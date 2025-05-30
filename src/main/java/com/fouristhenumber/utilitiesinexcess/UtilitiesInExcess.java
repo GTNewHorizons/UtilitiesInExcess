@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
 
@@ -37,6 +38,7 @@ public class UtilitiesInExcess {
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerBlock(new BlockFloating(), BlockFloating.ItemBlockFloating.class, "floatingBlock");
         GameRegistry.registerItem(new ItemHungerAxe(), "hungerAxe");
+        GameRegistry.registerItem(new ItemMobJar(), "mobJar");
 
         proxy.preInit(event);
     }
