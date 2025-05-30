@@ -17,7 +17,7 @@ public class BuilderWandUtils {
 
     /**
      * Counts the items of a certain type in a player's inventory
-     * 
+     *
      * @param player    The player whose inventory to coutnt
      * @param itemStack The itemstack incl metadata to count
      * @return The item count
@@ -38,7 +38,7 @@ public class BuilderWandUtils {
 
     /**
      * Decreases an ItemStack containing the item in the player's inventory by 1
-     * 
+     *
      * @param player    The player in question
      * @param itemStack The itemstack with metadata to compare
      * @return True if the ItemStack has been decremented, otherwise false
@@ -63,7 +63,7 @@ public class BuilderWandUtils {
     /**
      * Finds the blocks adjacent to the start position that are connected cardinally
      * and have air infront of them relative to the side clicked on.
-     * 
+     *
      * @param world       The world in which to place
      * @param blockToFind The block that is being found
      * @param metaToFind  The metadata of the block that is being found
@@ -74,9 +74,12 @@ public class BuilderWandUtils {
      */
     public static Set<WandBlockPos> findAdjacentBlocks(World world, Block blockToFind, int metaToFind, int findCount,
         ForgeDirection clickedSide, WandBlockPos startPos) {
+        Set<WandBlockPos> region = new HashSet<>();
+        if (findCount <= 0) {
+            return region;
+        }
         Set<WandBlockPos> visited = new HashSet<>();
         Queue<WandBlockPos> queue = new LinkedList<>();
-        Set<WandBlockPos> region = new HashSet<>();
 
         // Determine allowed offsets depending on the face that was clicked.
         // In the plane perpendicular to the face, one coordinate remains constant.
