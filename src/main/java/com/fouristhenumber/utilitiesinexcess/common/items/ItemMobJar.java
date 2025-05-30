@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -109,7 +108,7 @@ public class ItemMobJar extends Item {
             String id = mobData.getString("id");
 
             // Make a dummy entity solely so that the proper localized name can be retrieved
-            Entity dummy = EntityList.createEntityByName(id, Minecraft.getMinecraft().theWorld);
+            Entity dummy = EntityList.createEntityByName(id, player.worldObj);
             if (dummy instanceof EntityLivingBase) {
                 String mobName = dummy.getCommandSenderName();
                 tooltip.add(StatCollector.translateToLocalFormatted("tooltip.mobJar.full", mobName));
