@@ -42,8 +42,12 @@ public class ItemBuilderWand extends Item {
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-        if (!world.isRemote || !(entity instanceof EntityPlayer player) || !isSelected) {
+        if (!world.isRemote || !(entity instanceof EntityPlayer player)) {
             return; // Only run on the client side when the item is held for rendering purposes.
+        }
+        if (!isSelected) {
+            WireframeRenderer.clearCandidatePositions();
+            return;
         }
         // Use the Minecraft instance's objectMouseOver, which is updated each tick
         MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
