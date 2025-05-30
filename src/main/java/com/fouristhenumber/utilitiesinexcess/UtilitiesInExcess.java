@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuilderWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
 
@@ -39,7 +40,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerBlock(new BlockFloating(), BlockFloating.ItemBlockFloating.class, "floatingBlock");
         GameRegistry.registerItem(new ItemHungerAxe(), "hungerAxe");
         GameRegistry.registerItem(new ItemBuilderWand(16), "builderWand");
-
+        MinecraftForge.EVENT_BUS.register(new WireframeRenderer());
         proxy.preInit(event);
     }
 

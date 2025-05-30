@@ -1,17 +1,23 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils;
 import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils.WandBlockPos;
 
@@ -35,12 +41,60 @@ public class ItemBuilderWand extends Item {
     }
 
     @Override
+    public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
+        if (!world.isRemote || !(entity instanceof EntityPlayer player) || !isSelected) {
+            return; // Only run on the client side when the item is held for rendering purposes.
+        }
+        // Use the Minecraft instance's objectMouseOver, which is updated each tick
+        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+
+        // Check if player is looking at a block.
+        if (mop == null || mop.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
+            WireframeRenderer.clearCandidatePositions();
+            return;
+        }
+
+        int x = mop.blockX;
+        int y = mop.blockY;
+        int z = mop.blockZ;
+        int side = mop.sideHit;
+        ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
+        if (forgeSide == ForgeDirection.UNKNOWN) {
+            UtilitiesInExcess.LOG.warn("Builder wand onUpdate was called with invalid facing direction: {}", forgeSide);
+            return;
+        }
+
+        Block blockToPlace = world.getBlock(x, y, z);
+        int metaToPlace = world.getBlockMetadata(x, y, z);
+        ItemStack itemStack = new ItemStack(Item.getItemFromBlock(blockToPlace), 1, metaToPlace);
+        if (blockToPlace == null) return;
+
+        int inventoryBlockCount = BuilderWandUtils.countItemInInventory(player, itemStack);
+        int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
+            : Math.min(inventoryBlockCount, this.buildLimit);
+
+        Set<WandBlockPos> blocksToPlace = BuilderWandUtils
+            .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new WandBlockPos(x, y, z));
+        List<Vec3> wireframesToRender = new ArrayList<>();
+        for (WandBlockPos pos : blocksToPlace) {
+            wireframesToRender.add(
+                Vec3.createVectorHelper(
+                    pos.x + forgeSide.offsetX,
+                    pos.y + forgeSide.offsetY,
+                    pos.z + forgeSide.offsetZ));
+        }
+        WireframeRenderer.setCandidatePositions(wireframesToRender);
+
+    }
+
+    @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         // TODO: Prevent player from placing blocks into themself / other entities?
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
-            UtilitiesInExcess.LOG.warn("Builder wand was called with invalid facing direction: {}", forgeSide);
+            UtilitiesInExcess.LOG
+                .warn("Builder wand onItemUse was called with invalid facing direction: {}", forgeSide);
             return false;
         }
 
