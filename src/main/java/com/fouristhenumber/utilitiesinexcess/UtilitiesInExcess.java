@@ -12,6 +12,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,6 +20,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -40,7 +42,11 @@ public class UtilitiesInExcess {
         GameRegistry.registerBlock(new BlockFloating(), BlockFloating.ItemBlockFloating.class, "floatingBlock");
         GameRegistry.registerItem(new ItemHungerAxe(), "hungerAxe");
         GameRegistry.registerItem(new ItemBuilderWand(16), "builderWand");
-        MinecraftForge.EVENT_BUS.register(new WireframeRenderer());
+
+        if (FMLCommonHandler.instance()
+            .getSide() == Side.CLIENT) {
+            MinecraftForge.EVENT_BUS.register(new WireframeRenderer());
+        }
         proxy.preInit(event);
     }
 

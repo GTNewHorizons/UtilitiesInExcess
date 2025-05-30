@@ -25,7 +25,6 @@ public class BuilderWandUtils {
     public static int countItemInInventory(EntityPlayer player, ItemStack itemStack) {
         int count = 0;
 
-        // Loop through the player's main inventory slots
         for (ItemStack stack : player.inventory.mainInventory) {
             if (stack != null && stack.getItem() == itemStack.getItem()
                 && stack.getItemDamage() == itemStack.getItemDamage()) {
@@ -44,8 +43,6 @@ public class BuilderWandUtils {
      * @return True if the ItemStack has been decremented, otherwise false
      */
     public static boolean decreaseFromInventory(EntityPlayer player, ItemStack itemStack) {
-
-        // Loop through the player's main inventory slots
         for (int slotIndex = 0; slotIndex < player.inventory.mainInventory.length; slotIndex++) {
             ItemStack stack = player.inventory.mainInventory[slotIndex];
             if (stack != null && stack.getItem() == itemStack.getItem()
@@ -82,7 +79,6 @@ public class BuilderWandUtils {
         Queue<WandBlockPos> queue = new LinkedList<>();
 
         // Determine allowed offsets depending on the face that was clicked.
-        // In the plane perpendicular to the face, one coordinate remains constant.
         int[][] allowedOffsets = switch (clickedSide) {
             case UP, DOWN ->
                 // Plane: x/z plane (y remains constant)
@@ -96,7 +92,6 @@ public class BuilderWandUtils {
             default -> throw new RuntimeException("UE's BuilderWand's findAdjacentBlocks called with invalid side");
         };
 
-        // Start flood fill at startPos (must already be of type blockToPlace)
         int sx = startPos.x;
         int sy = startPos.y;
         int sz = startPos.z;
@@ -136,7 +131,7 @@ public class BuilderWandUtils {
                 int airx = nx + clickedSide.offsetX;
                 int airy = ny + clickedSide.offsetY;
                 int airz = nz + clickedSide.offsetZ;
-                // If the block matches blockToPlace and
+
                 if (world.getBlock(nx, ny, nz) == blockToFind && world.getBlockMetadata(nx, ny, nz) == metaToFind
                     && world.isAirBlock(airx, airy, airz)) {
 

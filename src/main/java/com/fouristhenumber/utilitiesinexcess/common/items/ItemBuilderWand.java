@@ -21,6 +21,9 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils;
 import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils.WandBlockPos;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class ItemBuilderWand extends Item {
 
     public int buildLimit = -1;
@@ -40,16 +43,17 @@ public class ItemBuilderWand extends Item {
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
         if (!world.isRemote || !(entity instanceof EntityPlayer player)) {
-            return; // Only run on the client side when the item is held for rendering purposes.
+            return;
         }
+
         if (!isSelected) {
             WireframeRenderer.clearCandidatePositions();
             return;
         }
-        // Use the Minecraft instance's objectMouseOver, which is updated each tick
         MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
 
         // Check if player is looking at a block.
