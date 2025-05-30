@@ -53,9 +53,13 @@ public class WireframeRenderer {
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
         Minecraft mc = Minecraft.getMinecraft();
-        double posx = mc.renderViewEntity.posX;
-        double posy = mc.renderViewEntity.posY;
-        double posz = mc.renderViewEntity.posZ;
+        double partialTicks = event.partialTicks;
+        double posx = mc.renderViewEntity.lastTickPosX
+            + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * partialTicks;
+        double posy = mc.renderViewEntity.lastTickPosY
+            + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * partialTicks;
+        double posz = mc.renderViewEntity.lastTickPosZ
+            + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * partialTicks;
 
         // Loop through each candidate position.
         for (Vec3 pos : candidatePositions) {
