@@ -22,7 +22,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
     modid = UtilitiesInExcess.MODID,
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
-    acceptedMinecraftVersions = "[1.7.10]")
+    acceptedMinecraftVersions = "[1.7.10]",
+    dependencies = "required-after:gtnhlib[0.5.14,)")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
