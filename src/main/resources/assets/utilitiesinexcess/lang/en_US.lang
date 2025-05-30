@@ -1,3 +1,5 @@
 tile.floatingBlock.name=Floating Block
 item.hungerAxe.name=Glutton's Axe
 item.builderWand.name=Architect's Staff
+tooltip.builderWand.1=Assists in placing many blocks
+tooltip.builderWand.2=Can place up to %s blocks at once

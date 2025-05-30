@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,8 +39,10 @@ public class ItemBuilderWand extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + "Assists in placing many blocks");
-        tooltip.add(EnumChatFormatting.AQUA + "Can place up to " + this.buildLimit + " blocks at once");
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.builderWand.1"));
+        tooltip.add(
+            EnumChatFormatting.AQUA
+                + StatCollector.translateToLocalFormatted("tooltip.builderWand.2", this.buildLimit));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
