@@ -1,9 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuilderWand;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuilderWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;

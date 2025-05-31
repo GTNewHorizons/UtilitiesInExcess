@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
