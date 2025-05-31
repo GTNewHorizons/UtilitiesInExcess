@@ -1,5 +1,3 @@
-tile.floatingBlock.name=Floating Block
-
 tile.compressedCobblestone.0.name=Compressed Cobblestone
 tile.compressedCobblestone.1.name=Double Compressed Cobblestone
 tile.compressedCobblestone.2.name=Triple Compressed Cobblestone
@@ -10,6 +8,19 @@ tile.compressedCobblestone.6.name=Septuple Compressed Cobblestone
 tile.compressedCobblestone.7.name=Octuple Compressed Cobblestone
 tile.compressedCobblestone.desc=%,d Cobblestone
 
+tile.floatingBlock.name=Floating Block
+tile.floatingBlock.desc=Can be placed in midair
+
 item.hungerAxe.name=Glutton's Axe
+item.hungerAxe.desc.1=Sates the bearer's hunger while held
+item.hungerAxe.desc.2=Can consume hunger to heal struck entities
+item.hungerAxe.desc.3=This effect is lethal to most undead
+
+item.mobJar.name=Mob Jar
+item.mobJar.desc.full=Contains: §f%s
+item.mobJar.desc.empty=Empty
+item.mobJar.desc.1=Right click a passive mob to trap it
+item.mobJar.desc.2=Right click again to release
+
 item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
