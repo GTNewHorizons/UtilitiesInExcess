@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -70,7 +71,7 @@ public class BlockFloating extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-            tooltip.add(EnumChatFormatting.AQUA + "Can be placed in midair");
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tile.floatingBlock.desc"));
             super.addInformation(stack, player, tooltip, p_77624_4_);
         }
     }
