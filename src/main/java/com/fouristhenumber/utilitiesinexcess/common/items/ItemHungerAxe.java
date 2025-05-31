@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ItemHungerAxe extends ItemAxe {
@@ -22,9 +23,9 @@ public class ItemHungerAxe extends ItemAxe {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + "Sates the bearer's hunger while held");
-        tooltip.add(EnumChatFormatting.AQUA + "Can consume hunger to heal struck entities");
-        tooltip.add(EnumChatFormatting.AQUA + "This effect is lethal to most undead");
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.hungerAxe.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.hungerAxe.desc.2"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.hungerAxe.desc.3"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 

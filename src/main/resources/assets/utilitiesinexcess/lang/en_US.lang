@@ -1,4 +1,9 @@
 tile.floatingBlock.name=Floating Block
+tile.floatingBlock.desc=Can be placed in midair
+
 item.hungerAxe.name=Glutton's Axe
+item.hungerAxe.desc.1=Sates the bearer's hunger while held
+item.hungerAxe.desc.2=Can consume hunger to heal struck entities
+item.hungerAxe.desc.3=This effect is lethal to most undead
 item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
