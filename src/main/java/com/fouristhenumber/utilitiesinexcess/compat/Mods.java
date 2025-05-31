@@ -6,7 +6,12 @@ import cpw.mods.fml.common.Loader;
 
 public enum Mods {
 
-    Baubles("Baubles"),;
+    // spotless:off
+    Baubles("Baubles"),
+    Dreamcraft("dreamcraft"),
+
+    ;
+    // spotless:on
 
     public final String modid;
     private final Supplier<Boolean> supplier;

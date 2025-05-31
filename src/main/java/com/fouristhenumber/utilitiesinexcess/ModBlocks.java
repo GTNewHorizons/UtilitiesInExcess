@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressedCobblestone;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
@@ -16,6 +17,7 @@ public enum ModBlocks {
 
     // make sure to leave a trailing comma
     FLOATING_BLOCK(BlockConfig.enableFloatingBlock, new BlockFloating(), BlockFloating.ItemBlockFloating.class, "floatingBlock"),
+    COMPRESSED_COBBLESTONE(BlockConfig.enableCompressedCobblestone, new BlockCompressedCobblestone(), BlockCompressedCobblestone.ItemCompressedCobblestone.class, "compressedCobblestone"),
 
     ; // leave trailing semicolon
     // spotless:on

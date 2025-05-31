@@ -1,3 +1,13 @@
+tile.compressedCobblestone.0.name=Compressed Cobblestone
+tile.compressedCobblestone.1.name=Double Compressed Cobblestone
+tile.compressedCobblestone.2.name=Triple Compressed Cobblestone
+tile.compressedCobblestone.3.name=Quadruple Compressed Cobblestone
+tile.compressedCobblestone.4.name=Quintuple Compressed Cobblestone
+tile.compressedCobblestone.5.name=Sextuple Compressed Cobblestone
+tile.compressedCobblestone.6.name=Septuple Compressed Cobblestone
+tile.compressedCobblestone.7.name=Octuple Compressed Cobblestone
+tile.compressedCobblestone.desc=%,d Cobblestone
+
 tile.floatingBlock.name=Floating Block
 tile.floatingBlock.desc=Can be placed in midair
 

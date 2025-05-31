@@ -8,4 +8,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableFloatingBlock;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableCompressedCobblestone;
 }
