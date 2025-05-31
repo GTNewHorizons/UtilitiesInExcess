@@ -2,8 +2,9 @@ tile.floatingBlock.name=Floating Block
 
 item.hungerAxe.name=Glutton's Axe
 item.mobJar.name=Mob Jar
-
 item.mobJar.desc.full=Contains: §f%s
 item.mobJar.desc.empty=Empty
 item.mobJar.desc.1=Right click a passive mob to trap it
 item.mobJar.desc.2=Right click again to release
+item.heavenlyRing.name=Heavenly Ring
+item.heavenlyRing.desc=Grants creative flight

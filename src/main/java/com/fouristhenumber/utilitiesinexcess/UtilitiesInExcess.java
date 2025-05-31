@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
@@ -23,7 +24,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
     modid = UtilitiesInExcess.MODID,
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
-    acceptedMinecraftVersions = "[1.7.10]")
+    acceptedMinecraftVersions = "[1.7.10]",
+    dependencies = "required-after:gtnhlib@[0.5.14,)")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -39,6 +41,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerBlock(new BlockFloating(), BlockFloating.ItemBlockFloating.class, "floatingBlock");
         GameRegistry.registerItem(new ItemHungerAxe(), "hungerAxe");
         GameRegistry.registerItem(new ItemMobJar(), "mobJar");
+        GameRegistry.registerItem(new ItemHeavenlyRing(), "heavenlyRing");
 
         proxy.preInit(event);
     }
