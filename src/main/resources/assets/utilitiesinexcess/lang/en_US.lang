@@ -1,6 +1,12 @@
 tile.floatingBlock.name=Floating Block
 tile.floatingBlock.desc=Can be placed in midair
 
+tile.woodSpike.name=Wooden Spike
+tile.ironSpike.name=Iron Spike
+tile.goldSpike.name=Gold Spike
+tile.diamondSpike.name=Diamond Spike
+tile.spike.desc=Stabs stabbily
+
 item.hungerAxe.name=Glutton's Axe
 item.hungerAxe.desc.1=Sates the bearer's hunger while held
 item.hungerAxe.desc.2=Can consume hunger to heal struck entities

@@ -6,6 +6,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource.spikeTypes;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -16,6 +18,10 @@ public enum ModBlocks {
 
     // make sure to leave a trailing comma
     FLOATING_BLOCK(BlockConfig.enableFloatingBlock, new BlockFloating(), BlockFloating.ItemBlockFloating.class, "floatingBlock"),
+    SPIKE_WOOD(BlockConfig.enableWoodSpike, new BlockSpike(spikeTypes.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
+    SPIKE_IRON(BlockConfig.enableIronSpike, new BlockSpike(spikeTypes.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
+    SPIKE_GOLD(BlockConfig.enableGoldSpike, new BlockSpike(spikeTypes.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
+    SPIKE_DIAMOND(BlockConfig.enableDiamondSpike, new BlockSpike(spikeTypes.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
 
     ; // leave trailing semicolon
     // spotless:on

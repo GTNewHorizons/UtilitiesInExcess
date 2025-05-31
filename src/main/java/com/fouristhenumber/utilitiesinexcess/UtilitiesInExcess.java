@@ -5,6 +5,7 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.TileEntitySpike;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
 
@@ -14,6 +15,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -33,6 +35,7 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
         proxy.preInit(event);
     }
 
