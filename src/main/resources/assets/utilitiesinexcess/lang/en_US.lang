@@ -6,7 +6,6 @@ item.hungerAxe.desc.1=Sates the bearer's hunger while held
 item.hungerAxe.desc.2=Can consume hunger to heal struck entities
 item.hungerAxe.desc.3=This effect is lethal to most undead
 
-
 item.builderWand.name=Architect's Staff
 tooltip.builderWand.1=Assists in placing many blocks
 tooltip.builderWand.2=Can place up to %s blocks at once
