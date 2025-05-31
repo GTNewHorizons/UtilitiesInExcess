@@ -111,14 +111,14 @@ public class ItemMobJar extends Item {
             Entity dummy = EntityList.createEntityByName(id, player.worldObj);
             if (dummy instanceof EntityLivingBase) {
                 String mobName = dummy.getCommandSenderName();
-                tooltip.add(StatCollector.translateToLocalFormatted("tooltip.mobJar.full", mobName));
+                tooltip.add(StatCollector.translateToLocalFormatted("item.mobJar.desc.full", mobName));
             }
         } else {
-            tooltip.add(StatCollector.translateToLocal("tooltip.mobJar.empty"));
+            tooltip.add(StatCollector.translateToLocal("item.mobJar.desc.empty"));
         }
 
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.mobJar.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.mobJar.2"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.mobJar.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.mobJar.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 }
