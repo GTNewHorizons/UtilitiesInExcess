@@ -5,8 +5,11 @@ import java.util.function.Supplier;
 import cpw.mods.fml.common.Loader;
 
 public enum Mods {
+    // spotless:off
 
-    Baubles("Baubles"),;
+    Baubles("Baubles"),
+    Dreamcraft("dreamcraft"),;
+    // spotless:off
 
     public final String modid;
     private final Supplier<Boolean> supplier;

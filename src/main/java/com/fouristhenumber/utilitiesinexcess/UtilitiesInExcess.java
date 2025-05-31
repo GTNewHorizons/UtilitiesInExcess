@@ -5,11 +5,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressedCobblestone;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
@@ -20,7 +15,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -40,13 +34,6 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        ModBlocks.init();
-        new BlockCompressedCobblestone();
-
-        GameRegistry.registerItem(new ItemHungerAxe(), "hungerAxe");
-        GameRegistry.registerItem(new ItemMobJar(), "mobJar");
-        GameRegistry.registerItem(new ItemHeavenlyRing(), "heavenlyRing");
-
         proxy.preInit(event);
     }
 
