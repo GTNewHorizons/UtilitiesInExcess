@@ -1,4 +1,5 @@
 tile.floatingBlock.name=Floating Block
+tile.floatingBlock.desc=Can be placed in midair
 
 item.hungerAxe.name=Glutton's Axe
 item.hungerAxe.desc.1=Sates the bearer's hunger while held
@@ -10,8 +11,6 @@ item.mobJar.desc.full=Contains: §f%s
 item.mobJar.desc.empty=Empty
 item.mobJar.desc.1=Right click a passive mob to trap it
 item.mobJar.desc.2=Right click again to release
-
-tile.floatingBlock.desc=Can be placed in midair
 
 item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
