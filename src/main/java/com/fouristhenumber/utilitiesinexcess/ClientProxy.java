@@ -16,9 +16,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
-        if (FMLCommonHandler.instance()
-            .getSide() == Side.CLIENT) {
-            MinecraftForge.EVENT_BUS.register(new WireframeRenderer());
-        }
+        
+        MinecraftForge.EVENT_BUS.register(new WireframeRenderer());
     }
 }
