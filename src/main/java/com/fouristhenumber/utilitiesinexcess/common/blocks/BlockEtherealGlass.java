@@ -22,6 +22,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockEtherealGlass extends BlockGlass {
 
+    public enum EtherealGlassType {
+        NORMAL(0, "etherealGlass"),
+        DARK(2, "etherealGlassDark"),
+        INVERTED(3, "etherealGlassInverted"),
+        DARK_INVERTED(5, "etherealGlassDarkInverted");
+
+        public final int meta;
+        public final String textureName;
+
+        EtherealGlassType(int meta, String textureName) {
+            this.meta = meta;
+            this.textureName = textureName;
+        }
+    }
+
     public BlockEtherealGlass() {
         super(Material.glass, false);
         setBlockName("etherealGlass");
@@ -35,11 +50,11 @@ public class BlockEtherealGlass extends BlockGlass {
         List<AxisAlignedBB> list, Entity collider) {
         int meta = worldIn.getBlockMetadata(x, y, z);
 
-        if ((meta == 0 || meta == 2) && collider instanceof EntityPlayer) {
+        if ((meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.DARK.meta) && collider instanceof EntityPlayer) {
             return;
         }
 
-        if ((meta == 3 || meta == 5) && !(collider instanceof EntityPlayer)) {
+        if ((meta == EtherealGlassType.INVERTED.meta || meta == EtherealGlassType.DARK_INVERTED.meta) && !(collider instanceof EntityPlayer)) {
             return;
         }
 
@@ -49,26 +64,25 @@ public class BlockEtherealGlass extends BlockGlass {
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        return (meta == 0 || meta == 3) ? 0 : 255;
+        return (meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.INVERTED.meta) ? 0 : 255;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(this, 1, 0)); // Normal
-        list.add(new ItemStack(this, 1, 2)); // Dark
-        list.add(new ItemStack(this, 1, 3)); // Inverted
-        list.add(new ItemStack(this, 1, 5)); // Dark Inverted
+        for (EtherealGlassType value : EtherealGlassType.values()) {
+            list.add(new ItemStack(this, 1, value.meta));
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         icons = new IIcon[16];
-        icons[0] = iconRegister.registerIcon("utilitiesinexcess:etherealGlass");
-        icons[2] = iconRegister.registerIcon("utilitiesinexcess:etherealGlassDark");
-        icons[3] = iconRegister.registerIcon("utilitiesinexcess:etherealGlassInverted");
-        icons[5] = iconRegister.registerIcon("utilitiesinexcess:etherealGlassDarkInverted");
+
+        for (EtherealGlassType value : EtherealGlassType.values()) {
+            icons[value.meta] = iconRegister.registerIcon("utilitiesinexcess:" + value.textureName);
+        }
     }
 
     @Override
