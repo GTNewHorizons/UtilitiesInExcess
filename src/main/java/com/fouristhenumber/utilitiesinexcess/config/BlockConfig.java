@@ -11,4 +11,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableCompressedCobblestone;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableEtherealGlass;
 }

@@ -11,6 +11,11 @@ tile.compressedCobblestone.desc=%,d Cobblestone
 tile.floatingBlock.name=Floating Block
 tile.floatingBlock.desc=Can be placed in midair
 
+tile.etherealGlass.0.name=Ethereal Glass
+tile.etherealGlass.2.name=Dark Ethereal Glass
+tile.etherealGlass.3.name=Ethereal Glass (Inverted)
+tile.etherealGlass.5.name=Dark Ethereal Glass (Inverted)
+
 item.hungerAxe.name=Glutton's Axe
 item.hungerAxe.desc.1=Sates the bearer's hunger while held
 item.hungerAxe.desc.2=Can consume hunger to heal struck entities
