@@ -23,6 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockEtherealGlass extends BlockGlass {
 
     public enum EtherealGlassType {
+
         NORMAL(0, "etherealGlass"),
         DARK(2, "etherealGlassDark"),
         INVERTED(3, "etherealGlassInverted"),
@@ -50,11 +51,13 @@ public class BlockEtherealGlass extends BlockGlass {
         List<AxisAlignedBB> list, Entity collider) {
         int meta = worldIn.getBlockMetadata(x, y, z);
 
-        if ((meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.DARK.meta) && collider instanceof EntityPlayer) {
+        if ((meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.DARK.meta)
+            && collider instanceof EntityPlayer) {
             return;
         }
 
-        if ((meta == EtherealGlassType.INVERTED.meta || meta == EtherealGlassType.DARK_INVERTED.meta) && !(collider instanceof EntityPlayer)) {
+        if ((meta == EtherealGlassType.INVERTED.meta || meta == EtherealGlassType.DARK_INVERTED.meta)
+            && !(collider instanceof EntityPlayer)) {
             return;
         }
 
