@@ -14,4 +14,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableRedstoneClock;
+  
+    @Config.DefaultBoolean(true)
+    public static boolean enableEtherealGlass;
 }
