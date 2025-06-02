@@ -22,5 +22,9 @@ item.mobJar.desc.empty=Empty
 item.mobJar.desc.1=Right click a passive mob to trap it
 item.mobJar.desc.2=Right click again to release
 
+tile.redstoneClock.name=Redstone Clock
+tile.redstoneClock.desc.1=Toggles redstone every tick
+tile.redstoneClock.desc.2=Supply with a redstone signal to turn off
+
 item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
