@@ -52,7 +52,6 @@ public class ItemBuilderWand extends Item {
             return;
         }
 
-        // handles null checks
         if (player.getHeldItem() == null || !(player.getHeldItem()
             .getItem() instanceof ItemBuilderWand)) {
             WireframeRenderer.clearCandidatePositions();
