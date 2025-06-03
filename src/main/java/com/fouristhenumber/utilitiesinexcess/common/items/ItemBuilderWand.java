@@ -50,11 +50,11 @@ public class ItemBuilderWand extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-        if (!world.isRemote || !(entity instanceof EntityPlayer player)) {
+        if (!world.isRemote || !(entity instanceof EntityPlayer player) || player.getHeldItem() == null) {
             return;
         }
 
-        // handles null checks (held stack is checked above in call stack)
+        // handles null checks
         if (!(player.getHeldItem()
             .getItem() instanceof ItemBuilderWand)) {
             WireframeRenderer.clearCandidatePositions();
@@ -79,11 +79,12 @@ public class ItemBuilderWand extends Item {
         }
 
         Block blockToPlace = world.getBlock(x, y, z);
+        if (blockToPlace == null) return;
         int metaToPlace = world.getBlockMetadata(x, y, z);
         ItemStack itemStack = new ItemStack(Item.getItemFromBlock(blockToPlace), 1, metaToPlace);
-        if (blockToPlace == null) return;
 
         int inventoryBlockCount = BuilderWandUtils.countItemInInventory(player, itemStack);
+        if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) return;
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 
