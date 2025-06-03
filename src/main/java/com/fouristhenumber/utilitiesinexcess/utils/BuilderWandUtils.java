@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
 public class BuilderWandUtils {
 
     public BuilderWandUtils() {};
@@ -69,14 +71,14 @@ public class BuilderWandUtils {
      * @param startPos    The position to start
      * @return The set of 1<=x<=findCount adjacent blocks with air on their face
      */
-    public static Set<WandBlockPos> findAdjacentBlocks(World world, Block blockToFind, int metaToFind, int findCount,
-        ForgeDirection clickedSide, WandBlockPos startPos) {
-        Set<WandBlockPos> region = new HashSet<>();
+    public static Set<BlockPos> findAdjacentBlocks(World world, Block blockToFind, int metaToFind, int findCount,
+        ForgeDirection clickedSide, BlockPos startPos) {
+        Set<BlockPos> region = new HashSet<>();
         if (findCount <= 0) {
             return region;
         }
-        Set<WandBlockPos> visited = new HashSet<>();
-        Queue<WandBlockPos> queue = new LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
+        Queue<BlockPos> queue = new LinkedList<>();
 
         // Determine allowed offsets depending on the face that was clicked.
         int[][] allowedOffsets = switch (clickedSide) {
@@ -100,7 +102,7 @@ public class BuilderWandUtils {
         if (world.getBlock(sx, sy, sz) == blockToFind && world.getBlockMetadata(sx, sy, sz) == metaToFind
             && world.isAirBlock(sz + clickedSide.offsetX, sy + clickedSide.offsetY, sz + clickedSide.offsetZ)) {
 
-            WandBlockPos neighbor = new WandBlockPos(sx, sy, sz);
+            BlockPos neighbor = new BlockPos(sx, sy, sz);
             region.add(neighbor);
             queue.add(neighbor);
             visited.add(startPos);
@@ -110,7 +112,7 @@ public class BuilderWandUtils {
 
         // Flood-fill the contiguous region in the allowed plane.
         while (!queue.isEmpty() && region.size() < findCount) {
-            WandBlockPos current = queue.poll();
+            BlockPos current = queue.poll();
             int cx = current.x;
             int cy = current.y;
             int cz = current.z;
@@ -121,7 +123,7 @@ public class BuilderWandUtils {
                 int ny = cy + off[1];
                 int nz = cz + off[2];
 
-                WandBlockPos key = new WandBlockPos(nx, ny, nz);
+                BlockPos key = new BlockPos(nx, ny, nz);
                 if (visited.contains(key)) {
                     continue;
                 }
@@ -135,7 +137,7 @@ public class BuilderWandUtils {
                 if (world.getBlock(nx, ny, nz) == blockToFind && world.getBlockMetadata(nx, ny, nz) == metaToFind
                     && world.isAirBlock(airx, airy, airz)) {
 
-                    WandBlockPos neighbor = new WandBlockPos(nx, ny, nz);
+                    BlockPos neighbor = new BlockPos(nx, ny, nz);
                     region.add(neighbor);
                     queue.add(neighbor);
                 }
@@ -143,32 +145,6 @@ public class BuilderWandUtils {
         }
 
         return region;
-    }
-
-    // Helper class since Minecraft's Vec3 does not
-    // implement these methods
-    public static class WandBlockPos {
-
-        public final int x, y, z;
-
-        public WandBlockPos(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof WandBlockPos)) return false;
-            WandBlockPos that = (WandBlockPos) o;
-            return x == that.x && y == that.y && z == that.z;
-        }
-
-        @Override
-        public int hashCode() {
-            return (((x * 31) + y) * 31) + z;
-        }
     }
 
 }

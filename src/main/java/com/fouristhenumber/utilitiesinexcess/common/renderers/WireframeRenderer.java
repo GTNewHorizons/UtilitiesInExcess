@@ -6,36 +6,45 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
+
+import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+import com.gtnewhorizon.gtnhlib.eventbus.Phase;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber(phase = Phase.PRE, side = Side.CLIENT)
 public class WireframeRenderer {
 
     public WireframeRenderer() {
         candidatePositions = new ArrayList<>();
-        candidatePositions.add(Vec3.createVectorHelper(10, 10, 10));
     }
 
-    private static List<Vec3> candidatePositions;
+    private static List<BlockPos> candidatePositions;
 
     // Setter so your item can update the candidate positions
-    public static void setCandidatePositions(List<Vec3> newCandidatePositions) {
-        candidatePositions = newCandidatePositions;
+    public static void addCandidatePosition(BlockPos pos) {
+        candidatePositions.add(pos);
     }
 
     public static void clearCandidatePositions() {
         if (!candidatePositions.isEmpty()) candidatePositions.clear();
     }
 
+    @EventBusSubscriber.Condition
+    public static boolean shouldSubscribe() {
+        return ItemConfig.enableBuilderWand;
+    }
+
     @SubscribeEvent
-    public void onRenderWorldLast(RenderWorldLastEvent event) {
+    public static void onRenderWorldLast(RenderWorldLastEvent event) {
         if (candidatePositions == null || candidatePositions.isEmpty()) {
             return;
         }
@@ -57,10 +66,10 @@ public class WireframeRenderer {
         double posz = mc.renderViewEntity.lastTickPosZ
             + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * partialTicks;
 
-        for (Vec3 pos : candidatePositions) {
-            int x = (int) pos.xCoord;
-            int y = (int) pos.yCoord;
-            int z = (int) pos.zCoord;
+        for (BlockPos pos : candidatePositions) {
+            int x = pos.x;
+            int y = pos.y;
+            int z = pos.z;
 
             AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
 

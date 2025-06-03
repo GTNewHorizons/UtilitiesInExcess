@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,14 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils;
-import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils.WandBlockPos;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -91,17 +89,12 @@ public class ItemBuilderWand extends Item {
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 
-        Set<WandBlockPos> blocksToPlace = BuilderWandUtils
-            .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new WandBlockPos(x, y, z));
-        List<Vec3> wireframesToRender = new ArrayList<>();
-        for (WandBlockPos pos : blocksToPlace) {
-            wireframesToRender.add(
-                Vec3.createVectorHelper(
-                    pos.x + forgeSide.offsetX,
-                    pos.y + forgeSide.offsetY,
-                    pos.z + forgeSide.offsetZ));
+        Set<BlockPos> blocksToPlace = BuilderWandUtils
+            .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new BlockPos(x, y, z));
+        WireframeRenderer.clearCandidatePositions();
+        for (BlockPos pos : blocksToPlace) {
+            WireframeRenderer.addCandidatePosition(pos.offset(forgeSide.offsetX, forgeSide.offsetY, forgeSide.offsetZ));
         }
-        WireframeRenderer.setCandidatePositions(wireframesToRender);
 
     }
 
@@ -126,9 +119,9 @@ public class ItemBuilderWand extends Item {
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 
-        Set<WandBlockPos> blocksToPlace = BuilderWandUtils
-            .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new WandBlockPos(x, y, z));
-        for (WandBlockPos pos : blocksToPlace) {
+        Set<BlockPos> blocksToPlace = BuilderWandUtils
+            .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new BlockPos(x, y, z));
+        for (BlockPos pos : blocksToPlace) {
             // TODO: Group these by a bigger number instead of decreasing by 1 every time.
             if (player.capabilities.isCreativeMode || BuilderWandUtils.decreaseFromInventory(player, itemStack)) {
                 world.setBlock(
