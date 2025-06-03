@@ -13,5 +13,8 @@ public class BlockConfig {
     public static boolean enableCompressedCobblestone;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableRedstoneClock;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableEtherealGlass;
 }
