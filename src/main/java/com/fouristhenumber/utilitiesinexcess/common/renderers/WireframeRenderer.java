@@ -1,8 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.AxisAlignedBB;
@@ -18,12 +15,14 @@ import com.gtnewhorizon.gtnhlib.eventbus.Phase;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
+@SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
-@EventBusSubscriber(phase = Phase.PRE, side = Side.CLIENT)
+@EventBusSubscriber(phase = Phase.INIT, side = Side.CLIENT)
 public class WireframeRenderer {
 
-    private final static List<BlockPos> candidatePositions = new ArrayList<>();;
+    private final static ObjectOpenHashSet<BlockPos> candidatePositions = new ObjectOpenHashSet<>();;
 
     // Setter so your item can update the candidate positions
     public static void addCandidatePosition(BlockPos pos) {
