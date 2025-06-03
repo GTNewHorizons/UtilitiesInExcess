@@ -35,6 +35,7 @@ public class ItemBuilderWand extends Item {
         setTextureName("utilitiesinexcess:builderWand");
         setUnlocalizedName("builderWand");
         setMaxDamage(0);
+        setMaxStackSize(1);
     }
 
     @Override
@@ -53,7 +54,9 @@ public class ItemBuilderWand extends Item {
             return;
         }
 
-        if (!isSelected) {
+        // handles null checks (held stack is checked above in call stack)
+        if (!(player.getHeldItem()
+            .getItem() instanceof ItemBuilderWand)) {
             WireframeRenderer.clearCandidatePositions();
             return;
         }
@@ -110,17 +113,17 @@ public class ItemBuilderWand extends Item {
         }
 
         Block blockToPlace = world.getBlock(x, y, z);
+        if (blockToPlace == null) return false;
         int metaToPlace = world.getBlockMetadata(x, y, z);
         ItemStack itemStack = new ItemStack(Item.getItemFromBlock(blockToPlace), 1, metaToPlace);
-        if (blockToPlace == null) return false;
 
         int inventoryBlockCount = BuilderWandUtils.countItemInInventory(player, itemStack);
+        if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) return false;
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 
         Set<WandBlockPos> blocksToPlace = BuilderWandUtils
             .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new WandBlockPos(x, y, z));
-
         for (WandBlockPos pos : blocksToPlace) {
             // TODO: Group these by a bigger number instead of decreasing by 1 every time.
             if (player.capabilities.isCreativeMode || BuilderWandUtils.decreaseFromInventory(player, itemStack)) {
