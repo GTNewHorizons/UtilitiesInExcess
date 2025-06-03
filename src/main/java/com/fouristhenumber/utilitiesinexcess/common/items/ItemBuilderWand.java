@@ -50,12 +50,12 @@ public class ItemBuilderWand extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-        if (!world.isRemote || !(entity instanceof EntityPlayer player) || player.getHeldItem() == null) {
+        if (!world.isRemote || !(entity instanceof EntityPlayer player)) {
             return;
         }
 
         // handles null checks
-        if (!(player.getHeldItem()
+        if (player.getHeldItem() == null || !(player.getHeldItem()
             .getItem() instanceof ItemBuilderWand)) {
             WireframeRenderer.clearCandidatePositions();
             return;
