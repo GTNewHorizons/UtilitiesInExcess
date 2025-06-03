@@ -23,11 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @EventBusSubscriber(phase = Phase.PRE, side = Side.CLIENT)
 public class WireframeRenderer {
 
-    public WireframeRenderer() {
-        candidatePositions = new ArrayList<>();
-    }
-
-    private static List<BlockPos> candidatePositions;
+    private final static List<BlockPos> candidatePositions = new ArrayList<>();;
 
     // Setter so your item can update the candidate positions
     public static void addCandidatePosition(BlockPos pos) {
@@ -45,7 +41,7 @@ public class WireframeRenderer {
 
     @SubscribeEvent
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (candidatePositions == null || candidatePositions.isEmpty()) {
+        if (candidatePositions.isEmpty()) {
             return;
         }
 
