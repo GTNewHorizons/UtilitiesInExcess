@@ -84,7 +84,10 @@ public class ItemBuilderWand extends Item {
         ItemStack itemStack = new ItemStack(Item.getItemFromBlock(blockToPlace), 1, metaToPlace);
 
         int inventoryBlockCount = BuilderWandUtils.countItemInInventory(player, itemStack);
-        if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) return;
+        if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) {
+            WireframeRenderer.clearCandidatePositions();
+            return;
+        }
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 

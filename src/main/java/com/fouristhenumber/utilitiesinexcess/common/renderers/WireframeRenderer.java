@@ -31,7 +31,7 @@ public class WireframeRenderer {
     }
 
     public static void clearCandidatePositions() {
-        if (!candidatePositions.isEmpty()) candidatePositions = new ArrayList<>();
+        if (!candidatePositions.isEmpty()) candidatePositions.clear();
     }
 
     @SubscribeEvent
