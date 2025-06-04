@@ -1,11 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressedCobblestone;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;

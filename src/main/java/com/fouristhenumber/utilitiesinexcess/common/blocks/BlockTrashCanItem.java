@@ -2,8 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.List;
 
-import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -14,7 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 
 public class BlockTrashCanItem extends BlockContainer {
 
@@ -25,9 +24,11 @@ public class BlockTrashCanItem extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer playerIn, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer playerIn, int side, float hitX,
+        float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            GuiFactories.tileEntity().open(playerIn, x, y, z);
+            GuiFactories.tileEntity()
+                .open(playerIn, x, y, z);
         }
         return true;
     }
@@ -36,7 +37,6 @@ public class BlockTrashCanItem extends BlockContainer {
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityTrashCanItem();
     }
-
 
     public static class ItemBlockTrashCanItem extends ItemBlock {
 
