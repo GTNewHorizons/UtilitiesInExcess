@@ -36,3 +36,6 @@ item.heavenlyRing.desc=Grants creative flight
 
 tile.trashCanItem.name=Trash Can (Item)
 tile.trashCanItem.desc.1=Trash Can for Items
+
+tile.trashCanFluid.name=Trash Can (Fluid)
+tile.trashCanFluid.desc=Trash Can for Fluids

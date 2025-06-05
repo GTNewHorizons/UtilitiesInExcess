@@ -6,6 +6,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -37,7 +38,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str("Trash Can (Item)")
+                    IKey.str(StatCollector.translateToLocal("tile.trashCanItem.name"))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)
