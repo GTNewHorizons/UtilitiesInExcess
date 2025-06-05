@@ -33,3 +33,6 @@ tile.redstoneClock.desc.2=Supply with a redstone signal to turn off
 
 item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
+
+tile.drum.name=Drum
+tile.drum.desc=Holds %u buckets of fluid
