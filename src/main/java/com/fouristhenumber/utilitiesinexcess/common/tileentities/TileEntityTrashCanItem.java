@@ -89,8 +89,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-    }
+    public void setInventorySlotContents(int index, ItemStack stack) {}
 
     @Override
     public String getInventoryName() {
@@ -129,7 +128,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[]{1,2,3,4,5,6,7,8,9,10};
+        return new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     }
 
     @Override

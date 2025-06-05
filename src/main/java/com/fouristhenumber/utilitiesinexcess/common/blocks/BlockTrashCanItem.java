@@ -20,7 +20,7 @@ public class BlockTrashCanItem extends BlockContainer {
     public BlockTrashCanItem() {
         super(Material.rock);
         setBlockName("trashCanItem");
-        setBlockTextureName("utilitiesinexcess:redstone_clock");
+        setBlockTextureName("utilitiesinexcess:trash_can_item");
     }
 
     @Override
