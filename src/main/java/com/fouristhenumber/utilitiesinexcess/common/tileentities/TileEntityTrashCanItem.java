@@ -94,7 +94,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
 
     @Override
     public String getInventoryName() {
-        return "Trash Can (Item)";
+        return StatCollector.translateToLocal("tile.trashCanItem.name");
     }
 
     @Override

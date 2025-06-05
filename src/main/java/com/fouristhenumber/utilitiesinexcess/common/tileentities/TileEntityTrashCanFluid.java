@@ -49,12 +49,26 @@ public class TileEntityTrashCanFluid extends TileEntity
                 ItemStack drainedStack = FluidContainerRegistry.drainFluidContainer(inputStack);
                 if (drainedStack == null) return;
 
-                ItemStack unInserted = this.insertItem(OUTPUT_SLOT, drainedStack, false);
-
-                if (unInserted == null) {
-                    this.setStackInSlot(0, null);
+                ItemStack outputStack = this.getStackInSlot(OUTPUT_SLOT);
+                if (outputStack != null && !outputStack.getItem()
+                    .equals(drainedStack.getItem())) return;
+                // We interface directly with the inventory here, since interfacing with the inventoryHandler
+                // would call onContentsChanged again.
+                int inserted;
+                if (outputStack == null) {
+                    inserted = inputStack.stackSize;
+                    drainedStack.stackSize = inserted;
+                    mInventory[OUTPUT_SLOT] = drainedStack;
                 } else {
-                    inputStack.stackSize -= (drainedStack.stackSize - unInserted.stackSize);
+                    // Make sure we don't insert more than stackLimit
+                    // aka, outputStack.stackSize += stackLimit - outputStack.stackSize <= stackLimit
+                    int stackLimit = drainedStack.getMaxStackSize();
+                    inserted = Math.min(stackLimit - outputStack.stackSize, inputStack.stackSize);
+                    outputStack.stackSize += inserted;
+                }
+                inputStack.stackSize -= inserted;
+                if (inputStack.stackSize <= 0) {
+                    mInventory[INPUT_SLOT] = null;
                 }
             }
         };
@@ -80,7 +94,7 @@ public class TileEntityTrashCanFluid extends TileEntity
                         .marginTop(5)
                         .marginBottom(-15)));
 
-        IWidget waterSlots = Flow.column()
+        IWidget slots = Flow.column()
             .childPadding(10)
             .coverChildren()
             .child(
@@ -93,7 +107,7 @@ public class TileEntityTrashCanFluid extends TileEntity
                     new ModularSlot(inventoryHandler, OUTPUT_SLOT).slotGroup("item_inv")
                         .accessibility(false, true)));
 
-        return panel.child(waterSlots);
+        return panel.child(slots);
     }
 
     @Override
@@ -133,20 +147,17 @@ public class TileEntityTrashCanFluid extends TileEntity
     // Item Handler Methods
     @Override
     public int getSizeInventory() {
-        return mInventory.length;
+        return inventoryHandler.getSlots();
     }
 
     @Override
-    public ItemStack getStackInSlot(int slotIn) {
-        return mInventory[slotIn];
+    public ItemStack getStackInSlot(int slot) {
+        return inventoryHandler.getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        if (mInventory[index] == null) return null;
-        ItemStack returnStack = new ItemStack(mInventory[index].getItem(), count, mInventory[index].getItemDamage());
-        mInventory[index].stackSize -= count;
-        return returnStack;
+        return inventoryHandler.extractItem(index, count, false);
     }
 
     @Override
@@ -156,12 +167,12 @@ public class TileEntityTrashCanFluid extends TileEntity
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        mInventory[index] = stack;
+        inventoryHandler.setStackInSlot(index, stack);
     }
 
     @Override
     public String getInventoryName() {
-        return "Trash Can (Fluid)";
+        return StatCollector.translateToLocal("tile.trashCanFluid.name");
     }
 
     @Override
@@ -201,20 +212,19 @@ public class TileEntityTrashCanFluid extends TileEntity
     }
 
     @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return p_102007_1_ == INPUT_SLOT && isValidItemInput(p_102007_2_);
+    public boolean canInsertItem(int slot, ItemStack item, int side) {
+        return slot == INPUT_SLOT && isValidItemInput(item)
+            && !(item.equals(inventoryHandler.insertItem(slot, item, true)));
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        if (p_102008_1_ != OUTPUT_SLOT) return false;
-        ItemStack outputStack = mInventory[OUTPUT_SLOT];
-        if (outputStack == null || p_102008_2_ == null
-            || outputStack.getItem()
-                .equals(p_102008_2_.getItem()))
-            return false;
-
-        return true;
+    public boolean canExtractItem(int slot, ItemStack item, int side) {
+        if (slot != OUTPUT_SLOT) return false;
+        if (item == null) return false;
+        if (inventoryHandler.getStackInSlot(slot)
+            .getItem() != item.getItem()) return false;
+        ItemStack extractedStack = inventoryHandler.extractItem(slot, item.stackSize, true);
+        return extractedStack != null && extractedStack.stackSize > 0;
     }
 
     // Fluid Handler Methods
@@ -251,7 +261,7 @@ public class TileEntityTrashCanFluid extends TileEntity
     }
 
     public static boolean isValidItemInput(ItemStack itemStack) {
-        return FluidContainerRegistry.isContainer(itemStack);
+        return FluidContainerRegistry.isFilledContainer(itemStack);
     }
 
 }
