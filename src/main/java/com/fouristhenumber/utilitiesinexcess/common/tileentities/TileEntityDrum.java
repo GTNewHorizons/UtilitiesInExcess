@@ -9,8 +9,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-
 public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     public FluidTank tank;
@@ -20,30 +18,29 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
         this.tank = new FluidTank(capacity);
     }
 
-    int ticker = 0;
+    public void setTank(FluidTank tank) {
+        this.tank = tank;
+    }
 
-    @Override
-    public void updateEntity() {
-        this.ticker++;
-        if (this.ticker % 20 == 0) {
-            UtilitiesInExcess.LOG.info("Hello from Drum");
-            if (tank.getInfo().fluid != null && tank.getInfo().fluid.getFluid() != null) {
-                UtilitiesInExcess.LOG.info(tank.getInfo().fluid.getFluid());
-                UtilitiesInExcess.LOG.info(tank.getInfo().fluid.amount);
-            }
-        }
+    public void setFluid(FluidStack stack) {
+        this.tank.setFluid(stack);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        tank.readFromNBT(nbt);
+        if (nbt.hasKey("tank")) {
+            NBTTagCompound tankNbt = nbt.getCompoundTag("tank");
+            tank.readFromNBT(tankNbt);
+        }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        tank.writeToNBT(nbt);
+        NBTTagCompound tankNbt = new NBTTagCompound();
+        tank.writeToNBT(tankNbt);
+        nbt.setTag("tank", tankNbt);
     }
 
     // IFluidHandler implementation

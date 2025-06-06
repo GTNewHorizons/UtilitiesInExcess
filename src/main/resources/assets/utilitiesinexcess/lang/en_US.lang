@@ -35,4 +35,5 @@ item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
 
 tile.drum.name=Drum
-tile.drum.desc=Holds %u buckets of fluid
+tile.drum.desc=Holds %s buckets of fluid
+tile.drum.desc.fluid=Currently holding %s %sL
