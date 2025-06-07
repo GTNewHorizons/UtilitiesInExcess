@@ -13,7 +13,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -56,14 +56,13 @@ public class BlockDrum extends BlockContainer {
         if (tile instanceof TileEntityDrum drum) {
             if (drum.tank != null && drum.tank.getFluid() != null) {
                 player.addChatMessage(
-                    new ChatComponentText(
-                        StatCollector.translateToLocalFormatted(
-                            "tile.drum.chat.filled",
-                            drum.tank.getFluid()
-                                .getLocalizedName(),
-                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount))));
+                    new ChatComponentTranslation(
+                        "tile.drum.chat.filled",
+                        drum.tank.getFluid()
+                            .getLocalizedName(),
+                        NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
             } else {
-                player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tile.drum.chat.empty")));
+                player.addChatMessage(new ChatComponentTranslation("tile.drum.chat.empty"));
             }
         }
         return true;
