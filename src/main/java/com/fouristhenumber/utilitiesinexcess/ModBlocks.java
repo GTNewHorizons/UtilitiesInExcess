@@ -23,7 +23,7 @@ public enum ModBlocks {
     COMPRESSED_COBBLESTONE(BlockConfig.enableCompressedCobblestone, new BlockCompressedCobblestone(), BlockCompressedCobblestone.ItemCompressedCobblestone.class, "compressedCobblestone"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), BlockRedstoneClock.ItemBlockRedstoneClock.class, "redstoneClock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "etherealGlass"),
-    DRUM(BlockConfig.enableDrum, new BlockDrum(), BlockDrum.ItemBlockDrum.class, "drum"),
+    DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
     ; // leave trailing semicolon
     // spotless:on
 

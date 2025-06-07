@@ -19,14 +19,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 
 public class BlockDrum extends BlockContainer {
 
-    int capacity = 16000;
+    final int capacity;
 
-    public BlockDrum() {
+    public BlockDrum(int capacity) {
         super(Material.iron);
+        this.capacity = capacity;
         setBlockName("drum");
         this.setHardness(3.0F);
         this.setResistance(5.0F);
@@ -55,10 +57,13 @@ public class BlockDrum extends BlockContainer {
             if (drum.tank != null && drum.tank.getFluid() != null) {
                 player.addChatMessage(
                     new ChatComponentText(
-                        "In drum: " + drum.tank.getFluid()
-                            .getLocalizedName() + " " + drum.tank.getFluid().amount + "L"));
+                        StatCollector.translateToLocalFormatted(
+                            "tile.drum.chat.filled",
+                            drum.tank.getFluid()
+                                .getLocalizedName(),
+                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount))));
             } else {
-                player.addChatMessage(new ChatComponentText("Drum is empty"));
+                player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tile.drum.chat.empty")));
             }
         }
         return true;
@@ -110,10 +115,11 @@ public class BlockDrum extends BlockContainer {
 
     public static class ItemBlockDrum extends ItemBlock implements IFluidContainerItem {
 
-        public static int capacity = -1;
+        public final int capacity;
 
         public ItemBlockDrum(Block block) {
             super(block);
+            this.setMaxStackSize(1);
             this.capacity = ((BlockDrum) block).capacity;
         }
 
@@ -212,13 +218,14 @@ public class BlockDrum extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("tile.drum.desc", (int) Math.floor(((float) capacity) / 1000f)));
+            tooltip
+                .add(StatCollector.translateToLocalFormatted("tile.drum.desc", NumberFormat.DEFAULT.format(capacity)));
             FluidStack fluid = getFluid(stack);
             if (fluid != null) {
-                String formatted = StatCollector
-                    .translateToLocalFormatted("tile.drum.desc.fluid", fluid.getLocalizedName(), fluid.amount);
+                String formatted = StatCollector.translateToLocalFormatted(
+                    "tile.drum.desc.fluid",
+                    fluid.getLocalizedName(),
+                    NumberFormat.DEFAULT.format(fluid.amount));
                 tooltip.add(formatted);
             }
         }
