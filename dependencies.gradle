@@ -35,6 +35,8 @@
  */
 dependencies {
     implementation("com.github.GTNewHorizons:GTNHLib:0.6.25:dev")
+    // TODO: remove MUI1 dep when the implicit dependency
+    // TODO: in IItemHandlerModifiable is removed
     api("com.github.GTNewHorizons:ModularUI:1.2.18:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.15-1.7.10:dev")
     compileOnly("com.github.GTNewHorizons:Baubles-Expanded:2.1.8-GTNH:dev")
