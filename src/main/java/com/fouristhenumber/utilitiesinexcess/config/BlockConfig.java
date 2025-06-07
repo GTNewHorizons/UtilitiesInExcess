@@ -17,4 +17,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableEtherealGlass;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDrum;
 }
