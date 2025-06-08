@@ -36,9 +36,6 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         RecipeLoader.run();
 
-        FMLCommonHandler.instance()
-            .bus()
-            .register(new EventHandler());
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
