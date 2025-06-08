@@ -41,16 +41,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemWateringCan extends Item {
 
     private int range;
+    private int tier;
     private static final String TAG_ACTIVE = "WateringCanActive";
     // A map to track the last time each player used the watering can
     public static final Map<EntityPlayer, Long> lastWaterTick = new WeakHashMap<>();
     private final int cooldownTicks = 4; // Watering delay
 
-    public ItemWateringCan(int effectArea) {
+    public ItemWateringCan(int tier, int effectArea) {
+        this.tier = tier;
         // Ensure effectArea is odd, since it should be centered (3, 5, 7, etc.)
         this.range = (effectArea - 1) / 2;;
-        setTextureName("utilitiesinexcess:wateringCan");
-        setUnlocalizedName("wateringCan");
+        setTextureName("utilitiesinexcess:" + getNameFromTier(tier));
+        setUnlocalizedName(getNameFromTier(tier));
         setMaxStackSize(1);
     }
 
@@ -67,11 +69,12 @@ public class ItemWateringCan extends Item {
             // If the player can water and the world is not remote (server-side), perform the watering action
             if (!world.isRemote && canWater) {
                 lastWaterTick.put(player, currentTick);
-                OnItemUse(stack, player, world);
+                onItemUse(stack, player, world);
             } else {
                 // If the player is remote (client-side) apply the walking speed penalty
                 WalkingSpeed(player, player.isUsingItem() ? false : true);
             }
+            System.out.println("Watering can used by " + player.getDisplayName() + " at " + currentTick);
         }
     }
 
@@ -108,22 +111,31 @@ public class ItemWateringCan extends Item {
                         .translateToLocal("item.wateringCan." + (isActive(stack) ? "activated" : "deactivated"))));
             return true;
         }
+        System.out.println("onItemUse called for player: " + player + " isFakePlayer(player): " + isFakePlayer(player));
+        if (isFakePlayer(player) && !world.isRemote) {
+            this.onItemUse(stack, player, world, x, y, z, side);
+        }
+
         return false;
     }
+
+    // public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+    // float hitX, float hitY, float hitZ) {
+    // System.out.println("onItemUse called for player: " + player + " isFakePlayer(player): " + isFakePlayer(player));
+    // if (isFakePlayer(player) && !world.isRemote) {
+    // this.onItemUse(stack, player, world, x, y, z, side);
+    // }
+    // return false;
+    // }
 
     /**
      * Called when the item is used by the player.
      * This method is called when the player right-clicks with the item.
      * It performs a ray trace to find the block the player is looking at and calls onItemUse with the hit position.
      */
-    public void OnItemUse(ItemStack stack, Entity entity, World world) {
+    public void onItemUse(ItemStack stack, Entity entity, World world) {
         if (entity instanceof EntityPlayer player) {
-            // Eye height ensures the position is at the player's eyes
-            double posY = player.posY + player.getEyeHeight();
-            Vec3 pos = Vec3.createVectorHelper(player.posX, posY, player.posZ);
-            Vec3 look = player.getLookVec();
-            Vec3 target = pos.addVector(look.xCoord * 4.5F, look.yCoord * 4.5F, look.zCoord * 4.5F);
-            MovingObjectPosition hit = world.rayTraceBlocks(pos, target);
+            MovingObjectPosition hit = rayTrace(world, player, false);
             if (hit != null) {
                 onItemUse(stack, player, world, hit.blockX, hit.blockY, hit.blockZ, hit.sideHit);
             }
@@ -210,8 +222,13 @@ public class ItemWateringCan extends Item {
         Block targetBlock = world.getBlock(x, y, z);
         int targetMeta = world.getBlockMetadata(x, y, z);
 
-        // randomly spawn a flower (5% chance)
-        if (world.rand.nextInt(100) < 5) {
+        // Only spawn flowers if the block below is grass
+        if (world.getBlock(x, y - 1, z) != Blocks.grass) {
+            return;
+        }
+
+        // randomly spawn a flower (3% chance)
+        if (world.rand.nextInt(100) < 3) {
             int bx = x + world.rand.nextInt(range * 2 + 1) - range;
             int bz = z + world.rand.nextInt(range * 2 + 1) - range;
             int by = y;
@@ -336,5 +353,38 @@ public class ItemWateringCan extends Item {
             }
             playerSP.setSprinting(false); // Disable sprinting
         }
+    }
+
+    public MovingObjectPosition rayTrace(World world, EntityPlayer player, boolean useLiquids) {
+        Vec3 pos = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+        Vec3 look = player.getLookVec();
+        Vec3 target = pos.addVector(look.xCoord * 4.5F, look.yCoord * 4.5F, look.zCoord * 4.5F);
+        return world.rayTraceBlocks(pos, target, useLiquids);
+    }
+
+    public String getNameFromTier(int tier) {
+        switch (tier) {
+            case 1:
+                return "wateringCanBasic";
+            case 2:
+                return "wateringCanAdvanced";
+            case 3:
+                return "wateringCanElite";
+            default:
+                return "wateringCan"; // Fallback for any other tier
+        }
+    }
+
+    public boolean isFakePlayer(EntityPlayer player) {
+        if (player == null) return false;
+        // Check for Forge FakePlayer
+        if (player instanceof FakePlayer) return true;
+        // Check for Thaumcraft FakeThaumcraftPlayer
+        try {
+            Class<?> thaumFake = Class.forName("thaumcraft.common.lib.FakeThaumcraftPlayer");
+            if (thaumFake.isInstance(player)) return true;
+        } catch (ClassNotFoundException ignored) {}
+
+        return false;
     }
 }

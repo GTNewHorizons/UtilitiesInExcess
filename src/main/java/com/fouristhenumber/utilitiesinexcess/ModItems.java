@@ -19,7 +19,9 @@ public enum ModItems {
     HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemHungerAxe(), "hungerAxe"),
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
-    WATERING_CAN(ItemConfig.wateringCan.enableWateringCan, new ItemWateringCan(3), "wateringCan"),
+    WATERING_CAN_Basic(ItemConfig.wateringCan.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "wateringCanBasic"),
+    WATERING_CAN_Advanced(ItemConfig.wateringCan.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "wateringCanAdvanced"),
+    WATERING_CAN_Elite(ItemConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "wateringCanElite"),
 
 
     ; // leave trailing semicolon
