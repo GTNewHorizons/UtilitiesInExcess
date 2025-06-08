@@ -111,7 +111,6 @@ public class ItemWateringCan extends Item {
                         .translateToLocal("item.wateringCan." + (isActive(stack) ? "activated" : "deactivated"))));
             return true;
         }
-        System.out.println("onItemUse called for player: " + player + " isFakePlayer(player): " + isFakePlayer(player));
         if (isFakePlayer(player) && !world.isRemote) {
             this.onItemUse(stack, player, world, x, y, z, side);
         }
@@ -119,14 +118,14 @@ public class ItemWateringCan extends Item {
         return false;
     }
 
-    // public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-    // float hitX, float hitY, float hitZ) {
-    // System.out.println("onItemUse called for player: " + player + " isFakePlayer(player): " + isFakePlayer(player));
-    // if (isFakePlayer(player) && !world.isRemote) {
-    // this.onItemUse(stack, player, world, x, y, z, side);
-    // }
-    // return false;
-    // }
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
+
+        if (isFakePlayer(player) && !world.isRemote) {
+            this.onItemUse(stack, player, world, x, y, z, side);
+        }
+        return false;
+    }
 
     /**
      * Called when the item is used by the player.
