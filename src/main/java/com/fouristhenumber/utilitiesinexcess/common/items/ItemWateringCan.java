@@ -72,7 +72,7 @@ public class ItemWateringCan extends Item {
                 onItemUse(stack, player, world);
             } else {
                 // If the player is remote (client-side) apply the walking speed penalty
-                WalkingSpeed(player, player.isUsingItem() ? false : true);
+                walkingSpeed(player, player.isUsingItem() ? false : true);
             }
         }
     }
@@ -156,18 +156,18 @@ public class ItemWateringCan extends Item {
 
         if (!wateringCan.allowAutomatedWatering && player instanceof FakePlayer) return false;
 
-        this.HydrateFarmland(world, x, y, z);
+        this.hydrateFarmland(world, x, y, z);
 
-        this.SpawnFlowers(world, x, y, z);
+        this.spawnFlowers(world, x, y, z);
 
         this.spawnParticle(world, x, y, z);
 
-        this.AccelerateGrowth(world, x, y, z);
+        this.accelerateGrowth(world, x, y, z);
 
         return false;
     }
 
-    public void AccelerateGrowth(World world, int x, int y, int z) {
+    public void accelerateGrowth(World world, int x, int y, int z) {
         int chance = world.rand.nextInt(100) + 1;
         // int bonus = 4 * stack.getItemDamage();
         int bonus = 4;
@@ -193,7 +193,7 @@ public class ItemWateringCan extends Item {
      * This method checks each block in the range and sets its metadata to 7 (hydrated) if it is farmland.
      * It is called when the watering can is used to water crops.
      */
-    public void HydrateFarmland(World world, int x, int y, int z) {
+    public void hydrateFarmland(World world, int x, int y, int z) {
         for (int dx = -range; dx <= range; dx++) {
             for (int dy = -range; dy <= range; dy++) {
                 for (int dz = -range; dz <= range; dz++) {
@@ -216,7 +216,7 @@ public class ItemWateringCan extends Item {
      * If used directly on a flower, it will attempt to multiply that flower nearby.
      * Otherwise, has a chance to spawn a random flower.
      */
-    public void SpawnFlowers(World world, int x, int y, int z) {
+    public void spawnFlowers(World world, int x, int y, int z) {
         Block targetBlock = world.getBlock(x, y, z);
         int targetMeta = world.getBlockMetadata(x, y, z);
 
@@ -339,7 +339,7 @@ public class ItemWateringCan extends Item {
      * This method is called to apply a speed penalty when the player is using the watering can.
      * It modifies the player's movement input to slow them down while using the watering can.
      */
-    public void WalkingSpeed(EntityPlayer player, boolean slowness) {
+    public void walkingSpeed(EntityPlayer player, boolean slowness) {
         if (player.worldObj.isRemote && player instanceof EntityPlayerSP playerSP) {
             // this is a workaround to prevent the player from slowing when using the watering can (right click)
             if (!slowness && !wateringCan.WalkingSpeedPenalty) {
