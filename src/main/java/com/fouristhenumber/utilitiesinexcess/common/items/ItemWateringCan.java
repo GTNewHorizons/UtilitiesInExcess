@@ -74,7 +74,6 @@ public class ItemWateringCan extends Item {
                 // If the player is remote (client-side) apply the walking speed penalty
                 WalkingSpeed(player, player.isUsingItem() ? false : true);
             }
-            System.out.println("Watering can used by " + player.getDisplayName() + " at " + currentTick);
         }
     }
 
