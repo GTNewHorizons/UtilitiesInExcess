@@ -1,14 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.myname.mymodid.Tags;
 
 import cpw.mods.fml.common.Mod;
@@ -17,7 +11,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -43,12 +36,6 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-
-        RecipeLoader.run();
-
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
-        GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
-        GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
     }
 
     @Mod.EventHandler
