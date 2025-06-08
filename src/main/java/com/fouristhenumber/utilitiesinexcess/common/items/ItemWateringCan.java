@@ -20,7 +20,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
@@ -105,9 +105,7 @@ public class ItemWateringCan extends Item {
         if (wateringCan.allowWateringCanToggle && player.isSneaking() && !world.isRemote) {
             setActive(stack, !isActive(stack));
             player.addChatMessage(
-                new ChatComponentText(
-                    StatCollector
-                        .translateToLocal("item.wateringCan." + (isActive(stack) ? "activated" : "deactivated"))));
+                new ChatComponentTranslation("item.wateringCan." + (isActive(stack) ? "activated" : "deactivated")));
             return true;
         }
         if (isFakePlayer(player) && !world.isRemote) {
@@ -169,7 +167,6 @@ public class ItemWateringCan extends Item {
 
     public void accelerateGrowth(World world, int x, int y, int z) {
         int chance = world.rand.nextInt(100) + 1;
-        // int bonus = 4 * stack.getItemDamage();
         int bonus = 4;
         if (chance <= (40 + bonus)) {
             for (int dx = -range; dx <= range; dx++) {
