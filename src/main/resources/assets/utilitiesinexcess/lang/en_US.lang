@@ -45,8 +45,9 @@ item.wateringCan.desc.3=Crouch and use to toggle
 item.wateringCan.desc.4=automatic mode.
 
 
-utilitiesinexcess.config.item.warningCan=Warning Can
-utilitiesinexcess.config.item.warningCanTier=Warning Can Tier
+utilitiesinexcess.config.item.wateringCan=Watering Can
+utilitiesinexcess.config.item.wateringCanTier=Watering Can Tier
+utilitiesinexcess.config.item.wateringCanFlowering=Watering Can Flowering
 
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid

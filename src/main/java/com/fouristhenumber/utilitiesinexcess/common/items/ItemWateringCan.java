@@ -227,17 +227,34 @@ public class ItemWateringCan extends Item {
             int bx = x + world.rand.nextInt(range * 2 + 1) - range;
             int bz = z + world.rand.nextInt(range * 2 + 1) - range;
             int by = y;
+            Block targetBlockAt = world.getBlock(bx, by, bz);
 
             // Multiply flower if used on an existing flower block
-            if (wateringCan.allowFlowerDuplication && targetBlock instanceof BlockFlower) {
+            if (wateringCan.Flowering.allowFlowerDuplication && targetBlock instanceof BlockFlower) {
                 multiplyFlower(world, bx, by, bz, (BlockFlower) targetBlock, targetMeta);
                 return;
+            }
+            if (!wateringCan.Flowering.allowFlowerSpawning) return;
+
+            // Ensure flowers only spawn on grass blocks:
+            // If the target block isn't grass, check the block below its top surface (accounting for block height).
+            // Abort spawning if that block is not grass.
+            if (targetBlockAt != Blocks.grass) {
+                if (world.getBlock(bx, (int) (by - targetBlockAt.getBlockBoundsMaxY()), bz) != Blocks.grass) {
+                    return;
+                }
+            }
+
+            // If the target block height is less than 0.85F try and place a new flower next to it
+            if (wateringCan.Flowering.adjustFlowerSpawnHeightForShortBlocks
+                && targetBlock.getBlockBoundsMaxY() < 0.85F) {
+                by -= targetBlock.getBlockBoundsMaxY(); // Adjust the height to place the flower correctly
             }
 
             by += 1; // Place the flower one block above the target coordinates
             Block below = world.getBlock(bx, by - 1, bz);
 
-            if (world.isAirBlock(bx, by, bz) && below == Blocks.grass
+            if (world.isAirBlock(bx, by, bz)
                 && below.canSustainPlant(world, bx, by - 1, bz, ForgeDirection.UP, Blocks.red_flower)) {
 
                 int totalVariants = BlockFlower.field_149859_a.length + BlockFlower.field_149858_b.length;
@@ -339,10 +356,10 @@ public class ItemWateringCan extends Item {
     public void walkingSpeed(EntityPlayer player, boolean slowness) {
         if (player.worldObj.isRemote && player instanceof EntityPlayerSP playerSP) {
             // this is a workaround to prevent the player from slowing when using the watering can (right click)
-            if (!slowness && !wateringCan.WalkingSpeedPenalty) {
+            if (!slowness && !wateringCan.walkingSpeedPenalty) {
                 playerSP.movementInput.moveStrafe /= 0.2F;
                 playerSP.movementInput.moveForward /= 0.2F;
-            } else if (slowness && wateringCan.WalkingSpeedPenalty) {
+            } else if (slowness && wateringCan.walkingSpeedPenalty) {
                 playerSP.movementInput.moveStrafe *= 0.2F;
                 playerSP.movementInput.moveForward *= 0.2F;
             }
