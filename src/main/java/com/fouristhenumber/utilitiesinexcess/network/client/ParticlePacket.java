@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.network;
+package com.fouristhenumber.utilitiesinexcess.network.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;

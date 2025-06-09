@@ -32,7 +32,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
-import com.fouristhenumber.utilitiesinexcess.network.ParticlePacket;
+import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
