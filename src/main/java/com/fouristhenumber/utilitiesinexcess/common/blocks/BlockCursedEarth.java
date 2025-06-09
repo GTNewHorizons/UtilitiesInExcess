@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -36,6 +37,8 @@ public class BlockCursedEarth extends Block {
         if (world.isRemote) return;
         if (!world.isAirBlock(x, y + 1, z)) return;
         if (world.getBlockLightValue(x, y + 1, z) >= 8) return;
+        if (!world.getGameRules().getGameRuleBooleanValue("doMobSpawning")) return;
+        if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
         if (random.nextInt(100) >= BlockConfig.cursedEarth.cursedEarthSpawnRate) return;
 
         AxisAlignedBB spawnArea = AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
