@@ -24,7 +24,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
@@ -137,7 +136,7 @@ public class ItemWateringCan extends Item {
      */
     public void onItemUse(ItemStack stack, Entity entity, World world) {
         if (entity instanceof EntityPlayer player) {
-            MovingObjectPosition hit = rayTrace(world, player, false);
+            MovingObjectPosition hit = getMovingObjectPositionFromPlayer(world, player, true);
             if (hit != null) {
                 onItemUse(stack, player, world, hit.blockX, hit.blockY, hit.blockZ, hit.sideHit);
             }
@@ -354,13 +353,6 @@ public class ItemWateringCan extends Item {
             }
             playerSP.setSprinting(false); // Disable sprinting
         }
-    }
-
-    public MovingObjectPosition rayTrace(World world, EntityPlayer player, boolean useLiquids) {
-        Vec3 pos = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLookVec();
-        Vec3 target = pos.addVector(look.xCoord * 4.5F, look.yCoord * 4.5F, look.zCoord * 4.5F);
-        return world.rayTraceBlocks(pos, target, useLiquids);
     }
 
     public String getNameFromTier(int tier) {
