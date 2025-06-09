@@ -30,12 +30,14 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.ParticlePacket;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import thaumcraft.common.lib.FakeThaumcraftPlayer;
 
 // Credit to Mystical Agriculture 1.12 for the original ItemWateringCan implementation
 public class ItemWateringCan extends Item {
@@ -94,6 +96,10 @@ public class ItemWateringCan extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (isFakePlayer(player) && !world.isRemote) {
+            this.onItemUse(stack, player, world);
+        }
+
         player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
         return stack;
     }
@@ -152,7 +158,7 @@ public class ItemWateringCan extends Item {
 
         if (!player.canPlayerEdit(x2, y2, z2, side, stack)) return false;
 
-        if (!wateringCan.allowAutomatedWatering && player instanceof FakePlayer) return false;
+        if (!wateringCan.allowAutomatedWatering && isFakePlayer(player)) return false;
 
         this.hydrateFarmland(world, x, y, z);
 
@@ -375,10 +381,7 @@ public class ItemWateringCan extends Item {
         // Check for Forge FakePlayer
         if (player instanceof FakePlayer) return true;
         // Check for Thaumcraft FakeThaumcraftPlayer
-        try {
-            Class<?> thaumFake = Class.forName("thaumcraft.common.lib.FakeThaumcraftPlayer");
-            if (thaumFake.isInstance(player)) return true;
-        } catch (ClassNotFoundException ignored) {}
+        if (Mods.Thaumcraft.isLoaded() && player instanceof FakeThaumcraftPlayer) return true;
 
         return false;
     }
