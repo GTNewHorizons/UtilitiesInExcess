@@ -222,11 +222,6 @@ public class ItemWateringCan extends Item {
         Block targetBlock = world.getBlock(x, y, z);
         int targetMeta = world.getBlockMetadata(x, y, z);
 
-        // Only spawn flowers if the block below is grass
-        if (world.getBlock(x, y - 1, z) != Blocks.grass) {
-            return;
-        }
-
         // randomly spawn a flower (3% chance)
         if (world.rand.nextInt(100) < 3) {
             int bx = x + world.rand.nextInt(range * 2 + 1) - range;
@@ -242,7 +237,7 @@ public class ItemWateringCan extends Item {
             by += 1; // Place the flower one block above the target coordinates
             Block below = world.getBlock(bx, by - 1, bz);
 
-            if (world.isAirBlock(bx, by, bz)
+            if (world.isAirBlock(bx, by, bz) && below == Blocks.grass
                 && below.canSustainPlant(world, bx, by - 1, bz, ForgeDirection.UP, Blocks.red_flower)) {
 
                 int totalVariants = BlockFlower.field_149859_a.length + BlockFlower.field_149858_b.length;
