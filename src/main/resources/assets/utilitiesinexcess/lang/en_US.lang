@@ -39,3 +39,8 @@ tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
+
+tile.cursedEarth.name=Cursed Earth
+tile.cursedEarth.desc=Spawns mobs aggressively
+
+utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
