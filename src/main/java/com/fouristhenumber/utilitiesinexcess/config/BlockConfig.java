@@ -21,16 +21,18 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableDrum;
 
-
     @Config.Comment("Cursed Earth Configuration")
-    public final CursedEarth cursedEarth = new CursedEarth();
+    public static final CursedEarth cursedEarth = new CursedEarth();
 
     @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
     public static class CursedEarth {
-        @Config.DefaultBoolean(true)
-        public static boolean enableCursedEarth;
 
+        @Config.DefaultBoolean(true)
+        public boolean enableCursedEarth;
+
+        @Config.Comment("Chance that a mob is spawned on a Cursed Earth block on a random tick.")
         @Config.DefaultInt(40)
-        public static int cursedEarthSpawnRate;
+        @Config.RangeInt(min = 0, max = 100)
+        public int cursedEarthSpawnRate;
     }
 }
