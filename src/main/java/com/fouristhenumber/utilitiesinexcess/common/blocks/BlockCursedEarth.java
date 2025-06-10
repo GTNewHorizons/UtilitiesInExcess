@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +9,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -23,7 +27,7 @@ import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 public class BlockCursedEarth extends Block {
 
     // TODO: Handle spreading? Look into how we wanna do that
-    // if/when we handle
+    // if/when we handle the sigil etc
     public BlockCursedEarth() {
         super(Material.ground);
         setBlockName("cursedEarth");
@@ -32,12 +36,27 @@ public class BlockCursedEarth extends Block {
     }
 
     @Override
+    public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
+        ItemStack tool = player.getCurrentEquippedItem();
+        return tool != null && tool.getItem() instanceof ItemSpade;
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+        // Change Items.diamond to any item you want it to drop
+        drops.add(new ItemStack(Item.getItemFromBlock(Blocks.dirt), 1));
+        return drops;
+    }
+
+    @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         super.updateTick(world, x, y, z, random);
         if (world.isRemote) return;
         if (!world.isAirBlock(x, y + 1, z)) return;
         if (world.getBlockLightValue(x, y + 1, z) >= 8) return;
-        if (!world.getGameRules().getGameRuleBooleanValue("doMobSpawning")) return;
+        if (!world.getGameRules()
+            .getGameRuleBooleanValue("doMobSpawning")) return;
         if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
         if (random.nextInt(100) >= BlockConfig.cursedEarth.cursedEarthSpawnRate) return;
 
