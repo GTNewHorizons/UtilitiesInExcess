@@ -32,6 +32,9 @@ public class BlockCursedEarth extends Block {
         super(Material.ground);
         setBlockName("cursedEarth");
         setBlockTextureName("utilitiesinexcess:cursed_earth");
+        this.setHardness(0.5F);
+        this.setResistance(200.0F);
+        this.setStepSound(soundTypeGravel);
         this.setTickRandomly(true);
     }
 
@@ -39,6 +42,19 @@ public class BlockCursedEarth extends Block {
     public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
         ItemStack tool = player.getCurrentEquippedItem();
         return tool != null && tool.getItem() instanceof ItemSpade;
+    }
+
+    @Override
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        for (int i = 0; i < 4; i++) {
+            double px = x + random.nextFloat();
+            double py = y + random.nextFloat();
+            double pz = z + random.nextFloat();
+            double vx = (random.nextFloat() - 0.5) * 0.5;
+            double vy = (random.nextFloat() - 0.5) * 0.5;
+            double vz = (random.nextFloat() - 0.5) * 0.5;
+            world.spawnParticle("portal", px, py, pz, vx, vy, vz);
+        }
     }
 
     @Override
