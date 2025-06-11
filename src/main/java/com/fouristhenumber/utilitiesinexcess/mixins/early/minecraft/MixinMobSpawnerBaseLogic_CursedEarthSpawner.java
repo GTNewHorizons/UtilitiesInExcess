@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -9,94 +7,85 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
-import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
 
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 @Mixin(MobSpawnerBaseLogic.class)
-public class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
+public abstract class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
 
     @Shadow
-    private int minSpawnDelay;
+    public abstract World getSpawnerWorld();
+
     @Shadow
-    private int maxSpawnDelay;
+    public abstract int getSpawnerX();
+
     @Shadow
-    private List<WeightedRandom.Item> potentialEntitySpawns;
+    public abstract int getSpawnerY();
 
-    private boolean isCursedEarth = false;
+    @Shadow
+    public abstract int getSpawnerZ();
 
-    // If the block below is cursed earth,
-    // always run the spawner instead of depending
-    // on player location.
-    @Inject(method = "isActivated", at = @At("HEAD"), cancellable = true)
-    private void uei$onIsActivated(CallbackInfoReturnable<Boolean> cir) {
-        MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
-        World world = self.getSpawnerWorld();
+    @Shadow
+    public int spawnDelay;
 
-        if (world == null) return;
+    @Unique
+    private boolean uie$isCursedEarth;
 
-        Block blockBelow = world.getBlock(self.getSpawnerX(), self.getSpawnerY() - 1, self.getSpawnerZ());
-        isCursedEarth = blockBelow instanceof BlockCursedEarth;
-        if (isCursedEarth) {
-            cir.setReturnValue(true);
+    // If the block below is cursed earth, run the
+    // spawner instead of depending on player location.
+    @ModifyReturnValue(method = "isActivated", at = @At("RETURN"))
+    private boolean uei$onIsActivated(boolean original) {
+        Block blockBelow = this.getSpawnerWorld()
+            .getBlock(this.getSpawnerX(), this.getSpawnerY() - 1, this.getSpawnerZ());
+        uie$isCursedEarth = blockBelow instanceof BlockCursedEarth;
+        return uie$isCursedEarth || original;
+    }
+
+    // Dividing the spawn time by 4 if
+    // the block is cursed earth.
+    @Inject(
+        method = "resetTimer",
+        at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraft/tileentity/MobSpawnerBaseLogic;spawnDelay:I",
+            opcode = Opcodes.PUTFIELD,
+            shift = At.Shift.AFTER))
+    private void uie$ChangeTime(CallbackInfo ci) {
+        if (uie$isCursedEarth) {
+            this.spawnDelay = this.spawnDelay / 4;
         }
     }
 
-    // Copied from base class except
-    // dividing the spawn time by 4 if the block
-    // is cursed earth.
-    @Inject(method = "resetTimer", at = @At("HEAD"), cancellable = true)
-    private void uei$onResetTimer(CallbackInfo ci) {
-        // Re-use the cursed earth variable since this only gets called in the same callstack as isActivated();
-        if (!isCursedEarth) return;
-
-        MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
-        World world = self.getSpawnerWorld();
-        if (this.maxSpawnDelay <= this.minSpawnDelay) {
-            self.spawnDelay = this.minSpawnDelay / 4;
-        } else {
-            int range = this.maxSpawnDelay - this.minSpawnDelay;
-            self.spawnDelay = (this.minSpawnDelay + world.rand.nextInt(range)) / 4;
+    // If the block is cursed earth, make the
+    // creatures persistent and add potion effects.
+    @ModifyArg(
+        method = "func_98265_a",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/World;spawnEntityInWorld(Lnet/minecraft/entity/Entity;)Z"))
+    private Entity uie$onEntitySpawned(Entity original) {
+        if (!uie$isCursedEarth) return original;
+        if (original instanceof EntityLiving living) {
+            // Make persistent
+            living.func_110163_bv();
+            if (living instanceof IMob) {
+                living.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 72000, 0));
+                living.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 72000, 0));
+            } else {
+                living.addPotionEffect(new PotionEffect(Potion.regeneration.id, 72000, 0));
+            }
         }
-
-        if (this.potentialEntitySpawns != null && this.potentialEntitySpawns.size() > 0) {
-            self.setRandomEntity(
-                (MobSpawnerBaseLogic.WeightedRandomMinecart) WeightedRandom
-                    .getRandomItem(world.rand, this.potentialEntitySpawns));
-        }
-
-        self.func_98267_a(1);
-        ci.cancel();
-    }
-
-    // If the block is cursed earth, make the creatures persistent
-    // and add potion effects.
-    @Inject(method = "func_98265_a", at = @At("RETURN"))
-    private void uei$onEntitySpawned(Entity entity, CallbackInfoReturnable<Entity> cir) {
-        // Re-use the cursed earth variable since this only gets called in the same callstack as isActivated();
-        if (!isCursedEarth) return;
-        MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
-        World world = self.getSpawnerWorld();
-
-        if (world == null || world.isRemote) return;
-        if (!(entity instanceof EntityLiving living)) return;
-
-        // Make persistent
-        living.func_110163_bv();
-
-        if (living instanceof IMob) {
-            living.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 72000, 0));
-            living.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 72000, 0));
-        } else {
-            living.addPotionEffect(new PotionEffect(Potion.regeneration.id, 72000, 0));
-        }
+        return original;
     }
 }
