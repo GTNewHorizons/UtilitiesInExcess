@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressedCobblestone;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
@@ -24,6 +25,7 @@ public enum ModBlocks {
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), BlockRedstoneClock.ItemBlockRedstoneClock.class, "redstoneClock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "etherealGlass"),
     DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
+    CURSED_EARTH(BlockConfig.cursedEarth.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursedEarth"),
     ; // leave trailing semicolon
     // spotless:on
 
