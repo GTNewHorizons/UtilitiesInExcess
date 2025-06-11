@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -22,9 +24,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
-public class BlockCursedEarth extends Block {
+public class BlockCursedEarth extends BlockContainer {
 
     // TODO: Handle spreading? Look into how we wanna do that
     // if/when we handle the sigil etc
@@ -36,6 +39,21 @@ public class BlockCursedEarth extends Block {
         this.setResistance(200.0F);
         this.setStepSound(soundTypeGravel);
         this.setTickRandomly(true);
+    }
+
+    // Spawner handling
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        if (world.isRemote) return;
+        if (!(world.getTileEntity(x, y, z) instanceof TileEntityCursedEarth cursedEarth)) return;
+        cursedEarth.checkForSpawner(world, x, y, z);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        if (world.isRemote) return;
+        if (!(world.getTileEntity(x, y, z) instanceof TileEntityCursedEarth cursedEarth)) return;
+        cursedEarth.checkForSpawner(world, x, y, z);
     }
 
     @Override
@@ -105,6 +123,11 @@ public class BlockCursedEarth extends Block {
             0.0F);
 
         world.spawnEntityInWorld(mob);
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileEntityCursedEarth();
     }
 
     public static class ItemBlockCursedEarth extends ItemBlock {
