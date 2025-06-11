@@ -26,7 +26,6 @@ import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 public class BlockCursedEarth extends Block {
 
-    public static final int SPAWN_CHECK_DELAY = 20;
     // TODO: Handle spreading? Look into how we wanna do that
     // if/when we handle the sigil etc
 
@@ -69,16 +68,9 @@ public class BlockCursedEarth extends Block {
         return drops;
     }
 
-    private int counter = 0;
-
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         super.updateTick(world, x, y, z, random);
-        counter = (counter + 1) % SPAWN_CHECK_DELAY;
-        if (counter == (SPAWN_CHECK_DELAY - 1)) {
-            counter++;
-            return;
-        }
         if (world.isRemote) return;
         if (!world.isAirBlock(x, y + 1, z)) return;
         if (world.getBlockLightValue(x, y + 1, z) >= 8) return;
