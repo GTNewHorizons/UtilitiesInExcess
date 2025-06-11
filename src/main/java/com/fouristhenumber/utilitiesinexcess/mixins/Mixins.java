@@ -13,12 +13,12 @@ import com.gtnewhorizon.gtnhlib.mixin.TargetedMod;
 
 public enum Mixins implements IMixins {
 
-    CURSED_EARTH_SPAWNER(
-        new MixinBuilder("Boost spawners when placed on Cursed Earth").addMixinClasses("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
-            .setPhase(Phase.EARLY)
-            .setSide(Side.BOTH)
-            .setApplyIf(() -> BlockConfig.cursedEarth.enableCursedEarth)
-            .addTargetedMod(TargetedMod.VANILLA)),;
+    CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed Earth")
+        .addMixinClasses("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> BlockConfig.cursedEarth.enableCursedEarth)
+        .addTargetedMod(TargetedMod.VANILLA)),;
 
     private final List<String> mixinClasses;
     private final List<ITargetedMod> targetedMods;
