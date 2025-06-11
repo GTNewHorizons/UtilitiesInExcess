@@ -12,6 +12,9 @@ import com.gtnewhorizon.gtnhlib.mixin.Side;
 import com.gtnewhorizon.gtnhlib.mixin.TargetedMod;
 
 public enum Mixins implements IMixins {
+    // spotless:off
+
+    // make sure to leave a trailing comma
     CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed Earth")
         .addMixinClasses("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
@@ -24,7 +27,9 @@ public enum Mixins implements IMixins {
         .setSide(Side.CLIENT)
         .setApplyIf(() -> BlockConfig.enableMagicWood)
         .addTargetedMod(TargetedMod.VANILLA)
-    ),;
+    ),
+    ; // leave trailing semicolon
+    // spotless:on
 
     private final List<String> mixinClasses;
     private final List<ITargetedMod> targetedMods;
