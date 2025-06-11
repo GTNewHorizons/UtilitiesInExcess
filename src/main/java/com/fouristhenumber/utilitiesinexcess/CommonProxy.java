@@ -1,10 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
-import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -13,13 +8,9 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
-        try {
-            ConfigurationManager.registerConfig(ItemConfig.class);
-            ConfigurationManager.registerConfig(BlockConfig.class);
-        } catch (ConfigException e) {
-            throw new RuntimeException(e);
-        }
-
+        // Config is handled in the early mixin loader (UIEMixinLoader)
+        // since we want the config to be available
+        // during mixin initialisation time.
         ModBlocks.init();
         ModItems.init();
     }
