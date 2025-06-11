@@ -12,13 +12,19 @@ import com.gtnewhorizon.gtnhlib.mixin.Side;
 import com.gtnewhorizon.gtnhlib.mixin.TargetedMod;
 
 public enum Mixins implements IMixins {
-
     CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed Earth")
         .addMixinClasses("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)
         .setApplyIf(() -> BlockConfig.cursedEarth.enableCursedEarth)
-        .addTargetedMod(TargetedMod.VANILLA)),;
+        .addTargetedMod(TargetedMod.VANILLA)),
+    MAGIC_WOOD_PARTICLES(new MixinBuilder("Adds particles for Magic Wood when connected to an Enchantment Table")
+        .addMixinClasses("minecraft.MixinBlockEnchantmentTable_MagicWood")
+        .setPhase(Phase.EARLY)
+        .setSide(Side.CLIENT)
+        .setApplyIf(() -> BlockConfig.enableMagicWood)
+        .addTargetedMod(TargetedMod.VANILLA)
+    ),;
 
     private final List<String> mixinClasses;
     private final List<ITargetedMod> targetedMods;
