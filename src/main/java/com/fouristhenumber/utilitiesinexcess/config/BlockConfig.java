@@ -21,6 +21,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableDrum;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableMagicWood;
+
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
 
