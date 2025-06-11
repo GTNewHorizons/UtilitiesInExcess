@@ -31,6 +31,8 @@ public class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
     @Shadow
     private List<WeightedRandom.Item> potentialEntitySpawns;
 
+    private boolean isCursedEarth = false;
+
     // If the block below is cursed earth,
     // always run the spawner instead of depending
     // on player location.
@@ -42,8 +44,8 @@ public class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
         if (world == null) return;
 
         Block blockBelow = world.getBlock(self.getSpawnerX(), self.getSpawnerY() - 1, self.getSpawnerZ());
-
-        if (blockBelow instanceof BlockCursedEarth) {
+        isCursedEarth = blockBelow instanceof BlockCursedEarth;
+        if (isCursedEarth) {
             cir.setReturnValue(true);
         }
     }
@@ -53,15 +55,11 @@ public class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
     // is cursed earth.
     @Inject(method = "resetTimer", at = @At("HEAD"), cancellable = true)
     private void uei$onResetTimer(CallbackInfo ci) {
+        // Re-use the cursed earth variable since this only gets called in the same callstack as isActivated();
+        if (!isCursedEarth) return;
+
         MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
         World world = self.getSpawnerWorld();
-
-        if (world == null) return;
-
-        Block blockBelow = world.getBlock(self.getSpawnerX(), self.getSpawnerY() - 1, self.getSpawnerZ());
-
-        if (!(blockBelow instanceof BlockCursedEarth)) return;
-
         if (this.maxSpawnDelay <= this.minSpawnDelay) {
             self.spawnDelay = this.minSpawnDelay / 4;
         } else {
@@ -83,14 +81,13 @@ public class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
     // and add potion effects.
     @Inject(method = "func_98265_a", at = @At("RETURN"))
     private void uei$onEntitySpawned(Entity entity, CallbackInfoReturnable<Entity> cir) {
+        // Re-use the cursed earth variable since this only gets called in the same callstack as isActivated();
+        if (!isCursedEarth) return;
         MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
         World world = self.getSpawnerWorld();
 
         if (world == null || world.isRemote) return;
-
-        Block blockBelow = world.getBlock(self.getSpawnerX(), self.getSpawnerY() - 1, self.getSpawnerZ());
-
-        if (!(blockBelow instanceof BlockCursedEarth && entity instanceof EntityLiving living)) return;
+        if (!(entity instanceof EntityLiving living)) return;
 
         // Make persistent
         living.func_110163_bv();
