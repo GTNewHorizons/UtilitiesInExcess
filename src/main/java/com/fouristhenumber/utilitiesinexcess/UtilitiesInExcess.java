@@ -10,7 +10,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCurse
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
-import com.myname.mymodid.Tags;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
