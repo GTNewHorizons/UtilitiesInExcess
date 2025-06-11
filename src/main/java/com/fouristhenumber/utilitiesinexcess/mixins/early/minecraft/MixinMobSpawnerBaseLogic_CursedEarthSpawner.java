@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 
 @Mixin(MobSpawnerBaseLogic.class)
-public class CursedEarthSpawner {
+public class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
 
     @Shadow
     private int minSpawnDelay;
@@ -35,7 +35,7 @@ public class CursedEarthSpawner {
     // always run the spawner instead of depending
     // on player location.
     @Inject(method = "isActivated", at = @At("HEAD"), cancellable = true)
-    private void onIsActivated(CallbackInfoReturnable<Boolean> cir) {
+    private void uei$onIsActivated(CallbackInfoReturnable<Boolean> cir) {
         MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
         World world = self.getSpawnerWorld();
 
@@ -52,7 +52,7 @@ public class CursedEarthSpawner {
     // dividing the spawn time by 4 if the block
     // is cursed earth.
     @Inject(method = "resetTimer", at = @At("HEAD"), cancellable = true)
-    private void onResetTimer(CallbackInfo ci) {
+    private void uei$onResetTimer(CallbackInfo ci) {
         MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
         World world = self.getSpawnerWorld();
 
@@ -82,7 +82,7 @@ public class CursedEarthSpawner {
     // If the block is cursed earth, make the creatures persistent
     // and add potion effects.
     @Inject(method = "func_98265_a", at = @At("RETURN"))
-    private void onEntitySpawned(Entity entity, CallbackInfoReturnable<Entity> cir) {
+    private void uei$onEntitySpawned(Entity entity, CallbackInfoReturnable<Entity> cir) {
         MobSpawnerBaseLogic self = (MobSpawnerBaseLogic) (Object) this;
         World world = self.getSpawnerWorld();
 
