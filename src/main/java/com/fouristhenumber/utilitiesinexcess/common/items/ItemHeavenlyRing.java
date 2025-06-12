@@ -33,7 +33,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.heavenlyRing.desc"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.heavenly_ring.desc"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 

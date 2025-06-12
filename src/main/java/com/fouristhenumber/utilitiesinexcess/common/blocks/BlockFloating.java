@@ -71,7 +71,7 @@ public class BlockFloating extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tile.floatingBlock.desc"));
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tile.floating_block.desc"));
             super.addInformation(stack, player, tooltip, p_77624_4_);
         }
     }

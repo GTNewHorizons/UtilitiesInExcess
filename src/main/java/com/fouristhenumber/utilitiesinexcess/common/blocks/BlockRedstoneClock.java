@@ -64,8 +64,8 @@ public class BlockRedstoneClock extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.redstoneClock.desc.1"));
-            tooltip.add(StatCollector.translateToLocal("tile.redstoneClock.desc.2"));
+            tooltip.add(StatCollector.translateToLocal("tile.redstone_clock.desc.1"));
+            tooltip.add(StatCollector.translateToLocal("tile.redstone_clock.desc.2"));
         }
     }
 }
