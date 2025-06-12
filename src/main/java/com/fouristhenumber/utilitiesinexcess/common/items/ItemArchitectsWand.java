@@ -17,17 +17,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
-import com.fouristhenumber.utilitiesinexcess.utils.BuilderWandUtils;
+import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBuilderWand extends Item {
+public class ItemArchitectsWand extends Item {
 
     public int buildLimit = -1;
 
-    public ItemBuilderWand(int buildLimit) {
+    public ItemArchitectsWand(int buildLimit) {
         super();
         this.buildLimit = buildLimit;
         setTextureName("utilitiesinexcess:builderWand");
@@ -38,10 +38,10 @@ public class ItemBuilderWand extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.builderWand.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.architects_wand.1"));
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("tooltip.builderWand.2", this.buildLimit));
+                + StatCollector.translateToLocalFormatted("tooltip.architects_wand.2", this.buildLimit));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -53,7 +53,7 @@ public class ItemBuilderWand extends Item {
         }
 
         if (player.getHeldItem() == null || !(player.getHeldItem()
-            .getItem() instanceof ItemBuilderWand)) {
+            .getItem() instanceof ItemArchitectsWand)) {
             WireframeRenderer.clearCandidatePositions();
             return;
         }
@@ -71,7 +71,7 @@ public class ItemBuilderWand extends Item {
         int side = mop.sideHit;
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
-            UtilitiesInExcess.LOG.warn("Builder wand onUpdate was called with invalid facing direction: {}", forgeSide);
+            UtilitiesInExcess.LOG.warn("Architect wand onUpdate was called with invalid facing direction: {}", forgeSide);
             return;
         }
 
@@ -80,7 +80,7 @@ public class ItemBuilderWand extends Item {
         int metaToPlace = world.getBlockMetadata(x, y, z);
         ItemStack itemStack = new ItemStack(Item.getItemFromBlock(blockToPlace), 1, metaToPlace);
 
-        int inventoryBlockCount = BuilderWandUtils.countItemInInventory(player, itemStack);
+        int inventoryBlockCount = ArchitectsWandUtils.countItemInInventory(player, itemStack);
         if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) {
             WireframeRenderer.clearCandidatePositions();
             return;
@@ -88,7 +88,7 @@ public class ItemBuilderWand extends Item {
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 
-        Set<BlockPos> blocksToPlace = BuilderWandUtils
+        Set<BlockPos> blocksToPlace = ArchitectsWandUtils
             .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new BlockPos(x, y, z));
         WireframeRenderer.clearCandidatePositions();
         for (BlockPos pos : blocksToPlace) {
@@ -104,7 +104,7 @@ public class ItemBuilderWand extends Item {
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
             UtilitiesInExcess.LOG
-                .warn("Builder wand onItemUse was called with invalid facing direction: {}", forgeSide);
+                .warn("Architects wand onItemUse was called with invalid facing direction: {}", forgeSide);
             return false;
         }
 
@@ -113,16 +113,16 @@ public class ItemBuilderWand extends Item {
         int metaToPlace = world.getBlockMetadata(x, y, z);
         ItemStack itemStack = new ItemStack(Item.getItemFromBlock(blockToPlace), 1, metaToPlace);
 
-        int inventoryBlockCount = BuilderWandUtils.countItemInInventory(player, itemStack);
+        int inventoryBlockCount = ArchitectsWandUtils.countItemInInventory(player, itemStack);
         if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) return false;
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(inventoryBlockCount, this.buildLimit);
 
-        Set<BlockPos> blocksToPlace = BuilderWandUtils
+        Set<BlockPos> blocksToPlace = ArchitectsWandUtils
             .findAdjacentBlocks(world, blockToPlace, metaToPlace, placeCount, forgeSide, new BlockPos(x, y, z));
         for (BlockPos pos : blocksToPlace) {
             // TODO: Group these by a bigger number instead of decreasing by 1 every time.
-            if (player.capabilities.isCreativeMode || BuilderWandUtils.decreaseFromInventory(player, itemStack)) {
+            if (player.capabilities.isCreativeMode || ArchitectsWandUtils.decreaseFromInventory(player, itemStack)) {
                 world.setBlock(
                     pos.x + forgeSide.offsetX,
                     pos.y + forgeSide.offsetY,

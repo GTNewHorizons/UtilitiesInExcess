@@ -35,7 +35,7 @@ public class WireframeRenderer {
 
     @EventBusSubscriber.Condition
     public static boolean shouldSubscribe() {
-        return ItemConfig.enableBuilderWand;
+        return ItemConfig.enableArchitectsWand;
     }
 
     @SubscribeEvent

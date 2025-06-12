@@ -13,9 +13,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-public class BuilderWandUtils {
+public class ArchitectsWandUtils {
 
-    public BuilderWandUtils() {};
+    public ArchitectsWandUtils() {};
 
     /**
      * Counts the items of a certain type in a player's inventory

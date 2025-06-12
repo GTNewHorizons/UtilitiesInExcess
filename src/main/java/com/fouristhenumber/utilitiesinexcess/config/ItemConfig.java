@@ -16,5 +16,5 @@ public class ItemConfig {
     public static boolean enableMobJar;
 
     @Config.DefaultBoolean(true)
-    public static boolean enableBuilderWand;
+    public static boolean enableArchitectsWand;
 }

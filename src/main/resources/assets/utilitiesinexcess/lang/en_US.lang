@@ -21,9 +21,9 @@ item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
 item.gluttons_axe.desc.3=This effect is lethal to most undead
 
-item.builder_wand.name=Architect's Staff
-tooltip.builder_wand.1=Assists in placing many blocks
-tooltip.builder_wand.2=Can place up to %s blocks at once
+item.architects_wand.name=Architects Wand
+tooltip.architects_wand.1=Assists in placing many blocks
+tooltip.architects_wand.2=Can place up to %s blocks at once
 
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
