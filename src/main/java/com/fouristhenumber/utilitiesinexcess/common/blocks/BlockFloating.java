@@ -17,7 +17,7 @@ public class BlockFloating extends Block {
 
     public BlockFloating() {
         super(Material.rock);
-        setBlockName("floatingBlock");
+        setBlockName("floating_block");
         setBlockTextureName("utilitiesinexcess:floating_block");
     }
 

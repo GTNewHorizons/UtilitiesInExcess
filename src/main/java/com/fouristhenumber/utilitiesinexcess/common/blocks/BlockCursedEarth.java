@@ -33,7 +33,7 @@ public class BlockCursedEarth extends Block {
     // implemented in mixins.early.minecraft.CursedEarthSpawner
     public BlockCursedEarth() {
         super(Material.ground);
-        setBlockName("cursedEarth");
+        setBlockName("cursed_earth");
         setBlockTextureName("utilitiesinexcess:cursed_earth");
         this.setHardness(0.5F);
         this.setResistance(200.0F);

@@ -27,7 +27,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
 
     public ItemHeavenlyRing() {
         setTextureName("utilitiesinexcess:heavenly_ring");
-        setUnlocalizedName("heavenlyRing");
+        setUnlocalizedName("heavenly_ring");
         setMaxDamage(0);
     }
 

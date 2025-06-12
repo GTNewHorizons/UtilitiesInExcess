@@ -40,7 +40,7 @@ public class BlockEtherealGlass extends BlockGlass {
 
     public BlockEtherealGlass() {
         super(Material.glass, false);
-        setBlockName("etherealGlass");
+        setBlockName("ethereal_glass");
     }
 
     @SideOnly(Side.CLIENT)

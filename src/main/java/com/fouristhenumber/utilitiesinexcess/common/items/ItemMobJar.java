@@ -28,7 +28,7 @@ public class ItemMobJar extends Item {
     private IIcon filledIcon;
 
     public ItemMobJar() {
-        setUnlocalizedName("mobJar");
+        setUnlocalizedName("mob_jar");
         setMaxStackSize(1);
     }
 

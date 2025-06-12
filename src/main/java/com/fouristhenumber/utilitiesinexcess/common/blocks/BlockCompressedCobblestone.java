@@ -21,7 +21,7 @@ public class BlockCompressedCobblestone extends Block {
     public BlockCompressedCobblestone() {
         super(Material.rock);
         setHardness(4.0F);
-        setBlockName("compressedCobblestone");
+        setBlockName("compressed_cobblestone");
     }
 
     @SideOnly(Side.CLIENT)

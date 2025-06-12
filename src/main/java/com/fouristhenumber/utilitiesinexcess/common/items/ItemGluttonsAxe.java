@@ -17,7 +17,7 @@ public class ItemGluttonsAxe extends ItemAxe {
     public ItemGluttonsAxe() {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:gluttons_axe");
-        setUnlocalizedName("gluttonsAxe");
+        setUnlocalizedName("gluttons_axe");
         setMaxDamage(0);
     }
 
