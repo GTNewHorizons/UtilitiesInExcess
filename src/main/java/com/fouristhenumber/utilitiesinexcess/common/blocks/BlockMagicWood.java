@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,12 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class BlockMagicWood extends Block {
+
     public BlockMagicWood() {
         super(Material.wood);
-        setBlockName("magicWood");
+        setBlockName("magic_wood");
         setBlockTextureName("utilitiesinexcess:magic_wood");
 
         setResistance(30.0f);
@@ -27,13 +28,14 @@ public class BlockMagicWood extends Block {
     }
 
     public static class ItemBlockMagicWood extends ItemBlock {
+
         public ItemBlockMagicWood(Block block) {
             super(block);
         }
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocalFormatted("tile.magicWood.desc"));
+            tooltip.add(StatCollector.translateToLocalFormatted("tile.magic_wood.desc"));
         }
     }
 }
