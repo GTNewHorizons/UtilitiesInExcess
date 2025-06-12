@@ -78,7 +78,7 @@ public class BlockCompressedCobblestone extends Block {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "tile.compressedCobblestone.desc",
+                    "tile.compressed_cobblestone.desc",
                     (long) Math.pow(9, stack.getItemDamage() + 1)));
         }
     }

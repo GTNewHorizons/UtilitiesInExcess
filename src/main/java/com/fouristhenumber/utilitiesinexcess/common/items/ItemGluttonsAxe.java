@@ -23,9 +23,9 @@ public class ItemGluttonsAxe extends ItemAxe {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttonsAxe.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttonsAxe.desc.2"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttonsAxe.desc.3"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.2"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.3"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
