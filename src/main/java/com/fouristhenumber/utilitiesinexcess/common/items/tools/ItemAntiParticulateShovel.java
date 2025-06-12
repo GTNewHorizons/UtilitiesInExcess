@@ -15,8 +15,8 @@ import java.util.List;
 public class ItemAntiParticulateShovel extends ItemSpade {
     public ItemAntiParticulateShovel() {
         super(ToolMaterial.EMERALD);
-        setTextureName("utilitiesinexcess:antiParticulateShovel");
-        setUnlocalizedName("antiParticulateShovel");
+        setTextureName("utilitiesinexcess:anti_particulate_shovel");
+        setUnlocalizedName("anti_particulate_shovel");
         setMaxDamage(0);
     }
 
@@ -38,8 +38,8 @@ public class ItemAntiParticulateShovel extends ItemSpade {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.antiParticulateShovel.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.antiParticulateShovel.desc.2"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.anti_particulate_shovel.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.anti_particulate_shovel.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 }

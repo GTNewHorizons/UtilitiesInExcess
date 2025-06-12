@@ -16,24 +16,24 @@ tile.etherealGlass.2.name=Dark Ethereal Glass
 tile.etherealGlass.3.name=Ethereal Glass (Inverted)
 tile.etherealGlass.5.name=Dark Ethereal Glass (Inverted)
 
-item.gluttonsAxe.name=Glutton's Axe
-item.gluttonsAxe.desc.1=Sates the bearer's hunger while held
-item.gluttonsAxe.desc.2=Can consume hunger to heal struck entities
-item.gluttonsAxe.desc.3=This effect is lethal to most undead
+item.gluttons_axe.name=Glutton's Axe
+item.gluttons_axe.desc.1=Sates the bearer's hunger while held
+item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
+item.gluttons_axe.desc.3=This effect is lethal to most undead
 
-item.destructionPickaxe.name=Destruction Pickaxe
-item.destructionPickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
-item.destructionPickaxe.desc.2=All other blocks are mined slower than your fist
-item.destructionPickaxe.desc.3=Mined blocks will not drop anything
+item.destruction_pickaxe.name=Destruction Pickaxe
+item.destruction_pickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
+item.destruction_pickaxe.desc.2=All other blocks are mined slower than your fist
+item.destruction_pickaxe.desc.3=Mined blocks will not drop anything
 
-item.antiParticulateShovel.name=Anti-Particulate Shovel
-item.antiParticulateShovel.desc.1=Destroys all sand/gravel above blocks mined
-item.antiParticulateShovel.desc.2=Mined blocks will not drop anything
+item.anti_particulate_shovel.name=Anti-Particulate Shovel
+item.anti_particulate_shovel.desc.1=Destroys all sand/gravel above blocks mined
+item.anti_particulate_shovel.desc.2=Mined blocks will not drop anything
 
-item.precisionShears.name=Precision Shears
-item.precisionShears.desc.1=Functions as shears as well as a stone multi-tool
-item.precisionShears.desc.2=Can right click to instantly break blocks
-item.precisionShears.desc.3=Drops are instantly teleported to your inventory
+item.precision_shears.name=Precision Shears
+item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
+item.precision_shears.desc.2=Can right click to instantly break blocks
+item.precision_shears.desc.3=Drops are instantly teleported to your inventory
 
 item.mobJar.name=Mob Jar
 item.mobJar.desc.full=Contains: §f%s

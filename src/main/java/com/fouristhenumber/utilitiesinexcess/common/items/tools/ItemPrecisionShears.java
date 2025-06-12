@@ -26,8 +26,8 @@ public class ItemPrecisionShears extends ItemShears {
     private IIcon cooldownIcon;
 
     public ItemPrecisionShears() {
-        setTextureName("utilitiesinexcess:precisionShears");
-        setUnlocalizedName("precisionShears");
+        setTextureName("utilitiesinexcess:precision_shears");
+        setUnlocalizedName("precision_shears");
 
         setMaxDamage(0);
         setMaxStackSize(1);
@@ -95,16 +95,16 @@ public class ItemPrecisionShears extends ItemShears {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precisionShears.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precisionShears.desc.2"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precisionShears.desc.3"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.2"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.3"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     @Override
     public void registerIcons(IIconRegister register) {
         super.registerIcons(register);
-        cooldownIcon = register.registerIcon("utilitiesinexcess:precisionShears_cooldown");
+        cooldownIcon = register.registerIcon("utilitiesinexcess:precision_shears_cooldown");
     }
 
     @Override

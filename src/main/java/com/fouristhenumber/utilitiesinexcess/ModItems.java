@@ -18,10 +18,10 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    GLUTTONS_AXE(ItemConfig.unstableTools.enableGluttonsAxe, new ItemGluttonsAxe(), "gluttonsAxe"),
-    DESTRUCTION_PICKAXE(ItemConfig.unstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destructionPickaxe"),
-    ANTI_PARTICULATE_SHOVEL(ItemConfig.unstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "antiParticulateShovel"),
-    PRECISION_SHEARS(ItemConfig.unstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precisionShears"),
+    GLUTTONS_AXE(ItemConfig.unstableTools.enableGluttonsAxe, new ItemGluttonsAxe(), "gluttons_axe"),
+    DESTRUCTION_PICKAXE(ItemConfig.unstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destruction_pickaxe"),
+    ANTI_PARTICULATE_SHOVEL(ItemConfig.unstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
+    PRECISION_SHEARS(ItemConfig.unstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precision_shears"),
 
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
