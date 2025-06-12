@@ -8,7 +8,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.FoodStats;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGluttonsAxe;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -18,7 +18,7 @@ public class EventHandler {
     public void onAttackEntity(net.minecraftforge.event.entity.player.AttackEntityEvent event) {
         ItemStack held = event.entityPlayer.getHeldItem();
 
-        if (held != null && held.getItem() instanceof ItemHungerAxe) {
+        if (held != null && held.getItem() instanceof ItemGluttonsAxe) {
             // Convert zombie villager instantly
             if (event.target instanceof EntityZombie zombie && zombie.isVillager() && !zombie.worldObj.isRemote) {
                 EntityVillager entityvillager = new EntityVillager(zombie.worldObj);

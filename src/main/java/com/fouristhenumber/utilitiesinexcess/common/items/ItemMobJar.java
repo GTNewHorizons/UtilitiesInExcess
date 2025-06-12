@@ -28,15 +28,15 @@ public class ItemMobJar extends Item {
     private IIcon filledIcon;
 
     public ItemMobJar() {
-        setUnlocalizedName("mobJar");
+        setUnlocalizedName("mob_jar");
         setMaxStackSize(1);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
-        emptyIcon = register.registerIcon("utilitiesinexcess:mobJar");
-        filledIcon = register.registerIcon("utilitiesinexcess:mobJarFull");
+        emptyIcon = register.registerIcon("utilitiesinexcess:mob_jar");
+        filledIcon = register.registerIcon("utilitiesinexcess:mob_jar_full");
         itemIcon = emptyIcon;
     }
 

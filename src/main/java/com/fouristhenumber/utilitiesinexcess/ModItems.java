@@ -4,8 +4,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuilderWand;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
 
@@ -16,7 +16,7 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemHungerAxe(), "hungerAxe"),
+    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hungerAxe"),
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
     BUILDER_WAND(ItemConfig.enableBuilderWand, new ItemBuilderWand(16), "builderWand"),

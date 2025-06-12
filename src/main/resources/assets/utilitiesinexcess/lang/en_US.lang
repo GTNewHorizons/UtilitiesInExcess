@@ -11,10 +11,15 @@ tile.compressedCobblestone.desc=%,d Cobblestone
 tile.floatingBlock.name=Floating Block
 tile.floatingBlock.desc=Can be placed in midair
 
-item.hungerAxe.name=Glutton's Axe
-item.hungerAxe.desc.1=Sates the bearer's hunger while held
-item.hungerAxe.desc.2=Can consume hunger to heal struck entities
-item.hungerAxe.desc.3=This effect is lethal to most undead
+tile.etherealGlass.0.name=Ethereal Glass
+tile.etherealGlass.2.name=Dark Ethereal Glass
+tile.etherealGlass.3.name=Ethereal Glass (Inverted)
+tile.etherealGlass.5.name=Dark Ethereal Glass (Inverted)
+
+item.gluttonsAxe.name=Glutton's Axe
+item.gluttonsAxe.desc.1=Sates the bearer's hunger while held
+item.gluttonsAxe.desc.2=Can consume hunger to heal struck entities
+item.gluttonsAxe.desc.3=This effect is lethal to most undead
 
 item.builderWand.name=Architect's Staff
 tooltip.builderWand.1=Assists in placing many blocks
@@ -26,5 +31,20 @@ item.mobJar.desc.empty=Empty
 item.mobJar.desc.1=Right click a passive mob to trap it
 item.mobJar.desc.2=Right click again to release
 
+tile.redstoneClock.name=Redstone Clock
+tile.redstoneClock.desc.1=Sends a redstone pulse every second
+tile.redstoneClock.desc.2=Supply with a redstone signal to turn off
+
 item.heavenlyRing.name=Heavenly Ring
 item.heavenlyRing.desc=Grants creative flight
+
+tile.drum.name=Drum
+tile.drum.desc=Holds %s buckets of fluid
+tile.drum.desc.fluid=Currently holding %s %sL
+tile.drum.chat.filled=In drum: %s %sL
+tile.drum.chat.empty=Drum is empty
+
+tile.cursedEarth.name=Cursed Earth
+tile.cursedEarth.desc=Spawns mobs aggressively
+
+utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
