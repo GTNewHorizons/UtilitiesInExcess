@@ -16,6 +16,9 @@ public class ItemConfig {
 
         @Config.DefaultBoolean(true)
         public boolean enableDestructionPickaxe;
+
+        @Config.DefaultBoolean(true)
+        public boolean enableAntiParticulateShovel;
     }
 
     @Config.DefaultBoolean(true)

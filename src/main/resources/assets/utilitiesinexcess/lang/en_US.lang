@@ -26,6 +26,10 @@ item.destructionPickaxe.desc.1=Mines smooth stone 5x faster than a diamond picka
 item.destructionPickaxe.desc.2=All other blocks are mined slower than your fist
 item.destructionPickaxe.desc.3=Mined blocks will not drop anything
 
+item.antiParticulateShovel.name=Anti-Particulate Shovel
+item.antiParticulateShovel.desc.1=Destroys all sand/gravel above blocks mined
+item.antiParticulateShovel.desc.2=Mined blocks will not drop anything
+
 item.mobJar.name=Mob Jar
 item.mobJar.desc.full=Contains: §f%s
 item.mobJar.desc.empty=Empty

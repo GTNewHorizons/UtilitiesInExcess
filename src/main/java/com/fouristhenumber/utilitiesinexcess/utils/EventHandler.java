@@ -55,7 +55,11 @@ public class EventHandler {
     @SubscribeEvent
     public void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
         if (event.harvester == null) return;
-        if (event.harvester.getHeldItem() != null && event.harvester.getHeldItem().getItem() == ModItems.DESTRUCTION_PICKAXE.get()) {
+        ItemStack heldItem = event.harvester.getHeldItem();
+        if (heldItem == null) return;
+
+        if (heldItem.getItem() == ModItems.DESTRUCTION_PICKAXE.get() ||
+            heldItem.getItem() == ModItems.ANTI_PARTICULATE_SHOVEL.get()) {
             event.drops.clear();
         }
     }
