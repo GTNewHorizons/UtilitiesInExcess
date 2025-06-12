@@ -19,6 +19,9 @@ public class ItemConfig {
 
         @Config.DefaultBoolean(true)
         public boolean enableAntiParticulateShovel;
+
+        @Config.DefaultBoolean(true)
+        public boolean enablePrecisionShears;
     }
 
     @Config.DefaultBoolean(true)

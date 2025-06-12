@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -20,6 +21,7 @@ public enum ModItems {
     GLUTTONS_AXE(ItemConfig.unstableTools.enableGluttonsAxe, new ItemGluttonsAxe(), "gluttonsAxe"),
     DESTRUCTION_PICKAXE(ItemConfig.unstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destructionPickaxe"),
     ANTI_PARTICULATE_SHOVEL(ItemConfig.unstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "antiParticulateShovel"),
+    PRECISION_SHEARS(ItemConfig.unstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precisionShears"),
 
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
