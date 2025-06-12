@@ -26,8 +26,8 @@ import cpw.mods.fml.relauncher.Side;
 public class ItemHeavenlyRing extends Item implements IBauble {
 
     public ItemHeavenlyRing() {
-        setTextureName("utilitiesinexcess:heavenlyRing");
-        setUnlocalizedName("heavenlyRing");
+        setTextureName("utilitiesinexcess:heavenly_ring");
+        setUnlocalizedName("heavenly_ring");
         setMaxDamage(0);
     }
 
