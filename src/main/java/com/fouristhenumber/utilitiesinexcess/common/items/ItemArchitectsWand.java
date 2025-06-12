@@ -71,7 +71,8 @@ public class ItemArchitectsWand extends Item {
         int side = mop.sideHit;
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
-            UtilitiesInExcess.LOG.warn("Architect wand onUpdate was called with invalid facing direction: {}", forgeSide);
+            UtilitiesInExcess.LOG
+                .warn("Architect wand onUpdate was called with invalid facing direction: {}", forgeSide);
             return;
         }
 
