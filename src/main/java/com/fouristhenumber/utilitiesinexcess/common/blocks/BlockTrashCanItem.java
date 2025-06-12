@@ -19,7 +19,7 @@ public class BlockTrashCanItem extends BlockContainer {
 
     public BlockTrashCanItem() {
         super(Material.rock);
-        setBlockName("trashCanItem");
+        setBlockName("trash_can_item");
         setBlockTextureName("utilitiesinexcess:trash_can_item");
     }
 
@@ -46,7 +46,7 @@ public class BlockTrashCanItem extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.trashCanItem.desc"));
+            tooltip.add(StatCollector.translateToLocal("tile.trash_can_fluid.desc"));
         }
     }
 }
