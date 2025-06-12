@@ -23,7 +23,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableTrashCanFluid;
- 
+
     @Config.DefaultBoolean(true)
     public static boolean enableDrum;
 
