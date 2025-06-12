@@ -21,7 +21,7 @@ public class BlockCompressedCobblestone extends Block {
     public BlockCompressedCobblestone() {
         super(Material.rock);
         setHardness(4.0F);
-        setBlockName("compressedCobblestone");
+        setBlockName("compressed_cobblestone");
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,7 +43,7 @@ public class BlockCompressedCobblestone extends Block {
     public void registerBlockIcons(IIconRegister iconRegister) {
         icons = new IIcon[16];
         for (int i = 0; i < 8; i++) {
-            icons[i] = iconRegister.registerIcon("utilitiesinexcess:compressedCobble" + i);
+            icons[i] = iconRegister.registerIcon("utilitiesinexcess:compressed_cobblestone_" + i);
         }
     }
 
@@ -78,7 +78,7 @@ public class BlockCompressedCobblestone extends Block {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "tile.compressedCobblestone.desc",
+                    "tile.compressed_cobblestone.desc",
                     (long) Math.pow(9, stack.getItemDamage() + 1)));
         }
     }
