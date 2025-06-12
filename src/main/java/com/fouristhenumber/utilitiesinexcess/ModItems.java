@@ -1,10 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemHungerAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
 
@@ -15,7 +16,9 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemHungerAxe(), "hungerAxe"),
+    GLUTTONS_AXE(ItemConfig.unstableTools.enableGluttonsAxe, new ItemGluttonsAxe(), "gluttonsAxe"),
+    DESTRUCTION_PICKAXE(ItemConfig.unstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destructionPickaxe"),
+
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
 

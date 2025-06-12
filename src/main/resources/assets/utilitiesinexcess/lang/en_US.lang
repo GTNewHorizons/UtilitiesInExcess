@@ -16,10 +16,15 @@ tile.etherealGlass.2.name=Dark Ethereal Glass
 tile.etherealGlass.3.name=Ethereal Glass (Inverted)
 tile.etherealGlass.5.name=Dark Ethereal Glass (Inverted)
 
-item.hungerAxe.name=Glutton's Axe
-item.hungerAxe.desc.1=Sates the bearer's hunger while held
-item.hungerAxe.desc.2=Can consume hunger to heal struck entities
-item.hungerAxe.desc.3=This effect is lethal to most undead
+item.gluttonsAxe.name=Glutton's Axe
+item.gluttonsAxe.desc.1=Sates the bearer's hunger while held
+item.gluttonsAxe.desc.2=Can consume hunger to heal struck entities
+item.gluttonsAxe.desc.3=This effect is lethal to most undead
+
+item.destructionPickaxe.name=Destruction Pickaxe
+item.destructionPickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
+item.destructionPickaxe.desc.2=All other blocks are mined slower than your fist
+item.destructionPickaxe.desc.3=Mined blocks will not drop anything
 
 item.mobJar.name=Mob Jar
 item.mobJar.desc.full=Contains: §f%s
@@ -44,3 +49,5 @@ tile.cursedEarth.name=Cursed Earth
 tile.cursedEarth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
+
+utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
