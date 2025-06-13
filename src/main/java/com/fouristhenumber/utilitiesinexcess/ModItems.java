@@ -1,14 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;

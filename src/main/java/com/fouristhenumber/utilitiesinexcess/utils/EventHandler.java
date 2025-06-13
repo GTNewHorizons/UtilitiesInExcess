@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import com.fouristhenumber.utilitiesinexcess.ModItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -8,11 +7,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.FoodStats;
+import net.minecraftforge.event.world.BlockEvent;
 
+import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.event.world.BlockEvent;
 
 public class EventHandler {
 
@@ -58,8 +58,8 @@ public class EventHandler {
         ItemStack heldItem = event.harvester.getHeldItem();
         if (heldItem == null) return;
 
-        if (heldItem.getItem() == ModItems.DESTRUCTION_PICKAXE.get() ||
-            heldItem.getItem() == ModItems.ANTI_PARTICULATE_SHOVEL.get()) {
+        if (heldItem.getItem() == ModItems.DESTRUCTION_PICKAXE.get()
+            || heldItem.getItem() == ModItems.ANTI_PARTICULATE_SHOVEL.get()) {
             event.drops.clear();
         }
     }

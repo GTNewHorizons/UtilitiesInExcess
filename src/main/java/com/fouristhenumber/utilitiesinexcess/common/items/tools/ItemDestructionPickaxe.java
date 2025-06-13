@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -8,9 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import java.util.List;
-
 public class ItemDestructionPickaxe extends ItemPickaxe {
+
     public ItemDestructionPickaxe() {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:destruction_pickaxe");

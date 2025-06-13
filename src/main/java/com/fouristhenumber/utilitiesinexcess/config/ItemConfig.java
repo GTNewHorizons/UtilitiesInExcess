@@ -11,6 +11,7 @@ public class ItemConfig {
 
     @Config.LangKey("utilitiesinexcess.config.item.unstable_tools")
     public static class UnstableTools {
+
         @Config.DefaultBoolean(true)
         public boolean enableGluttonsAxe;
 

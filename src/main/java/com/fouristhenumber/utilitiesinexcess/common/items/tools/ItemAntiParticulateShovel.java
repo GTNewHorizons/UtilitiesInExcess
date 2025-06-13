@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +12,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class ItemAntiParticulateShovel extends ItemSpade {
+
     public ItemAntiParticulateShovel() {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:anti_particulate_shovel");
@@ -21,7 +22,8 @@ public class ItemAntiParticulateShovel extends ItemSpade {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, int x, int y, int z, EntityLivingBase harvester) {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, int x, int y, int z,
+        EntityLivingBase harvester) {
         int worldHeight = worldIn.getHeight();
         int currY = y + 1;
         while (currY < worldHeight) {

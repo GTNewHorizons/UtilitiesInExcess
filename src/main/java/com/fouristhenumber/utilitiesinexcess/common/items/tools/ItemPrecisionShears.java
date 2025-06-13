@@ -1,10 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,10 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ItemPrecisionShears extends ItemShears {
+
     private final float efficiencyOnProperMaterial;
 
     private static final String COOLDOWN_NBT_TAG = "uie:cooldown";
@@ -55,7 +55,8 @@ public class ItemPrecisionShears extends ItemShears {
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float clickX, float clickY, float clickZ) {
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float clickX, float clickY, float clickZ) {
         if (player.isSneaking()) {
             NBTTagCompound nbt = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
             if (nbt.getInteger(COOLDOWN_NBT_TAG) == 0) {
@@ -110,7 +111,8 @@ public class ItemPrecisionShears extends ItemShears {
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
         if (stack.hasTagCompound()) {
-            if (stack.getTagCompound().getInteger(COOLDOWN_NBT_TAG) > 0) {
+            if (stack.getTagCompound()
+                .getInteger(COOLDOWN_NBT_TAG) > 0) {
                 System.out.println("Showing cooldown sprite");
                 return cooldownIcon;
             }
