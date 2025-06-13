@@ -13,6 +13,15 @@ public class BlockConfig {
     public static boolean enableCompressedCobblestone;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableCompressedDirt;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableCompressedSand;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableCompressedGravel;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableRedstoneClock;
 
     @Config.DefaultBoolean(true)
