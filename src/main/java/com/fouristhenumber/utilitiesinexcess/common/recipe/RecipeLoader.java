@@ -21,7 +21,7 @@ public class RecipeLoader {
             ModBlocks.COMPRESSED_SAND, };
 
         for (ModBlocks modBlock : blocks) {
-            if (!(modBlock.get() instanceof BlockCompressed block) || !modBlock.isEnabled()) return;
+            if (!(modBlock.get() instanceof BlockCompressed block) || !modBlock.isEnabled()) continue;
 
             GameRegistry
                 .addRecipe(new ItemStack(block, 1, 0), "###", "###", "###", '#', new ItemStack(block.getBase(), 9, 0));
