@@ -21,6 +21,20 @@ item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
 item.gluttons_axe.desc.3=This effect is lethal to most undead
 
+item.destruction_pickaxe.name=Destruction Pickaxe
+item.destruction_pickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
+item.destruction_pickaxe.desc.2=All other blocks are mined slower than your fist
+item.destruction_pickaxe.desc.3=Mined blocks will not drop anything
+
+item.anti_particulate_shovel.name=Anti-Particulate Shovel
+item.anti_particulate_shovel.desc.1=Destroys all sand/gravel above blocks mined
+item.anti_particulate_shovel.desc.2=Mined blocks will not drop anything
+
+item.precision_shears.name=Precision Shears
+item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
+item.precision_shears.desc.2=Can right click to instantly break blocks
+item.precision_shears.desc.3=Drops are instantly teleported to your inventory
+
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
 item.mob_jar.desc.empty=Empty
@@ -44,3 +58,5 @@ tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
+
+utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
