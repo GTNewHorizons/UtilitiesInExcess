@@ -33,7 +33,7 @@ public class BlockCursedEarth extends Block {
     // implemented in mixins.early.minecraft.CursedEarthSpawner
     public BlockCursedEarth() {
         super(Material.ground);
-        setBlockName("cursedEarth");
+        setBlockName("cursed_earth");
         setBlockTextureName("utilitiesinexcess:cursed_earth");
         this.setHardness(0.5F);
         this.setResistance(200.0F);
@@ -125,7 +125,7 @@ public class BlockCursedEarth extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-            tooltip.add(StatCollector.translateToLocal("tile.cursedEarth.desc"));
+            tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.desc"));
             super.addInformation(stack, player, tooltip, p_77624_4_);
         }
     }

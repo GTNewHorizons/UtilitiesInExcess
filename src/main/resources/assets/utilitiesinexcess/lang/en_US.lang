@@ -1,20 +1,20 @@
-tile.compressedCobblestone.0.name=Compressed Cobblestone
-tile.compressedCobblestone.1.name=Double Compressed Cobblestone
-tile.compressedCobblestone.2.name=Triple Compressed Cobblestone
-tile.compressedCobblestone.3.name=Quadruple Compressed Cobblestone
-tile.compressedCobblestone.4.name=Quintuple Compressed Cobblestone
-tile.compressedCobblestone.5.name=Sextuple Compressed Cobblestone
-tile.compressedCobblestone.6.name=Septuple Compressed Cobblestone
-tile.compressedCobblestone.7.name=Octuple Compressed Cobblestone
-tile.compressedCobblestone.desc=%,d Cobblestone
+tile.compressed_cobblestone.0.name=Compressed Cobblestone
+tile.compressed_cobblestone.1.name=Double Compressed Cobblestone
+tile.compressed_cobblestone.2.name=Triple Compressed Cobblestone
+tile.compressed_cobblestone.3.name=Quadruple Compressed Cobblestone
+tile.compressed_cobblestone.4.name=Quintuple Compressed Cobblestone
+tile.compressed_cobblestone.5.name=Sextuple Compressed Cobblestone
+tile.compressed_cobblestone.6.name=Septuple Compressed Cobblestone
+tile.compressed_cobblestone.7.name=Octuple Compressed Cobblestone
+tile.compressed_cobblestone.desc=%,d Cobblestone
 
-tile.floatingBlock.name=Floating Block
-tile.floatingBlock.desc=Can be placed in midair
+tile.floating_block.name=Floating Block
+tile.floating_block.desc=Can be placed in midair
 
-tile.etherealGlass.0.name=Ethereal Glass
-tile.etherealGlass.2.name=Dark Ethereal Glass
-tile.etherealGlass.3.name=Ethereal Glass (Inverted)
-tile.etherealGlass.5.name=Dark Ethereal Glass (Inverted)
+tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.2.name=Dark Ethereal Glass
+tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held
@@ -35,18 +35,18 @@ item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
 item.precision_shears.desc.2=Can right click to instantly break blocks
 item.precision_shears.desc.3=Drops are instantly teleported to your inventory
 
-item.mobJar.name=Mob Jar
-item.mobJar.desc.full=Contains: §f%s
-item.mobJar.desc.empty=Empty
-item.mobJar.desc.1=Right click a passive mob to trap it
-item.mobJar.desc.2=Right click again to release
+item.mob_jar.name=Mob Jar
+item.mob_jar.desc.full=Contains: §f%s
+item.mob_jar.desc.empty=Empty
+item.mob_jar.desc.1=Right click a passive mob to trap it
+item.mob_jar.desc.2=Right click again to release
 
-tile.redstoneClock.name=Redstone Clock
-tile.redstoneClock.desc.1=Sends a redstone pulse every second
-tile.redstoneClock.desc.2=Supply with a redstone signal to turn off
+tile.redstone_clock.name=Redstone Clock
+tile.redstone_clock.desc.1=Sends a redstone pulse every second
+tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
 
-item.heavenlyRing.name=Heavenly Ring
-item.heavenlyRing.desc=Grants creative flight
+item.heavenly_ring.name=Heavenly Ring
+item.heavenly_ring.desc=Grants creative flight
 
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
@@ -54,8 +54,8 @@ tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 
-tile.cursedEarth.name=Cursed Earth
-tile.cursedEarth.desc=Spawns mobs aggressively
+tile.cursed_earth.name=Cursed Earth
+tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 
