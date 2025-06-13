@@ -35,6 +35,10 @@ item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
 item.precision_shears.desc.2=Can right click to instantly break blocks
 item.precision_shears.desc.3=Drops are instantly teleported to your inventory
 
+item.etheric_sword.name=Etheric Sword
+
+item.reversing_hoe.name=Reversing Hoe
+
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
 item.mob_jar.desc.empty=Empty

@@ -23,6 +23,12 @@ public class ItemConfig {
 
         @Config.DefaultBoolean(true)
         public boolean enablePrecisionShears;
+
+        @Config.DefaultBoolean(true)
+        public boolean enableEthericSword;
+
+        @Config.DefaultBoolean(true)
+        public boolean enableReversingHoe;
     }
 
     @Config.DefaultBoolean(true)
