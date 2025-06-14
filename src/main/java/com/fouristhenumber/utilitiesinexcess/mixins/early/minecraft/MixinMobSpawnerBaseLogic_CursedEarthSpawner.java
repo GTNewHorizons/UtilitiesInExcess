@@ -45,7 +45,7 @@ public abstract class MixinMobSpawnerBaseLogic_CursedEarthSpawner {
     // If the block below is cursed earth, run the
     // spawner instead of depending on player location.
     @ModifyReturnValue(method = "isActivated", at = @At("RETURN"))
-    private boolean uei$onIsActivated(boolean original) {
+    private boolean uie$onIsActivated(boolean original) {
         Block blockBelow = this.getSpawnerWorld()
             .getBlock(this.getSpawnerX(), this.getSpawnerY() - 1, this.getSpawnerZ());
         uie$isCursedEarth = blockBelow instanceof BlockCursedEarth;

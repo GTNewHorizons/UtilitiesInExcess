@@ -15,9 +15,9 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hungerAxe"),
-    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
-    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
+    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hunger_axe"),
+    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
+    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
 
 
     ; // leave trailing semicolon
