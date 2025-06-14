@@ -12,6 +12,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,6 +30,8 @@ public enum ModBlocks {
     COMPRESSED_GRAVEL(BlockConfig.enableCompressedGravel, new BlockCompressed(Blocks.gravel, "compressed_gravel"), BlockCompressed.ItemCompressedBlock.class, "compressed_gravel"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), BlockRedstoneClock.ItemBlockRedstoneClock.class, "redstoneClock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "etherealGlass"),
+    TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), BlockTrashCanItem.ItemBlockTrashCanItem.class, "trashCanItem"),
+    TRASH_CAN_FLUID(BlockConfig.enableTrashCanFluid, new BlockTrashCanFluid(), BlockTrashCanFluid.ItemBlockTrashCanFluid.class, "trashCanFluid"),
     DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
     CURSED_EARTH(BlockConfig.cursedEarth.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursedEarth"),
     ; // leave trailing semicolon

@@ -70,6 +70,13 @@ tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 
+
+tile.trash_can_item.name=Trash Can (Item)
+tile.trash_can_item.desc.1=Trash Can for Items
+
+tile.trash_can_fluid.name=Trash Can (Fluid)
+tile.trash_can_fluid.desc=Trash Can for Fluids
+
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
