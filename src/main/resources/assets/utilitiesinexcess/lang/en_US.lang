@@ -77,3 +77,7 @@ tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
+
+tile.sound_muffler.name=Sound Muffler
+tile.sound_muffler.desc.1=Muffles sounds within %s blocks to %s%% volume
+tile.sound_muffler.desc.2=Supply with a redstone signal to turn off

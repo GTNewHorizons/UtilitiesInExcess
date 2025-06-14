@@ -47,4 +47,23 @@ public class BlockConfig {
         @Config.RangeInt(min = 0, max = 100)
         public int cursedEarthSpawnRate;
     }
+
+    @Config.Comment("Sound Muffler Configuration")
+    public static final SoundMuffler soundMuffler = new SoundMuffler();
+
+    public static class SoundMuffler {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableSoundMuffler;
+
+        @Config.Comment("The volume reduction of sounds by the sound muffler. 0 = silent, 100 = full volume")
+        @Config.DefaultInt(20)
+        @Config.RangeInt(min = 0, max = 100)
+        public int soundMufflerReduction;
+
+        @Config.Comment("The radius a sound muffler operates in (as a square box)")
+        @Config.DefaultInt(8)
+        @Config.RangeInt(min = 1, max = 64)
+        public int soundMufflerRange;
+    }
 }
