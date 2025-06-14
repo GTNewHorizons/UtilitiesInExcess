@@ -8,6 +8,36 @@ tile.compressed_cobblestone.6.name=Septuple Compressed Cobblestone
 tile.compressed_cobblestone.7.name=Octuple Compressed Cobblestone
 tile.compressed_cobblestone.desc=%,d Cobblestone
 
+tile.compressed_dirt.0.name=Compressed Dirt
+tile.compressed_dirt.1.name=Double Compressed Dirt
+tile.compressed_dirt.2.name=Triple Compressed Dirt
+tile.compressed_dirt.3.name=Quadruple Compressed Dirt
+tile.compressed_dirt.4.name=Quintuple Compressed Dirt
+tile.compressed_dirt.5.name=Sextuple Compressed Dirt
+tile.compressed_dirt.6.name=Septuple Compressed Dirt
+tile.compressed_dirt.7.name=Octuple Compressed Dirt
+tile.compressed_dirt.desc=%,d Dirt
+
+tile.compressed_sand.0.name=Compressed Sand
+tile.compressed_sand.1.name=Double Compressed Sand
+tile.compressed_sand.2.name=Triple Compressed Sand
+tile.compressed_sand.3.name=Quadruple Compressed Sand
+tile.compressed_sand.4.name=Quintuple Compressed Sand
+tile.compressed_sand.5.name=Sextuple Compressed Sand
+tile.compressed_sand.6.name=Septuple Compressed Sand
+tile.compressed_sand.7.name=Octuple Compressed Sand
+tile.compressed_sand.desc=%,d Sand
+
+tile.compressed_gravel.0.name=Compressed Gravel
+tile.compressed_gravel.1.name=Double Compressed Gravel
+tile.compressed_gravel.2.name=Triple Compressed Gravel
+tile.compressed_gravel.3.name=Quadruple Compressed Gravel
+tile.compressed_gravel.4.name=Quintuple Compressed Gravel
+tile.compressed_gravel.5.name=Sextuple Compressed Gravel
+tile.compressed_gravel.6.name=Septuple Compressed Gravel
+tile.compressed_gravel.7.name=Octuple Compressed Gravel
+tile.compressed_gravel.desc=%,d Gravel
+
 tile.floating_block.name=Floating Block
 tile.floating_block.desc=Can be placed in midair
 
