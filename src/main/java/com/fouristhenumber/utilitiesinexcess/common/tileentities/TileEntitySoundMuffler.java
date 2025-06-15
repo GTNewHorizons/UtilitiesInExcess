@@ -41,11 +41,13 @@ public class TileEntitySoundMuffler extends TileEntity {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         redstonepowered = nbt.getBoolean("powered");
+        active = nbt.getBoolean("active");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("powered", redstonepowered);
+        nbt.setBoolean("active", active);
     }
 }
