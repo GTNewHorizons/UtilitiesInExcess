@@ -51,6 +51,7 @@ public class SoundEventHandler {
         } else if (volumeCheckSound.isInVolume(player.dimension, x, y, z)) {
             float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
             event.result = new MuffledSound(event.sound, reduction);
+            UtilitiesInExcess.LOG.info(event.result.getVolume());
         }
     }
 
@@ -100,7 +101,7 @@ public class SoundEventHandler {
 
         @Override
         public float getZPosF() {
-            return base.getXPosF();
+            return base.getZPosF();
         }
 
         @Override

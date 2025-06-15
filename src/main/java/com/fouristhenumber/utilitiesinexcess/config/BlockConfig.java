@@ -56,8 +56,8 @@ public class BlockConfig {
         @Config.DefaultBoolean(true)
         public boolean enableSoundMuffler;
 
-        @Config.Comment("The volume reduction of sounds by the sound muffler. 0 = silent, 100 = full volume")
-        @Config.DefaultInt(20)
+        @Config.Comment("The volume reduction of sounds by the sound muffler. 0 = silent, 100 = normal level")
+        @Config.DefaultInt(5)
         @Config.RangeInt(min = 0, max = 100)
         public int soundMufflerReduction;
 
