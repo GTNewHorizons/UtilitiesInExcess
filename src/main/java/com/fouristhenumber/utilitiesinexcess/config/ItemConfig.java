@@ -18,7 +18,7 @@ public class ItemConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableMobJar;
 
-    @Config.LangKey("utilitiesinexcess.config.item.wateringCan")
+    @Config.LangKey("utilitiesinexcess.config.item.watering_can")
     public static class WateringCan {
 
         @Config.Comment("Watering Can Tier Configuration")
@@ -44,7 +44,7 @@ public class ItemConfig {
         @Config.Comment("If true, the player will be slowed down while using the watering can.")
         public boolean walkingSpeedPenalty;
 
-        @Config.LangKey("utilitiesinexcess.config.item.wateringCanFlowering")
+        @Config.LangKey("utilitiesinexcess.config.item.watering_can_flowering")
         public static class WateringCanFlowering {
 
             @Config.DefaultBoolean(true)
@@ -64,7 +64,7 @@ public class ItemConfig {
 
         }
 
-        @Config.LangKey("utilitiesinexcess.config.item.wateringCanTier")
+        @Config.LangKey("utilitiesinexcess.config.item.watering_can_tier")
         public static class WateringCanTier {
 
             @Config.DefaultBoolean(true)

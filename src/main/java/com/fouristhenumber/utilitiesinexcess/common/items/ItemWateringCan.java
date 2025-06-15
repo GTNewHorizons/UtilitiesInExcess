@@ -110,7 +110,7 @@ public class ItemWateringCan extends Item {
         if (wateringCan.allowWateringCanToggle && player.isSneaking() && !world.isRemote) {
             setActive(stack, !isActive(stack));
             player.addChatMessage(
-                new ChatComponentTranslation("item.wateringCan." + (isActive(stack) ? "activated" : "deactivated")));
+                new ChatComponentTranslation("item.watering_can." + (isActive(stack) ? "activated" : "deactivated")));
             return true;
         }
         if (isFakePlayer(player) && !world.isRemote) {
@@ -321,16 +321,17 @@ public class ItemWateringCan extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         int range = (this.range * 2 + 1);
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.wateringCan.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.watering_can.desc.1"));
         tooltip.add(
-            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted("item.wateringCan.desc.2", range, range));
+            EnumChatFormatting.AQUA
+                + StatCollector.translateToLocalFormatted("item.watering_can.desc.2", range, range));
         if (wateringCan.allowWateringCanToggle) {
             tooltip.add(
                 EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC.toString()
-                    + StatCollector.translateToLocal("item.wateringCan.desc.3"));
+                    + StatCollector.translateToLocal("item.watering_can.desc.3"));
             tooltip.add(
                 EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC.toString()
-                    + StatCollector.translateToLocal("item.wateringCan.desc.4"));
+                    + StatCollector.translateToLocal("item.watering_can.desc.4"));
         }
     }
 
@@ -370,13 +371,13 @@ public class ItemWateringCan extends Item {
     public String getNameFromTier(int tier) {
         switch (tier) {
             case 1:
-                return "wateringCanBasic";
+                return "watering_can_basic";
             case 2:
-                return "wateringCanAdvanced";
+                return "watering_can_advanced";
             case 3:
-                return "wateringCanElite";
+                return "watering_can_elite";
             default:
-                return "wateringCan"; // Fallback for any other tier
+                return "watering_can"; // Fallback for any other tier
         }
     }
 

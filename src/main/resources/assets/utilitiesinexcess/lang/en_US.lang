@@ -64,20 +64,20 @@ tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
 item.heavenly_ring.name=Heavenly Ring
 item.heavenly_ring.desc=Grants creative flight
 
-item.wateringCanBasic.name=Basic Watering Can
-item.wateringCanAdvanced.name=Advanced Watering Can
-item.wateringCanElite.name=Elite Watering Can
-item.wateringCan.activated=Activated (Toggle)
-item.wateringCan.deactivated=Deactivated (Toggle)
-item.wateringCan.desc.1=It hydrates and accelerates
-item.wateringCan.desc.2=crop growth in a %dx%d area.
-item.wateringCan.desc.3=Crouch and use to toggle
-item.wateringCan.desc.4=automatic mode.
+item.watering_can_basic.name=Basic Watering Can
+item.watering_can_advanced.name=Advanced Watering Can
+item.watering_can_elite.name=Elite Watering Can
+item.watering_can.activated=Activated (Toggle)
+item.watering_can.deactivated=Deactivated (Toggle)
+item.watering_can.desc.1=It hydrates and accelerates
+item.watering_can.desc.2=crop growth in a %dx%d area.
+item.watering_can.desc.3=Crouch and use to toggle
+item.watering_can.desc.4=automatic mode.
 
 
-utilitiesinexcess.config.item.wateringCan=Watering Can
-utilitiesinexcess.config.item.wateringCanTier=Watering Can Tier
-utilitiesinexcess.config.item.wateringCanFlowering=Watering Can Flowering
+utilitiesinexcess.config.item.watering_can=Watering Can
+utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
+utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
