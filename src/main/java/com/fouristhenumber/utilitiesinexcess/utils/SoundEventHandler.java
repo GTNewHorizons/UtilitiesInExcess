@@ -47,10 +47,8 @@ public class SoundEventHandler {
         if (player == null) return;
 
         if (event.category == SoundCategory.WEATHER && volumeCheckRain.isInVolume(player.dimension, x, y, z)) {
-            UtilitiesInExcess.LOG.info("Muffling Rain");
             event.result = null;
         } else if (volumeCheckSound.isInVolume(player.dimension, x, y, z)) {
-            UtilitiesInExcess.LOG.info("Muffling Sound");
             float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
             event.result = new MuffledSound(event.sound, reduction);
         }
