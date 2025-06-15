@@ -1,5 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.network.PacketSoundMuffler;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,9 +39,14 @@ public class UtilitiesInExcess {
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
     public static CommonProxy proxy;
 
+    public static SimpleNetworkWrapper networkWrapper;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
+
+        networkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+        networkWrapper.registerMessage(PacketSoundMuffler.class, PacketSoundMuffler.class, 1, Side.CLIENT);
     }
 
     @Mod.EventHandler
@@ -48,6 +58,7 @@ public class UtilitiesInExcess {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
+        GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMuffler");
     }
 
     @Mod.EventHandler

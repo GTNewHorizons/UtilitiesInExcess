@@ -29,14 +29,22 @@ public class BlockSoundMuffler extends BlockContainer {
         return new TileEntitySoundMuffler();
     }
 
-
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        super.onNeighborBlockChange(world, x, y, z, neighbor);
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntitySoundMuffler) {
             ((TileEntitySoundMuffler) te).onInputChanged();
         }
+        super.onNeighborBlockChange(world, x, y, z, neighbor);
+    }
+
+    @Override
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof TileEntitySoundMuffler) {
+            ((TileEntitySoundMuffler) te).disableMuffler();
+        }
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 
     public static class ItemBlockSoundMuffler extends ItemBlock {
