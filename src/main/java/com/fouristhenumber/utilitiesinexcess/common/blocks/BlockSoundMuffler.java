@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,7 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 public class BlockSoundMuffler extends BlockContainer {
 

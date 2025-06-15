@@ -1,11 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
-import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeMembershipCheck;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.SoundCategory;
@@ -13,16 +7,23 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeMembershipCheck;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class SoundEventHandler {
+
     VolumeMembershipCheck volumeCheckRain = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
     VolumeMembershipCheck volumeCheckSound = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
-
 
     public void putSoundMuffler(int dim, int x, int y, int z) {
         volumeCheckSound.putVolume(dim, x, y, z, BlockConfig.soundMuffler.soundMufflerRange);
     }
+
     public void removeSoundMuffler(int dim, int x, int y, int z) {
         volumeCheckSound.removeVolume(dim, x, y, z);
     }
@@ -30,6 +31,7 @@ public class SoundEventHandler {
     public void putRainMuffler(int dim, int x, int y, int z) {
         volumeCheckRain.putVolume(dim, x, y, z, BlockConfig.rainMuffler.rainMufflerRange);
     }
+
     public void removeRainMuffler(int dim, int x, int y, int z) {
         volumeCheckRain.removeVolume(dim, x, y, z);
     }
@@ -56,6 +58,7 @@ public class SoundEventHandler {
     }
 
     private static class MuffledSound implements ISound {
+
         ISound base;
         float reduction;
 

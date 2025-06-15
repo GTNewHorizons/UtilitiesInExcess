@@ -2,7 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
-public class TileEntityRainMuffler extends TileEntitySoundMuffler{
+public class TileEntityRainMuffler extends TileEntitySoundMuffler {
 
     @Override
     public void enableMuffler() {
@@ -11,6 +11,7 @@ public class TileEntityRainMuffler extends TileEntitySoundMuffler{
 
     @Override
     public void disableMuffler() {
-        UtilitiesInExcess.proxy.soundEventHandler.removeRainMuffler(worldObj.provider.dimensionId, xCoord, yCoord, zCoord);
+        UtilitiesInExcess.proxy.soundEventHandler
+            .removeRainMuffler(worldObj.provider.dimensionId, xCoord, yCoord, zCoord);
     }
 }

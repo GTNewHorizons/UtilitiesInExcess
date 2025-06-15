@@ -1,14 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundEventHandler;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
+
     public SoundEventHandler soundEventHandler;
 
     public void preInit(FMLPreInitializationEvent event) {
