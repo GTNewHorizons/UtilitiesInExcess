@@ -1,18 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -32,6 +26,7 @@ public enum ModBlocks {
     DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
     CURSED_EARTH(BlockConfig.cursedEarth.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursedEarth"),
     SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler() , BlockSoundMuffler.ItemBlockSoundMuffler.class, "soundMuffler"),
+    RANI_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler() , BlockRainMuffler.ItemBlockRainMuffler.class, "rainMuffler"),
     ; // leave trailing semicolon
     // spotless:on
 
