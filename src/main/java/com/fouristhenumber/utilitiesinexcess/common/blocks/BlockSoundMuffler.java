@@ -39,12 +39,12 @@ public class BlockSoundMuffler extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+    public void onBlockAdded(World worldIn, int x, int y, int z) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntitySoundMuffler muffler) {
-            muffler.onBlockBreak();
+            muffler.onInputChanged();
         }
-        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
+        super.onBlockAdded(worldIn, x, y, z);
     }
 
     public static class ItemBlockSoundMuffler extends ItemBlock {
