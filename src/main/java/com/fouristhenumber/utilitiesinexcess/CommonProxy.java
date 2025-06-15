@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -11,6 +13,7 @@ public class CommonProxy {
         // Config is handled in the early mixin loader (UIEMixinLoader)
         // since we want the config to be available
         // during mixin initialisation time.
+        PacketHandler.init();
         ModBlocks.init();
         ModItems.init();
     }
