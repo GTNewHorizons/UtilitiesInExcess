@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 import net.minecraft.block.Block;
@@ -26,6 +27,7 @@ public class BlockRainMuffler extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
+
         return new TileEntityRainMuffler();
     }
 
@@ -39,12 +41,12 @@ public class BlockRainMuffler extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+    public void onBlockAdded(World worldIn, int x, int y, int z) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityRainMuffler muffler) {
-            muffler.onBlockBreak();
+            muffler.onInputChanged();
         }
-        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
+        super.onBlockAdded(worldIn, x, y, z);
     }
 
     public static class ItemBlockRainMuffler extends ItemBlock {

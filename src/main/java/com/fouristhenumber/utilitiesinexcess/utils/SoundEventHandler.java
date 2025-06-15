@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
@@ -45,7 +46,7 @@ public class SoundEventHandler {
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
 
-        if (sound.getPositionedSoundLocation().getResourcePath().startsWith("ambient.weather") && volumeCheckRain.isInVolume(player.dimension, x, y, z)) {
+        if (event.category == SoundCategory.WEATHER && volumeCheckRain.isInVolume(player.dimension, x, y, z)) {
             UtilitiesInExcess.LOG.info("Muffling Rain");
             event.result = null;
         } else if (volumeCheckSound.isInVolume(player.dimension, x, y, z)) {

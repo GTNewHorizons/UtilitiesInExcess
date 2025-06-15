@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntitySoundMuffler extends TileEntity {
     boolean active;
-    boolean changed;
 
     public void enableMuffler() {
         UtilitiesInExcess.proxy.soundEventHandler.putSoundMuffler(worldObj.provider.dimensionId, xCoord, yCoord, zCoord);
@@ -20,12 +19,8 @@ public class TileEntitySoundMuffler extends TileEntity {
     }
 
     @Override
-    public void updateEntity() {
-        if (!worldObj.isRemote) return;
-        if (!changed) return;
-
-        if (active) enableMuffler(); else disableMuffler();
-        changed = false;
+    public boolean canUpdate() {
+        return false;
     }
 
     public void onInputChanged() {
@@ -40,10 +35,10 @@ public class TileEntitySoundMuffler extends TileEntity {
         }
     }
 
-    public void onBlockBreak() {
-        //UtilitiesInExcess.networkWrapper.sendToAll(new PacketMuffler(this, false));
-    }
-
+    public void stateChange() {
+        if (worldObj.isRemote) {
+        if (active) enableMuffler(); else disableMuffler();
+    }}
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -58,6 +53,14 @@ public class TileEntitySoundMuffler extends TileEntity {
     }
 
     @Override
+    public void invalidate() {
+        if (worldObj.isRemote) {
+            disableMuffler();
+        }
+        super.invalidate();
+    }
+
+    @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
@@ -66,8 +69,7 @@ public class TileEntitySoundMuffler extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        UtilitiesInExcess.LOG.warn("Recieved on client");
         this.readFromNBT(pkt.func_148857_g());
-        this.changed = true;
+        stateChange();
     }
 }
