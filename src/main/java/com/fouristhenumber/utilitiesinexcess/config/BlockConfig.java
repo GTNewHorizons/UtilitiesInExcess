@@ -66,4 +66,18 @@ public class BlockConfig {
         @Config.RangeInt(min = 1, max = 64)
         public int soundMufflerRange;
     }
+
+    @Config.Comment("Rain Muffler Configuration")
+    public static final RainMuffler rainMuffler = new RainMuffler();
+
+    public static class RainMuffler {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableRainMuffler;
+
+        @Config.Comment("The radius a rain muffler operates in (as a square box)")
+        @Config.DefaultInt(64)
+        @Config.RangeInt(min = 1, max = 256)
+        public int rainMufflerRange;
+    }
 }

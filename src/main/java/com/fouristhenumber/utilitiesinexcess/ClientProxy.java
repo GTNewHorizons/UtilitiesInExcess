@@ -13,7 +13,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         // There is no point listening for sound events on the server side
-        if (BlockConfig.soundMuffler.enableSoundMuffler) {
+        if (BlockConfig.soundMuffler.enableSoundMuffler || BlockConfig.rainMuffler.enableRainMuffler) {
             soundEventHandler = new SoundEventHandler();
             MinecraftForge.EVENT_BUS.register(soundEventHandler);
         }

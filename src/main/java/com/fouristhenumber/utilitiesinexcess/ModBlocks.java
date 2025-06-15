@@ -33,6 +33,7 @@ public enum ModBlocks {
     DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
     CURSED_EARTH(BlockConfig.cursedEarth.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursedEarth"),
     SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler() , BlockSoundMuffler.ItemBlockSoundMuffler.class, "soundMuffler"),
+    RANI_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler() , BlockRainMuffler.ItemBlockRainMuffler.class, "rainMuffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), BlockMagicWood.ItemBlockMagicWood.class, "magic_wood"),
     CURSED_EARTH(BlockConfig.cursedEarth.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     ; // leave trailing semicolon

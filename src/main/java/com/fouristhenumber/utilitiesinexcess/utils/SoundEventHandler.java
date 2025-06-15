@@ -15,13 +15,22 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 
 
 public class SoundEventHandler {
-    VolumeMembershipCheck volumeCheck = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
+    VolumeMembershipCheck volumeCheckRain = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
+    VolumeMembershipCheck volumeCheckSound = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
 
-    public void putMuffler(int dim, int x, int y, int z) {
-        volumeCheck.putVolume(dim, x, y, z, BlockConfig.soundMuffler.soundMufflerRange);
+
+    public void putSoundMuffler(int dim, int x, int y, int z) {
+        volumeCheckSound.putVolume(dim, x, y, z, BlockConfig.soundMuffler.soundMufflerRange);
     }
-    public void removeMuffler(int dim, int x, int y, int z) {
-        volumeCheck.removeVolume(dim, x, y, z);
+    public void removeSoundMuffler(int dim, int x, int y, int z) {
+        volumeCheckSound.removeVolume(dim, x, y, z);
+    }
+
+    public void putRainMuffler(int dim, int x, int y, int z) {
+        volumeCheckRain.putVolume(dim, x, y, z, BlockConfig.rainMuffler.rainMufflerRange);
+    }
+    public void removeRainMuffler(int dim, int x, int y, int z) {
+        volumeCheckRain.removeVolume(dim, x, y, z);
     }
 
     @SubscribeEvent
@@ -36,8 +45,11 @@ public class SoundEventHandler {
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
 
-        if (volumeCheck.isInVolume(player.dimension, x, y, z)) {
-            UtilitiesInExcess.LOG.warn("Muffling Sound");
+        if (sound.getPositionedSoundLocation().getResourcePath().startsWith("ambient.weather") && volumeCheckRain.isInVolume(player.dimension, x, y, z)) {
+            UtilitiesInExcess.LOG.info("Muffling Rain");
+            event.result = null;
+        } else if (volumeCheckSound.isInVolume(player.dimension, x, y, z)) {
+            UtilitiesInExcess.LOG.info("Muffling Sound");
             float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
             event.result = new MuffledSound(event.sound, reduction);
         }
