@@ -24,10 +24,10 @@ public class BlockEtherealGlass extends BlockGlass {
 
     public enum EtherealGlassType {
 
-        NORMAL(0, "etherealGlass"),
-        DARK(2, "etherealGlassDark"),
-        INVERTED(3, "etherealGlassInverted"),
-        DARK_INVERTED(5, "etherealGlassDarkInverted");
+        NORMAL(0, "ethereal_glass"),
+        DARK(2, "ethereal_glass_dark"),
+        INVERTED(3, "ethereal_glass_inverted"),
+        DARK_INVERTED(5, "ethereal_glass_dark_inverted");
 
         public final int meta;
         public final String textureName;
@@ -40,7 +40,7 @@ public class BlockEtherealGlass extends BlockGlass {
 
     public BlockEtherealGlass() {
         super(Material.glass, false);
-        setBlockName("etherealGlass");
+        setBlockName("ethereal_glass");
     }
 
     @SideOnly(Side.CLIENT)

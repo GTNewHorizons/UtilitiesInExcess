@@ -19,7 +19,7 @@ public class BlockRedstoneClock extends BlockContainer {
 
     public BlockRedstoneClock() {
         super(Material.rock);
-        setBlockName("redstoneClock");
+        setBlockName("redstone_clock");
         setBlockTextureName("utilitiesinexcess:redstone_clock");
     }
 
@@ -64,8 +64,8 @@ public class BlockRedstoneClock extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.redstoneClock.desc.1"));
-            tooltip.add(StatCollector.translateToLocal("tile.redstoneClock.desc.2"));
+            tooltip.add(StatCollector.translateToLocal("tile.redstone_clock.desc.1"));
+            tooltip.add(StatCollector.translateToLocal("tile.redstone_clock.desc.2"));
         }
     }
 }

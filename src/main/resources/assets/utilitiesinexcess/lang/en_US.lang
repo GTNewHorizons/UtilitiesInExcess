@@ -1,38 +1,68 @@
-tile.compressedCobblestone.0.name=Compressed Cobblestone
-tile.compressedCobblestone.1.name=Double Compressed Cobblestone
-tile.compressedCobblestone.2.name=Triple Compressed Cobblestone
-tile.compressedCobblestone.3.name=Quadruple Compressed Cobblestone
-tile.compressedCobblestone.4.name=Quintuple Compressed Cobblestone
-tile.compressedCobblestone.5.name=Sextuple Compressed Cobblestone
-tile.compressedCobblestone.6.name=Septuple Compressed Cobblestone
-tile.compressedCobblestone.7.name=Octuple Compressed Cobblestone
-tile.compressedCobblestone.desc=%,d Cobblestone
+tile.compressed_cobblestone.0.name=Compressed Cobblestone
+tile.compressed_cobblestone.1.name=Double Compressed Cobblestone
+tile.compressed_cobblestone.2.name=Triple Compressed Cobblestone
+tile.compressed_cobblestone.3.name=Quadruple Compressed Cobblestone
+tile.compressed_cobblestone.4.name=Quintuple Compressed Cobblestone
+tile.compressed_cobblestone.5.name=Sextuple Compressed Cobblestone
+tile.compressed_cobblestone.6.name=Septuple Compressed Cobblestone
+tile.compressed_cobblestone.7.name=Octuple Compressed Cobblestone
+tile.compressed_cobblestone.desc=%,d Cobblestone
 
-tile.floatingBlock.name=Floating Block
-tile.floatingBlock.desc=Can be placed in midair
+tile.compressed_dirt.0.name=Compressed Dirt
+tile.compressed_dirt.1.name=Double Compressed Dirt
+tile.compressed_dirt.2.name=Triple Compressed Dirt
+tile.compressed_dirt.3.name=Quadruple Compressed Dirt
+tile.compressed_dirt.4.name=Quintuple Compressed Dirt
+tile.compressed_dirt.5.name=Sextuple Compressed Dirt
+tile.compressed_dirt.6.name=Septuple Compressed Dirt
+tile.compressed_dirt.7.name=Octuple Compressed Dirt
+tile.compressed_dirt.desc=%,d Dirt
 
-tile.etherealGlass.0.name=Ethereal Glass
-tile.etherealGlass.2.name=Dark Ethereal Glass
-tile.etherealGlass.3.name=Ethereal Glass (Inverted)
-tile.etherealGlass.5.name=Dark Ethereal Glass (Inverted)
+tile.compressed_sand.0.name=Compressed Sand
+tile.compressed_sand.1.name=Double Compressed Sand
+tile.compressed_sand.2.name=Triple Compressed Sand
+tile.compressed_sand.3.name=Quadruple Compressed Sand
+tile.compressed_sand.4.name=Quintuple Compressed Sand
+tile.compressed_sand.5.name=Sextuple Compressed Sand
+tile.compressed_sand.6.name=Septuple Compressed Sand
+tile.compressed_sand.7.name=Octuple Compressed Sand
+tile.compressed_sand.desc=%,d Sand
 
-item.hungerAxe.name=Glutton's Axe
-item.hungerAxe.desc.1=Sates the bearer's hunger while held
-item.hungerAxe.desc.2=Can consume hunger to heal struck entities
-item.hungerAxe.desc.3=This effect is lethal to most undead
+tile.compressed_gravel.0.name=Compressed Gravel
+tile.compressed_gravel.1.name=Double Compressed Gravel
+tile.compressed_gravel.2.name=Triple Compressed Gravel
+tile.compressed_gravel.3.name=Quadruple Compressed Gravel
+tile.compressed_gravel.4.name=Quintuple Compressed Gravel
+tile.compressed_gravel.5.name=Sextuple Compressed Gravel
+tile.compressed_gravel.6.name=Septuple Compressed Gravel
+tile.compressed_gravel.7.name=Octuple Compressed Gravel
+tile.compressed_gravel.desc=%,d Gravel
 
-item.mobJar.name=Mob Jar
-item.mobJar.desc.full=Contains: §f%s
-item.mobJar.desc.empty=Empty
-item.mobJar.desc.1=Right click a passive mob to trap it
-item.mobJar.desc.2=Right click again to release
+tile.floating_block.name=Floating Block
+tile.floating_block.desc=Can be placed in midair
 
-tile.redstoneClock.name=Redstone Clock
-tile.redstoneClock.desc.1=Sends a redstone pulse every second
-tile.redstoneClock.desc.2=Supply with a redstone signal to turn off
+tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.2.name=Dark Ethereal Glass
+tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
-item.heavenlyRing.name=Heavenly Ring
-item.heavenlyRing.desc=Grants creative flight
+item.gluttons_axe.name=Glutton's Axe
+item.gluttons_axe.desc.1=Sates the bearer's hunger while held
+item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
+item.gluttons_axe.desc.3=This effect is lethal to most undead
+
+item.mob_jar.name=Mob Jar
+item.mob_jar.desc.full=Contains: §f%s
+item.mob_jar.desc.empty=Empty
+item.mob_jar.desc.1=Right click a passive mob to trap it
+item.mob_jar.desc.2=Right click again to release
+
+tile.redstone_clock.name=Redstone Clock
+tile.redstone_clock.desc.1=Sends a redstone pulse every second
+tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
+
+item.heavenly_ring.name=Heavenly Ring
+item.heavenly_ring.desc=Grants creative flight
 
 item.wateringCanBasic.name=Basic Watering Can
 item.wateringCanAdvanced.name=Advanced Watering Can
@@ -54,3 +84,8 @@ tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
+
+tile.cursed_earth.name=Cursed Earth
+tile.cursed_earth.desc=Spawns mobs aggressively
+
+utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
