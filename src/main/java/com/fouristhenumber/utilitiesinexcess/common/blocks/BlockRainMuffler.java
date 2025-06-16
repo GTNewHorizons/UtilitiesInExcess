@@ -27,7 +27,6 @@ public class BlockRainMuffler extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-
         return new TileEntityRainMuffler();
     }
 
@@ -37,7 +36,6 @@ public class BlockRainMuffler extends BlockContainer {
         if (te instanceof TileEntityRainMuffler muffler) {
             muffler.onInputChanged();
         }
-        super.onNeighborBlockChange(world, x, y, z, neighbor);
     }
 
     @Override
@@ -46,7 +44,6 @@ public class BlockRainMuffler extends BlockContainer {
         if (te instanceof TileEntityRainMuffler muffler) {
             muffler.onInputChanged();
         }
-        super.onBlockAdded(worldIn, x, y, z);
     }
 
     public static class ItemBlockRainMuffler extends ItemBlock {

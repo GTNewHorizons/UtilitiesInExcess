@@ -36,7 +36,6 @@ public class BlockSoundMuffler extends BlockContainer {
         if (te instanceof TileEntitySoundMuffler muffler) {
             muffler.onInputChanged();
         }
-        super.onNeighborBlockChange(world, x, y, z, neighbor);
     }
 
     @Override
@@ -45,7 +44,6 @@ public class BlockSoundMuffler extends BlockContainer {
         if (te instanceof TileEntitySoundMuffler muffler) {
             muffler.onInputChanged();
         }
-        super.onBlockAdded(worldIn, x, y, z);
     }
 
     public static class ItemBlockSoundMuffler extends ItemBlock {
