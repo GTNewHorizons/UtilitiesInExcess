@@ -5,7 +5,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 // TODO: Add new features to the reversing hoe
 public class ItemReversingHoe extends ItemHoe {
@@ -38,5 +42,12 @@ public class ItemReversingHoe extends ItemHoe {
         }
 
         return super.onItemUse(itemStack, player, world, x, y, z, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.1"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.2"));
+        super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 }

@@ -1,11 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -20,7 +22,9 @@ public class EventHandler {
     public void onAttackEntity(net.minecraftforge.event.entity.player.AttackEntityEvent event) {
         ItemStack held = event.entityPlayer.getHeldItem();
 
-        if (held != null && held.getItem() instanceof ItemGluttonsAxe) {
+        if (held == null) return;
+
+        if (held.getItem() instanceof ItemGluttonsAxe) {
             // Convert zombie villager instantly
             if (event.target instanceof EntityZombie zombie && zombie.isVillager() && !zombie.worldObj.isRemote) {
                 EntityVillager entityvillager = new EntityVillager(zombie.worldObj);
@@ -49,6 +53,15 @@ public class EventHandler {
             }
             // Cancel the attack
             event.setCanceled(true);
+        }
+        else if (held.getItem() instanceof ItemEthericSword) {
+            if (event.target instanceof EntityLivingBase entityLivingBase) {
+                // TODO: Find a way to confirm that this damage is actually armor-piercing
+                // TODO: Add critical hits
+                entityLivingBase.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer).setDamageBypassesArmor().setMagicDamage(), 6.0f);
+                entityLivingBase.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer), 8.0f);
+                event.setCanceled(true);
+            }
         }
     }
 
