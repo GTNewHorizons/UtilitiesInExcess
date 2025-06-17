@@ -8,7 +8,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -16,6 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainM
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 public class BlockRainMuffler extends BlockContainer {
+    public static final String NBT_RAIN_MUFFLED = "RainMuffledUIX";
 
     public BlockRainMuffler() {
         super(Material.sponge);
@@ -44,6 +48,22 @@ public class BlockRainMuffler extends BlockContainer {
         if (te instanceof TileEntityRainMuffler muffler) {
             muffler.onInputChanged();
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+        NBTTagCompound playerNBT = player.getEntityData();
+        NBTTagCompound persistentNBT = playerNBT.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+        boolean nowActive = !persistentNBT.getBoolean(NBT_RAIN_MUFFLED);
+        persistentNBT.setBoolean(NBT_RAIN_MUFFLED, nowActive);
+        playerNBT.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistentNBT);
+        if (worldIn.isRemote) {
+            if (nowActive) {
+                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.global.enable"));
+            } else {
+                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.global.disable"));
+            }}
+        return true;
     }
 
     public static class ItemBlockRainMuffler extends ItemBlock {

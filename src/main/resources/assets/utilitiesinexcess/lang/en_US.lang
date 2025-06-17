@@ -86,3 +86,6 @@ tile.rain_muffler.name=Rain Muffler
 tile.rain_muffler.desc.1=Silences weather sounds %s blocks
 tile.rain_muffler.desc.2=Supply with a redstone signal to turn off
 tile.rain_muffler.desc.3=Right click to toggle weather sounds globally
+tile.rain_muffler.global.enable=You dull your senses to the sound of the rain
+tile.rain_muffler.global.disable=You become aware of the sound of the rain
+

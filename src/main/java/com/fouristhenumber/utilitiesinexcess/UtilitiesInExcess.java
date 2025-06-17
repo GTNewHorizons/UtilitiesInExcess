@@ -1,5 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.network.PacketRainMuffledSync;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +35,8 @@ public class UtilitiesInExcess {
     public static final String MODID = "utilitiesinexcess";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
+    public static SimpleNetworkWrapper networkWrapper;
+
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
@@ -39,6 +45,9 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
+
+        networkWrapper = new SimpleNetworkWrapper(MODID);
+        networkWrapper.registerMessage(PacketRainMuffledSync.class, PacketRainMuffledSync.class, 1, Side.CLIENT);
     }
 
     @Mod.EventHandler
@@ -47,7 +56,10 @@ public class UtilitiesInExcess {
 
         RecipeLoader.run();
 
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        EventHandler handler = new EventHandler();
+        MinecraftForge.EVENT_BUS.register(handler);
+        FMLCommonHandler.instance().bus().register(handler);
+
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMuffler");

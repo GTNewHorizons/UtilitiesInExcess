@@ -39,13 +39,6 @@ public class TileEntitySoundMuffler extends TileEntity {
         }
     }
 
-    public void stateChange() {
-        if (worldObj.isRemote) {
-            if (active) enableMuffler();
-            else disableMuffler();
-        }
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
@@ -76,6 +69,9 @@ public class TileEntitySoundMuffler extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
-        stateChange();
+        if (worldObj.isRemote) {
+            if (active) enableMuffler();
+            else disableMuffler();
+        }
     }
 }

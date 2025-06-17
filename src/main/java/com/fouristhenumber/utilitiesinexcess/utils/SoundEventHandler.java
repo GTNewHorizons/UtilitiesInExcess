@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
@@ -14,6 +13,8 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeMembershipCheck;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler.NBT_RAIN_MUFFLED;
 
 public class SoundEventHandler {
 
@@ -47,8 +48,7 @@ public class SoundEventHandler {
 
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
-
-        if (event.category == SoundCategory.WEATHER && volumeCheckRain.isInVolume(player.dimension, x, y, z)) {
+        if (sound.getPositionedSoundLocation().getResourcePath().equals("ambient.weather.rain") && (player.getEntityData().getCompoundTag(EntityClientPlayerMP.PERSISTED_NBT_TAG).getBoolean(NBT_RAIN_MUFFLED) || volumeCheckRain.isInVolume(player.dimension, x, y, z))) {
             event.result = null;
         } else if (volumeCheckSound.isInVolume(player.dimension, x, y, z)) {
             float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
