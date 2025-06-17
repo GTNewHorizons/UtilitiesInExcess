@@ -16,12 +16,12 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hungerAxe"),
-    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
-    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
-    WATERING_CAN_Basic(ItemConfig.wateringCan.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "wateringCanBasic"),
-    WATERING_CAN_Advanced(ItemConfig.wateringCan.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "wateringCanAdvanced"),
-    WATERING_CAN_Elite(ItemConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "wateringCanElite"),
+    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hunger_axe"),
+    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
+    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
+    WATERING_CAN_Basic(ItemConfig.wateringCan.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
+    WATERING_CAN_Advanced(ItemConfig.wateringCan.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
+    WATERING_CAN_Elite(ItemConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
 
 
     ; // leave trailing semicolon

@@ -85,6 +85,9 @@ tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 
+tile.magic_wood.name=Magic Wood
+tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
+
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
