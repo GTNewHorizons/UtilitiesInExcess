@@ -54,6 +54,7 @@ public class SoundEventHandler {
             float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
             event.result = new MuffledSound(event.sound, reduction);
             UtilitiesInExcess.LOG.info(event.result.getVolume());
+            player.worldObj.spawnParticle("smoke", sound.getXPosF(), sound.getYPosF(), sound.getZPosF(), 0, 0.03, 0);
         }
     }
 
