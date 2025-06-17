@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -8,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 // TODO: Add new features to the reversing hoe
 public class ItemReversingHoe extends ItemHoe {

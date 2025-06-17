@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -12,6 +11,7 @@ import net.minecraft.util.FoodStats;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -53,12 +53,15 @@ public class EventHandler {
             }
             // Cancel the attack
             event.setCanceled(true);
-        }
-        else if (held.getItem() instanceof ItemEthericSword) {
+        } else if (held.getItem() instanceof ItemEthericSword) {
             if (event.target instanceof EntityLivingBase entityLivingBase) {
                 // TODO: Find a way to confirm that this damage is actually armor-piercing
                 // TODO: Add critical hits
-                entityLivingBase.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer).setDamageBypassesArmor().setMagicDamage(), 6.0f);
+                entityLivingBase.attackEntityFrom(
+                    DamageSource.causePlayerDamage(event.entityPlayer)
+                        .setDamageBypassesArmor()
+                        .setMagicDamage(),
+                    6.0f);
                 entityLivingBase.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer), 8.0f);
                 event.setCanceled(true);
             }
