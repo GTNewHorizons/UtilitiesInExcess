@@ -1,16 +1,18 @@
 package com.fouristhenumber.utilitiesinexcess.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import io.netty.buffer.ByteBuf;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler.NBT_RAIN_MUFFLED;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler.NBT_RAIN_MUFFLED;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
 
 public class PacketRainMuffledSync implements IMessage, IMessageHandler<PacketRainMuffledSync, IMessage> {
+
     boolean muffled;
 
     public PacketRainMuffledSync() {}

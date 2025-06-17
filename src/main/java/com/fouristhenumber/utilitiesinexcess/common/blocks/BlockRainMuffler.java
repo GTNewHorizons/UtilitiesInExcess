@@ -18,6 +18,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainM
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 public class BlockRainMuffler extends BlockContainer {
+
     public static final String NBT_RAIN_MUFFLED = "RainMuffledUIX";
 
     public BlockRainMuffler() {
@@ -50,7 +51,8 @@ public class BlockRainMuffler extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
         NBTTagCompound playerNBT = player.getEntityData();
         NBTTagCompound persistentNBT = playerNBT.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
         boolean nowActive = !persistentNBT.getBoolean(NBT_RAIN_MUFFLED);
@@ -61,7 +63,8 @@ public class BlockRainMuffler extends BlockContainer {
                 player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.global.enable"));
             } else {
                 player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.global.disable"));
-            }}
+            }
+        }
         return true;
     }
 

@@ -1,9 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.network.PacketRainMuffledSync;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,15 +10,19 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.network.PacketRainMuffledSync;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -58,7 +58,9 @@ public class UtilitiesInExcess {
 
         EventHandler handler = new EventHandler();
         MinecraftForge.EVENT_BUS.register(handler);
-        FMLCommonHandler.instance().bus().register(handler);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(handler);
 
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
