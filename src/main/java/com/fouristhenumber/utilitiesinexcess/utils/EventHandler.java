@@ -6,9 +6,13 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
+import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemGluttonsAxe;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -18,7 +22,9 @@ public class EventHandler {
     public void onAttackEntity(net.minecraftforge.event.entity.player.AttackEntityEvent event) {
         ItemStack held = event.entityPlayer.getHeldItem();
 
-        if (held != null && held.getItem() instanceof ItemGluttonsAxe) {
+        if (held == null) return;
+
+        if (held.getItem() instanceof ItemGluttonsAxe) {
             // Convert zombie villager instantly
             if (event.target instanceof EntityZombie zombie && zombie.isVillager() && !zombie.worldObj.isRemote) {
                 EntityVillager entityvillager = new EntityVillager(zombie.worldObj);
@@ -47,6 +53,30 @@ public class EventHandler {
             }
             // Cancel the attack
             event.setCanceled(true);
+        } else if (held.getItem() instanceof ItemEthericSword) {
+            if (event.target instanceof EntityLivingBase entityLivingBase) {
+                // TODO: Find a way to confirm that this damage is actually armor-piercing
+                // TODO: Add critical hits
+                entityLivingBase.attackEntityFrom(
+                    DamageSource.causePlayerDamage(event.entityPlayer)
+                        .setDamageBypassesArmor()
+                        .setMagicDamage(),
+                    6.0f);
+                entityLivingBase.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer), 8.0f);
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+        if (event.harvester == null) return;
+        ItemStack heldItem = event.harvester.getHeldItem();
+        if (heldItem == null) return;
+
+        if (heldItem.getItem() == ModItems.DESTRUCTION_PICKAXE.get()
+            || heldItem.getItem() == ModItems.ANTI_PARTICULATE_SHOVEL.get()) {
+            event.drops.clear();
         }
     }
 }

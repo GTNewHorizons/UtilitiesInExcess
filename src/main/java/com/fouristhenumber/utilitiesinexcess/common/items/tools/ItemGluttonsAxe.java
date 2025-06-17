@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.items;
+package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
 
