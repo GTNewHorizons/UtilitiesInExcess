@@ -27,8 +27,8 @@ public enum ModItems {
     ETHERIC_SWORD(ItemConfig.unstableTools.enableEthericSword, new ItemEthericSword(), "etheric_sword"),
     REVERSING_HOE(ItemConfig.unstableTools.enableReversingHoe, new ItemReversingHoe(), "reversing_hoe"),
 
-    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
-    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
+    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
+    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
 
 
     ; // leave trailing semicolon
