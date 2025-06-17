@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.5.14,)")
+    dependencies = "required-after:gtnhlib@[0.6.31,)")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
