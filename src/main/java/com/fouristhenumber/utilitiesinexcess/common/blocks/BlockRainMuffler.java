@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler.NBT_RAIN_MUFFLED;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -18,8 +20,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainM
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 public class BlockRainMuffler extends BlockContainer {
-
-    public static final String NBT_RAIN_MUFFLED = "RainMuffledUIX";
 
     public BlockRainMuffler() {
         super(Material.sponge);
@@ -60,9 +60,9 @@ public class BlockRainMuffler extends BlockContainer {
         playerNBT.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistentNBT);
         if (worldIn.isRemote) {
             if (nowActive) {
-                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.global.enable"));
+                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_enable"));
             } else {
-                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.global.disable"));
+                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_disable"));
             }
         }
         return true;

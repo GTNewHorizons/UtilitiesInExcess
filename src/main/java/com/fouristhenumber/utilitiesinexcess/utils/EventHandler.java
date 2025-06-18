@@ -1,23 +1,16 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler.NBT_RAIN_MUFFLED;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.FoodStats;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGluttonsAxe;
-import com.fouristhenumber.utilitiesinexcess.network.PacketRainMuffledSync;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 public class EventHandler {
 
@@ -56,15 +49,4 @@ public class EventHandler {
             event.setCanceled(true);
         }
     }
-
-    @SubscribeEvent
-    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.player instanceof EntityPlayerMP playerMP) {
-            boolean rainMuffled = event.player.getEntityData()
-                .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG)
-                .getBoolean(NBT_RAIN_MUFFLED);
-            UtilitiesInExcess.networkWrapper.sendTo(new PacketRainMuffledSync(rainMuffled), playerMP);
-        }
-    }
-
 }

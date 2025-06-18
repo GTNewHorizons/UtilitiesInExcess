@@ -13,7 +13,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySound
 import com.fouristhenumber.utilitiesinexcess.network.PacketRainMuffledSync;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -58,9 +57,6 @@ public class UtilitiesInExcess {
 
         EventHandler handler = new EventHandler();
         MinecraftForge.EVENT_BUS.register(handler);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(handler);
 
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");

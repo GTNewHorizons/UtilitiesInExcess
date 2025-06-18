@@ -51,6 +51,7 @@ public class BlockConfig {
     @Config.Comment("Sound Muffler Configuration")
     public static final SoundMuffler soundMuffler = new SoundMuffler();
 
+    @Config.LangKey("utilitiesinexcess.config.block.sound_muffler")
     public static class SoundMuffler {
 
         @Config.DefaultBoolean(true)
@@ -70,6 +71,7 @@ public class BlockConfig {
     @Config.Comment("Rain Muffler Configuration")
     public static final RainMuffler rainMuffler = new RainMuffler();
 
+    @Config.LangKey("utilitiesinexcess.config.block.rain_muffler")
     public static class RainMuffler {
 
         @Config.DefaultBoolean(true)
