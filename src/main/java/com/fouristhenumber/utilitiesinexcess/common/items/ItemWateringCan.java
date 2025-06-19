@@ -42,14 +42,12 @@ import thaumcraft.common.lib.FakeThaumcraftPlayer;
 public class ItemWateringCan extends Item {
 
     private int range;
-    private int tier;
     private static final String TAG_ACTIVE = "WateringCanActive";
     // A map to track the last time each player used the watering can
     public static final Map<EntityPlayer, Long> lastWaterTick = new WeakHashMap<>();
     private final int cooldownTicks = 4; // Watering delay
 
     public ItemWateringCan(int tier, int effectArea) {
-        this.tier = tier;
         // Ensure effectArea is odd, since it should be centered (3, 5, 7, etc.)
         this.range = (effectArea - 1) / 2;;
         setTextureName("utilitiesinexcess:" + getNameFromTier(tier));
@@ -97,6 +95,8 @@ public class ItemWateringCan extends Item {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (isFakePlayer(player) && !world.isRemote) {
             this.onItemUse(stack, player, world);
+            // prevent CoFH Fake player from deleting the item
+            return stack;
         }
 
         player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
@@ -150,6 +150,7 @@ public class ItemWateringCan extends Item {
      * executed server-side to ensure the watering can works correctly in multiplayer.
      */
     private boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
+        if (world.isRemote) return false; // Ensure this is executed server-side
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         int x2 = x + dir.offsetX;
         int y2 = y + dir.offsetY;
@@ -307,12 +308,10 @@ public class ItemWateringCan extends Item {
                 }
 
                 // Send particle packet to all players around the watering can
-                if (!world.isRemote) {
-                    PacketHandler.INSTANCE.sendToAllAround(
-                        new ParticlePacket("splash", d0, d1, d2, 5),
-                        new NetworkRegistry.TargetPoint(world.provider.dimensionId, d0, d1, d2, 32.0 // range in blocks
-                        ));
-                }
+                PacketHandler.INSTANCE.sendToAllAround(
+                    new ParticlePacket("splash", d0, d1, d2, 5),
+                    new NetworkRegistry.TargetPoint(world.provider.dimensionId, d0, d1, d2, 32.0 // range in blocks
+                    ));
             }
         }
     }
@@ -336,8 +335,8 @@ public class ItemWateringCan extends Item {
     }
 
     public boolean isActive(ItemStack stack) {
-        NBTTagCompound tag = stack.getTagCompound();
-        return tag != null && tag.getBoolean(TAG_ACTIVE);
+        return stack.hasTagCompound() && stack.getTagCompound()
+            .getBoolean(TAG_ACTIVE);
     }
 
     public void setActive(ItemStack stack, boolean active) {
