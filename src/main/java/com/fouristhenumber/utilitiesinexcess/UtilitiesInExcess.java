@@ -47,8 +47,7 @@ public class UtilitiesInExcess {
 
         RecipeLoader.run();
 
-        EventHandler handler = new EventHandler();
-        MinecraftForge.EVENT_BUS.register(handler);
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
 
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
