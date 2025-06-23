@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.network;
+package com.fouristhenumber.utilitiesinexcess.network.client;
 
 import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler.NBT_RAIN_MUFFLED;
 
@@ -9,9 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
-public class PacketRainMuffledSync implements IMessage, IMessageHandler<PacketRainMuffledSync, IMessage> {
+public class PacketRainMuffledSync implements IMessage {
 
     boolean muffled;
 
@@ -31,14 +33,18 @@ public class PacketRainMuffledSync implements IMessage, IMessageHandler<PacketRa
         buf.writeBoolean(muffled);
     }
 
-    @Override
-    public IMessage onMessage(PacketRainMuffledSync message, MessageContext ctx) {
-        if (ctx.side.isClient()) {
+    public static class Handler implements IMessageHandler<PacketRainMuffledSync, IMessage> {
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IMessage onMessage(PacketRainMuffledSync message, MessageContext ctx) {
+
             NBTTagCompound playerNBT = Minecraft.getMinecraft().thePlayer.getEntityData();
             NBTTagCompound persistentNBT = playerNBT.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
             persistentNBT.setBoolean(NBT_RAIN_MUFFLED, message.muffled);
             playerNBT.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistentNBT);
+
+            return null;
         }
-        return null;
     }
 }

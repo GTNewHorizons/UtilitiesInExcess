@@ -9,7 +9,8 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
-import com.fouristhenumber.utilitiesinexcess.network.PacketRainMuffledSync;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketRainMuffledSync;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -66,7 +67,7 @@ public class TileEntityRainMuffler extends TileEntitySoundMuffler {
             boolean rainMuffled = event.player.getEntityData()
                 .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG)
                 .getBoolean(NBT_RAIN_MUFFLED);
-            UtilitiesInExcess.networkWrapper.sendTo(new PacketRainMuffledSync(rainMuffled), playerMP);
+            PacketHandler.INSTANCE.sendTo(new PacketRainMuffledSync(rainMuffled), playerMP);
         }
     }
 }
