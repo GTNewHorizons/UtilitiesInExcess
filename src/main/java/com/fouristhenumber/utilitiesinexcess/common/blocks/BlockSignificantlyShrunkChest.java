@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.List;
 
+import com.cleanroommc.modularui.factory.GuiFactories;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -9,10 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.gui.GuiHandler;
 
 public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest {
 
@@ -35,13 +33,9 @@ public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        if (worldIn.isRemote) {
-            return true;
-        }
-
-        TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntitySignificantlyShrunkChest) {
-            player.openGui(UtilitiesInExcess.instance, GuiHandler.GUI_SIGNIFICANTLY_SHRUNK_CHEST, worldIn, x, y, z);
+        if (!worldIn.isRemote) {
+            GuiFactories.tileEntity()
+                .open(player, x, y, z);
         }
         return true;
     }

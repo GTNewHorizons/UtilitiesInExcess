@@ -26,7 +26,6 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
     public BlockMarginallyMaximisedChest() {
         super(Material.wood);
         setBlockName("marginally_maximised_chest");
-        setBlockBounds(0, 0, 0, 1, 1, 1);
     }
 
     @Override
@@ -111,8 +110,8 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
     @Override
     public int getComparatorInputOverride(World worldIn, int x, int y, int z, int side) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof IInventory) {
-            return Container.calcRedstoneFromInventory((IInventory) te);
+        if (te instanceof IInventory inv) {
+            return Container.calcRedstoneFromInventory(inv);
         }
         return 0;
     }
@@ -125,7 +124,8 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocalFormatted("tile.marginally_maximised_chest.desc"));
+            tooltip.add(StatCollector.translateToLocalFormatted("tile.marginally_maximised_chest.desc1"));
+            tooltip.add(StatCollector.translateToLocalFormatted("tile.marginally_maximised_chest.desc2"));
         }
     }
 }

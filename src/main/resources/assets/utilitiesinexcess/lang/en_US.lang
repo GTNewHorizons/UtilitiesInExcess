@@ -94,4 +94,9 @@ tile.cursed_earth.desc=Spawns mobs aggressively
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 
 tile.marginally_maximised_chest.name=Marginally Maximised Chest
-tile.marginally_maximised_chest.desc=Just a regular chest, but doesn't form double chests and can be opened even with a block above
+tile.marginally_maximised_chest.desc1=Doesn't form double chests
+tile.marginally_maximised_chest.desc2=Can be opened even with a block above
+
+
+tile.significantly_shrunk_chest.name=Significantly Shrunk Chest
+tile.significantly_shrunk_chest.desc=Hold just one item stack
