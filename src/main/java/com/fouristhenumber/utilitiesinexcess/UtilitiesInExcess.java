@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,9 +31,6 @@ public class UtilitiesInExcess {
     public static final String MODID = "utilitiesinexcess";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
-    @Mod.Instance(MODID)
-    public static UtilitiesInExcess instance;
-
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
@@ -53,6 +51,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
         GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
+        GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
     }
 
     @Mod.EventHandler
