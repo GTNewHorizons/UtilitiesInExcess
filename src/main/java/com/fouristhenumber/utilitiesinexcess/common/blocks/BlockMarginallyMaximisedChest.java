@@ -3,9 +3,14 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.List;
 import java.util.Random;
 
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -14,6 +19,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -26,6 +33,7 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
     public BlockMarginallyMaximisedChest() {
         super(Material.wood);
         setBlockName("marginally_maximised_chest");
+        setBlockTextureName("marginally_maximised_chest"); // Used as prefix for icons
     }
 
     @Override
@@ -33,15 +41,24 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         return new TileEntityMarginallyMaximisedChest();
     }
 
-    // @SideOnly(Side.CLIENT)
-    // @Override
-    // public IIcon getIcon(int i, int j) {
-    // if (j < IronChestType.values().length) {
-    // IronChestType type = IronChestType.values()[j];
-    // return type.getIcon(i);
-    // }
-    // return null;
-    // }
+    @Override
+    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
+        byte chestFacing = 0;
+        int facing = MathHelper.floor_double((double) ((placer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+        if (facing == 0) {
+            chestFacing = 2;
+        }
+        if (facing == 1) {
+            chestFacing = 5;
+        }
+        if (facing == 2) {
+            chestFacing = 3;
+        }
+        if (facing == 3) {
+            chestFacing = 4;
+        }
+        worldIn.setBlockMetadataWithNotify(x, y, z, chestFacing, 3);
+    }
 
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
@@ -114,6 +131,36 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
             return Container.calcRedstoneFromInventory(inv);
         }
         return 0;
+    }
+
+    private static final String[] sideNames = { "top", "front", "side" };
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] icons;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        icons = new IIcon[3];
+        int i = 0;
+        for (String side : sideNames) {
+                icons[i++] = reg.registerIcon(String.format("%s:%s_%s", UtilitiesInExcess.MODID, getTextureName(), side));
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        if (side <= 1) {
+            // Top or Bottom
+            return icons[0];
+        } else if (side == meta) {
+            // Front
+            return icons[1];
+        } else {
+            // Side
+            return icons[2];
+        }
     }
 
     public static class ItemBlockMarginallyMaximisedChest extends ItemBlock {

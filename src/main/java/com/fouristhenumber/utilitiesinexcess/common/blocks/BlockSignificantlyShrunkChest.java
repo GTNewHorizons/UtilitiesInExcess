@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.List;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
+import com.fouristhenumber.utilitiesinexcess.render.ModRenderers;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -17,6 +18,7 @@ public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest
     public BlockSignificantlyShrunkChest() {
         super();
         setBlockName("significantly_shrunk_chest");
+        //setBlockTextureName("significantly_shrunk_chest"); // Used as prefix for icons
         setBlockBounds(0.3f, 0, 0.3f, 0.7f, 0.4f, 0.7f);
     }
 

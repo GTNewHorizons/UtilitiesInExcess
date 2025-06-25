@@ -52,6 +52,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
         GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
         GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
+
     }
 
     @Mod.EventHandler
