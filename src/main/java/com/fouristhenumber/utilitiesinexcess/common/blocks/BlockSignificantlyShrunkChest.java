@@ -3,12 +3,17 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.List;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.render.ModRenderers;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.render.ScaledCubeFaceIcon;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
@@ -28,6 +33,11 @@ public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest
     }
 
     @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntitySignificantlyShrunkChest();
     }
@@ -40,6 +50,17 @@ public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest
                 .open(player, x, y, z);
         }
         return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        icons = new IIcon[3];
+        int i = 0;
+        for (String side : sideNames) {
+            IIcon icon = reg.registerIcon(String.format("%s:%s_%s", UtilitiesInExcess.MODID, getTextureName(), side));
+            icons[i++] = new ScaledCubeFaceIcon(icon, this, side.equals("top"));
+        }
     }
 
     public static class ItemBlockSignificantlyShrunkChest extends ItemBlock {

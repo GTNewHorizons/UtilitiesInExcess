@@ -133,10 +133,10 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         return 0;
     }
 
-    private static final String[] sideNames = { "top", "front", "side" };
+    protected static final String[] sideNames = { "top", "front", "side" };
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons;
+    protected IIcon[] icons;
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -157,7 +157,11 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         } else if (side == meta) {
             // Front
             return icons[1];
-        } else {
+        } else if (meta == 0 && side == 3){
+            //Front and rendering in an inventory (no face set)
+            return icons[1];
+        }
+        else {
             // Side
             return icons[2];
         }
