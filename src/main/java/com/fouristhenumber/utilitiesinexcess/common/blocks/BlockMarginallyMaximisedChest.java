@@ -3,9 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.List;
 import java.util.Random;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -24,7 +21,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMarginallyMaximisedChest extends BlockContainer {
 
@@ -144,7 +145,7 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         icons = new IIcon[3];
         int i = 0;
         for (String side : sideNames) {
-                icons[i++] = reg.registerIcon(String.format("%s:%s_%s", UtilitiesInExcess.MODID, getTextureName(), side));
+            icons[i++] = reg.registerIcon(String.format("%s:%s_%s", UtilitiesInExcess.MODID, getTextureName(), side));
         }
     }
 
@@ -157,11 +158,10 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         } else if (side == meta) {
             // Front
             return icons[1];
-        } else if (meta == 0 && side == 3){
-            //Front and rendering in an inventory (no face set)
+        } else if (meta == 0 && side == 3) {
+            // Front and rendering in an inventory (no face set)
             return icons[1];
-        }
-        else {
+        } else {
             // Side
             return icons[2];
         }

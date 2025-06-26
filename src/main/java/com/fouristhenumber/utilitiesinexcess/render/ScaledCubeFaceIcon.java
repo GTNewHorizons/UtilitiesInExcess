@@ -55,7 +55,8 @@ public class ScaledCubeFaceIcon implements IIcon {
     @Override
     public float getInterpolatedU(double coordinate) {
         double clamped = MathHelper.clamp_double(coordinate / 16, horizontalMin, horizontalMax);
-        return (float) (((clamped - horizontalMin) / (horizontalMax - horizontalMin)) * (getMaxU() - getMinU())) + getMinU();
+        return (float) (((clamped - horizontalMin) / (horizontalMax - horizontalMin)) * (getMaxU() - getMinU()))
+            + getMinU();
     }
 
     @Override

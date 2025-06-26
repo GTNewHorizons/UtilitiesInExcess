@@ -2,11 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.List;
 
-import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.render.ScaledCubeFaceIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,14 +11,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.render.ScaledCubeFaceIcon;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest {
 
     public BlockSignificantlyShrunkChest() {
         super();
         setBlockName("significantly_shrunk_chest");
-        //setBlockTextureName("significantly_shrunk_chest"); // Used as prefix for icons
+        // setBlockTextureName("significantly_shrunk_chest"); // Used as prefix for icons
         setBlockBounds(0.3f, 0, 0.3f, 0.7f, 0.4f, 0.7f);
     }
 

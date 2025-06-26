@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -13,10 +15,9 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
-import net.minecraft.util.StatCollector;
 
-public class TileEntitySignificantlyShrunkChest extends TileEntityMarginallyMaximisedChest implements IGuiHolder<PosGuiData> {
-
+public class TileEntitySignificantlyShrunkChest extends TileEntityMarginallyMaximisedChest
+    implements IGuiHolder<PosGuiData> {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
