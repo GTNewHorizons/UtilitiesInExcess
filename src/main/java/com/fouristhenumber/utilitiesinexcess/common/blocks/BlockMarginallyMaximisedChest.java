@@ -35,6 +35,8 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         super(Material.wood);
         setBlockName("marginally_maximised_chest");
         setBlockTextureName("marginally_maximised_chest"); // Used as prefix for icons
+        setHardness(2.5F);
+        setStepSound(soundTypeWood);
     }
 
     @Override

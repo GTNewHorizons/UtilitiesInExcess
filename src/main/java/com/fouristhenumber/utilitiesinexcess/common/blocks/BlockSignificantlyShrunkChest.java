@@ -25,8 +25,8 @@ public class BlockSignificantlyShrunkChest extends BlockMarginallyMaximisedChest
     public BlockSignificantlyShrunkChest() {
         super();
         setBlockName("significantly_shrunk_chest");
-        // setBlockTextureName("significantly_shrunk_chest"); // Used as prefix for icons
         setBlockBounds(0.3f, 0, 0.3f, 0.7f, 0.4f, 0.7f);
+        setHardness(1.5F);
     }
 
     @Override
