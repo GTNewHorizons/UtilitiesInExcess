@@ -92,3 +92,8 @@ tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
+
+tile.pure_love.name=Pure Love
+tile.pure_love.desc=Makes animals within %d blocks fall in love
+
+utilitiesinexcess.config.block.pure_love=Pure Love Configuration
