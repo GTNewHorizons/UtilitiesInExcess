@@ -56,7 +56,6 @@ public class ItemPrecisionShears extends ItemShears {
         super.onUpdate(stack, worldIn, entityIn, p_77663_4_, p_77663_5_);
     }
 
-    // TODO: Not working 100% with server/client split
     // TODO: Should decide whether excess items should spit out of the player or the block's position
     // TODO: Should it swing your hand on right click?
     @Override
@@ -107,6 +106,8 @@ public class ItemPrecisionShears extends ItemShears {
                         }
                         world.removeEntity(itemEntity);
                     }
+
+                    player.inventoryContainer.detectAndSendChanges();
 
                     nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
 
