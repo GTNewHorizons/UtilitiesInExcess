@@ -57,8 +57,7 @@ public class ItemPrecisionShears extends ItemShears {
     }
 
     // TODO: Not working 100% with server/client split
-    // TODO: Should decide whether excess items should
-    //  spit out of the player or the block's position
+    // TODO: Should decide whether excess items should spit out of the player or the block's position
     // TODO: Should it swing your hand on right click?
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
@@ -73,19 +72,24 @@ public class ItemPrecisionShears extends ItemShears {
                     // Get drops that the block directly reports
                     ArrayList<ItemStack> directDrops = block.getDrops(world, x, y, z, meta, 0);
 
-                    AxisAlignedBB dropSearchArea = AxisAlignedBB.getBoundingBox(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
+                    AxisAlignedBB dropSearchArea = AxisAlignedBB
+                        .getBoundingBox(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
 
                     // Save a list of existing items so we don't accidentally grab them in our search
-                    List<EntityItem> existingItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea).stream()
-                        .filter(EntityItem.class::isInstance).map(EntityItem.class::cast)
+                    List<EntityItem> existingItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
+                        .stream()
+                        .filter(EntityItem.class::isInstance)
+                        .map(EntityItem.class::cast)
                         .collect(Collectors.toList());
-                    // TODO: Not sure why I can't do .toList() here because it
-                    //  should be able to convert syntax from modern Java to 8
+                    // TODO: Not sure why I can't do .toList() here because it should be able to convert syntax from
+                    // modern Java to 8
 
                     world.setBlockToAir(x, y, z);
 
-                    List<EntityItem> foundItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea).stream()
-                        .filter(EntityItem.class::isInstance).map(EntityItem.class::cast)
+                    List<EntityItem> foundItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
+                        .stream()
+                        .filter(EntityItem.class::isInstance)
+                        .map(EntityItem.class::cast)
                         .filter(entityItem -> !existingItems.contains(entityItem))
                         .collect(Collectors.toList()); // TODO: Same as above
 
@@ -101,7 +105,7 @@ public class ItemPrecisionShears extends ItemShears {
                         if (!player.inventory.addItemStackToInventory(stack)) {
                             player.entityDropItem(stack, 0.0f);
                         }
-                       world.removeEntity(itemEntity);
+                        world.removeEntity(itemEntity);
                     }
 
                     nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
