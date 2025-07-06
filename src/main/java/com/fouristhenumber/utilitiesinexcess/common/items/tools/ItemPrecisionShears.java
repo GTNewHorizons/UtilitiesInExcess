@@ -61,59 +61,62 @@ public class ItemPrecisionShears extends ItemShears {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
-        if (!world.isRemote && player.isSneaking()) {
+        if (player.isSneaking()) {
             NBTTagCompound nbt = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
             if (nbt.getInteger(COOLDOWN_NBT_TAG) == 0) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
                 int harvestLevel = block.getHarvestLevel(meta);
                 if (harvestLevel <= 1) {
-                    // Get drops that the block directly reports
-                    ArrayList<ItemStack> directDrops = block.getDrops(world, x, y, z, meta, 0);
+                    if (!world.isRemote) {
+                        // Get drops that the block directly reports
+                        ArrayList<ItemStack> directDrops = block.getDrops(world, x, y, z, meta, 0);
 
-                    AxisAlignedBB dropSearchArea = AxisAlignedBB
-                        .getBoundingBox(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
+                        AxisAlignedBB dropSearchArea = AxisAlignedBB
+                            .getBoundingBox(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
 
-                    // Save a list of existing items so we don't accidentally grab them in our search
-                    List<EntityItem> existingItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
-                        .stream()
-                        .filter(EntityItem.class::isInstance)
-                        .map(EntityItem.class::cast)
-                        .collect(Collectors.toList());
-                    // TODO: Not sure why I can't do .toList() here because it should be able to convert syntax from
-                    // modern Java to 8
+                        // Save a list of existing items so we don't accidentally grab them in our search
+                        List<EntityItem> existingItems = world
+                            .getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
+                            .stream()
+                            .filter(EntityItem.class::isInstance)
+                            .map(EntityItem.class::cast)
+                            .collect(Collectors.toList());
+                        // TODO: Not sure why I can't do .toList() here because it should be able to convert syntax from
+                        // modern Java to 8
 
-                    world.setBlockToAir(x, y, z);
+                        world.setBlockToAir(x, y, z);
 
-                    List<EntityItem> foundItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
-                        .stream()
-                        .filter(EntityItem.class::isInstance)
-                        .map(EntityItem.class::cast)
-                        .filter(entityItem -> !existingItems.contains(entityItem))
-                        .collect(Collectors.toList()); // TODO: Same as above
+                        List<EntityItem> foundItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
+                            .stream()
+                            .filter(EntityItem.class::isInstance)
+                            .map(EntityItem.class::cast)
+                            .filter(entityItem -> !existingItems.contains(entityItem))
+                            .collect(Collectors.toList()); // TODO: Same as above
 
-                    // Give player items
-                    for (ItemStack drop : directDrops) {
-                        if (!player.inventory.addItemStackToInventory(drop)) {
-                            player.entityDropItem(drop, 0.0f);
+                        // Give player items
+                        for (ItemStack drop : directDrops) {
+                            if (!player.inventory.addItemStackToInventory(drop)) {
+                                player.entityDropItem(drop, 0.0f);
+                            }
                         }
-                    }
 
-                    for (EntityItem itemEntity : foundItems) {
-                        ItemStack stack = itemEntity.getEntityItem();
-                        if (!player.inventory.addItemStackToInventory(stack)) {
-                            player.entityDropItem(stack, 0.0f);
+                        for (EntityItem itemEntity : foundItems) {
+                            ItemStack stack = itemEntity.getEntityItem();
+                            if (!player.inventory.addItemStackToInventory(stack)) {
+                                player.entityDropItem(stack, 0.0f);
+                            }
+                            world.removeEntity(itemEntity);
                         }
-                        world.removeEntity(itemEntity);
+
+                        player.inventoryContainer.detectAndSendChanges();
+
+                        nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
+
+                        itemStack.setTagCompound(nbt);
+                    } else {
+                        world.spawnParticle("smoke", x + 0.5d, y + 0.5d, z + 0.5d, 0.0D, 0.0D, 0.0D);
                     }
-
-                    player.inventoryContainer.detectAndSendChanges();
-
-                    nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
-
-                    itemStack.setTagCompound(nbt);
-
-                    // TODO: Spawn smoke particles
                 }
             }
         }
