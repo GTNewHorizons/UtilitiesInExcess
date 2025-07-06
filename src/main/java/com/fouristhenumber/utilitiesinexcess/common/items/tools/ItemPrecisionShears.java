@@ -82,8 +82,6 @@ public class ItemPrecisionShears extends ItemShears {
                             .filter(EntityItem.class::isInstance)
                             .map(EntityItem.class::cast)
                             .collect(Collectors.toList());
-                        // TODO: Not sure why I can't do .toList() here because it should be able to convert syntax from
-                        // modern Java to 8
 
                         world.setBlockToAir(x, y, z);
 
@@ -92,7 +90,7 @@ public class ItemPrecisionShears extends ItemShears {
                             .filter(EntityItem.class::isInstance)
                             .map(EntityItem.class::cast)
                             .filter(entityItem -> !existingItems.contains(entityItem))
-                            .collect(Collectors.toList()); // TODO: Same as above
+                            .collect(Collectors.toList());
 
                         // Give player items
                         for (ItemStack drop : directDrops) {
