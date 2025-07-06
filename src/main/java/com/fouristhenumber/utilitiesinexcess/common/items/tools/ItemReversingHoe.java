@@ -22,8 +22,8 @@ public class ItemReversingHoe extends ItemHoe {
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_,
-        float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float clickX, float clickY, float clickZ) {
         Block block = world.getBlock(x, y, z);
 
         if (block == Blocks.dirt) {
@@ -41,7 +41,7 @@ public class ItemReversingHoe extends ItemHoe {
             return false;
         }
 
-        return super.onItemUse(itemStack, player, world, x, y, z, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
+        return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
     }
 
     @Override
