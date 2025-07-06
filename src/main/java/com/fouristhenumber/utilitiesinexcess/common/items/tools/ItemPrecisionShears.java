@@ -47,7 +47,6 @@ public class ItemPrecisionShears extends ItemShears {
             int cooldown = nbt.getInteger(COOLDOWN_NBT_TAG);
             if (cooldown > 0) {
                 nbt.setInteger(COOLDOWN_NBT_TAG, cooldown - 1);
-                System.out.println("Lowered cooldown to: " + (cooldown - 1));
                 stack.setTagCompound(nbt);
             }
         }
@@ -74,7 +73,6 @@ public class ItemPrecisionShears extends ItemShears {
                     world.setBlockToAir(x, y, z);
 
                     nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
-                    System.out.println("Set cooldown to " + COOLDOWN_TICKS);
 
                     itemStack.setTagCompound(nbt);
 
@@ -113,15 +111,9 @@ public class ItemPrecisionShears extends ItemShears {
         if (stack.hasTagCompound()) {
             if (stack.getTagCompound()
                 .getInteger(COOLDOWN_NBT_TAG) > 0) {
-                System.out.println("Showing cooldown sprite");
                 return cooldownIcon;
             }
         }
         return super.getIcon(stack, pass);
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return super.getIcon(stack, renderPass, player, usingItem, useRemaining);
     }
 }
