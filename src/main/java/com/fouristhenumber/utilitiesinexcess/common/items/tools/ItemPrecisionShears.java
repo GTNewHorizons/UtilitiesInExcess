@@ -2,14 +2,17 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -53,24 +56,53 @@ public class ItemPrecisionShears extends ItemShears {
         super.onUpdate(stack, worldIn, entityIn, p_77663_4_, p_77663_5_);
     }
 
+    // TODO: Not working 100% with server/client split
+    // TODO: Should decide whether excess items should
+    //  spit out of the player or the block's position
+    // TODO: Should it swing your hand on right click?
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
-        if (player.isSneaking()) {
+        if (!world.isRemote && player.isSneaking()) {
             NBTTagCompound nbt = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
             if (nbt.getInteger(COOLDOWN_NBT_TAG) == 0) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
                 int harvestLevel = block.getHarvestLevel(meta);
                 if (harvestLevel <= 1) {
-                    // TODO: Get drops from things like chests
-                    ArrayList<ItemStack> drops = block.getDrops(world, x, y, z, meta, 0);
-                    for (ItemStack drop : drops) {
+                    // Get drops that the block directly reports
+                    ArrayList<ItemStack> directDrops = block.getDrops(world, x, y, z, meta, 0);
+
+                    AxisAlignedBB dropSearchArea = AxisAlignedBB.getBoundingBox(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
+
+                    // Save a list of existing items so we don't accidentally grab them in our search
+                    List<EntityItem> existingItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea).stream()
+                        .filter(EntityItem.class::isInstance).map(EntityItem.class::cast)
+                        .collect(Collectors.toList());
+                    // TODO: Not sure why I can't do .toList() here because it
+                    //  should be able to convert syntax from modern Java to 8
+
+                    world.setBlockToAir(x, y, z);
+
+                    List<EntityItem> foundItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea).stream()
+                        .filter(EntityItem.class::isInstance).map(EntityItem.class::cast)
+                        .filter(entityItem -> !existingItems.contains(entityItem))
+                        .collect(Collectors.toList()); // TODO: Same as above
+
+                    // Give player items
+                    for (ItemStack drop : directDrops) {
                         if (!player.inventory.addItemStackToInventory(drop)) {
                             player.entityDropItem(drop, 0.0f);
                         }
                     }
-                    world.setBlockToAir(x, y, z);
+
+                    for (EntityItem itemEntity : foundItems) {
+                        ItemStack stack = itemEntity.getEntityItem();
+                        if (!player.inventory.addItemStackToInventory(stack)) {
+                            player.entityDropItem(stack, 0.0f);
+                        }
+                       world.removeEntity(itemEntity);
+                    }
 
                     nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
 
