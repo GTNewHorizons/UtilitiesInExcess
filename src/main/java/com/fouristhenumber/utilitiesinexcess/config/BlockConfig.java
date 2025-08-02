@@ -28,6 +28,12 @@ public class BlockConfig {
     public static boolean enableEtherealGlass;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableTrashCanItem;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableTrashCanFluid;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableDrum;
 
     @Config.DefaultBoolean(true)
