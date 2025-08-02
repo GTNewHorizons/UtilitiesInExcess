@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,12 +15,22 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCompressedCobblestone extends Block {
+public class BlockCompressed extends Block {
 
-    public BlockCompressedCobblestone() {
-        super(Material.rock);
-        setHardness(4.0F);
-        setBlockName("compressed_cobblestone");
+    String name;
+    Block base;
+
+    public BlockCompressed(Block base, String name) {
+        super(base.getMaterial());
+        // These parameters are unused by the default method
+        setHardness(base.getBlockHardness(null, 0, 0, 0) * 1.5F);
+        this.name = name;
+        this.base = base;
+        setBlockName(name);
+    }
+
+    public Block getBase() {
+        return base;
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,7 +52,7 @@ public class BlockCompressedCobblestone extends Block {
     public void registerBlockIcons(IIconRegister iconRegister) {
         icons = new IIcon[16];
         for (int i = 0; i < 8; i++) {
-            icons[i] = iconRegister.registerIcon("utilitiesinexcess:compressed_cobblestone_" + i);
+            icons[i] = iconRegister.registerIcon("utilitiesinexcess:" + name + "_" + i);
         }
     }
 
@@ -56,9 +65,9 @@ public class BlockCompressedCobblestone extends Block {
         return icons[meta];
     }
 
-    public static class ItemCompressedCobblestone extends ItemBlock {
+    public static class ItemCompressedBlock extends ItemBlock {
 
-        public ItemCompressedCobblestone(Block block) {
+        public ItemCompressedBlock(Block block) {
             super(block);
             this.setHasSubtypes(true);
             this.setMaxDamage(0);
@@ -78,7 +87,7 @@ public class BlockCompressedCobblestone extends Block {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "tile.compressed_cobblestone.desc",
+                    getUnlocalizedName() + ".desc",
                     (long) Math.pow(9, stack.getItemDamage() + 1)));
         }
     }

@@ -7,7 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
@@ -52,6 +55,9 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItem");
         GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluid");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
+        GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLove");
+        GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
+        GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
     }
 
     @Mod.EventHandler
