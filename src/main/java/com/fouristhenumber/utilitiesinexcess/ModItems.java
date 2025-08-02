@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,9 +16,12 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hungerAxe"),
-    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenlyRing"),
-    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mobJar"),
+    HUNGER_AXE(ItemConfig.enableHungerAxe, new ItemGluttonsAxe(), "hunger_axe"),
+    HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
+    MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
+    WATERING_CAN_BASIC(ItemConfig.wateringCan.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
+    WATERING_CAN_ADVANCED(ItemConfig.wateringCan.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
+    WATERING_CAN_ELITE(ItemConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
 
 
     ; // leave trailing semicolon
