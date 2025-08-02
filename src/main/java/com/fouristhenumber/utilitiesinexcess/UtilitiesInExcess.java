@@ -7,7 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
 import cpw.mods.fml.common.Mod;
@@ -48,6 +50,9 @@ public class UtilitiesInExcess {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
+        GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
+        GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
+
     }
 
     @Mod.EventHandler
