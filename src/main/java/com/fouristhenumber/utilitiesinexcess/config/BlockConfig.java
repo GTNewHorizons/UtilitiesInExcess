@@ -33,6 +33,12 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableMagicWood;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableMarginallyMaximisedChest;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableSignificantlyShrunkChest;
+
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
 

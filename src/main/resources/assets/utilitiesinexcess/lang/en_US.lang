@@ -97,3 +97,10 @@ tile.pure_love.name=Pure Love
 tile.pure_love.desc=Makes animals within %d blocks fall in love
 
 utilitiesinexcess.config.block.pure_love=Pure Love Configuration
+
+tile.marginally_maximised_chest.name=Marginally Maximised Chest
+tile.marginally_maximised_chest.desc1=Doesn't form double chests
+tile.marginally_maximised_chest.desc2=Can be opened even with a block above
+
+tile.significantly_shrunk_chest.name=Significantly Shrunk Chest
+tile.significantly_shrunk_chest.desc=Holds just one item stack

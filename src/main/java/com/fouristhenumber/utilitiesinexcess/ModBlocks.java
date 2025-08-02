@@ -12,8 +12,10 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -34,6 +36,8 @@ public enum ModBlocks {
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), BlockMagicWood.ItemBlockMagicWood.class, "magic_wood"),
     CURSED_EARTH(BlockConfig.cursedEarth.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
+    MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), BlockMarginallyMaximisedChest.ItemBlockMarginallyMaximisedChest.class, "marginally_maximised_chest"),
+    SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), BlockSignificantlyShrunkChest.ItemBlockSignificantlyShrunkChest.class, "significantly_shrunk_chest"),
     ; // leave trailing semicolon
     // spotless:on
 
