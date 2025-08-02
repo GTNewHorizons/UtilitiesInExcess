@@ -87,7 +87,7 @@ public class TileEntityTrashCanFluid extends TileEntity
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str(StatCollector.translateToLocal("tile.trashCanFluid.name"))
+                    IKey.str(StatCollector.translateToLocal("tile.trash_can_fluid.name"))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)
@@ -172,7 +172,7 @@ public class TileEntityTrashCanFluid extends TileEntity
 
     @Override
     public String getInventoryName() {
-        return StatCollector.translateToLocal("tile.trashCanFluid.name");
+        return StatCollector.translateToLocal("tile.trash_can_fluid.name");
     }
 
     @Override
