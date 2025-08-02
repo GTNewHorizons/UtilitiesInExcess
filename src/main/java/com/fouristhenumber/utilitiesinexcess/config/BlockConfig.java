@@ -53,4 +53,19 @@ public class BlockConfig {
         @Config.RangeInt(min = 0, max = 100)
         public int cursedEarthSpawnRate;
     }
+
+    @Config.Comment("Pure Love Configuration")
+    public static final PureLove pureLove = new PureLove();
+
+    @Config.LangKey("utilitiesinexcess.config.block.pure_love")
+    public static class PureLove {
+
+        @Config.DefaultBoolean(true)
+        public boolean enablePureLove;
+
+        @Config.Comment("Radius within which animals fall in love")
+        @Config.DefaultInt(8)
+        @Config.RangeInt(min = 1, max = 16)
+        public int rangePureLove;
+    }
 }
