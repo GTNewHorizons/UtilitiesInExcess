@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,15 +26,14 @@ public class ItemAntiParticulateShovel extends ItemSpade {
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, int x, int y, int z,
         EntityLivingBase harvester) {
         int worldHeight = worldIn.getHeight();
-        int currY = y + 1;
-        while (currY < worldHeight) {
-            Block block = worldIn.getBlock(x, currY, z);
-            if (block == Blocks.gravel || block == Blocks.sand) {
-                worldIn.setBlockToAir(x, currY, z);
-                currY++;
-            } else {
-                break;
-            }
+        int curY = y + 1;
+        for ( curY = y+1; curY <worldHeight ; curY++) {
+            Block block = worldIn.getBlock(x, curY, z);
+            if (block instanceof BlockFalling f && this.func_150893_a(stack,block)>=1 ) {
+                EntityPlayer hPlayer=(EntityPlayer)harvester;
+                block.removedByPlayer(worldIn, hPlayer, x, curY, z, true);
+                block.harvestBlock(worldIn, hPlayer, x, curY, z, 0);
+            } else break;
         }
         return super.onBlockDestroyed(stack, worldIn, blockIn, x, y, z, harvester);
     }
@@ -44,4 +44,23 @@ public class ItemAntiParticulateShovel extends ItemSpade {
         tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.anti_particulate_shovel.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
+
+
+
+    // Unbreakable
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+        return false;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
+    }
+    //
 }

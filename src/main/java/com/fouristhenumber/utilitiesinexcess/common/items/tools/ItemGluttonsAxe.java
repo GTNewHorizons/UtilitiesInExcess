@@ -38,8 +38,23 @@ public class ItemGluttonsAxe extends ItemAxe {
         }
     }
 
+
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z,
+        EntityLivingBase entity) {
+        return true;
+    }
+
+
+    // Unbreakable
     @Override
     public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
         return false;
     }
 
@@ -47,10 +62,5 @@ public class ItemGluttonsAxe extends ItemAxe {
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
     }
-
-    @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z,
-        EntityLivingBase entity) {
-        return true;
-    }
+    //
 }

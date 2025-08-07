@@ -15,6 +15,7 @@ public class ItemEthericSword extends ItemSword {
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
         setMaxDamage(0);
+
     }
 
     @Override
@@ -23,4 +24,22 @@ public class ItemEthericSword extends ItemSword {
         tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.etheric_sword.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
+
+
+    // Unbreakable
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+        return false;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
+    }
+    //
 }

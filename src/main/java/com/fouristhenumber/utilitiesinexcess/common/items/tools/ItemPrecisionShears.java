@@ -154,4 +154,22 @@ public class ItemPrecisionShears extends ItemShears {
         }
         return super.getIcon(stack, pass);
     }
+
+
+    // Unbreakable
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+        return false;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
+    }
+    //
 }

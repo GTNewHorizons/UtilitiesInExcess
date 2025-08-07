@@ -21,6 +21,8 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
 
     // Equivalent to getEfficiencyOnBlock
     public float func_150893_a(ItemStack itemStack, Block block) {
+        //Why specifically 0.5?
+        //Maybe change it from stone to other materials too, ie sandstone, etr stone variations,etc
         return block == Blocks.stone ? this.efficiencyOnProperMaterial * 5 : 0.5F;
     }
 
@@ -31,4 +33,21 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
         tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.destruction_pickaxe.desc.3"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
+
+    // Unbreakable
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+        return false;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
+    }
+    //
 }

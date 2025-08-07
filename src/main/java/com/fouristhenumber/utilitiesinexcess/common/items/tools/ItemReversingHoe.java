@@ -50,4 +50,22 @@ public class ItemReversingHoe extends ItemHoe {
         tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
+
+
+    // Unbreakable
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+        return false;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
+    }
+    //
 }
