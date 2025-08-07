@@ -1,7 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -12,33 +19,18 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventHandler {
 
-    @SubscribeEvent
-    public void onAttackEntity(net.minecraftforge.event.entity.player.AttackEntityEvent event) {
-        ItemStack held = event.entityPlayer.getHeldItem();
-        if (held == null) return;
-        if (held.getItem() instanceof ItemEthericSword) {
-            if (event.target instanceof EntityLivingBase entityLivingBase) {
-                // TODO: Find a way to confirm that this damage is actually armor-piercing
-                // TODO: Add critical hits
-                entityLivingBase.attackEntityFrom(
-                    DamageSource.causePlayerDamage(event.entityPlayer)
-                        .setDamageBypassesArmor()
-                        .setMagicDamage(),
-                    6.0f);
-                entityLivingBase.attackEntityFrom(DamageSource.causePlayerDamage(event.entityPlayer), 8.0f);
-                event.setCanceled(true);
-            }
-        }
-    }
+
 
     @SubscribeEvent
     public void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
         if (event.harvester == null) return;
         ItemStack heldItem = event.harvester.getHeldItem();
         if (heldItem == null) return;
-
-        if (heldItem.getItem() == ModItems.DESTRUCTION_PICKAXE.get()
-            || heldItem.getItem() == ModItems.ANTI_PARTICULATE_SHOVEL.get()) {
+        Item heldItemType=heldItem.getItem();
+        if (heldItemType instanceof ItemDestructionPickaxe
+            || heldItemType instanceof ItemAntiParticulateShovel
+            ||(heldItemType instanceof ItemGluttonsAxe && GluttonsAxeConfig.voidMinedBlock)
+        ) {
             event.drops.clear();
         }
     }

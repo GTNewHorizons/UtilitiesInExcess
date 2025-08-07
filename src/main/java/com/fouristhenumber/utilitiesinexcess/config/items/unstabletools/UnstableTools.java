@@ -13,6 +13,7 @@ public class UnstableTools {
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(UnstableTools.class);
         ConfigurationManager.registerConfig(GluttonsAxeConfig.class);
+        ConfigurationManager.registerConfig(EthericSwordConfig.class);
     }
 
     @Config.DefaultBoolean(true)
@@ -24,8 +25,7 @@ public class UnstableTools {
     @Config.DefaultBoolean(true)
     public static boolean enablePrecisionShears;
 
-    @Config.DefaultBoolean(true)
-    public static boolean enableEthericSword;
+
 
     @Config.DefaultBoolean(true)
     public static boolean enableReversingHoe;

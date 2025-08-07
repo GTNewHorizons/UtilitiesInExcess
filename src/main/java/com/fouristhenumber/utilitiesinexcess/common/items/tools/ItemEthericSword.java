@@ -2,9 +2,13 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -15,7 +19,25 @@ public class ItemEthericSword extends ItemSword {
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
         setMaxDamage(0);
+        this.field_150934_a= EthericSwordConfig.normalDamage;
+    }
 
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase p) {
+        //Shouldn't ever fail?
+        EntityPlayer player=(EntityPlayer)p;
+        boolean succeed= super.hitEntity(stack, target, player);
+        //Apparently this code doesn't exist standalone, so i just stole it:P
+        boolean isCrit = player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Potion.blindness) && player.ridingEntity == null && target instanceof EntityLivingBase;
+        float magicDamage=EthericSwordConfig.magicDamage;
+        if(isCrit)
+            magicDamage*=1.5f;
+        target.attackEntityFrom(
+            DamageSource.causePlayerDamage(player)
+                .setDamageBypassesArmor()
+                .setMagicDamage(),
+            magicDamage);
+        return succeed;
     }
 
     @Override

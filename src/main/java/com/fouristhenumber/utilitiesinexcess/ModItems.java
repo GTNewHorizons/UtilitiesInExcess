@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -26,7 +27,7 @@ public enum ModItems {
     DESTRUCTION_PICKAXE(UnstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destruction_pickaxe"),
     ANTI_PARTICULATE_SHOVEL(UnstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
     PRECISION_SHEARS(UnstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precision_shears"),
-    ETHERIC_SWORD(UnstableTools.enableEthericSword, new ItemEthericSword(), "etheric_sword"),
+    ETHERIC_SWORD(EthericSwordConfig.enable, new ItemEthericSword(), "etheric_sword"),
     REVERSING_HOE(UnstableTools.enableReversingHoe, new ItemReversingHoe(), "reversing_hoe"),
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),

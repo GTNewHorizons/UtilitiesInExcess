@@ -58,6 +58,7 @@ public class ItemPrecisionShears extends ItemShears {
 
     // TODO: Should decide whether excess items should spit out of the player or the block's position
     // TODO: Should it swing your hand on right click?
+    // TODO(miya:3): god what is this code :sobbing:
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
