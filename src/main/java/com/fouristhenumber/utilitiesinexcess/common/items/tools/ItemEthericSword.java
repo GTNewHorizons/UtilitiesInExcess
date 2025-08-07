@@ -25,7 +25,6 @@ public class ItemEthericSword extends ItemSword {
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
-
     // Unbreakable
     @Override
     public boolean isDamageable() {

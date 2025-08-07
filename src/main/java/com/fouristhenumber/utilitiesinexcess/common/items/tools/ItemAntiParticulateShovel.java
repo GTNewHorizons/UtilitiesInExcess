@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -27,10 +26,10 @@ public class ItemAntiParticulateShovel extends ItemSpade {
         EntityLivingBase harvester) {
         int worldHeight = worldIn.getHeight();
         int curY = y + 1;
-        for ( curY = y+1; curY <worldHeight ; curY++) {
+        for (curY = y + 1; curY < worldHeight; curY++) {
             Block block = worldIn.getBlock(x, curY, z);
-            if (block instanceof BlockFalling f && this.func_150893_a(stack,block)>=1 ) {
-                EntityPlayer hPlayer=(EntityPlayer)harvester;
+            if (block instanceof BlockFalling f && this.func_150893_a(stack, block) >= 1) {
+                EntityPlayer hPlayer = (EntityPlayer) harvester;
                 block.removedByPlayer(worldIn, hPlayer, x, curY, z, true);
                 block.harvestBlock(worldIn, hPlayer, x, curY, z, 0);
             } else break;
@@ -44,8 +43,6 @@ public class ItemAntiParticulateShovel extends ItemSpade {
         tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.anti_particulate_shovel.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
-
-
 
     // Unbreakable
     @Override

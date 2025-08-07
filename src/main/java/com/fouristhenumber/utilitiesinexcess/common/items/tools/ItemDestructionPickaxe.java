@@ -21,8 +21,8 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
 
     // Equivalent to getEfficiencyOnBlock
     public float func_150893_a(ItemStack itemStack, Block block) {
-        //Why specifically 0.5?
-        //Maybe change it from stone to other materials too, ie sandstone, etr stone variations,etc
+        // Why specifically 0.5?
+        // Maybe change it from stone to other materials too, ie sandstone, etr stone variations,etc
         return block == Blocks.stone ? this.efficiencyOnProperMaterial * 5 : 0.5F;
     }
 

@@ -155,7 +155,6 @@ public class ItemPrecisionShears extends ItemShears {
         return super.getIcon(stack, pass);
     }
 
-
     // Unbreakable
     @Override
     public boolean isDamageable() {

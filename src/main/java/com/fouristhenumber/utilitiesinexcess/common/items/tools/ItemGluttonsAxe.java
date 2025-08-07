@@ -38,14 +38,11 @@ public class ItemGluttonsAxe extends ItemAxe {
         }
     }
 
-
-
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z,
         EntityLivingBase entity) {
         return true;
     }
-
 
     // Unbreakable
     @Override

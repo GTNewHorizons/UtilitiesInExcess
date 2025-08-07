@@ -51,7 +51,6 @@ public class ItemReversingHoe extends ItemHoe {
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
-
     // Unbreakable
     @Override
     public boolean isDamageable() {
