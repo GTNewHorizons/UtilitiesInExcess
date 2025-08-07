@@ -1,10 +1,17 @@
-package com.fouristhenumber.utilitiesinexcess.config;
+package com.fouristhenumber.utilitiesinexcess.config.blocks;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 @Config(modid = UtilitiesInExcess.MODID, category = "blocks")
 public class BlockConfig {
+
+    public static void registerConfig() throws ConfigException {
+        ConfigurationManager.registerConfig(BlockConfig.class);
+        ConfigurationManager.registerConfig(CursedEarthConfig.class);
+    }
 
     @Config.DefaultBoolean(true)
     public static boolean enableFloatingBlock;
@@ -33,18 +40,4 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableMagicWood;
 
-    @Config.Comment("Cursed Earth Configuration")
-    public static final CursedEarth cursedEarth = new CursedEarth();
-
-    @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
-    public static class CursedEarth {
-
-        @Config.DefaultBoolean(true)
-        public boolean enableCursedEarth;
-
-        @Config.Comment("Chance that a mob is spawned on a Cursed Earth block on a random tick.")
-        @Config.DefaultInt(40)
-        @Config.RangeInt(min = 0, max = 100)
-        public int cursedEarthSpawnRate;
-    }
 }

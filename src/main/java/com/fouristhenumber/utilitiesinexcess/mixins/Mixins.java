@@ -3,7 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.mixins;
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.gtnewhorizon.gtnhlib.mixin.IMixins;
 import com.gtnewhorizon.gtnhlib.mixin.ITargetedMod;
 import com.gtnewhorizon.gtnhlib.mixin.MixinBuilder;
@@ -19,7 +20,7 @@ public enum Mixins implements IMixins {
         .addMixinClasses("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)
-        .setApplyIf(() -> BlockConfig.cursedEarth.enableCursedEarth)
+        .setApplyIf(() -> CursedEarthConfig.enableCursedEarth)
         .addTargetedMod(TargetedMod.VANILLA)),
     MAGIC_WOOD_PARTICLES(new MixinBuilder("Adds particles for Magic Wood when connected to an Enchantment Table")
         .addMixinClasses("minecraft.MixinBlockEnchantmentTable_MagicWood")

@@ -25,8 +25,7 @@ public class ItemAntiParticulateShovel extends ItemSpade {
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, int x, int y, int z,
         EntityLivingBase harvester) {
         int worldHeight = worldIn.getHeight();
-        int curY = y + 1;
-        for (curY = y + 1; curY < worldHeight; curY++) {
+        for (int curY = y + 1; curY < worldHeight; curY++) {
             Block block = worldIn.getBlock(x, curY, z);
             if (block instanceof BlockFalling f && this.func_150893_a(stack, block) >= 1) {
                 EntityPlayer hPlayer = (EntityPlayer) harvester;

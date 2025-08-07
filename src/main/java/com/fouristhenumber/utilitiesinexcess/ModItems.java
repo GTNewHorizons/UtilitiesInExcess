@@ -11,7 +11,9 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
-import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.UnstableTools;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -20,13 +22,12 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    GLUTTONS_AXE(ItemConfig.unstableTools.enableGluttonsAxe, new ItemGluttonsAxe(), "gluttons_axe"),
-    DESTRUCTION_PICKAXE(ItemConfig.unstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destruction_pickaxe"),
-    ANTI_PARTICULATE_SHOVEL(ItemConfig.unstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
-    PRECISION_SHEARS(ItemConfig.unstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precision_shears"),
-    ETHERIC_SWORD(ItemConfig.unstableTools.enableEthericSword, new ItemEthericSword(), "etheric_sword"),
-    REVERSING_HOE(ItemConfig.unstableTools.enableReversingHoe, new ItemReversingHoe(), "reversing_hoe"),
-
+    GLUTTONS_AXE(GluttonsAxeConfig.enable, new ItemGluttonsAxe(), "gluttons_axe"),
+    DESTRUCTION_PICKAXE(UnstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destruction_pickaxe"),
+    ANTI_PARTICULATE_SHOVEL(UnstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
+    PRECISION_SHEARS(UnstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precision_shears"),
+    ETHERIC_SWORD(UnstableTools.enableEthericSword, new ItemEthericSword(), "etheric_sword"),
+    REVERSING_HOE(UnstableTools.enableReversingHoe, new ItemReversingHoe(), "reversing_hoe"),
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
 
