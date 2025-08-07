@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +11,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
+
 public class ItemEthericSword extends ItemSword {
 
     public ItemEthericSword() {
@@ -19,24 +20,33 @@ public class ItemEthericSword extends ItemSword {
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
         setMaxDamage(0);
-        this.field_150934_a= EthericSwordConfig.normalDamage;
+        this.field_150934_a = EthericSwordConfig.normalDamage;
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase p) {
-        //Shouldn't ever fail?
-        EntityPlayer player=(EntityPlayer)p;
-        boolean succeed= super.hitEntity(stack, target, player);
-        //Apparently this code doesn't exist standalone, so i just stole it:P
-        boolean isCrit = player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(Potion.blindness) && player.ridingEntity == null && target instanceof EntityLivingBase;
-        float magicDamage=EthericSwordConfig.magicDamage;
-        if(isCrit)
-            magicDamage*=1.5f;
+        // Shouldn't ever fail?
+        EntityPlayer player = (EntityPlayer) p;
+        boolean succeed = super.hitEntity(stack, target, player);
+        // Apparently this code doesn't exist standalone, so i just stole it:P
+        boolean isCrit = player.fallDistance > 0.0F && !player.onGround
+            && !player.isOnLadder()
+            && !player.isInWater()
+            && !player.isPotionActive(Potion.blindness)
+            && player.ridingEntity == null
+            && target instanceof EntityLivingBase;
+        float magicDamage = EthericSwordConfig.magicDamage;
+        if (isCrit) magicDamage *= 1.5f;
+        float cd = target.lastDamage;
+        // Set the last damage to 0 because we don't want our normal dmg to our interrupt magic dmg
+        target.lastDamage = 0;
         target.attackEntityFrom(
             DamageSource.causePlayerDamage(player)
                 .setDamageBypassesArmor()
                 .setMagicDamage(),
             magicDamage);
+        // Should magic damage impair next hit?
+        target.lastDamage = cd + magicDamage;
         return succeed;
     }
 

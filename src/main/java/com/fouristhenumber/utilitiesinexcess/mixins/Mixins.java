@@ -1,15 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.mixins;
 
-import java.util.List;
-import java.util.function.Supplier;
+import javax.annotation.Nonnull;
 
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.gtnewhorizon.gtnhmixins.builders.MixinBuilder;
-
-import javax.annotation.Nonnull;
-
 
 public enum Mixins implements IMixins {
     // spotless:off

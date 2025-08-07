@@ -25,8 +25,6 @@ public class UnstableTools {
     @Config.DefaultBoolean(true)
     public static boolean enablePrecisionShears;
 
-
-
     @Config.DefaultBoolean(true)
     public static boolean enableReversingHoe;
 }
