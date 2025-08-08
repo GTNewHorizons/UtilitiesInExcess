@@ -18,6 +18,7 @@ public class ItemConfig {
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
+        ConfigurationManager.registerConfig(WateringCanConfig.class);
     }
 
     @Config.DefaultBoolean(true)
