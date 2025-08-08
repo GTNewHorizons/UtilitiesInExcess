@@ -12,6 +12,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemSword;
 
 public class ItemEthericSword extends ItemSword {
 
@@ -20,7 +22,7 @@ public class ItemEthericSword extends ItemSword {
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
         setMaxDamage(0);
-        this.field_150934_a = EthericSwordConfig.normalDamage;
+        ((AccessorItemSword) this).setDamageVsEntity_uie(EthericSwordConfig.normalDamage);
     }
 
     @Override
@@ -37,16 +39,18 @@ public class ItemEthericSword extends ItemSword {
             && target instanceof EntityLivingBase;
         float magicDamage = EthericSwordConfig.magicDamage;
         if (isCrit) magicDamage *= 1.5f;
-        float cd = target.lastDamage;
+        AccessorEntityLivingBase acTarget = (AccessorEntityLivingBase) target;
+        float cd = acTarget.getLastDamage_uie();
         // Set the last damage to 0 because we don't want our normal dmg to our interrupt magic dmg
-        target.lastDamage = 0;
+        acTarget.setLastDamage_uie(0);
         target.attackEntityFrom(
             DamageSource.causePlayerDamage(player)
                 .setDamageBypassesArmor()
                 .setMagicDamage(),
             magicDamage);
-        // Should magic damage impair next hit?
-        target.lastDamage = cd + magicDamage;
+        // Should magic damage impair next hit? Probably yeah, otherwise the magic will apply on every hit even if it
+        // shouldn't
+        acTarget.setLastDamage_uie(cd + magicDamage);
         return succeed;
     }
 

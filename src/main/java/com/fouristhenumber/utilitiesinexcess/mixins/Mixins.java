@@ -22,6 +22,13 @@ public enum Mixins implements IMixins {
         .setApplyIf(() -> BlockConfig.enableMagicWood)
         /*.addRequiredMod(TargetedMod.VANILLA)*/
     ),
+    ACCESSORS(new MixinBuilder("Accessors for the mod to use")
+        .setPhase(Phase.EARLY)
+        .addCommonMixins("minecraft.accessors.AccessorEntityZombie",
+            "minecraft.accessors.AccessorItemTool",
+            "minecraft.accessors.AccessorItemSword",
+            "minecraft.accessors.AccessorEntityLivingBase")
+    )
     ; // leave trailing semicolon
     // spotless:on
 

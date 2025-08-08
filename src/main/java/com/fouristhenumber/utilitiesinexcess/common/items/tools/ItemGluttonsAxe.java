@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -16,6 +17,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
 
 public class ItemGluttonsAxe extends ItemAxe {
 
@@ -24,7 +27,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         setTextureName("utilitiesinexcess:gluttons_axe");
         setUnlocalizedName("gluttons_axe");
         setMaxDamage(0);
-        this.damageVsEntity = GluttonsAxeConfig.damageAgainstUndead;
+        ((AccessorItemTool) this).setDamageVsEntity_uie(GluttonsAxeConfig.damageAgainstUndead);
     }
 
     @Override
@@ -34,6 +37,8 @@ public class ItemGluttonsAxe extends ItemAxe {
         tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.3"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
+
+    private static final Random particleRandom = new Random();;
 
     public static void spawnParticles(Entity e) {
         if (!GluttonsAxeConfig.spawnParticles) return;
@@ -45,9 +50,9 @@ public class ItemGluttonsAxe extends ItemAxe {
 
             e.worldObj.spawnParticle(
                 "mobSpell",
-                e.posX + (e.rand.nextDouble() - 0.5D) * (double) e.width,
-                e.posY + e.rand.nextDouble() * (double) e.height - (double) e.yOffset,
-                e.posZ + (e.rand.nextDouble() - 0.5D) * (double) e.width,
+                e.posX + (particleRandom.nextDouble() - 0.5D) * (double) e.width,
+                e.posY + particleRandom.nextDouble() * (double) e.height - (double) e.yOffset,
+                e.posZ + (particleRandom.nextDouble() - 0.5D) * (double) e.width,
                 d0,
                 d1,
                 d2);
@@ -78,7 +83,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         if (target instanceof EntityZombie z && z.isVillager()) {
             attacker.addExhaustion(3 * 4);
             spawnParticles(target);
-            if (!attacker.worldObj.isRemote) z.convertToVillager();
+            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).convertToVillager_uie();
             return true;
         }
         if (!target.isEntityUndead()) {
