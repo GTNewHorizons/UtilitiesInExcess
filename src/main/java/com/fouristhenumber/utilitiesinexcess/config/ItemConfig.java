@@ -18,6 +18,15 @@ public class ItemConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableMobJar;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableInversionSigil;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableInvertedIngot;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDiamondStick;
+
     @Config.LangKey("utilitiesinexcess.config.item.watering_can")
     public static class WateringCan {
 

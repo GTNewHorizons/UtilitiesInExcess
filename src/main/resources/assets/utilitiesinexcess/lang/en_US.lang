@@ -46,6 +46,11 @@ tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
+item.inverted_ingot.name=Inverted Ingot
+item.diamond_stick.name=Diamond Stick
+item.inversion_sigil_inactive.name=Inert Inversion Sigil
+item.inversion_sigil_active.name=Awakened Inversion Sigil
+
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
