@@ -51,7 +51,7 @@ public enum ModItems {
     private final ItemDisabled disabledVersion;
 
     ModItems(boolean enabled, Item item, String name) {
-        isEnabled = enabled;
+        this.isEnabled = enabled;
         theItem = item;
         this.name = name;
         if (ItemConfig.registerDisabledItems) disabledVersion = new ItemDisabled(theItem);

@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
@@ -50,14 +49,14 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
 
     @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
-        // Why specifically 0.5?
-        // Maybe change it from stone to other materials too, ie sandstone, etr stone variations,etc
         var i = DestructionPickaxeConfig.includeEffective;
         var w = DestructionPickaxeConfig.excludeEffective;
         var name = block.delegate.name();
-        for (String s : w) if (Objects.equals(s, name)) return 0.5f;
-        for (String s : i) if (blockMatches(name, s)) return this.efficiencyOnProperMaterial * 5;
-        return 0.5F;
+        for (String s : w) if (blockMatches(name, s))
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
+        for (String s : i) if (blockMatches(name, s))
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.effectiveSpeedModifier;
+        return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
     }
 
     @Override

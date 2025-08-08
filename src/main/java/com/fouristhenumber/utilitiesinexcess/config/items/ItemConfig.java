@@ -9,7 +9,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
 public class ItemConfig {
 
-    @Config.DefaultBoolean(true)
+    @Config.DefaultBoolean(false)
     public static boolean registerDisabledItems;
 
     @Config.DefaultBoolean(true)

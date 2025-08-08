@@ -1,19 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -25,19 +21,14 @@ import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.Precisio
 
 public class ItemPrecisionShears extends ItemShears {
 
-    private final float efficiencyOnProperMaterial;
-
-    private static final String COOLDOWN_NBT_TAG = "uie:cooldown";
-    private static final int COOLDOWN_TICKS = 20;
-
+    public static final String COOLDOWN_NBT_TAG = "uie:cooldown";
     private IIcon cooldownIcon;
 
     public ItemPrecisionShears() {
         setTextureName("utilitiesinexcess:precision_shears");
         setUnlocalizedName("precision_shears");
         if (PrecisionShearsConfig.unbreakable) setMaxDamage(0);
-        int harvestLevel = ToolMaterial.STONE.getHarvestLevel();
-        efficiencyOnProperMaterial = ToolMaterial.STONE.getEfficiencyOnProperMaterial();
+        int harvestLevel = PrecisionShearsConfig.toolLevel;
         setHarvestLevel("pickaxe", harvestLevel);
         setHarvestLevel("axe", harvestLevel);
         setHarvestLevel("shovel", harvestLevel);
@@ -56,68 +47,24 @@ public class ItemPrecisionShears extends ItemShears {
         super.onUpdate(stack, worldIn, entityIn, p_77663_4_, p_77663_5_);
     }
 
-    // TODO: Should decide whether excess items should spit out of the player or the block's position
-    // TODO: Should it swing your hand on right click?
-    // TODO(miya:3): god what is this code :sobbing:
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
-        if (player.isSneaking()) {
-            NBTTagCompound nbt = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
-            if (nbt.getInteger(COOLDOWN_NBT_TAG) == 0) {
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-                int harvestLevel = block.getHarvestLevel(meta);
-                if (harvestLevel <= 1) {
-                    if (!world.isRemote) {
-                        // Get drops that the block directly reports
-                        ArrayList<ItemStack> directDrops = block.getDrops(world, x, y, z, meta, 0);
-
-                        AxisAlignedBB dropSearchArea = AxisAlignedBB
-                            .getBoundingBox(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
-
-                        // Save a list of existing items so we don't accidentally grab them in our search
-                        List<EntityItem> existingItems = world
-                            .getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
-                            .stream()
-                            .filter(EntityItem.class::isInstance)
-                            .map(EntityItem.class::cast)
-                            .collect(Collectors.toList());
-
-                        world.setBlockToAir(x, y, z);
-
-                        List<EntityItem> foundItems = world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
-                            .stream()
-                            .filter(EntityItem.class::isInstance)
-                            .map(EntityItem.class::cast)
-                            .filter(entityItem -> !existingItems.contains(entityItem))
-                            .collect(Collectors.toList());
-
-                        // Give player items
-                        for (ItemStack drop : directDrops) {
-                            if (!player.inventory.addItemStackToInventory(drop)) {
-                                player.entityDropItem(drop, 0.0f);
-                            }
-                        }
-
-                        for (EntityItem itemEntity : foundItems) {
-                            ItemStack stack = itemEntity.getEntityItem();
-                            if (!player.inventory.addItemStackToInventory(stack)) {
-                                player.entityDropItem(stack, 0.0f);
-                            }
-                            world.removeEntity(itemEntity);
-                        }
-
-                        player.inventoryContainer.detectAndSendChanges();
-
-                        nbt.setInteger(COOLDOWN_NBT_TAG, COOLDOWN_TICKS);
-
-                        itemStack.setTagCompound(nbt);
-                    } else {
-                        world.spawnParticle("smoke", x + 0.5d, y + 0.5d, z + 0.5d, 0.0D, 0.0D, 0.0D);
-                    }
-                }
-            }
+        NBTTagCompound nbt = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+        int harvestLevel = block.getHarvestLevel(meta);
+        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0
+            || harvestLevel > PrecisionShearsConfig.toolLevel
+            || harvestLevel < 0)
+            return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
+        if (!world.isRemote && block.removedByPlayer(world, player, x, y, z, true)) {
+            block.harvestBlock(world, player, x, y, z, meta);
+            nbt.setInteger(COOLDOWN_NBT_TAG, PrecisionShearsConfig.cooldown);
+            itemStack.setTagCompound(nbt);
+            if (!PrecisionShearsConfig.unbreakable) itemStack.damageItem(1, player);
+        } else if (PrecisionShearsConfig.spawnParticles) {
+            world.spawnParticle("smoke", x + 0.5d, y + 0.5d, z + 0.5d, 0.0D, 0.0D, 0.0D);
         }
         return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
     }
@@ -125,7 +72,7 @@ public class ItemPrecisionShears extends ItemShears {
     @Override
     public float getDigSpeed(ItemStack itemstack, Block block, int metadata) {
         if (ForgeHooks.isToolEffective(itemstack, block, metadata)) {
-            return efficiencyOnProperMaterial;
+            return PrecisionShearsConfig.efficiency;
         } else {
             return super.getDigSpeed(itemstack, block, metadata);
         }
@@ -138,7 +85,6 @@ public class ItemPrecisionShears extends ItemShears {
             tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.2"));
             tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.3"));
         } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
-
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 

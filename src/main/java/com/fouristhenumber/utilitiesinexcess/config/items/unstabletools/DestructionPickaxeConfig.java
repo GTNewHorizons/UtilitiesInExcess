@@ -18,4 +18,10 @@ public class DestructionPickaxeConfig {
     public static String[] includeEffective;
     @Config.DefaultStringList({})
     public static String[] excludeEffective;
+    @Config.DefaultFloat(5)
+    @Config.RangeFloat(min = 0, max = 100)
+    public static float effectiveSpeedModifier;
+    @Config.DefaultFloat(0.0625f)
+    @Config.RangeFloat(min = 0, max = 100)
+    public static float ineffectiveSpeedModifier;
 }

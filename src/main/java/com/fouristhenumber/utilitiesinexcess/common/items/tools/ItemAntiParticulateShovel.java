@@ -33,8 +33,9 @@ public class ItemAntiParticulateShovel extends ItemSpade {
             Block block = worldIn.getBlock(x, curY, z);
             if (block instanceof BlockFalling f && this.func_150893_a(stack, block) >= 1) {
                 EntityPlayer hPlayer = (EntityPlayer) harvester;
-                block.removedByPlayer(worldIn, hPlayer, x, curY, z, true);
-                block.harvestBlock(worldIn, hPlayer, x, curY, z, 0);
+                int meta = worldIn.getBlockMetadata(x, y, z);
+                if (block.removedByPlayer(worldIn, hPlayer, x, curY, z, true))
+                    block.harvestBlock(worldIn, hPlayer, x, curY, z, meta);
             } else break;
         }
         return super.onBlockDestroyed(stack, worldIn, blockIn, x, y, z, harvester);
