@@ -8,8 +8,6 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class RecipeLoader {
 
     public static void run() {
@@ -50,24 +48,39 @@ public class RecipeLoader {
         }
     }
 
-    private static void loadCompressedBlockRecipes() {
+    private static boolean addShapedRecipe(Object outputObject, Object... params) {
+        return DisableableItemStack.addShapedRecipe(outputObject, params);
+    }
 
+    private static boolean addShapelessRecipe(Object outputObject, Object... params) {
+        return DisableableItemStack.addShapelessRecipe(outputObject, params);
+    }
+
+    private static void loadCompressedBlockRecipes() {
         ModBlocks[] blocks = { ModBlocks.COMPRESSED_COBBLESTONE, ModBlocks.COMPRESSED_DIRT, ModBlocks.COMPRESSED_GRAVEL,
             ModBlocks.COMPRESSED_SAND, };
 
         for (ModBlocks modBlock : blocks) {
             if (!(modBlock.get() instanceof BlockCompressed block) || !modBlock.isEnabled()) continue;
-
-            GameRegistry
-                .addRecipe(new ItemStack(block, 1, 0), "###", "###", "###", '#', new ItemStack(block.getBase(), 9, 0));
-
-            GameRegistry.addShapelessRecipe(new ItemStack(block.getBase(), 9, 0), new ItemStack(block, 1, 0));
-
+            addShapedRecipe(
+                new DisableableItemStack(modBlock),
+                "###",
+                "###",
+                "###",
+                '#',
+                new ItemStack(block.getBase(), 9));
+            addShapelessRecipe(new DisableableItemStack(modBlock, 9), new DisableableItemStack(modBlock, 1));
             for (int i = 0; i < 7; i++) {
-                GameRegistry
-                    .addRecipe(new ItemStack(block, 1, i + 1), "###", "###", "###", '#', new ItemStack(block, 1, i));
-
-                GameRegistry.addShapelessRecipe(new ItemStack(block, 9, i), new ItemStack(block, 1, i + 1));
+                addShapedRecipe(
+                    new DisableableItemStack(modBlock, 1, i + 1),
+                    "###",
+                    "###",
+                    "###",
+                    '#',
+                    new DisableableItemStack(modBlock, 1, i));
+                addShapelessRecipe(
+                    new DisableableItemStack(modBlock, 9, i),
+                    new DisableableItemStack(modBlock, 1, i + 1));
             }
         }
     }
