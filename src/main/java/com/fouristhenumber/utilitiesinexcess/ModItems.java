@@ -15,7 +15,12 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShe
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.*;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
