@@ -151,12 +151,10 @@ public class ItemInversionSigilInactive extends Item {
 
         if (!(event.entityLiving instanceof EntityAnimal)) return;
 
-        EntityPlayer player = null;
-        if (event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer) {
-            player = (EntityPlayer) event.source.getSourceOfDamage();
+        if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
+            return;
         }
 
-        if (player == null) return;
         if (!player.inventory.hasItem(this)) return;
 
         int radius = ENCHANT_TABLE_SEARCH_RADIUS;
