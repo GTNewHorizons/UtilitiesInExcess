@@ -65,6 +65,10 @@ item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
 item.gluttons_axe.desc.3=This effect is lethal to most undead
 
+item.architects_wand.name=Architect's Wand
+tooltip.architects_wand.1=Assists in placing many blocks
+tooltip.architects_wand.2=Can place up to %s blocks at once
+
 item.destruction_pickaxe.name=Destruction Pickaxe
 item.destruction_pickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
 item.destruction_pickaxe.desc.2=All other blocks are mined slower than your fist
