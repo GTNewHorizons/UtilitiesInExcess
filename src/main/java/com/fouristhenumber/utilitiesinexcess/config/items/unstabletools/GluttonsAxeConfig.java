@@ -10,6 +10,9 @@ public class GluttonsAxeConfig {
     @Config.RequiresMcRestart
     public static boolean enable;
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean unbreakable;
+    @Config.DefaultBoolean(true)
     public static boolean drainHp;
     @Config.DefaultFloat(15)
     @Config.RangeFloat(min = 0f, max = 100f)

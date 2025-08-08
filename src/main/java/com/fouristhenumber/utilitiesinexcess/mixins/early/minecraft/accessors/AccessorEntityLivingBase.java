@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessorEntityLivingBase {
 
     @Accessor(value = "lastDamage")
-    float uie$getLastDamage();
+    float getLastDamage();
 
     @Accessor(value = "lastDamage")
-    void uie$setLastDamage(float value);
+    void setLastDamage(float value);
 }

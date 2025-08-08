@@ -2,7 +2,9 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemHoe;
@@ -11,6 +13,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
+
 // TODO: Add new features to the reversing hoe
 public class ItemReversingHoe extends ItemHoe {
 
@@ -18,7 +22,7 @@ public class ItemReversingHoe extends ItemHoe {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:reversing_hoe");
         setUnlocalizedName("reversing_hoe");
-        setMaxDamage(0);
+        if (ReversingHoeConfig.unbreakable) setMaxDamage(0);
     }
 
     @Override
@@ -46,25 +50,32 @@ public class ItemReversingHoe extends ItemHoe {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.2"));
+        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.1"));
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.2"));
+        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
+
+
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        return false;
+        if (ReversingHoeConfig.unbreakable) return false;
+        return super.isDamageable();
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
+    public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+        if (ReversingHoeConfig.unbreakable) return false;
+        return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return false;
+        if (ReversingHoeConfig.unbreakable) return false;
+        return super.showDurabilityBar(stack);
     }
     //
 }

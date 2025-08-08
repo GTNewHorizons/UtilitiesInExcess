@@ -7,6 +7,8 @@ import net.minecraftforge.event.world.BlockEvent;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -19,7 +21,8 @@ public class EventHandler {
         ItemStack heldItem = event.harvester.getHeldItem();
         if (heldItem == null) return;
         Item heldItemType = heldItem.getItem();
-        if (heldItemType instanceof ItemDestructionPickaxe || heldItemType instanceof ItemAntiParticulateShovel
+        if ((heldItemType instanceof ItemDestructionPickaxe && DestructionPickaxeConfig.voidMinedBlock)
+            || (heldItemType instanceof ItemAntiParticulateShovel && AntiParticulateShovelConfig.voidMinedBlocks)
             || (heldItemType instanceof ItemGluttonsAxe && GluttonsAxeConfig.voidMinedBlock)) {
             event.drops.clear();
         }

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -19,6 +21,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
+
 public class ItemPrecisionShears extends ItemShears {
 
     private final float efficiencyOnProperMaterial;
@@ -31,13 +35,9 @@ public class ItemPrecisionShears extends ItemShears {
     public ItemPrecisionShears() {
         setTextureName("utilitiesinexcess:precision_shears");
         setUnlocalizedName("precision_shears");
-
-        setMaxDamage(0);
-        setMaxStackSize(1);
-
+        if (PrecisionShearsConfig.unbreakable) setMaxDamage(0);
         int harvestLevel = ToolMaterial.STONE.getHarvestLevel();
         efficiencyOnProperMaterial = ToolMaterial.STONE.getEfficiencyOnProperMaterial();
-
         setHarvestLevel("pickaxe", harvestLevel);
         setHarvestLevel("axe", harvestLevel);
         setHarvestLevel("shovel", harvestLevel);
@@ -133,9 +133,12 @@ public class ItemPrecisionShears extends ItemShears {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.2"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.3"));
+        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.1"));
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.2"));
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.3"));
+        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
+
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -159,17 +162,20 @@ public class ItemPrecisionShears extends ItemShears {
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        return false;
+        if (PrecisionShearsConfig.unbreakable) return false;
+        return super.isDamageable();
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
+    public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+        if (PrecisionShearsConfig.unbreakable) return false;
+        return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return false;
+        if (PrecisionShearsConfig.unbreakable) return false;
+        return super.showDurabilityBar(stack);
     }
     //
 }

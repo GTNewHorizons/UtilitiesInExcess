@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessorItemTool {
 
     @Accessor(value = "damageVsEntity")
-    float uie$getDamageVsEntity();
+    float getDamageVsEntity();
 
     @Accessor(value = "damageVsEntity")
-    void uie$setDamageVsEntity(float value);
+    void setDamageVsEntity(float value);
 }

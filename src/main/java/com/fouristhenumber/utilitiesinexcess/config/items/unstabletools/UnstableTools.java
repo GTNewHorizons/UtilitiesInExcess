@@ -16,17 +16,9 @@ public class UnstableTools {
         ConfigurationManager.registerConfig(GluttonsAxeConfig.class);
         ConfigurationManager.registerConfig(EthericSwordConfig.class);
         ConfigurationManager.registerConfig(AntiParticulateShovelConfig.class);
+        ConfigurationManager.registerConfig(DestructionPickaxeConfig.class);
+        ConfigurationManager.registerConfig(ReversingHoeConfig.class);
+        ConfigurationManager.registerConfig(PrecisionShearsConfig.class);
     }
 
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean enableDestructionPickaxe;
-
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean enablePrecisionShears;
-
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean enableReversingHoe;
 }

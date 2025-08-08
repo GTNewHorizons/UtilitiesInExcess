@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,8 +23,8 @@ public class ItemEthericSword extends ItemSword {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
-        setMaxDamage(0);
-        ((AccessorItemSword) this).uie$setDamageVsEntity(EthericSwordConfig.normalDamage);
+        if (EthericSwordConfig.unbreakable) setMaxDamage(0);
+        ((AccessorItemSword) this).setDamageVsEntity(EthericSwordConfig.normalDamage);
     }
 
     @Override
@@ -40,41 +42,45 @@ public class ItemEthericSword extends ItemSword {
         float magicDamage = EthericSwordConfig.magicDamage;
         if (isCrit) magicDamage *= 1.5f;
         AccessorEntityLivingBase acTarget = (AccessorEntityLivingBase) target;
-        float cd = acTarget.uie$getLastDamage();
+        float cd = acTarget.getLastDamage();
         // Set the last damage to 0 because we don't want our normal dmg to our interrupt magic dmg
-        acTarget.uie$setLastDamage(0);
+        acTarget.setLastDamage(0);
         target.attackEntityFrom(
             DamageSource.causePlayerDamage(player)
                 .setDamageBypassesArmor()
                 .setMagicDamage(),
             magicDamage);
-        // Should magic damage impair next hit? Probably yeah, otherwise the magic will apply on every hit even if it
-        // shouldn't
-        acTarget.uie$setLastDamage(cd + magicDamage);
+        // Should magic damage impair next hit? Probably yeah
+        acTarget.setLastDamage(cd + magicDamage);
         return succeed;
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.etheric_sword.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.etheric_sword.desc.2"));
+        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.etheric_sword.desc.1"));
+            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.etheric_sword.desc.2"));
+        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        return false;
+        if (EthericSwordConfig.unbreakable) return false;
+        return super.isDamageable();
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
+    public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+        if (EthericSwordConfig.unbreakable) return false;
+        return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return false;
+        if (EthericSwordConfig.unbreakable) return false;
+        return super.showDurabilityBar(stack);
     }
     //
 }

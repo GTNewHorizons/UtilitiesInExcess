@@ -101,5 +101,6 @@ tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
-
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
+
+shift_for_description=Hold shift for description...

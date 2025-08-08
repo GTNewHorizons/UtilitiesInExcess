@@ -9,5 +9,12 @@ public class AntiParticulateShovelConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enable;
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean unbreakable;
+    @Config.DefaultBoolean(true)
+    public static boolean breakFallingAbove;
+    @Config.DefaultBoolean(true)
+    public static boolean voidMinedBlocks;
 
 }

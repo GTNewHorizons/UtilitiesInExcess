@@ -12,6 +12,9 @@ public class ItemConfig {
     @Config.DefaultBoolean(true)
     public static boolean registerDisabledItems;
 
+    @Config.DefaultBoolean(true)
+    public static boolean shiftForDescription;
+
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
