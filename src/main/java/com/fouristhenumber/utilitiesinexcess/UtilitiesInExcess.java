@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +38,8 @@ public class UtilitiesInExcess {
     public static final String MODID = "utilitiesinexcess";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
+    public static int lapisAetheriusRenderID;
+
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
@@ -63,6 +67,9 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+
+        lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
     }
 
     @Mod.EventHandler
