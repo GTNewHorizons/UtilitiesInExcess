@@ -9,15 +9,6 @@ public class WateringCanConfig {
     @Config.Comment("Watering Can Configuration")
     public static final WateringCan wateringCan = new WateringCan();
 
-    @Config.DefaultBoolean(true)
-    public static boolean enableInversionSigil;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableInvertedIngot;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableDiamondStick;
-
     @Config.LangKey("utilitiesinexcess.config.item.watering_can")
     public static class WateringCan {
 
