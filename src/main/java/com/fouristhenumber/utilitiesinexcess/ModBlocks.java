@@ -14,8 +14,10 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -38,6 +40,8 @@ public enum ModBlocks {
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), BlockTrashCanItem.ItemBlockTrashCanItem.class, "trashCanItem"),
     TRASH_CAN_FLUID(BlockConfig.enableTrashCanFluid, new BlockTrashCanFluid(), BlockTrashCanFluid.ItemBlockTrashCanFluid.class, "trashCanFluid"),
     DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
+    SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler() , BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
+    RAIN_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler() , BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), BlockMagicWood.ItemBlockMagicWood.class, "magic_wood"),
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), BlockMarginallyMaximisedChest.ItemBlockMarginallyMaximisedChest.class, "marginally_maximised_chest"),

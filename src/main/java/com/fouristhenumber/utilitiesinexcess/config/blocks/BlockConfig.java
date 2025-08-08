@@ -81,4 +81,39 @@ public class BlockConfig {
         @Config.RangeInt(min = 1, max = 16)
         public int rangePureLove;
     }
+
+    @Config.Comment("Sound Muffler Configuration")
+    public static final SoundMuffler soundMuffler = new SoundMuffler();
+
+    @Config.LangKey("utilitiesinexcess.config.block.sound_muffler")
+    public static class SoundMuffler {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableSoundMuffler;
+
+        @Config.Comment("The volume reduction of sounds by the sound muffler. 0 = silent, 100 = normal level")
+        @Config.DefaultInt(5)
+        @Config.RangeInt(min = 0, max = 100)
+        public int soundMufflerReduction;
+
+        @Config.Comment("The radius a sound muffler operates in (as a square box)")
+        @Config.DefaultInt(8)
+        @Config.RangeInt(min = 1, max = 64)
+        public int soundMufflerRange;
+    }
+
+    @Config.Comment("Rain Muffler Configuration")
+    public static final RainMuffler rainMuffler = new RainMuffler();
+
+    @Config.LangKey("utilitiesinexcess.config.block.rain_muffler")
+    public static class RainMuffler {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableRainMuffler;
+
+        @Config.Comment("The radius a rain muffler operates in (as a square box)")
+        @Config.DefaultInt(64)
+        @Config.RangeInt(min = 1, max = 256)
+        public int rainMufflerRange;
+    }
 }
