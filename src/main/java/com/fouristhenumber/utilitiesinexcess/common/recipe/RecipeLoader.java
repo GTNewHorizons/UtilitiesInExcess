@@ -22,74 +22,69 @@ public class RecipeLoader {
 
         // Inverted Ingot
         addShapedRecipe(
-            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            ModItems.INVERTED_INGOT,
             "i",
             "#",
             "d",
             'i',
             Items.iron_ingot,
             '#',
-            new DisableableItemStack(ModItems.INVERSION_SIGIL_ACTIVE),
+            ModItems.INVERSION_SIGIL_ACTIVE,
             'd',
             Items.diamond);
 
         // Glutton's Axe
         addShapedRecipe(
-            new DisableableItemStack(ModItems.GLUTTONS_AXE),
+            ModItems.GLUTTONS_AXE,
             "ii",
             "is",
             " s",
             'i',
-            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            ModItems.INVERTED_INGOT,
             's',
-            new DisableableItemStack(ModItems.DIAMOND_STICK));
+            ModItems.DIAMOND_STICK);
 
         addShapedRecipe(
-            new DisableableItemStack(ModItems.DESTRUCTION_PICKAXE),
+            ModItems.DESTRUCTION_PICKAXE,
             "iii",
             " s ",
             " s ",
             'i',
-            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            ModItems.INVERTED_INGOT,
             's',
-            new DisableableItemStack(ModItems.DIAMOND_STICK));
+            ModItems.DIAMOND_STICK);
 
         addShapedRecipe(
-            new DisableableItemStack(ModItems.REVERSING_HOE),
+            ModItems.REVERSING_HOE,
             "ii",
             " s",
             " s",
             'i',
-            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            ModItems.INVERTED_INGOT,
             's',
-            new DisableableItemStack(ModItems.DIAMOND_STICK));
+            ModItems.DIAMOND_STICK);
 
         addShapedRecipe(
-            new DisableableItemStack(ModItems.ANTI_PARTICULATE_SHOVEL),
+            ModItems.ANTI_PARTICULATE_SHOVEL,
             "i",
             "s",
             "s",
             'i',
-            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            ModItems.INVERTED_INGOT,
             's',
-            new DisableableItemStack(ModItems.DIAMOND_STICK));
+            ModItems.DIAMOND_STICK);
 
         addShapedRecipe(
-            new DisableableItemStack(ModItems.ETHERIC_SWORD),
+            ModItems.ETHERIC_SWORD,
             "i",
             "i",
             "s",
             'i',
-            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            ModItems.INVERTED_INGOT,
             's',
-            new DisableableItemStack(ModItems.DIAMOND_STICK));
+            ModItems.DIAMOND_STICK);
 
-        addShapedRecipe(
-            new DisableableItemStack(ModItems.PRECISION_SHEARS),
-            " i",
-            "i ",
-            'i',
-            new DisableableItemStack(ModItems.INVERTED_INGOT));
+        addShapedRecipe(ModItems.PRECISION_SHEARS, " i", "i ", 'i', ModItems.INVERTED_INGOT);
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
