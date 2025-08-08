@@ -65,11 +65,35 @@ item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
 item.gluttons_axe.desc.3=This effect is lethal to most undead
 
+item.destruction_pickaxe.name=Destruction Pickaxe
+item.destruction_pickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
+item.destruction_pickaxe.desc.2=All other blocks are mined slower than your fist
+item.destruction_pickaxe.desc.3=Mined blocks will not drop anything
+
+item.anti_particulate_shovel.name=Anti-Particulate Shovel
+item.anti_particulate_shovel.desc.1=Destroys all sand/gravel above blocks mined
+item.anti_particulate_shovel.desc.2=Mined blocks will not drop anything
+
+item.precision_shears.name=Precision Shears
+item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
+item.precision_shears.desc.2=Can right click to instantly break blocks
+item.precision_shears.desc.3=Drops are instantly teleported to your inventory
+
+item.etheric_sword.name=Etheric Sword
+item.etheric_sword.desc.1=Equivalent total damage to a diamond sword
+item.etheric_sword.desc.2=3 points of damage are magic, armor-piercing damage
+
+item.reversing_hoe.name=Reversing Hoe
+item.reversing_hoe.desc.1=Reverts wheat crop growth
+item.reversing_hoe.desc.2=Converts dirt -> grass and cobblestone -> stone
+
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
 item.mob_jar.desc.empty=Empty
 item.mob_jar.desc.1=Right click a passive mob to trap it
 item.mob_jar.desc.2=Right click again to release
+
+item.disabled_item.name=Disabled Item '%s'
 
 tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
@@ -112,6 +136,9 @@ tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
+utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
+
+shift_for_description=Hold shift for description...
 
 tile.pure_love.name=Pure Love
 tile.pure_love.desc=Makes animals within %d blocks fall in love

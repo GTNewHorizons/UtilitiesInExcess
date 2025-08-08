@@ -1,22 +1,13 @@
-package com.fouristhenumber.utilitiesinexcess.config;
+package com.fouristhenumber.utilitiesinexcess.config.items;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items")
-public class ItemConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.wateringcan")
+public class WateringCanConfig {
 
     @Config.Comment("Watering Can Configuration")
     public static final WateringCan wateringCan = new WateringCan();
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableHungerAxe;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableHeavenlyRing;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableMobJar;
 
     @Config.DefaultBoolean(true)
     public static boolean enableInversionSigil;
@@ -93,5 +84,4 @@ public class ItemConfig {
 
         }
     }
-
 }

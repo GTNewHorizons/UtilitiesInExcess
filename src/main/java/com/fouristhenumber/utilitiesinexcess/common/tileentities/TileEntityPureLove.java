@@ -10,7 +10,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 public class TileEntityPureLove extends TileEntity {
 
