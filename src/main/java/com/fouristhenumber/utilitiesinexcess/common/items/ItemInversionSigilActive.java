@@ -30,8 +30,8 @@ public class ItemInversionSigilActive extends Item {
         p_150895_3_.add(getStack());
     }
 
-    public @NotNull ItemStack getStack() {
-        ItemStack stack = new ItemStack(this);
+    public static @NotNull ItemStack getStack() {
+        ItemStack stack = new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get(), 1);
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger(DURABILITY_NBT_KEY, 256);

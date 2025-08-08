@@ -15,7 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.ModItems;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -188,7 +187,7 @@ public class ItemInversionSigilInactive extends Item {
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack is = player.inventory.getStackInSlot(i);
             if (is != null && is.getItem() == this) {
-                player.inventory.setInventorySlotContents(i, new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get(), 1));
+                player.inventory.setInventorySlotContents(i, ItemInversionSigilActive.getStack());
             }
         }
 
