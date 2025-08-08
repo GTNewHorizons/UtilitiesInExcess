@@ -29,7 +29,7 @@ public class ItemReversingHoe extends ItemHoe {
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
         Block block = world.getBlock(x, y, z);
-
+        // TODO: config for this
         if (block == Blocks.dirt) {
             world.setBlock(x, y, z, Blocks.grass);
             return true;
