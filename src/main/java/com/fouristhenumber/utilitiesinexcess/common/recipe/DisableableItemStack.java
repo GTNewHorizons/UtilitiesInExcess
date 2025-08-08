@@ -2,12 +2,12 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import java.util.ArrayList;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
