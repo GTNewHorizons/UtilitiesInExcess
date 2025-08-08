@@ -46,16 +46,58 @@ tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
+item.inverted_ingot.name=Inverted Ingot
+item.diamond_stick.name=Diamond Stick
+item.inversion_sigil_inactive.name=Inert Inversion Sigil
+item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.inversion_sigil_active.desc=Uses Remaining: %s
+
+chat.inversion_ritual.header=Ritual Of Inversion:
+chat.inversion_ritual.time= - The time is right: %s
+chat.inversion_ritual.redstone= - Redstone circle is drawn: %s
+chat.inversion_ritual.grass= - Surrounded by natural earth: %s
+chat.inversion_ritual.darkness= - There is no light: %s
+chat.inversion_ritual.moon= - Can see the moon: %s
+chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
+
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
 item.gluttons_axe.desc.3=This effect is lethal to most undead
+
+item.architects_wand.name=Architect's Wand
+tooltip.architects_wand.1=Assists in placing many blocks
+tooltip.architects_wand.2=Can place up to %s blocks at once
+
+item.destruction_pickaxe.name=Destruction Pickaxe
+item.destruction_pickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
+item.destruction_pickaxe.desc.2=All other blocks are mined slower than your fist
+item.destruction_pickaxe.desc.3=Mined blocks will not drop anything
+
+item.anti_particulate_shovel.name=Anti-Particulate Shovel
+item.anti_particulate_shovel.desc.1=Destroys all sand/gravel above blocks mined
+item.anti_particulate_shovel.desc.2=Mined blocks will not drop anything
+
+item.precision_shears.name=Precision Shears
+item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
+item.precision_shears.desc.2=Can right click to instantly break blocks
+item.precision_shears.desc.3=Drops are instantly teleported to your inventory
+
+item.etheric_sword.name=Etheric Sword
+item.etheric_sword.desc.1=Equivalent total damage to a diamond sword
+item.etheric_sword.desc.2=3 points of damage are magic, armor-piercing damage
+
+item.reversing_hoe.name=Reversing Hoe
+item.reversing_hoe.desc.1=Reverts wheat crop growth
+item.reversing_hoe.desc.2=Converts dirt -> grass and cobblestone -> stone
 
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
 item.mob_jar.desc.empty=Empty
 item.mob_jar.desc.1=Right click a passive mob to trap it
 item.mob_jar.desc.2=Right click again to release
+
+item.disabled_item.name=Disabled Item '%s'
 
 tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
@@ -85,6 +127,12 @@ tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 
+tile.trash_can_item.name=Trash Can (Item)
+tile.trash_can_item.desc.1=Trash Can for Items
+
+tile.trash_can_fluid.name=Trash Can (Fluid)
+tile.trash_can_fluid.desc=Trash Can for Fluids
+
 tile.magic_wood.name=Magic Wood
 tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
 
@@ -92,6 +140,23 @@ tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
+utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
+utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
+
+shift_for_description=Hold shift for description...
+
+tile.pure_love.name=Pure Love
+tile.pure_love.desc=Makes animals within %d blocks fall in love
+
+utilitiesinexcess.config.block.pure_love=Pure Love Configuration
+
+tile.marginally_maximised_chest.name=Marginally Maximised Chest
+tile.marginally_maximised_chest.desc1=Doesn't form double chests
+tile.marginally_maximised_chest.desc2=Can be opened even with a block above
+
+tile.significantly_shrunk_chest.name=Significantly Shrunk Chest
+tile.significantly_shrunk_chest.desc=Holds just one item stack
+
 utilitiesinexcess.config.block.sound_muffler=Sound Muffler Configuration
 utilitiesinexcess.config.block.rain_muffler=Rain Muffler Configuration
 

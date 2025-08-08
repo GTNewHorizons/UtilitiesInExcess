@@ -7,8 +7,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
@@ -50,7 +55,12 @@ public class UtilitiesInExcess {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
+        GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItem");
+        GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluid");
         GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
+        GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLove");
+        GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
+        GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMuffler");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMuffler");
     }

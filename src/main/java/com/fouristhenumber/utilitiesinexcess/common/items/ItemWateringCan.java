@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.config.ItemConfig.wateringCan;
+import static com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig.wateringCan;
 import static net.minecraft.init.Blocks.mycelium;
 
 import java.util.List;

@@ -4,12 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
-import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-import com.gtnewhorizon.gtnhlib.mixin.IMixins;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
+import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
@@ -19,8 +18,8 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
     static {
         // Register config here because then it's available during mixins.
         try {
-            ConfigurationManager.registerConfig(ItemConfig.class);
-            ConfigurationManager.registerConfig(BlockConfig.class);
+            ItemConfig.registerConfig();
+            BlockConfig.registerConfig();
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
