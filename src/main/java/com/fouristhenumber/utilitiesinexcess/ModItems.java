@@ -14,6 +14,8 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShe
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.*;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
+import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -30,6 +32,9 @@ public enum ModItems {
     REVERSING_HOE(ReversingHoeConfig.enable, new ItemReversingHoe(), "reversing_hoe"),
     HEAVENLY_RING(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing(), "heavenly_ring"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
+    WATERING_CAN_BASIC(ItemConfig.wateringCan.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
+    WATERING_CAN_ADVANCED(ItemConfig.wateringCan.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
+    WATERING_CAN_ELITE(ItemConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
 
 
     ; // leave trailing semicolon

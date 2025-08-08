@@ -88,11 +88,32 @@ tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
 item.heavenly_ring.name=Heavenly Ring
 item.heavenly_ring.desc=Grants creative flight
 
+item.watering_can_basic.name=Basic Watering Can
+item.watering_can_advanced.name=Advanced Watering Can
+item.watering_can_elite.name=Elite Watering Can
+item.watering_can.activated=Activated (Toggle)
+item.watering_can.deactivated=Deactivated (Toggle)
+item.watering_can.desc.1=It hydrates and accelerates
+item.watering_can.desc.2=crop growth in a %dx%d area.
+item.watering_can.desc.3=Crouch and use to toggle
+item.watering_can.desc.4=automatic mode.
+
+
+utilitiesinexcess.config.item.watering_can=Watering Can
+utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
+utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
+
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
+
+tile.trash_can_item.name=Trash Can (Item)
+tile.trash_can_item.desc.1=Trash Can for Items
+
+tile.trash_can_fluid.name=Trash Can (Fluid)
+tile.trash_can_fluid.desc=Trash Can for Fluids
 
 tile.magic_wood.name=Magic Wood
 tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
@@ -104,3 +125,15 @@ utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
 
 shift_for_description=Hold shift for description...
+
+tile.pure_love.name=Pure Love
+tile.pure_love.desc=Makes animals within %d blocks fall in love
+
+utilitiesinexcess.config.block.pure_love=Pure Love Configuration
+
+tile.marginally_maximised_chest.name=Marginally Maximised Chest
+tile.marginally_maximised_chest.desc1=Doesn't form double chests
+tile.marginally_maximised_chest.desc2=Can be opened even with a block above
+
+tile.significantly_shrunk_chest.name=Significantly Shrunk Chest
+tile.significantly_shrunk_chest.desc=Holds just one item stack
