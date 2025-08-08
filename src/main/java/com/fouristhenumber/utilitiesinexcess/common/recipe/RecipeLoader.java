@@ -1,11 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
-import com.fouristhenumber.utilitiesinexcess.ModItems;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
@@ -26,10 +25,28 @@ public class RecipeLoader {
             GameRegistry.addRecipe(new ItemStack(ModItems.DIAMOND_STICK.get(), 4), "#", "#", '#', Items.diamond);
         }
         if (invertedIngotEnabled && ModItems.INVERSION_SIGIL_ACTIVE.isEnabled()) {
-            GameRegistry.addRecipe(new ItemStack(ModItems.INVERTED_INGOT.get(), 1), "i", "#", "d", 'i', Items.iron_ingot, '#', ModItems.INVERSION_SIGIL_ACTIVE.get(), 'd', Items.diamond);
+            GameRegistry.addRecipe(
+                new ItemStack(ModItems.INVERTED_INGOT.get(), 1),
+                "i",
+                "#",
+                "d",
+                'i',
+                Items.iron_ingot,
+                '#',
+                ModItems.INVERSION_SIGIL_ACTIVE.get(),
+                'd',
+                Items.diamond);
         }
         if (diamondStickEnabled && invertedIngotEnabled && ModItems.HUNGER_AXE.isEnabled()) {
-            GameRegistry.addRecipe(new ItemStack(ModItems.HUNGER_AXE.get(), 1), "ii","is"," s", 'i', ModItems.INVERTED_INGOT.get(), 's', ModItems.DIAMOND_STICK.get());
+            GameRegistry.addRecipe(
+                new ItemStack(ModItems.HUNGER_AXE.get(), 1),
+                "ii",
+                "is",
+                " s",
+                'i',
+                ModItems.INVERTED_INGOT.get(),
+                's',
+                ModItems.DIAMOND_STICK.get());
         }
     }
 

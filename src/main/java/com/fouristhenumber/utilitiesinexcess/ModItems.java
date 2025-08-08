@@ -1,11 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;

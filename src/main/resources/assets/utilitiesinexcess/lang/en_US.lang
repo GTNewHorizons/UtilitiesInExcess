@@ -50,6 +50,7 @@ item.inverted_ingot.name=Inverted Ingot
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.inversion_sigil_active.desc=Uses Remaining: %s
 
 chat.inversion_ritual.header=Ritual Of Inversion:
 chat.inversion_ritual.time= - The time is right: %s

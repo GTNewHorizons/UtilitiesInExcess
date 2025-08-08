@@ -107,8 +107,10 @@ public class ItemInversionSigilInactive extends Item {
 
     private boolean countNearbyGrass(World world, int cx, int cy, int cz) {
         int count = 0;
-        for (int dx = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx++) {
-            for (int dz = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dz <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dz++) {
+        for (int dx = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx
+            <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx++) {
+            for (int dz = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dz
+                <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dz++) {
                 for (int dy = -1; dy <= 1; dy++) {
                     int bx = cx + dx;
                     int by = cy + dy;
