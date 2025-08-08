@@ -7,6 +7,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 public class AntiParticulateShovelConfig {
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enable;
 
 }

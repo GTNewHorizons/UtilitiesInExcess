@@ -10,6 +10,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 @Config(modid = UtilitiesInExcess.MODID, category = "items.unstable_tools")
 public class UnstableTools {
 
+    // Not sure abt nested categories, lets disccuss that later
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(UnstableTools.class);
         ConfigurationManager.registerConfig(GluttonsAxeConfig.class);
@@ -18,11 +19,14 @@ public class UnstableTools {
     }
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableDestructionPickaxe;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enablePrecisionShears;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableReversingHoe;
 }

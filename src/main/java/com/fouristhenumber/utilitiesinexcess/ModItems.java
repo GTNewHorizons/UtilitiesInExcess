@@ -44,7 +44,7 @@ public enum ModItems {
         for (ModItems item : VALUES) {
             if (item.isEnabled()) {
                 GameRegistry.registerItem(item.get(), item.name);
-            } else GameRegistry.registerItem(item.disabledVersion, item.name);
+            } else if (ItemConfig.registerDisabledItems) GameRegistry.registerItem(item.disabledVersion, item.name);
         }
     }
 
@@ -57,7 +57,8 @@ public enum ModItems {
         isEnabled = enabled;
         theItem = item;
         this.name = name;
-        disabledVersion = new ItemDisabled(theItem);
+        if (ItemConfig.registerDisabledItems) disabledVersion = new ItemDisabled(theItem);
+        else disabledVersion = null;
     }
 
     public boolean isEnabled() {

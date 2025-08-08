@@ -7,6 +7,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 public class GluttonsAxeConfig {
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enable;
     @Config.DefaultBoolean(true)
     public static boolean drainHp;

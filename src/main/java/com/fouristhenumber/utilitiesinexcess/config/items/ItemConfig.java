@@ -9,6 +9,9 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
 public class ItemConfig {
 
+    @Config.DefaultBoolean(true)
+    public static boolean registerDisabledItems;
+
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
