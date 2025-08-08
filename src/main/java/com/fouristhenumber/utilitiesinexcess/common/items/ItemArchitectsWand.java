@@ -30,8 +30,8 @@ public class ItemArchitectsWand extends Item {
     public ItemArchitectsWand(int buildLimit) {
         super();
         this.buildLimit = buildLimit;
-        setTextureName("utilitiesinexcess:builderWand");
-        setUnlocalizedName("builderWand");
+        setTextureName("utilitiesinexcess:architects_wand");
+        setUnlocalizedName("architects_wand");
         setMaxDamage(0);
         setMaxStackSize(1);
     }

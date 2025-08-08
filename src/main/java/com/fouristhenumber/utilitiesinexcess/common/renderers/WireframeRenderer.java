@@ -7,7 +7,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import com.fouristhenumber.utilitiesinexcess.config.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.eventbus.Phase;
@@ -22,7 +22,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 @EventBusSubscriber(phase = Phase.INIT, side = Side.CLIENT)
 public class WireframeRenderer {
 
-    private final static ObjectOpenHashSet<BlockPos> candidatePositions = new ObjectOpenHashSet<>();;
+    private final static ObjectOpenHashSet<BlockPos> candidatePositions = new ObjectOpenHashSet<>();
 
     // Setter so your item can update the candidate positions
     public static void addCandidatePosition(BlockPos pos) {
