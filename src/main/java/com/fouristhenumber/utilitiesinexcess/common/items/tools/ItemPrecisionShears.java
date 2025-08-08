@@ -53,10 +53,8 @@ public class ItemPrecisionShears extends ItemShears {
         NBTTagCompound nbt = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
-        int harvestLevel = block.getHarvestLevel(meta);
-        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0
-            || harvestLevel > PrecisionShearsConfig.toolLevel
-            || harvestLevel < 0)
+        float hardness = block.getPlayerRelativeBlockHardness(player, world, x, y, z);
+        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0 || hardness <= 0)
             return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
         if (!world.isRemote && block.removedByPlayer(world, player, x, y, z, true)) {
             block.harvestBlock(world, player, x, y, z, meta);
