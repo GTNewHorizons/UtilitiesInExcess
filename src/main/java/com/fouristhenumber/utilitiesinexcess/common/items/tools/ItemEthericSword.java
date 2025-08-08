@@ -22,7 +22,7 @@ public class ItemEthericSword extends ItemSword {
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
         setMaxDamage(0);
-        ((AccessorItemSword) this).setDamageVsEntity_uie(EthericSwordConfig.normalDamage);
+        ((AccessorItemSword) this).uie$setDamageVsEntity(EthericSwordConfig.normalDamage);
     }
 
     @Override
@@ -40,9 +40,9 @@ public class ItemEthericSword extends ItemSword {
         float magicDamage = EthericSwordConfig.magicDamage;
         if (isCrit) magicDamage *= 1.5f;
         AccessorEntityLivingBase acTarget = (AccessorEntityLivingBase) target;
-        float cd = acTarget.getLastDamage_uie();
+        float cd = acTarget.uie$getLastDamage();
         // Set the last damage to 0 because we don't want our normal dmg to our interrupt magic dmg
-        acTarget.setLastDamage_uie(0);
+        acTarget.uie$setLastDamage(0);
         target.attackEntityFrom(
             DamageSource.causePlayerDamage(player)
                 .setDamageBypassesArmor()
@@ -50,7 +50,7 @@ public class ItemEthericSword extends ItemSword {
             magicDamage);
         // Should magic damage impair next hit? Probably yeah, otherwise the magic will apply on every hit even if it
         // shouldn't
-        acTarget.setLastDamage_uie(cd + magicDamage);
+        acTarget.uie$setLastDamage(cd + magicDamage);
         return succeed;
     }
 

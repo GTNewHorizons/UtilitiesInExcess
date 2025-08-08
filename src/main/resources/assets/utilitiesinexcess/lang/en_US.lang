@@ -79,6 +79,8 @@ item.mob_jar.desc.empty=Empty
 item.mob_jar.desc.1=Right click a passive mob to trap it
 item.mob_jar.desc.2=Right click again to release
 
+item.disabled_item.name=Disabled Item '%s'
+
 tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
 tile.redstone_clock.desc.2=Supply with a redstone signal to turn off

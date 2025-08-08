@@ -27,7 +27,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         setTextureName("utilitiesinexcess:gluttons_axe");
         setUnlocalizedName("gluttons_axe");
         setMaxDamage(0);
-        ((AccessorItemTool) this).setDamageVsEntity_uie(GluttonsAxeConfig.damageAgainstUndead);
+        ((AccessorItemTool) this).uie$setDamageVsEntity(GluttonsAxeConfig.damageAgainstUndead);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         if (target instanceof EntityZombie z && z.isVillager()) {
             attacker.addExhaustion(3 * 4);
             spawnParticles(target);
-            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).convertToVillager_uie();
+            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).uie$convertToVillager();
             return true;
         }
         if (!target.isEntityUndead()) {

@@ -20,8 +20,6 @@ public class UnstableTools {
     @Config.DefaultBoolean(true)
     public static boolean enableDestructionPickaxe;
 
-
-
     @Config.DefaultBoolean(true)
     public static boolean enablePrecisionShears;
 

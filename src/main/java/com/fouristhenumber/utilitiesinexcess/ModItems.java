@@ -1,10 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
@@ -14,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.UnstableTools;
@@ -40,25 +40,24 @@ public enum ModItems {
 
     public static final ModItems[] VALUES = values();
 
-    private static final ItemDisabled disabledItem=new ItemDisabled();
-
     public static void init() {
         for (ModItems item : VALUES) {
             if (item.isEnabled()) {
                 GameRegistry.registerItem(item.get(), item.name);
-            }
-            else GameRegistry.registerItem(disabledItem,item.name);
+            } else GameRegistry.registerItem(item.disabledVersion, item.name);
         }
     }
 
     private final boolean isEnabled;
     private final Item theItem;
     private final String name;
+    private final ItemDisabled disabledVersion;
 
     ModItems(boolean enabled, Item item, String name) {
         isEnabled = enabled;
         theItem = item;
         this.name = name;
+        disabledVersion = new ItemDisabled(theItem);
     }
 
     public boolean isEnabled() {

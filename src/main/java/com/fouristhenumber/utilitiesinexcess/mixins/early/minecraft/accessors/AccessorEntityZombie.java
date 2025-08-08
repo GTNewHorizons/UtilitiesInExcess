@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(EntityZombie.class)
 public interface AccessorEntityZombie {
 
-    // public net.minecraft.entity.monster.EntityZombie func_82232_p()V
     @Invoker(value = "convertToVillager")
-    public void convertToVillager_uie();
+    void uie$convertToVillager();
 }
