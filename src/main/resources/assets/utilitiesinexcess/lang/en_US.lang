@@ -46,6 +46,20 @@ tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
+item.inverted_ingot.name=Inverted Ingot
+item.diamond_stick.name=Diamond Stick
+item.inversion_sigil_inactive.name=Inert Inversion Sigil
+item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.inversion_sigil_active.desc=Uses Remaining: %s
+
+chat.inversion_ritual.header=Ritual Of Inversion:
+chat.inversion_ritual.time= - The time is right: %s
+chat.inversion_ritual.redstone= - Redstone circle is drawn: %s
+chat.inversion_ritual.grass= - Surrounded by natural earth: %s
+chat.inversion_ritual.darkness= - There is no light: %s
+chat.inversion_ritual.moon= - Can see the moon: %s
+chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
+
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held
 item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
@@ -123,6 +137,7 @@ tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
+utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
 
 shift_for_description=Hold shift for description...
 

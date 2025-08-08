@@ -19,7 +19,11 @@ public class ItemConfig {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
         ConfigurationManager.registerConfig(WateringCanConfig.class);
+        ConfigurationManager.registerConfig(InversionConfig.class);
     }
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDiamondStick;
 
     @Config.DefaultBoolean(true)
     public static boolean enableHeavenlyRing;
