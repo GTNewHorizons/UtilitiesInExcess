@@ -17,35 +17,79 @@ public class RecipeLoader {
     }
 
     private static void loadInversionRecipes() {
-        boolean diamondStickEnabled = ModItems.DIAMOND_STICK.isEnabled();
-        boolean invertedIngotEnabled = ModItems.INVERTED_INGOT.isEnabled();
-        if (diamondStickEnabled) {
-            GameRegistry.addRecipe(new ItemStack(ModItems.DIAMOND_STICK.get(), 4), "#", "#", '#', Items.diamond);
-        }
-        if (invertedIngotEnabled && ModItems.INVERSION_SIGIL_ACTIVE.isEnabled()) {
-            GameRegistry.addRecipe(
-                new ItemStack(ModItems.INVERTED_INGOT.get(), 1),
-                "i",
-                "#",
-                "d",
-                'i',
-                Items.iron_ingot,
-                '#',
-                ModItems.INVERSION_SIGIL_ACTIVE.get(),
-                'd',
-                Items.diamond);
-        }
-        if (diamondStickEnabled && invertedIngotEnabled && ModItems.GLUTTONS_AXE.isEnabled()) {
-            GameRegistry.addRecipe(
-                new ItemStack(ModItems.GLUTTONS_AXE.get(), 1),
-                "ii",
-                "is",
-                " s",
-                'i',
-                ModItems.INVERTED_INGOT.get(),
-                's',
-                ModItems.DIAMOND_STICK.get());
-        }
+        // Diamond Stick
+        addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
+
+        // Inverted Ingot
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            "i",
+            "#",
+            "d",
+            'i',
+            Items.iron_ingot,
+            '#',
+            new DisableableItemStack(ModItems.INVERSION_SIGIL_ACTIVE),
+            'd',
+            Items.diamond);
+
+        // Glutton's Axe
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.GLUTTONS_AXE),
+            "ii",
+            "is",
+            " s",
+            'i',
+            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            's',
+            new DisableableItemStack(ModItems.DIAMOND_STICK));
+
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.DESTRUCTION_PICKAXE),
+            "iii",
+            " s ",
+            " s ",
+            'i',
+            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            's',
+            new DisableableItemStack(ModItems.DIAMOND_STICK));
+
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.REVERSING_HOE),
+            "ii",
+            " s",
+            " s",
+            'i',
+            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            's',
+            new DisableableItemStack(ModItems.DIAMOND_STICK));
+
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.ANTI_PARTICULATE_SHOVEL),
+            "i",
+            "s",
+            "s",
+            'i',
+            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            's',
+            new DisableableItemStack(ModItems.DIAMOND_STICK));
+
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.ETHERIC_SWORD),
+            "i",
+            "i",
+            "s",
+            'i',
+            new DisableableItemStack(ModItems.INVERTED_INGOT),
+            's',
+            new DisableableItemStack(ModItems.DIAMOND_STICK));
+
+        addShapedRecipe(
+            new DisableableItemStack(ModItems.PRECISION_SHEARS),
+            " i",
+            "i ",
+            'i',
+            new DisableableItemStack(ModItems.INVERTED_INGOT));
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
