@@ -42,5 +42,5 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Baubles-Expanded:2.1.9-GTNH:dev")
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.71-GTNH-pre:dev" )
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.72-GTNH:dev" )
 }
