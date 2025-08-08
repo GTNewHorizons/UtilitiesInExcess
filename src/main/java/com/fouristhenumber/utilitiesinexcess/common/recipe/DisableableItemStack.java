@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import java.util.ArrayList;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -29,7 +30,7 @@ public class DisableableItemStack {
     }
 
     public static boolean isEnabled(Object disableable) {
-        if (disableable instanceof ModItems mi) return mi.isEnabled();
+        if (disableable instanceof ModItems mi) return mi.isEnabled() || ItemConfig.registerDisabledItems;
         if (disableable instanceof ModBlocks mb) return mb.isEnabled();
         if (disableable instanceof DisableableItemStack dstack) return isEnabled(dstack.disableable);
         return true;
