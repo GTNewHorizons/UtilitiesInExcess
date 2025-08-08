@@ -14,7 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 public class BlockPureLove extends BlockContainer {
 

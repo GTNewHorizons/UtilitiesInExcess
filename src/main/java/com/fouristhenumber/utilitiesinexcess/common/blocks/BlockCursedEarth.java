@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 
 public class BlockCursedEarth extends Block {
 
@@ -77,7 +77,7 @@ public class BlockCursedEarth extends Block {
         if (!world.getGameRules()
             .getGameRuleBooleanValue("doMobSpawning")) return;
         if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
-        if (random.nextInt(100) >= BlockConfig.cursedEarth.cursedEarthSpawnRate) return;
+        if (random.nextInt(100) >= CursedEarthConfig.cursedEarthSpawnRate) return;
 
         AxisAlignedBB spawnArea = AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
         List<EntityLiving> entitiesAbove = world.getEntitiesWithinAABB(EntityLiving.class, spawnArea);
