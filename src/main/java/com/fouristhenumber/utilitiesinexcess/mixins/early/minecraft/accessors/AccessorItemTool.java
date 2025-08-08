@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(ItemTool.class)
 public interface AccessorItemTool {
 
-    @Accessor(value = "damageVsEntity", remap = false)
+    @Accessor(value = "damageVsEntity")
     public float getDamageVsEntity_uie();
 
-    @Accessor(value = "damageVsEntity", remap = false)
+    @Accessor(value = "damageVsEntity")
     public void setDamageVsEntity_uie(float value);
 }

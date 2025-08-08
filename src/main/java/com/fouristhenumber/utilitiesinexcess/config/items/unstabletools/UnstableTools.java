@@ -14,13 +14,13 @@ public class UnstableTools {
         ConfigurationManager.registerConfig(UnstableTools.class);
         ConfigurationManager.registerConfig(GluttonsAxeConfig.class);
         ConfigurationManager.registerConfig(EthericSwordConfig.class);
+        ConfigurationManager.registerConfig(AntiParticulateShovelConfig.class);
     }
 
     @Config.DefaultBoolean(true)
     public static boolean enableDestructionPickaxe;
 
-    @Config.DefaultBoolean(true)
-    public static boolean enableAntiParticulateShovel;
+
 
     @Config.DefaultBoolean(true)
     public static boolean enablePrecisionShears;

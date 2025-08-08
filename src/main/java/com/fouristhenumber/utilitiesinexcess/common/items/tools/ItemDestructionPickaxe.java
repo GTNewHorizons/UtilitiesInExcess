@@ -20,6 +20,7 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
     }
 
     // Equivalent to getEfficiencyOnBlock
+    @Override
     public float func_150893_a(ItemStack itemStack, Block block) {
         // Why specifically 0.5?
         // Maybe change it from stone to other materials too, ie sandstone, etr stone variations,etc

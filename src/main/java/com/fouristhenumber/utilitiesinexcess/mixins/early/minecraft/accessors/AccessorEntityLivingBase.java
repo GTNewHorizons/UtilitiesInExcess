@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityLivingBase.class)
 public interface AccessorEntityLivingBase {
 
-    @Accessor(value = "lastDamage", remap = false)
+    @Accessor(value = "lastDamage")
     public float getLastDamage_uie();
 
-    @Accessor(value = "lastDamage", remap = false)
+    @Accessor(value = "lastDamage")
     public void setLastDamage_uie(float value);
 }

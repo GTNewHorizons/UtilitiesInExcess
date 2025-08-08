@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -25,7 +27,7 @@ public enum ModItems {
     // make sure to leave a trailing comma
     GLUTTONS_AXE(GluttonsAxeConfig.enable, new ItemGluttonsAxe(), "gluttons_axe"),
     DESTRUCTION_PICKAXE(UnstableTools.enableDestructionPickaxe, new ItemDestructionPickaxe(), "destruction_pickaxe"),
-    ANTI_PARTICULATE_SHOVEL(UnstableTools.enableAntiParticulateShovel, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
+    ANTI_PARTICULATE_SHOVEL(AntiParticulateShovelConfig.enable, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
     PRECISION_SHEARS(UnstableTools.enablePrecisionShears, new ItemPrecisionShears(), "precision_shears"),
     ETHERIC_SWORD(EthericSwordConfig.enable, new ItemEthericSword(), "etheric_sword"),
     REVERSING_HOE(UnstableTools.enableReversingHoe, new ItemReversingHoe(), "reversing_hoe"),
@@ -38,16 +40,19 @@ public enum ModItems {
 
     public static final ModItems[] VALUES = values();
 
+    private static final ItemDisabled disabledItem=new ItemDisabled();
+
     public static void init() {
         for (ModItems item : VALUES) {
             if (item.isEnabled()) {
                 GameRegistry.registerItem(item.get(), item.name);
             }
+            else GameRegistry.registerItem(disabledItem,item.name);
         }
     }
 
-    final private boolean isEnabled;
-    final private Item theItem;
+    private final boolean isEnabled;
+    private final Item theItem;
     private final String name;
 
     ModItems(boolean enabled, Item item, String name) {
