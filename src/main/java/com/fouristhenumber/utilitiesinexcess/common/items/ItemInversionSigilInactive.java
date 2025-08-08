@@ -1,7 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -13,6 +15,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 
@@ -126,27 +129,40 @@ public class ItemInversionSigilInactive extends Item {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onLivingDeath(LivingDeathEvent evt) {
-        World world = evt.entityLiving.worldObj;
+    public void onLivingDrops(LivingDropsEvent event) {
+        if (event.entityLiving instanceof EntityWither) {
+            event.drops.add(
+                new EntityItem(
+                    event.entityLiving.worldObj,
+                    event.entityLiving.posX,
+                    event.entityLiving.posY,
+                    event.entityLiving.posZ,
+                    new ItemStack(this, 1)));
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void onLivingDeath(LivingDeathEvent event) {
+        World world = event.entityLiving.worldObj;
 
         if (world.isRemote) return;
 
         if (!isWithinMidnightWindow(world.getWorldTime())) return;
 
-        if (!(evt.entityLiving instanceof EntityAnimal)) return;
+        if (!(event.entityLiving instanceof EntityAnimal)) return;
 
         EntityPlayer player = null;
-        if (evt.source != null && evt.source.getSourceOfDamage() instanceof EntityPlayer) {
-            player = (EntityPlayer) evt.source.getSourceOfDamage();
+        if (event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer) {
+            player = (EntityPlayer) event.source.getSourceOfDamage();
         }
 
         if (player == null) return;
         if (!player.inventory.hasItem(this)) return;
 
         int radius = ENCHANT_TABLE_SEARCH_RADIUS;
-        int mobX = (int) Math.floor(evt.entityLiving.posX);
-        int mobY = (int) Math.floor(evt.entityLiving.posY);
-        int mobZ = (int) Math.floor(evt.entityLiving.posZ);
+        int mobX = (int) Math.floor(event.entityLiving.posX);
+        int mobY = (int) Math.floor(event.entityLiving.posY);
+        int mobZ = (int) Math.floor(event.entityLiving.posZ);
 
         int tableX = 0, tableY = 0, tableZ = 0;
         boolean found = false;

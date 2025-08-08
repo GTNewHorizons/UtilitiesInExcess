@@ -37,9 +37,9 @@ public class RecipeLoader {
                 'd',
                 Items.diamond);
         }
-        if (diamondStickEnabled && invertedIngotEnabled && ModItems.HUNGER_AXE.isEnabled()) {
+        if (diamondStickEnabled && invertedIngotEnabled && ModItems.GLUTTONS_AXE.isEnabled()) {
             GameRegistry.addRecipe(
-                new ItemStack(ModItems.HUNGER_AXE.get(), 1),
+                new ItemStack(ModItems.GLUTTONS_AXE.get(), 1),
                 "ii",
                 "is",
                 " s",
