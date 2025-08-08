@@ -20,7 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class ItemInversionSigil extends Item {
+public class ItemInversionSigilInactive extends Item {
 
     private static final int MIDNIGHT = 18000;
     private static final int WINDOW_TICKS = 1000;
@@ -35,10 +35,9 @@ public class ItemInversionSigil extends Item {
     public static Block cursedEarthBlock = (ModBlocks.CURSED_EARTH.isEnabled() ? ModBlocks.CURSED_EARTH.get()
         : Blocks.dirt);
 
-    public ItemInversionSigil() {
+    public ItemInversionSigilInactive() {
         setTextureName("utilitiesinexcess:inversion_sigil_inactive");
         setUnlocalizedName("inversion_sigil_inactive");
-        setMaxDamage(0);
         setMaxStackSize(1);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -108,8 +107,8 @@ public class ItemInversionSigil extends Item {
 
     private boolean countNearbyGrass(World world, int cx, int cy, int cz) {
         int count = 0;
-        for (int dx = -ItemInversionSigil.GRASS_SEARCH_RADIUS; dx <= ItemInversionSigil.GRASS_SEARCH_RADIUS; dx++) {
-            for (int dz = -ItemInversionSigil.GRASS_SEARCH_RADIUS; dz <= ItemInversionSigil.GRASS_SEARCH_RADIUS; dz++) {
+        for (int dx = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx++) {
+            for (int dz = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dz <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dz++) {
                 for (int dy = -1; dy <= 1; dy++) {
                     int bx = cx + dx;
                     int by = cy + dy;
