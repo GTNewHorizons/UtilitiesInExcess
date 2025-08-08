@@ -1,34 +1,35 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
-import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeMembershipCheck;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
+import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 
 public class SoundVolumeChecks {
 
-    VolumeMembershipCheck volumeCheckRain = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
-    VolumeMembershipCheck volumeCheckSound = new VolumeMembershipCheck(VolumeMembershipCheck.VolumeShape.CUBE);
+    ArrayProximityCheck4D volumeCheckRain = new ArrayProximityCheck4D(VolumeShape.CUBE);
+    ArrayProximityCheck4D volumeCheckSound = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
     public void putSoundMuffler(int dim, int x, int y, int z) {
-        volumeCheckSound.putVolume(dim, x, y, z, BlockConfig.soundMuffler.soundMufflerRange);
+        volumeCheckSound.put(dim, x, y, z, BlockConfig.soundMuffler.soundMufflerRange);
     }
 
     public void removeSoundMuffler(int dim, int x, int y, int z) {
-        volumeCheckSound.removeVolume(dim, x, y, z);
+        volumeCheckSound.remove(dim, x, y, z);
     }
 
     public void putRainMuffler(int dim, int x, int y, int z) {
-        volumeCheckRain.putVolume(dim, x, y, z, BlockConfig.rainMuffler.rainMufflerRange);
+        volumeCheckRain.put(dim, x, y, z, BlockConfig.rainMuffler.rainMufflerRange);
     }
 
     public void removeRainMuffler(int dim, int x, int y, int z) {
-        volumeCheckRain.removeVolume(dim, x, y, z);
+        volumeCheckRain.remove(dim, x, y, z);
     }
 
     public boolean isInRainMufflerRange(int dim, double x, double y, double z) {
-        return volumeCheckRain.isInVolume(dim, x, y, z);
+        return volumeCheckRain.isInRange(dim, x, y, z);
     }
 
     public boolean isInSoundMufflerRange(int dim, double x, double y, double z) {
-        return volumeCheckSound.isInVolume(dim, x, y, z);
+        return volumeCheckSound.isInRange(dim, x, y, z);
     }
 }

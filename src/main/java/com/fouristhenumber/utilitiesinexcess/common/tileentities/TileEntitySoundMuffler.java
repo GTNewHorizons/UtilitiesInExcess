@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;

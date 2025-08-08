@@ -61,8 +61,8 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLove");
         GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
         GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
-        GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMuffler");
-        GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMuffler");
+        GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
+        GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
     }
 
     @Mod.EventHandler

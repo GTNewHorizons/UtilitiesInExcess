@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 public class BlockRainMuffler extends BlockContainer {
 

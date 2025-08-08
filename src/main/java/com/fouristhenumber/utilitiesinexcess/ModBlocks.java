@@ -20,7 +20,6 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShr
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 
