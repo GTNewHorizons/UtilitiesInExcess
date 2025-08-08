@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.awakenedInversionDurability;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -34,7 +36,7 @@ public class ItemInversionSigilActive extends Item {
         ItemStack stack = new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get(), 1);
 
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger(DURABILITY_NBT_KEY, 256);
+        tag.setInteger(DURABILITY_NBT_KEY, awakenedInversionDurability);
         stack.setTagCompound(tag);
         return stack;
     }
@@ -46,6 +48,8 @@ public class ItemInversionSigilActive extends Item {
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
+        if (awakenedInversionDurability == 0) return itemStack;
+
         NBTTagCompound tag = itemStack.getTagCompound();
         if (tag == null) return null;
 
@@ -60,7 +64,7 @@ public class ItemInversionSigilActive extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tt, boolean p_77624_4_) {
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null) {
+        if (tag != null && awakenedInversionDurability != 0) {
             tt.add(
                 StatCollector
                     .translateToLocalFormatted("item.inversion_sigil_active.desc", tag.getInteger(DURABILITY_NBT_KEY)));

@@ -137,6 +137,7 @@ tile.cursed_earth.desc=Spawns mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
+utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
 
 shift_for_description=Hold shift for description...
 

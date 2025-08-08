@@ -19,13 +19,8 @@ public class ItemConfig {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
         ConfigurationManager.registerConfig(WateringCanConfig.class);
+        ConfigurationManager.registerConfig(InversionConfig.class);
     }
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableInversionSigil;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableInvertedIngot;
 
     @Config.DefaultBoolean(true)
     public static boolean enableDiamondStick;
