@@ -1,18 +1,22 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
+
+import akka.japi.Pair;
 
 public class ItemDestructionPickaxe extends ItemPickaxe {
 
@@ -23,12 +27,37 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
         if (DestructionPickaxeConfig.unbreakable) setMaxDamage(0);
     }
 
-    // Equivalent to getEfficiencyOnBlock
+    private final static HashMap<String, Pattern> compiledPatterns = new HashMap<>();
+    private final static HashMap<Pair<String, String>, Boolean> resultLookup = new HashMap<>();
+
+    public static boolean blockMatches(String name, String pattern) {
+        // Prob can be made cleaner
+        if (!compiledPatterns.containsKey(name)) {
+            String replaceWildcard = pattern.replace(".", "\\.")
+                .replace("*", ".*?")
+                .replace("(", "\\(")
+                .replace(")", "\\)");
+            compiledPatterns.put(pattern, Pattern.compile(replaceWildcard));
+        }
+        Pattern p = compiledPatterns.get(pattern);
+        if (!resultLookup.containsKey(new Pair<>(pattern, name))) {
+            boolean res = p.matcher(name)
+                .matches();
+            resultLookup.put(new Pair<>(pattern, name), res);
+        }
+        return resultLookup.get(new Pair<>(pattern, name));
+    }
+
     @Override
-    public float func_150893_a(ItemStack itemStack, Block block) {
+    public float getDigSpeed(ItemStack stack, Block block, int meta) {
         // Why specifically 0.5?
         // Maybe change it from stone to other materials too, ie sandstone, etr stone variations,etc
-        return block == Blocks.stone ? this.efficiencyOnProperMaterial * 5 : 0.5F;
+        var i = DestructionPickaxeConfig.includeEffective;
+        var w = DestructionPickaxeConfig.excludeEffective;
+        var name = block.delegate.name();
+        for (String s : w) if (Objects.equals(s, name)) return 0.5f;
+        for (String s : i) if (blockMatches(name, s)) return this.efficiencyOnProperMaterial * 5;
+        return 0.5F;
     }
 
     @Override
