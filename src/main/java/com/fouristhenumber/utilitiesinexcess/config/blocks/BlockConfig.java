@@ -52,6 +52,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableSignificantlyShrunkChest;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableTradingPost;
+
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
 

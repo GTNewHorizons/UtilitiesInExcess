@@ -171,3 +171,5 @@ tile.rain_muffler.desc.3=Right click to toggle weather sounds globally
 tile.rain_muffler.chat.global_enable=You dull your senses to the sound of the rain
 tile.rain_muffler.chat.global_disable=You become aware of the sound of the rain
 
+tile.trading_post.name=Trading Post
+tile.trading_post.desc=Trade with nearby villagers in one block
