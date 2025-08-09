@@ -22,7 +22,6 @@ public class BlockLapisAetherius extends Block {
     public BlockLapisAetherius() {
         super(Material.glass);
         setBlockName("lapis_aetherius");
-        // setLightLevel(0.1F);
         setLightOpacity(0);
         setHardness(1);
         setResistance(8F);
