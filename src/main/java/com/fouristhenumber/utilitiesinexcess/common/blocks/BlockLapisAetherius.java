@@ -1,27 +1,31 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLapisAetherius extends Block {
 
     public BlockLapisAetherius() {
         super(Material.glass);
         setBlockName("lapis_aetherius");
-        setLightLevel(0.1F);
+        // setLightLevel(0.1F);
+        setLightOpacity(0);
+        setHardness(1);
+        setResistance(8F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -37,8 +41,18 @@ public class BlockLapisAetherius extends Block {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+    public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
+        return true;
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        return 10;
+    }
+
+    @Override
+    public int getLightValue() {
+        return 10;
     }
 
     @SideOnly(Side.CLIENT)

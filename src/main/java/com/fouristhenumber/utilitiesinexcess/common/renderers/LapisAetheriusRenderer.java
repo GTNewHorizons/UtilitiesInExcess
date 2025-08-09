@@ -1,12 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
+
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
 
@@ -16,34 +19,17 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         Tessellator tess = Tessellator.instance;
 
         renderer.setRenderBoundsFromBlock(block);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         tess.startDrawingQuads();
-        tess.setNormal(0, -1, 0);
-        renderer.renderFaceYNeg(block, 0, 0, 0, block.getIcon(0, metadata));
-        tess.draw();
 
-        tess.startDrawingQuads();
         tess.setNormal(0, 1, 0);
+        renderer.renderFaceYNeg(block, 0, 0, 0, block.getIcon(0, metadata));
         renderer.renderFaceYPos(block, 0, 0, 0, block.getIcon(1, metadata));
-        tess.draw();
-
-        tess.startDrawingQuads();
-        tess.setNormal(0, 0, -1);
         renderer.renderFaceZNeg(block, 0, 0, 0, block.getIcon(2, metadata));
-        tess.draw();
-
-        tess.startDrawingQuads();
-        tess.setNormal(0, 0, 1);
         renderer.renderFaceZPos(block, 0, 0, 0, block.getIcon(3, metadata));
-        tess.draw();
-
-        tess.startDrawingQuads();
-        tess.setNormal(-1, 0, 0);
         renderer.renderFaceXNeg(block, 0, 0, 0, block.getIcon(4, metadata));
-        tess.draw();
-
-        tess.startDrawingQuads();
-        tess.setNormal(1, 0, 0);
         renderer.renderFaceXPos(block, 0, 0, 0, block.getIcon(5, metadata));
         tess.draw();
 
@@ -51,20 +37,22 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId, RenderBlocks renderer) {
-        GL11.glPushAttrib(GL11.GL_LIGHTING_BIT | GL11.GL_CURRENT_BIT);
-        GL11.glDisable(GL11.GL_LIGHTING);
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+        RenderBlocks renderer) {
+        Tessellator tess = Tessellator.instance;
 
-        renderer.setRenderBoundsFromBlock(block);
-        renderer.renderFaceYNeg(block, x, y, z, block.getIcon(0, 0));
-        renderer.renderFaceYPos(block, x, y, z, block.getIcon(1, 0));
-        renderer.renderFaceZNeg(block, x, y, z, block.getIcon(2, 0));
-        renderer.renderFaceZPos(block, x, y, z, block.getIcon(3, 0));
-        renderer.renderFaceXNeg(block, x, y, z, block.getIcon(4, 0));
-        renderer.renderFaceXPos(block, x, y, z, block.getIcon(5, 0));
+        tess.setBrightness(240);
+        tess.setColorOpaque_F(1F, 1F, 1F);
 
-        GL11.glPopAttrib();
+        int meta = world.getBlockMetadata(x, y, z);
+
+        renderer.renderFaceYNeg(block, x, y, z, block.getIcon(0, meta));
+        renderer.renderFaceYPos(block, x, y, z, block.getIcon(1, meta));
+        renderer.renderFaceZNeg(block, x, y, z, block.getIcon(2, meta));
+        renderer.renderFaceZPos(block, x, y, z, block.getIcon(3, meta));
+        renderer.renderFaceXNeg(block, x, y, z, block.getIcon(4, meta));
+        renderer.renderFaceXPos(block, x, y, z, block.getIcon(5, meta));
+
         return true;
     }
 
