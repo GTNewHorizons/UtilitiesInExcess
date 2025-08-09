@@ -48,8 +48,8 @@ public enum ModItems {
     INVERSION_SIGIL_ACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new Item().setUnlocalizedName("inverted_ingot").setTextureName("utilitiesinexcess:inverted_ingot"), "inverted_ingot"),
     DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
-    ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(16), "architectsWand");
-
+    ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(16), "architectsWand"),
+    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new Item().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot")
 
     ; // leave trailing semicolon
     // spotless:on

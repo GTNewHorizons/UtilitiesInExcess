@@ -46,7 +46,11 @@ tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
+tile.inverted_block.name=Inverted Block
+tile.bedrockium_block.name=Block of Bedrockium
+
 item.inverted_ingot.name=Inverted Ingot
+item.bedrockium_ingot.name=Bedrockium Ingot
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
