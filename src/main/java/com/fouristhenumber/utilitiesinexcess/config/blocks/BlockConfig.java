@@ -116,4 +116,20 @@ public class BlockConfig {
         @Config.RangeInt(min = 1, max = 256)
         public int rainMufflerRange;
     }
+
+    @Config.Comment("Cursed Earth Configuration")
+    public static final Spikes spikes = new Spikes();
+
+    @Config.LangKey("utilitiesinexcess.config.block.spikes")
+    public static class Spikes {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableWoodenSpike;
+        @Config.DefaultBoolean(true)
+        public boolean enableIronSpike;
+        @Config.DefaultBoolean(true)
+        public boolean enableGoldSpike;
+        @Config.DefaultBoolean(true)
+        public boolean enableDiamondSpike;
+    }
 }

@@ -22,13 +22,12 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShr
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource.spikeTypes;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource.spikeTypes;
-import com.fouristhenumber.utilitiesinexcess.config.BlockConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -55,11 +54,11 @@ public enum ModBlocks {
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), BlockSignificantlyShrunkChest.ItemBlockSignificantlyShrunkChest.class, "significantly_shrunk_chest"),
     CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
-    INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block")
-    SPIKE_WOOD(BlockConfig.enableWoodSpike, new BlockSpike(spikeTypes.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
-    SPIKE_IRON(BlockConfig.enableIronSpike, new BlockSpike(spikeTypes.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
-    SPIKE_GOLD(BlockConfig.enableGoldSpike, new BlockSpike(spikeTypes.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
-    SPIKE_DIAMOND(BlockConfig.enableDiamondSpike, new BlockSpike(spikeTypes.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
+    INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
+    SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(spikeTypes.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
+    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(spikeTypes.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
+    SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(spikeTypes.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
+    SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(spikeTypes.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
 
     ; // leave trailing semicolon
     // spotless:on
