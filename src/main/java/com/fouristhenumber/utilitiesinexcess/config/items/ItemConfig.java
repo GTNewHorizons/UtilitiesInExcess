@@ -33,4 +33,7 @@ public class ItemConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableArchitectsWand;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableBedrockium;
 }
