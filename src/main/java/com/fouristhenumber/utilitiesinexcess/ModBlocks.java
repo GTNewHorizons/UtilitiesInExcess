@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTradingPost;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -19,6 +18,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;

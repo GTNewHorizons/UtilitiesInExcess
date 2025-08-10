@@ -1,8 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -13,7 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.List;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 
 public class BlockTradingPost extends BlockContainer {
 
@@ -26,9 +26,8 @@ public class BlockTradingPost extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer playerIn, int side, float hitX,
         float hitY, float hitZ) {
-        if(worldIn.isRemote)
-        {
-            TileEntityTradingPost te=(TileEntityTradingPost)worldIn.getTileEntity(x,y,z);
+        if (worldIn.isRemote) {
+            TileEntityTradingPost te = (TileEntityTradingPost) worldIn.getTileEntity(x, y, z);
             te.updateCachedTrades(playerIn);
         }
         if (!worldIn.isRemote) {
@@ -39,7 +38,7 @@ public class BlockTradingPost extends BlockContainer {
         return true;
     }
 
-    //Does this need to be a tile entity?
+    // Does this need to be a tile entity?
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityTradingPost();

@@ -1,187 +1,167 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
+import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
+import net.minecraft.village.MerchantRecipe;
+import net.minecraft.village.MerchantRecipeList;
+
+import org.lwjgl.opengl.GL11;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.mixins.early.minecraft.GuiContainerAccessor;
-import com.cleanroommc.modularui.mixins.early.minecraft.GuiScreenAccessor;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
-import com.cleanroommc.modularui.utils.GlStateManager;
+import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.value.ObjectValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.village.MerchantRecipe;
-import net.minecraft.village.MerchantRecipeList;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL30;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
 
+    public static class TradeWidget extends ParentWidget<TradeWidget> {
 
-    public static class TradeWidget extends ParentWidget<TradeWidget>
-    {
         private final ArrayList<CachedMerchantTrade> trades;
         private final int index;
 
-        public TradeWidget(ArrayList<CachedMerchantTrade> trades, int index)
-        {
+        @Override
+        public void onUpdate() {
+            super.onUpdate();
+            // this.getContext().isMouseAbove(this);
+            if (isBelowMouse()) clientVillager = getMerchantEntity();
+
+        }
+
+        public EntityLivingBase getMerchantEntity() {
+            return (EntityLivingBase) getTrade().getMerchant();
+        }
+
+        public CachedMerchantTrade getTrade() {
+            return trades.get(index);
+        }
+
+        public TradeWidget(ArrayList<CachedMerchantTrade> trades, int index) {
             this.trades = trades;
             this.index = index;
             this.coverChildren();
 
-            Flow inputItems=new Row().childPadding(5).coverChildren()
-                    .child(new ItemDisplayWidget().displayAmount(true).item(new ObjectValue.Dynamic<>(()->trades.get(index).getInput1(),v->{})))
-                    .child(new ItemDisplayWidget().displayAmount(true).item(new ObjectValue.Dynamic<>(()->trades.get(index).getInput2(),v->{})));
+            Flow inputItems = new Row().childPadding(5)
+                .coverChildren()
+                .child(
+                    new ItemDisplayWidget().displayAmount(true)
+                        .item(new ObjectValue.Dynamic<>(() -> getTrade().getInput1(), v -> {})))
+                .child(
+                    new ItemDisplayWidget().displayAmount(true)
+                        .item(new ObjectValue.Dynamic<>(() -> getTrade().getInput2(), v -> {})));
 
-            ProgressWidget progress=new ProgressWidget().direction(ProgressWidget.Direction.RIGHT).texture(GuiTextures.PROGRESS_ARROW,20)
-                    .progress(()->{
-                        var trade=trades.get(index);
-                        return 1-(trade.currentUses/(double)trade.maxUses);
-                    })
-                    ;
+            ProgressWidget progress = new ProgressWidget().direction(ProgressWidget.Direction.RIGHT)
+                .texture(GuiTextures.PROGRESS_ARROW, 20)
+                .progress(() -> {
+                    var trade = getTrade();
+                    return 1 - (trade.currentUses / (double) trade.maxUses);
+                });
 
-            Flow wholeRow=new Row().coverChildren().childPadding(2)
-                    .child(inputItems)
-                    .child(progress)
-                    .child(new ItemDisplayWidget().displayAmount(true).item(new ObjectValue.Dynamic<>(()->trades.get(index).getOutput(),v->{})));
-                    ;
-
+            Flow wholeRow = new Row().coverChildren()
+                .childPadding(2)
+                .child(inputItems)
+                .child(progress)
+                .child(
+                    new ItemDisplayWidget().displayAmount(true)
+                        .item(new ObjectValue.Dynamic<>(() -> getTrade().getOutput(), v -> {})));;
 
             this.child(wholeRow);
         }
     }
 
     public static class TradeGrid extends Grid {
+
         private final ArrayList<CachedMerchantTrade> trades;
 
-        public TradeGrid(ArrayList<CachedMerchantTrade> trades)
-        {
+        public TradeGrid(ArrayList<CachedMerchantTrade> trades) {
             this.trades = trades;
-            this.mapTo(1, trades.size(),index->new TradeWidget(this.trades,index).padding(5,5));
-            //this.row(n);
+            this.mapTo(1, trades.size(), index -> new TradeWidget(this.trades, index).padding(5, 5));
+            // this.row(n);
         }
     }
-    public static class EntityDisplay extends Widget<EntityDisplay>
-    {
+
+    public static class EntityDisplay extends Widget<EntityDisplay> {
+
         private final Supplier<EntityLivingBase> entitySupplier;
+        private final boolean lookAtMouse;
+        private final float mouseFollowStrength;
 
-        public EntityDisplay(Supplier<EntityLivingBase> e)
-        {
+        public EntityDisplay(Supplier<EntityLivingBase> e, boolean lookAtMouse, float mouseFollowStrength) {
             this.entitySupplier = e;
-            this.size(18,36);
+            this.lookAtMouse = lookAtMouse;
+            this.mouseFollowStrength = mouseFollowStrength;
+            this.size(18, 36);
         }
-        public static void drawEntity(int x,int y,int scale,float lookAtX,float lookAtY,EntityLivingBase e,int z,ModularGuiContext context)
-        {
-            GL11.glColor4f(1,1,1,1);
-            //GuiInventory.func_147046_a(x,y,scale,0,0,e );
-            //int p_147046_0_, int p_147046_1_, int p_147046_2_, float p_147046_3_, float p_147046_4_, EntityLivingBase p_147046_5_
-            final int p_147046_0_=x;
-            final int p_147046_1_=y;
-            final int p_147046_2_=scale;
-            final float p_147046_3_=lookAtX;
-            final float p_147046_4_=lookAtY;
-            final EntityLivingBase p_147046_5_=e;
 
-
-            GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-            GL11.glPushMatrix();
-            //GL11.glTranslatef((float)p_147046_0_, (float)p_147046_1_, z);
-
-            float f2 = p_147046_5_.renderYawOffset;
-            float f3 = p_147046_5_.rotationYaw;
-            float f4 = p_147046_5_.rotationPitch;
-            float f5 = p_147046_5_.prevRotationYawHead;
-            float f6 = p_147046_5_.rotationYawHead;
-            //GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
-            RenderHelper.enableGUIStandardItemLighting();
-            //GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-            //GL11.glRotatef(-((float)Math.atan((double)(p_147046_4_ / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-            p_147046_5_.renderYawOffset = (float)Math.atan((double)(p_147046_3_ / 40.0F)) * 20.0F;
-            p_147046_5_.rotationYaw = (float)Math.atan((double)(p_147046_3_ / 40.0F)) * 40.0F;
-            p_147046_5_.rotationPitch = -((float)Math.atan((double)(p_147046_4_ / 40.0F))) * 20.0F;
-            p_147046_5_.rotationYawHead = p_147046_5_.rotationYaw;
-            p_147046_5_.prevRotationYawHead = p_147046_5_.rotationYaw;
-            //GL11.glTranslatef(0.0F, p_147046_5_.yOffset, 0.0F);
-            RenderManager.instance.playerViewY = 180.0F;
-            context.applyToOpenGl();
-            GL11.glScalef((float)(-p_147046_2_), (float)p_147046_2_, (float)p_147046_2_);
-            GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-            RenderManager.instance.renderEntityWithPosYaw(p_147046_5_, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-            p_147046_5_.renderYawOffset = f2;
-            p_147046_5_.rotationYaw = f3;
-            p_147046_5_.rotationPitch = f4;
-            p_147046_5_.prevRotationYawHead = f5;
-            p_147046_5_.rotationYawHead = f6;
-            GL11.glPopMatrix();
-            RenderHelper.disableStandardItemLighting();
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-
-
-
+        public static void drawEntity(int x, int y, int scale, EntityLivingBase e, boolean lookAtMouse, float mouseX,
+            float mouseY, float mouseFollowStrength) {
+            if (e == null) return;
+            GL11.glColor4f(1, 1, 1, 1);
+            Platform.setupDrawItem();
+            float yawX = 0;
+            float pitchY = 0;
+            if (lookAtMouse) {
+                yawX = -mouseX;
+                pitchY -= mouseY;
+                yawX /= scale;
+                pitchY /= scale;
+                yawX *= mouseFollowStrength;
+                pitchY *= mouseFollowStrength;
+            }
+            // TODO: figure out if u can somehow turn off shadows without mixins
+            GuiInventory.func_147046_a(x, y, scale, yawX, pitchY, e);
+            Platform.endDrawItem();
         }
 
         @Override
         public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
-            EntityLivingBase e=entitySupplier.get();
-            //ItemSlot;
-            //TODO: not working
-            var area=this.getArea();
-            drawEntity(0,0,10,0,0,e,area.z(),context);
-
+            EntityLivingBase e = entitySupplier.get();
+            Area area = this.getArea();
+            drawEntity(
+                +area.width / 2,
+                area.height,
+                area.width,
+                e,
+                this.lookAtMouse,
+                context.getMouseX(),
+                context.getMouseY(),
+                mouseFollowStrength);
         }
     }
 
-    public EntityVillager clientVillager;
+    public static EntityLivingBase clientVillager;
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        int w=176;
-        int h=166;
-        ModularPanel panel = ModularPanel.defaultPanel("trading_post",w, h);
+        int w = 176;
+        int h = 166;
+        ModularPanel panel = ModularPanel.defaultPanel("trading_post", w, h);
         panel.bindPlayerInventory();
         // Add title
         panel.child(
@@ -194,16 +174,18 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                         .marginRight(5)
                         .marginTop(5)
                         .marginBottom(-15)));
-        panel.child(new TradeGrid(clientCachedTrades).marginTop(12).size(w-8-77,h-12-8-80).scrollable());
-        panel.child(new EntityDisplay(()->clientVillager ));
+        panel.child(
+            new TradeGrid(clientCachedTrades).marginTop(12)
+                .size(w - 8 - 77, h - 12 - 8 - 80)
+                .scrollable());
+        panel.child(
+            new EntityDisplay(() -> clientVillager, true, 20).size(36, 36 * 2)
+                .margin(115, 10));
         return panel;
     }
 
+    public final static class CachedMerchantTrade {
 
-
-
-    public final static class CachedMerchantTrade
-    {
         private final MerchantRecipe recipe;
         private final IMerchant merchant;
         private ItemStack input1;
@@ -211,79 +193,80 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         private ItemStack output;
         private int currentUses;
         private int maxUses;
-        public  ItemStack getInput1()
-        {
+
+        public IMerchant getMerchant() {
+            return merchant;
+        }
+
+        public ItemStack getInput1() {
             updateCache();
             return input1;
         }
-        public  ItemStack getInput2()
-        {
+
+        public ItemStack getInput2() {
             updateCache();
             return input2;
         }
-        public  ItemStack getOutput()
-        {
+
+        public ItemStack getOutput() {
             updateCache();
             return output;
         }
-        public  int getCurrentUses()
-        {
+
+        public int getCurrentUses() {
             updateCache();
             return currentUses;
         }
-        public  int getMaxUses()
-        {
+
+        public int getMaxUses() {
             updateCache();
             return maxUses;
         }
-        public boolean isRecipeDisabled()
-        {
+
+        public boolean isRecipeDisabled() {
             updateCache();
-            return getCurrentUses() >= getMaxUses() || merchant==null;
+            return getCurrentUses() >= getMaxUses() || merchant == null;
         }
 
-        public final void updateCache()
-        {
-            if(recipe==null)return;
-            AccessorMerchantRecipe accessorTrade=(AccessorMerchantRecipe)recipe;
-            input1=recipe.getItemToBuy();
-            input2=recipe.getSecondItemToBuy();
-            output=recipe.getItemToSell();
-            currentUses=accessorTrade.getCurrentUses();
-            maxUses=accessorTrade.getMaxUses();
+        public final void updateCache() {
+            if (recipe == null) return;
+            AccessorMerchantRecipe accessorTrade = (AccessorMerchantRecipe) recipe;
+            input1 = recipe.getItemToBuy();
+            input2 = recipe.getSecondItemToBuy();
+            output = recipe.getItemToSell();
+            currentUses = accessorTrade.getCurrentUses();
+            maxUses = accessorTrade.getMaxUses();
         }
 
-        public CachedMerchantTrade(MerchantRecipe trade,IMerchant merchant)
-        {
-            recipe=trade;
-            this.merchant=merchant;
+        public CachedMerchantTrade(MerchantRecipe trade, IMerchant merchant) {
+            recipe = trade;
+            this.merchant = merchant;
             updateCache();
         }
     }
 
+    public final ArrayList<CachedMerchantTrade> clientCachedTrades = new ArrayList<>();
 
-    public final ArrayList<CachedMerchantTrade> clientCachedTrades=new ArrayList<>();
-
-
-    public void updateCachedTrades(EntityPlayer player)
-    {
-        if(!getWorldObj().isRemote)return;
-        AxisAlignedBB box=AxisAlignedBB.getBoundingBox(xCoord-32,yCoord-getWorldObj().getHeight(),zCoord-32,xCoord+getWorldObj().getHeight(),yCoord+32,zCoord+32);
-        List<IMerchant> foundMerchants = worldObj.getEntitiesWithinAABB(IMerchant.class,box);
+    public void updateCachedTrades(EntityPlayer player) {
+        if (!getWorldObj().isRemote) return;
+        AxisAlignedBB box = AxisAlignedBB.getBoundingBox(
+            xCoord - 32,
+            yCoord - getWorldObj().getHeight(),
+            zCoord - 32,
+            xCoord + getWorldObj().getHeight(),
+            yCoord + 32,
+            zCoord + 32);
+        List<IMerchant> foundMerchants = worldObj.getEntitiesWithinAABB(IMerchant.class, box);
         clientCachedTrades.clear();
-        for (IMerchant merchant : foundMerchants)
-        {
-            clientVillager=(EntityVillager)merchant;
-            MerchantRecipeList allTrades=merchant.getRecipes(player);
+        for (IMerchant merchant : foundMerchants) {
+            MerchantRecipeList allTrades = merchant.getRecipes(player);
             for (Object _trade : allTrades) {
-                MerchantRecipe trade=(MerchantRecipe)_trade;
-                CachedMerchantTrade cachedTrade=new CachedMerchantTrade(trade,merchant);
+                MerchantRecipe trade = (MerchantRecipe) _trade;
+                CachedMerchantTrade cachedTrade = new CachedMerchantTrade(trade, merchant);
                 clientCachedTrades.add(cachedTrade);
             }
         }
     }
-
-
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -294,6 +277,5 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
     }
-
 
 }
