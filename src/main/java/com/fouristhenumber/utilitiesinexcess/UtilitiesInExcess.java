@@ -13,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainM
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
@@ -63,6 +64,8 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+        GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
+
     }
 
     @Mod.EventHandler

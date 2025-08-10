@@ -31,7 +31,6 @@ public class BlockTradingPost extends BlockContainer {
             te.updateCachedTrades(playerIn);
         }
         if (!worldIn.isRemote) {
-
             GuiFactories.tileEntity()
                 .open(playerIn, x, y, z);
         }
