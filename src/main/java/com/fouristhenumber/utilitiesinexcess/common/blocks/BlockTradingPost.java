@@ -26,11 +26,8 @@ public class BlockTradingPost extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer playerIn, int side, float hitX,
         float hitY, float hitZ) {
-        if (worldIn.isRemote) {
-            TileEntityTradingPost te = (TileEntityTradingPost) worldIn.getTileEntity(x, y, z);
-            te.updateCachedTrades(playerIn);
-        }
         if (!worldIn.isRemote) {
+            TileEntityTradingPost te = (TileEntityTradingPost) worldIn.getTileEntity(x, y, z);
             GuiFactories.tileEntity()
                 .open(playerIn, x, y, z);
         }
@@ -40,7 +37,7 @@ public class BlockTradingPost extends BlockContainer {
     // Does this need to be a tile entity?
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityTradingPost();
+        return new TileEntityTradingPost(world);
     }
 
     public static class ItemBlockTradingPost extends ItemBlock {

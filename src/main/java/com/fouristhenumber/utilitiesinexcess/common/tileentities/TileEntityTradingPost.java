@@ -1,20 +1,24 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost.TradeWidget.sortTradesList;
+import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost.TradeWidget.sortTradesList_;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.function.Supplier;
 
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
@@ -38,6 +42,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
@@ -48,26 +53,23 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
-import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
 
-    public TileEntityTradingPost() {
-        super();
-        if (!this.worldObj.isRemote) clientCachedTrades = new HashMap<>();
-    }
-
     private static class TradingPostModularContainer extends ModularContainer {
 
-        // Handle client-side only slots this hacky way :P
         @Override
         public ItemStack slotClick(int slotId, int mouseButton, int mode, EntityPlayer player) {
             if (this.inventorySlots.size() <= slotId) return null;
             return super.slotClick(slotId, mouseButton, mode, player);
         }
+    }
+
+    public TileEntityTradingPost(World world) {
+        super();
     }
 
     public static class TradeWidget extends ParentWidget<TradeWidget> implements Interactable {
@@ -86,7 +88,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         public static void sortTradesList(ArrayList<CachedMerchantTrade> trades) {
             // First sort alphabetically, then favoritably
             trades.sort((o1, o2) -> {
-                if (o1.isFavorited == o2.isFavorited) {
+                if (o1.uie$getFavorite() == o2.uie$getFavorite()) {
                     // Alphabetical
                     String o1d = o1.getOutput()
                         .getDisplayName();
@@ -113,7 +115,44 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
                     return 0;
                 } else {
-                    return o1.isFavorited ? -1 : 1;
+                    return o1.uie$getFavorite() ? -1 : 1;
+                }
+            });
+        }
+
+        public static void sortTradesList_(ArrayList<MerchantRecipe> trades) {
+            // First sort alphabetically, then favoritably
+            trades.sort((o1, o2) -> {
+                IFavoritable o1f = (IFavoritable) o1;
+                IFavoritable o2f = (IFavoritable) o2;
+                if (o1f.uie$getFavorite() == o2f.uie$getFavorite()) {
+                    // Alphabetical
+                    String o1d = o1.getItemToSell()
+                        .getDisplayName();
+                    String o2d = o2.getItemToSell()
+                        .getDisplayName();
+                    int output = o1d.compareTo(o2d);
+                    if (output != 0) return output;
+
+                    o1d = o1.getItemToBuy()
+                        .getDisplayName();
+                    o2d = o2.getItemToBuy()
+                        .getDisplayName();
+                    output = o1d.compareTo(o2d);
+                    if (output != 0) return output;
+
+                    o1d = o1.getSecondItemToBuy() == null ? ""
+                        : o1.getSecondItemToBuy()
+                            .getDisplayName();
+                    o2d = o2.getSecondItemToBuy() == null ? ""
+                        : o1.getSecondItemToBuy()
+                            .getDisplayName();
+                    output = o1d.compareTo(o2d);
+                    if (output != 0) return output;
+
+                    return 0;
+                } else {
+                    return o1f.uie$getFavorite() ? -1 : 1;
                 }
             });
         }
@@ -122,7 +161,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         public @NotNull Result onMousePressed(int mouseButton) {
             if (mouseButton == 0
                 && (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU))) {
-                getTrade().isFavorited = !getTrade().isFavorited;
+
+                getTrade().toggleFavorite();
+
+                TradeSyncHandler handler = (TradeSyncHandler) this.optionalGrid.sync.getSyncHandler("trades:0");
+                handler.syncToServer(1, buffer -> {
+                    buffer.writeInt(this.index);
+                    buffer.writeBoolean(getTrade().uie$getFavorite());
+                });
+
                 sortTradesList(trades);
                 return Result.SUCCESS;
             }
@@ -134,6 +181,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
 
         public CachedMerchantTrade getTrade() {
+            if (trades == null || trades.size() <= index) return null;
             return trades.get(index);
         }
 
@@ -155,6 +203,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
             @Override
             public @Nullable ItemStack getStackInSlot(int slot) {
+                if (owner.getTrade() == null) return null;
                 if (slot == 0) return owner.getTrade()
                     .getInput1();
                 if (slot == 1) return owner.getTrade()
@@ -192,7 +241,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 IKey.str("*")
                     .asWidget()
                     .margin(0, 0, -7, 0)
-                    .setEnabledIf(w -> getTrade().isFavorited));
+                    .setEnabledIf(w -> getTrade() != null && getTrade().uie$getFavorite()));
 
             // new ItemDisplayWidget().displayAmount(true)
             // .item(new ObjectValue.Dynamic<>(() -> getTrade().getInput1(), v -> {}))
@@ -204,7 +253,10 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .texture(GuiTextures.PROGRESS_ARROW, 20)
                 .progress(() -> {
                     var trade = getTrade();
-                    return 1 - (trade.currentUses / (double) trade.maxUses);
+                    return 1 - (trade.getTradeAccessor()
+                        .getCurrentUses()
+                        / (double) trade.getTradeAccessor()
+                            .getMaxUses());
                 });
             Flow wholeRow = new Row().coverChildren()
                 .childPadding(2)
@@ -217,12 +269,32 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static class TradeGrid extends Grid {
 
-        private final ArrayList<CachedMerchantTrade> trades;
+        private ArrayList<CachedMerchantTrade> trades;
+        private final Supplier<ArrayList<CachedMerchantTrade>> _trades;
+        private final boolean client;
+        private final PanelSyncManager sync;
 
-        public TradeGrid(ArrayList<CachedMerchantTrade> trades) {
-            this.trades = trades;
-            TradeWidget.sortTradesList(trades);
-            this.mapTo(1, trades.size(), index -> new TradeWidget(this.trades, index, this).padding(5, 5));
+        private final HashMap<Integer, TradeWidget> widgets = new HashMap<>();
+
+        @Override
+        public void onUpdate() {
+            super.onUpdate();
+            trades.clear();
+            trades.addAll(_trades.get());
+            sortTradesList(trades);
+        }
+
+        public TradeGrid(Supplier<ArrayList<CachedMerchantTrade>> trades, boolean client, PanelSyncManager sync) {
+            _trades = trades;
+            this.client = client;
+            this.sync = sync;
+            this.trades = new ArrayList<>();
+            this.mapTo(
+                1,
+                256,
+                i -> new TradeWidget(this.trades, i, this).setEnabledIf(a -> a.trades.size() > i)
+                    .padding(5, 5));
+
         }
     }
 
@@ -275,22 +347,100 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public static EntityLivingBase clientVillager;
+    @SideOnly(Side.CLIENT)
+    public HashSet<IMerchant> nearbyMerchants;
+
+    private static class TradeSyncHandler extends SyncHandler {
+
+        private final ArrayList<MerchantRecipeList> trades;
+        private final TileEntityTradingPost post;
+        private final EntityPlayer player;
+
+        public TradeSyncHandler(ArrayList<MerchantRecipeList> trades, TileEntityTradingPost post, EntityPlayer p) {
+            this.trades = trades;
+            this.post = post;
+            this.player = p;
+        }
+
+        public void setTrades(ArrayList<MerchantRecipeList> _trades) {
+            this.trades.clear();
+            this.trades.addAll(_trades);
+            syncToClient(0, buffer -> {
+                NBTTagList l = new NBTTagList();
+                for (MerchantRecipeList trade : trades) {
+                    l.appendTag(trade.getRecipiesAsTags());
+                }
+                var t = new NBTTagCompound();
+                t.setTag("list", l);
+                buffer.writeNBTTagCompoundToBuffer(t);
+            });
+        }
+
+        @Override
+        public void init(String key, PanelSyncManager syncManager) {
+            super.init(key, syncManager);
+            if (player instanceof EntityPlayerMP) detectAndSendChanges(true);
+        }
+
+        @Override
+        public void detectAndSendChanges(boolean init) {
+            super.detectAndSendChanges(init);
+            ArrayList<MerchantRecipeList> l = new ArrayList<>();
+            for (IMerchant m : post.nearbyMerchants) {
+                l.add(m.getRecipes(player));
+            }
+            this.setTrades(l);
+        }
+
+        @Override
+        public void readOnClient(int id, PacketBuffer buf) throws IOException {
+            if (id == 0) {
+                trades.clear();
+                NBTTagCompound t = buf.readNBTTagCompoundFromBuffer();
+                var l = (NBTTagList) t.getTag("list");
+                for (int i = 0; i < l.tagCount(); i++) {
+                    var tag = l.getCompoundTagAt(i);
+                    trades.add(new MerchantRecipeList(tag));
+                }
+            }
+        }
+
+        @Override
+        public void readOnServer(int id, PacketBuffer buf) throws IOException {
+            // Do nothing if server
+            if (id == 1) {
+                int index = buf.readInt();
+                boolean val = buf.readBoolean();
+
+                ArrayList<MerchantRecipe> all = new ArrayList<>();
+                for (MerchantRecipeList trade : this.trades) {
+                    for (Object o : trade) {
+                        all.add((MerchantRecipe) o);
+                    }
+                }
+                sortTradesList_(all);
+                MerchantRecipe r = all.get(index);
+                if (r != null) ((IFavoritable) r).uie$setFavorite(val);
+            }
+        }
+    }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         settings.customContainer(TradingPostModularContainer::new);
         int w = 176;
         int h = 166;
-        if (!clientCachedTrades.containsKey(
-            data.getPlayer()
-                .getGameProfile()))
-            clientCachedTrades.put(
-                data.getPlayer()
-                    .getGameProfile(),
-                new ArrayList<>());
         ModularPanel panel = ModularPanel.defaultPanel("trading_post", w, h);
         panel.bindPlayerInventory();
+        nearbyMerchants = new HashSet<>(
+            data.getWorld()
+                .getEntitiesWithinAABB(
+                    IMerchant.class,
+                    data.getTileEntity()
+                        .getRenderBoundingBox()
+                        .expand(32, 32, 32)));
         panel.child(
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
@@ -301,189 +451,124 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                         .marginRight(5)
                         .marginTop(5)
                         .marginBottom(-15)));
+        ArrayList<MerchantRecipeList> trades = new ArrayList<>();
+        syncManager.syncValue("trades", new TradeSyncHandler(trades, this, data.getPlayer()));
+
+        // TradeSyncHandler handler=(TradeSyncHandler)syncManager.getSyncHandler("trades:0");
+        // handler.detectAndSendChanges(false);
+
         panel.child(
             new TradeGrid(
-                clientCachedTrades.get(
-                    data.getPlayer()
-                        .getGameProfile())).marginTop(12)
-                            .size(w - 8 - 77, h - 12 - 8 - 80)
-                            .scrollable());
+                () -> getTradesServer(syncManager, data.getPlayer(), data.isClient()),
+                data.isClient(),
+                syncManager).marginTop(12)
+                    .size(w - 8 - 77, h - 12 - 8 - 80)
+                    .scrollable()
+                    .minRowHeight(0)
+                    .collapseDisabledChild());
         panel.child(
             new EntityDisplay(() -> clientVillager, true, 20).size(36, 36 * 2)
                 .margin(115, 10));
         return panel;
     }
 
-    public final static class CachedMerchantTrade {
+    public ArrayList<CachedMerchantTrade> getTradesServer(PanelSyncManager syncManager, EntityPlayer player,
+        boolean isClient) {
+        TradeSyncHandler handler = (TradeSyncHandler) syncManager.getSyncHandler("trades:0");
+        var allLists = handler.trades;
+        if (!isClient) {
+            ArrayList<MerchantRecipeList> l = new ArrayList<>();
+            for (IMerchant m : nearbyMerchants) {
+                l.add(m.getRecipes(player));
+            }
+            handler.setTrades(l);
+        }
+        ArrayList<CachedMerchantTrade> trades = new ArrayList<>();
+        for (MerchantRecipeList l : allLists) {
+            for (int i = 0; i < l.size(); i++) {
+                var t = new CachedMerchantTrade(i, null, l);
+                trades.add(t);
+            }
+        }
+        return trades;
+    }
+
+    public final static class CachedMerchantTrade implements IFavoritable {
+
+        public final IMerchant merchant;
+        public final int tradeIndex;
+        public final MerchantRecipeList list;
+
+        public CachedMerchantTrade(int tradeIndex, IMerchant merchant, MerchantRecipeList l) {
+            this.tradeIndex = tradeIndex;
+            this.merchant = merchant;
+            list = l;
+        }
 
         @Override
         public String toString() {
-            return "CachedMerchantTrade{" + "output=" + output + ", input2=" + input2 + ", input1=" + input1 + '}';
+            return "CachedMerchantTrade{" + "merchant="
+                + merchant
+                + ", tradeIndex="
+                + tradeIndex
+                + ", list="
+                + list
+                + ", i1="
+                + getInput1()
+                + ", i2="
+                + getInput2()
+                + ", o="
+                + getOutput()
+                + '}';
         }
 
-        private final MerchantRecipe recipe;
-        private final IMerchant merchant;
-        private ItemStack input1;
-        private ItemStack input2;
-        private ItemStack output;
-        private int currentUses;
-        private int maxUses;
-        private boolean isFavorited;
-
-        private boolean mostlyEquals(CachedMerchantTrade t) {
-            return t.merchant == this.merchant && ItemStack.areItemStacksEqual(t.getOutput(), this.getOutput())
-                && ItemStack.areItemStacksEqual(t.getInput2(), this.getInput2())
-                && ItemStack.areItemStacksEqual(t.getInput1(), this.getInput1());
+        public MerchantRecipe getTrade() {
+            return (MerchantRecipe) list.get(tradeIndex);
         }
 
-        public boolean getIsFavorited() {
-            return isFavorited;
-        }
-
-        public boolean setIsFavorited(boolean v) {
-            return isFavorited = v;
-        }
-
-        public IMerchant getMerchant() {
-            return merchant;
-        }
-
-        public ItemStack getInput1() {
-            updateCache();
-            return input1;
-        }
-
-        public ItemStack getInput2() {
-            updateCache();
-            return input2;
+        public AccessorMerchantRecipe getTradeAccessor() {
+            return (AccessorMerchantRecipe) getTrade();
         }
 
         public ItemStack getOutput() {
-            updateCache();
-            return output;
+            return getTrade().getItemToSell();
         }
 
-        public int getCurrentUses() {
-            updateCache();
-            return currentUses;
+        public ItemStack getInput1() {
+            return getTrade().getItemToBuy();
         }
 
-        public int getMaxUses() {
-            updateCache();
-            return maxUses;
+        public ItemStack getInput2() {
+            return getTrade().getSecondItemToBuy();
         }
 
-        public boolean isRecipeDisabled() {
-            updateCache();
-            return getCurrentUses() >= getMaxUses() || merchant == null;
+        public IMerchant getMerchant() {
+            return this.merchant;
         }
 
-        public final void updateCache() {
-            if (recipe == null) return;
-            AccessorMerchantRecipe accessorTrade = (AccessorMerchantRecipe) recipe;
-            input1 = recipe.getItemToBuy();
-            input2 = recipe.getSecondItemToBuy();
-            output = recipe.getItemToSell();
-            currentUses = accessorTrade.getCurrentUses();
-            maxUses = accessorTrade.getMaxUses();
+        @Override
+        public boolean uie$getFavorite() {
+            return ((IFavoritable) getTrade()).uie$getFavorite();
         }
 
-        public CachedMerchantTrade(MerchantRecipe trade, IMerchant merchant) {
-            recipe = trade;
-            this.merchant = merchant;
-            updateCache();
+        @Override
+        public void uie$setFavorite(boolean value) {
+            ((IFavoritable) getTrade()).uie$setFavorite(value);
         }
-    }
 
-    @SideOnly(Side.SERVER)
-    public Map<GameProfile, ArrayList<CachedMerchantTrade>> clientCachedTrades;
-
-    private void addIfMissing(CachedMerchantTrade t, EntityPlayer player) {
-        GameProfile p = player.getGameProfile();
-        if (!clientCachedTrades.containsKey(p)) clientCachedTrades.put(p, new ArrayList<>());
-        if (clientCachedTrades.get(p)
-            .stream()
-            .anyMatch(a -> a.mostlyEquals(t))) return;
-        clientCachedTrades.get(p)
-            .add(t);
-    }
-
-    public void updateCachedTrades(EntityPlayer player) {
-        this.markDirty();
-        if (!getWorldObj().isRemote) return;
-        AxisAlignedBB box = this.getRenderBoundingBox()
-            .expand(32, getWorldObj().getHeight(), 32);
-        List<IMerchant> foundMerchants = worldObj.getEntitiesWithinAABB(IMerchant.class, box);
-        for (IMerchant merchant : foundMerchants) {
-            MerchantRecipeList allTrades = merchant.getRecipes(player);
-            for (Object _trade : allTrades) {
-                MerchantRecipe trade = (MerchantRecipe) _trade;
-                CachedMerchantTrade cachedTrade = new CachedMerchantTrade(trade, merchant);
-                addIfMissing(cachedTrade, player);
-            }
+        public void toggleFavorite() {
+            uie$setFavorite(!uie$getFavorite());
         }
-    }
-
-    public static EntityPlayer getPlayer(GameProfile profile, World world) {
-        return world.getPlayerEntityByName(profile.getName());
-    }
-
-    public void updateAllCachedTrades(World world) {
-        clientCachedTrades
-            .forEach((gameProfile, cachedMerchantTrades) -> { updateCachedTrades(getPlayer(gameProfile, world)); });
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        updateAllCachedTrades(this.getWorldObj());
-        // write clientCachedTrades
-        NBTTagList profileList = new NBTTagList();
-        compound.setTag("profileList", profileList);
-        clientCachedTrades.forEach((gameProfile, cachedMerchantTrades) -> {
-            NBTTagCompound profile = new NBTTagCompound();
-            profile.setString(
-                "uuid",
-                gameProfile.getId()
-                    .toString());
-            profile.setString("name", gameProfile.getName());
-            NBTTagList list = new NBTTagList();
-            profile.setTag("list", list);
-            for (CachedMerchantTrade trade : cachedMerchantTrades) {
-                NBTTagCompound tradeTag = new NBTTagCompound();
-                tradeTag.setTag(
-                    "input1",
-                    trade.getInput1()
-                        .writeToNBT(new NBTTagCompound()));
-                if (trade.getInput2() != null) tradeTag.setTag(
-                    "input2",
-                    trade.getInput2()
-                        .writeToNBT(new NBTTagCompound()));
-                tradeTag.setTag(
-                    "input3",
-                    trade.getOutput()
-                        .writeToNBT(new NBTTagCompound()));
-                tradeTag.setInteger("uses", trade.getCurrentUses());
-                tradeTag.setInteger("max", trade.getMaxUses());
-                if (trade.getMerchant() instanceof EntityLivingBase b) {
-                    var entity = new NBTTagCompound();
-                    b.writeToNBT(entity);
-                    tradeTag.setTag("merchant", entity);
-                }
-                tradeTag.setBoolean("favorite", trade.getIsFavorited());
-                list.appendTag(tradeTag);
-            }
-            profileList.appendTag(profile);
-        });
-
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        clientCachedTrades.clear();
-
-        updateAllCachedTrades(this.getWorldObj());
     }
 
 }

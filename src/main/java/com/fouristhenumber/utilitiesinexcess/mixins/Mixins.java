@@ -29,6 +29,10 @@ public enum Mixins implements IMixins {
                 "minecraft.accessors.AccessorItemSword",
                 "minecraft.accessors.AccessorMerchantRecipe",
             "minecraft.accessors.AccessorEntityLivingBase")
+    ),
+    FAVORITE_MERCHANT_RECIPE(new MixinBuilder("Allows to favorite any merchant recipe")
+            .setPhase(Phase.EARLY)
+            .addCommonMixins("minecraft.MixinMerchantRecipe")
     )
     ; // leave trailing semicolon
     // spotless:on
