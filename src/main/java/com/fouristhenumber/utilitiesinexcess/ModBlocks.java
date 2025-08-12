@@ -13,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
@@ -51,6 +52,7 @@ public enum ModBlocks {
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), BlockMarginallyMaximisedChest.ItemBlockMarginallyMaximisedChest.class, "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), BlockSignificantlyShrunkChest.ItemBlockSignificantlyShrunkChest.class, "significantly_shrunk_chest"),
     CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
+    LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block")
     ; // leave trailing semicolon

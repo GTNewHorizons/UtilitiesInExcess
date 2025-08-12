@@ -52,6 +52,10 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableSignificantlyShrunkChest;
 
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableLapisAetherius;
+
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
 
