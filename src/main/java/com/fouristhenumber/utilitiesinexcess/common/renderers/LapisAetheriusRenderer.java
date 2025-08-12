@@ -15,7 +15,6 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        GL11.glDisable(GL11.GL_LIGHTING);
         Tessellator tess = Tessellator.instance;
 
         renderer.setRenderBoundsFromBlock(block);
@@ -31,8 +30,6 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         renderer.renderFaceXNeg(block, 0, 0, 0, block.getIcon(4, metadata));
         renderer.renderFaceXPos(block, 0, 0, 0, block.getIcon(5, metadata));
         tess.draw();
-
-        GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     @Override
@@ -44,12 +41,24 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         tess.setColorOpaque_F(1F, 1F, 1F);
 
         int meta = world.getBlockMetadata(x, y, z);
-        renderer.renderFaceYNeg(block, x, y, z, block.getIcon(0, meta));
-        renderer.renderFaceYPos(block, x, y, z, block.getIcon(1, meta));
-        renderer.renderFaceZNeg(block, x, y, z, block.getIcon(2, meta));
-        renderer.renderFaceZPos(block, x, y, z, block.getIcon(3, meta));
-        renderer.renderFaceXNeg(block, x, y, z, block.getIcon(4, meta));
-        renderer.renderFaceXPos(block, x, y, z, block.getIcon(5, meta));
+        if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x, y - 1, z, 0)) {
+            renderer.renderFaceYNeg(block, x, y, z, block.getIcon(0, meta));
+        }
+        if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x, y + 1, z, 1)) {
+            renderer.renderFaceYPos(block, x, y, z, block.getIcon(1, meta));
+        }
+        if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x, y, z - 1, 2)) {
+            renderer.renderFaceZNeg(block, x, y, z, block.getIcon(2, meta));
+        }
+        if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x, y, z + 1, 3)) {
+            renderer.renderFaceZPos(block, x, y, z, block.getIcon(3, meta));
+        }
+        if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x - 1, y, z, 4)) {
+            renderer.renderFaceXNeg(block, x, y, z, block.getIcon(4, meta));
+        }
+        if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x + 1, y, z, 5)) {
+            renderer.renderFaceXPos(block, x, y, z, block.getIcon(5, meta));
+        }
 
         return true;
     }
