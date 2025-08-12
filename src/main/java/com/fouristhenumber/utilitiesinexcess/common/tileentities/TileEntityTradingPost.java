@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost.TradeSyncHandler.tradeHash;
 import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost.TradeWidget.sortTradesList;
-import static com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost.TradeWidget.sortTradesList_;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.function.Supplier;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
@@ -120,56 +121,25 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             });
         }
 
-        public static void sortTradesList_(ArrayList<MerchantRecipe> trades) {
-            // First sort alphabetically, then favoritably
-            trades.sort((o1, o2) -> {
-                IFavoritable o1f = (IFavoritable) o1;
-                IFavoritable o2f = (IFavoritable) o2;
-                if (o1f.uie$getFavorite() == o2f.uie$getFavorite()) {
-                    // Alphabetical
-                    String o1d = o1.getItemToSell()
-                        .getDisplayName();
-                    String o2d = o2.getItemToSell()
-                        .getDisplayName();
-                    int output = o1d.compareTo(o2d);
-                    if (output != 0) return output;
-
-                    o1d = o1.getItemToBuy()
-                        .getDisplayName();
-                    o2d = o2.getItemToBuy()
-                        .getDisplayName();
-                    output = o1d.compareTo(o2d);
-                    if (output != 0) return output;
-
-                    o1d = o1.getSecondItemToBuy() == null ? ""
-                        : o1.getSecondItemToBuy()
-                            .getDisplayName();
-                    o2d = o2.getSecondItemToBuy() == null ? ""
-                        : o1.getSecondItemToBuy()
-                            .getDisplayName();
-                    output = o1d.compareTo(o2d);
-                    if (output != 0) return output;
-
-                    return 0;
-                } else {
-                    return o1f.uie$getFavorite() ? -1 : 1;
-                }
-            });
-        }
 
         @Override
         public @NotNull Result onMousePressed(int mouseButton) {
-            if (mouseButton == 0
-                && (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU))) {
-
-                getTrade().toggleFavorite();
-
+            if (mouseButton == 0 && (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU))) {
                 TradeSyncHandler handler = (TradeSyncHandler) this.optionalGrid.sync.getSyncHandler("trades:0");
                 handler.syncToServer(1, buffer -> {
-                    buffer.writeInt(this.index);
-                    buffer.writeBoolean(getTrade().uie$getFavorite());
+                    buffer.writeStringToBuffer(tradeHash(this.getTrade().getTrade()));
+                    buffer.writeBoolean(!getTrade().uie$getFavorite());
                 });
-
+                sortTradesList(trades);
+                return Result.SUCCESS;
+            }
+            else if(mouseButton==0)
+            {
+                TradeSyncHandler handler = (TradeSyncHandler) this.optionalGrid.sync.getSyncHandler("trades:0");
+                handler.syncToServer(2, buffer -> {
+                    buffer.writeStringToBuffer(tradeHash(this.getTrade().getTrade()));
+                    buffer.writeBoolean(GuiScreen.isShiftKeyDown());
+                });
                 sortTradesList(trades);
                 return Result.SUCCESS;
             }
@@ -352,7 +322,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     @SideOnly(Side.CLIENT)
     public HashSet<IMerchant> nearbyMerchants;
 
-    private static class TradeSyncHandler extends SyncHandler {
+    public static class TradeSyncHandler extends SyncHandler {
 
         private final ArrayList<MerchantRecipeList> trades;
         private final TileEntityTradingPost post;
@@ -389,7 +359,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             super.detectAndSendChanges(init);
             ArrayList<MerchantRecipeList> l = new ArrayList<>();
             for (IMerchant m : post.nearbyMerchants) {
-                l.add(m.getRecipes(player));
+                var t=m.getRecipes(player);
+                    l.add(t);
             }
             this.setTrades(l);
         }
@@ -407,23 +378,47 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             }
         }
 
+        public static String tradeHash(MerchantRecipe recipe)
+        {
+            return recipe.writeToTags().toString();
+        }
+
         @Override
         public void readOnServer(int id, PacketBuffer buf) throws IOException {
             // Do nothing if server
             if (id == 1) {
-                int index = buf.readInt();
+                String hash = buf.readStringFromBuffer(4096);
                 boolean val = buf.readBoolean();
-
-                ArrayList<MerchantRecipe> all = new ArrayList<>();
                 for (MerchantRecipeList trade : this.trades) {
                     for (Object o : trade) {
-                        all.add((MerchantRecipe) o);
+                        MerchantRecipe r=(MerchantRecipe) o;
+                        String curHash=tradeHash(r);
+                        if(curHash.equals(hash))
+                        {
+                            ((IFavoritable) r).uie$setFavorite(val);
+                            break;
+                        }
                     }
                 }
-                sortTradesList_(all);
-                MerchantRecipe r = all.get(index);
-                if (r != null) ((IFavoritable) r).uie$setFavorite(val);
             }
+            if (id == 2) {
+                String hash = buf.readStringFromBuffer(4096);
+                boolean isMaximum = buf.readBoolean();
+                for (MerchantRecipeList trade : this.trades) {
+                    for (Object o : trade) {
+                        MerchantRecipe r=(MerchantRecipe) o;
+                        String curHash=tradeHash(r);
+                        if(curHash.equals(hash))
+                        {
+                            //Handle the buying
+
+                            r.incrementToolUses();
+                            break;
+                        }
+                    }
+                }
+            }
+            detectAndSendChanges(false);
         }
     }
 
