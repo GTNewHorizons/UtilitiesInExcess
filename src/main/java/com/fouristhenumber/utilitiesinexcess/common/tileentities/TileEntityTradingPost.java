@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.function.Supplier;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,6 +43,7 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.PlayerMainInvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -121,23 +123,29 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             });
         }
 
-
         @Override
         public @NotNull Result onMousePressed(int mouseButton) {
-            if (mouseButton == 0 && (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU))) {
+            if (mouseButton == 0
+                && (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU))) {
                 TradeSyncHandler handler = (TradeSyncHandler) this.optionalGrid.sync.getSyncHandler("trades:0");
                 handler.syncToServer(1, buffer -> {
-                    buffer.writeStringToBuffer(tradeHash(this.getTrade().getTrade()));
+                    buffer.writeStringToBuffer(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+                    buffer.writeLong(
+                        tradeHash(
+                            this.getTrade()
+                                .getTrade()));
                     buffer.writeBoolean(!getTrade().uie$getFavorite());
                 });
                 sortTradesList(trades);
                 return Result.SUCCESS;
-            }
-            else if(mouseButton==0)
-            {
+            } else if (mouseButton == 0) {
                 TradeSyncHandler handler = (TradeSyncHandler) this.optionalGrid.sync.getSyncHandler("trades:0");
                 handler.syncToServer(2, buffer -> {
-                    buffer.writeStringToBuffer(tradeHash(this.getTrade().getTrade()));
+                    buffer.writeStringToBuffer(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+                    buffer.writeLong(
+                        tradeHash(
+                            this.getTrade()
+                                .getTrade()));
                     buffer.writeBoolean(GuiScreen.isShiftKeyDown());
                 });
                 sortTradesList(trades);
@@ -225,8 +233,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                     var trade = getTrade();
                     return 1 - (trade.getTradeAccessor()
                         .getCurrentUses()
-                        / (double) trade.getTradeAccessor()
-                            .getMaxUses());
+                        / (double) (trade.getTradeAccessor()
+                            .getMaxUses() + 1));
                 });
             Flow wholeRow = new Row().coverChildren()
                 .childPadding(2)
@@ -359,8 +367,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             super.detectAndSendChanges(init);
             ArrayList<MerchantRecipeList> l = new ArrayList<>();
             for (IMerchant m : post.nearbyMerchants) {
-                var t=m.getRecipes(player);
-                    l.add(t);
+                var t = m.getRecipes(player);
+                l.add(t);
             }
             this.setTrades(l);
         }
@@ -378,23 +386,24 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             }
         }
 
-        public static String tradeHash(MerchantRecipe recipe)
-        {
-            return recipe.writeToTags().toString();
+        public static long tradeHash(MerchantRecipe recipe) {
+            return recipe.writeToTags()
+                .hashCode();
         }
 
         @Override
         public void readOnServer(int id, PacketBuffer buf) throws IOException {
             // Do nothing if server
+            String playerName = buf.readStringFromBuffer(256);
+            EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(playerName);
             if (id == 1) {
-                String hash = buf.readStringFromBuffer(4096);
+                long hash = buf.readLong();
                 boolean val = buf.readBoolean();
                 for (MerchantRecipeList trade : this.trades) {
                     for (Object o : trade) {
-                        MerchantRecipe r=(MerchantRecipe) o;
-                        String curHash=tradeHash(r);
-                        if(curHash.equals(hash))
-                        {
+                        MerchantRecipe r = (MerchantRecipe) o;
+                        long curHash = tradeHash(r);
+                        if (curHash == hash) {
                             ((IFavoritable) r).uie$setFavorite(val);
                             break;
                         }
@@ -402,17 +411,69 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 }
             }
             if (id == 2) {
-                String hash = buf.readStringFromBuffer(4096);
+                long hash = buf.readLong();
                 boolean isMaximum = buf.readBoolean();
                 for (MerchantRecipeList trade : this.trades) {
                     for (Object o : trade) {
-                        MerchantRecipe r=(MerchantRecipe) o;
-                        String curHash=tradeHash(r);
-                        if(curHash.equals(hash))
-                        {
-                            //Handle the buying
+                        MerchantRecipe r = (MerchantRecipe) o;
+                        long curHash = tradeHash(r);
+                        if (curHash == hash) {
 
-                            r.incrementToolUses();
+                            do {
+
+                                if (((AccessorMerchantRecipe) r).getCurrentUses()
+                                    >= ((AccessorMerchantRecipe) r).getMaxUses() + 1) {
+                                    detectAndSendChanges(false);
+                                    return;
+                                }
+                                var wrapper = new PlayerMainInvWrapper(player.inventory);
+                                ItemStack first = r.getItemToBuy()
+                                    .copy();
+                                ItemStack second = r.getSecondItemToBuy();
+                                if (second != null) second = second.copy();
+                                int neededFirst = first.stackSize;
+                                int neededSecond = second == null ? 0 : second.stackSize;
+                                int foundTotalFirst = 0;
+                                int foundTotalSecond = 0;
+                                for (int i = 0; i < wrapper.getSlots(); i++) {
+                                    ItemStack stack = wrapper.getStackInSlot(i);
+                                    if (stack == null) continue;
+                                    if ((first.stackSize == 0) && (second == null || second.stackSize == 0)) break;
+                                    if (first.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(first, stack)) {
+                                        ItemStack extracted = wrapper.extractItem(i, first.stackSize, true);
+                                        if (extracted != null) foundTotalFirst += extracted.stackSize;
+                                    }
+                                    if (second != null && second.isItemEqual(stack)
+                                        && ItemStack.areItemStackTagsEqual(second, stack)) {
+                                        ItemStack extracted = wrapper.extractItem(i, second.stackSize, true);
+                                        if (extracted != null) foundTotalSecond += extracted.stackSize;
+                                    }
+                                }
+
+                                if (foundTotalFirst >= neededFirst && foundTotalSecond >= neededSecond) {
+                                    for (int i = 0; i < wrapper.getSlots(); i++) {
+                                        ItemStack stack = wrapper.getStackInSlot(i);
+                                        if (stack == null) continue;
+                                        if ((first.stackSize == 0) && (second == null || second.stackSize == 0)) break;
+                                        if (first.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(first, stack)) {
+                                            ItemStack extracted = wrapper.extractItem(i, first.stackSize, false);
+                                            if (extracted != null) first.stackSize -= extracted.stackSize;
+                                        }
+                                        if (second != null && second.isItemEqual(stack)
+                                            && ItemStack.areItemStackTagsEqual(second, stack)) {
+                                            ItemStack extracted = wrapper.extractItem(i, second.stackSize, false);
+                                            if (extracted != null) second.stackSize -= extracted.stackSize;
+                                        }
+                                    }
+                                    ItemStack needToInsert = r.getItemToSell()
+                                        .copy();
+                                    for (int i = 0; i < wrapper.getSlots(); i++) {
+                                        if (needToInsert == null || needToInsert.stackSize == 0) break;
+                                        needToInsert = wrapper.insertItem(i, needToInsert, false);
+                                    }
+                                    r.incrementToolUses();
+                                }
+                            } while (isMaximum);
                             break;
                         }
                     }
