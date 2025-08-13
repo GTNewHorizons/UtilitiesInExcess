@@ -34,10 +34,9 @@ public class BlockTradingPost extends BlockContainer {
         return true;
     }
 
-    // Does this need to be a tile entity?
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityTradingPost(world);
+        return new TileEntityTradingPost();
     }
 
     public static class ItemBlockTradingPost extends ItemBlock {

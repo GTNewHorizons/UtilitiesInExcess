@@ -1,7 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.village.MerchantRecipe;
+import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -10,13 +15,42 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.IFavoritable;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 
 @Mixin(MerchantRecipe.class)
-public class MixinMerchantRecipe implements IFavoritable {
+public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecipeExtension {
 
     @Unique
     public boolean uie$favorite;
+    @Unique
+    public EntityPlayer uie$player;
+    // Let's assume the merchant is an entity, which tbh it should almost always be
+    @Unique
+    public IMerchant uie$merchant;
+    @Unique
+    public int uie$index;
+
+    @Inject(method = "readFromTags", at = @At(value = "TAIL"))
+    public void uie$readFromTags(NBTTagCompound compound, CallbackInfo ci) {
+        World world = Minecraft.getMinecraft().theWorld;
+        String playerName = compound.getString("player");
+        uie$setFavorite(compound.getBoolean("favorite"));
+        uie$setPlayer(world.getPlayerEntityByName(playerName));
+        uie$setMerchant((IMerchant) world.getEntityByID(compound.getInteger("merchant")));
+        uie$setListIndex(compound.getInteger("index"));
+    }
+
+    @Inject(method = "writeToTags", at = @At(value = "TAIL"))
+    public void uie$writeToTags(CallbackInfoReturnable<NBTTagCompound> cir) {
+        NBTTagCompound compound = cir.getReturnValue();
+        compound.setBoolean("favorite", this.uie$getFavorite());
+        compound.setString(
+            "player",
+            this.uie$getPlayer()
+                .getCommandSenderName());
+        compound.setInteger("merchant", ((Entity) this.uie$getMerchant()).getEntityId());
+        compound.setInteger("index", this.uie$getListIndex());
+    }
 
     @Override
     public boolean uie$getFavorite() {
@@ -28,14 +62,34 @@ public class MixinMerchantRecipe implements IFavoritable {
         uie$favorite = value;
     }
 
-    @Inject(method = "readFromTags", at = @At(value = "TAIL"))
-    public void uie$readFromTags(NBTTagCompound compound, CallbackInfo ci) {
-        uie$setFavorite(compound.getBoolean("favorite"));
+    @Override
+    public EntityPlayer uie$getPlayer() {
+        return uie$player;
     }
 
-    @Inject(method = "writeToTags", at = @At(value = "TAIL"))
-    public void uie$writeToTags(CallbackInfoReturnable<NBTTagCompound> cir) {
-        NBTTagCompound compound = cir.getReturnValue();
-        compound.setBoolean("favorite", uie$getFavorite());
+    @Override
+    public void uie$setPlayer(EntityPlayer player) {
+        uie$player = player;
     }
+
+    @Override
+    public IMerchant uie$getMerchant() {
+        return uie$merchant;
+    }
+
+    @Override
+    public void uie$setMerchant(IMerchant merchant) {
+        uie$merchant = merchant;
+    }
+
+    @Override
+    public int uie$getListIndex() {
+        return uie$index;
+    }
+
+    @Override
+    public void uie$setListIndex(int index) {
+        uie$index = index;
+    }
+
 }

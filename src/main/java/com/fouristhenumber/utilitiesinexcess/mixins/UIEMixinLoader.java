@@ -27,7 +27,7 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
-        return null;
+        return new String[] { "com.fouristhenumber.utilitiesinexcess.mixins.transformers.TransformerIMerchant" };
     }
 
     @Override
