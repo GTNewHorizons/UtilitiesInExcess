@@ -120,6 +120,8 @@ item.watering_can.desc.2=crop growth in a %dx%d area.
 item.watering_can.desc.3=Crouch and use to toggle
 item.watering_can.desc.4=automatic mode.
 
+item.fire_battery.name=Fire Battery
+item.fire_battery.desc=%s / %s
 
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
