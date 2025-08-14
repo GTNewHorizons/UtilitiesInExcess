@@ -23,8 +23,18 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShr
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockHighTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLavaGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLowTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockNetherStarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPinkGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotionGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
@@ -58,8 +68,18 @@ public enum ModBlocks {
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
+    LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator"), "low_temperature_furnace_generator"),
     FURNACE_GENERATOR(GeneratorConfig.enableFurnaceGenerator, new BlockFurnaceGenerator("furnace_generator"), "furnace_generator"),
+    HIGH_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableHighTemperatureFurnaceGenerator, new BlockHighTemperatureFurnaceGenerator("high_temperature_furnace_generator"), "high_temperature_furnace_generator"),
+    LAVA_GENERATOR(GeneratorConfig.enableLavaGenerator, new BlockLavaGenerator("lava_generator"), "lava_generator"),
+    ENDER_GENERATOR(GeneratorConfig.enableEnderGenerator, new BlockEnderGenerator("ender_generator"), "ender_generator"),
+    REDSTONE_GENERATOR(GeneratorConfig.enableRedstoneGenerator, new BlockRedstoneGenerator("redstone_generator"), "redstone_generator"),
+    FOOD_GENERATOR(GeneratorConfig.enableFoodGenerator, new BlockFoodGenerator("food_generator"), "food_generator"),
     POTION_GENERATOR(GeneratorConfig.enablePotionGenerator, new BlockPotionGenerator("potion_generator"), "potion_generator"),
+    SOLAR_GENERATOR(GeneratorConfig.enableSolarGenerator, new BlockSolarGenerator("solar_generator"), "solar_generator"),
+    TNT_GENERATOR(GeneratorConfig.enableTNTGenerator, new BlockTNTGenerator("tnt_generator"), "tnt_generator"),
+    PINK_GENERATOR(GeneratorConfig.enablePinkGenerator, new BlockPinkGenerator("pink_generator"), "pink_generator"),
+    NETHER_STAR_GENERATOR(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator"), "nether_star_generator"),
     ; // leave trailing semicolon
     // spotless:on
 

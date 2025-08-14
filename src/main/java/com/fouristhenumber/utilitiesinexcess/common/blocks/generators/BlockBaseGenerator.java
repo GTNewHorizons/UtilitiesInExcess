@@ -14,7 +14,7 @@ public abstract class BlockBaseGenerator extends BlockContainer {
     protected BlockBaseGenerator(String id) {
         super(Material.iron);
         setBlockName(id);
-        setBlockTextureName("utilitiesinexcess:" + id);
+        setBlockTextureName("utilitiesinexcess:generators/" + id);
     }
 
     @Override

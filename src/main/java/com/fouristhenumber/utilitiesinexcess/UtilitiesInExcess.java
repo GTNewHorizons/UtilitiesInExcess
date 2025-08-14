@@ -16,8 +16,18 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySigni
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityHighTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityLavaGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityLowTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityNetherStarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityPinkGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityPotionGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityRedstoneGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -69,8 +79,23 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+
+        GameRegistry.registerTileEntity(
+            TileEntityLowTemperatureFurnaceGenerator.class,
+            "TileEntityLowTemperatureFurnaceGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityFurnaceGenerator.class, "TileEntityFurnaceGeneratorUIE");
+        GameRegistry.registerTileEntity(
+            TileEntityHighTemperatureFurnaceGenerator.class,
+            "TileEntityHighTemperatureFurnaceGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityLavaGenerator.class, "TileEntityLavaGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityEnderGenerator.class, "TileEntityEnderGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityRedstoneGenerator.class, "TileEntityRedstoneGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityFoodGenerator.class, "TileEntityFoodGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPotionGenerator.class, "TileEntityPotionGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntitySolarGenerator.class, "TileEntitySolarGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityTNTGenerator.class, "TileEntityTNTGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

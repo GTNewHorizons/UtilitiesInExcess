@@ -128,7 +128,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         burnTime = tag.getInteger("BurnTime");
-        currentFuelBurnTime = tag.getInteger("CurrentItemBurnTime");
+        currentFuelBurnTime = tag.getInteger("currentFuelBurnTime");
         currentRFPerTick = tag.getInteger("CurrentRFPerTick");
         energyStorage.readFromNBT(tag);
     }
@@ -137,7 +137,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("BurnTime", burnTime);
-        tag.setInteger("CurrentItemBurnTime", currentFuelBurnTime);
+        tag.setInteger("currentFuelBurnTime", currentFuelBurnTime);
         tag.setInteger("CurrentRFPerTick", currentRFPerTick);
         energyStorage.writeToNBT(tag);
     }
