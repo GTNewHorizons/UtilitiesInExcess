@@ -1,6 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.TNTGeneratorExplosions;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.TNTGeneratorGunpowderFuelValue;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.TNTGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.TNTGeneratorTNTFuelValue;
 import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.uieRandom;
 
 import net.minecraft.init.Blocks;
@@ -18,8 +21,8 @@ public class TileEntityTNTGenerator extends TileEntityBaseGeneratorWithItemFuel 
     protected int getRFPerTick(ItemStack stack) {
         if (stack == null) return 0;
         Item item = stack.getItem();
-        if (item == Item.getItemFromBlock(Blocks.tnt)) return 480000;
-        if (item == Items.gunpowder) return 32000;
+        if (item == Item.getItemFromBlock(Blocks.tnt)) return TNTGeneratorTNTFuelValue;
+        if (item == Items.gunpowder) return TNTGeneratorGunpowderFuelValue;
         return 0;
     }
 
@@ -42,13 +45,15 @@ public class TileEntityTNTGenerator extends TileEntityBaseGeneratorWithItemFuel 
 
     @Override
     protected void onBurnTick() {
-        worldObj.newExplosion(
-            null,
-            xCoord + (10 - uieRandom.nextInt(20)) + 0.5,
-            yCoord + 0.5,
-            zCoord + (10 - uieRandom.nextInt(20)) + 0.5,
-            4.0F,
-            false,
-            false);
+        if (TNTGeneratorExplosions) {
+            worldObj.newExplosion(
+                null,
+                xCoord + (10 - uieRandom.nextInt(20)) + 0.5,
+                yCoord + 0.5,
+                zCoord + (10 - uieRandom.nextInt(20)) + 0.5,
+                4.0F,
+                false,
+                false);
+        }
     }
 }

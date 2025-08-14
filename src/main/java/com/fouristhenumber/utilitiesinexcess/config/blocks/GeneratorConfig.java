@@ -117,10 +117,21 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static boolean enableTNTGenerator;
 
-    @Config.DefaultInt(100_000)
+    @Config.DefaultInt(1_000_000)
     @Config.RangeInt(min = 1)
     @Config.RequiresMcRestart
     public static int TNTGeneratorRFCapacity;
+
+    @Config.DefaultInt(480_000)
+    @Config.RangeInt(min = 1)
+    public static int TNTGeneratorTNTFuelValue;
+
+    @Config.DefaultInt(32_000)
+    @Config.RangeInt(min = 1)
+    public static int TNTGeneratorGunpowderFuelValue;
+
+    @Config.DefaultBoolean(true)
+    public static boolean TNTGeneratorExplosions;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
