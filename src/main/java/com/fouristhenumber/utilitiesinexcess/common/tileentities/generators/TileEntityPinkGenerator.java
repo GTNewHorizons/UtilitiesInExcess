@@ -8,7 +8,7 @@ import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 public class TileEntityPinkGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityPinkGenerator() {
-        super(100_000, 200);
+        super(100_000);
     }
 
     @Override

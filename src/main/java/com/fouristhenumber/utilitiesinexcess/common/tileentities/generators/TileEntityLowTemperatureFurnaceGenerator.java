@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 public class TileEntityLowTemperatureFurnaceGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityLowTemperatureFurnaceGenerator() {
-        super(20000, 40);
+        super(20000);
     }
 
     @Override

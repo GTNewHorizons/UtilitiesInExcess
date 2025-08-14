@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityEnderGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityEnderGenerator() {
-        super(100000, 200);
+        super(100000);
     }
 
     @Override

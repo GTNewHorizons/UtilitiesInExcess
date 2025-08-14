@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityFoodGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityFoodGenerator() {
-        super(5000000, 5000);
+        super(5000000);
     }
 
     @Override

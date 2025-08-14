@@ -11,7 +11,7 @@ import net.minecraft.potion.PotionEffect;
 public class TileEntityPotionGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityPotionGenerator() {
-        super(5000000, 5000);
+        super(5000000);
     }
 
     @Override

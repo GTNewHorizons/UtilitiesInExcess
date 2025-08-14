@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityTNTGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityTNTGenerator() {
-        super(2_500_000, 5000);
+        super(2_500_000);
     }
 
     @Override

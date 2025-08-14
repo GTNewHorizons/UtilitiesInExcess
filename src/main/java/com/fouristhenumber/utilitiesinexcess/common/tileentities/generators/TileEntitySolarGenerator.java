@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     public TileEntitySolarGenerator() {
-        super(100_000, 300);
+        super(100_000);
     }
 
     @Override

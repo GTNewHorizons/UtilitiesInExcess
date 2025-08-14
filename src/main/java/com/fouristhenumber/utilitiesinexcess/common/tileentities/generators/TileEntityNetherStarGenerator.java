@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityNetherStarGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityNetherStarGenerator() {
-        super(1_000_000, 500_000);
+        super(1_000_000);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class TileEntityLavaGenerator extends TileEntityBaseGenerator implements 
     protected FluidStackTank fluidTank = new FluidStackTank(() -> fluid, fluidStack -> fluid = fluidStack, 4000);
 
     public TileEntityLavaGenerator() {
-        super(100_000, 5000);
+        super(100_000);
     }
 
     @Override

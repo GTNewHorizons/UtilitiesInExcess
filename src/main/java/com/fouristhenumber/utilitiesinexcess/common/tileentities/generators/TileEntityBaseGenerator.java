@@ -41,10 +41,8 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
         .imageSize(16, 128)
         .build();
 
-    // Generators can "receive" infinite energy because this allows them to generate however much they say.
-    // Nothing can push to them anyway.
-    public TileEntityBaseGenerator(int capacity, int maxTransfer) {
-        this.energyStorage = new EnergyStorage(capacity, Integer.MAX_VALUE, maxTransfer);
+    public TileEntityBaseGenerator(int capacity) {
+        this.energyStorage = new EnergyStorage(capacity);
     }
 
     /**

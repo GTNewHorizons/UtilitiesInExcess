@@ -19,8 +19,8 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
 
     protected ItemStack fuelStack = null;
 
-    public TileEntityBaseGeneratorWithItemFuel(int capacity, int maxTransfer) {
-        super(capacity, maxTransfer);
+    public TileEntityBaseGeneratorWithItemFuel(int capacity) {
+        super(capacity);
     }
 
     /** Override to define how much RF per tick a given fuel stack provides. */
