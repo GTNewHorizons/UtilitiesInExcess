@@ -1,72 +1,110 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
-import java.util.List;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.slot.FluidSlot;
+import com.fouristhenumber.utilitiesinexcess.utils.mui.FilteredFluidSlotSyncHandler;
 
-public class TileEntityLavaGenerator extends TileEntityBaseGeneratorWithItemFuel {
+public class TileEntityLavaGenerator extends TileEntityBaseGenerator implements IFluidHandler {
+
+    protected FluidStack fluid;
+    protected FluidStackTank fluidTank = new FluidStackTank(() -> fluid, fluidStack -> fluid = fluidStack, 4000);
 
     public TileEntityLavaGenerator() {
         super(5000000, 5000);
     }
 
     @Override
-    protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 1000;
-    }
-
-    @Override
-    protected int getFuelBurnTime(ItemStack stack) {
-        if (stack == null) return 0;
-        return getPotionComplexity(stack) * 600;
-    }
-
-    // Each effect is 1 complexity. This is not relevant in vanilla but will make it compatible with custom modded
-    // potions.
-    // Similarly, each level above 1 gives an additional point due to requiring glowstone. Again, modded potions could
-    // be even stronger.
-    // If the duration is longer than 3600 ticks, 1 point because redstone has been applied.
-    // If the potion is splash, 1 point because gunpowder has been applied.
-    protected int getPotionComplexity(ItemStack potion) {
-        if (!(potion.getItem() instanceof ItemPotion)) return 0;
-        List<PotionEffect> effects = Items.potionitem.getEffects(potion);
-        // Awkward and mundane potions are still 1 step!
-        if (effects == null || effects.isEmpty()) return 1;
-
-        int complexity = 1;
-
-        for (PotionEffect e : effects) {
-            complexity += 1;
-            complexity += e.getAmplifier();
-
-            if (e.getDuration() > 3600) complexity += 1;
-
-            // These effects grant an additional point because they are brewed using the additional fermented spider eye
-            // step.
-            if (e.getPotionID() == Potion.harm.id || e.getPotionID() == Potion.invisibility.id) {
-                complexity += 1;
-            }
+    protected boolean consumeFuel() {
+        if (fluid != null && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()
+            && fluid.amount >= 50) {
+            currentFuelBurnTime = 50;
+            currentRFPerTick = 40;
+            fluidTank.drain(50, true);
+            return true;
         }
+        return false;
+    }
 
-        if (ItemPotion.isSplash(potion.getItemDamage())) {
-            complexity += 1;
+    @Override
+    protected String getGUIName() {
+        return "tile.lava_generator.name";
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        if (resource == null || resource.getFluid() != FluidRegistry.LAVA) return 0;
+        return fluidTank.fill(resource, doFill);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return fluid == FluidRegistry.LAVA;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { fluidTank.getInfo() };
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        if (tag.hasKey("Fluid")) {
+            fluid = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("Fluid"));
+        } else {
+            fluid = null;
         }
-
-        return complexity;
     }
 
     @Override
-    public String getInventoryName() {
-        return "tile.potion_generator.name";
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        if (fluid != null) {
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            fluid.writeToNBT(fluidTag);
+            tag.setTag("Fluid", fluidTag);
+        }
     }
 
     @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        if (stack == null) return false;
-        return stack.getItem() instanceof ItemPotion;
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        ModularPanel panel = super.buildUI(data, syncManager, settings);
+
+        FilteredFluidSlotSyncHandler fluidSync = new FilteredFluidSlotSyncHandler(
+            fluidTank,
+            input -> input == FluidRegistry.LAVA);
+
+        panel.child(
+            new FluidSlot().syncHandler(fluidSync)
+                .pos(79, 34));
+
+        return panel;
     }
 }
