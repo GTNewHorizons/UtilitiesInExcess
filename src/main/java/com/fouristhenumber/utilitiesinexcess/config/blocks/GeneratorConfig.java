@@ -12,4 +12,7 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static boolean enableFurnaceGenerator;
 
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean enablePotionGenerator;
 }

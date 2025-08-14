@@ -121,6 +121,7 @@ item.watering_can.desc.3=Crouch and use to toggle
 item.watering_can.desc.4=automatic mode.
 
 tile.furnace_generator.name=Furnace Generator
+tile.potion_generator.name=Potion Generator
 
 gui.energy.tooltip=%s / %s
 
@@ -139,8 +140,6 @@ tile.trash_can_item.desc.1=Trash Can for Items
 
 tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_fluid.desc=Trash Can for Fluids
-
-tile.trash_can_energy.name=Trash Can (Energy)
 
 tile.magic_wood.name=Magic Wood
 tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
