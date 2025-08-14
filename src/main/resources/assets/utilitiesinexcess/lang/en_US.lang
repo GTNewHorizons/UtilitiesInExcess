@@ -120,6 +120,9 @@ item.watering_can.desc.2=crop growth in a %dx%d area.
 item.watering_can.desc.3=Crouch and use to toggle
 item.watering_can.desc.4=automatic mode.
 
+item.fire_battery.name=Fire Battery
+item.fire_battery.desc=%s / %s
+
 tile.low_temperature_furnace_generator.name=Low-Temperature Furnace Generator
 tile.furnace_generator.name=Furnace Generator
 tile.high_temperature_furnace_generator.name=High-Temperature Furnace Generator
@@ -146,10 +149,8 @@ tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 
 tile.trash_can_item.name=Trash Can (Item)
-tile.trash_can_item.desc.1=Trash Can for Items
-
 tile.trash_can_fluid.name=Trash Can (Fluid)
-tile.trash_can_fluid.desc=Trash Can for Fluids
+tile.trash_can_energy.name=Trash Can (Energy)
 
 tile.magic_wood.name=Magic Wood
 tile.magic_wood.desc=Has the enchanting power of 5 bookshelves

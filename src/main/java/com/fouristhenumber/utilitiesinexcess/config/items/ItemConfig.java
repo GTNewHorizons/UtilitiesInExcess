@@ -20,6 +20,7 @@ public class ItemConfig {
         UnstableTools.registerConfig();
         ConfigurationManager.registerConfig(WateringCanConfig.class);
         ConfigurationManager.registerConfig(InversionConfig.class);
+        ConfigurationManager.registerConfig(FireBatteryConfig.class);
     }
 
     @Config.DefaultBoolean(true)
