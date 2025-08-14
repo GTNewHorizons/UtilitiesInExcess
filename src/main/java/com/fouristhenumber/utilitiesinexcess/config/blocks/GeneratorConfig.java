@@ -123,6 +123,14 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int foodGeneratorRFCapacity;
 
+    @Config.DefaultInt(4)
+    @Config.RangeInt(min = 1)
+    public static int foodGeneratorRFMultiplier;
+
+    @Config.DefaultInt(900)
+    @Config.RangeInt(min = 1)
+    public static int foodGeneratorBurnTimeMultiplier;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enablePotionGenerator;
