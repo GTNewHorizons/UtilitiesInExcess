@@ -125,6 +125,21 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int solarGeneratorRFCapacity;
 
+    @Config.DefaultInt(20)
+    @Config.RangeInt(min = 0)
+    @Config.RequiresMcRestart
+    public static int solarGeneratorLowDayTimeGeneration;
+
+    @Config.DefaultInt(60)
+    @Config.RangeInt(min = 0)
+    @Config.RequiresMcRestart
+    public static int solarGeneratorHighDayTimeGeneration;
+
+    @Config.DefaultInt(40)
+    @Config.RangeInt(min = 0)
+    @Config.RequiresMcRestart
+    public static int solarGeneratorNoSkyGeneration;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableTNTGenerator;

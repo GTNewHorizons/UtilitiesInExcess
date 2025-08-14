@@ -1,5 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorHighDayTimeGeneration;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorLowDayTimeGeneration;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorNoSkyGeneration;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorRFCapacity;
 
 public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
@@ -39,15 +42,16 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
     protected int getRFPerTick() {
 
         // For dimensions like the end with no time, but where the sky can be seen, output constant rate
-        if (worldObj.provider.hasNoSky) return 40;
+        if (worldObj.provider.hasNoSky) return solarGeneratorNoSkyGeneration;
 
         // Interpolate between 20-60
         long time = worldObj.getWorldTime();
 
+        double interp = solarGeneratorHighDayTimeGeneration - solarGeneratorLowDayTimeGeneration;
         if (time >= 0 && time <= 6000) {
-            return (int) (20 + (40.0 * time / 6000.0));
+            return (int) (solarGeneratorLowDayTimeGeneration + (interp * time / 6000.0));
         } else {
-            return (int) (60 - (40.0 * (time - 6000) / 6000.0));
+            return (int) (solarGeneratorHighDayTimeGeneration - (interp * (time - 6000) / 6000.0));
         }
     }
 
