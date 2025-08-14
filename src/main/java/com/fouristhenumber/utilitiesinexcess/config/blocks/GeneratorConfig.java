@@ -68,6 +68,14 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int lavaGeneratorRFCapacity;
 
+    @Config.DefaultInt(40)
+    @Config.RangeInt(min = 1)
+    public static int lavaGeneratorRFPerTick;
+
+    @Config.DefaultInt(50)
+    @Config.RangeInt(min = 1)
+    public static int lavaGeneratorFuelBurnTime;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableEnderGenerator;
@@ -97,6 +105,14 @@ public class GeneratorConfig {
     @Config.RangeInt(min = 1)
     @Config.RequiresMcRestart
     public static int redstoneGeneratorRFCapacity;
+
+    @Config.DefaultInt(80)
+    @Config.RangeInt(min = 1)
+    public static int redstoneGeneratorRFPerTick;
+
+    @Config.DefaultInt(320)
+    @Config.RangeInt(min = 1)
+    public static int redstoneGeneratorFuelBurnTime;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart

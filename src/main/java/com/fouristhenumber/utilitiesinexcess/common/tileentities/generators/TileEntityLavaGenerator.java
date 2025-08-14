@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.lavaGeneratorFuelBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.lavaGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.lavaGeneratorRFPerTick;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,8 +37,8 @@ public class TileEntityLavaGenerator extends TileEntityBaseGenerator implements 
     protected boolean consumeFuel() {
         if (fluid != null && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()
             && fluid.amount >= 50) {
-            currentFuelBurnTime = 50;
-            currentRFPerTick = 40;
+            currentFuelBurnTime = lavaGeneratorFuelBurnTime;
+            currentRFPerTick = lavaGeneratorRFPerTick;
             fluidTank.drain(50, true);
             return true;
         }

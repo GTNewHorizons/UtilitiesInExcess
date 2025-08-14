@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.redstoneGeneratorFuelBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.redstoneGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.redstoneGeneratorRFPerTick;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -38,8 +40,8 @@ public class TileEntityRedstoneGenerator extends TileEntityLavaGenerator impleme
             && fluid.amount >= 125
             && redstoneStack != null
             && redstoneStack.getItem() != null) {
-            currentFuelBurnTime = 312;
-            currentRFPerTick = 80;
+            currentFuelBurnTime = redstoneGeneratorFuelBurnTime;
+            currentRFPerTick = redstoneGeneratorRFPerTick;
             fluidTank.drain(125, true);
             redstoneStack.stackSize--;
             if (redstoneStack.stackSize <= 0) redstoneStack = null;
