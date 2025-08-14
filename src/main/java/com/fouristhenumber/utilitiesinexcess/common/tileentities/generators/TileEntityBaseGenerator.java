@@ -1,7 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
@@ -13,17 +12,11 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.item.IItemHandler;
-import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 import cofh.api.energy.EnergyStorage;
@@ -35,7 +28,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
 
     protected EnergyStorage energyStorage;
     protected int burnTime;
-    protected int currentItemBurnTime;
+    protected int currentFuelBurnTime;
     protected int currentRFPerTick;
     protected boolean isBurning;
 
@@ -52,14 +45,11 @@ public abstract class TileEntityBaseGenerator extends TileEntity
         this.energyStorage = new EnergyStorage(capacity, maxTransfer);
     }
 
-    /** Override to define how much RF per tick a given fuel stack provides. */
-    protected abstract int getRFPerTick(ItemStack stack);
-
-    /** Override to define burn time for a given fuel stack. */
-    protected abstract int getFuelBurnTime(ItemStack stack);
-
-    /** Override to consume fuel (usually decrement stack size in inventory). */
-    protected abstract ItemStack consumeFuel();
+    /**
+     * Override to set fuel consumption behavior. Return true if fuel consumption succeeds.
+     * A proper implementation of consumeFuel should usually set currentFuelBurnTime and currentRFPerTick!
+     */
+    protected abstract boolean consumeFuel();
 
     @Override
     public void updateEntity() {
@@ -74,15 +64,9 @@ public abstract class TileEntityBaseGenerator extends TileEntity
             dirty = true;
         } else {
             isBurning = false;
-            ItemStack fuel = getFuelStack();
-            if (fuel != null) {
-                int time = getFuelBurnTime(fuel);
-                currentRFPerTick = getRFPerTick(fuel);
-                if (time > 0) {
-                    currentItemBurnTime = burnTime = time;
-                    consumeFuel();
-                    dirty = true;
-                }
+            if (consumeFuel()) {
+                burnTime = currentFuelBurnTime;
+                dirty = true;
             }
         }
 
@@ -114,9 +98,6 @@ public abstract class TileEntityBaseGenerator extends TileEntity
         }
     }
 
-    /** Override to return the stack representing current fuel in inventory. */
-    protected abstract ItemStack getFuelStack();
-
     public void onNeighborBlockChange() {
         receiversDirty = true;
     }
@@ -147,7 +128,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         burnTime = tag.getInteger("BurnTime");
-        currentItemBurnTime = tag.getInteger("CurrentItemBurnTime");
+        currentFuelBurnTime = tag.getInteger("CurrentItemBurnTime");
         currentRFPerTick = tag.getInteger("CurrentRFPerTick");
         energyStorage.readFromNBT(tag);
     }
@@ -156,7 +137,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("BurnTime", burnTime);
-        tag.setInteger("CurrentItemBurnTime", currentItemBurnTime);
+        tag.setInteger("CurrentItemBurnTime", currentFuelBurnTime);
         tag.setInteger("CurrentRFPerTick", currentRFPerTick);
         energyStorage.writeToNBT(tag);
     }
@@ -189,8 +170,6 @@ public abstract class TileEntityBaseGenerator extends TileEntity
         syncManager.syncValue("energySyncer", energySyncer);
         syncManager.syncValue("maxEnergySyncer", maxEnergySyncer);
 
-        SlotGroup slotGroup = new SlotGroup("fuel_slot", 1);
-
         ModularPanel panel = new ModularPanel("panel");
         panel.bindPlayerInventory();
 
@@ -204,14 +183,6 @@ public abstract class TileEntityBaseGenerator extends TileEntity
                         .marginRight(5)
                         .marginTop(5)
                         .marginBottom(-15)));
-
-        IItemHandler itemHandler = new InvWrapper(this);
-        ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
-
-        panel.child(
-            new Grid().coverChildren()
-                .pos(79, 34)
-                .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
         panel.child(
             new ProgressWidget()
                 .value(
