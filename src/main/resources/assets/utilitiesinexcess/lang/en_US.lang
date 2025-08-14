@@ -134,10 +134,8 @@ tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 
 tile.trash_can_item.name=Trash Can (Item)
-tile.trash_can_item.desc.1=Trash Can for Items
-
 tile.trash_can_fluid.name=Trash Can (Fluid)
-tile.trash_can_fluid.desc=Trash Can for Fluids
+tile.trash_can_energy.name=Trash Can (Energy)
 
 tile.magic_wood.name=Magic Wood
 tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
