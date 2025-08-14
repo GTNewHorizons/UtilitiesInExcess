@@ -14,6 +14,8 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
+import java.util.Random;
+
 public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBaseGenerator {
 
     protected ItemStack fuelStack = null;
@@ -89,7 +91,7 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
 
     @Override
     protected boolean consumeFuel() {
-        if (fuelStack != null && fuelStack.getItem() != null) {
+        if (fuelStack != null && fuelStack.getItem() != null && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
             currentFuelBurnTime = getFuelBurnTime(fuelStack);
             currentRFPerTick = getRFPerTick(fuelStack);
             fuelStack.stackSize--;

@@ -41,8 +41,10 @@ public abstract class TileEntityBaseGenerator extends TileEntity
         .imageSize(16, 128)
         .build();
 
+    // Generators can "receive" infinite energy because this allows them to generate however much they say.
+    // Nothing can push to them anyway.
     public TileEntityBaseGenerator(int capacity, int maxTransfer) {
-        this.energyStorage = new EnergyStorage(capacity, maxTransfer);
+        this.energyStorage = new EnergyStorage(capacity, Integer.MAX_VALUE, maxTransfer);
     }
 
     /**
@@ -50,6 +52,11 @@ public abstract class TileEntityBaseGenerator extends TileEntity
      * A proper implementation of consumeFuel should usually set currentFuelBurnTime and currentRFPerTick!
      */
     protected abstract boolean consumeFuel();
+
+    /**
+     * Called every burn tick.
+     */
+    protected void onBurnTick() {}
 
     @Override
     public void updateEntity() {
@@ -62,6 +69,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
             energyStorage.receiveEnergy(currentRFPerTick, false);
             isBurning = true;
             dirty = true;
+            onBurnTick();
         } else {
             isBurning = false;
             if (consumeFuel()) {
