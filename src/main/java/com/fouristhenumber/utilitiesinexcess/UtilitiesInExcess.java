@@ -30,6 +30,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
+import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
@@ -101,6 +102,8 @@ public class UtilitiesInExcess {
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
+
+        PinkFuelHelper.scanRecipesForPinkFuel();
     }
 
     @Mod.EventHandler
