@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -14,7 +15,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
-public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBaseGenerator {
+public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBaseGenerator implements IInventory {
 
     protected ItemStack fuelStack = null;
 
@@ -27,6 +28,11 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
 
     /** Override to define burn time for a given fuel stack. */
     protected abstract int getFuelBurnTime(ItemStack stack);
+
+    @Override
+    protected String getGUIName() {
+        return getInventoryName();
+    }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {

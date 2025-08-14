@@ -30,7 +30,7 @@ public class PinkFuelHelper {
         for (Object obj : recipes) {
             if (obj instanceof IRecipe recipe) {
                 for (ItemStack input : getAllRecipeInputs(recipe)) {
-                    if (input.isItemEqual(pinkDye) || input.isItemEqual(pinkWool)) {
+                    if (stackMatches(input, pinkDye) || stackMatches(input, pinkWool)) {
                         ItemStack output = recipe.getRecipeOutput();
                         if (output != null) {
                             pinkFuelItems.add(output.getItem());
@@ -43,6 +43,10 @@ public class PinkFuelHelper {
 
         pinkFuelItems.add(pinkDye.getItem());
         pinkFuelItems.add(pinkWool.getItem());
+    }
+
+    private static boolean stackMatches(ItemStack stack, ItemStack target) {
+        return stack != null && stack.isItemEqual(target);
     }
 
     private static List<ItemStack> getAllRecipeInputs(IRecipe recipe) {

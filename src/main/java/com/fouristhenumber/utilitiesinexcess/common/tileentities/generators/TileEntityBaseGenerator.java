@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
 import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
@@ -25,8 +24,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 
-public abstract class TileEntityBaseGenerator extends TileEntity
-    implements IEnergyProvider, IInventory, IGuiHolder<PosGuiData> {
+public abstract class TileEntityBaseGenerator extends TileEntity implements IEnergyProvider, IGuiHolder<PosGuiData> {
 
     protected EnergyStorage energyStorage;
     protected int burnTime;
@@ -60,6 +58,10 @@ public abstract class TileEntityBaseGenerator extends TileEntity
      */
     protected void onBurnTick() {}
 
+    protected boolean canExtract() {
+        return true;
+    }
+
     @Override
     public void updateEntity() {
         boolean dirty = false;
@@ -80,7 +82,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
             }
         }
 
-        pushEnergyToReceivers();
+        if (canExtract()) pushEnergyToReceivers();
 
         if (dirty) {
             markDirty();
@@ -154,7 +156,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
 
     @Override
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        return energyStorage.extractEnergy(maxExtract, simulate);
+        return canExtract() ? energyStorage.extractEnergy(maxExtract, simulate) : 0;
     }
 
     @Override
@@ -172,6 +174,8 @@ public abstract class TileEntityBaseGenerator extends TileEntity
         return energyStorage.getMaxEnergyStored();
     }
 
+    protected abstract String getGUIName();
+
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
 
@@ -187,7 +191,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
+                    IKey.str(StatCollector.translateToLocal(getGUIName()))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)

@@ -1,31 +1,56 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
-
-public class TileEntitySolarGenerator extends TileEntityBaseGeneratorWithItemFuel {
+public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     public TileEntitySolarGenerator() {
-        super(100000, 200);
+        super(100_000, 300);
     }
 
     @Override
-    protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 40;
+    protected boolean consumeFuel() {
+        return worldObj.isDaytime() && getWorldObj().canBlockSeeTheSky(xCoord, yCoord + 1, zCoord) && !canExtract();
     }
 
     @Override
-    protected int getFuelBurnTime(ItemStack stack) {
-        return TileEntityFurnace.getItemBurnTime(stack);
+    protected boolean canExtract() {
+        return (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
     }
 
     @Override
-    public String getInventoryName() {
-        return "tile.furnace_generator.name";
+    public void updateEntity() {
+        boolean dirty = false;
+
+        if (receiversDirty) refreshEnergyReceivers();
+
+        if (consumeFuel()) {
+            energyStorage.receiveEnergy(getRFPerTick(), false);
+            dirty = true;
+        }
+
+        onBurnTick();
+
+        if (canExtract()) pushEnergyToReceivers();
+
+        if (dirty) markDirty();
+    }
+
+    protected int getRFPerTick() {
+
+        // For dimensions like the end with no time, but where the sky can be seen, output constant rate
+        if (worldObj.provider.hasNoSky) return 40;
+
+        // Interpolate between 20-60
+        long time = worldObj.getWorldTime();
+
+        if (time >= 0 && time <= 6000) {
+            return (int) (20 + (40.0 * time / 6000.0));
+        } else {
+            return (int) (60 - (40.0 * (time - 6000) / 6000.0));
+        }
     }
 
     @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return TileEntityFurnace.isItemFuel(stack);
+    protected String getGUIName() {
+        return "tile.solar_generator.name";
     }
 }

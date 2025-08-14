@@ -15,6 +15,7 @@ public class TileEntityEnderGenerator extends TileEntityBaseGeneratorWithItemFue
         return 40;
     }
 
+    // TODO: This should also allow ender-lily seeds when we add those
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
         if (stack == null) return 0;
