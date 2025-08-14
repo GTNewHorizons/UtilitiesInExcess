@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.netherStarGeneratorFuelBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.netherStarGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.netherStarGeneratorRFPerTick;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -14,14 +16,14 @@ public class TileEntityNetherStarGenerator extends TileEntityBaseGeneratorWithIt
 
     @Override
     protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 40_000;
+        return netherStarGeneratorRFPerTick;
     }
 
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
         if (stack == null) return 0;
         Item item = stack.getItem();
-        if (item == Items.nether_star) return 2400;
+        if (item == Items.nether_star) return netherStarGeneratorFuelBurnTime;
         return 0;
     }
 

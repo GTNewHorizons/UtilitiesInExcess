@@ -77,6 +77,18 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int enderGeneratorRFCapacity;
 
+    @Config.DefaultInt(40)
+    @Config.RangeInt(min = 1)
+    public static int enderGeneratorRFPerTick;
+
+    @Config.DefaultInt(800)
+    @Config.RangeInt(min = 0)
+    public static int enderGeneratorEnderPearlBurnTime;
+
+    @Config.DefaultInt(3000)
+    @Config.RangeInt(min = 0)
+    public static int enderGeneratorEnderEyeBurnTime;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableRedstoneGenerator;
@@ -123,11 +135,11 @@ public class GeneratorConfig {
     public static int TNTGeneratorRFCapacity;
 
     @Config.DefaultInt(480_000)
-    @Config.RangeInt(min = 1)
+    @Config.RangeInt(min = 0)
     public static int TNTGeneratorTNTFuelValue;
 
     @Config.DefaultInt(32_000)
-    @Config.RangeInt(min = 1)
+    @Config.RangeInt(min = 0)
     public static int TNTGeneratorGunpowderFuelValue;
 
     @Config.DefaultBoolean(true)
@@ -142,6 +154,14 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int pinkGeneratorRFCapacity;
 
+    @Config.DefaultInt(40)
+    @Config.RangeInt(min = 1)
+    public static int pinkGeneratorRFPerTick;
+
+    @Config.DefaultInt(400)
+    @Config.RangeInt(min = 1)
+    public static int pinkGeneratorFuelBurnTime;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableNetherStarGenerator;
@@ -150,5 +170,13 @@ public class GeneratorConfig {
     @Config.RangeInt(min = 1)
     @Config.RequiresMcRestart
     public static int netherStarGeneratorRFCapacity;
+
+    @Config.DefaultInt(40_000)
+    @Config.RangeInt(min = 1)
+    public static int netherStarGeneratorRFPerTick;
+
+    @Config.DefaultInt(2400)
+    @Config.RangeInt(min = 1)
+    public static int netherStarGeneratorFuelBurnTime;
 
 }

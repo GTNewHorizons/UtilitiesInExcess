@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.pinkGeneratorFuelBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.pinkGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.pinkGeneratorRFPerTick;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,7 +17,7 @@ public class TileEntityPinkGenerator extends TileEntityBaseGeneratorWithItemFuel
 
     @Override
     protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 40;
+        return pinkGeneratorRFPerTick;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class TileEntityPinkGenerator extends TileEntityBaseGeneratorWithItemFuel
         if (stack == null) return 0;
         Item item = stack.getItem();
         if (PinkFuelHelper.pinkFuelItems.contains(item)) {
-            return 400;
+            return pinkGeneratorFuelBurnTime;
         }
         return 0;
     }
