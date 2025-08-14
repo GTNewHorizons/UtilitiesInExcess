@@ -1,31 +1,36 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 public class TileEntityNetherStarGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityNetherStarGenerator() {
-        super(100000, 200);
+        super(1_000_000, 500_000);
     }
 
     @Override
     protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 40;
+        return 40_000;
     }
 
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
-        return TileEntityFurnace.getItemBurnTime(stack);
+        if (stack == null) return 0;
+        Item item = stack.getItem();
+        if (item == Items.nether_star) return 2400;
+        return 0;
     }
 
     @Override
     public String getInventoryName() {
-        return "tile.furnace_generator.name";
+        return "tile.nether_star_generator.name";
     }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return TileEntityFurnace.isItemFuel(stack);
+        if (stack == null) return false;
+        return stack.getItem() == Items.nether_star;
     }
 }
