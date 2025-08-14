@@ -62,6 +62,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
 
     @Override
     public void updateEntity() {
+        if (worldObj.isRemote) return;
         boolean dirty = false;
 
         if (receiversDirty) refreshEnergyReceivers();

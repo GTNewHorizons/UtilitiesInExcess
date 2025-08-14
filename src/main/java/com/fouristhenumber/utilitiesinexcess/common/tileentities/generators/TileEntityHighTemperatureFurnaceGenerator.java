@@ -1,22 +1,26 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.highTemperatureFurnaceGeneratorFuelUsageRatio;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.highTemperatureFurnaceGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.highTemperatureFurnaceGeneratorRFPerTick;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class TileEntityHighTemperatureFurnaceGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityHighTemperatureFurnaceGenerator() {
-        super(500000);
+        super(highTemperatureFurnaceGeneratorRFCapacity);
     }
 
     @Override
     protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 200;
+        return highTemperatureFurnaceGeneratorRFPerTick;
     }
 
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
-        return TileEntityFurnace.getItemBurnTime(stack) / 10;
+        return (int) (TileEntityFurnace.getItemBurnTime(stack) * highTemperatureFurnaceGeneratorFuelUsageRatio);
     }
 
     @Override

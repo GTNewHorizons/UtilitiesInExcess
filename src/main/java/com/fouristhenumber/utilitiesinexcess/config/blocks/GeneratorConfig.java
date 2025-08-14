@@ -12,13 +12,52 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static boolean enableLowTemperatureFurnaceGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int lowTemperatureFurnaceGeneratorRFCapacity;
+
+    @Config.DefaultFloat(0.5F)
+    @Config.RangeFloat(min = 0.0001F, max = 10000F)
+    public static float lowTemperatureFurnaceGeneratorFuelUsageRatio;
+
+    @Config.DefaultInt(5)
+    @Config.RangeInt(min = 1)
+    public static int lowTemperatureFurnaceGeneratorRFPerTick;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableFurnaceGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int furnaceGeneratorRFCapacity;
+
+    @Config.DefaultFloat(0.3125F)
+    @Config.RangeFloat(min = 0.0001F, max = 10000F)
+    public static float furnaceGeneratorFuelUsageRatio;
+
+    @Config.DefaultInt(40)
+    @Config.RangeInt(min = 1)
+    public static int furnaceGeneratorRFPerTick;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableHighTemperatureFurnaceGenerator;
+
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int highTemperatureFurnaceGeneratorRFCapacity;
+
+    @Config.DefaultFloat(0.0075F)
+    @Config.RangeFloat(min = 0.0001F, max = 10000F)
+    public static float highTemperatureFurnaceGeneratorFuelUsageRatio;
+
+    @Config.DefaultInt(400)
+    @Config.RangeInt(min = 1)
+    public static int highTemperatureFurnaceGeneratorRFPerTick;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
