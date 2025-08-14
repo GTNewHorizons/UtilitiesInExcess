@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
@@ -12,6 +13,16 @@ import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DisableableItemStack {
+
+    public static boolean addFurnaceRecipe(Object inputObject, Object outputObject, float exp) {
+        if (!isEnabled(inputObject) || !isEnabled(outputObject)) return false;
+        ItemStack input = getItem(inputObject);
+        ItemStack output = getItem(outputObject);
+
+        FurnaceRecipes.smelting()
+            .func_151394_a(input, output, exp);
+        return true;
+    }
 
     public static boolean addShapedRecipe(Object outputObject, Object... params) {
         if (!isEnabled(outputObject)) return false;
