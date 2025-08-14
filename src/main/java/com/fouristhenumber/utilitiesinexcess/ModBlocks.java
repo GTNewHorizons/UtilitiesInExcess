@@ -23,8 +23,10 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShr
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
@@ -54,7 +56,8 @@ public enum ModBlocks {
     CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
-    INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block")
+    INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
+    FURNACE_GENERATOR(GeneratorConfig.enableFurnaceGenerator, new BlockFurnaceGenerator("furnace_generator"), "furnace_generator")
     ; // leave trailing semicolon
     // spotless:on
 
