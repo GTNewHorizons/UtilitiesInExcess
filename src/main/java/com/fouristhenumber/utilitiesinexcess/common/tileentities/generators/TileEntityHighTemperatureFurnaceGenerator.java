@@ -6,22 +6,22 @@ import net.minecraft.tileentity.TileEntityFurnace;
 public class TileEntityHighTemperatureFurnaceGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityHighTemperatureFurnaceGenerator() {
-        super(100000, 200);
+        super(500000, 1000);
     }
 
     @Override
     protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 40;
+        return 200;
     }
 
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
-        return TileEntityFurnace.getItemBurnTime(stack);
+        return TileEntityFurnace.getItemBurnTime(stack) / 10;
     }
 
     @Override
     public String getInventoryName() {
-        return "tile.furnace_generator.name";
+        return "tile.high_temperature_furnace_generator.name";
     }
 
     @Override
