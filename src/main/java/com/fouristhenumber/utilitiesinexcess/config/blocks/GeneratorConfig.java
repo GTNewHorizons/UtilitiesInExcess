@@ -116,6 +116,14 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int potionGeneratorRFCapacity;
 
+    @Config.DefaultInt(20)
+    @Config.RangeInt(min = 1)
+    public static int potionGeneratorRFMultiplier;
+
+    @Config.DefaultInt(800)
+    @Config.RangeInt(min = 0)
+    public static int potionGeneratorBurnTime;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableSolarGenerator;
@@ -127,17 +135,14 @@ public class GeneratorConfig {
 
     @Config.DefaultInt(20)
     @Config.RangeInt(min = 0)
-    @Config.RequiresMcRestart
     public static int solarGeneratorLowDayTimeGeneration;
 
     @Config.DefaultInt(60)
     @Config.RangeInt(min = 0)
-    @Config.RequiresMcRestart
     public static int solarGeneratorHighDayTimeGeneration;
 
     @Config.DefaultInt(40)
     @Config.RangeInt(min = 0)
-    @Config.RequiresMcRestart
     public static int solarGeneratorNoSkyGeneration;
 
     @Config.DefaultBoolean(true)

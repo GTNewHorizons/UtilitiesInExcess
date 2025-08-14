@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.potionGeneratorBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.potionGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.potionGeneratorRFMultiplier;
 
 import java.util.List;
 
@@ -17,14 +19,14 @@ public class TileEntityPotionGenerator extends TileEntityBaseGeneratorWithItemFu
     }
 
     @Override
-    protected int getRFPerTick(ItemStack currentBurningItem) {
-        return 1000;
+    protected int getRFPerTick(ItemStack stack) {
+        if (stack == null) return 0;
+        return (int) (Math.pow(2, getPotionComplexity(stack)) * potionGeneratorRFMultiplier);
     }
 
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
-        if (stack == null) return 0;
-        return getPotionComplexity(stack) * 600;
+        return potionGeneratorBurnTime;
     }
 
     // Each effect is 1 complexity. This is not relevant in vanilla but will make it compatible with custom modded

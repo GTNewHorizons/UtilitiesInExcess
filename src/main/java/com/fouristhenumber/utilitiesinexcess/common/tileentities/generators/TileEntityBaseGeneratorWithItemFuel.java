@@ -136,7 +136,9 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
         ModularPanel panel = super.buildUI(data, syncManager, settings);
 
         IntSyncValue burnSyncer = new IntSyncValue(() -> burnTime, ignore -> {});
+        IntSyncValue rftSyncer = new IntSyncValue(() -> currentRFPerTick, ignore -> {});
         syncManager.syncValue("burnSyncer", burnSyncer);
+        syncManager.syncValue("rftSyncer", rftSyncer);
 
         SlotGroup slotGroup = new SlotGroup("fuel_slot", 1);
 
@@ -151,7 +153,11 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
                 IKey.dynamic(
                     () -> (burnSyncer.getIntValue() / 1200) + "m " + (burnSyncer.getIntValue() % 1200) / 20 + "s")
                     .asWidget()
-                    .pos(10, 50));
+                    .pos(10, 50))
+            .child(
+                IKey.dynamic(() -> rftSyncer.getIntValue() + "RF/t")
+                    .asWidget()
+                    .pos(10, 62));
 
         return panel;
     }
