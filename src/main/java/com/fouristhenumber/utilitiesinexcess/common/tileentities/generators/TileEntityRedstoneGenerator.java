@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.redstoneGeneratorRFCapacity;
+
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,10 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 public class TileEntityRedstoneGenerator extends TileEntityLavaGenerator implements IInventory {
+
+    public TileEntityRedstoneGenerator() {
+        super(redstoneGeneratorRFCapacity);
+    }
 
     protected ItemStack redstoneStack = null;
 

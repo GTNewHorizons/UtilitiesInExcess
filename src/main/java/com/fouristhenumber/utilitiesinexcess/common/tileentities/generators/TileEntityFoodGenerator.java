@@ -1,12 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.foodGeneratorRFCapacity;
+
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityFoodGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityFoodGenerator() {
-        super(5000000);
+        super(foodGeneratorRFCapacity);
     }
 
     @Override

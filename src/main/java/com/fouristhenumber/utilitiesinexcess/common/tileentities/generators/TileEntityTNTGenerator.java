@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.TNTGeneratorRFCapacity;
 import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.uieRandom;
 
 import net.minecraft.init.Blocks;
@@ -10,15 +11,15 @@ import net.minecraft.item.ItemStack;
 public class TileEntityTNTGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityTNTGenerator() {
-        super(2_500_000);
+        super(TNTGeneratorRFCapacity);
     }
 
     @Override
     protected int getRFPerTick(ItemStack stack) {
         if (stack == null) return 0;
         Item item = stack.getItem();
-        if (item == Item.getItemFromBlock(Blocks.tnt)) return 500_000;
-        if (item == Items.gunpowder) return 30_000;
+        if (item == Item.getItemFromBlock(Blocks.tnt)) return 480000;
+        if (item == Items.gunpowder) return 32000;
         return 0;
     }
 

@@ -63,35 +63,81 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static boolean enableLavaGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int lavaGeneratorRFCapacity;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableEnderGenerator;
+
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int enderGeneratorRFCapacity;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableRedstoneGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int redstoneGeneratorRFCapacity;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableFoodGenerator;
+
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int foodGeneratorRFCapacity;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enablePotionGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int potionGeneratorRFCapacity;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableSolarGenerator;
+
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int solarGeneratorRFCapacity;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableTNTGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int TNTGeneratorRFCapacity;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enablePinkGenerator;
 
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int pinkGeneratorRFCapacity;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableNetherStarGenerator;
+
+    @Config.DefaultInt(100_000)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int netherStarGeneratorRFCapacity;
+
 }

@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.lavaGeneratorRFCapacity;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -22,7 +24,11 @@ public class TileEntityLavaGenerator extends TileEntityBaseGenerator implements 
     protected FluidStackTank fluidTank = new FluidStackTank(() -> fluid, fluidStack -> fluid = fluidStack, 4000);
 
     public TileEntityLavaGenerator() {
-        super(100_000);
+        super(lavaGeneratorRFCapacity);
+    }
+
+    public TileEntityLavaGenerator(int capacity) {
+        super(capacity);
     }
 
     @Override

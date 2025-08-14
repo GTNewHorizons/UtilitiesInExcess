@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.enderGeneratorRFCapacity;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -7,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityEnderGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityEnderGenerator() {
-        super(100000);
+        super(enderGeneratorRFCapacity);
     }
 
     @Override

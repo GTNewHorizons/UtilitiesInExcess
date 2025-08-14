@@ -1,9 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorRFCapacity;
+
 public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     public TileEntitySolarGenerator() {
-        super(100_000);
+        super(solarGeneratorRFCapacity);
     }
 
     @Override

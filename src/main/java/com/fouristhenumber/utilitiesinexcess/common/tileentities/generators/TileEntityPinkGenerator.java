@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.pinkGeneratorRFCapacity;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -8,7 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 public class TileEntityPinkGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityPinkGenerator() {
-        super(100_000);
+        super(pinkGeneratorRFCapacity);
     }
 
     @Override

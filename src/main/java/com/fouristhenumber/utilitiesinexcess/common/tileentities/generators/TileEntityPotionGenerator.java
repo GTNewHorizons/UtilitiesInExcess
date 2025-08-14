@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.potionGeneratorRFCapacity;
+
 import java.util.List;
 
 import net.minecraft.init.Items;
@@ -11,7 +13,7 @@ import net.minecraft.potion.PotionEffect;
 public class TileEntityPotionGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityPotionGenerator() {
-        super(5000000);
+        super(potionGeneratorRFCapacity);
     }
 
     @Override

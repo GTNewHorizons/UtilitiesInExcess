@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.netherStarGeneratorRFCapacity;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -7,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityNetherStarGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
     public TileEntityNetherStarGenerator() {
-        super(1_000_000);
+        super(netherStarGeneratorRFCapacity);
     }
 
     @Override
