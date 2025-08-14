@@ -17,6 +17,7 @@ public class TileEntityFoodGenerator extends TileEntityBaseGeneratorWithItemFuel
     protected int getRFPerTick(ItemStack stack) {
         if (stack == null) return 0;
         if (!(stack.getItem() instanceof ItemFood foodItem)) return 0;
+        // Obfuscated method is getHungerValue
         return foodItem.func_150905_g(stack) * foodGeneratorRFMultiplier;
     }
 
@@ -24,6 +25,7 @@ public class TileEntityFoodGenerator extends TileEntityBaseGeneratorWithItemFuel
     protected int getFuelBurnTime(ItemStack stack) {
         if (stack == null) return 0;
         if (!(stack.getItem() instanceof ItemFood foodItem)) return 0;
+        // Obfuscated method is getSaturation
         return (int) (foodItem.func_150906_h(stack) * foodGeneratorBurnTimeMultiplier);
     }
 
