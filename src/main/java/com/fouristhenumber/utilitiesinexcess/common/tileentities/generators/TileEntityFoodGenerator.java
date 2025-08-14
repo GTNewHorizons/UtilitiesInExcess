@@ -20,7 +20,7 @@ public class TileEntityFoodGenerator extends TileEntityBaseGeneratorWithItemFuel
     protected int getFuelBurnTime(ItemStack stack) {
         if (stack == null) return 0;
         if (!(stack.getItem() instanceof ItemFood foodItem)) return 0;
-        return (int) foodItem.func_150906_h(stack) * 100;
+        return (int) (foodItem.func_150906_h(stack) * 100);
     }
 
     @Override

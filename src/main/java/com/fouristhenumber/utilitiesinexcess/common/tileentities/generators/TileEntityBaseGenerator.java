@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -204,8 +206,8 @@ public abstract class TileEntityBaseGenerator extends TileEntity
                     tt -> tt.add(
                         StatCollector.translateToLocalFormatted(
                             "gui.energy.tooltip",
-                            energySyncer.getStringValue(),
-                            maxEnergySyncer.getStringValue()))));
+                            formatNumber(energySyncer.getIntValue()),
+                            formatNumber(maxEnergySyncer.getIntValue())))));
 
         return panel;
     }

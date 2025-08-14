@@ -121,7 +121,7 @@ item.watering_can.desc.3=Crouch and use to toggle
 item.watering_can.desc.4=automatic mode.
 
 item.fire_battery.name=Fire Battery
-item.fire_battery.desc=%s / %s
+item.fire_battery.desc=RF %s / %s
 
 tile.low_temperature_furnace_generator.name=Low-Temperature Furnace Generator
 tile.furnace_generator.name=Furnace Generator
@@ -136,7 +136,7 @@ tile.solar_generator.name=Solar Generator
 tile.redstone_generator.name=Redstone Generator
 tile.potion_generator.name=Potion Generator
 
-gui.energy.tooltip=%s / %s
+gui.energy.tooltip=RF: %s / %s
 
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier

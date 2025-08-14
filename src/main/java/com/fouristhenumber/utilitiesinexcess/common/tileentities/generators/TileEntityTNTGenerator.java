@@ -1,14 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
-import java.util.List;
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.uieRandom;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 
 public class TileEntityTNTGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
@@ -46,10 +43,11 @@ public class TileEntityTNTGenerator extends TileEntityBaseGeneratorWithItemFuel 
     protected void onBurnTick() {
         worldObj.newExplosion(
             null,
-            xCoord + 0.5, yCoord + 0.5, zCoord + 0.5,
+            xCoord + (10 - uieRandom.nextInt(20)) + 0.5,
+            yCoord + 0.5,
+            zCoord + (10 - uieRandom.nextInt(20)) + 0.5,
             4.0F,
             false,
-            false
-        );
+            false);
     }
 }
