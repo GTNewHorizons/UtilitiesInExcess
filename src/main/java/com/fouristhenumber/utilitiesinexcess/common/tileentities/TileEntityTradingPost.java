@@ -1,12 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.util.List;
+
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+
+import org.jetbrains.annotations.ApiStatus;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -48,9 +53,19 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         ModularPanel panel = ModularPanel.defaultPanel("trading_post");
-        var villager = new EntityVillager(data.getWorld());
-        var recipes = villager.getRecipes(data.getPlayer());
-        var r1 = (MerchantRecipe) recipes.get(0);
+        // Baby villagers shouldn't trade :P
+        AxisAlignedBB boundingBox = data.getTileEntity()
+            .getRenderBoundingBox()
+            .expand(
+                32,
+                data.getWorld()
+                    .getHeight(),
+                32);
+        List<IMerchant> l = data.getWorld()
+            .selectEntitiesWithinAABB(IMerchant.class, boundingBox, entity -> {
+                if (entity instanceof EntityAgeable ageable) return ageable.getGrowingAge() >= 0;
+                return true;
+            });
         return panel;
     }
 
@@ -64,6 +79,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         super.readFromNBT(compound);
     }
 
+    @ApiStatus.Internal
     public static void handleMerchant(MerchantRecipeList list, IMerchant merchant, EntityPlayer player) {
         for (int i = 0; i < list.size(); i++) {
             MerchantRecipe recipe = (MerchantRecipe) list.get(i);

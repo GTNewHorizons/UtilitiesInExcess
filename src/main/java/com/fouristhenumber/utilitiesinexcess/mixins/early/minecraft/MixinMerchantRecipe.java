@@ -37,14 +37,16 @@ public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecip
         World world = Minecraft.getMinecraft().theWorld;
         String playerId = compound.getString("player");
         uie$setFavorite(compound.getBoolean("favorite"));
-        for (EntityPlayer playerEntity : world.playerEntities) {
-            if (playerEntity.getGameProfile()
-                .getId() == UUID.fromString(playerId)) {
-                uie$setPlayer(playerEntity);
-                break;
+        if (world != null) {
+            if (!playerId.isEmpty()) for (EntityPlayer playerEntity : world.playerEntities) {
+                if (playerEntity.getGameProfile()
+                    .getId() == UUID.fromString(playerId)) {
+                    uie$setPlayer(playerEntity);
+                    break;
+                }
             }
+            uie$setMerchant((IMerchant) world.getEntityByID(compound.getInteger("merchant")));
         }
-        uie$setMerchant((IMerchant) world.getEntityByID(compound.getInteger("merchant")));
         uie$setListIndex(compound.getInteger("index"));
     }
 
@@ -52,12 +54,14 @@ public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecip
     public void uie$writeToTags(CallbackInfoReturnable<NBTTagCompound> cir) {
         NBTTagCompound compound = cir.getReturnValue();
         compound.setBoolean("favorite", this.uie$getFavorite());
-        compound.setString(
-            "player",
-            this.uie$getPlayer()
-                .getGameProfile()
-                .getId()
-                .toString());
+        if (this.uie$getPlayer() != null) {
+            compound.setString(
+                "player",
+                this.uie$getPlayer()
+                    .getGameProfile()
+                    .getId()
+                    .toString());
+        }
         compound.setInteger("merchant", ((Entity) this.uie$getMerchant()).getEntityId());
         compound.setInteger("index", this.uie$getListIndex());
     }
