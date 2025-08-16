@@ -7,6 +7,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
@@ -31,21 +32,22 @@ public class TransformerIMerchant implements IClassTransformer {
                     .filter(a -> a.name.equals("getRecipes"))
                     .findFirst()
                     .orElse(null);
-                InsnList handle = new InsnList();
-                handle.add(new InsnNode(Opcodes.DUP));// Dup
-                handle.add(new VarInsnNode(Opcodes.ALOAD, 0));// Push this (instance of IMerchant)
-                handle.add(new VarInsnNode(Opcodes.ALOAD, 1));// Push the player
-                handle.add(
-                    new MethodInsnNode(
-                        0xb8,
-                        "com/fouristhenumber/utilitiesinexcess/common/tileentities/TileEntityTradingPost",
-                        "handleMerchant",
-                        "(Lnet/minecraft/village/MerchantRecipeList;Lnet/minecraft/entity/IMerchant;Lnet/minecraft/entity/player/EntityPlayer;)V",
-                        false));// invokestatic
-                method.instructions.insertBefore(
-                    method.instructions.getLast()
-                        .getPrevious(),
-                    handle);
+                for (AbstractInsnNode abstractInsnNode : method.instructions.toArray()) {
+                    InsnList handle = new InsnList();
+                    handle.add(new InsnNode(Opcodes.DUP));
+                    handle.add(new VarInsnNode(Opcodes.ALOAD, 0));
+                    handle.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                    handle.add(
+                        new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            "com/fouristhenumber/utilitiesinexcess/common/tileentities/TileEntityTradingPost",
+                            "handleMerchant",
+                            "(Lnet/minecraft/village/MerchantRecipeList;Lnet/minecraft/entity/IMerchant;Lnet/minecraft/entity/player/EntityPlayer;)V",
+                            false));
+                    if (abstractInsnNode.getOpcode() == Opcodes.ARETURN) {
+                        method.instructions.insertBefore(abstractInsnNode, handle);
+                    }
+                }
                 ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 cn.accept(cw);
                 return cw.toByteArray();

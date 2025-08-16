@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft;
 
+import java.util.UUID;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IMerchant;
@@ -33,9 +35,15 @@ public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecip
     @Inject(method = "readFromTags", at = @At(value = "TAIL"))
     public void uie$readFromTags(NBTTagCompound compound, CallbackInfo ci) {
         World world = Minecraft.getMinecraft().theWorld;
-        String playerName = compound.getString("player");
+        String playerId = compound.getString("player");
         uie$setFavorite(compound.getBoolean("favorite"));
-        uie$setPlayer(world.getPlayerEntityByName(playerName));
+        for (EntityPlayer playerEntity : world.playerEntities) {
+            if (playerEntity.getGameProfile()
+                .getId() == UUID.fromString(playerId)) {
+                uie$setPlayer(playerEntity);
+                break;
+            }
+        }
         uie$setMerchant((IMerchant) world.getEntityByID(compound.getInteger("merchant")));
         uie$setListIndex(compound.getInteger("index"));
     }
@@ -47,7 +55,9 @@ public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecip
         compound.setString(
             "player",
             this.uie$getPlayer()
-                .getCommandSenderName());
+                .getGameProfile()
+                .getId()
+                .toString());
         compound.setInteger("merchant", ((Entity) this.uie$getMerchant()).getEntityId());
         compound.setInteger("index", this.uie$getListIndex());
     }
