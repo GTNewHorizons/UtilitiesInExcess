@@ -1,11 +1,19 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.cleanroommc.modularui.api.widget.IParentWidget;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.SortableListWidget;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.village.MerchantRecipe;
@@ -50,22 +58,90 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
     }
 
+    public static class TradeWidgetSH extends SyncHandler
+    {
+        @Override
+        public void detectAndSendChanges(boolean init) {
+        }
+
+        @Override
+        public void readOnClient(int id, PacketBuffer buf) throws IOException {
+
+        }
+
+        @Override
+        public void readOnServer(int id, PacketBuffer buf) throws IOException {
+
+        }
+    }
+    public static class TradeWidget extends ParentWidget<TradeWidget> implements Interactable
+    {
+        public TradeWidget()
+        {
+            super();
+            this.setSyncHandler(new TradeWidgetSH());
+
+        }
+
+    }
+    public static class TradeListSH extends SyncHandler
+    {
+        private final PosGuiData data;
+
+        public TradeListSH(PosGuiData data)
+        {
+            super();
+            this.data = data;
+        }
+        @Override
+        public void detectAndSendChanges(boolean init) {
+            if(init)
+            {
+// Baby villagers shouldn't trade :P
+                AxisAlignedBB boundingBox = data.getTileEntity()
+                        .getRenderBoundingBox()
+                        .expand(
+                                32,
+                                data.getWorld()
+                                        .getHeight(),
+                                32);
+                List<IMerchant> l = data.getWorld()
+                        .selectEntitiesWithinAABB(IMerchant.class, boundingBox, entity -> {
+                            if (entity instanceof EntityAgeable ageable) return ageable.getGrowingAge() >= 0;
+                            return true;
+                        });
+                return;
+            }
+        }
+
+        @Override
+        public void readOnClient(int id, PacketBuffer buf) throws IOException {
+
+        }
+
+        @Override
+        public void readOnServer(int id, PacketBuffer buf) throws IOException {
+
+        }
+    }
+    public static class TradeList extends SortableListWidget<TradeWidget>
+    {
+        private final PosGuiData data;
+
+        public TradeList(PosGuiData data)
+        {
+            super();
+            this.data = data;
+            this.setSyncHandler(new TradeListSH(data));
+        }
+    }
+
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         ModularPanel panel = ModularPanel.defaultPanel("trading_post");
-        // Baby villagers shouldn't trade :P
-        AxisAlignedBB boundingBox = data.getTileEntity()
-            .getRenderBoundingBox()
-            .expand(
-                32,
-                data.getWorld()
-                    .getHeight(),
-                32);
-        List<IMerchant> l = data.getWorld()
-            .selectEntitiesWithinAABB(IMerchant.class, boundingBox, entity -> {
-                if (entity instanceof EntityAgeable ageable) return ageable.getGrowingAge() >= 0;
-                return true;
-            });
+
+        panel.child(new TradeList(data));
+
         return panel;
     }
 

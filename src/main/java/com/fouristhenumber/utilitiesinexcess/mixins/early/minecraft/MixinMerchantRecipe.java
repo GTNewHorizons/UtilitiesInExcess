@@ -62,6 +62,7 @@ public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecip
                     .getId()
                     .toString());
         }
+        if(this.uie$getMerchant()!=null)
         compound.setInteger("merchant", ((Entity) this.uie$getMerchant()).getEntityId());
         compound.setInteger("index", this.uie$getListIndex());
     }
