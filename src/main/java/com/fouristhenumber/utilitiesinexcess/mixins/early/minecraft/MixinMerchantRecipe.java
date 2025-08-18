@@ -22,6 +22,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradi
 @Mixin(MerchantRecipe.class)
 public class MixinMerchantRecipe implements TileEntityTradingPost.IMerchantRecipeExtension {
 
+
+    public int hashCode() {
+        return ((MerchantRecipe)(Object)this).writeToTags().hashCode();
+    }
+
     @Unique
     public boolean uie$favorite;
     @Unique
