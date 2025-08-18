@@ -49,6 +49,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableDrum;
 
+    @Config.DefaultInt(256000)
+    public static int drumCapacity;
+
     @Config.DefaultBoolean(true)
     public static boolean enableMagicWood;
 

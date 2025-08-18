@@ -40,7 +40,7 @@ public class BlockDrum extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityDrum(capacity);
+        return new TileEntityDrum();
     }
 
     @Override
