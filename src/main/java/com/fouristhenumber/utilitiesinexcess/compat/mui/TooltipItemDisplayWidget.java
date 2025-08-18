@@ -1,7 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.compat.mui;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.integration.nei.NEIIngredientProvider;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -9,9 +11,10 @@ import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
-public class TooltipItemDisplayWidget extends ItemDisplayWidget {
+public class TooltipItemDisplayWidget extends ItemDisplayWidget implements NEIIngredientProvider {
     public TooltipItemDisplayWidget()
     {
         super();
@@ -20,6 +23,7 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget {
             ItemStack stack = getItemStack();
             buildTooltip(stack, tooltip);
         });
+        background(IDrawable.EMPTY);
     }
 
     public ItemStack getItemStack()
@@ -59,4 +63,8 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget {
         tooltip.addFromItem(stack);
     }
 
+    @Override
+    public @Nullable ItemStack getStackForNEI() {
+        return getItemStack();
+    }
 }
