@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IValue;
 import com.cleanroommc.modularui.api.widget.IParentWidget;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
@@ -15,15 +16,18 @@ import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.value.ObjectValue;
 import com.cleanroommc.modularui.value.sync.ModularSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.SortableListWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.TooltipItemDisplayWidget;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -80,70 +84,22 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
     }
 
-    public static class TradeItemHandler implements IItemHandlerModifiable {
-
-        private final TradeWidget owner;
-
-        public TradeItemHandler(TradeWidget owner) {
-            this.owner = owner;
-        }
-
-        @Override
-        public void setStackInSlot(int slot, @Nullable ItemStack stack) {}
-
-        @Override
-        public int getSlots() {
-            return 3;
-        }
-
-        @Override
-        public @Nullable ItemStack getStackInSlot(int slot) {
-            if (owner.getRecipe() == null) return null;
-            if (slot == 0) return owner.getRecipe()
-                    .getItemToBuy();
-            if (slot == 1) return owner.getRecipe()
-                    .getSecondItemToBuy();
-            if (slot == 2) return owner.getRecipe()
-                    .getItemToSell();
-            return null;
-        }
-
-        @Override
-        public @Nullable ItemStack insertItem(int slot, @Nullable ItemStack stack, boolean simulate) {
-            return null;
-        }
-
-        @Override
-        public @Nullable ItemStack extractItem(int slot, int amount, boolean simulate) {
-            return null;
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            return 64;
-        }
-    }
-
     public static class TradeWidget extends ParentWidget<TradeWidget> implements Interactable
     {
         public TradeWidget()
         {
             super();
+            background(GuiTextures.BUTTON_CLEAN);
             this.coverChildren();
-
-            var handler = new TradeItemHandler(this);
-
             this.child(
                     IKey.str("*")
                             .asWidget()
                             .margin(0, 0, -7, 0)
                             .setEnabledIf(w -> getRecipe() != null && ((IMerchantRecipeExtension)getRecipe()).uie$getFavorite()));
-            // new ItemDisplayWidget().displayAmount(true)
-            // .item(new ObjectValue.Dynamic<>(() -> getTrade().getInput1(), v -> {}))
             Flow inputItems = new Row().childPadding(5)
                     .coverChildren()
-                    .child(new ItemSlot().slot(new ModularSlot(handler, 0).accessibility(false, false)))
-                    .child(new ItemSlot().slot(new ModularSlot(handler, 1).accessibility(false, false)));
+                    .child(new TooltipItemDisplayWidget().displayAmount(true).item(new ObjectValue.Dynamic<>(()->getRecipe().getItemToBuy(),i->{})))
+                    .child(new TooltipItemDisplayWidget().displayAmount(true).item(new ObjectValue.Dynamic<>(()->getRecipe().getSecondItemToBuy(),i->{})));
             ProgressWidget progress = new ProgressWidget().direction(ProgressWidget.Direction.RIGHT)
                     .texture(GuiTextures.PROGRESS_ARROW, 20)
                     .progress(() -> {
@@ -157,7 +113,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                     .childPadding(2)
                     .child(inputItems)
                     .child(progress)
-                    .child(new ItemSlot().slot(new ModularSlot(handler, 2).accessibility(false, false)));
+                    .child(new TooltipItemDisplayWidget().displayAmount(true).item(new ObjectValue.Dynamic<>(()->getRecipe().getItemToSell(),i->{})));
             this.child(wholeRow);
         }
 
@@ -249,7 +205,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
         }
     }
-    public static class TradeList extends SortableListWidget<TradeWidget>
+    public static class TradeList extends ListWidget<TradeWidget,TradeList>
     {
         private final PosGuiData data;
 
@@ -263,7 +219,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             {
                 for (int i = 0; i < toDo; i++) {
                     var t=new TradeWidget();
-                    child(new Item<>(t).child(t));
+                    child(t);
                 }
             }
             else {
@@ -281,8 +237,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             int i=0;
             for (MerchantRecipe recipe : recipes) {
 
-                Item<TradeWidget> iWidget = (Item<TradeWidget>)children.get(i);
-                iWidget.getWidgetValue().setRecipe(recipe);
+                TradeWidget iWidget =(TradeWidget)children.get(i);
+                iWidget.setRecipe(recipe);
                 i++;
             }
         }
@@ -312,11 +268,11 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     }
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        ModularPanel panel = ModularPanel.defaultPanel("trading_post");
-        panel.bindPlayerInventory();
+        ModularPanel panel = ModularPanel.defaultPanel("trading_post",276, 166);
+        panel.child(SlotGroupWidget.playerInventory(7, false).right(7));
         settings.customContainer(()->new TradingPostModularContainer());
 
-        var list=new TradeList(data);
+        var list=new TradeList(data).keepScrollBarInArea(false).coverChildrenWidth().top(17).height(142);
         syncManager.syncValue("tradelist",0,new TradeListSH(data)
         {
             @Override
