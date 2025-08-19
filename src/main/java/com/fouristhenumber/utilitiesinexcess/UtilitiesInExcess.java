@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.*;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -7,16 +8,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -69,6 +60,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+        GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

@@ -1,29 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
@@ -57,6 +40,7 @@ public enum ModBlocks {
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
+    BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), BlockUpdateDetector.ItemBlockUpdateDetector.class, "block_update_detector"),
     ; // leave trailing semicolon
     // spotless:on
 
