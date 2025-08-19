@@ -41,9 +41,7 @@ public class BlockUpdateDetector extends BlockContainer {
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityBlockUpdateDetector) {
-            int power = ((TileEntityBlockUpdateDetector) te).getOutputPower();
-            System.out.println("Output power: " + power);
-            return power;
+            return ((TileEntityBlockUpdateDetector) te).getOutputPower();
         }
         return 0;
     }
