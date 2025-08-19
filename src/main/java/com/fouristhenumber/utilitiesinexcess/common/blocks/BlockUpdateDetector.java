@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,7 +13,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 
 public class BlockUpdateDetector extends BlockContainer {
 
@@ -52,7 +53,9 @@ public class BlockUpdateDetector extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) { return new TileEntityBlockUpdateDetector(); }
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TileEntityBlockUpdateDetector();
+    }
 
     public static class ItemBlockUpdateDetector extends ItemBlock {
 

@@ -4,13 +4,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBlockUpdateDetector extends TileEntity {
+
     private boolean isProvidingPower = false;
 
     @Override
     public void updateEntity() {
-        if(worldObj.isRemote) { return; }
+        if (worldObj.isRemote) {
+            return;
+        }
 
-        if(isProvidingPower) {
+        if (isProvidingPower) {
             isProvidingPower = false;
             notifyNeighbors();
         }

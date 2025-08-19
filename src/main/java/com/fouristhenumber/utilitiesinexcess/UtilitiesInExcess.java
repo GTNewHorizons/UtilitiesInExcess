@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.*;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.*;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
