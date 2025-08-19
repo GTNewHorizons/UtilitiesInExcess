@@ -51,7 +51,7 @@ public class BlockRedstoneClock extends BlockContainer {
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         super.onNeighborBlockChange(world, x, y, z, neighbor);
 
-        if(neighbor instanceof BlockRedstoneClock) {
+        if (neighbor instanceof BlockRedstoneClock) {
             // Don't let neighbouring clocks trigger updates to each other
             return;
         }
