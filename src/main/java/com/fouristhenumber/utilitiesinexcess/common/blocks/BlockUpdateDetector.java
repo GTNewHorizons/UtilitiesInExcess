@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,17 +25,37 @@ public class BlockUpdateDetector extends BlockContainer {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        super.onNeighborBlockChange(world, x, y, z, neighbor);
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TileEntityBlockUpdateDetector();
+    }
 
-        if(neighbor instanceof BlockUpdateDetector) {
-            // Don't let update detectors trigger each other
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
+        float hitY, float hitZ) {
+        if (!world.isRemote) {
+
+        }
+        return true;
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+
+        if (neighbor instanceof BlockUpdateDetector) {
+            // Don't let detectors trigger updates off each other
+            return;
+        }
+
+        // Prevent constant updates from redstone dust (there must be a more correct way of doing this?)
+        if (neighbor == Blocks.redstone_wire) {
             return;
         }
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityBlockUpdateDetector) {
-            ((TileEntityBlockUpdateDetector) te).onNeighborUpdate();
+            if (((TileEntityBlockUpdateDetector) te).getOutputPower() == 0) {
+                ((TileEntityBlockUpdateDetector) te).onNeighborUpdate();
+            }
         }
     }
 
@@ -45,9 +66,9 @@ public class BlockUpdateDetector extends BlockContainer {
 
     @Override
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityBlockUpdateDetector) {
-            return ((TileEntityBlockUpdateDetector) te).getOutputPower();
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof TileEntityBlockUpdateDetector) {
+            return ((TileEntityBlockUpdateDetector) tileEntity).getOutputPower();
         }
         return 0;
     }
@@ -55,11 +76,6 @@ public class BlockUpdateDetector extends BlockContainer {
     @Override
     public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
         return true;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityBlockUpdateDetector();
     }
 
     public static class ItemBlockUpdateDetector extends ItemBlock {

@@ -1,11 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBlockUpdateDetector extends TileEntity {
 
     private boolean isProvidingPower = false;
+    private int pulseTimer = 0;
 
     @Override
     public void updateEntity() {
@@ -13,38 +13,25 @@ public class TileEntityBlockUpdateDetector extends TileEntity {
             return;
         }
 
-        if (isProvidingPower) {
-            isProvidingPower = false;
-            notifyNeighbors();
+        if (isProvidingPower && pulseTimer > 0) {
+            pulseTimer--;
+            if (pulseTimer <= 0) {
+                isProvidingPower = false;
+                worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+            }
         }
-
     }
 
     public void onNeighborUpdate() {
-        isProvidingPower = true;
-        notifyNeighbors();
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord), 1);
+        if (!isProvidingPower) {
+            isProvidingPower = true;
+            pulseTimer++;
+            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType(), 1);
+        }
     }
 
     public int getOutputPower() {
         return isProvidingPower ? 15 : 0;
     }
-
-    private void notifyNeighbors() {
-        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord));
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        isProvidingPower = nbt.getBoolean("isProvidingPower");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("isProvidingPower", isProvidingPower);
-    }
-
 }
