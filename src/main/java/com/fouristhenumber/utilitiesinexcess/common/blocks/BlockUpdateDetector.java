@@ -27,6 +27,11 @@ public class BlockUpdateDetector extends BlockContainer {
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         super.onNeighborBlockChange(world, x, y, z, neighbor);
 
+        if(neighbor instanceof BlockUpdateDetector) {
+            // Don't let update detectors trigger each other
+            return;
+        }
+
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityBlockUpdateDetector) {
             ((TileEntityBlockUpdateDetector) te).onNeighborUpdate();
