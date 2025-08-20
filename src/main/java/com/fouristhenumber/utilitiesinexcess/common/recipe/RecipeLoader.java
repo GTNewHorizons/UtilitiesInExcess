@@ -60,6 +60,21 @@ public class RecipeLoader {
             't',
             Blocks.redstone_torch);
 
+        // Redstone Clock
+        addShapedRecipe(
+            ModBlocks.BLOCK_UPDATE_DETECTOR,
+            "srs",
+            "sps",
+            "sts",
+            'r',
+            Items.redstone,
+            's',
+            Blocks.stone,
+            't',
+            Blocks.redstone_torch,
+            'p',
+            Blocks.sticky_piston);
+
         // Trash Can (Items)
         addShapedRecipe(
             ModBlocks.TRASH_CAN_ITEM,
