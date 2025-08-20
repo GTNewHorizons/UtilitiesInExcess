@@ -53,9 +53,7 @@ public class BlockUpdateDetector extends BlockContainer {
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityBlockUpdateDetector) {
-            if (((TileEntityBlockUpdateDetector) te).getOutputPower() == 0) {
-                ((TileEntityBlockUpdateDetector) te).onNeighborUpdate();
-            }
+            ((TileEntityBlockUpdateDetector) te).onNeighborUpdate();
         }
     }
 
