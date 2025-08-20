@@ -123,6 +123,9 @@ item.watering_can.desc.4=automatic mode.
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=%s / %s
 
+tile.block_update_detector.name=Block Update Detector
+tile.block_update_detector.desc=Emits a redstone pulse on neighbouring block update
+
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
