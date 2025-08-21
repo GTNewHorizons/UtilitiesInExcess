@@ -123,6 +123,9 @@ item.watering_can.desc.4=automatic mode.
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=%s / %s
 
+item.golden_bag.name=Golden Bag of Holding
+item.golden_bag.desc=Carries a double chest worth of items
+
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering

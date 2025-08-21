@@ -11,6 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGoldenBag;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
@@ -53,6 +54,7 @@ public enum ModItems {
     ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(16), "architectsWand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new Item().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
     FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
+    GOLDEN_BAG(true, new ItemGoldenBag(), "golden_bag"),
 
     ; // leave trailing semicolon
     // spotless:on
