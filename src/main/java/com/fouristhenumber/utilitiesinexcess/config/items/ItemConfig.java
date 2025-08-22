@@ -37,4 +37,7 @@ public class ItemConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableBedrockium;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableGoldenBagOfHolding;
 }
