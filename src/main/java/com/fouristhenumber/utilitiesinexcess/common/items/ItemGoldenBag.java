@@ -2,19 +2,20 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,9 +26,10 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemGoldenBag extends Item implements IGuiHolder<GuiData> {
+public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGuiData> {
 
-    private final IItemHandlerModifiable inventoryHandler = new ItemStackHandler(54);
+    private final int inventorySize = 9;
+    private ItemStackHandler inventoryHandler;
 
     public ItemGoldenBag() {
         setUnlocalizedName("golden_bag");
@@ -50,23 +52,44 @@ public class ItemGoldenBag extends Item implements IGuiHolder<GuiData> {
         tooltip.add(StatCollector.translateToLocal("item.golden_bag.desc"));
     }
 
+    private void onGuiOpen(ItemStack stack) {
+        if (stack.hasTagCompound()) {
+            inventoryHandler.deserializeNBT(stack.getTagCompound());
+        }
+    }
+
+    private void onGuiClose(ItemStack stack) {
+        stack.setTagCompound(inventoryHandler.serializeNBT());
+    }
+
     @Override
-    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager, UISettings settings) {
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
         ModularPanel panel = ModularPanel.defaultPanel("golden_bag", 176, 220);
 
-        syncManager.registerSlotGroup("golden_bag_items", 9);
+        syncManager.registerSlotGroup("golden_bag_items", inventorySize);
+
+        syncManager.addOpenListener(playerInventory -> {
+            if(!playerInventory.worldObj.isRemote) {
+                onGuiOpen(data.getUsedItemStack());
+            }
+        });
+        syncManager.addCloseListener(playerInventory -> {
+            if(!playerInventory.worldObj.isRemote) {
+                onGuiClose(data.getUsedItemStack());
+            }
+        });
 
         panel.child(new Column()
             .child(new ParentWidget<>().widthRel(1f).height(138)
                 .child(IKey.str("Golden Bag of Holding").asWidget().margin(6, 0, 5, 0).align(Alignment.TopLeft))
                 .child(SlotGroupWidget.builder()
                     .row("IIIIIIIII")
-                    .row("IIIIIIIII")
-                    .row("IIIIIIIII")
-                    .row("IIIIIIIII")
-                    .row("IIIIIIIII")
-                    .row("IIIIIIIII")
-                    .key('I', index -> new ItemSlot().slot(SyncHandlers.itemSlot(inventoryHandler, index)
+                    //.row("IIIIIIIII")
+                    //.row("IIIIIIIII")
+                    //.row("IIIIIIIII")
+                    //.row("IIIIIIIII")
+                    //.row("IIIIIIIII")
+                    .key('I', index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index)
                         .slotGroup("golden_bag_items")))
                     .build()
                     .align(Alignment.Center).marginTop(1))
