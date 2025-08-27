@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IValue;
@@ -50,6 +51,9 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 
@@ -86,6 +90,10 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static class TradeWidget extends ParentWidget<TradeWidget> implements Interactable
     {
+        public void setSyncHandler(TradeWidgetSH handler)
+        {
+            super.setSyncHandler(handler);
+        }
         public TradeWidget()
         {
             super();
@@ -94,7 +102,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             this.child(
                     IKey.str("*")
                             .asWidget()
-                            .margin(0, 0, -7, 0)
+                            .margin(0, 0, 0, 0)
                             .setEnabledIf(w -> getRecipe() != null && ((IMerchantRecipeExtension)getRecipe()).uie$getFavorite()));
             Flow inputItems = new Row().childPadding(5)
                     .coverChildren()
@@ -118,6 +126,23 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
 
         @Override
+        public @NotNull Result onMousePressed(int mouseButton) {
+            if(mouseButton==0 && Keyboard.isKeyDown(Keyboard.KEY_LMENU))
+            {
+                ((IMerchantRecipeExtension)this.getRecipe()).uie$setFavorite(!((IMerchantRecipeExtension)this.getRecipe()).uie$getFavorite());
+                this.getHandler().syncToServer(0, buffer -> {
+                    buffer.writeBoolean(((IMerchantRecipeExtension)this.getRecipe()).uie$getFavorite());
+                });
+                return Result.SUCCESS;
+            }
+            return Interactable.super.onMousePressed(mouseButton);
+        }
+        public TradeWidgetSH getHandler()
+        {
+            return (TradeWidgetSH)getSyncHandler();
+        }
+
+        @Override
         public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
             super.draw(context, widgetTheme);
         }
@@ -132,6 +157,41 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             return recipe;
         }
 
+        @Override
+        public boolean isValidSyncHandler(SyncHandler syncHandler) {
+            return syncHandler instanceof TradeWidgetSH;
+        }
+    }
+    public static class TradeWidgetSH extends SyncHandler
+    {
+
+        public final TradeWidget owner;
+
+        public TradeWidgetSH(TradeWidget owner)
+        {
+            this.owner = owner;
+        }
+
+
+        @Override
+        public void detectAndSendChanges(boolean init) {
+            super.detectAndSendChanges(init);
+        }
+
+        @Override
+        public void readOnClient(int id, PacketBuffer buf) throws IOException {
+
+        }
+
+        @Override
+        public void readOnServer(int id, PacketBuffer buf) throws IOException {
+            if(id==0)
+            {
+                boolean value=buf.readBoolean();
+                ((IMerchantRecipeExtension)this.owner.getRecipe()).uie$setFavorite(value);
+                //TODO: sync children and sort them
+            }
+        }
     }
     public static class TradeListSH extends SyncHandler
     {
@@ -182,6 +242,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                     sendMerchantTrade(recipe);
                 }
             }
+            syncChildren();
         }
 
         @Override
@@ -208,6 +269,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     public static class TradeList extends ListWidget<TradeWidget,TradeList>
     {
         private final PosGuiData data;
+        private final PanelSyncManager manager;
 
         public void haveExactlyNChildren(int amount)
         {
@@ -220,6 +282,12 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 for (int i = 0; i < toDo; i++) {
                     var t=new TradeWidget();
                     child(t);
+                    var h=new TradeWidgetSH(t);
+                    //This is very dirty but it works so:P
+                    h.init(PanelSyncManager.makeSyncKey("tradewidget",this.getChildren().size()),manager);
+                    manager.syncValue("tradewidget",this.getChildren().size(),h);
+                    t.syncHandler("tradewidget",this.getChildren().size());
+                    t.setSyncHandler(h);
                 }
             }
             else {
@@ -249,11 +317,19 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             return syncHandler instanceof TradeListSH;
         }
 
-        public TradeList(PosGuiData data)
+        public TradeList(PosGuiData data,PanelSyncManager manager)
         {
             super();
             this.data = data;
-            this.syncHandler("tradelist",0);
+            this.manager = manager;
+            var list=this;
+            this.setSyncHandler(new TradeListSH(data)
+            {
+                @Override
+                public void syncChildren() {
+                    list.syncChildren(this.recipes);
+                }
+            });
         }
 
     }
@@ -271,17 +347,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         ModularPanel panel = ModularPanel.defaultPanel("trading_post",276, 166);
         panel.child(SlotGroupWidget.playerInventory(7, false).right(7));
         settings.customContainer(()->new TradingPostModularContainer());
-
-        var list=new TradeList(data).keepScrollBarInArea(false).coverChildrenWidth().top(17).height(142);
-        syncManager.syncValue("tradelist",0,new TradeListSH(data)
-        {
-            @Override
-            public void syncChildren() {
-                list.syncChildren(this.recipes);
-            }
-        });
+        var list=new TradeList(data,syncManager).keepScrollBarInArea(false).coverChildrenWidth().top(17).height(142);
         panel.child(list.margin(5,5));
-
         return panel;
     }
 
