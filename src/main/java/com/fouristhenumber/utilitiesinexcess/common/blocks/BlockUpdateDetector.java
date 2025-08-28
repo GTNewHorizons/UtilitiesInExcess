@@ -30,18 +30,9 @@ public class BlockUpdateDetector extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-        float hitY, float hitZ) {
-        if (!world.isRemote) {
-
-        }
-        return true;
-    }
-
-    @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
 
-        if (neighbor instanceof BlockUpdateDetector) {
+        if (neighbor == this) {
             // Don't let detectors trigger updates off each other
             return;
         }
