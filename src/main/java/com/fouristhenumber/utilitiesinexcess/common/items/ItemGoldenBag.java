@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -30,6 +31,7 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
 
     private final int inventorySize = 54;
     private ItemStackHandler inventoryHandler;
+    private InvWrapper playerInventory;
 
     public ItemGoldenBag() {
         setUnlocalizedName("golden_bag");
@@ -55,8 +57,10 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
 
     @Override
     public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        ModularPanel panel = ModularPanel.defaultPanel("golden_bag", 176, 220);
-        ItemStack usedItem = data.getUsedItemStack();
+        final int panelHeight = 220;
+        final ModularPanel panel = ModularPanel.defaultPanel("golden_bag", 176, panelHeight);
+        final ItemStack usedItem = data.getUsedItemStack();
+        final EntityPlayer player = data.getPlayer();
 
         this.inventoryHandler = new ItemStackHandler(inventorySize) {
 
@@ -67,7 +71,19 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
             }
         };
 
-        if (!data.getPlayer().worldObj.isRemote) {
+        this.playerInventory = new InvWrapper(player.inventory) {
+
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot == player.inventory.currentItem) {
+                    return null;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
+
+        if (!player.worldObj.isRemote) {
             if (usedItem.hasTagCompound()) {
                 inventoryHandler.deserializeNBT(usedItem.getTagCompound());
             }
@@ -85,30 +101,56 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
                             .margin(6, 0, 5, 0)
                             .align(Alignment.TopLeft))
                     .child(
-                        SlotGroupWidget.builder()
-                            .row("IIIIIIIII")
-                            .row("IIIIIIIII")
-                            .row("IIIIIIIII")
-                            .row("IIIIIIIII")
-                            .row("IIIIIIIII")
-                            .row("IIIIIIIII")
-                            .key(
-                                'I',
-                                index -> new ItemSlot().slot(
-                                    new ModularSlot(inventoryHandler, index).slotGroup("golden_bag_items")
-                                        // Don't allow placing the bag inside itself
-                                        .filter(stack -> !(stack.getItem() instanceof ItemGoldenBag))))
-                            .build()
-                            .align(Alignment.Center)
+                        buildBagSlotGroup().align(Alignment.Center)
                             .marginTop(1))
                     .child(
                         IKey.str("Inventory")
                             .asWidget()
                             .alignX(0.05f)
                             .alignY(0.99f)))
-                .child(SlotGroupWidget.playerInventory(true)));
+                .child(
+                    buildPlayerInventorySlotGroup().align(Alignment.TopLeft)
+                        .marginLeft(8)
+                        .marginTop(panelHeight - 82))
+                .child(
+                    buildPlayerHotbarSlotGroup().align(Alignment.TopLeft)
+                        .marginLeft(8)
+                        .marginTop(panelHeight - 24)));
 
         return panel;
+    }
+
+    private SlotGroupWidget buildPlayerInventorySlotGroup() {
+        return SlotGroupWidget.builder()
+            .row("PPPPPPPPP")
+            .row("PPPPPPPPP")
+            .row("PPPPPPPPP")
+            .key('P', i -> new ItemSlot().slot(new ModularSlot(playerInventory, 9 + i).slotGroup("player_inventory")))
+            .build();
+    }
+
+    private SlotGroupWidget buildPlayerHotbarSlotGroup() {
+        return SlotGroupWidget.builder()
+            .row("HHHHHHHHH")
+            .key('H', i -> new ItemSlot().slot(new ModularSlot(playerInventory, i).slotGroup("player_inventory")))
+            .build();
+    }
+
+    private SlotGroupWidget buildBagSlotGroup() {
+        return SlotGroupWidget.builder()
+            .row("IIIIIIIII")
+            .row("IIIIIIIII")
+            .row("IIIIIIIII")
+            .row("IIIIIIIII")
+            .row("IIIIIIIII")
+            .row("IIIIIIIII")
+            .key(
+                'I',
+                index -> new ItemSlot().slot(
+                    new ModularSlot(inventoryHandler, index).slotGroup("golden_bag_items")
+                        // Don't allow placing the bag inside itself
+                        .filter(stack -> !(stack.getItem() instanceof ItemGoldenBag))))
+            .build();
     }
 
 }
