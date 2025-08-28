@@ -177,6 +177,23 @@ public class RecipeLoader {
             Items.ender_eye,
             'b',
             Items.glass_bottle);
+
+        // Golden Bag of Holding
+        addShapedRecipe(
+            ModItems.GOLDEN_BAG,
+            "wdw",
+            "gcg",
+            "wbw",
+            'g',
+            Items.gold_ingot,
+            'c',
+            Blocks.chest,
+            'w',
+            new ItemStack(Blocks.wool, 1, 14),
+            'd',
+            Items.diamond,
+            'b',
+            Blocks.gold_block);
     }
 
     private static void loadLapisAetheriusRecipes() {

@@ -123,12 +123,15 @@ item.watering_can.desc.4=automatic mode.
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=%s / %s
 
-tile.block_update_detector.name=Block Update Detector
-tile.block_update_detector.desc=Emits a redstone pulse on neighbouring block update
+item.golden_bag.name=Golden Bag of Holding
+item.golden_bag.desc=Carries a double chest worth of items
 
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
+
+tile.block_update_detector.name=Block Update Detector
+tile.block_update_detector.desc=Emits a redstone pulse on neighbouring block update
 
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
