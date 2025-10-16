@@ -71,9 +71,8 @@ public class BlockEnderLotus extends BlockCrops {
     @Override
     public void func_149853_b(World world, Random rand, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        world.setBlockMetadataWithNotify(x, y, z, 7, 2);
         if (meta > 0) {
-            world.setBlockMetadataWithNotify(x, y, z, 7, 2);
+            world.setBlockMetadataWithNotify(x, y, z, meta - 1, 2);
         }
     }
 
