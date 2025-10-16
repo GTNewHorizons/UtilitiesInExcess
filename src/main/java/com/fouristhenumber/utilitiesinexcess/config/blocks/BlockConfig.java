@@ -59,6 +59,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableSignificantlyShrunkChest;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableBlockUpdateDetector;
+
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableLapisAetherius;

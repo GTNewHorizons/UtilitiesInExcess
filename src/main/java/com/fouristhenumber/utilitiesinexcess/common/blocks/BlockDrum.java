@@ -16,6 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -54,17 +56,42 @@ public class BlockDrum extends BlockContainer {
         }
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileEntityDrum drum) {
-            if (drum.tank != null && drum.tank.getFluid() != null) {
-                player.addChatMessage(
-                    new ChatComponentTranslation(
-                        "tile.drum.chat.filled",
-                        drum.tank.getFluid()
-                            .getLocalizedName(),
-                        NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
-            } else {
-                player.addChatMessage(new ChatComponentTranslation("tile.drum.chat.empty"));
+            ItemStack heldItem = player.getCurrentEquippedItem();
+            FluidStack heldFluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+
+            if (FluidContainerRegistry.isFilledContainer(heldItem)) {
+
+                if (drum.tank.getFluid() == null) {
+                    drum.setFluid(new FluidStack(heldFluid.getFluid(), 0));
+                }
+
+                if (drum.fill(ForgeDirection.UP, heldFluid, true) == heldFluid.amount) {
+                    FluidContainerRegistry.drainFluidContainer(heldItem);
+                    ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
+                    emptyContainer.stackSize = 1;
+                    heldItem.stackSize--;
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
+                    player.inventory.addItemStackToInventory(emptyContainer);
+
+                    player.addChatMessage(
+                        new ChatComponentTranslation(
+                            "tile.drum.chat.filled",
+                            drum.tank.getFluid()
+                                .getLocalizedName(),
+                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
+                }
+            } else if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
+                if (drum.tank.getFluid() != null) {
+                    FluidStack drainedFluid = drum.drain(ForgeDirection.UP, 1000, true);
+
+                    if (drainedFluid.amount == 1000) {
+                        ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(drainedFluid, heldItem);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                    }
+                }
             }
         }
+
         return true;
     }
 

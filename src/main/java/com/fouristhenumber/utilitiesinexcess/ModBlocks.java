@@ -36,6 +36,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
@@ -82,6 +83,7 @@ public enum ModBlocks {
     TNT_GENERATOR(GeneratorConfig.enableTNTGenerator, new BlockTNTGenerator("tnt_generator"), "tnt_generator"),
     PINK_GENERATOR(GeneratorConfig.enablePinkGenerator, new BlockPinkGenerator("pink_generator"), "pink_generator"),
     NETHER_STAR_GENERATOR(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator"), "nether_star_generator"),
+    BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), BlockUpdateDetector.ItemBlockUpdateDetector.class, "block_update_detector"),
     ; // leave trailing semicolon
     // spotless:on
 

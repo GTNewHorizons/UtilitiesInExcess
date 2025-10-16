@@ -47,6 +47,11 @@ public class BlockEtherealGlass extends BlockGlass {
     private IIcon[] icons;
 
     @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask,
         List<AxisAlignedBB> list, Entity collider) {
         int meta = worldIn.getBlockMetadata(x, y, z);
