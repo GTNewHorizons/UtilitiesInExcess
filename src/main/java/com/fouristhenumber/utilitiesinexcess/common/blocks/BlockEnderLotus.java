@@ -79,8 +79,8 @@ public class BlockEnderLotus extends BlockCrops {
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (meta > 3 && !world.isRemote && entity instanceof EntityLivingBase) {
+        if (!EnderLotusConfig.thornyLotuses || world.isRemote || !(entity instanceof EntityLivingBase)) return;
+        if (world.getBlockMetadata(x, y, z) > 3) {
             entity.attackEntityFrom(DamageSource.cactus, 0.1F);
         }
     }

@@ -26,4 +26,8 @@ public class EnderLotusConfig {
     @Config.Comment("Chance to drop an extra seed when harvested from a fully grown plant on endstone")
     @Config.DefaultDouble(0.02)
     public static double extraSeedChanceOnEndstone;
+
+    @Config.Comment("Ender Lotuses hurt players and mobs when they walk on them")
+    @Config.DefaultBoolean(true)
+    public static boolean thornyLotuses;
 }
