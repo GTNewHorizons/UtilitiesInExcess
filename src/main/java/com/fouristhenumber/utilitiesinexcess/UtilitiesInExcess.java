@@ -133,7 +133,9 @@ public class UtilitiesInExcess {
                 new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
         }
 
-        PinkFuelHelper.scanRecipesForPinkFuel();
+        if (ModBlocks.PINK_GENERATOR.isEnabled()) {
+            PinkFuelHelper.scanRecipesForPinkFuel();
+        }
     }
 
     @Mod.EventHandler

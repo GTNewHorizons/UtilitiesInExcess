@@ -40,8 +40,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolar
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
