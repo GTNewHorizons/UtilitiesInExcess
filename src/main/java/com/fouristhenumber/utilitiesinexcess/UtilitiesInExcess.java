@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +32,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 
@@ -104,6 +107,31 @@ public class UtilitiesInExcess {
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
+
+        GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
+
+        if (ModItems.ENDER_LOTUS_SEED.isEnabled()) {
+            ChestGenHooks.addItem(
+                ChestGenHooks.DUNGEON_CHEST,
+                new WeightedRandomChestContent(ModItems.ENDER_LOTUS_SEED.get(), 0, 1, 2, 8));
+        }
+        if (ModItems.INVERSION_SIGIL_INACTIVE.isEnabled()) {
+            ChestGenHooks.addItem(
+                ChestGenHooks.DUNGEON_CHEST,
+                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
+            ChestGenHooks.addItem(
+                ChestGenHooks.MINESHAFT_CORRIDOR,
+                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+            ChestGenHooks.addItem(
+                ChestGenHooks.PYRAMID_DESERT_CHEST,
+                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
+            ChestGenHooks.addItem(
+                ChestGenHooks.STRONGHOLD_CORRIDOR,
+                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
+            ChestGenHooks.addItem(
+                ChestGenHooks.STRONGHOLD_CROSSING,
+                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+        }
 
         PinkFuelHelper.scanRecipesForPinkFuel();
     }

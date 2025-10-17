@@ -11,6 +11,7 @@ public class BlockConfig {
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(BlockConfig.class);
         ConfigurationManager.registerConfig(CursedEarthConfig.class);
+        ConfigurationManager.registerConfig(EnderLotusConfig.class);
         ConfigurationManager.registerConfig(GeneratorConfig.class);
     }
 
