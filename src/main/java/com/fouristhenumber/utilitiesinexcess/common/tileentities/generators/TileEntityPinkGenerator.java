@@ -4,7 +4,6 @@ import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfi
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.pinkGeneratorRFCapacity;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.pinkGeneratorRFPerTick;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -23,8 +22,8 @@ public class TileEntityPinkGenerator extends TileEntityBaseGeneratorWithItemFuel
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
         if (stack == null) return 0;
-        Item item = stack.getItem();
-        if (PinkFuelHelper.pinkFuelItems.contains(item)) {
+        if (PinkFuelHelper.pinkFuelItems
+            .contains(new PinkFuelHelper.ItemMetaPair(stack.getItem(), stack.getItemDamage()))) {
             return pinkGeneratorFuelBurnTime;
         }
         return 0;
@@ -37,6 +36,7 @@ public class TileEntityPinkGenerator extends TileEntityBaseGeneratorWithItemFuel
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return stack != null && PinkFuelHelper.pinkFuelItems.contains(stack.getItem());
+        return stack != null && PinkFuelHelper.pinkFuelItems
+            .contains(new PinkFuelHelper.ItemMetaPair(stack.getItem(), stack.getItemDamage()));
     }
 }

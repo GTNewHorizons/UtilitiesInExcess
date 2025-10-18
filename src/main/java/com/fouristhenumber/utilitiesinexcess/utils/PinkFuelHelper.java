@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
@@ -17,9 +18,11 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import com.github.bsideup.jabel.Desugar;
+
 public class PinkFuelHelper {
 
-    public static final Set<Item> pinkFuelItems = new HashSet<>();
+    public static final Set<ItemMetaPair> pinkFuelItems = new HashSet<>();
 
     public static void scanRecipesForPinkFuel() {
         ItemStack pinkDye = new ItemStack(Items.dye, 1, 9);
@@ -33,7 +36,7 @@ public class PinkFuelHelper {
                     if (stackMatches(input, pinkDye) || stackMatches(input, pinkWool)) {
                         ItemStack output = recipe.getRecipeOutput();
                         if (output != null) {
-                            pinkFuelItems.add(output.getItem());
+                            pinkFuelItems.add(new ItemMetaPair(output.getItem(), output.getItemDamage()));
                         }
                         break;
                     }
@@ -41,8 +44,8 @@ public class PinkFuelHelper {
             }
         }
 
-        pinkFuelItems.add(pinkDye.getItem());
-        pinkFuelItems.add(pinkWool.getItem());
+        pinkFuelItems.add(new ItemMetaPair(pinkDye.getItem(), pinkDye.getItemDamage()));
+        pinkFuelItems.add(new ItemMetaPair(pinkWool.getItem(), pinkWool.getItemDamage()));
     }
 
     private static boolean stackMatches(ItemStack stack, ItemStack target) {
@@ -72,4 +75,21 @@ public class PinkFuelHelper {
         else if (o instanceof List) stacks.addAll((List<ItemStack>) o);
         return stacks;
     }
+
+    @Desugar
+    public record ItemMetaPair(Item item, int meta) {
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof ItemMetaPair other)) return false;
+            return item == other.item && meta == other.meta;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(item, meta);
+        }
+    }
+
 }
