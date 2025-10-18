@@ -121,7 +121,22 @@ item.watering_can.desc.3=Crouch and use to toggle
 item.watering_can.desc.4=automatic mode.
 
 item.fire_battery.name=Fire Battery
-item.fire_battery.desc=%s / %s
+item.fire_battery.desc=RF %s / %s
+
+tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
+tile.furnace_generator.name=Furnace Generator
+tile.high_temperature_furnace_generator.name=High-Temp Furnace Generator
+tile.ender_generator.name=Ender Generator
+tile.food_generator.name=Food Generator
+tile.tnt_generator.name=TNT Generator
+tile.nether_star_generator.name=Nether Star Generator
+tile.pink_generator.name=Pink Generator
+tile.lava_generator.name=Lava Generator
+tile.solar_generator.name=Solar Generator
+tile.redstone_generator.name=Redstone Generator
+tile.potion_generator.name=Potion Generator
+
+gui.energy.tooltip=RF: %s / %s
 
 item.golden_bag.name=Golden Bag of Holding
 item.golden_bag.desc=Carries a double chest worth of items

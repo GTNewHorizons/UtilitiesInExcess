@@ -12,6 +12,7 @@ public class BlockConfig {
         ConfigurationManager.registerConfig(BlockConfig.class);
         ConfigurationManager.registerConfig(CursedEarthConfig.class);
         ConfigurationManager.registerConfig(EnderLotusConfig.class);
+        ConfigurationManager.registerConfig(GeneratorConfig.class);
     }
 
     @Config.DefaultBoolean(true)
