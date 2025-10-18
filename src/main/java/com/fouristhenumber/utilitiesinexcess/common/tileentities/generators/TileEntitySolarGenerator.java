@@ -12,7 +12,9 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     @Override
     protected boolean consumeFuel() {
-        return worldObj.isDaytime() && worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord) && !canExtract();
+        if (!worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord) || canExtract()) return false;
+        currentRFPerTick = getRFPerTick();
+        return true;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
         if (receiversDirty) refreshEnergyReceivers();
 
         if (consumeFuel()) {
-            energyStorage.receiveEnergy(getRFPerTick(), false);
+            energyStorage.receiveEnergy(currentRFPerTick, false);
             dirty = true;
         }
 
@@ -40,7 +42,6 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
     }
 
     protected int getRFPerTick() {
-
         // For dimensions like the end with no time, but where the sky can be seen, output constant rate
         if (worldObj.provider.hasNoSky) return solarGeneratorNoSkyGeneration;
 
@@ -68,5 +69,10 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
     @Override
     protected String getGUIName() {
         return "tile.solar_generator.name";
+    }
+
+    @Override
+    protected boolean showBurnTime() {
+        return false;
     }
 }

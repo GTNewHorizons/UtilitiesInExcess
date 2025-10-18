@@ -4,13 +4,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -135,11 +133,6 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         ModularPanel panel = super.buildUI(data, syncManager, settings);
 
-        IntSyncValue burnSyncer = new IntSyncValue(() -> burnTime, ignore -> {});
-        IntSyncValue rftSyncer = new IntSyncValue(() -> currentRFPerTick, ignore -> {});
-        syncManager.syncValue("burnSyncer", burnSyncer);
-        syncManager.syncValue("rftSyncer", rftSyncer);
-
         SlotGroup slotGroup = new SlotGroup("fuel_slot", 1);
 
         IItemHandler itemHandler = new InvWrapper(this);
@@ -148,16 +141,7 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
         panel.child(
             new Grid().coverChildren()
                 .pos(79, 34)
-                .mapTo(1, 1, index -> new ItemSlot().slot(slot)))
-            .child(
-                IKey.dynamic(
-                    () -> (burnSyncer.getIntValue() / 1200) + "m " + (burnSyncer.getIntValue() % 1200) / 20 + "s")
-                    .asWidget()
-                    .pos(10, 50))
-            .child(
-                IKey.dynamic(() -> rftSyncer.getIntValue() + "RF/t")
-                    .asWidget()
-                    .pos(10, 62));
+                .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
 
         return panel;
     }
