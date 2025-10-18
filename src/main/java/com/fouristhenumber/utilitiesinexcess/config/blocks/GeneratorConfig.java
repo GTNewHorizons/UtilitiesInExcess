@@ -157,13 +157,9 @@ public class GeneratorConfig {
     @Config.RequiresMcRestart
     public static int solarGeneratorRFCapacity;
 
-    @Config.DefaultInt(20)
+    @Config.DefaultInt(40)
     @Config.RangeInt(min = 0)
-    public static int solarGeneratorLowDayTimeGeneration;
-
-    @Config.DefaultInt(60)
-    @Config.RangeInt(min = 0)
-    public static int solarGeneratorHighDayTimeGeneration;
+    public static int solarGeneratorTopGeneration;
 
     @Config.DefaultInt(40)
     @Config.RangeInt(min = 0)

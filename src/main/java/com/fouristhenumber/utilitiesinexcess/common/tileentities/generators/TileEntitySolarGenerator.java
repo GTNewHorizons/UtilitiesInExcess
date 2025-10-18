@@ -1,9 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
-import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorHighDayTimeGeneration;
-import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorLowDayTimeGeneration;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorNoSkyGeneration;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorRFCapacity;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorTopGeneration;
 
 public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
@@ -13,7 +12,7 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     @Override
     protected boolean consumeFuel() {
-        return worldObj.isDaytime() && getWorldObj().canBlockSeeTheSky(xCoord, yCoord + 1, zCoord) && !canExtract();
+        return worldObj.isDaytime() && worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord) && !canExtract();
     }
 
     @Override
@@ -23,6 +22,7 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     @Override
     public void updateEntity() {
+        if (worldObj.isRemote) return;
         boolean dirty = false;
 
         if (receiversDirty) refreshEnergyReceivers();
@@ -44,14 +44,24 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
         // For dimensions like the end with no time, but where the sky can be seen, output constant rate
         if (worldObj.provider.hasNoSky) return solarGeneratorNoSkyGeneration;
 
-        // Interpolate between 20-60
-        long time = worldObj.getWorldTime();
+        return (int) interpolate((int) (((worldObj.getWorldTime() % 24000) + 24000) % 24000));
+    }
 
-        double interp = solarGeneratorHighDayTimeGeneration - solarGeneratorLowDayTimeGeneration;
-        if (time >= 0 && time <= 6000) {
-            return (int) (solarGeneratorLowDayTimeGeneration + (interp * time / 6000.0));
+    public static double interpolate(int time) {
+        if (time >= 14095 && time <= 21905) {
+            return 0.0;
+        } else if (time >= 4925 && time <= 7075) {
+            return solarGeneratorTopGeneration;
+        } else if (time > 7075 && time < 14095) {
+            double t = (double) (time - 7075) / (14095 - 7075);
+            return solarGeneratorTopGeneration * (1 - t);
         } else {
-            return (int) (solarGeneratorHighDayTimeGeneration - (interp * (time - 6000) / 6000.0));
+            double start = 21905;
+            double end = 24000 + 4925;
+            double xWrapped = (time < 4925) ? time + 24000 : time;
+
+            double t = (xWrapped - start) / (end - start);
+            return solarGeneratorTopGeneration * t;
         }
     }
 
