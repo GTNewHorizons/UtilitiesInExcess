@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.generators;
 
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.enderGeneratorEnderEyeBurnTime;
+import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.enderGeneratorEnderLotusSeedBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.enderGeneratorEnderPearlBurnTime;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.enderGeneratorRFCapacity;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.enderGeneratorRFPerTick;
@@ -8,6 +9,8 @@ import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfi
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import com.fouristhenumber.utilitiesinexcess.ModItems;
 
 public class TileEntityEnderGenerator extends TileEntityBaseGeneratorWithItemFuel {
 
@@ -20,13 +23,15 @@ public class TileEntityEnderGenerator extends TileEntityBaseGeneratorWithItemFue
         return enderGeneratorRFPerTick;
     }
 
-    // TODO: This should also allow ender-lily seeds when we add those
     @Override
     protected int getFuelBurnTime(ItemStack stack) {
         if (stack == null) return 0;
         Item item = stack.getItem();
         if (item == Items.ender_pearl) return enderGeneratorEnderPearlBurnTime;
         if (item == Items.ender_eye) return enderGeneratorEnderEyeBurnTime;
+        if (ModItems.ENDER_LOTUS_SEED.isEnabled() && item == ModItems.ENDER_LOTUS_SEED.get())
+            return enderGeneratorEnderLotusSeedBurnTime;
+
         return 0;
     }
 

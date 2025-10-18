@@ -97,6 +97,10 @@ public class GeneratorConfig {
     @Config.RangeInt(min = 0)
     public static int enderGeneratorEnderEyeBurnTime;
 
+    @Config.DefaultInt(12000)
+    @Config.RangeInt(min = 0)
+    public static int enderGeneratorEnderLotusSeedBurnTime;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableRedstoneGenerator;
