@@ -63,6 +63,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableBlackoutCurtains;
+
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableLapisAetherius;
