@@ -92,6 +92,9 @@ public class BlackoutCurtainsRenderer implements ISimpleBlockRenderingHandler {
         BlockBlackoutCurtains b = (BlockBlackoutCurtains) block;
         IIcon tex = b.getIcon(0, 0);
 
+        tess.setBrightness((int) (1.25f * block.getMixedBrightnessForBlock(world, x, y, z)));
+        tess.setColorOpaque_F(1, 1, 1);
+
         boolean connNorth = b.canConnectTo(world, x, y, z - 1, NORTH);
         boolean connSouth = b.canConnectTo(world, x, y, z + 1, SOUTH);
         boolean connWest = b.canConnectTo(world, x - 1, y, z, WEST);
