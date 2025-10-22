@@ -9,9 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.InjectionPortRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityInjectionPort;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
@@ -59,6 +61,7 @@ public class UtilitiesInExcess {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
+    public static int injectionPortRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -106,11 +109,14 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityTNTGenerator.class, "TileEntityTNTGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityInjectionPort.class, "TileEntityInjectionPortUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
+        injectionPortRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new InjectionPortRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 

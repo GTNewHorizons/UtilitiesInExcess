@@ -14,6 +14,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInjectionPort;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
@@ -89,6 +90,7 @@ public enum ModBlocks {
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), BlockUpdateDetector.ItemBlockUpdateDetector.class, "block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
+    INJECTION_PORT(true, new BlockInjectionPort(), "rejection_port"),
     ; // leave trailing semicolon
     // spotless:on
 
