@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +14,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 public class TileEntityConveyor extends TileEntity {
 
     /// The speed of the conveyor, measured in blocks per tick
-    private static final float SPEED = 0.1f / 20f;
+    private static final float SPEED = 1f / 20f;
 
     @Override
     public void updateEntity() {
@@ -46,7 +45,7 @@ public class TileEntityConveyor extends TileEntity {
 
                 double deltaZ = targetZ - centerZ;
 
-                entity.moveEntity(0, 0, Math.min(Math.abs(deltaZ), (1f / 20f)) * Math.signum(deltaZ));
+                entity.moveEntity(0, 0, Math.min(Math.abs(deltaZ), SPEED) * Math.signum(deltaZ));
             } else {
                 AxisAlignedBB entityAABB = entity.boundingBox;
 
@@ -56,10 +55,10 @@ public class TileEntityConveyor extends TileEntity {
 
                 double deltaX = targetX - centerX;
 
-                entity.moveEntity(Math.min(Math.abs(deltaX), (1f / 20f)) * Math.signum(deltaX), 0, 0);
+                entity.moveEntity(Math.min(Math.abs(deltaX), SPEED) * Math.signum(deltaX), 0, 0);
             }
 
-            entity.moveEntity(facing.offsetX * (1f / 20f), 0, facing.offsetZ * (1f / 20f));
+            entity.moveEntity(facing.offsetX * SPEED, 0, facing.offsetZ * SPEED);
         }
     }
 }
