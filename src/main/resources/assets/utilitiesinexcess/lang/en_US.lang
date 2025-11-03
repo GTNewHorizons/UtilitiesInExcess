@@ -107,11 +107,14 @@ tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
 tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
 
-tile.woodSpike.name=Wooden Spike
-tile.ironSpike.name=Iron Spike
-tile.goldSpike.name=Gold Spike
-tile.diamondSpike.name=Diamond Spike
-tile.spike.desc=Stabs stabbily
+tile.woodSpike.name=Wooden Spikes
+tile.ironSpike.name=Iron Spikes
+tile.goldSpike.name=Gold Spikes
+tile.diamondSpike.name=Diamond Spikes
+tile.woodSpike.desc=Will leave entities at one health
+tile.ironSpike.desc=Enemies will drop regular loot
+tile.goldSpike.desc=Enemies will drop regular loot and experience orbs
+tile.diamondSpike.desc=Enemies will drop "player-only" and regular loot
 
 item.hungerAxe.name=Glutton's Axe
 item.hungerAxe.desc.1=Sates the bearer's hunger while held

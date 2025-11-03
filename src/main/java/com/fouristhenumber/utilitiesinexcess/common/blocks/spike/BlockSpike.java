@@ -5,10 +5,13 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRende
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -129,10 +132,21 @@ public class BlockSpike extends Block {
 
     public static class ItemSpike extends ItemBlock {
 
+        private final float attackDamage;
+
         public ItemSpike(Block block) {
             super(block);
             this.setHasSubtypes(true);
             this.setMaxDamage(0);
+
+            BlockSpike spike = (BlockSpike) block;
+            switch (spike.getSpikeType()) {
+                case WOOD:    this.attackDamage = 2.0F; break;
+                case IRON:    this.attackDamage = 6.0F; break;
+                case GOLD:    this.attackDamage = 4.0F; break;
+                case DIAMOND: this.attackDamage = 7.0F; break;
+                default:      this.attackDamage = 1.0F;
+            }
         }
 
         @Override
@@ -149,7 +163,7 @@ public class BlockSpike extends Block {
         @Override
         public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
             if (!player.worldObj.isRemote && entity instanceof EntityLivingBase) {
-                DamageSource source = new SpikeDamageSource("ue_spike", stack, SpikeDamageSource.spikeTypes.WOOD);
+                DamageSource source = new SpikeDamageSource("ue_spike", stack, ((BlockSpike) field_150939_a).getSpikeType());
                 entity.attackEntityFrom(source, 1.0F);
             }
 
@@ -158,7 +172,32 @@ public class BlockSpike extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.spike.desc"));
+            switch (((BlockSpike) field_150939_a).getSpikeType()) {
+                case WOOD:
+                    tooltip.add(StatCollector.translateToLocal("tile.woodSpike.desc"));
+                    break;
+                case IRON:
+                    tooltip.add(StatCollector.translateToLocal("tile.ironSpike.desc"));
+                    break;
+                case GOLD:
+                    tooltip.add(StatCollector.translateToLocal("tile.goldSpike.desc"));
+                    break;
+                case DIAMOND:
+                    tooltip.add(StatCollector.translateToLocal("tile.diamondSpike.desc"));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack) {
+            Multimap<String, AttributeModifier> map = super.getAttributeModifiers(stack);
+
+            map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
+                new AttributeModifier(field_111210_e, "Spike Weapon modifier", this.attackDamage, 0));
+
+            return map;
         }
     }
 }
