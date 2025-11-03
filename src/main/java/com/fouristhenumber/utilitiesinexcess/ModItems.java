@@ -5,6 +5,9 @@ import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGoldenBag;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
@@ -16,6 +19,8 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
@@ -49,7 +54,10 @@ public enum ModItems {
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new Item().setUnlocalizedName("inverted_ingot").setTextureName("utilitiesinexcess:inverted_ingot"), "inverted_ingot"),
     DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
     ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(16), "architectsWand"),
-    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new Item().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot")
+    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new Item().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
+    FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
+    GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
+    ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
 
     ; // leave trailing semicolon
     // spotless:on

@@ -11,6 +11,8 @@ public class BlockConfig {
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(BlockConfig.class);
         ConfigurationManager.registerConfig(CursedEarthConfig.class);
+        ConfigurationManager.registerConfig(EnderLotusConfig.class);
+        ConfigurationManager.registerConfig(GeneratorConfig.class);
     }
 
     @Config.DefaultBoolean(true)
@@ -35,10 +37,16 @@ public class BlockConfig {
     public static boolean enableEtherealGlass;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableTrashCanItem;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableTrashCanFluid;
+
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean enableTrashCanEnergy;
 
     @Config.DefaultBoolean(true)
     public static boolean enableDrum;
@@ -51,6 +59,19 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableSignificantlyShrunkChest;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableBlockUpdateDetector;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableBlackoutCurtains;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableLapisAetherius;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableConveyor;
 
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
