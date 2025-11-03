@@ -30,6 +30,10 @@ public class TileEntitySpike extends TileEntity {
         entity.attackEntityFrom(source, 1F);
     }
 
+    public SpikeDamageSource.spikeTypes getSpikeType() {
+        return spikeType;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);

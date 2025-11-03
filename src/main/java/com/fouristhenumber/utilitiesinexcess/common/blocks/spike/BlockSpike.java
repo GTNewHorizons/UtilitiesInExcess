@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.spike;
 
+import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,7 +34,6 @@ public class BlockSpike extends Block {
     }
 
     private static final ThreadLocal<ItemStack> cachedDrop = new ThreadLocal<>();
-    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
     private final SpikeDamageSource.spikeTypes spikeType;
 
     @Override
@@ -97,6 +97,10 @@ public class BlockSpike extends Block {
             .getBoundingBox(x + shrink, y + shrink, z + shrink, x + 1 - shrink, y + 1 - shrink, z + 1 - shrink);
     }
 
+    public SpikeDamageSource.spikeTypes getSpikeType() {
+        return spikeType;
+    }
+
     @Override
     public boolean hasTileEntity(int meta) {
         return true;
@@ -114,7 +118,7 @@ public class BlockSpike extends Block {
 
     @Override
     public int getRenderType() {
-        return renderID;
+        return spikeRenderID;
     }
 
     @Override

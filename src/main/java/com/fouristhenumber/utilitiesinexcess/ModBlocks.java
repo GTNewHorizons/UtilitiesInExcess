@@ -27,8 +27,6 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource.spikeTypes;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
@@ -42,6 +40,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource.spikeTypes;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -93,7 +93,6 @@ public enum ModBlocks {
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
-    INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(spikeTypes.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
     SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(spikeTypes.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(spikeTypes.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
