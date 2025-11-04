@@ -12,11 +12,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
@@ -43,15 +43,17 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onLivingAttack(LivingAttackEvent event) {
-        if (!(event.source.getEntity() instanceof FakePlayer fakePlayer)) return;
+        if (!(event.source.getEntity() instanceof EntityPlayer player)) return;
 
-        if (!fakePlayer.getEntityData()
-            .getBoolean("UIE_SPIKE_WOOD")) return;
+        ItemStack weapon = player.getHeldItem();
+        if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
+
+        if (((BlockSpike) spike.field_150939_a).getSpikeType() != SpikeDamageSource.spikeTypes.WOOD) return;
 
         EntityLivingBase target = event.entityLiving;
-        float base = (float) fakePlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+        float base = (float) player.getEntityAttribute(SharedMonsterAttributes.attackDamage)
             .getAttributeValue();
-        float ench = EnchantmentHelper.getEnchantmentModifierLiving(fakePlayer, target);
+        float ench = EnchantmentHelper.getEnchantmentModifierLiving(player, target);
         float total = base + ench;
 
         // If attack would kill, cancel

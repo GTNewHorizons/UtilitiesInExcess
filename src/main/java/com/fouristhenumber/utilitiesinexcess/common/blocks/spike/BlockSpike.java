@@ -65,6 +65,28 @@ public class BlockSpike extends Block {
         }
     }
 
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list,
+        Entity collider) {
+        AxisAlignedBB fullBox = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
+        if (fullBox.intersectsWith(mask)) {
+            list.add(fullBox);
+        }
+
+        if (collider instanceof EntityLivingBase) {
+            double inset = 0.05;
+            AxisAlignedBB damageBox = AxisAlignedBB
+                .getBoundingBox(x + inset, y, z + inset, x + 1 - inset, y + 1, z + 1 - inset);
+
+            if (damageBox.intersectsWith(mask)) {
+                TileEntity te = world.getTileEntity(x, y, z);
+                if (te instanceof TileEntitySpike spike) {
+                    spike.damageEntity(collider);
+                }
+            }
+        }
+    }
+
     // Cache the itemStack held by the TE before it's removed
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
@@ -91,13 +113,6 @@ public class BlockSpike extends Block {
 
         cachedDrop.remove();
         return drops;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        float shrink = 0.005F;
-        return AxisAlignedBB
-            .getBoundingBox(x + shrink, y + shrink, z + shrink, x + 1 - shrink, y + 1 - shrink, z + 1 - shrink);
     }
 
     public SpikeDamageSource.spikeTypes getSpikeType() {
