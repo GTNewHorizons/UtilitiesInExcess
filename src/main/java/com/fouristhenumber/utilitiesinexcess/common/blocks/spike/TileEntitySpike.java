@@ -17,11 +17,11 @@ import com.mojang.authlib.GameProfile;
 public class TileEntitySpike extends TileEntity {
 
     private ItemStack fakeWeapon = null;
-    private SpikeDamageSource.spikeTypes spikeType;
+    private BlockSpike.spikeTypes spikeType;
 
     public TileEntitySpike() {}
 
-    public TileEntitySpike(SpikeDamageSource.spikeTypes spikeType) {
+    public TileEntitySpike(BlockSpike.spikeTypes spikeType) {
         this.spikeType = spikeType;
     }
 
@@ -41,7 +41,7 @@ public class TileEntitySpike extends TileEntity {
             (WorldServer) worldObj,
             new GameProfile(UUID.nameUUIDFromBytes("UIE_Spike".getBytes()), "[UIE Spike]"));
 
-        if (getSpikeType() == SpikeDamageSource.spikeTypes.WOOD) fakePlayer.getEntityData()
+        if (getSpikeType() == BlockSpike.spikeTypes.WOOD) fakePlayer.getEntityData()
             .setBoolean("UIE_SPIKE_WOOD", true);
         fakePlayer.setCurrentItemOrArmor(0, fakeWeapon.copy());
 
@@ -53,7 +53,7 @@ public class TileEntitySpike extends TileEntity {
         fakePlayer.setCurrentItemOrArmor(0, null);
     }
 
-    public SpikeDamageSource.spikeTypes getSpikeType() {
+    public BlockSpike.spikeTypes getSpikeType() {
         return spikeType;
     }
 
@@ -66,9 +66,9 @@ public class TileEntitySpike extends TileEntity {
 
         if (tag.hasKey("SpikeType")) {
             try {
-                spikeType = SpikeDamageSource.spikeTypes.valueOf(tag.getString("SpikeType"));
+                spikeType = BlockSpike.spikeTypes.valueOf(tag.getString("SpikeType"));
             } catch (IllegalArgumentException e) {
-                spikeType = SpikeDamageSource.spikeTypes.WOOD;
+                spikeType = BlockSpike.spikeTypes.WOOD;
             }
         }
     }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -28,16 +27,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSpike extends Block {
 
-    public BlockSpike(SpikeDamageSource.spikeTypes spikeType, String name) {
-        super(Material.wood);
+    public BlockSpike(spikeTypes spikeType, String name) {
+        super(spikeType.material.getMaterial());
         this.spikeType = spikeType;
         setBlockName(name);
         setBlockTextureName("utilitiesinexcess:spike");
-        setHardness(1.5F);
+        setHardness(spikeType.material.getBlockHardness(null, 0, 0, 0));
+        setResistance(spikeType.material.getExplosionResistance(null));
+        setHarvestLevel(spikeType.material.getHarvestTool(0), spikeType.material.getHarvestLevel(0));
     }
 
     private static final ThreadLocal<ItemStack> cachedDrop = new ThreadLocal<>();
-    private final SpikeDamageSource.spikeTypes spikeType;
+    private final spikeTypes spikeType;
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
@@ -115,7 +116,7 @@ public class BlockSpike extends Block {
         return drops;
     }
 
-    public SpikeDamageSource.spikeTypes getSpikeType() {
+    public spikeTypes getSpikeType() {
         return spikeType;
     }
 
@@ -142,7 +143,21 @@ public class BlockSpike extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.planks.getIcon(0, 0);
+        return spikeType.material.getIcon(0, 0);
+    }
+
+    public enum spikeTypes {
+
+        WOOD(Blocks.planks),
+        IRON(Blocks.iron_block),
+        GOLD(Blocks.gold_block),
+        DIAMOND(Blocks.diamond_block);
+
+        final Block material;
+
+        spikeTypes(Block material) {
+            this.material = material;
+        }
     }
 
     public static class ItemSpike extends ItemBlock {

@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -17,7 +16,6 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
@@ -32,13 +30,8 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onLivingDrops(LivingDropsEvent event) {
-        if (!(event.source instanceof SpikeDamageSource source)) return;
-        ItemStack fakeWeapon = source.getFakeWeapon();
-        SpikeDamageSource.spikeTypes type = source.getType();
 
         // if (type != SpikeDamageSource.spikeTypes.GOLD)
-
-        int looting = EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, fakeWeapon);
     }
 
     @SubscribeEvent
@@ -48,7 +41,7 @@ public class EventHandler {
         ItemStack weapon = player.getHeldItem();
         if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
 
-        if (((BlockSpike) spike.field_150939_a).getSpikeType() != SpikeDamageSource.spikeTypes.WOOD) return;
+        if (((BlockSpike) spike.field_150939_a).getSpikeType() != BlockSpike.spikeTypes.WOOD) return;
 
         EntityLivingBase target = event.entityLiving;
         float base = (float) player.getEntityAttribute(SharedMonsterAttributes.attackDamage)
