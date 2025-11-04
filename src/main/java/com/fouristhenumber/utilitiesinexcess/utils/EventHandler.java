@@ -5,14 +5,16 @@ import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeDamageSource;
@@ -41,20 +43,20 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onLivingAttack(LivingAttackEvent event) {
-        if (event.source instanceof SpikeDamageSource source) {
-            ItemStack fakeWeapon = source.getFakeWeapon();
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, fakeWeapon) > 0) {
-                event.entity.setFire(5);
-            }
-        }
-    }
+        if (!(event.source.getEntity() instanceof FakePlayer fakePlayer)) return;
 
-    @SubscribeEvent
-    public void onLivingHurt(LivingHurtEvent event) {
-        if (event.source instanceof SpikeDamageSource source) {
-            if (source.getType() == SpikeDamageSource.spikeTypes.WOOD && event.entityLiving.getHealth() < 2.0F) {
-                event.setCanceled(true);
-            }
+        if (!fakePlayer.getEntityData()
+            .getBoolean("UIE_SPIKE_WOOD")) return;
+
+        EntityLivingBase target = event.entityLiving;
+        float base = (float) fakePlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+            .getAttributeValue();
+        float ench = EnchantmentHelper.getEnchantmentModifierLiving(fakePlayer, target);
+        float total = base + ench;
+
+        // If attack would kill, cancel
+        if (target.getHealth() - total <= 0.01F) {
+            event.setCanceled(true);
         }
     }
 

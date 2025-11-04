@@ -5,7 +5,6 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRende
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -18,10 +17,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -141,11 +141,20 @@ public class BlockSpike extends Block {
 
             BlockSpike spike = (BlockSpike) block;
             switch (spike.getSpikeType()) {
-                case WOOD:    this.attackDamage = 2.0F; break;
-                case IRON:    this.attackDamage = 6.0F; break;
-                case GOLD:    this.attackDamage = 4.0F; break;
-                case DIAMOND: this.attackDamage = 7.0F; break;
-                default:      this.attackDamage = 1.0F;
+                case WOOD:
+                    this.attackDamage = 2.0F;
+                    break;
+                case IRON:
+                    this.attackDamage = 6.0F;
+                    break;
+                case GOLD:
+                    this.attackDamage = 4.0F;
+                    break;
+                case DIAMOND:
+                    this.attackDamage = 7.0F;
+                    break;
+                default:
+                    this.attackDamage = 1.0F;
             }
         }
 
@@ -156,17 +165,6 @@ public class BlockSpike extends Block {
 
         @Override
         public boolean isItemTool(ItemStack p_77616_1_) {
-            return true;
-        }
-
-        // Cancel default attacks and use spike damage source directly so that custom behavior applies
-        @Override
-        public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-            if (!player.worldObj.isRemote && entity instanceof EntityLivingBase) {
-                DamageSource source = new SpikeDamageSource("ue_spike", stack, ((BlockSpike) field_150939_a).getSpikeType());
-                entity.attackEntityFrom(source, 1.0F);
-            }
-
             return true;
         }
 
@@ -194,7 +192,8 @@ public class BlockSpike extends Block {
         public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack) {
             Multimap<String, AttributeModifier> map = super.getAttributeModifiers(stack);
 
-            map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
+            map.put(
+                SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
                 new AttributeModifier(field_111210_e, "Spike Weapon modifier", this.attackDamage, 0));
 
             return map;
