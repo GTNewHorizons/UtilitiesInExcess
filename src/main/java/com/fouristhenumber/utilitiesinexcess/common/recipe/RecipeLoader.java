@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,10 @@ public class RecipeLoader {
         loadEtherealGlassRecipes();
         loadWateringCanRecipes();
         loadLapisAetheriusRecipes();
+
+        if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
+            GameRegistry.addRecipe(new RecipeInvertedIngot(new ItemStack(ModItems.INVERTED_INGOT.get())));
+        }
 
         // Floating Block
         addShapedRecipe(
@@ -309,6 +314,7 @@ public class RecipeLoader {
         // Diamond Stick
         addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
 
+        /*
         // Inverted Ingot
         addShapedRecipe(
             ModItems.INVERTED_INGOT,
@@ -321,6 +327,8 @@ public class RecipeLoader {
             ModItems.INVERSION_SIGIL_ACTIVE,
             'd',
             Items.diamond);
+
+         */
 
         // Glutton's Axe
         addShapedRecipe(
