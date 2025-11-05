@@ -18,11 +18,11 @@ import com.mojang.authlib.GameProfile;
 public class TileEntitySpike extends TileEntity {
 
     private ItemStack fakeWeapon = null;
-    private BlockSpike.spikeTypes spikeType;
+    private BlockSpike.SPIKE_TYPE spikeType;
 
     public TileEntitySpike() {}
 
-    public TileEntitySpike(BlockSpike.spikeTypes spikeType) {
+    public TileEntitySpike(BlockSpike.SPIKE_TYPE spikeType) {
         this.spikeType = spikeType;
     }
 
@@ -52,7 +52,7 @@ public class TileEntitySpike extends TileEntity {
         fakePlayer.setCurrentItemOrArmor(0, null);
     }
 
-    public BlockSpike.spikeTypes getSpikeType() {
+    public BlockSpike.SPIKE_TYPE getSpikeType() {
         return spikeType;
     }
 
@@ -65,9 +65,9 @@ public class TileEntitySpike extends TileEntity {
 
         if (tag.hasKey("SpikeType")) {
             try {
-                spikeType = BlockSpike.spikeTypes.valueOf(tag.getString("SpikeType"));
+                spikeType = BlockSpike.SPIKE_TYPE.valueOf(tag.getString("SpikeType"));
             } catch (IllegalArgumentException e) {
-                spikeType = BlockSpike.spikeTypes.WOOD;
+                spikeType = BlockSpike.SPIKE_TYPE.WOOD;
             }
         }
     }

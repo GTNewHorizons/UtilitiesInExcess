@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSpike extends Block {
 
-    public BlockSpike(spikeTypes spikeType, String name) {
+    public BlockSpike(SPIKE_TYPE spikeType, String name) {
         super(spikeType.material.getMaterial());
         this.spikeType = spikeType;
         setBlockName(name);
@@ -39,7 +39,7 @@ public class BlockSpike extends Block {
     }
 
     private static final ThreadLocal<ItemStack> cachedDrop = new ThreadLocal<>();
-    private final spikeTypes spikeType;
+    private final SPIKE_TYPE spikeType;
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
@@ -117,7 +117,7 @@ public class BlockSpike extends Block {
         return drops;
     }
 
-    public spikeTypes getSpikeType() {
+    public SPIKE_TYPE getSpikeType() {
         return spikeType;
     }
 
@@ -147,17 +147,19 @@ public class BlockSpike extends Block {
         return spikeType.material.getIcon(0, 0);
     }
 
-    public enum spikeTypes {
+    public enum SPIKE_TYPE {
 
-        WOOD(Blocks.planks),
-        IRON(Blocks.iron_block),
-        GOLD(Blocks.gold_block),
-        DIAMOND(Blocks.diamond_block);
+        WOOD(Blocks.planks, 0.5F),
+        IRON(Blocks.iron_block, 6F),
+        GOLD(Blocks.gold_block, 4F),
+        DIAMOND(Blocks.diamond_block, 7F);
 
         final Block material;
+        final float damage;
 
-        spikeTypes(Block material) {
+        SPIKE_TYPE(Block material, float damage) {
             this.material = material;
+            this.damage = damage;
         }
     }
 
@@ -171,22 +173,7 @@ public class BlockSpike extends Block {
             this.setMaxDamage(0);
 
             BlockSpike spike = (BlockSpike) block;
-            switch (spike.getSpikeType()) {
-                case WOOD:
-                    this.attackDamage = 1.0F;
-                    break;
-                case IRON:
-                    this.attackDamage = 6.0F;
-                    break;
-                case GOLD:
-                    this.attackDamage = 4.0F;
-                    break;
-                case DIAMOND:
-                    this.attackDamage = 7.0F;
-                    break;
-                default:
-                    this.attackDamage = 0.0F;
-            }
+            this.attackDamage = spike.getSpikeType().damage;
         }
 
         @Override
