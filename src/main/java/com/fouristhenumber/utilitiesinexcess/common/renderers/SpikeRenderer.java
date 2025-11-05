@@ -25,7 +25,9 @@ public class SpikeRenderer implements ISimpleBlockRenderingHandler {
         RenderBlocks renderer) {
         Tessellator t = Tessellator.instance;
         IIcon icon = renderer.getBlockIcon(block);
-        drawAllCubes(t, x, y, z, icon);
+        for (Cube c : cubes) {
+            addCube(t, x, y, z, icon, c);
+        }
         return true;
     }
 
@@ -34,20 +36,13 @@ public class SpikeRenderer implements ISimpleBlockRenderingHandler {
         Tessellator t = Tessellator.instance;
         IIcon icon = renderer.getBlockIcon(block);
         t.startDrawingQuads();
-        drawAllCubes(t, 0, 0, 0, icon);
+        for (Cube c : cubes) {
+            addCube(t, 0, 0, 0, icon, c);
+        }
         t.draw();
     }
 
-    private void drawAllCubes(Tessellator t, int x, int y, int z, IIcon icon) {
-        if (cubes.isEmpty()) {
-            initializeCubes();
-        }
-        for (Cube c : cubes) {
-            addCube(t, x, y, z, icon, c);
-        }
-    }
-
-    private void initializeCubes() {
+    static {
         // base
         cubes.add(
             new Cube(
