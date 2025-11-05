@@ -11,7 +11,6 @@ import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeInventoryRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeTileRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
@@ -41,7 +40,6 @@ import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -121,8 +119,6 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
         spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new SpikeInventoryRenderer());
-
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySpike.class, new SpikeTileRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
