@@ -7,9 +7,9 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeInventoryRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.SpikeTileRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.TileEntitySpike;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeInventoryRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeTileRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;

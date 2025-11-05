@@ -1,10 +1,11 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.spike;
+package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

@@ -1,8 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike.spikeTypes.DIAMOND;
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike.spikeTypes.GOLD;
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike.spikeTypes.WOOD;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.spikeTypes.DIAMOND;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.spikeTypes.GOLD;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.spikeTypes.WOOD;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;

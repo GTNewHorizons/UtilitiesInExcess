@@ -1,7 +1,9 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.spike;
+package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;

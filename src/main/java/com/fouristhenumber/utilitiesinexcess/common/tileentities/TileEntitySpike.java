@@ -1,7 +1,8 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.spike;
+package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import java.util.UUID;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
