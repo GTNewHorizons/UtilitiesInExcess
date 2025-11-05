@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeInventoryRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
@@ -118,7 +118,7 @@ public class UtilitiesInExcess {
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
         spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new SpikeInventoryRenderer());
+        RenderingRegistry.registerBlockHandler(new SpikeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 

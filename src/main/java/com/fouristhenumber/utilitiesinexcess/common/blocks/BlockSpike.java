@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -141,10 +142,26 @@ public class BlockSpike extends Block {
         return spikeRenderID;
     }
 
+    private final static IIcon[] icons = new IIcon[4];
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        icons[0] = reg.registerIcon("utilitiesinexcess:models/woodSpike");
+        icons[1] = reg.registerIcon("utilitiesinexcess:models/ironSpike");
+        icons[2] = reg.registerIcon("utilitiesinexcess:models/goldSpike");
+        icons[3] = reg.registerIcon("utilitiesinexcess:models/diamondSpike");
+        super.registerBlockIcons(reg);
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return spikeType.material.getIcon(0, 0);
+        return switch (spikeType) {
+            case WOOD -> icons[0];
+            case IRON -> icons[1];
+            case GOLD -> icons[2];
+            case DIAMOND -> icons[3];
+        };
     }
 
     public enum SpikeType {
