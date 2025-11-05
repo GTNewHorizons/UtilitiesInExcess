@@ -1,33 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
@@ -91,6 +70,7 @@ public enum ModBlocks {
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
+    COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
     ; // leave trailing semicolon
     // spotless:on
 

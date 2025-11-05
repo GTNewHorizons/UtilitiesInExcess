@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.*;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -10,18 +11,6 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
@@ -66,6 +55,7 @@ public class UtilitiesInExcess {
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
     public static CommonProxy proxy;
 
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
@@ -74,6 +64,7 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
+        proxy.registerRenderers();
 
         RecipeLoader.run();
 
@@ -91,6 +82,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
+        GameRegistry.registerTileEntity(TileEntityCollector.class, "TileEntityCollector");
 
         GameRegistry.registerTileEntity(
             TileEntityLowTemperatureFurnaceGenerator.class,
