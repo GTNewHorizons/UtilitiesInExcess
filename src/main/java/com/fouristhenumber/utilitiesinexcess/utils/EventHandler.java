@@ -1,18 +1,25 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike.spikeTypes.DIAMOND;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike.spikeTypes.GOLD;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike.spikeTypes.WOOD;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.spike.BlockSpike;
@@ -23,15 +30,35 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShe
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventHandler {
 
     @SubscribeEvent
-    public void onLivingDrops(LivingDropsEvent event) {
+    public void onLivingDeath(LivingDeathEvent event) {
+        if (!(event.source.getEntity() instanceof EntityPlayer player)) return;
+        if (!(event.entityLiving instanceof EntityLiving entity)) return;
 
-        // if (type != SpikeDamageSource.spikeTypes.GOLD)
+        ItemStack weapon = player.getHeldItem();
+        if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
+
+        BlockSpike.spikeTypes type = ((BlockSpike) spike.field_150939_a).getSpikeType();
+
+        if (type != DIAMOND) {
+            entity.recentlyHit = 0;
+        }
+        if (type == GOLD) {
+            int xp = ((AccessorEntityLivingBase) entity).accessGetExperiencePoints(player);
+
+            while (xp > 0) {
+                int j = EntityXPOrb.getXPSplit(xp);
+                xp -= j;
+                entity.worldObj
+                    .spawnEntityInWorld(new EntityXPOrb(entity.worldObj, entity.posX, entity.posY, entity.posZ, j));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -41,7 +68,7 @@ public class EventHandler {
         ItemStack weapon = player.getHeldItem();
         if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
 
-        if (((BlockSpike) spike.field_150939_a).getSpikeType() != BlockSpike.spikeTypes.WOOD) return;
+        if (((BlockSpike) spike.field_150939_a).getSpikeType() != WOOD) return;
 
         EntityLivingBase target = event.entityLiving;
         float base = (float) player.getEntityAttribute(SharedMonsterAttributes.attackDamage)
@@ -52,6 +79,20 @@ public class EventHandler {
         // If attack would kill, cancel
         if (target.getHealth() - total <= 0.01F) {
             event.setCanceled(true);
+        }
+    }
+
+    // For canceling knockback from spike damage
+    @SubscribeEvent
+    public void onLivingHurt(LivingHurtEvent event) {
+        if (event.source.getEntity() instanceof EntityPlayer player) {
+            ItemStack weapon = player.getHeldItem();
+            if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike)) return;
+
+            event.entityLiving.motionX = 0;
+            event.entityLiving.motionY = Math.min(event.entityLiving.motionY, 0);
+            event.entityLiving.motionZ = 0;
+            event.entityLiving.velocityChanged = true;
         }
     }
 

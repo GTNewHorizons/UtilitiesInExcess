@@ -172,7 +172,7 @@ public class BlockSpike extends Block {
             BlockSpike spike = (BlockSpike) block;
             switch (spike.getSpikeType()) {
                 case WOOD:
-                    this.attackDamage = 2.0F;
+                    this.attackDamage = 1.0F;
                     break;
                 case IRON:
                     this.attackDamage = 6.0F;
@@ -225,7 +225,6 @@ public class BlockSpike extends Block {
             map.put(
                 SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
                 new AttributeModifier(field_111210_e, "Spike Weapon modifier", this.attackDamage, 0));
-
             return map;
         }
     }
