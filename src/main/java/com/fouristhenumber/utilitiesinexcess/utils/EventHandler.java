@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
@@ -79,20 +78,6 @@ public class EventHandler {
         // If attack would kill, cancel
         if (target.getHealth() - total <= 0.01F) {
             event.setCanceled(true);
-        }
-    }
-
-    // For canceling knockback from spike damage
-    @SubscribeEvent
-    public void onLivingHurt(LivingHurtEvent event) {
-        if (event.source.getEntity() instanceof EntityPlayer player) {
-            ItemStack weapon = player.getHeldItem();
-            if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike)) return;
-
-            event.entityLiving.motionX = 0;
-            event.entityLiving.motionY = Math.min(event.entityLiving.motionY, 0);
-            event.entityLiving.motionZ = 0;
-            event.entityLiving.velocityChanged = true;
         }
     }
 

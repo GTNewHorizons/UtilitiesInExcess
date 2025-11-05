@@ -48,7 +48,16 @@ public class TileEntitySpike extends TileEntity {
         fakePlayer.getAttributeMap()
             .applyAttributeModifiers(modifiers);
 
+        double prevMotionX = entity.motionX;
+        double prevMotionY = entity.motionY;
+        double prevMotionZ = entity.motionZ;
+
         fakePlayer.attackTargetEntityWithCurrentItem(entity);
+
+        entity.motionX = prevMotionX;
+        entity.motionY = prevMotionY;
+        entity.motionZ = prevMotionZ;
+
         fakePlayer.setCurrentItemOrArmor(0, null);
     }
 
