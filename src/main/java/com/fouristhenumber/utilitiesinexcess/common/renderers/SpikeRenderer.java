@@ -2,22 +2,30 @@ package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
+@ThreadSafeISBRH(perThread = false)
 public class SpikeRenderer implements ISimpleBlockRenderingHandler {
+
+    final static List<Cube> cubes = new ArrayList<>();
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
         Tessellator t = Tessellator.instance;
         IIcon icon = renderer.getBlockIcon(block);
-        makeAllCubes(t, x, y, z, icon);
+        drawAllCubes(t, x, y, z, icon);
         return true;
     }
 
@@ -26,18 +34,22 @@ public class SpikeRenderer implements ISimpleBlockRenderingHandler {
         Tessellator t = Tessellator.instance;
         IIcon icon = renderer.getBlockIcon(block);
         t.startDrawingQuads();
-        makeAllCubes(t, 0, 0, 0, icon);
+        drawAllCubes(t, 0, 0, 0, icon);
         t.draw();
     }
 
-    private void makeAllCubes(Tessellator t, int x, int y, int z, IIcon icon) {
+    private void drawAllCubes(Tessellator t, int x, int y, int z, IIcon icon) {
+        if (cubes.isEmpty()) {
+            initializeCubes();
+        }
+        for (Cube c : cubes) {
+            addCube(t, x, y, z, icon, c);
+        }
+    }
+
+    private void initializeCubes() {
         // base
-        addCube(
-            t,
-            x,
-            y,
-            z,
-            icon,
+        cubes.add(
             new Cube(
                 0,
                 0,
@@ -53,39 +65,40 @@ public class SpikeRenderer implements ISimpleBlockRenderingHandler {
         float[][] layer2uv = new float[][] { { 6, 17, 11, 22 }, { 12, 17, 17, 22 }, { 0, 23, 5, 23 }, { 6, 23, 11, 23 },
             { 12, 23, 17, 23 }, { 18, 23, 23, 23 } };
 
-        addCube(t, x, y, z, icon, new Cube(0.0625F, 0.0625F, 0.0625F, 0.4375F, 0.125F, 0.4375F, layer2uv));
+        cubes.add(new Cube(0.0625F, 0.0625F, 0.0625F, 0.4375F, 0.125F, 0.4375F, layer2uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.5625F, 0.0625F, 0.0625F, 0.9375F, 0.125F, 0.4375F, layer2uv));
+        cubes.add(new Cube(0.5625F, 0.0625F, 0.0625F, 0.9375F, 0.125F, 0.4375F, layer2uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.0625F, 0.0625F, 0.5625F, 0.4375F, 0.125F, 0.9375F, layer2uv));
+        cubes.add(new Cube(0.0625F, 0.0625F, 0.5625F, 0.4375F, 0.125F, 0.9375F, layer2uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.5625F, 0.0625F, 0.5625F, 0.9375F, 0.125F, 0.9375F, layer2uv));
+        cubes.add(new Cube(0.5625F, 0.0625F, 0.5625F, 0.9375F, 0.125F, 0.9375F, layer2uv));
 
         // layer 3 plates
 
         float[][] layer3uv = new float[][] { { 28, 18, 31, 21 }, { 32, 18, 35, 21 }, { 24, 22, 27, 23 },
             { 28, 22, 31, 23 }, { 32, 22, 35, 23 }, { 36, 22, 39, 23 } };
 
-        addCube(t, x, y, z, icon, new Cube(0.125F, 0.125F, 0.125F, 0.375F, 0.25F, 0.375F, layer3uv));
+        cubes.add(new Cube(0.125F, 0.125F, 0.125F, 0.375F, 0.25F, 0.375F, layer3uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.625F, 0.125F, 0.125F, 0.875F, 0.25F, 0.375F, layer3uv));
+        cubes.add(new Cube(0.625F, 0.125F, 0.125F, 0.875F, 0.25F, 0.375F, layer3uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.125F, 0.125F, 0.625F, 0.375F, 0.25F, 0.875F, layer3uv));
+        cubes.add(new Cube(0.125F, 0.125F, 0.625F, 0.375F, 0.25F, 0.875F, layer3uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.625F, 0.125F, 0.625F, 0.875F, 0.25F, 0.875F, layer3uv));
+        cubes.add(new Cube(0.625F, 0.125F, 0.625F, 0.875F, 0.25F, 0.875F, layer3uv));
 
         // layer 4 plates
 
         float[][] layer4uv = new float[][] { { 2, 0, 3, 1 }, { 4, 0, 5, 1 }, { 0, 2, 1, 4 }, { 2, 2, 3, 4 },
             { 4, 2, 5, 4 }, { 6, 2, 7, 4 } };
 
-        addCube(t, x, y, z, icon, new Cube(0.1875F, 0.25F, 0.1875F, 0.3125F, 0.4375F, 0.3125F, layer4uv));
+        cubes.add(new Cube(0.1875F, 0.25F, 0.1875F, 0.3125F, 0.4375F, 0.3125F, layer4uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.6875F, 0.25F, 0.1875F, 0.8125F, 0.4375F, 0.3125F, layer4uv));
+        cubes.add(new Cube(0.6875F, 0.25F, 0.1875F, 0.8125F, 0.4375F, 0.3125F, layer4uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.1875F, 0.25F, 0.6875F, 0.3125F, 0.4375F, 0.8125F, layer4uv));
+        cubes.add(new Cube(0.1875F, 0.25F, 0.6875F, 0.3125F, 0.4375F, 0.8125F, layer4uv));
 
-        addCube(t, x, y, z, icon, new Cube(0.6875F, 0.25F, 0.6875F, 0.8125F, 0.4375F, 0.8125F, layer4uv));
+        cubes.add(new Cube(0.6875F, 0.25F, 0.6875F, 0.8125F, 0.4375F, 0.8125F, layer4uv));
+
     }
 
     static final int TEXTURE_SIZE = 64;
