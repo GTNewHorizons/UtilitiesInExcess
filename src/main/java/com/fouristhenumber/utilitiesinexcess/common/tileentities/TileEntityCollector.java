@@ -1,14 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileEntityCollector extends TileEntity {
 
@@ -17,7 +17,7 @@ public class TileEntityCollector extends TileEntity {
     int tickCount = 0;
     IInventory inventory;
     public List<Vec3> itemPositions = new ArrayList<>();
-    private float size = 6f ;
+    private float size = 6f;
 
     @Override
     public void validate() {
@@ -29,13 +29,10 @@ public class TileEntityCollector extends TileEntity {
         this.borderTimer = ticks;
     }
 
-
     public void incrementSize() {
         size++;
         if (size > 9) size = 1;
     }
-
-
 
     @Override
     public void updateEntity() {
@@ -45,8 +42,7 @@ public class TileEntityCollector extends TileEntity {
             // client: just visual
             itemPositions.clear();
             for (EntityItem item : items) {
-                if (!item.isDead)
-                    itemPositions.add(Vec3.createVectorHelper(item.posX, item.posY + 0.25, item.posZ));
+                if (!item.isDead) itemPositions.add(Vec3.createVectorHelper(item.posX, item.posY + 0.25, item.posZ));
             }
         }
 
@@ -56,13 +52,13 @@ public class TileEntityCollector extends TileEntity {
         }
 
         TileEntity below = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
-        if (below instanceof IInventory) inventory = (IInventory) below;
+        if (!(below instanceof IInventory)) return;
 
-        if (inventory == null) return;
+        inventory = (IInventory) below;
 
         for (EntityItem item : items) {
             if (item.isDead) continue;
-
+            if (!item.onGround) continue;
             // Only collect after a short delay (20 ticks = 1 second)
             if (item.delayBeforeCanPickup > 0) continue;
 
@@ -77,37 +73,36 @@ public class TileEntityCollector extends TileEntity {
                     inventory.markDirty();
                     item.setDead();
                     break;
-                } else if (currentStack.isItemEqual(stackToInsert) && ItemStack.areItemStackTagsEqual(currentStack, stackToInsert)) {
-                    int maxStack = Math.min(currentStack.getMaxStackSize(), inventory.getInventoryStackLimit());
-                    int space = maxStack - currentStack.stackSize;
+                } else if (currentStack.isItemEqual(stackToInsert)
+                    && ItemStack.areItemStackTagsEqual(currentStack, stackToInsert)) {
+                        int maxStack = Math.min(currentStack.getMaxStackSize(), inventory.getInventoryStackLimit());
+                        int space = maxStack - currentStack.stackSize;
 
-                    if (space > 0) {
-                        if (stackToInsert.stackSize <= space) {
-                            currentStack.stackSize += stackToInsert.stackSize;
-                            inventory.markDirty();
-                            item.setDead();
-                            break;
-                        } else {
-                            currentStack.stackSize += space;
-                            stackToInsert.stackSize -= space;
-                            inventory.markDirty();
+                        if (space > 0) {
+                            if (stackToInsert.stackSize <= space) {
+                                currentStack.stackSize += stackToInsert.stackSize;
+                                inventory.markDirty();
+                                item.setDead();
+                                break;
+                            } else {
+                                currentStack.stackSize += space;
+                                stackToInsert.stackSize -= space;
+                                inventory.markDirty();
+                            }
                         }
                     }
-                }
             }
         }
     }
 
-
-
-
-
     private AxisAlignedBB getRadiusAABB() {
         return AxisAlignedBB.getBoundingBox(
-            xCoord - size, yCoord -size, zCoord - size,
-            xCoord + size+ 1, yCoord + size + 1, zCoord + size + 1
-        );
+            xCoord - size,
+            yCoord - size,
+            zCoord - size,
+            xCoord + size + 1,
+            yCoord + size + 1,
+            zCoord + size + 1);
     }
-
 
 }

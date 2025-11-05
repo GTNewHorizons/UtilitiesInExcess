@@ -73,7 +73,6 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableConveyor;
 
-
     @Config.DefaultBoolean(true)
     public static boolean enableCollector;
 

@@ -1,15 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.render;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 
 public class CollectorLine extends TileEntitySpecialRenderer {
 
@@ -25,8 +27,8 @@ public class CollectorLine extends TileEntitySpecialRenderer {
             }
         }
 
-        //WHATEVER GO MY OPENGL STATE FLAGS
-        //how to write open gl a fundamental guide \/
+        // WHATEVER GO MY OPENGL STATE FLAGS
+        // how to write open gl a fundamental guide \/
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -37,11 +39,13 @@ public class CollectorLine extends TileEntitySpecialRenderer {
         GL11.glLineWidth(6.0f);
         GL11.glTranslated(x, y, z);
 
-        //force fullbright (fun fact this is what night vision does so i didn't realize that this needed to be set UNTIL AFTER IT WORE OFF)
+        // force fullbright (fun fact this is what night vision does so i didn't realize that this needed to be set
+        // UNTIL AFTER IT WORE OFF)
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 
         GL11.glBegin(GL11.GL_LINES);
-        Iterator<Map.Entry<Vec3, Integer>> it = fadingLines.entrySet().iterator();
+        Iterator<Map.Entry<Vec3, Integer>> it = fadingLines.entrySet()
+            .iterator();
         while (it.hasNext()) {
             Map.Entry<Vec3, Integer> entry = it.next();
             Vec3 target = entry.getKey();
@@ -67,26 +71,19 @@ public class CollectorLine extends TileEntitySpecialRenderer {
             GL11.glLineWidth(3.0f);
             GL11.glBegin(GL11.GL_LINES);
 
-            double[][] edges = {
-                {-r, -r, -r}, {r + 1, -r, -r},
-                {-r, -r, -r}, {-r, r + 1, -r},
-                {-r, -r, -r}, {-r, -r, r + 1},
-                {r + 1, r + 1, r + 1}, {-r, r + 1, r + 1},
-                {r + 1, r + 1, r + 1}, {r + 1, -r, r + 1},
-                {r + 1, r + 1, r + 1}, {r + 1, r + 1, -r},
-                {r + 1, -r, -r}, {r + 1, r + 1, -r},
-                {r + 1, -r, -r}, {r + 1, -r, r + 1},
-                {-r, r + 1, -r}, {-r, r + 1, r + 1},
-                {-r, r + 1, -r}, {r + 1, r + 1, -r},
-                {-r, -r, r + 1}, {r + 1, -r, r + 1},
-                {-r, -r, r + 1}, {-r, r + 1, r + 1}
-            };
+            double[][] edges = { { -r, -r, -r }, { r + 1, -r, -r }, { -r, -r, -r }, { -r, r + 1, -r }, { -r, -r, -r },
+                { -r, -r, r + 1 }, { r + 1, r + 1, r + 1 }, { -r, r + 1, r + 1 }, { r + 1, r + 1, r + 1 },
+                { r + 1, -r, r + 1 }, { r + 1, r + 1, r + 1 }, { r + 1, r + 1, -r }, { r + 1, -r, -r },
+                { r + 1, r + 1, -r }, { r + 1, -r, -r }, { r + 1, -r, r + 1 }, { -r, r + 1, -r }, { -r, r + 1, r + 1 },
+                { -r, r + 1, -r }, { r + 1, r + 1, -r }, { -r, -r, r + 1 }, { r + 1, -r, r + 1 }, { -r, -r, r + 1 },
+                { -r, r + 1, r + 1 } };
 
             long time = System.currentTimeMillis();
             for (int i = 0; i < edges.length; i += 2) {
-                //wainbow :3
+                // wainbow :3
                 float hue = (float) ((time * 0.001 + i * 0.1) % 1.0);
-                float[] rgb = java.awt.Color.getHSBColor(hue, 1.0f, 1.0f).getRGBColorComponents(null);
+                float[] rgb = java.awt.Color.getHSBColor(hue, 1.0f, 1.0f)
+                    .getRGBColorComponents(null);
                 GL11.glColor4f(rgb[0], rgb[1], rgb[2], 0.8f);
 
                 GL11.glVertex3d(edges[i][0], edges[i][1], edges[i][2]);
@@ -103,7 +100,6 @@ public class CollectorLine extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
 
         // clear only new item positions
-        if (collector.itemPositions != null)
-            collector.itemPositions.clear();
+        if (collector.itemPositions != null) collector.itemPositions.clear();
     }
 }

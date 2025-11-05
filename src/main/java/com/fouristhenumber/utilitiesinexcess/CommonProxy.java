@@ -22,7 +22,7 @@ public class CommonProxy {
     }
 
     public void registerRenderers() {
-        //no op on server
+        // no op on server
     }
 
     public void init(FMLInitializationEvent event) {
