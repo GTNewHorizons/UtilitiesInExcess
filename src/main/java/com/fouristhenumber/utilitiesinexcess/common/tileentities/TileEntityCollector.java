@@ -17,7 +17,7 @@ public class TileEntityCollector extends TileEntity {
     int tickCount = 0;
     IInventory inventory;
     public List<Vec3> itemPositions = new ArrayList<>();
-    private static final int RADIUS = 4;
+    private float size = 6f ;
 
     @Override
     public void validate() {
@@ -29,49 +29,83 @@ public class TileEntityCollector extends TileEntity {
         this.borderTimer = ticks;
     }
 
+
+    public void incrementSize() {
+        size++;
+        if (size > 9) size = 1;
+    }
+
+
+
     @Override
     public void updateEntity() {
+        List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, getRadiusAABB());
+
         if (worldObj.isRemote) {
             // client: just visual
             itemPositions.clear();
-            List<EntityItem> nearbyItems = worldObj.getEntitiesWithinAABB(EntityItem.class, getRadiusAABB());
-            for (EntityItem item : nearbyItems) {
+            for (EntityItem item : items) {
                 if (!item.isDead)
                     itemPositions.add(Vec3.createVectorHelper(item.posX, item.posY + 0.25, item.posZ));
             }
-            return;
         }
 
         tickCount++;
-
-        // Refresh inventory every second
-        if (tickCount % 20 == 0) {
-            TileEntity below = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
-            if (below instanceof IInventory inv) inventory = inv;
+        if (!(tickCount % 20 == 0)) {
+            return;
         }
+
+        TileEntity below = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        if (below instanceof IInventory) inventory = (IInventory) below;
 
         if (inventory == null) return;
 
-        // Collect nearby items
-        List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, getRadiusAABB());
         for (EntityItem item : items) {
             if (item.isDead) continue;
-            // make it move
-            double dx = xCoord + 0.5 - item.posX;
-            double dy = yCoord + 0.5 - item.posY;
-            double dz = zCoord + 0.5 - item.posZ;
-            double speed = 0.05;
-            item.motionX += dx * speed;
-            item.motionY += dy * speed;
-            item.motionZ += dz * speed;
-            // optionally absorb when close
+
+            // Only collect after a short delay (20 ticks = 1 second)
+            if (item.delayBeforeCanPickup > 0) continue;
+
+            ItemStack stackToInsert = item.getEntityItem();
+            if (stackToInsert == null) continue;
+
+            for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
+                ItemStack currentStack = inventory.getStackInSlot(slot);
+
+                if (currentStack == null) {
+                    inventory.setInventorySlotContents(slot, stackToInsert);
+                    inventory.markDirty();
+                    item.setDead();
+                    break;
+                } else if (currentStack.isItemEqual(stackToInsert) && ItemStack.areItemStackTagsEqual(currentStack, stackToInsert)) {
+                    int maxStack = Math.min(currentStack.getMaxStackSize(), inventory.getInventoryStackLimit());
+                    int space = maxStack - currentStack.stackSize;
+
+                    if (space > 0) {
+                        if (stackToInsert.stackSize <= space) {
+                            currentStack.stackSize += stackToInsert.stackSize;
+                            inventory.markDirty();
+                            item.setDead();
+                            break;
+                        } else {
+                            currentStack.stackSize += space;
+                            stackToInsert.stackSize -= space;
+                            inventory.markDirty();
+                        }
+                    }
+                }
+            }
         }
     }
 
+
+
+
+
     private AxisAlignedBB getRadiusAABB() {
         return AxisAlignedBB.getBoundingBox(
-            xCoord - RADIUS, yCoord - RADIUS, zCoord - RADIUS,
-            xCoord + RADIUS + 1, yCoord + RADIUS + 1, zCoord + RADIUS + 1
+            xCoord - size, yCoord -size, zCoord - size,
+            xCoord + size+ 1, yCoord + size + 1, zCoord + size + 1
         );
     }
 

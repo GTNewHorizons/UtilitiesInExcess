@@ -32,7 +32,7 @@ public class BlockCollector extends BlockContainer {
         if (!worldIn.isRemote) {
             TileEntity tile = worldIn.getTileEntity(x, y, z);
             if (tile instanceof TileEntityCollector collector) {
-                collector.showBorderFor(100);
+
             }
         }
         return true;
