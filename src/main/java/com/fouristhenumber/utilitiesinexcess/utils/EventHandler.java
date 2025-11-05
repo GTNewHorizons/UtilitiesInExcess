@@ -1,8 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SPIKE_TYPE.DIAMOND;
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SPIKE_TYPE.GOLD;
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SPIKE_TYPE.WOOD;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.DIAMOND;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.GOLD;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.WOOD;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +44,7 @@ public class EventHandler {
         ItemStack weapon = player.getHeldItem();
         if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
 
-        BlockSpike.SPIKE_TYPE type = ((BlockSpike) spike.field_150939_a).getSpikeType();
+        BlockSpike.SpikeType type = ((BlockSpike) spike.field_150939_a).getSpikeType();
 
         if (type != DIAMOND) {
             entity.recentlyHit = 0;

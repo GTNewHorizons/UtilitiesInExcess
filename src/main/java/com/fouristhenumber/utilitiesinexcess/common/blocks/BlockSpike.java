@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSpike extends Block {
 
-    public BlockSpike(SPIKE_TYPE spikeType, String name) {
+    public BlockSpike(SpikeType spikeType, String name) {
         super(spikeType.material.getMaterial());
         this.spikeType = spikeType;
         setBlockName(name);
@@ -39,7 +39,7 @@ public class BlockSpike extends Block {
     }
 
     private static final ThreadLocal<ItemStack> cachedDrop = new ThreadLocal<>();
-    private final SPIKE_TYPE spikeType;
+    private final SpikeType spikeType;
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
@@ -117,7 +117,7 @@ public class BlockSpike extends Block {
         return drops;
     }
 
-    public SPIKE_TYPE getSpikeType() {
+    public SpikeType getSpikeType() {
         return spikeType;
     }
 
@@ -147,7 +147,7 @@ public class BlockSpike extends Block {
         return spikeType.material.getIcon(0, 0);
     }
 
-    public enum SPIKE_TYPE {
+    public enum SpikeType {
 
         WOOD(Blocks.planks, 0.5F),
         IRON(Blocks.iron_block, 6F),
@@ -157,7 +157,7 @@ public class BlockSpike extends Block {
         final Block material;
         final float damage;
 
-        SPIKE_TYPE(Block material, float damage) {
+        SpikeType(Block material, float damage) {
             this.material = material;
             this.damage = damage;
         }
