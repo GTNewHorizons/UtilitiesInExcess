@@ -80,13 +80,4 @@ public class ModelSpike extends ModelBase {
         this.shape1_5.render(f5);
         this.shape1_7.render(f5);
     }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
 }
