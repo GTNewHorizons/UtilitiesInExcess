@@ -19,6 +19,7 @@ public class RecipeLoader {
         loadEtherealGlassRecipes();
         loadWateringCanRecipes();
         loadLapisAetheriusRecipes();
+        loadSpikeRecipes();
 
         // Floating Block
         addShapedRecipe(
@@ -194,6 +195,56 @@ public class RecipeLoader {
             Items.diamond,
             'b',
             Blocks.gold_block);
+    }
+
+    private static void loadSpikeRecipes() {
+        addShapedRecipe(
+            ModBlocks.SPIKE_WOOD,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.wooden_sword,
+            'b',
+            Blocks.planks,
+            'c',
+            Blocks.log);
+
+        addShapedRecipe(
+            ModBlocks.SPIKE_IRON,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.iron_sword,
+            'b',
+            Items.iron_ingot,
+            'c',
+            Blocks.iron_block);
+
+        addShapedRecipe(
+            ModBlocks.SPIKE_GOLD,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.golden_sword,
+            'b',
+            ModBlocks.MAGIC_WOOD,
+            'c',
+            Blocks.gold_block);
+
+        addShapedRecipe(
+            ModBlocks.SPIKE_DIAMOND,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.diamond_sword,
+            'b',
+            ModBlocks.SPIKE_GOLD,
+            'c',
+            Blocks.diamond_block);
     }
 
     private static void loadLapisAetheriusRecipes() {

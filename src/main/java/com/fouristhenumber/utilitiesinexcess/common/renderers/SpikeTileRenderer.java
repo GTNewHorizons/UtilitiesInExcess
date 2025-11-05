@@ -1,12 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
-import com.fouristhenumber.utilitiesinexcess.common.models.ModelSpike;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import com.fouristhenumber.utilitiesinexcess.common.models.ModelSpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 
 public class SpikeTileRenderer extends TileEntitySpecialRenderer {
 

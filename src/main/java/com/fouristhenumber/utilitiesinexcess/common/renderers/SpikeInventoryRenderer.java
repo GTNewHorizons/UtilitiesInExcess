@@ -2,14 +2,15 @@ package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 

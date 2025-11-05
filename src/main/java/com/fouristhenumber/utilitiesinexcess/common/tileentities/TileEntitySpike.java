@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import java.util.UUID;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
@@ -12,6 +11,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
@@ -42,8 +42,6 @@ public class TileEntitySpike extends TileEntity {
             (WorldServer) worldObj,
             new GameProfile(UUID.nameUUIDFromBytes("UIE_Spike".getBytes()), "[UIE Spike]"));
 
-        if (getSpikeType() == BlockSpike.spikeTypes.WOOD) fakePlayer.getEntityData()
-            .setBoolean("UIE_SPIKE_WOOD", true);
         fakePlayer.setCurrentItemOrArmor(0, fakeWeapon.copy());
 
         Multimap<String, AttributeModifier> modifiers = fakeWeapon.getAttributeModifiers();

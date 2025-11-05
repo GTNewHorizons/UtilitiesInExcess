@@ -5,7 +5,6 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRende
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.relauncher.Side;
@@ -185,7 +185,7 @@ public class BlockSpike extends Block {
                     this.attackDamage = 7.0F;
                     break;
                 default:
-                    this.attackDamage = 1.0F;
+                    this.attackDamage = 0.0F;
             }
         }
 
