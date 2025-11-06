@@ -8,13 +8,14 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeLoader {
 
     public static void run() {
-        // if (Mods.Dreamcraft.isLoaded()) return;
+        if (Mods.Dreamcraft.isLoaded()) return;
         loadCompressedBlockRecipes();
         loadInversionRecipes();
         loadBedrockiumRecipes();
