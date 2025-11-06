@@ -25,13 +25,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemInvertedIngot extends Item {
 
     public ItemInvertedIngot() {
-        this.setUnlocalizedName("inverted_ingot");
         this.setTextureName("utilitiesinexcess:inverted_ingot");
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
     }
 
-    public static final DamageSource INVERTED_INGOT = (new DamageSource("invertedIngot")).setDamageBypassesArmor();
+    public static final DamageSource INVERTED_INGOT = (new DamageSource("inverted_ingot")).setDamageBypassesArmor();
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
@@ -61,6 +60,12 @@ public class ItemInvertedIngot extends Item {
     }
 
     @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        if (stack.getItemDamage() == 0) return "item.inverted_ingot";
+        else return "item.inverted_ingot.stable";
+    }
+
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
             if (InversionConfig.invertedIngotsImplode) {
@@ -85,7 +90,7 @@ public class ItemInvertedIngot extends Item {
                 }
             }
         } else {
-            tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.1.desc"));
+            tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.stable.desc"));
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
