@@ -35,21 +35,8 @@ import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.Gluttons
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-public class EventHandler {
-
-    @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event) {
-        if (event.player.openContainer != null
-            && event.player.openContainer.getClass() == net.minecraft.inventory.ContainerWorkbench.class) {
-            for (ItemStack item : event.player.openContainer.inventoryItemStacks) {
-                if (item != null && item.getItem() instanceof ItemInvertedIngot) {
-
-                }
-            }
-        }
-    }
+public class ForgeEventHandler {
 
     @SubscribeEvent
     public void onItemToss(ItemTossEvent event) {
