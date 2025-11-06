@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 
@@ -19,6 +20,9 @@ public class CommonProxy {
         PacketHandler.init();
         ModBlocks.init();
         ModItems.init();
+        ModDimensions.init();
+        ModBiomes.init();
+        UnderWorldEvents.init();
     }
 
     public void init(FMLInitializationEvent event) {

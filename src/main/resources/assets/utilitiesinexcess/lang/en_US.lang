@@ -237,3 +237,11 @@ tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
 tile.blackout_curtains.name=Blackout Curtains
 
 tile.conveyor.name=Conveyor
+
+tile.underworld_portal.name=Portal to the Underworld
+
+uie.chat.underworld_portal_blocked=§5§oThe portal fizzled out... perhaps the other end is blocked or missing?
+uie.chat.underworld_safe=§5§oYou no longer feel watched.
+uie.chat.underworld_aggressive=§5§oYour skin begins to crawl. Something does not want you here.
+
+death.attack.underworld-ghost=%1$s wasn't afraid of the dark.
