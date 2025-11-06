@@ -39,11 +39,6 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         tessellator.addVertex(0.5, -0.5, 0.5);
         tessellator.addVertex(-0.5, -0.5, 0.5);
 
-        tessellator.addVertex(-0.5, -0.5, -0.5);
-        tessellator.addVertex(0.5, -0.5, -0.5);
-        tessellator.addVertex(0.5, -0.5, 0.5);
-        tessellator.addVertex(-0.5, -0.5, 0.5);
-
         tessellator.addVertex(0.5, -0.5, -0.5);
         tessellator.addVertex(-0.5, -0.5, -0.5);
         tessellator.addVertex(-0.5, 0.5, -0.5);
