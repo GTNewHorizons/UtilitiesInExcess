@@ -27,7 +27,9 @@ public enum Mixins implements IMixins {
         .addCommonMixins("minecraft.accessors.AccessorEntityZombie",
             "minecraft.accessors.AccessorItemTool",
             "minecraft.accessors.AccessorItemSword",
-            "minecraft.accessors.AccessorEntityLivingBase")
+            "minecraft.accessors.AccessorEntityLivingBase",
+            "minecraft.accessors.AccessorPotionEffect",
+            "minecraft.accessors.AccessorEntityRenderer")
     )
     ; // leave trailing semicolon
     // spotless:on

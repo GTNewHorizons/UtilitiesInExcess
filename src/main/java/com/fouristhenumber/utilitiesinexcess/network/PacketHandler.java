@@ -1,7 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.network;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketRainMuffledSync;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
 import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -16,5 +18,9 @@ public class PacketHandler {
         INSTANCE.registerMessage(ParticlePacket.Handler.class, ParticlePacket.class, packetId++, Side.CLIENT);
         INSTANCE
             .registerMessage(PacketRainMuffledSync.Handler.class, PacketRainMuffledSync.class, packetId++, Side.CLIENT);
+        INSTANCE
+            .registerMessage(PacketAggressiveMobSpawn.Handler.class, PacketAggressiveMobSpawn.class, packetId++, Side.CLIENT);
+        INSTANCE
+            .registerMessage(PacketUnderworldAttack.Handler.class, PacketUnderworldAttack.class, packetId++, Side.CLIENT);
     }
 }
