@@ -169,6 +169,8 @@ public class UnderWorldEvents {
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         WorldServer world = (WorldServer) event.player.worldObj;
 
+        if (!(world.theChunkProviderServer.currentChunkProvider instanceof ChunkProviderUnderWorld)) return;
+
         // Only spawn once every 30 seconds
         if (world.getTotalWorldTime() % 600 != 0) return;
 

@@ -58,6 +58,11 @@ public class BlockPortalUnderWorld extends BlockContainer {
         return false;
     }
 
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public int getRenderType() {
