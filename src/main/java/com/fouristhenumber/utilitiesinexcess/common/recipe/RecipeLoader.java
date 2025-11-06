@@ -23,7 +23,11 @@ public class RecipeLoader {
         loadSpikeRecipes();
 
         if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
-            GameRegistry.addRecipe(new RecipeInvertedIngot(new ItemStack(ModItems.INVERTED_INGOT.get())));
+            GameRegistry.addRecipe(new RecipeInvertedIngot(1, 3, new ItemStack[] {
+                new ItemStack(Items.iron_ingot),
+                ModItems.INVERSION_SIGIL_ACTIVE.newItemStack(),
+                new ItemStack(Items.diamond),
+            }, ModItems.INVERTED_INGOT.newItemStack()));
         }
 
         // Floating Block
@@ -364,22 +368,6 @@ public class RecipeLoader {
     private static void loadInversionRecipes() {
         // Diamond Stick
         addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
-
-        /*
-        // Inverted Ingot
-        addShapedRecipe(
-            ModItems.INVERTED_INGOT,
-            "i",
-            "#",
-            "d",
-            'i',
-            Items.iron_ingot,
-            '#',
-            ModItems.INVERSION_SIGIL_ACTIVE,
-            'd',
-            Items.diamond);
-
-         */
 
         // Glutton's Axe
         addShapedRecipe(
