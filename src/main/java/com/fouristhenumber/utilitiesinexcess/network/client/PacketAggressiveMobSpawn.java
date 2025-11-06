@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 /// Spawns some smoke and plays a sound when a mob is aggressively spawn in a difficult region.
@@ -41,6 +43,7 @@ public class PacketAggressiveMobSpawn implements IMessage {
     public static class Handler implements IMessageHandler<PacketAggressiveMobSpawn, IMessage> {
 
         @Override
+        @SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketAggressiveMobSpawn message, MessageContext ctx) {
             World world = Minecraft.getMinecraft().theWorld;
 

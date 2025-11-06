@@ -12,6 +12,8 @@ import org.joml.Vector3d;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 /// Spawns some particles and plays a sound when the player is attacked by the invisible monster
@@ -32,6 +34,7 @@ public class PacketUnderworldAttack implements IMessage {
     public static class Handler implements IMessageHandler<PacketUnderworldAttack, IMessage> {
 
         @Override
+        @SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketUnderworldAttack message, MessageContext ctx) {
             World world = Minecraft.getMinecraft().theWorld;
 
