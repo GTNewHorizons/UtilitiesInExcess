@@ -85,8 +85,9 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         tessellator.addVertex(0.5, 0.5, -0.5);
         tessellator.addVertex(0.5, 0.5, 0.5);
 
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         tessellator.draw();
-
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         UnderworldPortalShader.clear();
 
         GL11.glPopMatrix();
