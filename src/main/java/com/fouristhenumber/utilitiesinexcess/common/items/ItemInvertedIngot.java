@@ -17,6 +17,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,9 +50,9 @@ public class ItemInvertedIngot extends Item {
     public static boolean checkImplosion(ItemStack item, World world) {
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
-            int remaining = tag.getInteger("ExplosionTimer");
+            int remaining = tag.getInteger("ImplosionTimer");
             if (remaining > 0) {
-                tag.setInteger("ExplosionTimer", remaining - 1);
+                tag.setInteger("ImplosionTimer", remaining - 1);
             } else {
                 return (world.isRemote);
             }
@@ -61,23 +63,26 @@ public class ItemInvertedIngot extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
-            NBTTagCompound tag = stack.getTagCompound();
-            if (tag == null) {
-                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
-            } else {
-                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
-                if (stack.hasTagCompound()) {
-                    double time = (double) stack.getTagCompound()
-                        .getInteger("ExplosionTimer") / 20;
-                    tooltip.add(
-                        StatCollector
-                            .translateToLocalFormatted("item.inverted_ingot.desc.2", formatNumber(Math.max(0, time))));
+            if (InversionConfig.invertedIngotsImplode) {
+                NBTTagCompound tag = stack.getTagCompound();
+                if (tag == null) {
+                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
                 } else {
-                    tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
+                    if (stack.hasTagCompound()) {
+                        double time = (double) stack.getTagCompound()
+                            .getInteger("ImplosionTimer") / 20;
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "item.inverted_ingot.desc.2",
+                                formatNumber(Math.max(0, time))));
+                    } else {
+                        tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+                    }
+                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
+                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
+                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
                 }
-                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
-                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
-                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
             }
         } else {
             tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.1.desc"));

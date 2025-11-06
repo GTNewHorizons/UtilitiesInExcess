@@ -14,6 +14,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,15 +50,15 @@ public class InvertedIngotRenderer implements IItemRenderer {
         float maxV = icon.getMaxV();
 
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && tag.hasKey("ExplosionTimer")) {
+        if (tag != null && tag.hasKey("ImplosionTimer")) {
 
             World world = Minecraft.getMinecraft().theWorld;
             if (world == null) return;
 
-            int remaining = tag.getInteger("ExplosionTimer");
+            int remaining = tag.getInteger("ImplosionTimer");
 
-            float maxTime = 200f;
-            float progress = MathHelper.clamp_float(remaining / maxTime, 0f, 1f);
+            float progress = MathHelper
+                .clamp_float((float) remaining / InversionConfig.invertedIngotImplosionTimer, 0f, 1f);
 
             float r = MathHelper.clamp_float(1.0f, 0f, 1f);
             float g = MathHelper.clamp_float(progress, 0f, 1f);

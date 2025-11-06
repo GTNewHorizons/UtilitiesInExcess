@@ -6,6 +6,8 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+
 public class RecipeInvertedIngot extends ShapedRecipes {
 
     public RecipeInvertedIngot(int width, int height, ItemStack[] input, ItemStack output) {
@@ -26,9 +28,11 @@ public class RecipeInvertedIngot extends ShapedRecipes {
     @Override
     public ItemStack getRecipeOutput() {
         ItemStack output = super.getRecipeOutput().copy();
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("ExplosionTimer", 200);
-        output.setTagCompound(nbt);
+        if (InversionConfig.invertedIngotsImplode) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("ImplosionTimer", InversionConfig.invertedIngotImplosionTimer);
+            output.setTagCompound(nbt);
+        }
         return output;
     }
 }
