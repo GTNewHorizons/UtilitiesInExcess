@@ -12,14 +12,69 @@ import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
 public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
 
     public static final IModelCustom FRAME = AdvancedModelLoader
         .loadModel(new ResourceLocation(UtilitiesInExcess.MODID, "models/underworld_portal/frame.obj"));
 
+    private VertexBuffer core;
+
+    private void initCoreVBO() {
+        TessellatorManager.startCapturing();
+
+        Tessellator tessellator = TessellatorManager.get();
+
+        tessellator.startDrawingQuads();
+
+        tessellator.addVertex(-0.5, 0.5, -0.5);
+        tessellator.addVertex(-0.5, 0.5, 0.5);
+        tessellator.addVertex(0.5, 0.5, 0.5);
+        tessellator.addVertex(0.5, 0.5, -0.5);
+
+        tessellator.addVertex(-0.5, -0.5, -0.5);
+        tessellator.addVertex(0.5, -0.5, -0.5);
+        tessellator.addVertex(0.5, -0.5, 0.5);
+        tessellator.addVertex(-0.5, -0.5, 0.5);
+
+        tessellator.addVertex(-0.5, -0.5, -0.5);
+        tessellator.addVertex(0.5, -0.5, -0.5);
+        tessellator.addVertex(0.5, -0.5, 0.5);
+        tessellator.addVertex(-0.5, -0.5, 0.5);
+
+        tessellator.addVertex(0.5, -0.5, -0.5);
+        tessellator.addVertex(-0.5, -0.5, -0.5);
+        tessellator.addVertex(-0.5, 0.5, -0.5);
+        tessellator.addVertex(0.5, 0.5, -0.5);
+
+        tessellator.addVertex(0.5, -0.5, 0.5);
+        tessellator.addVertex(0.5, 0.5, 0.5);
+        tessellator.addVertex(-0.5, 0.5, 0.5);
+        tessellator.addVertex(-0.5, -0.5, 0.5);
+
+        tessellator.addVertex(-0.5, -0.5, 0.5);
+        tessellator.addVertex(-0.5, 0.5, 0.5);
+        tessellator.addVertex(-0.5, 0.5, -0.5);
+        tessellator.addVertex(-0.5, -0.5, -0.5);
+
+        tessellator.addVertex(0.5, -0.5, 0.5);
+        tessellator.addVertex(0.5, -0.5, -0.5);
+        tessellator.addVertex(0.5, 0.5, -0.5);
+        tessellator.addVertex(0.5, 0.5, 0.5);
+
+        tessellator.draw();
+
+        core = TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION);
+    }
+
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
+        if (core == null) {
+            initCoreVBO();
+        }
+
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glTranslated(x + 0.5, y, z + 0.5);
@@ -51,41 +106,8 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
 
         bindTexture(TextureMap.locationBlocksTexture);
 
-        Tessellator tessellator = TessellatorManager.get();
-
-        tessellator.startDrawingQuads();
-
-        tessellator.addVertex(-0.5, 0.5, -0.5);
-        tessellator.addVertex(-0.5, 0.5, 0.5);
-        tessellator.addVertex(0.5, 0.5, 0.5);
-        tessellator.addVertex(0.5, 0.5, -0.5);
-
-        tessellator.addVertex(-0.5, -0.5, -0.5);
-        tessellator.addVertex(0.5, -0.5, -0.5);
-        tessellator.addVertex(0.5, -0.5, 0.5);
-        tessellator.addVertex(-0.5, -0.5, 0.5);
-
-        tessellator.addVertex(0.5, -0.5, -0.5);
-        tessellator.addVertex(-0.5, -0.5, -0.5);
-        tessellator.addVertex(-0.5, 0.5, -0.5);
-        tessellator.addVertex(0.5, 0.5, -0.5);
-
-        tessellator.addVertex(0.5, -0.5, 0.5);
-        tessellator.addVertex(0.5, 0.5, 0.5);
-        tessellator.addVertex(-0.5, 0.5, 0.5);
-        tessellator.addVertex(-0.5, -0.5, 0.5);
-
-        tessellator.addVertex(-0.5, -0.5, 0.5);
-        tessellator.addVertex(-0.5, 0.5, 0.5);
-        tessellator.addVertex(-0.5, 0.5, -0.5);
-        tessellator.addVertex(-0.5, -0.5, -0.5);
-
-        tessellator.addVertex(0.5, -0.5, 0.5);
-        tessellator.addVertex(0.5, -0.5, -0.5);
-        tessellator.addVertex(0.5, 0.5, -0.5);
-        tessellator.addVertex(0.5, 0.5, 0.5);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        tessellator.draw();
+        core.render();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         UnderworldPortalShader.clear();
