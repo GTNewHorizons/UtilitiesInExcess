@@ -4,6 +4,8 @@ import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,34 +14,41 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemInvertedIngot extends Item {
 
     public ItemInvertedIngot() {
         this.setUnlocalizedName("inverted_ingot");
         this.setTextureName("utilitiesinexcess:inverted_ingot");
-        this.setMaxStackSize(1);
+        this.setHasSubtypes(true);
+        this.setMaxDamage(0);
     }
 
     public static final DamageSource INVERTED_INGOT = (new DamageSource("invertedIngot")).setDamageBypassesArmor();
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
+        if (stack.getItemDamage() != 0) return;
         if (entityIn instanceof EntityItem item) item.setDead();
         if (!(entityIn instanceof EntityPlayer player)) return;
 
-        if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, player, worldIn)) {
+        if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
             player.inventory.setInventorySlotContents(slot, null);
+            player.closeScreen();
             player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
         }
 
         super.onUpdate(stack, worldIn, entityIn, slot, p_77663_5_);
     }
 
-    public static boolean checkImplosion(ItemStack item, EntityPlayer player, World world) {
-        if (item.hasTagCompound()) {
+    public static boolean checkImplosion(ItemStack item, World world) {
+        if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             long timeCreated = item.getTagCompound()
                 .getInteger("TimeCreated");
             return (world.isRemote && world.getTotalWorldTime() >= timeCreated + 200);
@@ -59,25 +68,52 @@ public class ItemInvertedIngot extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
-        if (stack.hasTagCompound()) {
-            double time = (double) (player.worldObj.getTotalWorldTime() - stack.getTagCompound()
-                .getLong("TimeCreated")) / 20;
-            tooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("item.inverted_ingot.desc.2", formatNumber(Math.max(0, 10 - time))));
+        if (stack.getItemDamage() == 0) {
+            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
+            if (stack.hasTagCompound()) {
+                double time = (double) (player.worldObj.getTotalWorldTime() - stack.getTagCompound()
+                    .getLong("TimeCreated")) / 20;
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("item.inverted_ingot.desc.2", formatNumber(Math.max(0, 10 - time))));
+            } else {
+                tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+            }
+            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
+            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
+            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
         } else {
-            tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+            tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.1.desc"));
         }
-        tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
-        tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
-        tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-        if (stack.getItemDamage() == 0) return 1;
-        return 64;
+        return (stack.getItemDamage() == 0) ? 1 : 64;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] icons;
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IIconRegister reg) {
+        icons = new IIcon[2];
+        icons[0] = reg.registerIcon("utilitiesinexcess:inverted_ingot");
+        icons[1] = reg.registerIcon("utilitiesinexcess:inverted_ingot_stable");
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIconFromDamage(int meta) {
+        return icons[meta];
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
     }
 }

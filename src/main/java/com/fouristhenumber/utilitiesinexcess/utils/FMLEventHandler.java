@@ -18,7 +18,7 @@ public class FMLEventHandler {
         if (event.player.openContainer instanceof ContainerWorkbench bench) {
             ItemStack cursorItem = event.player.inventory.getItemStack();
             if (cursorItem != null && cursorItem.getItem() instanceof ItemInvertedIngot) {
-                if (checkImplosion(cursorItem, event.player, event.player.worldObj)) {
+                if (checkImplosion(cursorItem, event.player.worldObj)) {
                     event.player.inventory.setItemStack(null);
                     event.player.closeScreen();
                     event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
@@ -27,7 +27,7 @@ public class FMLEventHandler {
             for (int i = 0; i < bench.craftMatrix.getSizeInventory(); i++) {
                 ItemStack stack = bench.craftMatrix.getStackInSlot(i);
                 if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
-                    if (checkImplosion(stack, event.player, event.player.worldObj)) {
+                    if (checkImplosion(stack, event.player.worldObj)) {
                         bench.craftMatrix.setInventorySlotContents(i, null);
                         event.player.closeScreen();
                         event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
