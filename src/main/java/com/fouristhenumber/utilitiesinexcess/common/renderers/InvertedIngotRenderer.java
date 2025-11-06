@@ -48,12 +48,12 @@ public class InvertedIngotRenderer implements IItemRenderer {
         float maxV = icon.getMaxV();
 
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && tag.hasKey("TimeCreated")) {
+        if (tag != null && tag.hasKey("ExplosionTimer")) {
 
             World world = Minecraft.getMinecraft().theWorld;
             if (world == null) return;
 
-            long remaining = 200 - (world.getTotalWorldTime() - tag.getLong("TimeCreated"));
+            int remaining = tag.getInteger("ExplosionTimer");
 
             float maxTime = 200f;
             float progress = MathHelper.clamp_float(remaining / maxTime, 0f, 1f);

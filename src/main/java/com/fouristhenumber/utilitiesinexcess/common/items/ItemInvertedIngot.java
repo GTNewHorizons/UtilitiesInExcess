@@ -48,19 +48,14 @@ public class ItemInvertedIngot extends Item {
     public static boolean checkImplosion(ItemStack item, World world) {
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
-            return (world.isRemote && world.getTotalWorldTime() >= tag.getInteger("TimeCreated") + 200);
+            int remaining = tag.getInteger("ExplosionTimer");
+            if (remaining > 0) {
+                tag.setInteger("ExplosionTimer", remaining - 1);
+            } else {
+                return (world.isRemote);
+            }
         }
         return false;
-    }
-
-    @Override
-    public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-        if (itemStack != null && itemStack.getItemDamage() == 0) {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setLong("TimeCreated", world.getTotalWorldTime());
-            itemStack.setTagCompound(nbt);
-        }
-        super.onCreated(itemStack, world, player);
     }
 
     @Override
@@ -72,12 +67,11 @@ public class ItemInvertedIngot extends Item {
             } else {
                 tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
                 if (stack.hasTagCompound()) {
-                    double time = (double) (player.worldObj.getTotalWorldTime() - stack.getTagCompound()
-                        .getLong("TimeCreated")) / 20;
+                    double time = (double) stack.getTagCompound()
+                        .getInteger("ExplosionTimer") / 20;
                     tooltip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "item.inverted_ingot.desc.2",
-                            formatNumber(Math.max(0, 10 - time))));
+                        StatCollector
+                            .translateToLocalFormatted("item.inverted_ingot.desc.2", formatNumber(Math.max(0, time))));
                 } else {
                     tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
                 }
