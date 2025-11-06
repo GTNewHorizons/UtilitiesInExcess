@@ -446,7 +446,12 @@ public class RecipeLoader {
             ModItems.DIAMOND_STICK);
 
         // Precision Shears
-        addShapedRecipe(ModItems.PRECISION_SHEARS, " i", "i ", 'i', ModItems.INVERTED_INGOT);
+        addShapedRecipe(
+            ModItems.PRECISION_SHEARS,
+            " i",
+            "i ",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Architect's Staff
         addShapedRecipe(
@@ -454,7 +459,7 @@ public class RecipeLoader {
             " i",
             "s ",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
