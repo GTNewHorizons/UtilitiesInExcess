@@ -24,6 +24,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
@@ -91,6 +92,11 @@ public enum ModBlocks {
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
+    SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
+    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
+    SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
+    SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
+
     ; // leave trailing semicolon
     // spotless:on
 

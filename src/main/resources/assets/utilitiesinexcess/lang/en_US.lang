@@ -107,6 +107,20 @@ tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
 tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
 
+tile.woodSpike.name=Wooden Spikes
+tile.ironSpike.name=Iron Spikes
+tile.goldSpike.name=Gold Spikes
+tile.diamondSpike.name=Diamond Spikes
+tile.woodSpike.desc=Will leave enemies at the brink of death
+tile.ironSpike.desc=Enemies will drop regular loot
+tile.goldSpike.desc=Enemies will drop regular loot and experience
+tile.diamondSpike.desc=Enemies will drop "player-only" loot and experience
+
+item.hungerAxe.name=Glutton's Axe
+item.hungerAxe.desc.1=Sates the bearer's hunger while held
+item.hungerAxe.desc.2=Can consume hunger to heal struck entities
+item.hungerAxe.desc.3=This effect is lethal to most undead
+
 item.heavenly_ring.name=Heavenly Ring
 item.heavenly_ring.desc=Grants creative flight
 
