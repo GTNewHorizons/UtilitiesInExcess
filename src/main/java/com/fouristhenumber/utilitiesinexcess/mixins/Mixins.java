@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.mixins;
 
+import static com.fouristhenumber.utilitiesinexcess.mixins.TargetedMod.ANGELICA;
+
 import javax.annotation.Nonnull;
 
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -20,6 +22,7 @@ public enum Mixins implements IMixins {
         .addClientMixins("minecraft.MixinBlockEnchantmentTable_MagicWood")
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> BlockConfig.enableMagicWood)
+        .addExcludedMod(ANGELICA)
         /*.addRequiredMod(TargetedMod.VANILLA)*/
     ),
     ACCESSORS(new MixinBuilder("Accessors for the mod to use")
