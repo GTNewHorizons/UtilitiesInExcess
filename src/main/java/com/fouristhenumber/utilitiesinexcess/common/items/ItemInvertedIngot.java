@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.Item;
@@ -34,8 +33,7 @@ public class ItemInvertedIngot extends Item {
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
-        if (stack.getItemDamage() != 0) return;
-        if (entityIn instanceof EntityItem item) item.setDead();
+        if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
         if (!(entityIn instanceof EntityPlayer player)) return;
 
         if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
@@ -49,9 +47,8 @@ public class ItemInvertedIngot extends Item {
 
     public static boolean checkImplosion(ItemStack item, World world) {
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
-            long timeCreated = item.getTagCompound()
-                .getInteger("TimeCreated");
-            return (world.isRemote && world.getTotalWorldTime() >= timeCreated + 200);
+            NBTTagCompound tag = item.getTagCompound();
+            return (world.isRemote && world.getTotalWorldTime() >= tag.getInteger("TimeCreated") + 200);
         }
         return false;
     }
@@ -69,19 +66,25 @@ public class ItemInvertedIngot extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
-            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
-            if (stack.hasTagCompound()) {
-                double time = (double) (player.worldObj.getTotalWorldTime() - stack.getTagCompound()
-                    .getLong("TimeCreated")) / 20;
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("item.inverted_ingot.desc.2", formatNumber(Math.max(0, 10 - time))));
+            NBTTagCompound tag = stack.getTagCompound();
+            if (tag == null) {
+                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
             } else {
-                tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
+                if (stack.hasTagCompound()) {
+                    double time = (double) (player.worldObj.getTotalWorldTime() - stack.getTagCompound()
+                        .getLong("TimeCreated")) / 20;
+                    tooltip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "item.inverted_ingot.desc.2",
+                            formatNumber(Math.max(0, 10 - time))));
+                } else {
+                    tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+                }
+                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
+                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
+                tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
             }
-            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
-            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
-            tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
         } else {
             tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.1.desc"));
         }

@@ -42,6 +42,7 @@ public class ForgeEventHandler {
     public void onItemToss(ItemTossEvent event) {
         ItemStack stack = event.entityItem.getEntityItem();
         if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
+            if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
             event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
             event.setCanceled(true);
         }

@@ -36,6 +36,8 @@ public class InvertedIngotRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
         if (stack == null) return;
 
+        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_ENABLE_BIT);
+
         IIcon icon = stack.getItem()
             .getIconFromDamageForRenderPass(stack.getItemDamage(), 0);
 
@@ -113,8 +115,7 @@ public class InvertedIngotRenderer implements IItemRenderer {
             default -> {}
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glColor4f(1, 1, 1, 1);
+        GL11.glPopAttrib();
     }
 
     public static void renderItemIcon(IIcon icon, double xStart, double yStart, double xEnd, double yEnd, double z,
