@@ -21,7 +21,7 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
         GL11.glPushMatrix();
-
+        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glTranslated(x + 0.5, y, z + 0.5);
 
         float light = tile.getWorldObj()
@@ -84,12 +84,12 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         tessellator.addVertex(0.5, -0.5, -0.5);
         tessellator.addVertex(0.5, 0.5, -0.5);
         tessellator.addVertex(0.5, 0.5, 0.5);
-
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         tessellator.draw();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-        UnderworldPortalShader.clear();
 
+        UnderworldPortalShader.clear();
+        GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
     }
 }
