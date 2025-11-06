@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -8,12 +7,13 @@ import net.minecraft.item.ItemStack;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeLoader {
 
     public static void run() {
-        if (Mods.Dreamcraft.isLoaded()) return;
+        // if (Mods.Dreamcraft.isLoaded()) return;
         loadCompressedBlockRecipes();
         loadInversionRecipes();
         loadBedrockiumRecipes();
@@ -23,11 +23,13 @@ public class RecipeLoader {
         loadSpikeRecipes();
 
         if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
-            GameRegistry.addRecipe(new RecipeInvertedIngot(1, 3, new ItemStack[] {
-                new ItemStack(Items.iron_ingot),
-                ModItems.INVERSION_SIGIL_ACTIVE.newItemStack(),
-                new ItemStack(Items.diamond),
-            }, ModItems.INVERTED_INGOT.newItemStack()));
+            GameRegistry.addRecipe(
+                new RecipeInvertedIngot(
+                    1,
+                    3,
+                    new ItemStack[] { new ItemStack(Items.iron_ingot), ModItems.INVERSION_SIGIL_ACTIVE.newItemStack(),
+                        new ItemStack(Items.diamond), },
+                    ModItems.INVERTED_INGOT.newItemStack()));
         }
 
         // Floating Block

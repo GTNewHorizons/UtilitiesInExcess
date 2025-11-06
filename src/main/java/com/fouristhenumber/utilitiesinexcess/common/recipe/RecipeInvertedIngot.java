@@ -15,7 +15,8 @@ public class RecipeInvertedIngot extends ShapedRecipes {
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
         // Reject if not a vanilla workbench
-        if (inv.eventHandler == null || inv.eventHandler.getClass() != net.minecraft.inventory.ContainerWorkbench.class) {
+        if (inv.eventHandler == null
+            || inv.eventHandler.getClass() != net.minecraft.inventory.ContainerWorkbench.class) {
             return false;
         }
 

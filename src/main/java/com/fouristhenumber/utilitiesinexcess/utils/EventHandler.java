@@ -8,7 +8,6 @@ import static com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIng
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +24,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
@@ -35,8 +35,21 @@ import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.Gluttons
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class EventHandler {
+
+    @SubscribeEvent
+    public void onPlayerTick(PlayerTickEvent event) {
+        if (event.player.openContainer != null
+            && event.player.openContainer.getClass() == net.minecraft.inventory.ContainerWorkbench.class) {
+            for (ItemStack item : event.player.openContainer.inventoryItemStacks) {
+                if (item != null && item.getItem() instanceof ItemInvertedIngot) {
+
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onItemToss(ItemTossEvent event) {

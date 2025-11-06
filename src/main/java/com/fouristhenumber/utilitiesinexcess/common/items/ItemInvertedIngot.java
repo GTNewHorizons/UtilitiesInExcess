@@ -1,5 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
+
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,11 +14,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.List;
-
-import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
-
 public class ItemInvertedIngot extends Item {
+
     public ItemInvertedIngot() {
         this.setUnlocalizedName("inverted_ingot");
         this.setTextureName("utilitiesinexcess:inverted_ingot");
@@ -35,10 +36,12 @@ public class ItemInvertedIngot extends Item {
         }
 
         if (stack.hasTagCompound()) {
-            int timer = stack.getTagCompound().getInteger("ExplosionTimer");
+            int timer = stack.getTagCompound()
+                .getInteger("ExplosionTimer");
             if (timer > 0) {
                 timer--;
-                stack.getTagCompound().setInteger("ExplosionTimer", timer);
+                stack.getTagCompound()
+                    .setInteger("ExplosionTimer", timer);
             } else if (!worldIn.isRemote) {
                 player.inventory.setInventorySlotContents(slot, null);
                 player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
@@ -50,7 +53,8 @@ public class ItemInvertedIngot extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.hasTagCompound()) {
-            double time = (double) stack.getTagCompound().getInteger("ExplosionTimer") / 20;
+            double time = (double) stack.getTagCompound()
+                .getInteger("ExplosionTimer") / 20;
 
             tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
             tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", formatNumber(time)));
