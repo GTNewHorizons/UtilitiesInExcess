@@ -22,16 +22,6 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
 
-        if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
-            GameRegistry.addRecipe(
-                new RecipeInvertedIngot(
-                    1,
-                    3,
-                    new ItemStack[] { new ItemStack(Items.iron_ingot), ModItems.INVERSION_SIGIL_ACTIVE.newItemStack(),
-                        new ItemStack(Items.diamond), },
-                    ModItems.INVERTED_INGOT.newItemStack()));
-        }
-
         // Floating Block
         addShapedRecipe(
             ModBlocks.FLOATING_BLOCK,
@@ -368,6 +358,34 @@ public class RecipeLoader {
     }
 
     private static void loadInversionRecipes() {
+        // Inverted Ingot (unstable)
+        // Has to use a special recipe adder to check for vanilla crafting table
+        if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
+            GameRegistry.addRecipe(
+                new RecipeInvertedIngot(
+                    1,
+                    3,
+                    new ItemStack[] { new ItemStack(Items.iron_ingot), ModItems.INVERSION_SIGIL_ACTIVE.newItemStack(),
+                        new ItemStack(Items.diamond), },
+                    ModItems.INVERTED_INGOT.newItemStack()));
+        }
+
+        // Inverted Nugget
+        addShapedRecipe(
+            ModItems.INVERTED_NUGGET,
+            "g",
+            "s",
+            "d",
+            'g',
+            Items.gold_nugget,
+            's',
+            ModItems.INVERSION_SIGIL_ACTIVE,
+            'd',
+            Items.diamond);
+
+        // Inverted Ingot (stable)
+        addShapedRecipe(ModItems.INVERTED_INGOT.newItemStack(1, 1), "nnn", "nnn", "nnn", 'n', ModItems.INVERTED_NUGGET);
+
         // Diamond Stick
         addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
 
@@ -441,8 +459,6 @@ public class RecipeLoader {
 
         // Inverted Ingot -> Block
         addShapedRecipe(ModBlocks.INVERTED_BLOCK, "iii", "iii", "iii", 'i', ModItems.INVERTED_INGOT);
-        // Inverted Block -> Ingot
-        addShapedRecipe(new DisableableItemStack(ModItems.INVERTED_INGOT, 9), "b", 'b', ModBlocks.INVERTED_BLOCK);
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {

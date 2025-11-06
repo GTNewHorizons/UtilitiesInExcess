@@ -56,6 +56,11 @@ item.inverted_ingot.desc.3=Will also implode if thrown or the crafting table is 
 item.inverted_ingot.desc.4=Does not stack.
 item.inverted_ingot.desc.5=Cannot be crafted outside of a vanilla crafting table.
 
+item.inverted_ingot.1.name=Stabilized Inverted Ingot
+item.inverted_ingot.1.desc=This ingot has been stabilized and will not implode.
+
+item.inverted_nugget.name=Stable Inverted Nugget
+
 death.attack.invertedIngot=%1$s's insides were inverted!
 
 item.bedrockium_ingot.name=Bedrockium Ingot
