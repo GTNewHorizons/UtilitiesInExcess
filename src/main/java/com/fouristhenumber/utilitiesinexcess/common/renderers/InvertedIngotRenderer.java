@@ -39,7 +39,6 @@ public class InvertedIngotRenderer implements IItemRenderer {
         if (stack == null) return;
 
         GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_ENABLE_BIT);
-
         IIcon icon = stack.getItem()
             .getIconFromDamageForRenderPass(stack.getItemDamage(), 0);
 
@@ -112,7 +111,9 @@ public class InvertedIngotRenderer implements IItemRenderer {
                     .renderItemIn2D(tess, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
             }
             case INVENTORY -> {
+                GL11.glEnable(GL11.GL_ALPHA_TEST);
                 renderItemIcon(icon, 0.0D, 0.0D, 16.0D, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);
+                GL11.glDisable(GL11.GL_ALPHA_TEST);
             }
             default -> {}
         }
