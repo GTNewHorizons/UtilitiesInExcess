@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
@@ -47,7 +48,7 @@ public class RecipeLoader {
             '*',
             Items.nether_star,
             'i',
-            ModItems.INVERTED_INGOT);
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Redstone Clock
         addShapedRecipe(
@@ -258,7 +259,7 @@ public class RecipeLoader {
                 's',
                 Blocks.stonebrick,
                 'i',
-                ModItems.INVERTED_INGOT,
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
                 'd',
                 new ItemStack(Items.dye, 1, 15 - i));
         }
@@ -285,7 +286,7 @@ public class RecipeLoader {
             "ibi",
             " i ",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             'b',
             Items.bowl,
             'm',
@@ -315,7 +316,7 @@ public class RecipeLoader {
             'g',
             Blocks.glass,
             'i',
-            ModItems.INVERTED_INGOT);
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Dark Ethereal Glass
         // TODO: Reliant on: Blackout Curtains, Dark Glass
@@ -396,7 +397,7 @@ public class RecipeLoader {
             "is",
             " s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -407,7 +408,7 @@ public class RecipeLoader {
             " s ",
             " s ",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -418,7 +419,7 @@ public class RecipeLoader {
             " s",
             " s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -429,7 +430,7 @@ public class RecipeLoader {
             "s",
             "s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -440,7 +441,7 @@ public class RecipeLoader {
             "i",
             "s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -458,7 +459,13 @@ public class RecipeLoader {
             ModItems.DIAMOND_STICK);
 
         // Inverted Ingot -> Block
-        addShapedRecipe(ModBlocks.INVERTED_BLOCK, "iii", "iii", "iii", 'i', ModItems.INVERTED_INGOT);
+        addShapedRecipe(
+            ModBlocks.INVERTED_BLOCK,
+            "iii",
+            "iii",
+            "iii",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
