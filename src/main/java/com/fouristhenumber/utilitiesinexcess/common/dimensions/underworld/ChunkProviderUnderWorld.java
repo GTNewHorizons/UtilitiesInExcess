@@ -41,6 +41,7 @@ import com.gtnewhorizon.gtnhlib.hash.Fnv1a64;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 
 public class ChunkProviderUnderWorld implements IChunkProvider {
@@ -58,7 +59,9 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
 
     private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
     private final WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
-    private final WorldGenBoulders boulderGen = new WorldGenBoulders(Arrays.asList(Blocks.air, Blocks.stone, Blocks.cobblestone), Blocks.cobblestone);
+    private final WorldGenBoulders boulderGen = new WorldGenBoulders(
+        Arrays.asList(Blocks.air, Blocks.stone, Blocks.cobblestone),
+        Blocks.cobblestone);
 
     public ChunkProviderUnderWorld(World world, long seed) {
         this.world = world;
@@ -176,7 +179,8 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
 
                 // Generate void holes
                 if (feature <= -0.7) {
-                    // Use an aggressive curve here to make the walls extremely steep, while maintaining an obvious slope.
+                    // Use an aggressive curve here to make the walls extremely steep, while maintaining an obvious
+                    // slope.
                     double holeDepth = linearCurve(feature, -0.75, 1, -0.7, 0);
 
                     int holeLevel = (int) (floorLevel * (1 - holeDepth));
@@ -234,7 +238,8 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
 
     /// Populates the given chunk. Note that MC populates the +X/+Z corner of it, not the chunk itself.
     /// All positions should be offset by +8,+8 to account for this.
-    /// The 4 chunks around the corner are properly generated and may be accessed. Modifying chunks outside of these 4 will cause cascading worldgen.
+    /// The 4 chunks around the corner are properly generated and may be accessed. Modifying chunks outside of these 4
+    /// will cause cascading worldgen.
     @Override
     public void populate(IChunkProvider provider, int chunkX, int chunkZ) {
         // Initialize the RNG with a deterministic seed
@@ -368,19 +373,18 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
         return boulders.sample(chunkX, chunkZ);
     }
 
-    private static final ForgeDirection[] HORIZONTAL = {
-        ForgeDirection.NORTH,
-        ForgeDirection.SOUTH,
-        ForgeDirection.WEST,
-        ForgeDirection.EAST,
-    };
+    private static final ForgeDirection[] HORIZONTAL = { ForgeDirection.NORTH, ForgeDirection.SOUTH,
+        ForgeDirection.WEST, ForgeDirection.EAST, };
 
-    /// Checks to make sure the location is a valid mycelium spot. Has a special case for the initial block (mushroom block on top of mycelium)
+    /// Checks to make sure the location is a valid mycelium spot. Has a special case for the initial block (mushroom
+    /// block on top of mycelium)
     private boolean validMyceliumSpawnLocation(int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
         Block above = world.getBlock(x, y + 1, z);
 
-        return (block == Blocks.cobblestone || block == Blocks.mycelium) && (above.isAir(world, x, y + 1, z) || above == Blocks.brown_mushroom_block || above == Blocks.red_mushroom_block);
+        return (block == Blocks.cobblestone || block == Blocks.mycelium)
+            && (above.isAir(world, x, y + 1, z) || above == Blocks.brown_mushroom_block
+                || above == Blocks.red_mushroom_block);
     }
 
     /// Spawns mycelium blocks in place of cobble stone randomly, starting from the given coordinate.

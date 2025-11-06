@@ -27,6 +27,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPorta
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -66,7 +67,8 @@ public class BlockPortalUnderWorld extends BlockContainer {
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta) {
-        return ModBlocks.BEDROCKIUM_BLOCK.get().getIcon(side, meta);
+        return ModBlocks.BEDROCKIUM_BLOCK.get()
+            .getIcon(side, meta);
     }
 
     @Override
@@ -132,9 +134,11 @@ public class BlockPortalUnderWorld extends BlockContainer {
 
         if (!world.isRemote) {
             if (world.provider instanceof WorldProviderUnderWorld) {
-                UnderWorldSourceProperty source = (UnderWorldSourceProperty) player.getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
+                UnderWorldSourceProperty source = (UnderWorldSourceProperty) player
+                    .getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
 
-                WorldServer dest = MinecraftServer.getServer().worldServerForDimension(source.entranceWorld);
+                WorldServer dest = MinecraftServer.getServer()
+                    .worldServerForDimension(source.entranceWorld);
 
                 BlockPos spawn = findSpawnLocation(dest, source.entranceX, source.entranceY, source.entranceZ);
 
@@ -145,7 +149,8 @@ public class BlockPortalUnderWorld extends BlockContainer {
                 }
             } else {
                 if (world.getTileEntity(x, y, z) instanceof TileEntityPortalUnderWorld tile) {
-                    WorldServer dest = MinecraftServer.getServer().worldServerForDimension(UnderWorldConfig.underWorldDimensionId);
+                    WorldServer dest = MinecraftServer.getServer()
+                        .worldServerForDimension(UnderWorldConfig.underWorldDimensionId);
 
                     if (!tile.hasDest || dest.getBlock(tile.destX, tile.destY, tile.destZ) != this) {
                         BlockPos existing = findPortal(dest, x, z);
@@ -168,9 +173,11 @@ public class BlockPortalUnderWorld extends BlockContainer {
                     BlockPos spawn = findSpawnLocation(dest, tile.destX, tile.destY, tile.destZ);
 
                     if (spawn == null) {
-                        player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.underworld_portal_blocked"));
+                        player.addChatComponentMessage(
+                            new ChatComponentTranslation("uie.chat.underworld_portal_blocked"));
                     } else {
-                        UnderWorldSourceProperty source = (UnderWorldSourceProperty) player.getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
+                        UnderWorldSourceProperty source = (UnderWorldSourceProperty) player
+                            .getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
 
                         source.entranceWorld = world.provider.dimensionId;
                         source.entranceX = x;
@@ -202,7 +209,10 @@ public class BlockPortalUnderWorld extends BlockContainer {
     private void teleport(EntityPlayerMP player, WorldServer world, int x, int y, int z) {
         TeleporterUnderworld teleporter = new TeleporterUnderworld(world, x, y, z);
 
-        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().transferPlayerToDimension(player, world.provider.dimensionId, teleporter);
+        FMLCommonHandler.instance()
+            .getMinecraftServerInstance()
+            .getConfigurationManager()
+            .transferPlayerToDimension(player, world.provider.dimensionId, teleporter);
     }
 
     private BlockPos findPortal(World world, int x, int z) {

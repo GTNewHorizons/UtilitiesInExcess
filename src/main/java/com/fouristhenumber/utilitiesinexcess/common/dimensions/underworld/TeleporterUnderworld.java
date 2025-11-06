@@ -19,13 +19,15 @@ public class TeleporterUnderworld extends Teleporter {
     }
 
     @Override
-    public void placeInPortal(Entity entity, double p_77185_2_, double p_77185_4_, double p_77185_6_, float p_77185_8_) {
+    public void placeInPortal(Entity entity, double p_77185_2_, double p_77185_4_, double p_77185_6_,
+        float p_77185_8_) {
         entity.setLocationAndAngles(x + 0.5, y, z + 0.5, entity.rotationYaw, 0.0F);
         entity.motionX = entity.motionY = entity.motionZ = 0.0D;
     }
 
     @Override
-    public boolean placeInExistingPortal(Entity entity, double p_77184_2_, double p_77184_4_, double p_77184_6_, float p_77184_8_) {
+    public boolean placeInExistingPortal(Entity entity, double p_77184_2_, double p_77184_4_, double p_77184_6_,
+        float p_77184_8_) {
         entity.setLocationAndAngles(x + 0.5, y, z + 0.5, entity.rotationYaw, 0.0F);
         entity.motionX = entity.motionY = entity.motionZ = 0.0D;
         return true;

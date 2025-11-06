@@ -16,6 +16,7 @@ import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.Ac
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.AutoShaderUpdater;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
@@ -29,11 +30,12 @@ public class UnderworldPortalShader extends ShaderProgram {
     private UnderworldPortalShader() {
         super(UtilitiesInExcess.MODID, "shaders/underworldportal.vert", "shaders/underworldportal.frag");
 
-        AutoShaderUpdater.getInstance().registerShaderReload(
-            this,
-            UtilitiesInExcess.MODID,
-            "shaders/underworldportal.vert",
-            "shaders/underworldportal.frag");
+        AutoShaderUpdater.getInstance()
+            .registerShaderReload(
+                this,
+                UtilitiesInExcess.MODID,
+                "shaders/underworldportal.vert",
+                "shaders/underworldportal.frag");
     }
 
     private static final int COSMIC_COUNT = 10;

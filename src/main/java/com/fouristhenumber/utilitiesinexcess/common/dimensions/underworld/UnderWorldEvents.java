@@ -29,6 +29,7 @@ import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
 import com.google.common.collect.MapMaker;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -45,7 +46,9 @@ public class UnderWorldEvents {
     public static void init() {
         MinecraftForge.TERRAIN_GEN_BUS.register(INSTANCE);
         MinecraftForge.ORE_GEN_BUS.register(INSTANCE);
-        FMLCommonHandler.instance().bus().register(INSTANCE);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(INSTANCE);
     }
 
     /// Disable all plant life decoration
@@ -95,7 +98,8 @@ public class UnderWorldEvents {
         }
     }
 
-    private final Map<EntityPlayer, Integer> timeInDarkness = new MapMaker().weakKeys().makeMap();
+    private final Map<EntityPlayer, Integer> timeInDarkness = new MapMaker().weakKeys()
+        .makeMap();
 
     private static final DamageSource GHOST = new DamageSource("underworld-ghost");
 
@@ -139,7 +143,8 @@ public class UnderWorldEvents {
         int chunkX = event.x >> 4;
         int chunkZ = event.z >> 4;
 
-        double difficulty = ((ChunkProviderUnderWorld) ((WorldServer) event.world).theChunkProviderServer.currentChunkProvider).getDifficulty(chunkX, chunkZ);
+        double difficulty = ((ChunkProviderUnderWorld) ((WorldServer) event.world).theChunkProviderServer.currentChunkProvider)
+            .getDifficulty(chunkX, chunkZ);
 
         if (event.world.rand.nextDouble() > difficulty) {
             event.setCanceled(true);
@@ -151,7 +156,8 @@ public class UnderWorldEvents {
         Aggressive
     }
 
-    private final Map<EntityPlayer, Zone> playerZone = new MapMaker().weakKeys().makeMap();
+    private final Map<EntityPlayer, Zone> playerZone = new MapMaker().weakKeys()
+        .makeMap();
 
     /// Spawn extra mobs on top of the player when the player is in a difficult zone.
     /// Notifies the player when this is about to happen via a spooky chat message.
@@ -166,8 +172,10 @@ public class UnderWorldEvents {
         // Only spawn once every 30 seconds
         if (world.getTotalWorldTime() % 600 != 0) return;
 
-        if (!world.getGameRules().getGameRuleBooleanValue("doMobSpawning")) return;
-        if (MinecraftServer.getServer().func_147135_j() == EnumDifficulty.PEACEFUL) return;
+        if (!world.getGameRules()
+            .getGameRuleBooleanValue("doMobSpawning")) return;
+        if (MinecraftServer.getServer()
+            .func_147135_j() == EnumDifficulty.PEACEFUL) return;
 
         int x = MathHelper.floor_double(player.posX);
         int y = MathHelper.floor_double(player.posY);
@@ -176,7 +184,8 @@ public class UnderWorldEvents {
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
 
-        double difficulty = ((ChunkProviderUnderWorld) world.theChunkProviderServer.currentChunkProvider).getDifficulty(chunkX, chunkZ);
+        double difficulty = ((ChunkProviderUnderWorld) world.theChunkProviderServer.currentChunkProvider)
+            .getDifficulty(chunkX, chunkZ);
 
         boolean isAggressive = difficulty >= 2;
 
@@ -198,7 +207,9 @@ public class UnderWorldEvents {
 
         if (!isAggressive) return;
 
-        List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getBoundingBox(x - 8, y - 8, z - 8, x + 8, y + 8, z + 8));
+        List<EntityMob> mobs = world.getEntitiesWithinAABB(
+            EntityMob.class,
+            AxisAlignedBB.getBoundingBox(x - 8, y - 8, z - 8, x + 8, y + 8, z + 8));
 
         // Limit the number of mobs surrounding the player depending on the difficulty
         if (mobs.size() > difficulty * 2 + 4) return;
@@ -218,7 +229,8 @@ public class UnderWorldEvents {
 
             if (!world.isAirBlock(x2, y2, z2)) continue;
 
-            if (!world.getBlock(x2, y2 - 1, z2).canCreatureSpawn(EnumCreatureType.monster, world, x2, y2 - 1, z2)) {
+            if (!world.getBlock(x2, y2 - 1, z2)
+                .canCreatureSpawn(EnumCreatureType.monster, world, x2, y2 - 1, z2)) {
                 continue;
             }
 
@@ -230,7 +242,8 @@ public class UnderWorldEvents {
             EntityLiving entity;
 
             try {
-                entity = spawnEntry.entityClass.getConstructor(World.class).newInstance(world);
+                entity = spawnEntry.entityClass.getConstructor(World.class)
+                    .newInstance(world);
             } catch (Exception exception) {
                 exception.printStackTrace();
                 continue;
@@ -246,7 +259,9 @@ public class UnderWorldEvents {
             count--;
 
             // Send a packet that creates some particles and plays a sound
-            PacketHandler.INSTANCE.sendToAllAround(new PacketAggressiveMobSpawn(x2, y2, z2), new TargetPoint(world.provider.dimensionId, x2, y2, z2, 64));
+            PacketHandler.INSTANCE.sendToAllAround(
+                new PacketAggressiveMobSpawn(x2, y2, z2),
+                new TargetPoint(world.provider.dimensionId, x2, y2, z2, 64));
         }
     }
 }

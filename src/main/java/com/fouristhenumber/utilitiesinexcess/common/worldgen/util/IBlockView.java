@@ -13,7 +13,8 @@ public interface IBlockView {
 
     int getBlockMetadata(int x, int y, int z);
 
-    /// Creates a sub view within this view. The coordinates are offset by the given box. `view.getBlock(0, 0, 0)` is equivalent to `this.getBlock(min x, min y, min z)`.
+    /// Creates a sub view within this view. The coordinates are offset by the given box. `view.getBlock(0, 0, 0)` is
+    /// equivalent to `this.getBlock(min x, min y, min z)`.
     default IBlockView subView(Box box) {
         Box thisBox = getBounds();
 

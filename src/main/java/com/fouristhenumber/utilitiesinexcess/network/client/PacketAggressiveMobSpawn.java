@@ -16,7 +16,7 @@ public class PacketAggressiveMobSpawn implements IMessage {
 
     private int x, y, z;
 
-    public PacketAggressiveMobSpawn() { }
+    public PacketAggressiveMobSpawn() {}
 
     public PacketAggressiveMobSpawn(int x, int y, int z) {
         this.x = x;
@@ -51,15 +51,25 @@ public class PacketAggressiveMobSpawn implements IMessage {
             int z = message.z;
 
             for (int i = 0; i < 20; i++) {
-                world.spawnParticle("flame",
-                    x + rng.nextDouble(), y + rng.nextDouble(), z + rng.nextDouble(),
-                    rng.nextDouble() * 0.1 - 0.05, rng.nextDouble() * 0.1 - 0.025, rng.nextDouble() * 0.1 - 0.05);
+                world.spawnParticle(
+                    "flame",
+                    x + rng.nextDouble(),
+                    y + rng.nextDouble(),
+                    z + rng.nextDouble(),
+                    rng.nextDouble() * 0.1 - 0.05,
+                    rng.nextDouble() * 0.1 - 0.025,
+                    rng.nextDouble() * 0.1 - 0.05);
             }
 
             for (int i = 0; i < 20; i++) {
-                world.spawnParticle("smoke",
-                    x + rng.nextDouble(), y + rng.nextDouble(), z + rng.nextDouble(),
-                    rng.nextDouble() * 0.1 - 0.05, rng.nextDouble() * 0.1 - 0.025, rng.nextDouble() * 0.1 - 0.05);
+                world.spawnParticle(
+                    "smoke",
+                    x + rng.nextDouble(),
+                    y + rng.nextDouble(),
+                    z + rng.nextDouble(),
+                    rng.nextDouble() * 0.1 - 0.05,
+                    rng.nextDouble() * 0.1 - 0.025,
+                    rng.nextDouble() * 0.1 - 0.05);
             }
 
             world.playSound(x + 0.5, y + 0.5, z + 0.5, "mob.bat.takeoff", 1, 1, false);

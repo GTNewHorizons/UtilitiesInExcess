@@ -17,7 +17,8 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
 public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
 
-    public static final IModelCustom FRAME = AdvancedModelLoader.loadModel(new ResourceLocation(UtilitiesInExcess.MODID, "models/underworld_portal/frame.obj"));
+    public static final IModelCustom FRAME = AdvancedModelLoader
+        .loadModel(new ResourceLocation(UtilitiesInExcess.MODID, "models/underworld_portal/frame.obj"));
 
     private VertexBuffer core;
 
@@ -78,7 +79,8 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
 
         GL11.glTranslated(x + 0.5, y, z + 0.5);
 
-        float light = tile.getWorldObj().getLightBrightness(tile.xCoord, tile.yCoord, tile.zCoord);
+        float light = tile.getWorldObj()
+            .getLightBrightness(tile.xCoord, tile.yCoord, tile.zCoord);
 
         Tessellator.instance.setBrightness((int) (light * 16));
 

@@ -24,55 +24,31 @@ public class BiomeDecoratorUnderWorld extends BiomeDecorator {
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Pre(currentWorld, randomGenerator, chunk_X, chunk_Z));
 
         if (TerrainGen.generateOre(currentWorld, randomGenerator, coalGen, chunk_X, chunk_Z, COAL)) {
-            this.genStandardOre1(
-                isAggressiveArea ? 60 : 20,
-                this.coalGen,
-                0, 255);
+            this.genStandardOre1(isAggressiveArea ? 60 : 20, this.coalGen, 0, 255);
 
-            this.genStandardOre1(
-                isAggressiveArea ? 60 : 20,
-                this.coalGen,
-                0, 80);
+            this.genStandardOre1(isAggressiveArea ? 60 : 20, this.coalGen, 0, 80);
         }
 
         if (TerrainGen.generateOre(currentWorld, randomGenerator, ironGen, chunk_X, chunk_Z, IRON)) {
-            this.genStandardOre1(
-                 isAggressiveArea ? 60 : 20,
-                this.ironGen,
-                0, 255);
+            this.genStandardOre1(isAggressiveArea ? 60 : 20, this.ironGen, 0, 255);
 
-            this.genStandardOre1(
-                isAggressiveArea ? 60 : 20,
-                this.ironGen,
-                0, 80);
+            this.genStandardOre1(isAggressiveArea ? 60 : 20, this.ironGen, 0, 80);
         }
 
         if (TerrainGen.generateOre(currentWorld, randomGenerator, goldGen, chunk_X, chunk_Z, GOLD)) {
-            this.genStandardOre1(
-                 isAggressiveArea ? 18 : 2,
-                this.goldGen,
-                0, 32);
+            this.genStandardOre1(isAggressiveArea ? 18 : 2, this.goldGen, 0, 32);
         }
 
         if (TerrainGen.generateOre(currentWorld, randomGenerator, redstoneGen, chunk_X, chunk_Z, REDSTONE)) {
-            this.genStandardOre1(
-                 isAggressiveArea ? 32 : 8,
-                this.redstoneGen,
-                0, 48);
+            this.genStandardOre1(isAggressiveArea ? 32 : 8, this.redstoneGen, 0, 48);
         }
 
         if (TerrainGen.generateOre(currentWorld, randomGenerator, diamondGen, chunk_X, chunk_Z, DIAMOND)) {
-            this.genStandardOre1(
-                 isAggressiveArea ? 9 : 1,
-                this.diamondGen,
-                0, 32);
+            this.genStandardOre1(isAggressiveArea ? 9 : 1, this.diamondGen, 0, 32);
         }
 
         if (TerrainGen.generateOre(currentWorld, randomGenerator, lapisGen, chunk_X, chunk_Z, LAPIS)) {
-            this.genStandardOre2(
-                 isAggressiveArea ? 9 : 1,
-                this.lapisGen,
-                32, 64);
+            this.genStandardOre2(isAggressiveArea ? 9 : 1, this.lapisGen, 32, 64);
         }
 
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));

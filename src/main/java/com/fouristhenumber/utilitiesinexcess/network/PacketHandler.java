@@ -18,9 +18,15 @@ public class PacketHandler {
         INSTANCE.registerMessage(ParticlePacket.Handler.class, ParticlePacket.class, packetId++, Side.CLIENT);
         INSTANCE
             .registerMessage(PacketRainMuffledSync.Handler.class, PacketRainMuffledSync.class, packetId++, Side.CLIENT);
-        INSTANCE
-            .registerMessage(PacketAggressiveMobSpawn.Handler.class, PacketAggressiveMobSpawn.class, packetId++, Side.CLIENT);
-        INSTANCE
-            .registerMessage(PacketUnderworldAttack.Handler.class, PacketUnderworldAttack.class, packetId++, Side.CLIENT);
+        INSTANCE.registerMessage(
+            PacketAggressiveMobSpawn.Handler.class,
+            PacketAggressiveMobSpawn.class,
+            packetId++,
+            Side.CLIENT);
+        INSTANCE.registerMessage(
+            PacketUnderworldAttack.Handler.class,
+            PacketUnderworldAttack.class,
+            packetId++,
+            Side.CLIENT);
     }
 }

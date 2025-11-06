@@ -6,8 +6,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldSourceProperty;
-
 public class TileEntityPortalUnderWorld extends TileEntity {
 
     /// Only set for outside->underworld portals
@@ -50,6 +48,7 @@ public class TileEntityPortalUnderWorld extends TileEntity {
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
 
-        invulnerable = pkt.func_148857_g().getBoolean("invulnerable");
+        invulnerable = pkt.func_148857_g()
+            .getBoolean("invulnerable");
     }
 }
