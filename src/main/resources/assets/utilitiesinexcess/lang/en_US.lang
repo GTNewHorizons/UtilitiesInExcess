@@ -46,6 +46,13 @@ tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
+nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block.
+nei.infopage.uie.ethereal_glass.1=Placeholder
+nei.infopage.uie.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
+nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players.
+nei.infopage.uie.ethereal_glass.4=Placeholder
+nei.infopage.uie.ethereal_glass.5=Dark Ethereal Glass (Inverted) has the exact opposite functionality as Dark Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. It still blocks all light.
+
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
@@ -77,6 +84,11 @@ chat.inversion_ritual.grass= - Surrounded by natural earth: %s
 chat.inversion_ritual.darkness= - There is no light: %s
 chat.inversion_ritual.moon= - Can see the moon: %s
 chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
+
+nei.infopage.uie.inversion_sigil.1=The Inversion Sigil is a powerful item that may be found in various structures, such as dungeons. It may also be dropped by the Wither. It is used in the creation of Inverted Ingots, but it must first be awakened by a dark ritual.
+nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantment Table while sneaking will give some hints on how to complete the ritual, or read on for precise instructions.
+nei.infopage.uie.inversion_sigil.3=Place an Enchantment Table outdoors on grass with a clear view of the sky, surround it with a ring of redstone dust, and wait until midnight. Ensure the Enchantment Table is in complete darkness, and sacrifice a living creature upon the table.
+nei.infopage.uie.inversion_sigil.4=If the ritual has been completed successfully, lightning will strike the Enchantment Table, and the surrounding grass will transform into Cursed Earth, which rapidly summons hostile creatures. Be prepared for battle!
 
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held
@@ -200,6 +212,8 @@ tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 
+nei.infopage.uie.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's Awakening Ritual. It rapidly spawns monsters, spreads in darkness, and burns away in bright light. Monster Spawners are supercharged when Cursed Earth is below them, and they will continue to operate even when a player is not nearby.
+
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
 utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
@@ -252,13 +266,21 @@ tile.lapis_aetherius.13.name=Lapis Aetherius Smaragdinus (Dark Green)
 tile.lapis_aetherius.14.name=Lapis Aetherius Sanguineus (Red)
 tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
 
+nei.infopage.uie.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
+
 tile.blackout_curtains.name=Blackout Curtains
+
+nei.infopage.uie.blackout_curtains.1=Blackout Curtains have no collision and block most light from passing through them.
 
 tile.conveyor.name=Conveyor
 
 tile.underworld_portal.name=Portal to the Underworld
 
 uie.chat.portal_blocked=§5§oThe portal fizzled out... perhaps the other end is blocked or missing?
+
+nei.infopage.uie.underworld_portal.1=The Underworld is a dimension fraught with peril and treasures. While the ground is rich with ore, the very darkness itself will begin to damage you if you stray from the light for too long!
+nei.infopage.uie.underworld_portal.2=Certain areas will have even higher quantities of ore than normal, but the denizens of the deep will not take kindly to your presence.
+nei.infopage.uie.underworld_portal.3=Night Vision potions will be little help in this dimension, as their effects are drastically shortened.
 
 uie.chat.underworld_safe=§5§oYou no longer feel watched.
 uie.chat.underworld_aggressive=§5§oYour skin begins to crawl. Something does not want you here.
