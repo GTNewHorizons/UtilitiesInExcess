@@ -28,7 +28,6 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.core.jmx.Server;
 
 public class BlockPortalEndOfTime extends Block {
 
@@ -121,14 +120,12 @@ public class BlockPortalEndOfTime extends Block {
             .transferPlayerToDimension(player, world.provider.dimensionId, teleporter);
     }
 
-    private void generateSpawnArea(World world, int x, int y, int z) {
-        if(world instanceof WorldServer serverWorld){
-            int chunkX = x >> 4;
-            int chunkZ = z >> 4;
-            for (int cx = -1; cx <= 1; cx++) {
-                for (int cz = -1; cz <= 1; cz++) {
-                    serverWorld.theChunkProviderServer.loadChunk(chunkX + cx, chunkZ + cz);
-                }
+    private void generateSpawnArea(WorldServer world, int x, int y, int z) {
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+        for (int cx = -1; cx <= 1; cx++) {
+            for (int cz = -1; cz <= 1; cz++) {
+                world.theChunkProviderServer.loadChunk(chunkX + cx, chunkZ + cz);
             }
         }
 
@@ -257,7 +254,6 @@ public class BlockPortalEndOfTime extends Block {
         for (int dy = 0; dy <= 3; dy++) {
             world.setBlock(x + 12, y + dy, z, Blocks.cobblestone_wall, 0, 2);
         }
-
 
         world.setBlock(x + 12, y + 4, z, Blocks.glowstone, 0, 3);
         world.setBlock(x + 12, y + 5, z, Blocks.stone_slab, 3, 1);
