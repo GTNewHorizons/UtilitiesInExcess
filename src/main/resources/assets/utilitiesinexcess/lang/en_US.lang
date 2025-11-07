@@ -252,5 +252,5 @@ tile.temporal_gate.desc=A portal to the End of Time
 nei.infopage.uie.temporal_gate.1=What remains after the last stars die out and all movement ceases in the universe? Plenty of space for your factories and urban development projects, of course!
 nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there is no rain (unless you re-enabled either in the configs). There is simply you and the endless march of eternity.
 nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
-nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If that even that is gone, the platform will reappear, replacing anything in its way.
+nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
