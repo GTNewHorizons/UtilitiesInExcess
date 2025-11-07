@@ -40,14 +40,8 @@ public class BlockPortalEndOfTime extends Block {
         super(Material.rock);
 
         setBlockName("temporal_gate");
+        setBlockTextureName("utilitiesinexcess:temporal_gate");
         setResistance(5);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return ModBlocks.FLOATING_BLOCK.get()
-            .getIcon(side, meta);
     }
 
     @Override
@@ -276,7 +270,7 @@ public class BlockPortalEndOfTime extends Block {
         }
     }
 
-    public class ItemBlockPortalEndOfTime extends ItemBlock {
+    public static class ItemBlockPortalEndOfTime extends ItemBlock {
 
         public ItemBlockPortalEndOfTime(Block block) {
             super(block);
