@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.DimensionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
@@ -20,6 +21,7 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
         try {
             ItemConfig.registerConfig();
             BlockConfig.registerConfig();
+            DimensionConfig.registerConfig();
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }

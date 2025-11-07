@@ -10,6 +10,21 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.*;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
@@ -24,10 +39,12 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
-import com.fouristhenumber.utilitiesinexcess.utils.EventHandler;
+import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
+import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -49,6 +66,7 @@ public class UtilitiesInExcess {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
+    public static int spikeRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -57,17 +75,19 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
         proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-        proxy.registerRenderers();
-
         RecipeLoader.run();
 
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new FMLEventHandler());
 
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
         GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItem");
@@ -81,6 +101,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
+        GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
         GameRegistry.registerTileEntity(TileEntityCollector.class, "TileEntityCollector");
 
         GameRegistry.registerTileEntity(
@@ -104,6 +125,8 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
+        spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new SpikeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 

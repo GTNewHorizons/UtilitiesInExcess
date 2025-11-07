@@ -50,6 +50,20 @@ tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
 item.inverted_ingot.name=Inverted Ingot
+item.inverted_ingot.desc.1=This ingot is deteriorating rapidly...
+item.inverted_ingot.desc.2=Will implode in %s seconds!
+item.inverted_ingot.desc.3=Will also implode if thrown or the crafting table is closed.
+item.inverted_ingot.desc.4=Does not stack.
+item.inverted_ingot.desc.5=Cannot be crafted outside of a vanilla crafting table.
+item.inverted_ingot.desc.c=Creatively spawned. Will not implode.
+
+item.inverted_ingot.stable.name=Stabilized Inverted Ingot
+item.inverted_ingot.stable.desc=This ingot has been stabilized and will not implode.
+
+item.inverted_nugget.name=Stable Inverted Nugget
+
+death.attack.inverted_ingot=%1$s's insides were inverted!
+
 item.bedrockium_ingot.name=Bedrockium Ingot
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
@@ -106,6 +120,20 @@ item.disabled_item.name=Disabled Item '%s'
 tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
 tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
+
+tile.woodSpike.name=Wooden Spikes
+tile.ironSpike.name=Iron Spikes
+tile.goldSpike.name=Gold Spikes
+tile.diamondSpike.name=Diamond Spikes
+tile.woodSpike.desc=Will leave enemies at the brink of death
+tile.ironSpike.desc=Enemies will drop regular loot
+tile.goldSpike.desc=Enemies will drop regular loot and experience
+tile.diamondSpike.desc=Enemies will drop "player-only" loot and experience
+
+item.hungerAxe.name=Glutton's Axe
+item.hungerAxe.desc.1=Sates the bearer's hunger while held
+item.hungerAxe.desc.2=Can consume hunger to heal struck entities
+item.hungerAxe.desc.3=This effect is lethal to most undead
 
 item.heavenly_ring.name=Heavenly Ring
 item.heavenly_ring.desc=Grants creative flight
@@ -223,3 +251,11 @@ tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
 tile.blackout_curtains.name=Blackout Curtains
 
 tile.conveyor.name=Conveyor
+
+tile.underworld_portal.name=Portal to the Underworld
+
+uie.chat.underworld_portal_blocked=§5§oThe portal fizzled out... perhaps the other end is blocked or missing?
+uie.chat.underworld_safe=§5§oYou no longer feel watched.
+uie.chat.underworld_aggressive=§5§oYour skin begins to crawl. Something does not want you here.
+
+death.attack.underworld-ghost=%1$s wasn't afraid of the dark.

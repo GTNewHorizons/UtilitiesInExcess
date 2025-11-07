@@ -3,11 +3,14 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeLoader {
 
@@ -19,6 +22,7 @@ public class RecipeLoader {
         loadEtherealGlassRecipes();
         loadWateringCanRecipes();
         loadLapisAetheriusRecipes();
+        loadSpikeRecipes();
 
         // Floating Block
         addShapedRecipe(
@@ -45,7 +49,7 @@ public class RecipeLoader {
             '*',
             Items.nether_star,
             'i',
-            ModItems.INVERTED_INGOT);
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Redstone Clock
         addShapedRecipe(
@@ -196,6 +200,56 @@ public class RecipeLoader {
             Blocks.gold_block);
     }
 
+    private static void loadSpikeRecipes() {
+        addShapedRecipe(
+            ModBlocks.SPIKE_WOOD,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.wooden_sword,
+            'b',
+            Blocks.planks,
+            'c',
+            Blocks.log);
+
+        addShapedRecipe(
+            ModBlocks.SPIKE_IRON,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.iron_sword,
+            'b',
+            Items.iron_ingot,
+            'c',
+            Blocks.iron_block);
+
+        addShapedRecipe(
+            ModBlocks.SPIKE_GOLD,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.golden_sword,
+            'b',
+            ModBlocks.MAGIC_WOOD,
+            'c',
+            Blocks.gold_block);
+
+        addShapedRecipe(
+            ModBlocks.SPIKE_DIAMOND,
+            " a ",
+            "aba",
+            "bcb",
+            'a',
+            Items.diamond_sword,
+            'b',
+            ModBlocks.SPIKE_GOLD,
+            'c',
+            Blocks.diamond_block);
+    }
+
     private static void loadLapisAetheriusRecipes() {
         for (int i = 0; i < 16; i++) {
             addShapedRecipe(
@@ -206,7 +260,7 @@ public class RecipeLoader {
                 's',
                 Blocks.stonebrick,
                 'i',
-                ModItems.INVERTED_INGOT,
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
                 'd',
                 new ItemStack(Items.dye, 1, 15 - i));
         }
@@ -233,7 +287,7 @@ public class RecipeLoader {
             "ibi",
             " i ",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             'b',
             Items.bowl,
             'm',
@@ -263,7 +317,7 @@ public class RecipeLoader {
             'g',
             Blocks.glass,
             'i',
-            ModItems.INVERTED_INGOT);
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Dark Ethereal Glass
         // TODO: Reliant on: Blackout Curtains, Dark Glass
@@ -306,21 +360,36 @@ public class RecipeLoader {
     }
 
     private static void loadInversionRecipes() {
-        // Diamond Stick
-        addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
+        // Inverted Ingot (unstable)
+        // Has to use a special recipe adder to check for vanilla crafting table
+        if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
+            GameRegistry.addRecipe(
+                new RecipeInvertedIngot(
+                    1,
+                    3,
+                    new ItemStack[] { new ItemStack(Items.iron_ingot), ModItems.INVERSION_SIGIL_ACTIVE.newItemStack(),
+                        new ItemStack(Items.diamond), },
+                    ModItems.INVERTED_INGOT.newItemStack()));
+        }
 
-        // Inverted Ingot
+        // Inverted Nugget
         addShapedRecipe(
-            ModItems.INVERTED_INGOT,
-            "i",
-            "#",
+            ModItems.INVERTED_NUGGET,
+            "g",
+            "s",
             "d",
-            'i',
-            Items.iron_ingot,
-            '#',
+            'g',
+            Items.gold_nugget,
+            's',
             ModItems.INVERSION_SIGIL_ACTIVE,
             'd',
             Items.diamond);
+
+        // Inverted Ingot (stable)
+        addShapedRecipe(ModItems.INVERTED_INGOT.newItemStack(1, 1), "nnn", "nnn", "nnn", 'n', ModItems.INVERTED_NUGGET);
+
+        // Diamond Stick
+        addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
 
         // Glutton's Axe
         addShapedRecipe(
@@ -329,7 +398,7 @@ public class RecipeLoader {
             "is",
             " s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -340,7 +409,7 @@ public class RecipeLoader {
             " s ",
             " s ",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -351,7 +420,7 @@ public class RecipeLoader {
             " s",
             " s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -362,7 +431,7 @@ public class RecipeLoader {
             "s",
             "s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
@@ -373,12 +442,17 @@ public class RecipeLoader {
             "i",
             "s",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
         // Precision Shears
-        addShapedRecipe(ModItems.PRECISION_SHEARS, " i", "i ", 'i', ModItems.INVERTED_INGOT);
+        addShapedRecipe(
+            ModItems.PRECISION_SHEARS,
+            " i",
+            "i ",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Architect's Staff
         addShapedRecipe(
@@ -386,14 +460,18 @@ public class RecipeLoader {
             " i",
             "s ",
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
 
         // Inverted Ingot -> Block
-        addShapedRecipe(ModBlocks.INVERTED_BLOCK, "iii", "iii", "iii", 'i', ModItems.INVERTED_INGOT);
-        // Inverted Block -> Ingot
-        addShapedRecipe(new DisableableItemStack(ModItems.INVERTED_INGOT, 9), "b", 'b', ModBlocks.INVERTED_BLOCK);
+        addShapedRecipe(
+            ModBlocks.INVERTED_BLOCK,
+            "iii",
+            "iii",
+            "iii",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {

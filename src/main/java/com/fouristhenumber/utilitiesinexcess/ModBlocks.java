@@ -7,6 +7,30 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
@@ -23,6 +47,7 @@ import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
@@ -70,6 +95,11 @@ public enum ModBlocks {
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
+    SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
+    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
+    SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
+    SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
+    UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
     ; // leave trailing semicolon
     // spotless:on

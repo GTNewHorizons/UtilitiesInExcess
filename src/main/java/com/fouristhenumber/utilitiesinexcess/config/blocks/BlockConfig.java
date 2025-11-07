@@ -76,6 +76,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableCollector;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableUnderWorldPortal;
+
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
 
@@ -139,5 +142,21 @@ public class BlockConfig {
         @Config.DefaultInt(64)
         @Config.RangeInt(min = 1, max = 256)
         public int rainMufflerRange;
+    }
+
+    @Config.Comment("Cursed Earth Configuration")
+    public static final Spikes spikes = new Spikes();
+
+    @Config.LangKey("utilitiesinexcess.config.block.spikes")
+    public static class Spikes {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableWoodenSpike;
+        @Config.DefaultBoolean(true)
+        public boolean enableIronSpike;
+        @Config.DefaultBoolean(true)
+        public boolean enableGoldSpike;
+        @Config.DefaultBoolean(true)
+        public boolean enableDiamondSpike;
     }
 }
