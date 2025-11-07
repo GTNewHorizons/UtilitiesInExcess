@@ -61,6 +61,20 @@ public enum ModItems {
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
 
+    // Transfer node upgrades
+    SPEED_UPGRADE(),
+    ITEM_FILTER(),
+    ADV_ITEM_FILTER(),
+    WORLD_INTERACTION_UPGRADE(),
+    STACK_UPGRADE(),
+    ENDER_TRANSMITTER(),
+    ENDER_RECEIVER(),
+    SEARCH_DEPTH_UPGRADE(),
+    SEARCH_BREADTH_UPGRADE(),
+    SEARCH_ROUND_ROBIN_UPGRADE(),
+    CREATIVE_UPGRADE(),
+
+
     ; // leave trailing semicolon
     // spotless:on
 
