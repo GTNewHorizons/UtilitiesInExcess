@@ -22,8 +22,8 @@ public class DimensionPortalData extends WorldSavedData {
 
     public static DimensionPortalData get(World world) {
         MapStorage storage = world.perWorldStorage;
-        DimensionPortalData.INSTANCE = (DimensionPortalData) storage.loadData(DimensionPortalData.class,
-            DimensionPortalData.DATA_NAME);
+        DimensionPortalData.INSTANCE = (DimensionPortalData) storage
+            .loadData(DimensionPortalData.class, DimensionPortalData.DATA_NAME);
         if (INSTANCE == null) {
             INSTANCE = new DimensionPortalData(DATA_NAME);
             storage.setData(DATA_NAME, INSTANCE);
