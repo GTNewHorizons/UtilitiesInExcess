@@ -255,8 +255,8 @@ public class BlockPortalEndOfTime extends Block {
             world.setBlock(x + 12, y + dy, z, Blocks.cobblestone_wall, 0, 2);
         }
 
-        world.setBlock(x + 12, y + 4, z, Blocks.glowstone, 0, 3);
-        world.setBlock(x + 12, y + 5, z, Blocks.stone_slab, 3, 1);
+        world.setBlock(x + 12, y + 4, z, Blocks.glowstone, 0, 2);
+        world.setBlock(x + 12, y + 5, z, Blocks.stone_slab, 3, 2);
         world.setBlock(x + 15, y, z - 3, Blocks.cauldron, 3, 2);
         world.setBlock(x + 15, y, z - 2, Blocks.flower_pot, 0, 2);
         TileEntity tileEntity = world.getTileEntity(x + 15, y, z - 2);
