@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -104,7 +105,6 @@ public class BlockPortalEndOfTime extends Block {
 
             if (!world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) continue;
             if (!world.isAirBlock(x + dir.offsetX, y + dir.offsetY + 1, z + dir.offsetZ)) continue;
-
             return new BlockPos(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
         }
 
@@ -120,7 +120,15 @@ public class BlockPortalEndOfTime extends Block {
             .transferPlayerToDimension(player, world.provider.dimensionId, teleporter);
     }
 
-    private void generateSpawnArea(World world, int x, int y, int z) {
+    private void generateSpawnArea(WorldServer world, int x, int y, int z) {
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+        for (int cx = -1; cx <= 1; cx++) {
+            for (int cz = -1; cz <= 1; cz++) {
+                world.theChunkProviderServer.loadChunk(chunkX + cx, chunkZ + cz);
+            }
+        }
+
         buildPlatform(world, x, y, z);
         buildPlatform(world, x + 12, y - 1, z);
         buildBridge(world, x + 4, y - 1, z);
@@ -246,6 +254,7 @@ public class BlockPortalEndOfTime extends Block {
         for (int dy = 0; dy <= 3; dy++) {
             world.setBlock(x + 12, y + dy, z, Blocks.cobblestone_wall, 0, 2);
         }
+
         world.setBlock(x + 12, y + 4, z, Blocks.glowstone, 0, 2);
         world.setBlock(x + 12, y + 5, z, Blocks.stone_slab, 3, 2);
         world.setBlock(x + 15, y, z - 3, Blocks.cauldron, 3, 2);
