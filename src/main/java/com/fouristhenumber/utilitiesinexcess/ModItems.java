@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
@@ -14,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInac
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
@@ -60,6 +62,7 @@ public enum ModItems {
     FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
+    XRAY_GOGGLES(ItemConfig.enableXRayGoggles, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_goggles"),
 
     ; // leave trailing semicolon
     // spotless:on

@@ -24,6 +24,9 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
 
+        // X-Ray Glasses
+        addShapedRecipe(ModItems.XRAY_GOGGLES, "iii", "eie", 'i', ModItems.INVERTED_INGOT, 'e', Items.ender_eye);
+
         // Floating Block
         addShapedRecipe(
             ModBlocks.FLOATING_BLOCK,
