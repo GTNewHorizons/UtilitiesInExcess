@@ -80,7 +80,8 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public ChunkCoordinates getEntrancePortalLocation() {
-        return DimensionPortalData.get(this.worldObj).getTarget();
+        return DimensionPortalData.get(this.worldObj)
+            .getTarget();
     }
 
     @Override
