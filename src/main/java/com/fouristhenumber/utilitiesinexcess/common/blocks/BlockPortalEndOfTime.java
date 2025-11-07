@@ -6,12 +6,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,6 +31,8 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockPortalEndOfTime extends Block {
 
@@ -267,6 +273,18 @@ public class BlockPortalEndOfTime extends Block {
         tileEntity = world.getTileEntity(x + 9, y, z + 3);
         if (tileEntity instanceof TileEntityFlowerPot pot) {
             pot.func_145964_a((Item) Item.itemRegistry.getObject("sapling"), 0);
+        }
+    }
+
+    public class ItemBlockPortalEndOfTime extends ItemBlock {
+
+        public ItemBlockPortalEndOfTime(Block block) {
+            super(block);
+        }
+
+        @Override
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("tile.temporal_gate.desc"));
         }
     }
 }
