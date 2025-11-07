@@ -268,6 +268,5 @@ public class BlockPortalEndOfTime extends Block {
         if (tileEntity instanceof TileEntityFlowerPot pot) {
             pot.func_145964_a((Item) Item.itemRegistry.getObject("sapling"), 0);
         }
-        world.updateLightByType(EnumSkyBlock.Block, x + 12, y + 4, z);
     }
 }
