@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.DIAMOND;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.GOLD;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.WOOD;
+import static com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot.INVERTED_INGOT;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,11 +18,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
@@ -33,7 +36,17 @@ import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.Ac
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class EventHandler {
+public class ForgeEventHandler {
+
+    @SubscribeEvent
+    public void onItemToss(ItemTossEvent event) {
+        ItemStack stack = event.entityItem.getEntityItem();
+        if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
+            if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+            event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public void onLivingDeath(LivingDeathEvent event) {

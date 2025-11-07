@@ -21,4 +21,12 @@ public class InversionConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableInvertedIngot;
+
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean invertedIngotsImplode;
+
+    @Config.DefaultInt(300)
+    @Config.RequiresMcRestart
+    public static int invertedIngotImplosionTimer;
 }

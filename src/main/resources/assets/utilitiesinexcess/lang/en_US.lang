@@ -50,6 +50,20 @@ tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
 item.inverted_ingot.name=Inverted Ingot
+item.inverted_ingot.desc.1=This ingot is deteriorating rapidly...
+item.inverted_ingot.desc.2=Will implode in %s seconds!
+item.inverted_ingot.desc.3=Will also implode if thrown or the crafting table is closed.
+item.inverted_ingot.desc.4=Does not stack.
+item.inverted_ingot.desc.5=Cannot be crafted outside of a vanilla crafting table.
+item.inverted_ingot.desc.c=Creatively spawned. Will not implode.
+
+item.inverted_ingot.stable.name=Stabilized Inverted Ingot
+item.inverted_ingot.stable.desc=This ingot has been stabilized and will not implode.
+
+item.inverted_nugget.name=Stable Inverted Nugget
+
+death.attack.inverted_ingot=%1$s's insides were inverted!
+
 item.bedrockium_ingot.name=Bedrockium Ingot
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
