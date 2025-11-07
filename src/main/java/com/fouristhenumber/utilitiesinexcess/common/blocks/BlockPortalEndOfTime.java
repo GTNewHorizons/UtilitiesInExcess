@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,6 +28,7 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.core.jmx.Server;
 
 public class BlockPortalEndOfTime extends Block {
 
@@ -104,7 +106,6 @@ public class BlockPortalEndOfTime extends Block {
 
             if (!world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) continue;
             if (!world.isAirBlock(x + dir.offsetX, y + dir.offsetY + 1, z + dir.offsetZ)) continue;
-
             return new BlockPos(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
         }
 
@@ -121,6 +122,16 @@ public class BlockPortalEndOfTime extends Block {
     }
 
     private void generateSpawnArea(World world, int x, int y, int z) {
+        if(world instanceof WorldServer serverWorld){
+            int chunkX = x >> 4;
+            int chunkZ = z >> 4;
+            for (int cx = -1; cx <= 1; cx++) {
+                for (int cz = -1; cz <= 1; cz++) {
+                    serverWorld.theChunkProviderServer.loadChunk(chunkX + cx, chunkZ + cz);
+                }
+            }
+        }
+
         buildPlatform(world, x, y, z);
         buildPlatform(world, x + 12, y - 1, z);
         buildBridge(world, x + 4, y - 1, z);
@@ -246,8 +257,10 @@ public class BlockPortalEndOfTime extends Block {
         for (int dy = 0; dy <= 3; dy++) {
             world.setBlock(x + 12, y + dy, z, Blocks.cobblestone_wall, 0, 2);
         }
-        world.setBlock(x + 12, y + 4, z, Blocks.glowstone, 0, 2);
-        world.setBlock(x + 12, y + 5, z, Blocks.stone_slab, 3, 2);
+
+
+        world.setBlock(x + 12, y + 4, z, Blocks.glowstone, 0, 3);
+        world.setBlock(x + 12, y + 5, z, Blocks.stone_slab, 3, 1);
         world.setBlock(x + 15, y, z - 3, Blocks.cauldron, 3, 2);
         world.setBlock(x + 15, y, z - 2, Blocks.flower_pot, 0, 2);
         TileEntity tileEntity = world.getTileEntity(x + 15, y, z - 2);
@@ -259,5 +272,6 @@ public class BlockPortalEndOfTime extends Block {
         if (tileEntity instanceof TileEntityFlowerPot pot) {
             pot.func_145964_a((Item) Item.itemRegistry.getObject("sapling"), 0);
         }
+        world.updateLightByType(EnumSkyBlock.Block, x + 12, y + 4, z);
     }
 }
