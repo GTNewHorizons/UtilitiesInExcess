@@ -14,7 +14,6 @@ public enum ModBiomes {
     // spotless:off
 
     // make sure to leave a trailing comma
-    // TODO What's the point of this class? These references are unused.
     UNDERWORLD(UnderWorldConfig.enableUnderWorldBiome, UnderWorldConfig.underWorldBiomeId, BiomeGenUnderWorld::new),
     END_OF_TIME(EndOfTimeConfig.enableEndOfTimeBiome, EndOfTimeConfig.endOfTimeBiomeId, BiomeGenEndOfTime::new),
     ; // leave trailing semicolon

@@ -7,7 +7,7 @@ import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-/// Various event hooks for the under world
+/// Various event hooks for the end of time
 public class EndOfTimeEvents {
 
     public static final EndOfTimeEvents INSTANCE = new EndOfTimeEvents();
