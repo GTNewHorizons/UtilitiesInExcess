@@ -63,7 +63,8 @@ public class BlockPortalEndOfTime extends Block {
             if (player.isSneaking()) {
                 player.travelToDimension(0);
                 ChunkCoordinates spawn = player.worldObj.getSpawnPoint();
-                player.setPositionAndUpdate(spawn.posX + 0.5, world.getTopSolidOrLiquidBlock(x, z), spawn.posZ + 0.5);
+                int topY = player.worldObj.getTopSolidOrLiquidBlock(x, z);
+                player.setPositionAndUpdate(spawn.posX + 0.5, topY, spawn.posZ + 0.5);
                 return true;
             }
             EndOfTimeSourceProperty source = (EndOfTimeSourceProperty) player
