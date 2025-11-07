@@ -42,5 +42,5 @@ public class ItemConfig {
     public static boolean enableGoldenBagOfHolding;
 
     @Config.DefaultBoolean(true)
-    public static boolean enableXRayGoggles;
+    public static boolean enableXRayGlasses;
 }

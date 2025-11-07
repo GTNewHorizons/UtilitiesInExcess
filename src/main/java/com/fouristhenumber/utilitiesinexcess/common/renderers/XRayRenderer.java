@@ -35,7 +35,7 @@ public class XRayRenderer {
 
     @EventBusSubscriber.Condition
     public static boolean shouldSubscribe() {
-        return ItemConfig.enableXRayGoggles;
+        return ItemConfig.enableXRayGlasses;
     }
 
     @SubscribeEvent

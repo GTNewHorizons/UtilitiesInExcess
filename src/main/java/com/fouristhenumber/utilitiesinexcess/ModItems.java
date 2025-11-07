@@ -62,7 +62,7 @@ public enum ModItems {
     FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
-    XRAY_GOGGLES(ItemConfig.enableXRayGoggles, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_goggles"),
+    XRAY_GLASSES(ItemConfig.enableXRayGlasses, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_glasses"),
 
     ; // leave trailing semicolon
     // spotless:on

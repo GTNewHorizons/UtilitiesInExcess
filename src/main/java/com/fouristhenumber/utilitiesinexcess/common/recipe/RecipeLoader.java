@@ -25,7 +25,7 @@ public class RecipeLoader {
         loadSpikeRecipes();
 
         // X-Ray Glasses
-        addShapedRecipe(ModItems.XRAY_GOGGLES, "iii", "eie", 'i', ModItems.INVERTED_INGOT, 'e', Items.ender_eye);
+        addShapedRecipe(ModItems.XRAY_GLASSES, "iii", "eie", 'i', ModItems.INVERTED_INGOT, 'e', Items.ender_eye);
 
         // Floating Block
         addShapedRecipe(
