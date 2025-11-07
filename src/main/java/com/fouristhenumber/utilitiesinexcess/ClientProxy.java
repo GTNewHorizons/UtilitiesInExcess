@@ -18,7 +18,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        if (ModItems.INVERTED_INGOT.isEnabled()) {
+        if (ModItems.INVERTED_NUGGET.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.INVERTED_INGOT.get(), new InvertedIngotRenderer());
         }
         if (ModBlocks.UNDERWORLD_PORTAL.isEnabled()) {

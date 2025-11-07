@@ -25,10 +25,6 @@ public class CommonProxy {
         UnderWorldEvents.init();
     }
 
-    public void registerRenderers() {
-        // no op on server
-    }
-
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
     }
