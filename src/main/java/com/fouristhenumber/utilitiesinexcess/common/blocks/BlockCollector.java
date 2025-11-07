@@ -10,8 +10,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityColle
 
 public class BlockCollector extends BlockContainer {
 
-    double x0, y0, z0, x1, y1, z1;
-
     public BlockCollector() {
         super(Material.rock);
         setBlockName("Collector");
@@ -25,12 +23,16 @@ public class BlockCollector extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        if (!worldIn.isRemote) {
-            TileEntity tile = worldIn.getTileEntity(x, y, z);
-            if (tile instanceof TileEntityCollector collector) {
-                //
-            }
+        TileEntity tile = worldIn.getTileEntity(x, y, z);
+        if (!(tile instanceof TileEntityCollector)) {
+            return true;
         }
+        TileEntityCollector collector = (TileEntityCollector) tile;
+
+        collector.incrementSize();
+        collector.showBorderFor(20);
+        worldIn.markBlockForUpdate(x, y, z);
+
         return true;
     }
 }

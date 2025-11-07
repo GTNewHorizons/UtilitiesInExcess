@@ -15,7 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityColle
 
 public class CollectorLine extends TileEntitySpecialRenderer {
 
-    private final Map<Vec3, Integer> fadingLines = new LinkedHashMap<>();
+    private final Map<Vec3, Integer> lines = new LinkedHashMap<>();
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
@@ -23,7 +23,7 @@ public class CollectorLine extends TileEntitySpecialRenderer {
 
         if (collector.itemPositions != null) {
             for (Vec3 pos : collector.itemPositions) {
-                fadingLines.put(pos, 20);
+                lines.put(pos, 20);
             }
         }
 
@@ -44,7 +44,7 @@ public class CollectorLine extends TileEntitySpecialRenderer {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 
         GL11.glBegin(GL11.GL_LINES);
-        Iterator<Map.Entry<Vec3, Integer>> it = fadingLines.entrySet()
+        Iterator<Map.Entry<Vec3, Integer>> it = lines.entrySet()
             .iterator();
         while (it.hasNext()) {
             Map.Entry<Vec3, Integer> entry = it.next();
@@ -54,11 +54,11 @@ public class CollectorLine extends TileEntitySpecialRenderer {
             float alpha = Math.max(0f, life / 20.0f);
             GL11.glColor4f(1.0f, 0f, 0f, alpha);
 
-            double dx = target.xCoord - (te.xCoord + 0.5);
-            double dy = target.yCoord - (te.yCoord + 0.5);
-            double dz = target.zCoord - (te.zCoord + 0.5);
+            double dx = target.xCoord - (te.xCoord);
+            double dy = target.yCoord - (te.yCoord);
+            double dz = target.zCoord - (te.zCoord);
 
-            GL11.glVertex3d(0, 0, 0);
+            GL11.glVertex3d(.5, .5, .5);
             GL11.glVertex3d(dx, dy, dz);
 
             entry.setValue(life - 1);
@@ -67,7 +67,7 @@ public class CollectorLine extends TileEntitySpecialRenderer {
         GL11.glEnd();
 
         if (collector.showBorder) {
-            int r = 4;
+            float r = collector.getSize();
             GL11.glLineWidth(3.0f);
             GL11.glBegin(GL11.GL_LINES);
 
