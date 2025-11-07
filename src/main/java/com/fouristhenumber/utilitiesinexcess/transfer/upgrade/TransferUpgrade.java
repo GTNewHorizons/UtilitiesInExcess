@@ -1,45 +1,40 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.BreadthWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.DepthWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ITransferWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.RoundRobinWalker;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 public enum TransferUpgrade {
 
-    SPEED(ModItems.SPEED_UPGRADE.get(), null),
-    ITEM_FILTER(ModItems.ITEM_FILTER.get(), UpgradeType.FILTER),
-    ADV_ITEM_FILTER(ModItems.ADV_ITEM_FILTER.get(), UpgradeType.FILTER),
-    WORLD_INTERACTION(ModItems.WORLD_INTERACTION_UPGRADE.get(), null),
-    STACK(ModItems.STACK_UPGRADE.get(), null),
-    ENDER_TRANSMITTER(ModItems.ENDER_TRANSMITTER.get(), null),
-    ENDER_RECEIVER(ModItems.ENDER_RECEIVER.get(), null),
-    SEARCH_DEPTH(ModItems.SEARCH_DEPTH_UPGRADE.get(), UpgradeType.WALKER),
-    SEARCH_BREADTH(ModItems.SEARCH_BREADTH_UPGRADE.get(), UpgradeType.WALKER),
-    SEARCH_ROUND_ROBIN(ModItems.SEARCH_ROUND_ROBIN_UPGRADE.get(), UpgradeType.WALKER),
-    CREATIVE(ModItems.CREATIVE_UPGRADE.get(), null),
+    // Order preserved from XU for migration purposes
+    SPEED(null),
+    FILTER(UpgradeType.FILTER),
+    WORLD_INTERACTION(null),
+    STACK(null),
+    CREATIVE(null),
+    ENDER_TRANSMITTER(null),
+    ENDER_RECEIVER(null),
+    SEARCH_DEPTH(UpgradeType.WALKER),
+    SEARCH_BREADTH(UpgradeType.WALKER),
+    SEARCH_ROUND_ROBIN(UpgradeType.WALKER),
+    ADV_FILTER(UpgradeType.FILTER),
 
     ;
 
-    private static final BiMap<TransferUpgrade, Item> MAPPING = HashBiMap.create(values().length);
-    static {
-        for (TransferUpgrade upgrade : values()) {
-            MAPPING.put(upgrade, upgrade.item);
-        }
-    }
+    public static final TransferUpgrade[] VALUES = values();
 
-    private final Item item;
     private final UpgradeType type;
 
-    TransferUpgrade(Item item, UpgradeType type) {
-        this.item = item;
+    TransferUpgrade(UpgradeType type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name().toLowerCase();
     }
 
     public boolean isWalkerUpgrade() {
@@ -60,13 +55,15 @@ public enum TransferUpgrade {
     }
 
     public static boolean isUpgrade(ItemStack stack) {
-        return getUpgrade(stack) != null;
+        return stack != null && stack.getItem() instanceof ItemUpgrade;
     }
 
     public static TransferUpgrade getUpgrade(ItemStack stack) {
-        if (stack == null) return null;
-        return MAPPING.inverse()
-            .get(stack.getItem());
+        if (!isUpgrade(stack)) return null;
+
+        int meta = stack.getItemDamage();
+        if (meta < 0 || meta >= VALUES.length) return null;
+        return VALUES[meta];
     }
 
     private enum UpgradeType {

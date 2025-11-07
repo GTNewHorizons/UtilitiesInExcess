@@ -13,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
@@ -60,19 +61,8 @@ public enum ModItems {
     FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
-
-    // Transfer node upgrades
-    SPEED_UPGRADE(),
-    ITEM_FILTER(),
-    ADV_ITEM_FILTER(),
-    WORLD_INTERACTION_UPGRADE(),
-    STACK_UPGRADE(),
-    ENDER_TRANSMITTER(),
-    ENDER_RECEIVER(),
-    SEARCH_DEPTH_UPGRADE(),
-    SEARCH_BREADTH_UPGRADE(),
-    SEARCH_ROUND_ROBIN_UPGRADE(),
-    CREATIVE_UPGRADE(),
+    // todo config
+    UPGRADE(true, new ItemUpgrade(), "upgrade"),
 
 
     ; // leave trailing semicolon
