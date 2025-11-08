@@ -25,6 +25,7 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
         loadGeneratorRecipes();
+        loadQEDRecipes();
 
         // Floating Block
         addShapedRecipe(
@@ -719,8 +720,10 @@ public class RecipeLoader {
             "iii",
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+    }
 
-        // todo test qed recipe, remove later
+    private static void loadQEDRecipes() {
+        // todo test recipe, remove later
         QEDRegistry.instance()
             .addRecipe(
                 new ItemStack(Items.gold_ingot),
