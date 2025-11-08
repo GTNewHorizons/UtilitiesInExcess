@@ -702,7 +702,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
-        // Architect's Staff
+        // Architect's Wand
         addShapedRecipe(
             ModItems.ARCHITECTS_WAND,
             " i",
@@ -711,6 +711,16 @@ public class RecipeLoader {
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             ModItems.DIAMOND_STICK);
+
+        // Super Architect's Wand
+        addShapedRecipe(
+            ModItems.SUPER_ARCHITECTS_WAND,
+            " i",
+            "s ",
+            'i',
+            ModItems.BEDROCKIUM_INGOT,
+            's',
+            ModItems.ARCHITECTS_WAND);
 
         // Inverted Ingot -> Block
         addShapedRecipe(
