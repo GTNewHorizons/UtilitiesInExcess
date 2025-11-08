@@ -35,6 +35,15 @@ public class ItemConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableArchitectsWand;
 
+    @Config.DefaultInt(9)
+    public static int architectsWandBuildLimit;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableSuperArchitectsWand;
+
+    @Config.DefaultInt(49)
+    public static int superArchitectsWandBuildLimit;
+
     @Config.DefaultBoolean(true)
     public static boolean enableBedrockium;
 

@@ -7,6 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
@@ -24,6 +25,7 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
         loadGeneratorRecipes();
+        loadQEDRecipes();
 
         // X-Ray Glasses
         addShapedRecipe(
@@ -710,7 +712,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
-        // Architect's Staff
+        // Architect's Wand
         addShapedRecipe(
             ModItems.ARCHITECTS_WAND,
             " i",
@@ -720,6 +722,16 @@ public class RecipeLoader {
             's',
             ModItems.DIAMOND_STICK);
 
+        // Super Architect's Wand
+        addShapedRecipe(
+            ModItems.SUPER_ARCHITECTS_WAND,
+            " i",
+            "s ",
+            'i',
+            ModItems.BEDROCKIUM_INGOT,
+            's',
+            ModItems.ARCHITECTS_WAND);
+
         // Inverted Ingot -> Block
         addShapedRecipe(
             ModBlocks.INVERTED_BLOCK,
@@ -728,6 +740,18 @@ public class RecipeLoader {
             "iii",
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+    }
+
+    private static void loadQEDRecipes() {
+        // todo test recipe, remove later
+        QEDRegistry.instance()
+            .addRecipe(
+                new ItemStack(Items.gold_ingot),
+                new String[] { "NNN", "NGN", "NNN" },
+                'N',
+                new ItemStack(Items.gold_nugget),
+                'G',
+                "blockGlass");
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
