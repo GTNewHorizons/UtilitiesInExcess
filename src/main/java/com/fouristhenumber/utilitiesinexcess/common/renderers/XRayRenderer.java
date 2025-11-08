@@ -2,8 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -50,14 +50,9 @@ public class XRayRenderer {
         GL11.glLineWidth(2.0F);
         GL11.glColor4f(1.0F, 0.3F, 0.3F, 0.5F);
 
-        Minecraft mc = Minecraft.getMinecraft();
-        double partialTicks = event.partialTicks;
-        double posX = mc.renderViewEntity.lastTickPosX
-            + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * partialTicks;
-        double posY = mc.renderViewEntity.lastTickPosY
-            + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * partialTicks;
-        double posZ = mc.renderViewEntity.lastTickPosZ
-            + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * partialTicks;
+        double posX = RenderManager.renderPosX;
+        double posY = RenderManager.renderPosY;
+        double posZ = RenderManager.renderPosZ;
 
         Tessellator tess = Tessellator.instance;
         tess.startDrawing(GL11.GL_LINES);
