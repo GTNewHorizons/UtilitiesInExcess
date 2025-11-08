@@ -142,21 +142,25 @@ public final class QEDRegistry {
     }
 
     private static String findOreForStacks(ItemStack[] stacks) {
-        return Arrays.stream(stacks)
-            .map(
-                stack -> Arrays.stream(OreDictionary.getOreIDs(stack))
-                    .boxed()
-                    .collect(Collectors.toSet()))
-            .reduce((s1, s2) -> {
-                s1.retainAll(s2);
-                return s1;
-            })
-            .map(
-                s -> s.stream()
-                    .mapToInt(Integer::intValue)
-                    .toArray())
-            .filter(a -> a.length > 0)
-            .map(a -> OreDictionary.getOreName(a[0]))
-            .orElse("idk wtf this ore is");
+        try {
+            return Arrays.stream(stacks)
+                .map(
+                    stack -> Arrays.stream(OreDictionary.getOreIDs(stack))
+                        .boxed()
+                        .collect(Collectors.toSet()))
+                .reduce((s1, s2) -> {
+                    s1.retainAll(s2);
+                    return s1;
+                })
+                .map(
+                    s -> s.stream()
+                        .mapToInt(Integer::intValue)
+                        .toArray())
+                .filter(a -> a.length > 0)
+                .map(a -> OreDictionary.getOreName(a[0]))
+                .orElse("idk wtf this ore is");
+        } catch (Exception e) {
+            return "idk wtf this ore is";
+        }
     }
 }
