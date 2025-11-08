@@ -13,7 +13,7 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getOverlayIdentifier() {
-        return super.getOverlayIdentifier();
+        return "qed_recipes";
     }
 
     @Override
@@ -73,7 +73,7 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
 
             return new CachedShapedRecipe(3, 3, inputs, recipe.getOutput());
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading recipe: ", e);
+            NEIClientConfig.logger.error("Error loading QED recipe: ", e);
             return null;
         }
     }
