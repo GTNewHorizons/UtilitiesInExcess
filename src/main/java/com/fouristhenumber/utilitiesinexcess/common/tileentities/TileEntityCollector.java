@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,14 +22,30 @@ public class TileEntityCollector extends TileEntity {
     public int borderTimer = 0;
     public List<Vec3> itemPositions = new ArrayList<>();
     private float size = 6f;
+    private int timeSinceLastClick = 0;
+
+    public int getTimeSinceLastClick() {
+        return timeSinceLastClick;
+    }
+
+    public void setTimeSinceLastClick(int timeSinceLastClick) {
+        this.timeSinceLastClick = timeSinceLastClick;
+    }
 
     public float getSize() {
         return size;
     }
 
-    public void incrementSize() {
-        size++;
-        if (size > 9) size = 1;
+    public void incrementSize(EntityPlayer player) {
+        if(player.isSneaking()){
+
+            size --;
+            if(size == 1) size = 9;
+        }
+        else {
+            size++;
+            if (size > 9) size = 1;
+        }
     }
 
     public void showBorderFor(int ticks) {
@@ -40,6 +57,7 @@ public class TileEntityCollector extends TileEntity {
     public void updateEntity() {
 
         if (worldObj.isRemote) {
+
             if (borderTimer > 0) {
                 borderTimer--;
                 if (borderTimer <= 0) showBorder = false;
@@ -55,6 +73,10 @@ public class TileEntityCollector extends TileEntity {
         }
 
         if (!worldObj.isRemote) {
+            timeSinceLastClick++;
+            if(timeSinceLastClick > 100){
+                timeSinceLastClick = 0;
+            }
             List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, getRadiusAABB());
             TileEntity chest = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
             if (!(chest instanceof IInventory)) return;

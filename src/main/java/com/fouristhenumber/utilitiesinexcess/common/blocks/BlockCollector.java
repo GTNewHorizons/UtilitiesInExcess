@@ -24,15 +24,19 @@ public class BlockCollector extends BlockContainer {
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
         TileEntity tile = worldIn.getTileEntity(x, y, z);
-        if (!(tile instanceof TileEntityCollector)) {
+        if (!(tile instanceof TileEntityCollector collector)) {
             return true;
         }
-        TileEntityCollector collector = (TileEntityCollector) tile;
 
-        collector.incrementSize();
-        collector.showBorderFor(20);
+
+        if(collector.getTimeSinceLastClick() < 40 && collector.getTimeSinceLastClick() > 0 ) {
+            collector.incrementSize(player);
+            collector.setTimeSinceLastClick(0);
+
+        }
+
+        collector.showBorderFor(40);
         worldIn.markBlockForUpdate(x, y, z);
-
         return true;
     }
 }
