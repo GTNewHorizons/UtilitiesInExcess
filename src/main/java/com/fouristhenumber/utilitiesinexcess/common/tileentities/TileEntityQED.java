@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import static com.cleanroommc.modularui.drawable.GuiTextures.PROGRESS_ARROW;
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.scanForBlock;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +36,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
@@ -49,11 +51,16 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     private int craftingProgress = 0;
     private boolean crafting = false;
     private final Set<BlockPos> crystals = new HashSet<>();
+    public boolean queuedScan = false;
 
     @Override
     public void updateEntity() {
+        if (worldObj.getTotalWorldTime() % 20 == 0 && queuedScan) {
+            scan();
+            queuedScan = false;
+        }
         if (crafting) {
-            for (BlockPos ignored : crystals) {
+            for (BlockPos pos : crystals) {
                 craftingProgress++;
             }
         }
@@ -71,6 +78,19 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
             updateCraftingResult();
         }
         super.updateEntity();
+    }
+
+    private void scan() {
+        Set<BlockPos> positions = scanForBlock(worldObj, xCoord, yCoord, zCoord, 9, ModBlocks.FLUX_CRYSTAL.get());
+        for (BlockPos pos : positions) {
+            addCrystal(new BlockPos(pos.x, pos.y, pos.z));
+        }
+    }
+
+    @Override
+    public void validate() {
+        queuedScan = true;
+        super.validate();
     }
 
     private void updateCraftingResult() {
@@ -108,7 +128,9 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
         syncManager.syncValue("preview", GenericSyncValue.forItem(() -> preview, null));
         IntSyncValue craftingSyncer = new IntSyncValue(() -> craftingProgress);
+        IntSyncValue connected = new IntSyncValue(crystals::size);
         syncManager.syncValue("craftingProgress", craftingSyncer);
+        syncManager.syncValue("connected", connected);
 
         // Add title
         panel.child(
@@ -121,6 +143,12 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                         .marginRight(5)
                         .marginTop(5)
                         .marginBottom(-15)));
+
+        panel.child(
+            IKey.dynamic(connected::getStringValue)
+                .asWidget()
+                .marginTop(70)
+                .marginLeft(10));
 
         IItemHandler itemHandler = new InvWrapper(this);
 
