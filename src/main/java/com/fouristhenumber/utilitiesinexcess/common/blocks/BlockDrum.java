@@ -63,14 +63,13 @@ public class BlockDrum extends BlockContainer {
             return false;
         }
 
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             tank = drum.tank;
         }
 
-        if(tank == null){
+        if (tank == null) {
             return true;
         }
-
 
         if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
             FluidStack stored = tank.getFluid();
