@@ -169,6 +169,7 @@ gui.energy.tooltip=RF: %s / %s
 item.golden_bag.name=Golden Bag of Holding
 item.golden_bag.desc=Carries a double chest worth of items
 
+tile.qed.name=QED
 
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 

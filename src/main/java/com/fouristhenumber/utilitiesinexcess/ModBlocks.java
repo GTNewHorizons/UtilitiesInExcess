@@ -21,6 +21,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockQED;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
@@ -99,6 +100,7 @@ public enum ModBlocks {
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
+    QED(true, new BlockQED(), "uieqed")
     ; // leave trailing semicolon
     // spotless:on
 

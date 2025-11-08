@@ -17,6 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityQED;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
@@ -105,6 +106,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
         GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
+        GameRegistry.registerTileEntity(TileEntityQED.class, "TileEntityQEDUIE");
 
         GameRegistry.registerTileEntity(
             TileEntityLowTemperatureFurnaceGenerator.class,
