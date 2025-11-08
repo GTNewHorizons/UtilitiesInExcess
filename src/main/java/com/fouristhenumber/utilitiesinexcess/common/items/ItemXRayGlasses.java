@@ -19,6 +19,8 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 public class ItemXRayGlasses extends ItemArmor {
 
+    static final int reach = 5;
+
     public ItemXRayGlasses(ArmorMaterial armorMaterial, int renderIndex, int armorType) {
         super(armorMaterial, renderIndex, armorType);
         setUnlocalizedName("xray_glasses");
@@ -35,8 +37,6 @@ public class ItemXRayGlasses extends ItemArmor {
         if (!world.isRemote || player.ticksExisted % 3 != 0) return;
 
         XRayRenderer.clearCandidatePositions();
-
-        double reach = 5.0D;
 
         double eyeX = player.posX;
         double eyeY = player.posY + player.getEyeHeight();
@@ -77,17 +77,16 @@ public class ItemXRayGlasses extends ItemArmor {
                             int nx = current.x + dx;
                             int ny = current.y + dy;
                             int nz = current.z + dz;
-                            BlockPos neighbor = new BlockPos(nx, ny, nz);
+                            BlockPos neighbor = new BlockPos(current.x + dx, current.y + dy, current.z + dz);
 
-                            if (distanceSq(origin, neighbor) > maxDistance * maxDistance) continue;
+                            if (distanceSq(origin, neighbor) > maxDistance * maxDistance || visited.contains(neighbor))
+                                continue;
 
-                            if (!visited.contains(neighbor)) {
-                                Block b = world.getBlock(nx, ny, nz);
-                                if (b == targetBlock) {
-                                    visited.add(neighbor);
-                                    toVisit.add(neighbor);
-                                    XRayRenderer.addCandidatePosition(neighbor);
-                                }
+                            Block b = world.getBlock(nx, ny, nz);
+                            if (b == targetBlock) {
+                                visited.add(neighbor);
+                                toVisit.add(neighbor);
+                                XRayRenderer.addCandidatePosition(neighbor);
                             }
                         }
                     }

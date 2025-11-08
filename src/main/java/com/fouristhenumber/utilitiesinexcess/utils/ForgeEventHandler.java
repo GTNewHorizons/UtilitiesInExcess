@@ -48,10 +48,8 @@ public class ForgeEventHandler {
 
         ItemStack from = event.getFrom();
 
-        if (from != null) {
-            if (from.getItem() instanceof ItemXRayGlasses) {
-                XRayRenderer.clearCandidatePositions();
-            }
+        if (from != null && from.getItem() instanceof ItemXRayGlasses) {
+            XRayRenderer.clearCandidatePositions();
         }
     }
 
