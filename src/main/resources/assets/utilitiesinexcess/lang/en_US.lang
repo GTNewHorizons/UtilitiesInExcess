@@ -170,6 +170,7 @@ item.golden_bag.name=Golden Bag of Holding
 item.golden_bag.desc=Carries a double chest worth of items
 
 tile.qed.name=QED
+tile.flux_crystal.name=Flux Crystal
 
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 

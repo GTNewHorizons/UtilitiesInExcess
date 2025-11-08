@@ -1,35 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.factory.inventory.ItemHandler;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
-import com.cleanroommc.modularui.theme.WidgetTheme;
-import com.cleanroommc.modularui.utils.ItemStackItemHandler;
-import com.cleanroommc.modularui.utils.item.IItemHandler;
-import com.cleanroommc.modularui.utils.item.InvWrapper;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
-import com.fouristhenumber.utilitiesinexcess.compat.nei.QEDRecipeHandler;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import static com.cleanroommc.modularui.drawable.GuiTextures.PROGRESS_ARROW;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
@@ -41,27 +17,87 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
-import org.lwjgl.opengl.GL11;
 
-import static com.cleanroommc.modularui.drawable.GuiTextures.PROGRESS_ARROW;
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<PosGuiData> {
+
     private final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerDummy(), 3, 3);
     private final InventoryCraftResult craftResult = new InventoryCraftResult();
 
     private static final ItemStack fakeItem = new ItemStack(new Item());
     private ItemStack preview = fakeItem;
 
+    private int craftingProgress = 0;
+    private boolean crafting = false;
+    private final Set<BlockPos> crystals = new HashSet<>();
 
     @Override
     public void updateEntity() {
+        if (crafting) {
+            for (BlockPos ignored : crystals) {
+                craftingProgress++;
+            }
+        }
+        if (craftingProgress >= 500) {
+            ItemStack newStack = QEDRegistry.instance()
+                .findRecipe(craftMatrix, true);
+            if (newStack != null) {
+                ItemStack outputStack = craftResult.getStackInSlot(0);
 
+                if (outputStack == null) craftResult.setInventorySlotContents(0, newStack);
+                else outputStack.stackSize += newStack.stackSize;
+            }
+            craftingProgress = 0;
+            crafting = false;
+            updateCraftingResult();
+        }
         super.updateEntity();
     }
 
     private void updateCraftingResult() {
-        ItemStack stack = QEDRegistry.instance().findRecipe(craftMatrix, false);
-        preview = stack == null ? fakeItem : stack;
+        ItemStack stack = QEDRegistry.instance()
+            .findRecipe(craftMatrix, false);
+
+        crafting = stack != null && canInsertToOutput(stack);
+        preview = stack != null ? stack : fakeItem;
+    }
+
+    public boolean canInsertToOutput(ItemStack toInsert) {
+        ItemStack outputStack = craftResult.getStackInSlot(0);
+        if (outputStack == null) return true;
+
+        if (!outputStack.isItemEqual(toInsert) || !ItemStack.areItemStackTagsEqual(outputStack, toInsert)) {
+            return false;
+        }
+
+        return (outputStack.stackSize + toInsert.stackSize) <= outputStack.getMaxStackSize();
+    }
+
+    public void addCrystal(BlockPos position) {
+        crystals.add(position);
+    }
+
+    public void removeCrystal(BlockPos position) {
+        crystals.remove(position);
     }
 
     @Override
@@ -71,6 +107,8 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         panel.bindPlayerInventory();
 
         syncManager.syncValue("preview", GenericSyncValue.forItem(() -> preview, null));
+        IntSyncValue craftingSyncer = new IntSyncValue(() -> craftingProgress);
+        syncManager.syncValue("craftingProgress", craftingSyncer);
 
         // Add title
         panel.child(
@@ -87,29 +125,39 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         IItemHandler itemHandler = new InvWrapper(this);
 
         // Input slots
-        panel.child(SlotGroupWidget.builder()
-            .matrix("III", "III", "III")
-            .key('I', index -> new ItemSlot().slot(new ModularSlot(itemHandler, index))).build()
-            .marginTop(20)
-            .marginLeft(37));
+        panel.child(
+            SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key(
+                    'I',
+                    index -> new ItemSlot().slot(
+                        new ModularSlot(itemHandler, index).changeListener((w, x, y, z) -> updateCraftingResult())))
+                .build()
+                .marginTop(20)
+                .marginLeft(37));
 
         // Progress bar
-        panel.child(new ProgressWidget()
-            .texture(PROGRESS_ARROW, 20)
-            .marginTop(38)
-            .marginLeft(97));
+        panel.child(
+            new ProgressWidget().texture(PROGRESS_ARROW, 20)
+                .value(new DoubleSyncValue(() -> (double) craftingSyncer.getIntValue() / 500))
+                .marginTop(38)
+                .marginLeft(97));
 
         // Preview slot
-        panel.child(new ItemDisplayWidget()
-            .syncHandler("preview")
-            .marginTop(15)
-            .marginLeft(97));
+        panel.child(
+            new ItemDisplayWidget().syncHandler("preview")
+                .marginTop(15)
+                .marginLeft(97));
 
         // Output slot
-        panel.child(new ItemSlot()
-            .slot(new ModularSlot(itemHandler, 9))
-            .marginTop(38)
-            .marginLeft(121));
+        panel
+            .child(
+                new ItemSlot()
+                    .slot(
+                        new ModularSlot(itemHandler, 9).changeListener((w, x, y, z) -> updateCraftingResult())
+                            .accessibility(false, true))
+                    .marginTop(38)
+                    .marginLeft(121));
 
         return panel;
     }
@@ -150,7 +198,6 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     public void setInventorySlotContents(int index, ItemStack stack) {
         if (index < 9) {
             craftMatrix.setInventorySlotContents(index, stack);
-            updateCraftingResult();
         } else {
             craftResult.setInventorySlotContents(0, stack);
         }
@@ -215,8 +262,8 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     }
 
     public static class ContainerDummy extends Container {
-        public ContainerDummy() {
-        }
+
+        public ContainerDummy() {}
 
         public boolean canInteractWith(EntityPlayer var1) {
             return false;
