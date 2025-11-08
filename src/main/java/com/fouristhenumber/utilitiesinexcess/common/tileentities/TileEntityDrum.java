@@ -12,9 +12,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     public FluidTank tank = new FluidTank(0);
-    public final int DEFAULT_CAPACITY = 16000;
 
     public TileEntityDrum() {
+        this(16000);
     }
 
     public TileEntityDrum(int capacity) {

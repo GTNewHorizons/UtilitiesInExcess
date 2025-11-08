@@ -52,7 +52,7 @@ public class BlockDrum extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
         float hitY, float hitZ) {
-
+        FluidTank tank = null;
         ItemStack heldItem = player.getCurrentEquippedItem();
         if (heldItem == null) {
             return false;
@@ -63,7 +63,14 @@ public class BlockDrum extends BlockContainer {
             return false;
         }
 
-        FluidTank tank = drum.tank;
+        if(!world.isRemote) {
+            tank = drum.tank;
+        }
+
+        if(tank == null){
+            return true;
+        }
+
 
         if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
             FluidStack stored = tank.getFluid();
