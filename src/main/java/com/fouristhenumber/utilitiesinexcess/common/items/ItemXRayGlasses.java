@@ -77,7 +77,7 @@ public class ItemXRayGlasses extends ItemArmor {
                             int nx = current.x + dx;
                             int ny = current.y + dy;
                             int nz = current.z + dz;
-                            BlockPos neighbor = new BlockPos(current.x + dx, current.y + dy, current.z + dz);
+                            BlockPos neighbor = new BlockPos(nx, ny, nz);
 
                             if (distanceSq(origin, neighbor) > maxDistance * maxDistance || visited.contains(neighbor))
                                 continue;
