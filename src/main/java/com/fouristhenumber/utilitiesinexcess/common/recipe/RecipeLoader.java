@@ -24,6 +24,7 @@ public class RecipeLoader {
         loadWateringCanRecipes();
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
+        loadGeneratorRecipes();
 
         // Floating Block
         addShapedRecipe(
@@ -96,6 +97,15 @@ public class RecipeLoader {
         // Trash Can (Fluids)
         addShapelessRecipe(ModBlocks.TRASH_CAN_FLUID, ModBlocks.TRASH_CAN_ITEM, Items.bucket);
 
+        // Trash Can (Energy)
+        addShapelessRecipe(
+            ModBlocks.TRASH_CAN_ENERGY,
+            ModBlocks.TRASH_CAN_ITEM,
+            Items.redstone,
+            Items.redstone,
+            Items.gold_ingot,
+            Items.gold_ingot);
+
         // Drum
         addShapedRecipe(
             ModBlocks.DRUM,
@@ -116,9 +126,9 @@ public class RecipeLoader {
             "wjw",
             "www",
             'w',
-            new ItemStack(Blocks.wool, 1, 32767),
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
             'j',
-            Blocks.jukebox);
+            Blocks.noteblock);
 
         // Rain Muffler
         addShapedRecipe(
@@ -127,9 +137,55 @@ public class RecipeLoader {
             "wbw",
             "www",
             'w',
-            new ItemStack(Blocks.wool, 1, 32767),
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
             'b',
-            Items.bucket);
+            Items.water_bucket);
+
+        // Fire Battery
+        addShapedRecipe(
+            ModItems.FIRE_BATTERY,
+            "ppp",
+            "p p",
+            "prp",
+            'p',
+            Blocks.heavy_weighted_pressure_plate,
+            'r',
+            Items.redstone);
+
+        // Underworld Portal
+        addShapedRecipe(
+            ModBlocks.UNDERWORLD_PORTAL,
+            "qiq",
+            "iui",
+            "qiq",
+            'q',
+            ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 3),
+            'i',
+            ModItems.INVERTED_INGOT,
+            'u',
+            ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 4));
+
+        // Blackout Curtains
+        addShapedRecipe(
+            ModBlocks.BLACKOUT_CURTAINS.newItemStack(12),
+            "ww",
+            "ww",
+            "ww",
+            'w',
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE));
+
+        // Conveyor
+        addShapedRecipe(
+            ModBlocks.CONVEYOR.newItemStack(8),
+            "rrr",
+            "isi",
+            "rrr",
+            'r',
+            Blocks.rail,
+            'i',
+            Items.iron_ingot,
+            's',
+            Items.redstone);
 
         // Magic Wood
         addShapedRecipe(
@@ -194,11 +250,201 @@ public class RecipeLoader {
             'c',
             Blocks.chest,
             'w',
-            new ItemStack(Blocks.wool, 1, 14),
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
             'd',
             Items.diamond,
             'b',
             Blocks.gold_block);
+    }
+
+    private static void loadGeneratorRecipes() {
+        // Low-Temp Furnace Generator
+        addShapedRecipe(
+            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR,
+            "ccc",
+            "ipi",
+            "rfr",
+            'c',
+            Blocks.cobblestone,
+            'i',
+            Items.iron_ingot,
+            'p',
+            Blocks.piston,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Furnace Generator
+        addShapedRecipe(
+            ModBlocks.FURNACE_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Items.iron_ingot,
+            'p',
+            Blocks.iron_block,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // High-Temp Furnace Generator
+        addShapedRecipe(
+            ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Items.iron_ingot,
+            'p',
+            ModBlocks.FURNACE_GENERATOR,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Lava Generator
+        addShapedRecipe(
+            ModBlocks.LAVA_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Items.gold_ingot,
+            'p',
+            Blocks.iron_block,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Ender Generator
+        addShapedRecipe(
+            ModBlocks.ENDER_GENERATOR,
+            "iii",
+            "epe",
+            "rfr",
+            'i',
+            Items.ender_pearl,
+            'e',
+            Items.ender_eye,
+            'p',
+            Blocks.iron_block,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Redstone Generator
+        addShapedRecipe(
+            ModBlocks.REDSTONE_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Blocks.redstone_block,
+            'p',
+            ModBlocks.LAVA_GENERATOR,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Food Generator
+        addShapedRecipe(
+            ModBlocks.FOOD_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Items.iron_ingot,
+            'p',
+            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Potion Generator
+        addShapedRecipe(
+            ModBlocks.POTION_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Blocks.obsidian,
+            'p',
+            Blocks.enchanting_table,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Solar Generator
+        addShapedRecipe(
+            ModBlocks.SOLAR_GENERATOR,
+            "iqi",
+            "qpq",
+            "rfr",
+            'i',
+            new ItemStack(Items.dye, 1, 4),
+            'q',
+            Items.quartz,
+            'p',
+            Blocks.diamond_block,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // TNT Generator
+        addShapedRecipe(
+            ModBlocks.TNT_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            Blocks.tnt,
+            'p',
+            Blocks.iron_block,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Pink Generator
+        addShapedRecipe(
+            ModBlocks.PINK_GENERATOR,
+            "iii",
+            "ipi",
+            "rfr",
+            'i',
+            new ItemStack(Blocks.wool, 1, 6),
+            'p',
+            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
+
+        // Nether Star Generator
+        addShapedRecipe(
+            ModBlocks.NETHER_STAR_GENERATOR,
+            "sis",
+            "sps",
+            "rfr",
+            'i',
+            Items.nether_star,
+            's',
+            new ItemStack(Items.skull, 1, 1),
+            'p',
+            ModBlocks.INVERTED_BLOCK,
+            'r',
+            Items.redstone,
+            'f',
+            Blocks.furnace);
     }
 
     private static void loadSpikeRecipes() {
