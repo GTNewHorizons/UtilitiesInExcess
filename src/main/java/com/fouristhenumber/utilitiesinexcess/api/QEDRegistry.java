@@ -1,8 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.api;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -12,7 +10,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
 
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
@@ -78,12 +75,10 @@ public final class QEDRegistry {
 
         QEDRecipe qedRecipe = new QEDRecipe(inputArray, output);
         this.recipes.add(qedRecipe);
-        logRecipe(qedRecipe);
     }
 
     public void addRecipe(QEDRecipe recipe) {
         this.recipes.add(recipe);
-        logRecipe(recipe);
     }
 
     private void verifyPattern(String[] pattern) {
@@ -115,52 +110,5 @@ public final class QEDRegistry {
 
     public List<QEDRecipe> getAllRecipes() {
         return ObjectLists.unmodifiable(this.recipes);
-    }
-
-    private static void logRecipe(QEDRecipe recipe) {
-        Object[] inputs = recipe.getInputs();
-        String[] logOutput = new String[9];
-        for (int i = 0; i < 9; i++) {
-            Object input = inputs[i];
-            if (input instanceof ItemStack stack) {
-                logOutput[i] = stack.getDisplayName();
-            } else {
-                logOutput[i] = findOreForStacks((ItemStack[]) input);
-            }
-        }
-
-        UtilitiesInExcess.LOG.info("======================================================");
-        UtilitiesInExcess.LOG.info(
-            "Adding QED Recipe for: {}",
-            recipe.getOutput()
-                .getDisplayName());
-        UtilitiesInExcess.LOG.info("Pattern:");
-        UtilitiesInExcess.LOG.info(String.format("[%16s, %16s, %16s]", logOutput[0], logOutput[1], logOutput[2]));
-        UtilitiesInExcess.LOG.info(String.format("[%16s, %16s, %16s]", logOutput[3], logOutput[4], logOutput[5]));
-        UtilitiesInExcess.LOG.info(String.format("[%16s, %16s, %16s]", logOutput[6], logOutput[7], logOutput[8]));
-        UtilitiesInExcess.LOG.info("======================================================");
-    }
-
-    private static String findOreForStacks(ItemStack[] stacks) {
-        try {
-            return Arrays.stream(stacks)
-                .map(
-                    stack -> Arrays.stream(OreDictionary.getOreIDs(stack))
-                        .boxed()
-                        .collect(Collectors.toSet()))
-                .reduce((s1, s2) -> {
-                    s1.retainAll(s2);
-                    return s1;
-                })
-                .map(
-                    s -> s.stream()
-                        .mapToInt(Integer::intValue)
-                        .toArray())
-                .filter(a -> a.length > 0)
-                .map(a -> OreDictionary.getOreName(a[0]))
-                .orElse("idk wtf this ore is");
-        } catch (Exception e) {
-            return "idk wtf this ore is";
-        }
     }
 }

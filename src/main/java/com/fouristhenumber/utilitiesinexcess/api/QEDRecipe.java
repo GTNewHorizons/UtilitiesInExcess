@@ -18,7 +18,7 @@ public class QEDRecipe {
         return this.output;
     }
 
-    protected Object[] getInputs() {
+    public Object[] getInputs() {
         return inputs;
     }
 
@@ -57,6 +57,23 @@ public class QEDRecipe {
         }
 
         return true;
+    }
+
+    public boolean containsInput(ItemStack testStack) {
+        for (Object rawInput : this.inputs) {
+            if (rawInput instanceof ItemStack inputStack) {
+                if (ItemStack.areItemStacksEqual(inputStack, testStack)) {
+                    return true;
+                }
+            } else if (rawInput instanceof ItemStack[]inputStacks) {
+                for (ItemStack inputStack : inputStacks) {
+                    if (ItemStack.areItemStacksEqual(inputStack, testStack)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public ItemStack getResult() {
