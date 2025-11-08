@@ -14,6 +14,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -89,7 +90,21 @@ public class BlockDrum extends BlockContainer {
                     if (!player.inventory.addItemStackToInventory(filledContainer)) {
                         player.dropPlayerItemWithRandomChoice(filledContainer, false);
                     }
+
                 }
+                if (!world.isRemote) {
+                    if (drum.tank.getFluid() == null) {
+                        player.addChatMessage(new ChatComponentTranslation("tile.drum.chat.empty"));
+                    } else {
+                        player.addChatMessage(
+                            new ChatComponentTranslation(
+                                "tile.drum.chat.filled",
+                                drum.tank.getFluid()
+                                    .getLocalizedName(),
+                                NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
+                    }
+                }
+
                 player.inventory.markDirty();
             }
 
@@ -127,7 +142,17 @@ public class BlockDrum extends BlockContainer {
                         if (emptyContainer != null && !player.inventory.addItemStackToInventory(emptyContainer)) {
                             player.dropPlayerItemWithRandomChoice(emptyContainer, false);
                         }
+
                     }
+                    if (world.isRemote) {
+                        player.addChatMessage(
+                            new ChatComponentTranslation(
+                                "tile.drum.chat.filled",
+                                drum.tank.getFluid()
+                                    .getLocalizedName(),
+                                NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
+                    }
+
                     player.inventory.markDirty();
                 }
 
