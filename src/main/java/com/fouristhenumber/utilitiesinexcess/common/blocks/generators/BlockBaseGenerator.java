@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.generators;
 
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
