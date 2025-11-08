@@ -9,6 +9,7 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -23,6 +24,7 @@ public class RecipeLoader {
         loadWateringCanRecipes();
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
+        loadTransferNodeRecipes();
 
         // Floating Block
         addShapedRecipe(
@@ -472,6 +474,126 @@ public class RecipeLoader {
             "iii",
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+    }
+
+    private static void loadTransferNodeRecipes() {
+        loadTransferUpgradeRecipes();
+        loadTransferPipeRecipes();
+    }
+
+    private static void loadTransferUpgradeRecipes() {
+        // Speed Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SPEED.getStack(4),
+            "RNR",
+            "NIN",
+            "RIR",
+            'R',
+            new ItemStack(Blocks.redstone_block),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'I',
+            new ItemStack(Items.gold_ingot));
+
+        // Filter
+        addShapedRecipe(
+            TransferUpgrade.FILTER.getStack(),
+            "RWR",
+            "WSW",
+            "RWR",
+            'R',
+            new ItemStack(Items.redstone),
+            'W',
+            new ItemStack(Items.stick),
+            'S',
+            new ItemStack(Items.string));
+        // todo filter setting stuff?
+
+        // World Interaction Upgrade
+        addShapedRecipe(
+            TransferUpgrade.WORLD_INTERACTION.getStack(),
+            "LIL",
+            "IPI",
+            "LIL",
+            'L',
+            new ItemStack(Items.dye, 1, 4), // Lapis
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'P',
+            new ItemStack(Items.iron_pickaxe));
+
+        // Stack Upgrade
+        addShapedRecipe(
+            TransferUpgrade.STACK.getStack(),
+            "INI",
+            "DUD",
+            "IDI",
+            'I',
+            new ItemStack(Items.gold_ingot),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'D',
+            new ItemStack(Items.diamond),
+            'U',
+            TransferUpgrade.SPEED.getStack());
+
+        // Creative Upgrade has no recipe
+
+        // TODO Ender Transmitter/Receiver default recipes are in QED
+
+        // Depth-First Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_DEPTH.getStack(3),
+            "UBB",
+            "UGU",
+            "GBB",
+            'U',
+            TransferUpgrade.SPEED.getStack(),
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'G',
+            new ItemStack(Items.gold_ingot));
+
+        // Breadth-First Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_BREADTH.getStack(3),
+            "BBB",
+            "SUS",
+            "BBB",
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'S',
+            TransferUpgrade.SPEED.getStack(),
+            'U',
+            TransferUpgrade.SEARCH_DEPTH.getStack());
+
+        // Round Robin Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_ROUND_ROBIN.getStack(3),
+            "BNB",
+            "BIN",
+            "BNB",
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'I',
+            new ItemStack(Items.gold_ingot));
+
+        // Advanced Filter
+        addShapedRecipe(
+            TransferUpgrade.ADV_FILTER.getStack(),
+            "L L",
+            " F ",
+            "L L",
+            'L',
+            new ItemStack(Items.dye, 1, 4), // Lapis
+            'F',
+            TransferUpgrade.FILTER.getStack());
+    }
+
+    private static void loadTransferPipeRecipes() {
+
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {

@@ -178,7 +178,7 @@ item.upgrade_ender_transmitter.name=Ender Transmitter
 item.upgrade_ender_receiver.name=Ender Receiver
 item.upgrade_search_depth.name=Depth-First Search Upgrade
 item.upgrade_search_breadth.name=Breadth-First Search Upgrade
-item.upgrade_search_round_robin.name=Round Robin Upgrade
+item.upgrade_search_round_robin.name=Round Robin Search Upgrade
 item.upgrade_adv_filter.name=Advanced Filter Upgrade
 
 

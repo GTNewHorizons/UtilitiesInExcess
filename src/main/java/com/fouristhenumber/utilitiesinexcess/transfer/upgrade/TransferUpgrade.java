@@ -2,7 +2,9 @@ package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
+import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.BreadthWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.DepthWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ITransferWalker;
@@ -35,6 +37,14 @@ public enum TransferUpgrade {
 
     public String getName() {
         return name().toLowerCase();
+    }
+
+    public DisableableItemStack getStack() {
+        return getStack(1);
+    }
+
+    public DisableableItemStack getStack(int amount) {
+        return new DisableableItemStack(ModItems.UPGRADE, amount, ordinal());
     }
 
     public boolean isWalkerUpgrade() {
