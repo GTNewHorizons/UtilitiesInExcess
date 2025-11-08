@@ -25,12 +25,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemArchitectsWand extends Item {
 
-    public int buildLimit = -1;
+    public int buildLimit;
 
     public ItemArchitectsWand(int buildLimit) {
         super();
         this.buildLimit = buildLimit;
-        setTextureName("utilitiesinexcess:architects_wand");
         setUnlocalizedName("architects_wand");
         setMaxDamage(0);
         setMaxStackSize(1);
