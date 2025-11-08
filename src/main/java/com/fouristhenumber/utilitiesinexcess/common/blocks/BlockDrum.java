@@ -9,17 +9,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.Direction;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.*;
 
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
@@ -49,49 +50,90 @@ public class BlockDrum extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-        float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+                                    int side, float hitX, float hitY, float hitZ) {
+
+        ItemStack heldItem = player.getCurrentEquippedItem();
+        if (heldItem == null) return false;
 
         TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityDrum drum) {
-            ItemStack heldItem = player.getCurrentEquippedItem();
-            FluidStack heldFluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+        if (!(tile instanceof TileEntityDrum drum)) return false;
 
-            if (FluidContainerRegistry.isFilledContainer(heldItem)) {
+        FluidTank tank = drum.tank;
+        FluidStack fluid = null;
+        int containerCapacity = 1000;
 
-                if (drum.tank.getFluid() == null) {
-                    drum.setFluid(new FluidStack(heldFluid.getFluid(), 0));
-                }
-
-                if (drum.fill(ForgeDirection.UP, heldFluid, true) == heldFluid.amount) {
-                    FluidContainerRegistry.drainFluidContainer(heldItem);
-                    ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
-                    emptyContainer.stackSize = 1;
-                    heldItem.stackSize--;
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
-                    player.inventory.addItemStackToInventory(emptyContainer);
-
-                    player.addChatMessage(
-                        new ChatComponentTranslation(
-                            "tile.drum.chat.filled",
-                            drum.tank.getFluid()
-                                .getLocalizedName(),
-                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
-                }
-            } else if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
-                if (drum.tank.getFluid() != null) {
-                    FluidStack drainedFluid = drum.drain(ForgeDirection.UP, 1000, true);
-
-                    if (drainedFluid.amount == 1000) {
-                        ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(drainedFluid, heldItem);
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
-                    }
-                }
-            }
+        Item item = heldItem.getItem();
+        if (item instanceof IFluidContainerItem fluidContainer) {
+            fluid = fluidContainer.getFluid(heldItem);
+            containerCapacity = fluidContainer.getCapacity(heldItem);
+        } else {
+            fluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
         }
 
-        return true;
+        if (fluid == null && FluidContainerRegistry.isEmptyContainer(heldItem)) {
+
+            FluidStack stored = tank.getFluid();
+            if (stored == null || stored.amount <= 0) return false;
+
+            int transferAmount = Math.min(containerCapacity, stored.amount);
+            FluidStack toFill = new FluidStack(stored.getFluid(), transferAmount);
+
+            ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(toFill, heldItem);
+            if (filledContainer == null) return false; // Not a valid container
+
+            tank.drain(transferAmount, true);
+            if (!player.capabilities.isCreativeMode) {
+                heldItem.stackSize--;
+                if (heldItem.stackSize <= 0) {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                } else {
+                    if (!player.inventory.addItemStackToInventory(filledContainer)) {
+                        player.dropPlayerItemWithRandomChoice(filledContainer, false);
+                    }
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
+                }
+                player.inventory.markDirty();
+            }
+            drum.markDirty();
+            world.markBlockForUpdate(x, y, z);
+            return true;
+        }
+
+        else if (fluid != null) {
+            int filled = tank.fill(fluid, true);
+            if (filled > 0) {
+
+                ItemStack emptyContainer = null;
+
+                if (item instanceof IFluidContainerItem fluidContainer) {
+                    fluidContainer.drain(heldItem, filled, true);
+                    emptyContainer = heldItem;
+                } else {
+                    emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
+                }
+
+                if (!player.capabilities.isCreativeMode) {
+                    heldItem.stackSize--;
+                    if (heldItem.stackSize <= 0) {
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, emptyContainer);
+                    } else {
+                        if (emptyContainer != null && !player.inventory.addItemStackToInventory(emptyContainer)) {
+                            player.dropPlayerItemWithRandomChoice(emptyContainer, false);
+                        }
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
+                    }
+                    player.inventory.markDirty();
+                }
+                drum.markDirty();
+                world.markBlockForUpdate(x, y, z);
+                return true;
+            }
+        }
+        return false;
     }
+
+
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
