@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +16,6 @@ import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -29,10 +30,6 @@ import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class BlockPortalEndOfTime extends Block {
 
