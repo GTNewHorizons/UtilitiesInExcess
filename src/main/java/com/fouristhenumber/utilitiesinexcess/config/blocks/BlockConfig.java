@@ -61,6 +61,9 @@ public class BlockConfig {
     public static boolean enableSignificantlyShrunkChest;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableRadicallyReducedChest;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;
 
     @Config.DefaultBoolean(true)
