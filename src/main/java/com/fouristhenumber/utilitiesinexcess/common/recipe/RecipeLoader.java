@@ -27,6 +27,16 @@ public class RecipeLoader {
         loadGeneratorRecipes();
         loadQEDRecipes();
 
+        // X-Ray Glasses
+        addShapedRecipe(
+            ModItems.XRAY_GLASSES,
+            "iii",
+            "eie",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'e',
+            Items.ender_eye);
+
         // Floating Block
         addShapedRecipe(
             ModBlocks.FLOATING_BLOCK,
@@ -162,7 +172,7 @@ public class RecipeLoader {
             'q',
             ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 3),
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             'u',
             ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 4));
 

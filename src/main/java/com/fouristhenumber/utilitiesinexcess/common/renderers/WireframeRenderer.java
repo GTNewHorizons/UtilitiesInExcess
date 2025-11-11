@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
@@ -52,14 +52,9 @@ public class WireframeRenderer {
 
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-        Minecraft mc = Minecraft.getMinecraft();
-        double partialTicks = event.partialTicks;
-        double posx = mc.renderViewEntity.lastTickPosX
-            + (mc.renderViewEntity.posX - mc.renderViewEntity.lastTickPosX) * partialTicks;
-        double posy = mc.renderViewEntity.lastTickPosY
-            + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * partialTicks;
-        double posz = mc.renderViewEntity.lastTickPosZ
-            + (mc.renderViewEntity.posZ - mc.renderViewEntity.lastTickPosZ) * partialTicks;
+        double posX = RenderManager.renderPosX;
+        double posY = RenderManager.renderPosY;
+        double posZ = RenderManager.renderPosZ;
 
         for (BlockPos pos : candidatePositions) {
             int x = pos.x;
@@ -68,7 +63,7 @@ public class WireframeRenderer {
 
             AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
 
-            aabb.offset(-posx, -posy, -posz);
+            aabb.offset(-posX, -posY, -posZ);
 
             RenderGlobal.drawOutlinedBoundingBox(aabb, -1);
         }
