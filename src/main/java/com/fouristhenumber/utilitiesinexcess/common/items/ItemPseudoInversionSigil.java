@@ -2,15 +2,10 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.fouristhenumber.utilitiesinexcess.ModItems;
 
 public class ItemPseudoInversionSigil extends Item {
 
@@ -20,19 +15,6 @@ public class ItemPseudoInversionSigil extends Item {
         setTextureName("utilitiesinexcess:pseudo_inversion_sigil");
         setMaxStackSize(1);
         setContainerItem(this);
-    }
-
-    @Override
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> p_150895_3_) {
-        p_150895_3_.add(getStack());
-    }
-
-    public static @NotNull ItemStack getStack() {
-        ItemStack stack = new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get(), 1);
-
-        NBTTagCompound tag = new NBTTagCompound();
-        stack.setTagCompound(tag);
-        return stack;
     }
 
     @Override
