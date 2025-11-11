@@ -28,18 +28,13 @@ public class BlockDecorativeGlass extends BlockGlass {
     // Dark Glass has the blackout curtain effect
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return world.getBlockMetadata(x, y, z) == 10 ? 8 : super.getLightOpacity(world, x, y, z);
+        return world.getBlockMetadata(x, y, z) >= 10 ? 8 : super.getLightOpacity(world, x, y, z);
     }
 
     // Glowing Glass
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         return world.getBlockMetadata(x, y, z) == 7 ? 10 : super.getLightValue();
-    }
-
-    @Override
-    public int getLightValue() {
-        return super.getLightValue();
     }
 
     @SideOnly(Side.CLIENT)
@@ -52,7 +47,7 @@ public class BlockDecorativeGlass extends BlockGlass {
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 11; ++i) {
+        for (int i = 0; i < 12; ++i) {
             list.add(new ItemStack(itemIn, 1, i));
         }
     }
@@ -61,7 +56,7 @@ public class BlockDecorativeGlass extends BlockGlass {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         icons = new IIcon[12];
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 12; i++) {
             icons[i] = iconRegister.registerIcon("utilitiesinexcess:glass_" + i);
         }
     }
@@ -77,7 +72,7 @@ public class BlockDecorativeGlass extends BlockGlass {
 
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        return 0;
+        return 1;
     }
 
     public static class ItemBlockDecorativeGlass extends ItemBlock {
