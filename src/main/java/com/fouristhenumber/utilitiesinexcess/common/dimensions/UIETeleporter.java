@@ -1,17 +1,17 @@
-package com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld;
+package com.fouristhenumber.utilitiesinexcess.common.dimensions;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
 /// Hacky Teleporter implementation that moves the player to a specific location instead of using the portal system.
-public class TeleporterUnderworld extends Teleporter {
+public class UIETeleporter extends Teleporter {
 
     private final int x;
     private final int y;
     private final int z;
 
-    public TeleporterUnderworld(WorldServer world, int x, int y, int z) {
+    public UIETeleporter(WorldServer world, int x, int y, int z) {
         super(world);
         this.x = x;
         this.y = y;

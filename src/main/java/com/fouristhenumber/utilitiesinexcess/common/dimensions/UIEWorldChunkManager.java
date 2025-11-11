@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld;
+package com.fouristhenumber.utilitiesinexcess.common.dimensions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,11 +8,11 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 
-public class WorldChunkManagerUnderWorld extends WorldChunkManager {
+public class UIEWorldChunkManager extends WorldChunkManager {
 
     private final BiomeGenBase biome;
 
-    public WorldChunkManagerUnderWorld(BiomeGenBase biome) {
+    public UIEWorldChunkManager(BiomeGenBase biome) {
         this.biome = biome;
     }
 
