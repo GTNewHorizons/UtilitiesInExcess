@@ -1,17 +1,16 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import com.fouristhenumber.utilitiesinexcess.ModItems;
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.awakenedInversionDurability;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
 
 public class ItemPseudoInversionSigil extends Item {
 
