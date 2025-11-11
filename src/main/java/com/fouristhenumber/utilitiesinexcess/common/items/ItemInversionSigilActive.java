@@ -28,20 +28,6 @@ public class ItemInversionSigilActive extends Item {
     }
 
     @Override
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> p_150895_3_) {
-        p_150895_3_.add(getStack());
-    }
-
-    public static @NotNull ItemStack getStack() {
-        ItemStack stack = new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get(), 1);
-
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger(DURABILITY_NBT_KEY, awakenedInversionDurability);
-        stack.setTagCompound(tag);
-        return stack;
-    }
-
-    @Override
     public boolean doesContainerItemLeaveCraftingGrid(ItemStack par1ItemStack) {
         return false;
     }
