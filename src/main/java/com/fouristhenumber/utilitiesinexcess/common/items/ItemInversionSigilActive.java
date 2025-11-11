@@ -4,13 +4,16 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.List;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -23,6 +26,16 @@ public class ItemInversionSigilActive extends Item {
 
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
+
+    private boolean checkNorthChest(TileEntityChest chest) {
+        Item[] CHECKED_ITEMS = {Items.brick,};
+        int ITEM_REQUIREMENT = InversionConfig.northChestRequiredItems;
+        for(int i=0;i<chest.getSizeInventory();i++){
+            ItemStack stack=chest.getStackInSlot(i);
+
+        }
+        return false;
+    }
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
@@ -38,12 +51,17 @@ public class ItemInversionSigilActive extends Item {
 
         if (world.isRemote) return true;
 
-        boolean dimensionOk = (world.provider.dimensionId == 1);;
+        boolean dimensionOk = (world.provider.dimensionId == 1);
         boolean chestNorthExistsOk = (world.getBlock(x, y, z - 4) == Blocks.chest);
         boolean chestEastExistsOk = (world.getBlock(x + 4, y, z) == Blocks.chest);
         boolean chestSouthExistsOk = (world.getBlock(x, y, z + 4) == Blocks.chest);
         boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
-
+        boolean chestNorthContentsOk;
+        if (world.getTileEntity(x,y,z-4)instanceof TileEntityChest chest) {
+            chestNorthContentsOk = checkNorthChest(chest);
+        } else {
+            chestNorthContentsOk = false;
+        }
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
         if (dimensionOk) {

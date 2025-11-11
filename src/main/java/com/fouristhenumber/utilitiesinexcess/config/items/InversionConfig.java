@@ -18,6 +18,12 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public static int awakenedInversionDurability;
 
+    @Config.Comment("Amount of unique items in the list the north chest has to contain for the pseudo-inversion ritual")
+    @Config.DefaultInt(12)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int northChestRequiredItems;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableInvertedIngot;
