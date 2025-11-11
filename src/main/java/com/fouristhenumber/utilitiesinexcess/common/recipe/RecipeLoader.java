@@ -67,7 +67,7 @@ public class RecipeLoader {
             't',
             Blocks.redstone_torch);
 
-        // Redstone Clock
+        // Block Update Detector
         addShapedRecipe(
             ModBlocks.BLOCK_UPDATE_DETECTOR,
             "srs",
@@ -261,6 +261,21 @@ public class RecipeLoader {
             Items.diamond,
             'b',
             Blocks.gold_block);
+
+        // Temporal Gate
+        addShapedRecipe(
+            ModBlocks.END_OF_TIME_PORTAL,
+            "qgq",
+            "geg",
+            "qcq",
+            'q',
+            Blocks.quartz_block, // TODO use burnt quartz replacement instead?
+            'e',
+            Items.ender_pearl,
+            'c',
+            Items.clock,
+            'g',
+            Blocks.glass_pane);
     }
 
     private static void loadGeneratorRecipes() {
