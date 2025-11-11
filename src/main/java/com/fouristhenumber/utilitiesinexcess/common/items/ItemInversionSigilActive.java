@@ -4,12 +4,16 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +22,43 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 public class ItemInversionSigilActive extends Item {
 
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
+    private static final int BEACON_SEARCH_RADIUS = 6;
+
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
+        if (!player.isSneaking()) {
+            return false;
+        }
+
+        Block clicked = world.getBlock(x, y, z);
+        if (clicked != Blocks.beacon) {
+            return false;
+        }
+
+        if (world.isRemote) return true;
+
+        boolean dimensionOk;
+
+        dimensionOk = (world.provider.dimensionId == 1);
+
+        player.addChatMessage(
+            new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
+        if (dimensionOk) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.dimension")));
+        } else if (world.provider.dimensionId == 0) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.overworld")));
+        } else if (world.provider.dimensionId == -1) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.nether")));
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.misc")));
+        }
+        return true;
+    }
 
     public ItemInversionSigilActive() {
         super();
