@@ -3,7 +3,9 @@ package com.fouristhenumber.utilitiesinexcess;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.render.CollectorLine;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
 
@@ -22,6 +24,10 @@ public class ClientProxy extends CommonProxy {
         if (ModBlocks.UNDERWORLD_PORTAL.isEnabled()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPortalUnderWorld.class, new TESRUnderworldPortal());
             RenderingRegistry.registerBlockHandler(ISBRHUnderworldPortal.INSTANCE);
+        }
+        if (ModBlocks.COLLECTOR.isEnabled()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCollector.class, new CollectorLine());
+
         }
     }
 }

@@ -11,6 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.*;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
@@ -85,7 +86,6 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-
         RecipeLoader.run();
 
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
@@ -107,6 +107,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
         GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
+        GameRegistry.registerTileEntity(TileEntityCollector.class, "TileEntityCollector");
 
         GameRegistry.registerTileEntity(
             TileEntityLowTemperatureFurnaceGenerator.class,
