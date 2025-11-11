@@ -84,6 +84,10 @@ chat.pseudo_inversion_ritual.dimension= - Dimension is correct: - ✓
 chat.pseudo_inversion_ritual.overworld= - Dimension is correct: - Too much natural earth 
 chat.pseudo_inversion_ritual.nether= - Dimension is correct: - Too hot 
 chat.pseudo_inversion_ritual.misc= - Dimension is correct: - Too otherworldly 
+chat.pseudo_inversion_ritual.chestNorthExists= - North chest correctly placed: %s
+chat.pseudo_inversion_ritual.chestEastExists= - East chest correctly placed: %s
+chat.pseudo_inversion_ritual.chestSouthExists= - South chest correctly placed: %s
+chat.pseudo_inversion_ritual.chestWestExists= - West chest correctly placed: %s
 
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held

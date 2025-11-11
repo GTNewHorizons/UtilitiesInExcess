@@ -38,9 +38,11 @@ public class ItemInversionSigilActive extends Item {
 
         if (world.isRemote) return true;
 
-        boolean dimensionOk;
-
-        dimensionOk = (world.provider.dimensionId == 1);
+        boolean dimensionOk = (world.provider.dimensionId == 1);;
+        boolean chestNorthExistsOk = (world.getBlock(x, y, z - 4) == Blocks.chest);
+        boolean chestEastExistsOk = (world.getBlock(x + 4, y, z) == Blocks.chest);
+        boolean chestSouthExistsOk = (world.getBlock(x, y, z + 4) == Blocks.chest);
+        boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
 
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
@@ -57,6 +59,26 @@ public class ItemInversionSigilActive extends Item {
             player.addChatMessage(
                 new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.misc")));
         }
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted(
+                    "chat.pseudo_inversion_ritual.chestNorthExists",
+                    (chestNorthExistsOk ? "✓" : "✗"))));
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted(
+                    "chat.pseudo_inversion_ritual.chestEastExists",
+                    (chestEastExistsOk ? "✓" : "✗"))));
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted(
+                    "chat.pseudo_inversion_ritual.chestSouthExists",
+                    (chestSouthExistsOk ? "✓" : "✗"))));
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted(
+                    "chat.pseudo_inversion_ritual.chestWestExists",
+                    (chestWestExistsOk ? "✓" : "✗"))));
         return true;
     }
 
