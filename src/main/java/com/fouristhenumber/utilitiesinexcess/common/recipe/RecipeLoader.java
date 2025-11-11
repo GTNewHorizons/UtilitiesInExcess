@@ -227,6 +227,11 @@ public class RecipeLoader {
             new DisableableItemStack(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST, 9),
             ModBlocks.MARGINALLY_MAXIMISED_CHEST);
 
+        // Radically Reduced Chest
+        addShapelessRecipe(
+            new DisableableItemStack(ModBlocks.RADICALLY_REDUCED_CHEST, 9),
+            ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST);
+
         // Mob Jar
         addShapedRecipe(
             ModItems.MOB_JAR,

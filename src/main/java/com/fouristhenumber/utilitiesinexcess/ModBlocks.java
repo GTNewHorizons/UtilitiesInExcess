@@ -22,6 +22,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximi
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalEndOfTime;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRadicallyReducedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
@@ -76,6 +77,7 @@ public enum ModBlocks {
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), BlockMarginallyMaximisedChest.ItemBlockMarginallyMaximisedChest.class, "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), BlockSignificantlyShrunkChest.ItemBlockSignificantlyShrunkChest.class, "significantly_shrunk_chest"),
+    RADICALLY_REDUCED_CHEST(BlockConfig.enableRadicallyReducedChest, new BlockRadicallyReducedChest(), BlockRadicallyReducedChest.ItemBlockRadicallyReducedChest.class, "radically_reduced_chest"),
     CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
