@@ -80,7 +80,7 @@ public enum ModBlocks {
     RADICALLY_REDUCED_CHEST(BlockConfig.enableRadicallyReducedChest, new BlockRadicallyReducedChest(), BlockRadicallyReducedChest.ItemBlockRadicallyReducedChest.class, "radically_reduced_chest"),
     CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
-    BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), "bedrockium_block"),
+    BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator"), "low_temperature_furnace_generator"),
     FURNACE_GENERATOR(GeneratorConfig.enableFurnaceGenerator, new BlockFurnaceGenerator("furnace_generator"), "furnace_generator"),
