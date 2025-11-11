@@ -12,6 +12,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemGoldenBag;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoInversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
@@ -54,6 +55,7 @@ public enum ModItems {
     WATERING_CAN_ELITE(WateringCanConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
     INVERSION_SIGIL_INACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
     INVERSION_SIGIL_ACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
+    PSEUDO_INVERSION_SIGIL(InversionConfig.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
     INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new Item().setUnlocalizedName("inverted_nugget").setTextureName("utilitiesinexcess:inverted_nugget"), "inverted_nugget"),
     DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
