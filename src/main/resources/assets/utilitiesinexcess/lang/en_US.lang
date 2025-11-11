@@ -68,6 +68,7 @@ item.bedrockium_ingot.name=Bedrockium Ingot
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.pseudo_inversion_sigil=Pseudo-Inversion Sigil
 item.inversion_sigil_active.desc=Uses Remaining: %s
 
 chat.inversion_ritual.header=Ritual Of Inversion:
