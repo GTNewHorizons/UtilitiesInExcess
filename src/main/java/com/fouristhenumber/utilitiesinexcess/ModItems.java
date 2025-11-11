@@ -5,6 +5,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
@@ -59,7 +60,7 @@ public enum ModItems {
     DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
     ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architectsWand"),
     SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "superArchitectsWand"),
-    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new Item().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
+    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
     FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
