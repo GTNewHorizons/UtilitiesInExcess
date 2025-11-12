@@ -41,9 +41,8 @@ public class ItemInversionSigilActive extends Item {
         }
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
-            player.addChatMessage(new ChatComponentText(getUnlocalizedName(stack)));
             for (int j = 0; j < 14; j++) {
-                if (stack == CHECKED_ITEMS[j]) {
+                if (stack != null && ItemStack.areItemStacksEqual(stack, CHECKED_ITEMS[j])) {
                     hasItem[j] = true;
                     break;
                 }
