@@ -92,6 +92,7 @@ chat.pseudo_inversion_ritual.chestNorthContents= - North chest correct contents:
 chat.pseudo_inversion_ritual.chestEastContents= - East chest correct contents: %s
 chat.pseudo_inversion_ritual.chestSouthContents= - South chest correct contents: %s
 chat.pseudo_inversion_ritual.chestWestContents= - West chest correct contents: %s
+chat.pseudo_inversion_ritual.spiral= - Redstone and String spiral done correctly: %s
 
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held

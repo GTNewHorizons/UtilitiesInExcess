@@ -27,7 +27,7 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
-    private boolean checkSpiral() {
+    private boolean checkSpiral(World world, int x, int y, int z) {
         int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
             { -1, 3 }, { -2, 3 }, { -3, 3 }, { -4, 3 }, { -4, 2 }, { -4, 1 }, { -4, 0 }, { -4, -1 }, { -4, -2 },
             { -4, -3 }, { -4, -4 } };
@@ -41,6 +41,14 @@ public class ItemInversionSigilActive extends Item {
             STRING_SPOTS[2 * i][1] = BASE[i][0];
             STRING_SPOTS[2 * i + 1][0] = BASE[i][1];
             STRING_SPOTS[2 * i + 1][1] = -1 * BASE[i][0];
+        }
+        for (int i = 0; i < 40; i++) {
+            if (world.getBlock(x + REDSTONE_SPOTS[i][0], y, z + REDSTONE_SPOTS[i][1]) != Blocks.redstone_wire) {
+                return false;
+            }
+            if (world.getBlock(x + STRING_SPOTS[i][0], y, z + STRING_SPOTS[i][1]) != Blocks.tripwire) {
+                return false;
+            }
         }
         return true;
     }
@@ -81,14 +89,15 @@ public class ItemInversionSigilActive extends Item {
         if (world.isRemote) return true;
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
-        boolean chestNorthExistsOk = (world.getBlock(x, y, z - 4) == Blocks.chest);
-        boolean chestEastExistsOk = (world.getBlock(x + 4, y, z) == Blocks.chest);
-        boolean chestSouthExistsOk = (world.getBlock(x, y, z + 4) == Blocks.chest);
-        boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
+        boolean chestNorthExistsOk = (world.getBlock(x, y, z - 5) == Blocks.chest);
+        boolean chestEastExistsOk = (world.getBlock(x + 5, y, z) == Blocks.chest);
+        boolean chestSouthExistsOk = (world.getBlock(x, y, z + 5) == Blocks.chest);
+        boolean chestWestExistsOk = (world.getBlock(x - 5, y, z) == Blocks.chest);
         boolean chestNorthContentsOk;
         boolean chestEastContentsOk;
         boolean chestSouthContentsOk;
         boolean chestWestContentsOk;
+        boolean spiralOk = checkSpiral(world, x, y, z);
 
         ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
             new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
@@ -116,22 +125,22 @@ public class ItemInversionSigilActive extends Item {
             new ItemStack(Items.record_far), new ItemStack(Items.record_11), new ItemStack(Items.record_mall),
             new ItemStack(Items.record_wait) };
 
-        if (world.getTileEntity(x, y, z - 4) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(x, y, z - 5) instanceof TileEntityChest chest) {
             chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
         } else {
             chestNorthContentsOk = false;
         }
-        if (world.getTileEntity(x + 4, y, z) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(x + 5, y, z) instanceof TileEntityChest chest) {
             chestEastContentsOk = checkChest(chest, CHEST_EAST_CONTENTS, InversionConfig.eastChestRequiredItems);
         } else {
             chestEastContentsOk = false;
         }
-        if (world.getTileEntity(x, y, z + 4) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(x, y, z + 5) instanceof TileEntityChest chest) {
             chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems);
         } else {
             chestSouthContentsOk = false;
         }
-        if (world.getTileEntity(x - 4, y, z) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(x - 5, y, z) instanceof TileEntityChest chest) {
             chestWestContentsOk = checkChest(chest, CHEST_WEST_CONTENTS, InversionConfig.westChestRequiredItems);
         } else {
             chestWestContentsOk = false;
@@ -191,6 +200,10 @@ public class ItemInversionSigilActive extends Item {
                 StatCollector.translateToLocalFormatted(
                     "chat.pseudo_inversion_ritual.chestWestContents",
                     (chestWestContentsOk ? "✓" : "✗"))));
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector
+                    .translateToLocalFormatted("chat.pseudo_inversion_ritual.spiral", (spiralOk ? "✓" : "✗"))));
         return true;
     }
 
