@@ -27,25 +27,20 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
-    private boolean checkChest(TileEntityChest chest, String direction) {
-        ItemStack[] CHECKED_ITEMS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
-            new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
-            new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
-            new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
-            new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
-        int ITEM_REQUIREMENT = InversionConfig.northChestRequiredItems;
+    private boolean checkChest(TileEntityChest chest, ItemStack[] CHECKED_ITEMS, int ITEM_REQUIREMENT,
+        int CHECKED_ITEMS_SIZE) {
         int requiredItemsAmount = 0;
-        boolean[] hasItem = new boolean[14];
+        boolean[] hasItem = new boolean[20];
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
-            for (int j = 0; j < 14; j++) {
+            for (int j = 0; j < CHECKED_ITEMS_SIZE; j++) {
                 if (stack != null && ItemStack.areItemStacksEqual(stack, CHECKED_ITEMS[j])) {
                     hasItem[j] = true;
                     break;
                 }
             }
         }
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < CHECKED_ITEMS_SIZE; i++) {
             if (hasItem[i]) {
                 requiredItemsAmount++;
             }
@@ -73,10 +68,31 @@ public class ItemInversionSigilActive extends Item {
         boolean chestSouthExistsOk = (world.getBlock(x, y, z + 4) == Blocks.chest);
         boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
         boolean chestNorthContentsOk;
+        boolean chestEastContentsOk;
+        boolean chestSouthContentsOk;
+        boolean chestWestContentsOk;
+
+        ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
+            new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
+            new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
+            new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
+            new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
+
+        ItemStack[] CHEST_SOUTH_CONTENTS = { new ItemStack(Blocks.grass), new ItemStack(Blocks.lapis_ore),
+            new ItemStack(Blocks.dirt), new ItemStack(Blocks.obsidian), new ItemStack(Blocks.sand),
+            new ItemStack(Blocks.diamond_ore), new ItemStack(Blocks.gravel), new ItemStack(Blocks.redstone_ore),
+            new ItemStack(Blocks.gold_ore), new ItemStack(Blocks.clay), new ItemStack(Blocks.iron_ore),
+            new ItemStack(Blocks.emerald_ore), new ItemStack(Blocks.coal_ore) };
+
         if (world.getTileEntity(x, y, z - 4) instanceof TileEntityChest chest) {
-            chestNorthContentsOk = checkChest(chest, "North");
+            chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems, 14);
         } else {
             chestNorthContentsOk = false;
+        }
+        if (world.getTileEntity(x, y, z + 4) instanceof TileEntityChest chest) {
+            chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems, 13);
+        } else {
+            chestSouthContentsOk = false;
         }
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
@@ -118,6 +134,11 @@ public class ItemInversionSigilActive extends Item {
                 StatCollector.translateToLocalFormatted(
                     "chat.pseudo_inversion_ritual.chestNorthContents",
                     (chestNorthContentsOk ? "✓" : "✗"))));
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted(
+                    "chat.pseudo_inversion_ritual.chestSouthContents",
+                    (chestSouthContentsOk ? "✓" : "✗"))));
         return true;
     }
 

@@ -24,6 +24,24 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public static int northChestRequiredItems;
 
+    @Config.Comment("Amount of unique items in the list the east chest has to contain for the pseudo-inversion ritual")
+    @Config.DefaultInt(12)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int eastChestRequiredItems;
+
+    @Config.Comment("Amount of unique items in the list the south chest has to contain for the pseudo-inversion ritual")
+    @Config.DefaultInt(12)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int southChestRequiredItems;
+
+    @Config.Comment("Amount of unique items in the list the west chest has to contain for the pseudo-inversion ritual")
+    @Config.DefaultInt(12)
+    @Config.RangeInt(min = 1)
+    @Config.RequiresMcRestart
+    public static int westChestRequiredItems;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableInvertedIngot;
