@@ -27,7 +27,7 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
-    private boolean checkNorthChest(TileEntityChest chest, EntityPlayer player) {
+    private boolean checkChest(TileEntityChest chest, String direction) {
         ItemStack[] CHECKED_ITEMS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
             new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
             new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
@@ -36,9 +36,6 @@ public class ItemInversionSigilActive extends Item {
         int ITEM_REQUIREMENT = InversionConfig.northChestRequiredItems;
         int requiredItemsAmount = 0;
         boolean[] hasItem = new boolean[14];
-        for (int i = 0; i < 14; i++) {
-            hasItem[i] = false;
-        }
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
             for (int j = 0; j < 14; j++) {
@@ -77,7 +74,7 @@ public class ItemInversionSigilActive extends Item {
         boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
         boolean chestNorthContentsOk;
         if (world.getTileEntity(x, y, z - 4) instanceof TileEntityChest chest) {
-            chestNorthContentsOk = checkNorthChest(chest, player);
+            chestNorthContentsOk = checkChest(chest, "North");
         } else {
             chestNorthContentsOk = false;
         }
