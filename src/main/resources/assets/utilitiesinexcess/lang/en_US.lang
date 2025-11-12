@@ -49,6 +49,15 @@ tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
+item.block_analyzer.name=Block Analyzer
+
+chat.block_analyzer.header=-----Analyzing Block-----
+chat.block_analyzer.blockid=Block ID: %s
+chat.block_analyzer.blockmeta=Block Meta: %s
+chat.block_analyzer.foundTE=-----Found TileEntity %s-----
+chat.block_analyzer.nbttag=%s: %s
+chat.block_analyzer.footer=-----Analysis Complete-----
+
 item.inverted_ingot.name=Inverted Ingot
 item.inverted_ingot.desc.1=This ingot is deteriorating rapidly...
 item.inverted_ingot.desc.2=Will implode in %s seconds!

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBlockAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
@@ -65,6 +66,7 @@ public enum ModItems {
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
     XRAY_GLASSES(ItemConfig.enableXRayGlasses, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_glasses"),
+    BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemBlockAnalyzer(), "block_analyzer"),
 
     ; // leave trailing semicolon
     // spotless:on
