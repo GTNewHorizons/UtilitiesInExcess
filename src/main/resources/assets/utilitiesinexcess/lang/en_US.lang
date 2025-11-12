@@ -88,6 +88,7 @@ chat.pseudo_inversion_ritual.chestNorthExists= - North chest correctly placed: %
 chat.pseudo_inversion_ritual.chestEastExists= - East chest correctly placed: %s
 chat.pseudo_inversion_ritual.chestSouthExists= - South chest correctly placed: %s
 chat.pseudo_inversion_ritual.chestWestExists= - West chest correctly placed: %s
+chat.pseudo_inversion_ritual.chestNorthContents= - North chest correct contents: %s
 
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held

@@ -4,7 +4,6 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +20,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
 public class ItemInversionSigilActive extends Item {
 
@@ -28,13 +28,32 @@ public class ItemInversionSigilActive extends Item {
     private static final int BEACON_SEARCH_RADIUS = 6;
 
     private boolean checkNorthChest(TileEntityChest chest) {
-        Item[] CHECKED_ITEMS = {Items.brick,};
+        ItemStack[] CHECKED_ITEMS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
+            new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
+            new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
+            new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
+            new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
         int ITEM_REQUIREMENT = InversionConfig.northChestRequiredItems;
-        for(int i=0;i<chest.getSizeInventory();i++){
-            ItemStack stack=chest.getStackInSlot(i);
-
+        int requiredItemsAmount = 0;
+        boolean[] hasItem = new boolean[14];
+        for (int i = 0; i < 14; i++) {
+            hasItem[i] = false;
         }
-        return false;
+        for (int i = 0; i < chest.getSizeInventory(); i++) {
+            ItemStack stack = chest.getStackInSlot(i);
+            for (int j = 0; j < 14; j++) {
+                if (stack == CHECKED_ITEMS[j]) {
+                    hasItem[j] = true;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < 14; i++) {
+            if (hasItem[i]) {
+                requiredItemsAmount++;
+            }
+        }
+        return requiredItemsAmount >= ITEM_REQUIREMENT;
     }
 
     @Override
@@ -57,7 +76,7 @@ public class ItemInversionSigilActive extends Item {
         boolean chestSouthExistsOk = (world.getBlock(x, y, z + 4) == Blocks.chest);
         boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
         boolean chestNorthContentsOk;
-        if (world.getTileEntity(x,y,z-4)instanceof TileEntityChest chest) {
+        if (world.getTileEntity(x, y, z - 4) instanceof TileEntityChest chest) {
             chestNorthContentsOk = checkNorthChest(chest);
         } else {
             chestNorthContentsOk = false;
@@ -97,6 +116,11 @@ public class ItemInversionSigilActive extends Item {
                 StatCollector.translateToLocalFormatted(
                     "chat.pseudo_inversion_ritual.chestWestExists",
                     (chestWestExistsOk ? "✓" : "✗"))));
+        player.addChatMessage(
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted(
+                    "chat.pseudo_inversion_ritual.chestNorthContents",
+                    (chestNorthContentsOk ? "✓" : "✗"))));
         return true;
     }
 
