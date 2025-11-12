@@ -11,9 +11,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-public class ItemBlockAnalyzer extends Item {
+public class ItemAnalyzer extends Item {
 
-    public ItemBlockAnalyzer() {
+    public ItemAnalyzer() {
         super();
         this.setTextureName("utilitiesinexcess:block_analyzer");
         this.setUnlocalizedName("block_analyzer");
