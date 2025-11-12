@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -14,13 +15,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemInversionSigilActive extends Item {
 
@@ -89,10 +95,6 @@ public class ItemInversionSigilActive extends Item {
         if (world.isRemote) return true;
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
-        boolean chestNorthExistsOk = (world.getBlock(x, y, z - 5) == Blocks.chest);
-        boolean chestEastExistsOk = (world.getBlock(x + 5, y, z) == Blocks.chest);
-        boolean chestSouthExistsOk = (world.getBlock(x, y, z + 5) == Blocks.chest);
-        boolean chestWestExistsOk = (world.getBlock(x - 5, y, z) == Blocks.chest);
         boolean chestNorthContentsOk;
         boolean chestEastContentsOk;
         boolean chestSouthContentsOk;
@@ -163,26 +165,6 @@ public class ItemInversionSigilActive extends Item {
         player.addChatMessage(
             new ChatComponentText(
                 StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestNorthExists",
-                    (chestNorthExistsOk ? "✓" : "✗"))));
-        player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestEastExists",
-                    (chestEastExistsOk ? "✓" : "✗"))));
-        player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestSouthExists",
-                    (chestSouthExistsOk ? "✓" : "✗"))));
-        player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestWestExists",
-                    (chestWestExistsOk ? "✓" : "✗"))));
-        player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
                     "chat.pseudo_inversion_ritual.chestNorthContents",
                     (chestNorthContentsOk ? "✓" : "✗"))));
         player.addChatMessage(
@@ -205,6 +187,116 @@ public class ItemInversionSigilActive extends Item {
                 StatCollector
                     .translateToLocalFormatted("chat.pseudo_inversion_ritual.spiral", (spiralOk ? "✓" : "✗"))));
         return true;
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void onLivingDeath(LivingDeathEvent event) {
+
+        World world = event.entityLiving.worldObj;
+
+        if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
+            return;
+        }
+
+        if (world.isRemote) return;
+
+        if (!(event.entityLiving instanceof EntityIronGolem)) return;
+
+        if (!player.inventory.hasItem(this)) return;
+
+        int radius = BEACON_SEARCH_RADIUS;
+        int mobX = (int) Math.floor(event.entityLiving.posX);
+        int mobY = (int) Math.floor(event.entityLiving.posY);
+        int mobZ = (int) Math.floor(event.entityLiving.posZ);
+
+        int tableX = 0, tableY = 0, tableZ = 0;
+        boolean found = false;
+
+        for (int dx = -radius; dx <= radius && !found; dx++) {
+            for (int dy = -2; dy <= 2 && !found; dy++) {
+                for (int dz = -radius; dz <= radius && !found; dz++) {
+                    int bx = mobX + dx;
+                    int by = mobY + dy;
+                    int bz = mobZ + dz;
+                    if (world.getBlock(bx, by, bz) == Blocks.enchanting_table) {
+                        tableX = bx;
+                        tableY = by;
+                        tableZ = bz;
+                        found = true;
+                    }
+                }
+            }
+        }
+
+        if (!found) return;
+
+        boolean dimensionOk = (world.provider.dimensionId == 1);
+        boolean chestNorthContentsOk;
+        boolean chestEastContentsOk;
+        boolean chestSouthContentsOk;
+        boolean chestWestContentsOk;
+        boolean spiralOk = checkSpiral(world, tableX, tableY, tableZ);
+
+        ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
+            new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
+            new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
+            new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
+            new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
+
+        int[] POTION_IDS = { 8193, 8194, 8195, 8196, 8197, 8198, 8200, 8201, 8202, 8204, 8205, 8206, 8225, 8226, 8228,
+            8229, 8232, 8233, 8234, 8236, 8257, 8258, 8259, 8260, 8262, 8264, 8265, 8267, 8268, 8269, 8270 };
+        ItemStack[] CHEST_EAST_CONTENTS = new ItemStack[62];
+        for (int i = 0; i < 31; i++) {
+            CHEST_EAST_CONTENTS[2 * i] = new ItemStack(Items.potionitem, 1, POTION_IDS[i]);
+            CHEST_EAST_CONTENTS[2 * i + 1] = new ItemStack(Items.potionitem, 1, POTION_IDS[i] + 8192);
+        }
+
+        ItemStack[] CHEST_SOUTH_CONTENTS = { new ItemStack(Blocks.grass), new ItemStack(Blocks.lapis_ore),
+            new ItemStack(Blocks.dirt), new ItemStack(Blocks.obsidian), new ItemStack(Blocks.sand),
+            new ItemStack(Blocks.diamond_ore), new ItemStack(Blocks.gravel), new ItemStack(Blocks.redstone_ore),
+            new ItemStack(Blocks.gold_ore), new ItemStack(Blocks.clay), new ItemStack(Blocks.iron_ore),
+            new ItemStack(Blocks.emerald_ore), new ItemStack(Blocks.coal_ore) };
+
+        ItemStack[] CHEST_WEST_CONTENTS = { new ItemStack(Items.record_13), new ItemStack(Items.record_mellohi),
+            new ItemStack(Items.record_cat), new ItemStack(Items.record_stal), new ItemStack(Items.record_blocks),
+            new ItemStack(Items.record_strad), new ItemStack(Items.record_chirp), new ItemStack(Items.record_ward),
+            new ItemStack(Items.record_far), new ItemStack(Items.record_11), new ItemStack(Items.record_mall),
+            new ItemStack(Items.record_wait) };
+
+        if (world.getTileEntity(tableX, tableY, tableZ - 5) instanceof TileEntityChest chest) {
+            chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
+        } else {
+            chestNorthContentsOk = false;
+        }
+        if (world.getTileEntity(tableX + 5, tableY, tableZ) instanceof TileEntityChest chest) {
+            chestEastContentsOk = checkChest(chest, CHEST_EAST_CONTENTS, InversionConfig.eastChestRequiredItems);
+        } else {
+            chestEastContentsOk = false;
+        }
+        if (world.getTileEntity(tableX, tableY, tableZ + 5) instanceof TileEntityChest chest) {
+            chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems);
+        } else {
+            chestSouthContentsOk = false;
+        }
+        if (world.getTileEntity(tableX - 5, tableY, tableZ) instanceof TileEntityChest chest) {
+            chestWestContentsOk = checkChest(chest, CHEST_WEST_CONTENTS, InversionConfig.westChestRequiredItems);
+        } else {
+            chestWestContentsOk = false;
+        }
+
+        if (!(dimensionOk && spiralOk
+            && chestNorthContentsOk
+            && chestEastContentsOk
+            && chestSouthContentsOk
+            && chestWestContentsOk)) {
+            return;
+        }
+
+        // Ritual has now succeeded
+
+        if (!world.isRemote) {
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
+        }
     }
 
     public ItemInversionSigilActive() {
