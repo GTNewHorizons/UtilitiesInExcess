@@ -35,7 +35,7 @@ public class ItemInversionSigilActive extends Item {
         int[][] STRING_SPOTS = new int[40][2];
         for (int i = 0; i < 20; i++) {
             REDSTONE_SPOTS[2 * i] = BASE[i];
-            REDSTONE_SPOTS[2 * i + 1][0] = BASE[i][0];
+            REDSTONE_SPOTS[2 * i + 1][0] = -1 * BASE[i][0];
             REDSTONE_SPOTS[2 * i + 1][1] = -1 * BASE[i][1];
             STRING_SPOTS[2 * i][0] = -1 * BASE[i][1];
             STRING_SPOTS[2 * i][1] = BASE[i][0];
