@@ -27,6 +27,24 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
+    private boolean checkSpiral() {
+        int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
+            { -1, 3 }, { -2, 3 }, { -3, 3 }, { -4, 3 }, { -4, 2 }, { -4, 1 }, { -4, 0 }, { -4, -1 }, { -4, -2 },
+            { -4, -3 }, { -4, -4 } };
+        int[][] REDSTONE_SPOTS = new int[40][2];
+        int[][] STRING_SPOTS = new int[40][2];
+        for (int i = 0; i < 20; i++) {
+            REDSTONE_SPOTS[2 * i] = BASE[i];
+            REDSTONE_SPOTS[2 * i + 1][0] = BASE[i][0];
+            REDSTONE_SPOTS[2 * i + 1][1] = -1 * BASE[i][1];
+            STRING_SPOTS[2 * i][0] = -1 * BASE[i][1];
+            STRING_SPOTS[2 * i][1] = BASE[i][0];
+            STRING_SPOTS[2 * i + 1][0] = BASE[i][1];
+            STRING_SPOTS[2 * i + 1][1] = -1 * BASE[i][0];
+        }
+        return true;
+    }
+
     private boolean checkChest(TileEntityChest chest, ItemStack[] CHECKED_ITEMS, int ITEM_REQUIREMENT) {
         int CHECKED_ITEMS_SIZE = CHECKED_ITEMS.length;
         int requiredItemsAmount = 0;
