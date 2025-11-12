@@ -41,6 +41,8 @@ public class BlockEtherealGlass extends BlockGlass {
     public BlockEtherealGlass() {
         super(Material.glass, false);
         setBlockName("ethereal_glass");
+        setHardness(0.3F);
+        setStepSound(soundTypeGlass);
     }
 
     @SideOnly(Side.CLIENT)

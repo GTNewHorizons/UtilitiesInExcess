@@ -82,6 +82,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableEndOfTimePortal;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeGlass;
+
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
 
