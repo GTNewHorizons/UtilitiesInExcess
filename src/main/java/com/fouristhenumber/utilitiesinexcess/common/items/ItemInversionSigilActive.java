@@ -27,7 +27,7 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
-    private boolean checkNorthChest(TileEntityChest chest) {
+    private boolean checkNorthChest(TileEntityChest chest, EntityPlayer player) {
         ItemStack[] CHECKED_ITEMS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
             new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
             new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
@@ -41,6 +41,7 @@ public class ItemInversionSigilActive extends Item {
         }
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
+            player.addChatMessage(new ChatComponentText(getUnlocalizedName(stack)));
             for (int j = 0; j < 14; j++) {
                 if (stack == CHECKED_ITEMS[j]) {
                     hasItem[j] = true;
@@ -77,7 +78,7 @@ public class ItemInversionSigilActive extends Item {
         boolean chestWestExistsOk = (world.getBlock(x - 4, y, z) == Blocks.chest);
         boolean chestNorthContentsOk;
         if (world.getTileEntity(x, y, z - 4) instanceof TileEntityChest chest) {
-            chestNorthContentsOk = checkNorthChest(chest);
+            chestNorthContentsOk = checkNorthChest(chest, player);
         } else {
             chestNorthContentsOk = false;
         }
