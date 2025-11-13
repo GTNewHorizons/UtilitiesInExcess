@@ -18,6 +18,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import org.jetbrains.annotations.NotNull;
@@ -209,7 +210,7 @@ public class ItemInversionSigilActive extends Item {
         int mobY = (int) Math.floor(event.entityLiving.posY);
         int mobZ = (int) Math.floor(event.entityLiving.posZ);
 
-        int tableX = 0, tableY = 0, tableZ = 0;
+        int beaconX = 0, beaconY = 0, beaconZ = 0;
         boolean found = false;
 
         for (int dx = -radius; dx <= radius && !found; dx++) {
@@ -218,10 +219,10 @@ public class ItemInversionSigilActive extends Item {
                     int bx = mobX + dx;
                     int by = mobY + dy;
                     int bz = mobZ + dz;
-                    if (world.getBlock(bx, by, bz) == Blocks.enchanting_table) {
-                        tableX = bx;
-                        tableY = by;
-                        tableZ = bz;
+                    if (world.getBlock(bx, by, bz) == Blocks.beacon) {
+                        beaconX = bx;
+                        beaconY = by;
+                        beaconZ = bz;
                         found = true;
                     }
                 }
@@ -235,7 +236,7 @@ public class ItemInversionSigilActive extends Item {
         boolean chestEastContentsOk;
         boolean chestSouthContentsOk;
         boolean chestWestContentsOk;
-        boolean spiralOk = checkSpiral(world, tableX, tableY, tableZ);
+        boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
 
         ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
             new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
@@ -263,22 +264,22 @@ public class ItemInversionSigilActive extends Item {
             new ItemStack(Items.record_far), new ItemStack(Items.record_11), new ItemStack(Items.record_mall),
             new ItemStack(Items.record_wait) };
 
-        if (world.getTileEntity(tableX, tableY, tableZ - 5) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(beaconX, beaconY, beaconZ - 5) instanceof TileEntityChest chest) {
             chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
         } else {
             chestNorthContentsOk = false;
         }
-        if (world.getTileEntity(tableX + 5, tableY, tableZ) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(beaconX + 5, beaconY, beaconZ) instanceof TileEntityChest chest) {
             chestEastContentsOk = checkChest(chest, CHEST_EAST_CONTENTS, InversionConfig.eastChestRequiredItems);
         } else {
             chestEastContentsOk = false;
         }
-        if (world.getTileEntity(tableX, tableY, tableZ + 5) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(beaconX, beaconY, beaconZ + 5) instanceof TileEntityChest chest) {
             chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems);
         } else {
             chestSouthContentsOk = false;
         }
-        if (world.getTileEntity(tableX - 5, tableY, tableZ) instanceof TileEntityChest chest) {
+        if (world.getTileEntity(beaconX - 5, beaconY, beaconZ) instanceof TileEntityChest chest) {
             chestWestContentsOk = checkChest(chest, CHEST_WEST_CONTENTS, InversionConfig.westChestRequiredItems);
         } else {
             chestWestContentsOk = false;
@@ -305,6 +306,8 @@ public class ItemInversionSigilActive extends Item {
         setTextureName("utilitiesinexcess:inversion_sigil_active");
         setMaxStackSize(1);
         setContainerItem(this);
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
