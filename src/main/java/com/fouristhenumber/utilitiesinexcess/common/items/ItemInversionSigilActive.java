@@ -4,6 +4,7 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.List;
 
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -34,6 +35,9 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
+    public static boolean siege = false;
+    public static int siegeMobsKilled, beaconSpawnX,beaconSpawnY,beaconSpawnZ;
+    public static World beaconSpawnWorld;
     private boolean checkSpiral(World world, int x, int y, int z) {
         int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
             { -1, 3 }, { -2, 3 }, { -3, 3 }, { -4, 3 }, { -4, 2 }, { -4, 1 }, { -4, 0 }, { -4, -1 }, { -4, -2 },
@@ -60,6 +64,36 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
+    private void siegeStart(World world, int beaconX, int beaconY, int beaconZ)
+    {
+        beaconSpawnWorld=world;
+        beaconSpawnX=beaconX;
+        beaconSpawnY=beaconY;
+        beaconSpawnZ=beaconZ;
+        siege=true;
+        siegeMobsKilled=0;
+        //kill all endermen
+        //strike lightning
+        //stop endermen from spawning(done in mob spawning code instead?)
+        //start spawning mobs from the beacon
+    }
+    private void siegeEnd(boolean Won, EntityPlayer player)
+    {
+        siege=false;
+        siegeMobsKilled=0;
+        //let endermen spawn again (done in mob spawning code instead?)
+        //stop spawning mobs from the beacon
+        //kill all siege mobs
+        if(Won)
+        {
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack is = player.inventory.getStackInSlot(i);
+                if (is != null && is.getItem() == this) {
+                    player.inventory.setInventorySlotContents(i, new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get(), 1));
+                }
+            }
+        }
+    }
     private boolean checkChest(TileEntityChest chest, ItemStack[] CHECKED_ITEMS, int ITEM_REQUIREMENT) {
         int CHECKED_ITEMS_SIZE = CHECKED_ITEMS.length;
         int requiredItemsAmount = 0;
@@ -201,7 +235,11 @@ public class ItemInversionSigilActive extends Item {
 
         if (world.isRemote) return;
 
-        if (!(event.entityLiving instanceof EntityIronGolem)) return;
+
+        else if (!(event.entityLiving instanceof EntityIronGolem))
+        {
+            return;
+        }
 
         if (!player.inventory.hasItem(this)) return;
 
@@ -298,6 +336,7 @@ public class ItemInversionSigilActive extends Item {
         if (!world.isRemote) {
             player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
         }
+        siegeStart(world, beaconX, beaconY, beaconZ);
     }
 
     public ItemInversionSigilActive() {
