@@ -49,6 +49,15 @@ tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
+item.block_analyzer.name=Block Analyzer
+
+chat.block_analyzer.header=-----Analyzing Block-----
+chat.block_analyzer.blockid=Block ID: %s
+chat.block_analyzer.blockmeta=Block Meta: %s
+chat.block_analyzer.foundTE=-----Found TileEntity %s-----
+chat.block_analyzer.nbttag=%s: %s
+chat.block_analyzer.footer=-----Analysis Complete-----
+
 item.inverted_ingot.name=Inverted Ingot
 item.inverted_ingot.desc.1=This ingot is deteriorating rapidly...
 item.inverted_ingot.desc.2=Will implode in %s seconds!
@@ -169,6 +178,8 @@ gui.energy.tooltip=RF: %s / %s
 item.golden_bag.name=Golden Bag of Holding
 item.golden_bag.desc=Carries a double chest worth of items
 
+item.xray_glasses.name=X-Ray Glasses
+
 tile.qed.name=QED
 tile.flux_crystal.name=Flux Crystal
 
@@ -219,6 +230,9 @@ tile.marginally_maximised_chest.desc2=Can be opened even with a block above
 tile.significantly_shrunk_chest.name=Significantly Shrunk Chest
 tile.significantly_shrunk_chest.desc=Holds just one item stack
 
+tile.radically_reduced_chest.name=Radically Reduced Chest
+tile.radically_reduced_chest.desc=Holds only a single item
+
 utilitiesinexcess.config.block.sound_muffler=Sound Muffler Configuration
 utilitiesinexcess.config.block.rain_muffler=Rain Muffler Configuration
 
@@ -256,8 +270,17 @@ tile.conveyor.name=Conveyor
 
 tile.underworld_portal.name=Portal to the Underworld
 
-uie.chat.underworld_portal_blocked=§5§oThe portal fizzled out... perhaps the other end is blocked or missing?
+uie.chat.portal_blocked=§5§oThe portal fizzled out... perhaps the other end is blocked or missing?
+
 uie.chat.underworld_safe=§5§oYou no longer feel watched.
 uie.chat.underworld_aggressive=§5§oYour skin begins to crawl. Something does not want you here.
 
 death.attack.underworld-ghost=%1$s wasn't afraid of the dark.
+
+tile.temporal_gate.name=Temporal Gate
+tile.temporal_gate.desc=A portal to the End of Time
+nei.infopage.uie.temporal_gate.1=What remains after the last stars die out and all movement ceases in the universe? Plenty of space for your factories and urban development projects, of course!
+nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there is no rain (unless you re-enabled either in the configs). There is simply you and the endless march of eternity.
+nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
+nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
+nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
