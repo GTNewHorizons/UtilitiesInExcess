@@ -6,9 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -237,17 +235,39 @@ public class ItemInversionSigilActive extends Item {
         siegeTimer--;
         if (siegeTimer <= 0) {
             siegeTimer = 100 + (int) (Math.random() * 61);
+            EntityMob entitymob=null;
+            int mobType=((int) (Math.random()*3))+1;
+            switch(mobType){
+                case 0:
+                    entitymob=new EntityZombie(beaconSpawnWorld);
+                    break;
+                case 1:
+                    entitymob=new EntitySkeleton(beaconSpawnWorld);
+                    break;
+                case 2:
+                    entitymob=new EntitySpider(beaconSpawnWorld);
+                    break;
+                case 3:
+                    entitymob=new EntityCreeper(beaconSpawnWorld);
+                    break;
+            }
+            if(entitymob!=null){
+                entitymob.setPosition(beaconSpawnX,beaconSpawnY,beaconSpawnZ);
+                beaconSpawnWorld.spawnEntityInWorld(entitymob);
+            }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
-        siegeEnd(false, event.player);
+        if (siege) {
+            siegeEnd(false, event.player);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.entity instanceof EntityEnderman && siege) {
+        if (event.entity instanceof EntityEnderman && siege && event.world.provider.dimensionId==1) {
             event.setCanceled(true);
         }
     }
