@@ -235,24 +235,24 @@ public class ItemInversionSigilActive extends Item {
         siegeTimer--;
         if (siegeTimer <= 0) {
             siegeTimer = 100 + (int) (Math.random() * 61);
-            EntityMob entitymob=null;
-            int mobType=((int) (Math.random()*3))+1;
-            switch(mobType){
+            EntityMob entitymob = null;
+            int mobType = ((int) (Math.random() * 3)) + 1;
+            switch (mobType) {
                 case 0:
-                    entitymob=new EntityZombie(beaconSpawnWorld);
+                    entitymob = new EntityZombie(beaconSpawnWorld);
                     break;
                 case 1:
-                    entitymob=new EntitySkeleton(beaconSpawnWorld);
+                    entitymob = new EntitySkeleton(beaconSpawnWorld);
                     break;
                 case 2:
-                    entitymob=new EntitySpider(beaconSpawnWorld);
+                    entitymob = new EntitySpider(beaconSpawnWorld);
                     break;
                 case 3:
-                    entitymob=new EntityCreeper(beaconSpawnWorld);
+                    entitymob = new EntityCreeper(beaconSpawnWorld);
                     break;
             }
-            if(entitymob!=null){
-                entitymob.setPosition(beaconSpawnX,beaconSpawnY,beaconSpawnZ);
+            if (entitymob != null) {
+                entitymob.setPosition(beaconSpawnX, beaconSpawnY, beaconSpawnZ);
                 beaconSpawnWorld.spawnEntityInWorld(entitymob);
             }
         }
@@ -267,7 +267,7 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.entity instanceof EntityEnderman && siege && event.world.provider.dimensionId==1) {
+        if (event.entity instanceof EntityEnderman && siege && event.world.provider.dimensionId == 1) {
             event.setCanceled(true);
         }
     }
