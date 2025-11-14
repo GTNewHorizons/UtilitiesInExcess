@@ -4,10 +4,11 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.List;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,6 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,15 +31,20 @@ import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class ItemInversionSigilActive extends Item {
 
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
 
-    public static boolean siege = false;
-    public static int siegeMobsKilled, beaconSpawnX,beaconSpawnY,beaconSpawnZ;
-    public static World beaconSpawnWorld;
+    // HELLO!!! IF ANYONE IS REVIEWING THIS IT MEANS THAT THESE VARIABLES STILL NEED TO BE INSTANCED TO INDIVIDUAL
+    // PLAYERS!!!
+    private boolean siege = false;
+    private int siegeMobsKilled, beaconSpawnX, beaconSpawnY, beaconSpawnZ, siegeTimer;
+    private World beaconSpawnWorld;
+
     private boolean checkSpiral(World world, int x, int y, int z) {
         int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
             { -1, 3 }, { -2, 3 }, { -3, 3 }, { -4, 3 }, { -4, 2 }, { -4, 1 }, { -4, 0 }, { -4, -1 }, { -4, -2 },
@@ -64,36 +71,37 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private void siegeStart(World world, int beaconX, int beaconY, int beaconZ)
-    {
-        beaconSpawnWorld=world;
-        beaconSpawnX=beaconX;
-        beaconSpawnY=beaconY;
-        beaconSpawnZ=beaconZ;
-        siege=true;
-        siegeMobsKilled=0;
-        //kill all endermen
-        //strike lightning
-        //stop endermen from spawning(done in mob spawning code instead?)
-        //start spawning mobs from the beacon
+    private void siegeStart(World world, int beaconX, int beaconY, int beaconZ) {
+        beaconSpawnWorld = world;
+        beaconSpawnX = beaconX;
+        beaconSpawnY = beaconY;
+        beaconSpawnZ = beaconZ;
+        siege = true;
+        siegeMobsKilled = 0;
+        siegeTimer = 0;
+        // kill all endermen
+        // strike lightning
+        // stop endermen from spawning(done in mob spawning code instead?)
+        // start spawning mobs from the beacon
     }
-    private void siegeEnd(boolean Won, EntityPlayer player)
-    {
-        siege=false;
-        siegeMobsKilled=0;
-        //let endermen spawn again (done in mob spawning code instead?)
-        //stop spawning mobs from the beacon
-        //kill all siege mobs
-        if(Won)
-        {
+
+    private void siegeEnd(boolean Won, EntityPlayer player) {
+        siege = false;
+        siegeMobsKilled = 0;
+        // let endermen spawn again (done in mob spawning code instead?)
+        // stop spawning mobs from the beacon
+        // kill all siege mobs
+        if (Won) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack is = player.inventory.getStackInSlot(i);
                 if (is != null && is.getItem() == this) {
-                    player.inventory.setInventorySlotContents(i, new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get(), 1));
+                    player.inventory
+                        .setInventorySlotContents(i, new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get(), 1));
                 }
             }
         }
     }
+
     private boolean checkChest(TileEntityChest chest, ItemStack[] CHECKED_ITEMS, int ITEM_REQUIREMENT) {
         int CHECKED_ITEMS_SIZE = CHECKED_ITEMS.length;
         int requiredItemsAmount = 0;
@@ -225,6 +233,26 @@ public class ItemInversionSigilActive extends Item {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void whenServerTick(TickEvent.ServerTickEvent event) {
+        siegeTimer--;
+        if (siegeTimer <= 0) {
+            siegeTimer = 100 + (int) (Math.random() * 61);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
+        siegeEnd(false, event.player);
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
+        if (event.entity instanceof EntityEnderman && siege) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onLivingDeath(LivingDeathEvent event) {
 
         World world = event.entityLiving.worldObj;
@@ -235,9 +263,16 @@ public class ItemInversionSigilActive extends Item {
 
         if (world.isRemote) return;
 
-
-        else if (!(event.entityLiving instanceof EntityIronGolem))
-        {
+        if (event.entityLiving instanceof EntityPlayer && siege) {
+            siegeEnd(false, player);
+            return;
+        } else if (event.entityLiving instanceof EntityMob && siege) {
+            siegeMobsKilled++;
+            if (siegeMobsKilled >= 100) {
+                siegeEnd(true, player);
+            }
+            return;
+        } else if (!(event.entityLiving instanceof EntityIronGolem)) {
             return;
         }
 
