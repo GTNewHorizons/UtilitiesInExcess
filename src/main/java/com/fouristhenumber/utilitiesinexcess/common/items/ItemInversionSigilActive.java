@@ -231,6 +231,9 @@ public class ItemInversionSigilActive extends Item {
             new ChatComponentText(
                 StatCollector
                     .translateToLocalFormatted("chat.pseudo_inversion_ritual.spiral", (spiralOk ? "✓" : "✗"))));
+        if (dimensionOk && chestNorthContentsOk && chestEastContentsOk && chestSouthContentsOk && chestWestContentsOk) {
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.ready"));
+        }
         return true;
     }
 
@@ -268,6 +271,7 @@ public class ItemInversionSigilActive extends Item {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (siege) {
+            event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
             siegeEnd(false, event.player);
         }
     }
@@ -291,13 +295,29 @@ public class ItemInversionSigilActive extends Item {
         if (world.isRemote) return;
 
         if (event.entityLiving instanceof EntityPlayer && siege) {
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
             siegeEnd(false, player);
             return;
         } else if (event.entityLiving instanceof EntityMob && siege) {
             siegeMobsKilled++;
-            player.addChatMessage(new ChatComponentTranslation(String.valueOf(siegeMobsKilled)));
-            if (siegeMobsKilled >= 5) {
+            if (siegeMobsKilled >= InversionConfig.SiegeRequiredMobsKill) {
+                player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
                 siegeEnd(true, player);
+            } else if (siegeMobsKilled == (int) (3 * InversionConfig.SiegeRequiredMobsKill) / 4) {
+                player.addChatMessage(
+                    new ChatComponentTranslation(
+                        StatCollector
+                            .translateToLocalFormatted("chat.pseudo_inversion_ritual.threequarters", siegeMobsKilled)));
+            } else if (siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 2) {
+                player.addChatMessage(
+                    new ChatComponentTranslation(
+                        StatCollector
+                            .translateToLocalFormatted("chat.pseudo_inversion_ritual.twoquarters", siegeMobsKilled)));
+            } else if (siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 4) {
+                player.addChatMessage(
+                    new ChatComponentTranslation(
+                        StatCollector
+                            .translateToLocalFormatted("chat.pseudo_inversion_ritual.onequarter", siegeMobsKilled)));
             }
             return;
         } else if (!(event.entityLiving instanceof EntityIronGolem)) {

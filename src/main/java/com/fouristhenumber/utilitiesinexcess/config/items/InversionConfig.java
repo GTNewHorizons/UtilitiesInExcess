@@ -42,6 +42,12 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public static int westChestRequiredItems;
 
+    @Config.Comment("Amount of mobs needed to kill to pass the siege of the ritual")
+    @Config.DefaultInt(7)
+    @Config.RangeInt(min = 4)
+    @Config.RequiresMcRestart
+    public static int SiegeRequiredMobsKill;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableInvertedIngot;
