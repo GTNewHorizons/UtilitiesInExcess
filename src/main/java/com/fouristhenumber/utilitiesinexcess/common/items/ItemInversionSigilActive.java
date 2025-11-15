@@ -44,6 +44,7 @@ public class ItemInversionSigilActive extends Item {
     // PLAYERS!!! DO NOT PUSH THIS TO THE MAIN GAME WITHOUT INSTANCING IT FIRST!!!
     private boolean siege;
     private int siegeMobsKilled, beaconSpawnX, beaconSpawnY, beaconSpawnZ, siegeTimer;
+    private EntityPlayer siegePlayer;
     private World beaconSpawnWorld;
 
     private boolean checkSpiral(World world, int x, int y, int z) {
@@ -77,20 +78,18 @@ public class ItemInversionSigilActive extends Item {
         beaconSpawnX = beaconX;
         beaconSpawnY = beaconY;
         beaconSpawnZ = beaconZ;
+        siegePlayer = Player;
         siege = true;
         siegeMobsKilled = 0;
         siegeTimer = 0;
         // kill all endermen
         // strike lightning
-        // stop endermen from spawning(done in mob spawning code instead?)
-        // start spawning mobs from the beacon
     }
 
     private void siegeEnd(boolean Won, EntityPlayer player) {
         siege = false;
         siegeMobsKilled = 0;
-        // let endermen spawn again (done in mob spawning code instead?)
-        // stop spawning mobs from the beacon
+        siegeTimer = 0;
         // kill all siege mobs
         if (Won) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
@@ -277,6 +276,14 @@ public class ItemInversionSigilActive extends Item {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void whenPlayerLeavesEnd2(PlayerEvent.PlayerRespawnEvent event) {
+        if (siege) {
+            event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
+            siegeEnd(false, event.player);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
         if (event.entity instanceof EntityEnderman && siege && event.world.provider.dimensionId == 1) {
             event.setResult(Event.Result.DENY);
@@ -289,16 +296,19 @@ public class ItemInversionSigilActive extends Item {
         World world = event.entityLiving.worldObj;
 
         if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
+            if (event.entityLiving instanceof EntityPlayer deadplayer && siege) {
+                if (deadplayer == siegePlayer) {
+                    siegePlayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
+                    siegeEnd(false, siegePlayer);
+                    return;
+                }
+            }
             return;
         }
 
         if (world.isRemote) return;
 
-        if (event.entityLiving instanceof EntityPlayer && siege) {
-            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
-            siegeEnd(false, player);
-            return;
-        } else if (event.entityLiving instanceof EntityMob && siege) {
+        if (event.entityLiving instanceof EntityMob && siege) {
             siegeMobsKilled++;
             if (siegeMobsKilled >= InversionConfig.SiegeRequiredMobsKill) {
                 player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
