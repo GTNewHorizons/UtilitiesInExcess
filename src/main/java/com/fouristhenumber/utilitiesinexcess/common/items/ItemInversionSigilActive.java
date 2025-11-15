@@ -6,7 +6,9 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -39,6 +41,7 @@ public class ItemInversionSigilActive extends Item {
 
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
+    private final int[][] BOLT_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
     // HELLO!!! IF ANYONE IS REVIEWING THIS IT MEANS THAT THESE VARIABLES STILL NEED TO BE INSTANCED TO INDIVIDUAL
     // PLAYERS!!! DO NOT PUSH THIS TO THE MAIN GAME WITHOUT INSTANCING IT FIRST!!!
@@ -82,15 +85,31 @@ public class ItemInversionSigilActive extends Item {
         siege = true;
         siegeMobsKilled = 0;
         siegeTimer = 0;
-        // kill all endermen
-        // strike lightning
+        for (Entity curentity : world.loadedEntityList) {
+            if (curentity instanceof EntityEnderman) {
+                curentity.setDead();
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            EntityLightningBolt bolt = new EntityLightningBolt(
+                world,
+                beaconX + BOLT_POSITIONS[i][0] + 0.5,
+                beaconY + 0.5,
+                beaconZ + BOLT_POSITIONS[i][1] + 0.5);
+            world.addWeatherEffect(bolt);
+            world.setBlock(beaconX + BOLT_POSITIONS[i][0], beaconY, beaconZ + BOLT_POSITIONS[i][1], Blocks.air);
+        }
     }
 
     private void siegeEnd(boolean Won, EntityPlayer player) {
         siege = false;
         siegeMobsKilled = 0;
         siegeTimer = 0;
-        // kill all siege mobs
+        for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
+            if (curentity instanceof EntityMob) {
+                curentity.setDead();
+            }
+        }
         if (Won) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack is = player.inventory.getStackInSlot(i);
@@ -299,7 +318,7 @@ public class ItemInversionSigilActive extends Item {
             if (event.entityLiving instanceof EntityPlayer deadplayer && siege) {
                 if (deadplayer == siegePlayer) {
                     siegePlayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
-                    siegeEnd(false, siegePlayer);
+                    siegeEnd(false, deadplayer);
                     return;
                 }
             }
