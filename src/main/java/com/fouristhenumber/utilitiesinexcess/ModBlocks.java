@@ -15,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFluxCrystal;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
@@ -22,6 +23,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximi
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalEndOfTime;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockQED;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRadicallyReducedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
@@ -104,6 +106,8 @@ public enum ModBlocks {
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
+    QED(BlockConfig.enableQED, new BlockQED(), "qed"),
+    FLUX_CRYSTAL(BlockConfig.enableQED, new BlockFluxCrystal(), "flux_crystal"),
     ; // leave trailing semicolon
     // spotless:on
 
