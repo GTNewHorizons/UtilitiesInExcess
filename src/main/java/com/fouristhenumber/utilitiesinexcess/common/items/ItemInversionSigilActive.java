@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.awakenedInversionDurability;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -21,6 +22,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -28,6 +30,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.entities.EntitySiegeProperty;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -42,13 +45,25 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] BOLT_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
+    private final String PROP_KEY = "entity-siege";
+    private final World beaconSpawnWorld = DimensionManager.getWorld(1);
 
-    // HELLO!!! IF ANYONE IS REVIEWING THIS IT MEANS THAT THESE VARIABLES STILL NEED TO BE INSTANCED TO INDIVIDUAL
-    // PLAYERS!!! DO NOT PUSH THIS TO THE MAIN GAME WITHOUT INSTANCING IT FIRST!!!
-    private boolean siege;
-    private int siegeMobsKilled, beaconSpawnX, beaconSpawnY, beaconSpawnZ, siegeTimer;
-    private EntityPlayer siegePlayer;
-    private World beaconSpawnWorld;
+    private EntitySiegeProperty getProperties(EntityPlayer player) {
+        return (EntitySiegeProperty) player.getExtendedProperties(PROP_KEY);
+    }
+
+    private List<EntityPlayer> getSiegePlayers() {
+        List<EntityPlayer> siegePlayers = new ArrayList<>();
+        for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
+            if (curentity instanceof EntityPlayer player
+                && curentity.getExtendedProperties(PROP_KEY) instanceof EntitySiegeProperty) {
+                if (getProperties(player).siege) {
+                    siegePlayers.add(player);
+                }
+            }
+        }
+        return siegePlayers;
+    }
 
     private boolean checkSpiral(World world, int x, int y, int z) {
         int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
@@ -76,15 +91,14 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private void siegeStart(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer Player) {
-        beaconSpawnWorld = world;
-        beaconSpawnX = beaconX;
-        beaconSpawnY = beaconY;
-        beaconSpawnZ = beaconZ;
-        siegePlayer = Player;
-        siege = true;
-        siegeMobsKilled = 0;
-        siegeTimer = 0;
+    private void siegeStart(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
+        EntitySiegeProperty source = getProperties(player);
+        source.beaconSpawnX = beaconX;
+        source.beaconSpawnY = beaconY;
+        source.beaconSpawnZ = beaconZ;
+        source.siege = true;
+        source.siegeMobsKilled = 0;
+        source.siegeTimer = 0;
         for (Entity curentity : world.loadedEntityList) {
             if (curentity instanceof EntityEnderman) {
                 curentity.setDead();
@@ -102,9 +116,10 @@ public class ItemInversionSigilActive extends Item {
     }
 
     private void siegeEnd(boolean Won, EntityPlayer player) {
-        siege = false;
-        siegeMobsKilled = 0;
-        siegeTimer = 0;
+        EntitySiegeProperty source = getProperties(player);
+        source.siege = false;
+        source.siegeMobsKilled = 0;
+        source.siegeTimer = 0;
         for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
             if (curentity instanceof EntityMob) {
                 curentity.setDead();
@@ -257,38 +272,45 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenServerTick(TickEvent.ServerTickEvent event) {
-        if (siege) {
-            siegeTimer--;
-        }
-        if (siegeTimer <= 0 && siege) {
-            siegeTimer = 60 + beaconSpawnWorld.rand.nextInt(41);
-            EntityMob entitymob = null;
-            int mobType = beaconSpawnWorld.rand.nextInt(4);
-            switch (mobType) {
-                case 0:
-                    entitymob = new EntityZombie(beaconSpawnWorld);
-                    break;
-                case 1:
-                    entitymob = new EntitySkeleton(beaconSpawnWorld);
-                    break;
-                case 2:
-                    entitymob = new EntitySpider(beaconSpawnWorld);
-                    break;
-                case 3:
-                    entitymob = new EntityCreeper(beaconSpawnWorld);
-                    break;
+        List<EntityPlayer> playerList = getSiegePlayers();
+        for (EntityPlayer player : playerList) {
+            EntitySiegeProperty properties = getProperties(player);
+            if (properties.siege) {
+                properties.siegeTimer--;
             }
-            int offsetX = beaconSpawnWorld.rand.nextInt(11) - 5, offsetZ = beaconSpawnWorld.rand.nextInt(11) - 5;
-            entitymob.setPosition(beaconSpawnX + offsetX, beaconSpawnY, beaconSpawnZ + offsetZ);
-            beaconSpawnWorld.spawnEntityInWorld(entitymob);
-            entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                .setBaseValue(7.0D);
+            if (properties.siegeTimer <= 0 && properties.siege) {
+                properties.siegeTimer = 60 + beaconSpawnWorld.rand.nextInt(41);
+                EntityMob entitymob = null;
+                int mobType = beaconSpawnWorld.rand.nextInt(4);
+                switch (mobType) {
+                    case 0:
+                        entitymob = new EntityZombie(beaconSpawnWorld);
+                        break;
+                    case 1:
+                        entitymob = new EntitySkeleton(beaconSpawnWorld);
+                        break;
+                    case 2:
+                        entitymob = new EntitySpider(beaconSpawnWorld);
+                        break;
+                    case 3:
+                        entitymob = new EntityCreeper(beaconSpawnWorld);
+                        break;
+                }
+                int offsetX = beaconSpawnWorld.rand.nextInt(11) - 5, offsetZ = beaconSpawnWorld.rand.nextInt(11) - 5;
+                entitymob.setPosition(
+                    properties.beaconSpawnX + offsetX,
+                    properties.beaconSpawnY,
+                    properties.beaconSpawnZ + offsetZ);
+                beaconSpawnWorld.spawnEntityInWorld(entitymob);
+                entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                    .setBaseValue(8.0D);
+            }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (siege) {
+        if (getProperties(event.player).siege) {
             event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
             siegeEnd(false, event.player);
         }
@@ -296,7 +318,7 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenPlayerLeavesEnd2(PlayerEvent.PlayerRespawnEvent event) {
-        if (siege) {
+        if (getProperties(event.player).siege) {
             event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
             siegeEnd(false, event.player);
         }
@@ -304,7 +326,8 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.entity instanceof EntityEnderman && siege && event.world.provider.dimensionId == 1) {
+        if (event.entity instanceof EntityEnderman && (!getSiegePlayers().isEmpty())
+            && event.world.provider.dimensionId == 1) {
             event.setResult(Event.Result.DENY);
         }
     }
@@ -315,38 +338,40 @@ public class ItemInversionSigilActive extends Item {
         World world = event.entityLiving.worldObj;
 
         if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
-            if (event.entityLiving instanceof EntityPlayer deadplayer && siege) {
-                if (deadplayer == siegePlayer) {
-                    siegePlayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
-                    siegeEnd(false, deadplayer);
-                    return;
-                }
+            if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
+                deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
+                siegeEnd(false, deadplayer);
+                return;
             }
             return;
         }
+        EntitySiegeProperty source = getProperties(player);
 
         if (world.isRemote) return;
 
-        if (event.entityLiving instanceof EntityMob && siege) {
-            siegeMobsKilled++;
-            if (siegeMobsKilled >= InversionConfig.SiegeRequiredMobsKill) {
+        if (event.entityLiving instanceof EntityMob && source.siege) {
+            source.siegeMobsKilled++;
+            if (source.siegeMobsKilled >= InversionConfig.SiegeRequiredMobsKill) {
                 player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
                 siegeEnd(true, player);
-            } else if (siegeMobsKilled == (int) (3 * InversionConfig.SiegeRequiredMobsKill) / 4) {
+            } else if (source.siegeMobsKilled == (int) (3 * InversionConfig.SiegeRequiredMobsKill) / 4) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
-                        StatCollector
-                            .translateToLocalFormatted("chat.pseudo_inversion_ritual.threequarters", siegeMobsKilled)));
-            } else if (siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 2) {
+                        StatCollector.translateToLocalFormatted(
+                            "chat.pseudo_inversion_ritual.threequarters",
+                            source.siegeMobsKilled)));
+            } else if (source.siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 2) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
-                        StatCollector
-                            .translateToLocalFormatted("chat.pseudo_inversion_ritual.twoquarters", siegeMobsKilled)));
-            } else if (siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 4) {
+                        StatCollector.translateToLocalFormatted(
+                            "chat.pseudo_inversion_ritual.twoquarters",
+                            source.siegeMobsKilled)));
+            } else if (source.siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 4) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
-                        StatCollector
-                            .translateToLocalFormatted("chat.pseudo_inversion_ritual.onequarter", siegeMobsKilled)));
+                        StatCollector.translateToLocalFormatted(
+                            "chat.pseudo_inversion_ritual.onequarter",
+                            source.siegeMobsKilled)));
             }
             return;
         } else if (!(event.entityLiving instanceof EntityIronGolem)) {
@@ -445,10 +470,10 @@ public class ItemInversionSigilActive extends Item {
 
         // Ritual has now succeeded
 
-        if (!world.isRemote && !siege) {
+        if (!world.isRemote && !source.siege) {
             player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
         }
-        if (!siege) {
+        if (!source.siege) {
             siegeStart(world, beaconX, beaconY, beaconZ, player);
         }
     }
