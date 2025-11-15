@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 import static com.cleanroommc.modularui.drawable.GuiTextures.PROGRESS_ARROW;
 import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.scanForBlock;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +36,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
@@ -50,19 +50,12 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
     private int craftingProgress = 0;
     private boolean crafting = false;
-    private final Set<BlockPos> crystals = new HashSet<>();
-    public boolean queuedScan = false;
+    private int crystals = 0;
 
     @Override
     public void updateEntity() {
-        if (worldObj.getTotalWorldTime() % 20 == 0 && queuedScan) {
-            scan();
-            queuedScan = false;
-        }
         if (crafting) {
-            for (BlockPos pos : crystals) {
-                craftingProgress++;
-            }
+            craftingProgress += crystals;
         }
         if (craftingProgress >= 500) {
             ItemStack newStack = QEDRegistry.instance()
@@ -71,7 +64,9 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                 ItemStack outputStack = craftResult.getStackInSlot(0);
 
                 if (outputStack == null) craftResult.setInventorySlotContents(0, newStack);
-                else outputStack.stackSize += newStack.stackSize;
+                else if (canInsertToOutput(newStack)) outputStack.stackSize += newStack.stackSize;
+                else UtilitiesInExcess.LOG
+                    .error("Failed to complete QED recipe because output stack did not match craft result.");
             }
             craftingProgress = 0;
             crafting = false;
@@ -82,21 +77,14 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
     private void scan() {
         Set<BlockPos> positions = scanForBlock(worldObj, xCoord, yCoord, zCoord, 9, ModBlocks.FLUX_CRYSTAL.get());
-        for (BlockPos pos : positions) {
-            addCrystal(new BlockPos(pos.x, pos.y, pos.z));
-        }
-    }
-
-    @Override
-    public void validate() {
-        queuedScan = true;
-        super.validate();
+        crystals = positions.size();
     }
 
     private void updateCraftingResult() {
         ItemStack stack = QEDRegistry.instance()
             .findRecipe(craftMatrix, false);
 
+        if (stack != null) scan();
         crafting = stack != null && canInsertToOutput(stack);
         preview = stack != null ? stack : fakeItem;
     }
@@ -112,14 +100,6 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         return (outputStack.stackSize + toInsert.stackSize) <= outputStack.getMaxStackSize();
     }
 
-    public void addCrystal(BlockPos position) {
-        crystals.add(position);
-    }
-
-    public void removeCrystal(BlockPos position) {
-        crystals.remove(position);
-    }
-
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
 
@@ -128,7 +108,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
         syncManager.syncValue("preview", GenericSyncValue.forItem(() -> preview, null));
         IntSyncValue craftingSyncer = new IntSyncValue(() -> craftingProgress);
-        IntSyncValue connected = new IntSyncValue(crystals::size);
+        IntSyncValue connected = new IntSyncValue(() -> crystals);
         syncManager.syncValue("craftingProgress", craftingSyncer);
         syncManager.syncValue("connected", connected);
 
@@ -261,9 +241,9 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        NBTTagList nbttaglist = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         for (int index = 0; index < nbttaglist.tagCount(); index++) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(index);
             int slot = nbttagcompound1.getByte("Slot") & 255;
@@ -271,11 +251,14 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                 setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(nbttagcompound1));
             }
         }
+        craftingProgress = tag.getInteger("craftingProgress");
+        crafting = tag.getBoolean("crafting");
+        crystals = tag.getInteger("crystals");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
         NBTTagList nbttaglist = new NBTTagList();
         for (int index = 0; index < getSizeInventory(); index++) {
             ItemStack curStack = getStackInSlot(index);
@@ -286,7 +269,10 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
-        nbttagcompound.setTag("Items", nbttaglist);
+        tag.setTag("Items", nbttaglist);
+        tag.setInteger("craftingProgres", craftingProgress);
+        tag.setBoolean("crafting", crafting);
+        tag.setInteger("crystals", crystals);
     }
 
     public static class ContainerDummy extends Container {

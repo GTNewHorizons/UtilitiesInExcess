@@ -33,6 +33,10 @@ public class UIEUtils {
     }
 
     public static Set<BlockPos> scanForBlock(World world, int x, int y, int z, int radius, Block findBlock) {
+        return scanForBlock(world, x, y, z, radius, findBlock, 0);
+    }
+
+    public static Set<BlockPos> scanForBlock(World world, int x, int y, int z, int radius, Block findBlock, int meta) {
         Set<BlockPos> positions = new HashSet<>();
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dy = -radius; dy <= radius; dy++) {
@@ -48,7 +52,8 @@ public class UIEUtils {
 
                     if (!world.blockExists(nx, ny, nz)) continue;
 
-                    if (world.getBlock(nx, ny, nz) == findBlock) positions.add(new BlockPos(nx, ny, nz));
+                    if (world.getBlock(nx, ny, nz) == findBlock && world.getBlockMetadata(nx, ny, nz) == meta)
+                        positions.add(new BlockPos(nx, ny, nz));
                 }
             }
         }
