@@ -71,6 +71,9 @@ public class ItemInversionSigilActive extends Item {
             { -4, -3 }, { -4, -4 } };
         int[][] REDSTONE_SPOTS = new int[40][2];
         int[][] STRING_SPOTS = new int[40][2];
+        int[][] BASE_ALTERNATE = new int[20][2];
+        int[][] REDSTONE_SPOTS_ALTERNATE = new int[40][2];
+        int[][] STRING_SPOTS_ALTERNATE = new int[40][2];
         for (int i = 0; i < 20; i++) {
             REDSTONE_SPOTS[2 * i] = BASE[i];
             REDSTONE_SPOTS[2 * i + 1][0] = -1 * BASE[i][0];
@@ -80,15 +83,41 @@ public class ItemInversionSigilActive extends Item {
             STRING_SPOTS[2 * i + 1][0] = BASE[i][1];
             STRING_SPOTS[2 * i + 1][1] = -1 * BASE[i][0];
         }
+        for (int i = 0; i < 20; i++) {
+            BASE_ALTERNATE[i][0] = -1 * BASE[i][1];
+            BASE_ALTERNATE[i][1] = BASE[i][0];
+            REDSTONE_SPOTS_ALTERNATE[2 * i] = BASE_ALTERNATE[i];
+            REDSTONE_SPOTS_ALTERNATE[2 * i + 1][0] = -1 * BASE_ALTERNATE[i][0];
+            REDSTONE_SPOTS_ALTERNATE[2 * i + 1][1] = -1 * BASE_ALTERNATE[i][1];
+            STRING_SPOTS_ALTERNATE[2 * i][0] = -1 * BASE_ALTERNATE[i][1];
+            STRING_SPOTS_ALTERNATE[2 * i][1] = BASE_ALTERNATE[i][0];
+            STRING_SPOTS_ALTERNATE[2 * i + 1][0] = BASE_ALTERNATE[i][1];
+            STRING_SPOTS_ALTERNATE[2 * i + 1][1] = -1 * BASE_ALTERNATE[i][0];
+        }
+        boolean baseTrue = true, alternateTrue = true;
         for (int i = 0; i < 40; i++) {
             if (world.getBlock(x + REDSTONE_SPOTS[i][0], y, z + REDSTONE_SPOTS[i][1]) != Blocks.redstone_wire) {
-                return false;
+                baseTrue = false;
+                break;
             }
             if (world.getBlock(x + STRING_SPOTS[i][0], y, z + STRING_SPOTS[i][1]) != Blocks.tripwire) {
-                return false;
+                baseTrue = false;
+                break;
             }
         }
-        return true;
+        for (int i = 0; i < 40; i++) {
+            if (world.getBlock(x + REDSTONE_SPOTS_ALTERNATE[i][0], y, z + REDSTONE_SPOTS_ALTERNATE[i][1])
+                != Blocks.redstone_wire) {
+                alternateTrue = false;
+                break;
+            }
+            if (world.getBlock(x + STRING_SPOTS_ALTERNATE[i][0], y, z + STRING_SPOTS_ALTERNATE[i][1])
+                != Blocks.tripwire) {
+                alternateTrue = false;
+                break;
+            }
+        }
+        return baseTrue || alternateTrue;
     }
 
     private void siegeStart(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
