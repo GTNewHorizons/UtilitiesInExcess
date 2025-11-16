@@ -663,6 +663,16 @@ public class RecipeLoader {
                     ModItems.INVERTED_INGOT.newItemStack()));
         }
 
+        if (ModItems.INVERTED_INGOT.isEnabled()) {
+            GameRegistry.addRecipe(
+                new RecipeInvertedIngotStable(
+                    1,
+                    3,
+                    new ItemStack[] { new ItemStack(Items.iron_ingot), ModItems.PSEUDO_INVERSION_SIGIL.newItemStack(),
+                        new ItemStack(Items.diamond), },
+                    ModItems.INVERTED_INGOT.newItemStack()));
+        }
+
         // Inverted Nugget
         addShapedRecipe(
             ModItems.INVERTED_NUGGET,
