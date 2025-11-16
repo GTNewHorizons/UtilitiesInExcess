@@ -272,8 +272,8 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenServerTick(TickEvent.ServerTickEvent event) {
-        if(beaconSpawnWorld==null){
-            beaconSpawnWorld=DimensionManager.getWorld(1);
+        if (beaconSpawnWorld == null) {
+            beaconSpawnWorld = DimensionManager.getWorld(1);
         }
         List<EntityPlayer> playerList = getSiegePlayers();
         for (EntityPlayer player : playerList) {
