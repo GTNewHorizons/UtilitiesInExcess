@@ -46,7 +46,6 @@ public class ItemInversionSigilActive extends Item {
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] BOLT_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
     private final String PROP_KEY = "entity-siege";
-    private World beaconSpawnWorld = DimensionManager.getWorld(1);
 
     private EntitySiegeProperty getProperties(EntityPlayer player) {
         return (EntitySiegeProperty) player.getExtendedProperties(PROP_KEY);
@@ -54,7 +53,7 @@ public class ItemInversionSigilActive extends Item {
 
     private List<EntityPlayer> getSiegePlayers() {
         List<EntityPlayer> siegePlayers = new ArrayList<>();
-        for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
+        for (Entity curentity : DimensionManager.getWorld(1).loadedEntityList) {
             if (curentity instanceof EntityPlayer player
                 && curentity.getExtendedProperties(PROP_KEY) instanceof EntitySiegeProperty) {
                 if (getProperties(player).siege) {
@@ -128,7 +127,7 @@ public class ItemInversionSigilActive extends Item {
         source.siege = true;
         source.siegeMobsKilled = 0;
         source.siegeTimer = 0;
-        for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
+        for (Entity curentity : player.getEntityWorld().loadedEntityList) {
             if (curentity instanceof EntityEnderman) {
                 curentity.setDead();
             }
@@ -149,7 +148,7 @@ public class ItemInversionSigilActive extends Item {
         source.siege = false;
         source.siegeMobsKilled = 0;
         source.siegeTimer = 0;
-        for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
+        for (Entity curentity : player.getEntityWorld().loadedEntityList) {
             if (curentity instanceof EntityMob) {
                 curentity.setDead();
             }
@@ -301,9 +300,6 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenServerTick(TickEvent.ServerTickEvent event) {
-        if (beaconSpawnWorld == null) {
-            beaconSpawnWorld = DimensionManager.getWorld(1);
-        }
         List<EntityPlayer> playerList = getSiegePlayers();
         for (EntityPlayer player : playerList) {
             EntitySiegeProperty properties = getProperties(player);
@@ -311,29 +307,31 @@ public class ItemInversionSigilActive extends Item {
                 properties.siegeTimer--;
             }
             if (properties.siegeTimer <= 0 && properties.siege) {
-                properties.siegeTimer = 60 + beaconSpawnWorld.rand.nextInt(41);
+                properties.siegeTimer = 60 + player.getEntityWorld().rand.nextInt(41);
                 EntityMob entitymob = null;
-                int mobType = beaconSpawnWorld.rand.nextInt(4);
+                int mobType = player.getEntityWorld().rand.nextInt(4);
                 switch (mobType) {
                     case 0:
-                        entitymob = new EntityZombie(beaconSpawnWorld);
+                        entitymob = new EntityZombie(player.getEntityWorld());
                         break;
                     case 1:
-                        entitymob = new EntitySkeleton(beaconSpawnWorld);
+                        entitymob = new EntitySkeleton(player.getEntityWorld());
                         break;
                     case 2:
-                        entitymob = new EntitySpider(beaconSpawnWorld);
+                        entitymob = new EntitySpider(player.getEntityWorld());
                         break;
                     case 3:
-                        entitymob = new EntityCreeper(beaconSpawnWorld);
+                        entitymob = new EntityCreeper(player.getEntityWorld());
                         break;
                 }
-                int offsetX = beaconSpawnWorld.rand.nextInt(11) - 5, offsetZ = beaconSpawnWorld.rand.nextInt(11) - 5;
+                int offsetX = player.getEntityWorld().rand.nextInt(11) - 5,
+                    offsetZ = player.getEntityWorld().rand.nextInt(11) - 5;
                 entitymob.setPosition(
                     properties.beaconSpawnX + offsetX,
                     properties.beaconSpawnY,
                     properties.beaconSpawnZ + offsetZ);
-                beaconSpawnWorld.spawnEntityInWorld(entitymob);
+                player.getEntityWorld()
+                    .spawnEntityInWorld(entitymob);
                 entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
                     .setBaseValue(8.0D);
             }
