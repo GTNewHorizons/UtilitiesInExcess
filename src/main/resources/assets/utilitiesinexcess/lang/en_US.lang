@@ -77,6 +77,7 @@ item.bedrockium_ingot.name=Bedrockium Ingot
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.pseudo_inversion_sigil=Pseudo-Inversion Sigil
 item.inversion_sigil_active.desc=Uses Remaining: %s
 
 chat.inversion_ritual.header=Ritual Of Inversion:
@@ -86,6 +87,25 @@ chat.inversion_ritual.grass= - Surrounded by natural earth: %s
 chat.inversion_ritual.darkness= - There is no light: %s
 chat.inversion_ritual.moon= - Can see the moon: %s
 chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
+
+chat.pseudo_inversion_ritual.header=Ritual Of Pseudo-Inversion:
+chat.pseudo_inversion_ritual.dimension= - Dimension is correct: ✓ 
+chat.pseudo_inversion_ritual.overworld= - Dimension is incorrect: Too much natural earth 
+chat.pseudo_inversion_ritual.nether= - Dimension is incorrect: Too hot 
+chat.pseudo_inversion_ritual.misc= - Dimension is incorrect: Too otherworldly
+chat.pseudo_inversion_ritual.chestNorthContents= - North chest: %s
+chat.pseudo_inversion_ritual.chestEastContents= - East chest: %s
+chat.pseudo_inversion_ritual.chestSouthContents= - South chest: %s
+chat.pseudo_inversion_ritual.chestWestContents= - West chest: %s
+chat.pseudo_inversion_ritual.spiral= - Redstone and String spiral done correctly: %s
+chat.pseudo_inversion_ritual.complete= Good luck. Survival is key...
+chat.pseudo_inversion_ritual.ready= Perform the ritual
+chat.pseudo_inversion_ritual.death= Unfortunately, your untimely demise has resulted in a fruitless ritual...
+chat.pseudo_inversion_ritual.leftEnd= Unfortunately, your sudden departure has resulted in a fruitless ritual...
+chat.pseudo_inversion_ritual.onequarter= You've held strong, but there is still a long way to go. %s Mobs killed.
+chat.pseudo_inversion_ritual.twoquarters= You're halfway there. Can you do it? %s Mobs killed.
+chat.pseudo_inversion_ritual.threequarters= You're almost done, don't let up now. %s Mobs killed.
+chat.pseudo_inversion_ritual.victory= You've proven yourself, and your sigil has been refreshed anew as a reward. Cherish it.
 
 item.gluttons_axe.name=Glutton's Axe
 item.gluttons_axe.desc.1=Sates the bearer's hunger while held
