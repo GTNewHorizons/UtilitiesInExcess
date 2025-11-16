@@ -53,6 +53,9 @@ public class ItemInversionSigilActive extends Item {
 
     private List<EntityPlayer> getSiegePlayers() {
         List<EntityPlayer> siegePlayers = new ArrayList<>();
+        if (net.minecraftforge.common.DimensionManager.getWorld(1) == null) {
+            return siegePlayers;
+        }
         for (Entity curentity : DimensionManager.getWorld(1).loadedEntityList) {
             if (curentity instanceof EntityPlayer player
                 && curentity.getExtendedProperties(PROP_KEY) instanceof EntitySiegeProperty) {
@@ -300,6 +303,7 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenServerTick(TickEvent.ServerTickEvent event) {
+
         List<EntityPlayer> playerList = getSiegePlayers();
         for (EntityPlayer player : playerList) {
             EntitySiegeProperty properties = getProperties(player);
