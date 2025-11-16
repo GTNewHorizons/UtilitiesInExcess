@@ -46,7 +46,7 @@ public class ItemInversionSigilActive extends Item {
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] BOLT_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
     private final String PROP_KEY = "entity-siege";
-    private final World beaconSpawnWorld = DimensionManager.getWorld(1);
+    private World beaconSpawnWorld = DimensionManager.getWorld(1);
 
     private EntitySiegeProperty getProperties(EntityPlayer player) {
         return (EntitySiegeProperty) player.getExtendedProperties(PROP_KEY);
@@ -99,7 +99,7 @@ public class ItemInversionSigilActive extends Item {
         source.siege = true;
         source.siegeMobsKilled = 0;
         source.siegeTimer = 0;
-        for (Entity curentity : world.loadedEntityList) {
+        for (Entity curentity : beaconSpawnWorld.loadedEntityList) {
             if (curentity instanceof EntityEnderman) {
                 curentity.setDead();
             }
@@ -140,7 +140,7 @@ public class ItemInversionSigilActive extends Item {
     private boolean checkChest(TileEntityChest chest, ItemStack[] CHECKED_ITEMS, int ITEM_REQUIREMENT) {
         int CHECKED_ITEMS_SIZE = CHECKED_ITEMS.length;
         int requiredItemsAmount = 0;
-        boolean[] hasItem = new boolean[70];
+        boolean[] hasItem = new boolean[CHECKED_ITEMS_SIZE];
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
             for (int j = 0; j < CHECKED_ITEMS_SIZE; j++) {
@@ -272,6 +272,9 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenServerTick(TickEvent.ServerTickEvent event) {
+        if(beaconSpawnWorld==null){
+            beaconSpawnWorld=DimensionManager.getWorld(1);
+        }
         List<EntityPlayer> playerList = getSiegePlayers();
         for (EntityPlayer player : playerList) {
             EntitySiegeProperty properties = getProperties(player);

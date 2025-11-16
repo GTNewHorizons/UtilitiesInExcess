@@ -90,9 +90,9 @@ chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transfo
 
 chat.pseudo_inversion_ritual.header=Ritual Of Pseudo-Inversion:
 chat.pseudo_inversion_ritual.dimension= - Dimension is correct: ✓ 
-chat.pseudo_inversion_ritual.overworld= - Dimension is correct: Too much natural earth 
-chat.pseudo_inversion_ritual.nether= - Dimension is correct: Too hot 
-chat.pseudo_inversion_ritual.misc= - Dimension is correct: Too otherworldly
+chat.pseudo_inversion_ritual.overworld= - Dimension is incorrect: Too much natural earth 
+chat.pseudo_inversion_ritual.nether= - Dimension is incorrect: Too hot 
+chat.pseudo_inversion_ritual.misc= - Dimension is incorrect: Too otherworldly
 chat.pseudo_inversion_ritual.chestNorthContents= - North chest: %s
 chat.pseudo_inversion_ritual.chestEastContents= - East chest: %s
 chat.pseudo_inversion_ritual.chestSouthContents= - South chest: %s
