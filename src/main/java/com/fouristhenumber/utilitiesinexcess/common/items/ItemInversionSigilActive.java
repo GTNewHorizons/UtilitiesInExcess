@@ -47,13 +47,34 @@ public class ItemInversionSigilActive extends Item {
     private final int[][] BOLT_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
     private final String PROP_KEY = "entity-siege";
 
+    private final ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
+        new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
+        new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
+        new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
+        new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
+
+    private final int[] POTION_IDS = { 8193, 8194, 8195, 8196, 8197, 8198, 8200, 8201, 8202, 8204, 8205, 8206, 8225,
+        8226, 8228, 8229, 8232, 8233, 8234, 8236, 8257, 8258, 8259, 8260, 8262, 8264, 8265, 8267, 8268, 8269, 8270 };
+
+    private final ItemStack[] CHEST_SOUTH_CONTENTS = { new ItemStack(Blocks.grass), new ItemStack(Blocks.lapis_ore),
+        new ItemStack(Blocks.dirt), new ItemStack(Blocks.obsidian), new ItemStack(Blocks.sand),
+        new ItemStack(Blocks.diamond_ore), new ItemStack(Blocks.gravel), new ItemStack(Blocks.redstone_ore),
+        new ItemStack(Blocks.gold_ore), new ItemStack(Blocks.clay), new ItemStack(Blocks.iron_ore),
+        new ItemStack(Blocks.emerald_ore), new ItemStack(Blocks.coal_ore) };
+
+    private final ItemStack[] CHEST_WEST_CONTENTS = { new ItemStack(Items.record_13),
+        new ItemStack(Items.record_mellohi), new ItemStack(Items.record_cat), new ItemStack(Items.record_stal),
+        new ItemStack(Items.record_blocks), new ItemStack(Items.record_strad), new ItemStack(Items.record_chirp),
+        new ItemStack(Items.record_ward), new ItemStack(Items.record_far), new ItemStack(Items.record_11),
+        new ItemStack(Items.record_mall), new ItemStack(Items.record_wait) };
+
     private EntitySiegeProperty getProperties(EntityPlayer player) {
         return (EntitySiegeProperty) player.getExtendedProperties(PROP_KEY);
     }
 
     private List<EntityPlayer> getSiegePlayers() {
         List<EntityPlayer> siegePlayers = new ArrayList<>();
-        if (net.minecraftforge.common.DimensionManager.getWorld(1) == null) {
+        if (DimensionManager.getWorld(1) == null) {
             return siegePlayers;
         }
         for (Entity curentity : DimensionManager.getWorld(1).loadedEntityList) {
@@ -71,55 +92,45 @@ public class ItemInversionSigilActive extends Item {
         int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
             { -1, 3 }, { -2, 3 }, { -3, 3 }, { -4, 3 }, { -4, 2 }, { -4, 1 }, { -4, 0 }, { -4, -1 }, { -4, -2 },
             { -4, -3 }, { -4, -4 } };
+        int[] current_base = new int[2];
         int[][] REDSTONE_SPOTS = new int[40][2];
         int[][] STRING_SPOTS = new int[40][2];
-        int[][] BASE_ALTERNATE = new int[20][2];
-        int[][] REDSTONE_SPOTS_ALTERNATE = new int[40][2];
-        int[][] STRING_SPOTS_ALTERNATE = new int[40][2];
-        for (int i = 0; i < 20; i++) {
-            REDSTONE_SPOTS[2 * i] = BASE[i];
-            REDSTONE_SPOTS[2 * i + 1][0] = -1 * BASE[i][0];
-            REDSTONE_SPOTS[2 * i + 1][1] = -1 * BASE[i][1];
-            STRING_SPOTS[2 * i][0] = -1 * BASE[i][1];
-            STRING_SPOTS[2 * i][1] = BASE[i][0];
-            STRING_SPOTS[2 * i + 1][0] = BASE[i][1];
-            STRING_SPOTS[2 * i + 1][1] = -1 * BASE[i][0];
-        }
-        for (int i = 0; i < 20; i++) {
-            BASE_ALTERNATE[i][0] = -1 * BASE[i][1];
-            BASE_ALTERNATE[i][1] = BASE[i][0];
-            REDSTONE_SPOTS_ALTERNATE[2 * i] = BASE_ALTERNATE[i];
-            REDSTONE_SPOTS_ALTERNATE[2 * i + 1][0] = -1 * BASE_ALTERNATE[i][0];
-            REDSTONE_SPOTS_ALTERNATE[2 * i + 1][1] = -1 * BASE_ALTERNATE[i][1];
-            STRING_SPOTS_ALTERNATE[2 * i][0] = -1 * BASE_ALTERNATE[i][1];
-            STRING_SPOTS_ALTERNATE[2 * i][1] = BASE_ALTERNATE[i][0];
-            STRING_SPOTS_ALTERNATE[2 * i + 1][0] = BASE_ALTERNATE[i][1];
-            STRING_SPOTS_ALTERNATE[2 * i + 1][1] = -1 * BASE_ALTERNATE[i][0];
-        }
-        boolean baseTrue = true, alternateTrue = true;
-        for (int i = 0; i < 40; i++) {
-            if (world.getBlock(x + REDSTONE_SPOTS[i][0], y, z + REDSTONE_SPOTS[i][1]) != Blocks.redstone_wire) {
-                baseTrue = false;
-                break;
+        for (int pattern = 0; pattern < 2; pattern++) {
+            for (int i = 0; i < 20; i++) {
+                if (pattern == 0) {
+                    current_base = BASE[i];
+                } else {
+                    current_base[0] = -1 * BASE[i][1];
+                    current_base[1] = BASE[i][0];
+                    if (i == 19) {
+                        current_base[1] = -4;
+                    }
+                }
+                REDSTONE_SPOTS[2 * i][0] = current_base[0];
+                REDSTONE_SPOTS[2 * i][1] = current_base[1];
+                REDSTONE_SPOTS[2 * i + 1][0] = -1 * current_base[0];
+                REDSTONE_SPOTS[2 * i + 1][1] = -1 * current_base[1];
+                STRING_SPOTS[2 * i][0] = -1 * current_base[1];
+                STRING_SPOTS[2 * i][1] = current_base[0];
+                STRING_SPOTS[2 * i + 1][0] = current_base[1];
+                STRING_SPOTS[2 * i + 1][1] = -1 * current_base[0];
             }
-            if (world.getBlock(x + STRING_SPOTS[i][0], y, z + STRING_SPOTS[i][1]) != Blocks.tripwire) {
-                baseTrue = false;
-                break;
+            boolean curTrue = true;
+            for (int i = 0; i < 40; i++) {
+                if (world.getBlock(x + REDSTONE_SPOTS[i][0], y, z + REDSTONE_SPOTS[i][1]) != Blocks.redstone_wire) {
+                    curTrue = false;
+                    break;
+                }
+                if (world.getBlock(x + STRING_SPOTS[i][0], y, z + STRING_SPOTS[i][1]) != Blocks.tripwire) {
+                    curTrue = false;
+                    break;
+                }
             }
-        }
-        for (int i = 0; i < 40; i++) {
-            if (world.getBlock(x + REDSTONE_SPOTS_ALTERNATE[i][0], y, z + REDSTONE_SPOTS_ALTERNATE[i][1])
-                != Blocks.redstone_wire) {
-                alternateTrue = false;
-                break;
-            }
-            if (world.getBlock(x + STRING_SPOTS_ALTERNATE[i][0], y, z + STRING_SPOTS_ALTERNATE[i][1])
-                != Blocks.tripwire) {
-                alternateTrue = false;
-                break;
+            if (curTrue) {
+                return true;
             }
         }
-        return baseTrue || alternateTrue;
+        return false;
     }
 
     private void siegeStart(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
@@ -158,8 +169,8 @@ public class ItemInversionSigilActive extends Item {
         }
         if (Won) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                ItemStack is = player.inventory.getStackInSlot(i);
-                if (is != null && is.getItem() == this) {
+                ItemStack stack = player.inventory.getStackInSlot(i);
+                if (stack != null && stack.getItem() == this) {
                     player.inventory
                         .setInventorySlotContents(i, new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get(), 1));
                     break;
@@ -168,25 +179,24 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private boolean checkChest(TileEntityChest chest, ItemStack[] CHECKED_ITEMS, int ITEM_REQUIREMENT) {
-        int CHECKED_ITEMS_SIZE = CHECKED_ITEMS.length;
+    private boolean checkChest(TileEntityChest chest, ItemStack[] itemsToCheck, int requiredAmount) {
         int requiredItemsAmount = 0;
-        boolean[] hasItem = new boolean[CHECKED_ITEMS_SIZE];
+        boolean[] hasItem = new boolean[itemsToCheck.length];
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
-            for (int j = 0; j < CHECKED_ITEMS_SIZE; j++) {
-                if (stack != null && ItemStack.areItemStacksEqual(stack, CHECKED_ITEMS[j])) {
+            for (int j = 0; j < itemsToCheck.length; j++) {
+                if (stack != null && ItemStack.areItemStacksEqual(stack, itemsToCheck[j])) {
                     hasItem[j] = true;
                     break;
                 }
             }
         }
-        for (int i = 0; i < CHECKED_ITEMS_SIZE; i++) {
+        for (int i = 0; i < itemsToCheck.length; i++) {
             if (hasItem[i]) {
                 requiredItemsAmount++;
             }
         }
-        return requiredItemsAmount >= ITEM_REQUIREMENT;
+        return requiredItemsAmount >= requiredAmount;
     }
 
     @Override
@@ -204,72 +214,47 @@ public class ItemInversionSigilActive extends Item {
         if (world.isRemote) return true;
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
-        boolean chestNorthContentsOk;
-        boolean chestEastContentsOk;
-        boolean chestSouthContentsOk;
-        boolean chestWestContentsOk;
+        boolean chestNorthContentsOk = false;
+        boolean chestEastContentsOk = false;
+        boolean chestSouthContentsOk = false;
+        boolean chestWestContentsOk = false;
         boolean spiralOk = checkSpiral(world, x, y, z);
 
-        ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
-            new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
-            new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
-            new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
-            new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
-
-        int[] POTION_IDS = { 8193, 8194, 8195, 8196, 8197, 8198, 8200, 8201, 8202, 8204, 8205, 8206, 8225, 8226, 8228,
-            8229, 8232, 8233, 8234, 8236, 8257, 8258, 8259, 8260, 8262, 8264, 8265, 8267, 8268, 8269, 8270 };
         ItemStack[] CHEST_EAST_CONTENTS = new ItemStack[62];
         for (int i = 0; i < 31; i++) {
             CHEST_EAST_CONTENTS[2 * i] = new ItemStack(Items.potionitem, 1, POTION_IDS[i]);
             CHEST_EAST_CONTENTS[2 * i + 1] = new ItemStack(Items.potionitem, 1, POTION_IDS[i] + 8192);
         }
 
-        ItemStack[] CHEST_SOUTH_CONTENTS = { new ItemStack(Blocks.grass), new ItemStack(Blocks.lapis_ore),
-            new ItemStack(Blocks.dirt), new ItemStack(Blocks.obsidian), new ItemStack(Blocks.sand),
-            new ItemStack(Blocks.diamond_ore), new ItemStack(Blocks.gravel), new ItemStack(Blocks.redstone_ore),
-            new ItemStack(Blocks.gold_ore), new ItemStack(Blocks.clay), new ItemStack(Blocks.iron_ore),
-            new ItemStack(Blocks.emerald_ore), new ItemStack(Blocks.coal_ore) };
-
-        ItemStack[] CHEST_WEST_CONTENTS = { new ItemStack(Items.record_13), new ItemStack(Items.record_mellohi),
-            new ItemStack(Items.record_cat), new ItemStack(Items.record_stal), new ItemStack(Items.record_blocks),
-            new ItemStack(Items.record_strad), new ItemStack(Items.record_chirp), new ItemStack(Items.record_ward),
-            new ItemStack(Items.record_far), new ItemStack(Items.record_11), new ItemStack(Items.record_mall),
-            new ItemStack(Items.record_wait) };
-
         if (world.getTileEntity(x, y, z - 5) instanceof TileEntityChest chest) {
             chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
-        } else {
-            chestNorthContentsOk = false;
         }
         if (world.getTileEntity(x + 5, y, z) instanceof TileEntityChest chest) {
             chestEastContentsOk = checkChest(chest, CHEST_EAST_CONTENTS, InversionConfig.eastChestRequiredItems);
-        } else {
-            chestEastContentsOk = false;
         }
         if (world.getTileEntity(x, y, z + 5) instanceof TileEntityChest chest) {
             chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems);
-        } else {
-            chestSouthContentsOk = false;
         }
         if (world.getTileEntity(x - 5, y, z) instanceof TileEntityChest chest) {
             chestWestContentsOk = checkChest(chest, CHEST_WEST_CONTENTS, InversionConfig.westChestRequiredItems);
-        } else {
-            chestWestContentsOk = false;
         }
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
         if (dimensionOk) {
             player.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.dimension")));
+                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.correctDimension")));
         } else if (world.provider.dimensionId == 0) {
             player.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.overworld")));
+                new ChatComponentText(
+                    StatCollector.translateToLocal("chat.pseudo_inversion_ritual.incorrectDimensionOverworld")));
         } else if (world.provider.dimensionId == -1) {
             player.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.nether")));
+                new ChatComponentText(
+                    StatCollector.translateToLocal("chat.pseudo_inversion_ritual.incorrectDimensionNether")));
         } else {
             player.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.misc")));
+                new ChatComponentText(
+                    StatCollector.translateToLocal("chat.pseudo_inversion_ritual.incorrectDimensionOther")));
         }
         player.addChatMessage(
             new ChatComponentText(
@@ -328,8 +313,8 @@ public class ItemInversionSigilActive extends Item {
                         entitymob = new EntityCreeper(player.getEntityWorld());
                         break;
                 }
-                int offsetX = player.getEntityWorld().rand.nextInt(11) - 5,
-                    offsetZ = player.getEntityWorld().rand.nextInt(11) - 5;
+                int offsetX = player.getEntityWorld().rand.nextInt(11) - 5;
+                int offsetZ = player.getEntityWorld().rand.nextInt(11) - 5;
                 entitymob.setPosition(
                     properties.beaconSpawnX + offsetX,
                     properties.beaconSpawnY,
@@ -360,8 +345,8 @@ public class ItemInversionSigilActive extends Item {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.entity instanceof EntityEnderman && (!getSiegePlayers().isEmpty())
-            && event.world.provider.dimensionId == 1) {
+        if (event.world.provider.dimensionId == 1 && event.entity instanceof EntityEnderman
+            && !getSiegePlayers().isEmpty()) {
             event.setResult(Event.Result.DENY);
         }
     }
@@ -375,7 +360,6 @@ public class ItemInversionSigilActive extends Item {
             if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
                 deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
                 siegeEnd(false, deadplayer);
-                return;
             }
             return;
         }
@@ -388,19 +372,19 @@ public class ItemInversionSigilActive extends Item {
             if (source.siegeMobsKilled >= InversionConfig.SiegeRequiredMobsKill) {
                 player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
                 siegeEnd(true, player);
-            } else if (source.siegeMobsKilled == (int) (3 * InversionConfig.SiegeRequiredMobsKill) / 4) {
+            } else if (source.siegeMobsKilled == (3 * InversionConfig.SiegeRequiredMobsKill) / 4) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
                         StatCollector.translateToLocalFormatted(
                             "chat.pseudo_inversion_ritual.threequarters",
                             source.siegeMobsKilled)));
-            } else if (source.siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 2) {
+            } else if (source.siegeMobsKilled == (InversionConfig.SiegeRequiredMobsKill) / 2) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
                         StatCollector.translateToLocalFormatted(
                             "chat.pseudo_inversion_ritual.twoquarters",
                             source.siegeMobsKilled)));
-            } else if (source.siegeMobsKilled == (int) (InversionConfig.SiegeRequiredMobsKill) / 4) {
+            } else if (source.siegeMobsKilled == (InversionConfig.SiegeRequiredMobsKill) / 4) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
                         StatCollector.translateToLocalFormatted(
@@ -408,7 +392,9 @@ public class ItemInversionSigilActive extends Item {
                             source.siegeMobsKilled)));
             }
             return;
-        } else if (!(event.entityLiving instanceof EntityIronGolem)) {
+        }
+
+        if (!(event.entityLiving instanceof EntityIronGolem)) {
             return;
         }
 
@@ -447,31 +433,11 @@ public class ItemInversionSigilActive extends Item {
         boolean chestWestContentsOk;
         boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
 
-        ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
-            new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
-            new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
-            new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
-            new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
-
-        int[] POTION_IDS = { 8193, 8194, 8195, 8196, 8197, 8198, 8200, 8201, 8202, 8204, 8205, 8206, 8225, 8226, 8228,
-            8229, 8232, 8233, 8234, 8236, 8257, 8258, 8259, 8260, 8262, 8264, 8265, 8267, 8268, 8269, 8270 };
         ItemStack[] CHEST_EAST_CONTENTS = new ItemStack[62];
         for (int i = 0; i < 31; i++) {
             CHEST_EAST_CONTENTS[2 * i] = new ItemStack(Items.potionitem, 1, POTION_IDS[i]);
             CHEST_EAST_CONTENTS[2 * i + 1] = new ItemStack(Items.potionitem, 1, POTION_IDS[i] + 8192);
         }
-
-        ItemStack[] CHEST_SOUTH_CONTENTS = { new ItemStack(Blocks.grass), new ItemStack(Blocks.lapis_ore),
-            new ItemStack(Blocks.dirt), new ItemStack(Blocks.obsidian), new ItemStack(Blocks.sand),
-            new ItemStack(Blocks.diamond_ore), new ItemStack(Blocks.gravel), new ItemStack(Blocks.redstone_ore),
-            new ItemStack(Blocks.gold_ore), new ItemStack(Blocks.clay), new ItemStack(Blocks.iron_ore),
-            new ItemStack(Blocks.emerald_ore), new ItemStack(Blocks.coal_ore) };
-
-        ItemStack[] CHEST_WEST_CONTENTS = { new ItemStack(Items.record_13), new ItemStack(Items.record_mellohi),
-            new ItemStack(Items.record_cat), new ItemStack(Items.record_stal), new ItemStack(Items.record_blocks),
-            new ItemStack(Items.record_strad), new ItemStack(Items.record_chirp), new ItemStack(Items.record_ward),
-            new ItemStack(Items.record_far), new ItemStack(Items.record_11), new ItemStack(Items.record_mall),
-            new ItemStack(Items.record_wait) };
 
         if (world.getTileEntity(beaconX, beaconY, beaconZ - 5) instanceof TileEntityChest chest) {
             chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
@@ -504,10 +470,8 @@ public class ItemInversionSigilActive extends Item {
 
         // Ritual has now succeeded
 
-        if (!world.isRemote && !source.siege) {
-            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
-        }
         if (!source.siege) {
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
             siegeStart(world, beaconX, beaconY, beaconZ, player);
         }
     }
