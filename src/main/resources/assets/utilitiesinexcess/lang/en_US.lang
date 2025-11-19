@@ -162,9 +162,15 @@ item.fire_battery.desc=RF %s / %s
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.furnace_generator.name=Furnace Generator
+tile.furnace_generator_plus.name=Furnace Generator
+tile.furnace_generator_plusplus.name=Furnace Generator
 tile.high_temperature_furnace_generator.name=High-Temp Furnace Generator
 tile.ender_generator.name=Ender Generator
+tile.ender_generator_plus.name=Ender Generator
+tile.ender_generator_plusplus.name=Ender Generator
 tile.food_generator.name=Food Generator
+tile.food_generator_plus.name=Food Generator
+tile.food_generator_plusplus.name=Food Generator
 tile.tnt_generator.name=TNT Generator
 tile.nether_star_generator.name=Nether Star Generator
 tile.pink_generator.name=Pink Generator
