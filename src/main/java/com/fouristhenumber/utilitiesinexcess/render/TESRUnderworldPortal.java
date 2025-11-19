@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.UniverseShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
@@ -96,8 +97,8 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         GL11.glRotated(counter / 400d * Math.PI * 2, 0, 0, 1);
         GL11.glRotated(counter / 200d * Math.PI * 2, 0, 1, 1);
 
-        UnderworldPortalShader.INSTANCE.use();
-        UnderworldPortalShader.setLightFromLocation(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
+        UniverseShader.INSTANCE.use();
+        UniverseShader.setLightFromLocation(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
 
         bindTexture(TextureMap.locationBlocksTexture);
 
@@ -105,7 +106,7 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         core.render();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        UnderworldPortalShader.clear();
+        UniverseShader.clear();
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
     }
