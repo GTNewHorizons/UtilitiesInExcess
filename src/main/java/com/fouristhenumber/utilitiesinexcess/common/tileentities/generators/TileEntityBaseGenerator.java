@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockBaseGenerator;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
@@ -31,6 +32,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
     protected int currentFuelBurnTime;
     protected int currentRFPerTick;
     protected boolean isBurning;
+    private int multiplier = -1;
 
     protected IEnergyReceiver[] connectedReceivers = new IEnergyReceiver[6];
     protected boolean receiversDirty = false;
@@ -62,6 +64,11 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
 
     @Override
     public void updateEntity() {
+        if (multiplier == -1) {
+            if (worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockBaseGenerator generator) {
+                multiplier = generator.getMultiplier();
+            }
+        }
         if (worldObj.isRemote) return;
         boolean dirty = false;
 
@@ -69,14 +76,14 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
 
         if (burnTime > 0) {
             burnTime--;
-            energyStorage.receiveEnergy(currentRFPerTick, false);
+            energyStorage.receiveEnergy(currentRFPerTick * multiplier, false);
             isBurning = true;
             dirty = true;
             onBurnTick();
         } else {
             isBurning = false;
             if (consumeFuel()) {
-                burnTime = currentFuelBurnTime;
+                burnTime = currentFuelBurnTime / multiplier;
                 dirty = true;
             }
         }
