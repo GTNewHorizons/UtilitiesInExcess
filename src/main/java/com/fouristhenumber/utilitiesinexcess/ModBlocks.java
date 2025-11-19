@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -32,18 +33,6 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockHighTemperatureFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLavaGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLowTemperatureFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockNetherStarGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPinkGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotionGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -93,13 +82,15 @@ public enum ModBlocks {
     SOLAR_GENERATOR(GeneratorConfig.enableSolarGenerator, new BlockSolarGenerator("solar_generator"), "solar_generator"),
     TNT_GENERATOR(GeneratorConfig.enableTNTGenerator, new BlockTNTGenerator("tnt_generator"), "tnt_generator"),
     PINK_GENERATOR(GeneratorConfig.enablePinkGenerator, new BlockPinkGenerator("pink_generator"), "pink_generator"),
+    PINK_GENERATOR_PLUS(GeneratorConfig.enablePinkGenerator, new BlockPinkGeneratorPlus("pink_generator_plus"), "pink_generator_plus"),
+    PINK_GENERATOR_PLUSPLUS(GeneratorConfig.enablePinkGenerator, new BlockPinkGeneratorPlus("pink_generator_plusplus"), "pink_generator_plusplus"),
     NETHER_STAR_GENERATOR(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator"), "nether_star_generator"),
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), BlockUpdateDetector.ItemBlockUpdateDetector.class, "block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
-    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
+    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, " "), BlockSpike.ItemSpike.class, "ironSpike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
