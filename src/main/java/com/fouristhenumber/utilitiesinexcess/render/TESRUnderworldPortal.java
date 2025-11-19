@@ -100,7 +100,7 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         UniverseShader.INSTANCE.use();
         UniverseShader.setLightFromLocation(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
 
-        bindTexture(TextureMap.locationBlocksTexture);
+        bindTexture(TextureMap.locationItemsTexture);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         core.render();
