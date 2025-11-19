@@ -61,6 +61,9 @@ public class BlockConfig {
     public static boolean enableSignificantlyShrunkChest;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableRadicallyReducedChest;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;
 
     @Config.DefaultBoolean(true)
@@ -75,6 +78,9 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableUnderWorldPortal;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableEndOfTimePortal;
 
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();
