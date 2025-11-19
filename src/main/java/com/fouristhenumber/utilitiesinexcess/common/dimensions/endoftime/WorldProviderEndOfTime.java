@@ -1,5 +1,6 @@
-package com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld;
+package com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
@@ -7,23 +8,23 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.UIEWorldChunkManager;
-import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WorldProviderUnderWorld extends WorldProvider {
+public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(UnderWorldConfig.defaultBiomeId));
-        this.dimensionId = UnderWorldConfig.underWorldDimensionId;
+        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.defaultBiomeId));
+        this.dimensionId = EndOfTimeConfig.endOfTimeDimensionId;
         this.hasNoSky = true;
     }
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        return new ChunkProviderUnderWorld(this.worldObj, this.worldObj.getSeed());
+        return new ChunkProviderEndOfTime(this.worldObj);
     }
 
     @Override
@@ -39,14 +40,19 @@ public class WorldProviderUnderWorld extends WorldProvider {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Vec3 getFogColor(float p_76562_1_, float p_76562_2_) {
-        return Vec3.createVectorHelper(0.2, 0.2, 0.3);
+    public boolean isSkyColored() {
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Vec3 getSkyColor(Entity p_72833_1_, float p_72833_2_) {
+        return Vec3.createVectorHelper(0, 0, 0);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean isSkyColored() {
-        return false;
+    public Vec3 getFogColor(float p_76562_1_, float p_76562_2_) {
+        return Vec3.createVectorHelper(0, 0, 0);
     }
 
     @Override
@@ -74,12 +80,13 @@ public class WorldProviderUnderWorld extends WorldProvider {
 
     @Override
     public ChunkCoordinates getEntrancePortalLocation() {
-        return new ChunkCoordinates(100, 50, 0);
+        return DimensionPortalData.get(this.worldObj)
+            .getTarget();
     }
 
     @Override
     public int getAverageGroundLevel() {
-        return ChunkProviderUnderWorld.FLOOR.lerp(0.5);
+        return 64;
     }
 
     @Override
@@ -88,13 +95,8 @@ public class WorldProviderUnderWorld extends WorldProvider {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean doesXZShowFog(int p_76568_1_, int p_76568_2_) {
-        return true;
+    public String getDimensionName() {
+        return "The End of Time";
     }
 
-    @Override
-    public String getDimensionName() {
-        return "The Underworld";
-    }
 }

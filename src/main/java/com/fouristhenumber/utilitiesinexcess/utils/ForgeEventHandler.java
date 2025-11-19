@@ -25,18 +25,33 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
+import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ForgeEventHandler {
+
+    @SubscribeEvent
+    public void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
+        int slot = event.getSlot();
+        if (slot != 4 || !(event.entity instanceof EntityPlayer)) return;
+
+        ItemStack from = event.getFrom();
+
+        if (from != null && from.getItem() instanceof ItemXRayGlasses) {
+            XRayRenderer.clearCandidatePositions();
+        }
+    }
 
     @SubscribeEvent
     public void onItemToss(ItemTossEvent event) {

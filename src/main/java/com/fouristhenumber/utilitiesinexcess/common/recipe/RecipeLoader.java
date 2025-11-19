@@ -27,6 +27,29 @@ public class RecipeLoader {
         loadGeneratorRecipes();
         loadQEDRecipes();
 
+        // X-Ray Glasses
+        addShapedRecipe(
+            ModItems.BLOCK_ANALYZER,
+            "iii",
+            "eri",
+            "iii",
+            'i',
+            Items.iron_ingot,
+            'r',
+            Items.redstone,
+            'e',
+            Items.ender_eye);
+
+        // X-Ray Glasses
+        addShapedRecipe(
+            ModItems.XRAY_GLASSES,
+            "iii",
+            "eie",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'e',
+            Items.ender_eye);
+
         // Floating Block
         addShapedRecipe(
             ModBlocks.FLOATING_BLOCK,
@@ -67,7 +90,7 @@ public class RecipeLoader {
             't',
             Blocks.redstone_torch);
 
-        // Redstone Clock
+        // Block Update Detector
         addShapedRecipe(
             ModBlocks.BLOCK_UPDATE_DETECTOR,
             "srs",
@@ -162,7 +185,7 @@ public class RecipeLoader {
             'q',
             ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 3),
             'i',
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             'u',
             ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 4));
 
@@ -227,6 +250,11 @@ public class RecipeLoader {
             new DisableableItemStack(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST, 9),
             ModBlocks.MARGINALLY_MAXIMISED_CHEST);
 
+        // Radically Reduced Chest
+        addShapelessRecipe(
+            new DisableableItemStack(ModBlocks.RADICALLY_REDUCED_CHEST, 9),
+            ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST);
+
         // Mob Jar
         addShapedRecipe(
             ModItems.MOB_JAR,
@@ -256,6 +284,21 @@ public class RecipeLoader {
             Items.diamond,
             'b',
             Blocks.gold_block);
+
+        // Temporal Gate
+        addShapedRecipe(
+            ModBlocks.END_OF_TIME_PORTAL,
+            "qgq",
+            "geg",
+            "qcq",
+            'q',
+            Blocks.quartz_block, // TODO use burnt quartz replacement instead?
+            'e',
+            Items.ender_pearl,
+            'c',
+            Items.clock,
+            'g',
+            Blocks.glass_pane);
     }
 
     private static void loadGeneratorRecipes() {
