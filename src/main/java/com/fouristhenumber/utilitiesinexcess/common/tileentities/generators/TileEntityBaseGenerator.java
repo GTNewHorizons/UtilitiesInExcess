@@ -82,6 +82,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
             onBurnTick();
         } else {
             isBurning = false;
+            currentRFPerTick = 0;
             if (consumeFuel()) {
                 burnTime = currentFuelBurnTime / multiplier;
                 dirty = true;
@@ -193,14 +194,16 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
 
-        IntSyncValue energySyncer = new IntSyncValue(() -> energyStorage.getEnergyStored(), ignore -> {});
-        IntSyncValue maxEnergySyncer = new IntSyncValue(() -> energyStorage.getMaxEnergyStored(), ignore -> {});
-        IntSyncValue burnSyncer = new IntSyncValue(() -> burnTime, ignore -> {});
-        IntSyncValue rftSyncer = new IntSyncValue(() -> currentRFPerTick, ignore -> {});
+        IntSyncValue energySyncer = new IntSyncValue(() -> energyStorage.getEnergyStored());
+        IntSyncValue maxEnergySyncer = new IntSyncValue(() -> energyStorage.getMaxEnergyStored());
+        IntSyncValue burnSyncer = new IntSyncValue(() -> burnTime);
+        IntSyncValue rftSyncer = new IntSyncValue(() -> currentRFPerTick);
+        IntSyncValue multSyncer = new IntSyncValue(() -> multiplier);
         syncManager.syncValue("energySyncer", energySyncer);
         syncManager.syncValue("maxEnergySyncer", maxEnergySyncer);
         syncManager.syncValue("burnSyncer", burnSyncer);
         syncManager.syncValue("rftSyncer", rftSyncer);
+        syncManager.syncValue("multSyncer", multSyncer);
 
         ModularPanel panel = new ModularPanel("panel");
         panel.bindPlayerInventory();
@@ -230,19 +233,18 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
                             "gui.energy.tooltip",
                             formatNumber(energySyncer.getIntValue()),
                             formatNumber(maxEnergySyncer.getIntValue())))));
-        if (showBurnTime()) {
-            panel.child(
-                IKey.dynamic(
-                    () -> (burnSyncer.getIntValue() / 1200) + "m " + (burnSyncer.getIntValue() % 1200) / 20 + "s")
-                    .asWidget()
-                    .pos(10, 50));
-        }
-        if (showGenerationRate()) {
-            panel.child(
-                IKey.dynamic(() -> rftSyncer.getIntValue() + " RF/t")
-                    .asWidget()
-                    .pos(10, 62));
-        }
+
+        panel.childIf(
+            showBurnTime(),
+            IKey.dynamic(() -> (burnSyncer.getIntValue() / 1200) + "m " + (burnSyncer.getIntValue() % 1200) / 20 + "s")
+                .asWidget()
+                .pos(10, 50));
+
+        panel.childIf(
+            showGenerationRate(),
+            IKey.dynamic(() -> (multSyncer.getIntValue() * rftSyncer.getIntValue() + " RF/t"))
+                .asWidget()
+                .pos(10, 62));
 
         return panel;
     }
