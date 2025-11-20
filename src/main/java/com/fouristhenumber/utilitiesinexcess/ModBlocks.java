@@ -32,7 +32,18 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.*;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockHighTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLavaGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLowTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockNetherStarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPinkGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotionGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -72,7 +83,7 @@ public enum ModBlocks {
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator", 1), "low_temperature_furnace_generator"),
-    LOW_TEMPERATURE_FURNACE_GENERATOR_PlUS(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator_plus", 8), "low_temperature_furnace_generator_plus"),
+    LOW_TEMPERATURE_FURNACE_GENERATOR_PLUS(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator_plus", 8), "low_temperature_furnace_generator_plus"),
     LOW_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator_plusplus", 64), "low_temperature_furnace_generator_plusplus"),
     FURNACE_GENERATOR(GeneratorConfig.enableFurnaceGenerator, new BlockFurnaceGenerator("furnace_generator", 1), "furnace_generator"),
     FURNACE_GENERATOR_PLUS(GeneratorConfig.enableFurnaceGenerator, new BlockFurnaceGenerator("furnace_generator_plus", 8), "furnace_generator_plus"),
@@ -90,7 +101,7 @@ public enum ModBlocks {
     REDSTONE_GENERATOR_PLUS(GeneratorConfig.enableRedstoneGenerator, new BlockRedstoneGenerator("redstone_generator_plus", 8), "redstone_generator_plus"),
     REDSTONE_GENERATOR_PLUSPLUS(GeneratorConfig.enableRedstoneGenerator, new BlockRedstoneGenerator("redstone_generator_plusplus", 64), "redstone_generator_plusplus"),
     FOOD_GENERATOR(GeneratorConfig.enableFoodGenerator, new BlockFoodGenerator("food_generator", 1), "food_generator"),
-    FOOD_GENERATOR_PlUS(GeneratorConfig.enableFoodGenerator, new BlockFoodGenerator("food_generator_plus", 8), "food_generator_plus"),
+    FOOD_GENERATOR_PLUS(GeneratorConfig.enableFoodGenerator, new BlockFoodGenerator("food_generator_plus", 8), "food_generator_plus"),
     FOOD_GENERATOR_PLUSPLUS(GeneratorConfig.enableFoodGenerator, new BlockFoodGenerator("food_generator_plusplus", 64), "food_generator_plusplus"),
     POTION_GENERATOR(GeneratorConfig.enablePotionGenerator, new BlockPotionGenerator("potion_generator", 1), "potion_generator"),
     POTION_GENERATOR_PLUS(GeneratorConfig.enablePotionGenerator, new BlockPotionGenerator("potion_generator_plus", 8), "potion_generator_plus"),
@@ -112,7 +123,7 @@ public enum ModBlocks {
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
-    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, " "), BlockSpike.ItemSpike.class, "ironSpike"),
+    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
