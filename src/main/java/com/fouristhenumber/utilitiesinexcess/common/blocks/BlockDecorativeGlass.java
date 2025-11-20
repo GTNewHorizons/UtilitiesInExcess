@@ -18,6 +18,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockDecorativeGlass extends BlockGlass {
 
+    private static final int META_VALUES = 12;
+
     public BlockDecorativeGlass() {
         super(Material.glass, false);
         setBlockName("decorative_glass");
@@ -47,7 +49,7 @@ public class BlockDecorativeGlass extends BlockGlass {
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 12; ++i) {
+        for (int i = 0; i < META_VALUES; ++i) {
             list.add(new ItemStack(itemIn, 1, i));
         }
     }
@@ -55,8 +57,8 @@ public class BlockDecorativeGlass extends BlockGlass {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        icons = new IIcon[12];
-        for (int i = 0; i < 12; i++) {
+        icons = new IIcon[META_VALUES];
+        for (int i = 0; i < META_VALUES; i++) {
             icons[i] = iconRegister.registerIcon("utilitiesinexcess:glass_" + i);
         }
     }
