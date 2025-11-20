@@ -30,6 +30,19 @@ public class RecipeLoader {
 
         // X-Ray Glasses
         addShapedRecipe(
+            ModItems.BLOCK_ANALYZER,
+            "iii",
+            "eri",
+            "iii",
+            'i',
+            Items.iron_ingot,
+            'r',
+            Items.redstone,
+            'e',
+            Items.ender_eye);
+
+        // X-Ray Glasses
+        addShapedRecipe(
             ModItems.XRAY_GLASSES,
             "iii",
             "eie",

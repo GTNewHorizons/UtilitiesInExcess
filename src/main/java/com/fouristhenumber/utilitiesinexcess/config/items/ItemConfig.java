@@ -52,4 +52,7 @@ public class ItemConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableXRayGlasses;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableBlockAnalyzer;
 }
