@@ -11,21 +11,13 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public abstract class BlockBaseGenerator extends BlockContainer {
 
-    private int multiplier;
+    public int multiplier;
 
     protected BlockBaseGenerator(String id, int mult) {
         super(Material.iron);
-        setMultiplier(mult);
+        multiplier = mult;
         setBlockName(id);
         setBlockTextureName("utilitiesinexcess:generators/" + id);
-    }
-
-    public void setMultiplier(int mult) {
-        multiplier = mult;
-    }
-
-    public int getMultiplier() {
-        return multiplier;
     }
 
     @Override

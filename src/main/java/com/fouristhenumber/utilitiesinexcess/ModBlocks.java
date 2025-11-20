@@ -91,7 +91,7 @@ public enum ModBlocks {
     FURNACE_GENERATOR_PLUSPLUS(GeneratorConfig.enableFurnaceGenerator, new BlockFurnaceGenerator("furnace_generator_plusplus", 64), "furnace_generator_plusplus"),
     HIGH_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableHighTemperatureFurnaceGenerator, new BlockHighTemperatureFurnaceGenerator("high_temperature_furnace_generator", 1), "high_temperature_furnace_generator"),
     HIGH_TEMPERATURE_FURNACE_GENERATOR_PLUS(GeneratorConfig.enableHighTemperatureFurnaceGenerator, new BlockHighTemperatureFurnaceGenerator("high_temperature_furnace_generator_plus", 8), "high_temperature_furnace_generator_plus"),
-    HIGH_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS(GeneratorConfig.enableHighTemperatureFurnaceGenerator, new BlockHighTemperatureFurnaceGenerator("high_temperature_furnace_generator_plusplus", 1), "high_temperature_furnace_generator_plusplus"),
+    HIGH_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS(GeneratorConfig.enableHighTemperatureFurnaceGenerator, new BlockHighTemperatureFurnaceGenerator("high_temperature_furnace_generator_plusplus", 64), "high_temperature_furnace_generator_plusplus"),
     LAVA_GENERATOR(GeneratorConfig.enableLavaGenerator, new BlockLavaGenerator("lava_generator", 1), "lava_generator"),
     LAVA_GENERATOR_PLUS(GeneratorConfig.enableLavaGenerator, new BlockLavaGenerator("lava_generator_plus", 8), "lava_generator_plus"),
     LAVA_GENERATOR_PLUSPLUS(GeneratorConfig.enableLavaGenerator, new BlockLavaGenerator("lava_generator_plusplus", 64), "lava_generator_plusplus"),

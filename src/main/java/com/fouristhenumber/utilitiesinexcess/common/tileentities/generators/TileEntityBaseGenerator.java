@@ -66,7 +66,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
     public void updateEntity() {
         if (multiplier == -1) {
             if (worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockBaseGenerator generator) {
-                multiplier = generator.getMultiplier();
+                multiplier = generator.multiplier;
             }
         }
         if (worldObj.isRemote) return;
