@@ -26,18 +26,19 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     @Override
     public void updateEntity() {
+        if (multiplier == -1) {
+            if (worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockBaseGenerator generator) {
+                multiplier = generator.multiplier;
+            }
+        }
+
         if (worldObj.isRemote) return;
         boolean dirty = false;
 
         if (receiversDirty) refreshEnergyReceivers();
 
-        int mult = 1;
-        if (worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockBaseGenerator generator) {
-            mult = generator.multiplier;
-        }
-
         if (consumeFuel()) {
-            energyStorage.receiveEnergy(currentRFPerTick * mult, false);
+            energyStorage.receiveEnergy(currentRFPerTick * multiplier, false);
             dirty = true;
         }
 

@@ -32,7 +32,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
     protected int currentFuelBurnTime;
     protected int currentRFPerTick;
     protected boolean isBurning;
-    private int multiplier = -1;
+    public int multiplier = -1;
 
     protected IEnergyReceiver[] connectedReceivers = new IEnergyReceiver[6];
     protected boolean receiversDirty = false;
