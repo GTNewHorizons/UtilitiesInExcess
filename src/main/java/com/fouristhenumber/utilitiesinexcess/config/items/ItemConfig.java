@@ -55,4 +55,7 @@ public class ItemConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableBlockAnalyzer;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableGlove;
 }
