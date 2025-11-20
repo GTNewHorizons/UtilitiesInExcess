@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -124,6 +125,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityTNTGenerator.class, "TileEntityTNTGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
+        GameRegistry.registerTileEntity(TileEntityEnderQuarry.class, "TileEntityEnderQuarryUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
