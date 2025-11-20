@@ -1,0 +1,167 @@
+package com.fouristhenumber.utilitiesinexcess.common.tileentities;
+
+import cofh.api.energy.IEnergyReceiver;
+import cofh.lib.util.position.ChunkCoord;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.IFluidTank;
+
+public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, IFluidHandler {
+
+    boolean stalled = false;
+
+    private int currentChunkX;
+    private int currentChunkZ;
+
+    private int currentXInChunk = 0;
+    private int currentZInChunk = 0;
+
+    private int currentY;
+
+    FluidTank tank = new FluidTank(1000);
+
+    @Override
+    public void updateEntity() {
+        if (worldObj.isRemote) return;
+
+        if (currentY == 0) {
+            initializeScanner();
+        }
+        if (!stalled || worldObj.getTotalWorldTime() % 200 == 0) {
+            stalled = false;
+
+            if (tank.getFluidAmount() > 0) {
+                if (worldObj.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IFluidHandler fluidHandler) {
+                    int canDrain = fluidHandler.fill(ForgeDirection.DOWN, tank.getFluid(), false);
+                    fluidHandler.fill(ForgeDirection.DOWN, drain(ForgeDirection.UP, new FluidStack(tank.getFluid().getFluid(), canDrain), true), true);
+                }
+            }
+
+            scanStep();
+        }
+    }
+
+    private void initializeScanner() {
+        currentChunkX = xCoord >> 4;
+        currentChunkZ = zCoord >> 4;
+
+        currentY = yCoord - 1;
+    }
+
+    private void scanStep() {
+        int worldX = (currentChunkX << 4) + currentXInChunk;
+        int worldZ = (currentChunkZ << 4) + currentZInChunk;
+
+        Block block = worldObj.getBlock(worldX, currentY, worldZ);
+        FluidStack fluid;
+
+        // Gotta hardcode the vanilla ones ugh
+        if (block == Blocks.water) {
+            fluid = new FluidStack(FluidRegistry.WATER, 1000);
+        } else if (block == Blocks.lava) {
+            fluid = new FluidStack(FluidRegistry.LAVA, 1000);
+        } else if (block instanceof IFluidBlock fluidBlock) {
+            fluid = fluidBlock.drain(worldObj, worldX, currentY, worldZ, false);
+        } else {
+            advanceColumn();
+            return;
+        }
+
+        if (tank.fill(fluid, false) >= fluid.amount) {
+            tank.fill(fluid, true);
+
+            worldObj.setBlock(worldX, currentY, worldZ, Blocks.stone, 1, 2);
+            currentY--;
+
+            if (currentY < 0) {
+                advanceColumn();
+            }
+        } else {
+            stalled = true;
+        }
+    }
+
+    private void advanceColumn() {
+        currentY = yCoord - 1;
+
+        currentXInChunk++;
+
+        if (currentXInChunk >= 16) {
+            currentXInChunk = 0;
+            currentZInChunk++;
+
+            if (currentZInChunk >= 16) {
+                currentZInChunk = 0;
+                currentChunkX++;
+            }
+        }
+    }
+
+
+    // IEnergyReceiver
+    @Override
+    public int receiveEnergy(ForgeDirection forgeDirection, int i, boolean b) {
+        return 0;
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection forgeDirection) {
+        return 0;
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection forgeDirection) {
+        return 10000;
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection forgeDirection) {
+        return true;
+    }
+
+    // IFluidHandler
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        return 0;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+            return null;
+        }
+        return tank.drain(resource.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return tank.drain(maxDrain, doDrain);
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return true;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { tank.getInfo() };
+    }
+}
