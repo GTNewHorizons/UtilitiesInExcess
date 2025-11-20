@@ -46,6 +46,19 @@ tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
+tile.decorative_glass.0.name=Smooth Glass
+tile.decorative_glass.1.name=Rimmed Glass
+tile.decorative_glass.2.name=Bricked Glass
+tile.decorative_glass.3.name=Creepy Glass
+tile.decorative_glass.4.name=Gilded Glass
+tile.decorative_glass.5.name=Obsidian Glass
+tile.decorative_glass.6.name=Latticed Glass
+tile.decorative_glass.7.name=Glowing Glass
+tile.decorative_glass.8.name=Beloved Glass
+tile.decorative_glass.9.name=Tiled Glass
+tile.decorative_glass.10.name=Dark Glass
+tile.decorative_glass.11.name=Reinforced Dark Glass
+
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
