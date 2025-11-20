@@ -26,7 +26,8 @@ public class RenderableCube {
         draw(t, x, y, z, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV(), textureSize);
     }
 
-    public void draw(Tessellator t, double x, double y, double z, float minU, float maxU, float minV, float maxV, float textureSize) {
+    public void draw(Tessellator t, double x, double y, double z, float minU, float maxU, float minV, float maxV,
+        float textureSize) {
         double X1 = x + minX, Y1 = y + minY, Z1 = z + minZ;
         double X2 = x + maxX, Y2 = y + maxY, Z2 = z + maxZ;
 
@@ -71,26 +72,26 @@ public class RenderableCube {
         // +Z
         t.setNormal(0, 0, 1);
         t.setColorOpaque_F(0.8F, 0.8F, 0.8F);
-        t.addVertexWithUV(X1, Y1, Z2, northUV[0], northUV[1]);
-        t.addVertexWithUV(X2, Y1, Z2, northUV[2], northUV[1]);
-        t.addVertexWithUV(X2, Y2, Z2, northUV[2], northUV[3]);
-        t.addVertexWithUV(X1, Y2, Z2, northUV[0], northUV[3]);
+        t.addVertexWithUV(X2, Y2, Z2, northUV[0], northUV[1]);
+        t.addVertexWithUV(X1, Y2, Z2, northUV[2], northUV[1]);
+        t.addVertexWithUV(X1, Y1, Z2, northUV[2], northUV[3]);
+        t.addVertexWithUV(X2, Y1, Z2, northUV[0], northUV[3]);
 
         // -Z
         t.setColorOpaque_F(0.8F, 0.8F, 0.8F);
         t.setNormal(0, 0, -1);
-        t.addVertexWithUV(X1, Y2, Z1, southUV[0], southUV[3]);
-        t.addVertexWithUV(X2, Y2, Z1, southUV[2], southUV[3]);
-        t.addVertexWithUV(X2, Y1, Z1, southUV[2], southUV[1]);
-        t.addVertexWithUV(X1, Y1, Z1, southUV[0], southUV[1]);
+        t.addVertexWithUV(X2, Y1, Z1, southUV[0], southUV[3]);
+        t.addVertexWithUV(X1, Y1, Z1, southUV[2], southUV[3]);
+        t.addVertexWithUV(X1, Y2, Z1, southUV[2], southUV[1]);
+        t.addVertexWithUV(X2, Y2, Z1, southUV[0], southUV[1]);
 
         // +X
         t.setColorOpaque_F(0.6F, 0.6F, 0.6F);
         t.setNormal(1, 0, 0);
-        t.addVertexWithUV(X2, Y1, Z2, westUV[0], westUV[1]);
-        t.addVertexWithUV(X2, Y1, Z1, westUV[2], westUV[1]);
-        t.addVertexWithUV(X2, Y2, Z1, westUV[2], westUV[3]);
-        t.addVertexWithUV(X2, Y2, Z2, westUV[0], westUV[3]);
+        t.addVertexWithUV(X2, Y1, Z2, westUV[2], westUV[3]);
+        t.addVertexWithUV(X2, Y1, Z1, westUV[0], westUV[3]);
+        t.addVertexWithUV(X2, Y2, Z1, westUV[0], westUV[1]);
+        t.addVertexWithUV(X2, Y2, Z2, westUV[2], westUV[1]);
 
         // -X
         t.setColorOpaque_F(0.6F, 0.6F, 0.6F);
