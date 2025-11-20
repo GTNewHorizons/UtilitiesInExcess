@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessorItemRenderer {
 
     @Accessor("equippedProgress")
-    float equippedProgress();
+    void uie$setEquippedProgress(float equippedProgress);
 
     @Accessor("prevEquippedProgress")
-    float prevEquippedProgress();
+    void uie$setPrevEquippedProgress(float prevEquippedProgress);
 }

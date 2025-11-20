@@ -31,7 +31,7 @@ public enum Mixins implements IMixins {
         /*.addRequiredMod(TargetedMod.VANILLA)*/
     ),
     GLOVE(new MixinBuilder("Implements the Gloves special right click")
-        .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove")
+        .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove", "minecraft.MixinItemRenderer_Glove")
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> ItemConfig.enableGlove)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
@@ -47,7 +47,6 @@ public enum Mixins implements IMixins {
             "minecraft.accessors.AccessorItemSword",
             "minecraft.accessors.AccessorEntityLivingBase",
             "minecraft.accessors.AccessorPotionEffect",
-            "minecraft.accessors.AccessorEntityRenderer",
             "minecraft.accessors.AccessorItemRenderer",
             "minecraft.accessors.AccessorClientMinecraft")
     )

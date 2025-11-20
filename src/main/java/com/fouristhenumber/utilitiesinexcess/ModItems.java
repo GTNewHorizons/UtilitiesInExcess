@@ -4,13 +4,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGoldenBag;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
