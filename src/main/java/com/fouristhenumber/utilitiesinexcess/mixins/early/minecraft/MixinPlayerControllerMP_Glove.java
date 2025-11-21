@@ -20,7 +20,7 @@ public class MixinPlayerControllerMP_Glove {
     @WrapOperation(
         method = "onPlayerRightClick",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldSettings$GameType;isCreative()Z"))
-    private boolean uie$renderFirstPersonArm(WorldSettings.GameType instance, Operation<Boolean> original,
+    private boolean uie$correctGloveRightClick(WorldSettings.GameType instance, Operation<Boolean> original,
         @Local(argsOnly = true) EntityPlayer player) {
         if (UIEUtils.hasBauble(player, ItemGlove.class) && UtilitiesInExcess.proxy.GLOVE_KEYBIND.isKeyDown(player)) {
             return true;

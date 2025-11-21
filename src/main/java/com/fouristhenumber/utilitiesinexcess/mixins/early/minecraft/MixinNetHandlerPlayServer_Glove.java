@@ -17,9 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
-import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -42,9 +40,7 @@ public class MixinNetHandlerPlayServer_Glove {
         ItemStack itemstack = inventory.getCurrentItem();
         ContainerPlayer inventoryContainer = (ContainerPlayer) player.inventoryContainer;
 
-        if (((itemstack != null && itemstack.getItem() instanceof ItemGlove)
-            || UIEUtils.hasBauble(player, ItemGlove.class))
-            && UtilitiesInExcess.proxy.GLOVE_KEYBIND.isKeyDown(player)) {
+        if (ItemGlove.isUsingGlove(player)) {
             uie$isUsingGlove = true;
             if (uie$theGlove != null) {
                 EntityItem entityitem = new EntityItem(

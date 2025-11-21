@@ -15,6 +15,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -54,6 +55,14 @@ public class ItemGlove extends Item implements IBauble {
                         + "]"
                         + EnumChatFormatting.AQUA));
         } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
+    }
+
+    public static boolean isUsingGlove(EntityPlayer player) {
+        if (player == null) return false;
+
+        return (player.getHeldItem() != null && player.getHeldItem()
+            .getItem() instanceof ItemGlove)
+            || (UIEUtils.hasBauble(player, ItemGlove.class) && UtilitiesInExcess.proxy.GLOVE_KEYBIND.isKeyDown(player));
     }
 
     @Override

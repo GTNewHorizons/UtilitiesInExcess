@@ -1,13 +1,19 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.utils.RenderableCube;
 
 import cpw.mods.fml.relauncher.Side;
@@ -60,5 +66,37 @@ public class GloveRenderer implements IItemRenderer {
         t.draw();
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, previousTex);
+    }
+
+    private static IIcon gloveIcon;
+
+    public static void renderGloveHudIcon() {
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.thePlayer;
+        if (!ItemGlove.isUsingGlove(player)) return;
+
+        if (gloveIcon == null) {
+            gloveIcon = new ItemStack(ModItems.GLOVE.get()).getIconIndex();
+        }
+
+        Tessellator t = Tessellator.instance;
+        ScaledResolution scaledResolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        mc.getTextureManager()
+            .bindTexture(TextureMap.locationItemsTexture);
+
+        GL11.glPushMatrix();
+
+        float x = (scaledResolution.getScaledWidth() / 2F) + 2, y = (scaledResolution.getScaledHeight() / 2F) + 2,
+            z = 0;
+        float width = 12;
+        float height = 12;
+        t.startDrawingQuads();
+        t.addVertexWithUV(x, y + height, z, gloveIcon.getMinU(), gloveIcon.getMaxV());
+        t.addVertexWithUV(x + width, y + height, z, gloveIcon.getMaxU(), gloveIcon.getMaxV());
+        t.addVertexWithUV(x + width, y, z, gloveIcon.getMaxU(), gloveIcon.getMinV());
+        t.addVertexWithUV(x, y, z, gloveIcon.getMinU(), gloveIcon.getMinV());
+        t.draw();
+
+        GL11.glPopMatrix();
     }
 }
