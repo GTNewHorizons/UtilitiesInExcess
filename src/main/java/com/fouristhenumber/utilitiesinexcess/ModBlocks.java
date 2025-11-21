@@ -28,6 +28,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRadicallyReduced
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
@@ -132,6 +133,7 @@ public enum ModBlocks {
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
+    SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump")
     ; // leave trailing semicolon
     // spotless:on
 
