@@ -1,50 +1,55 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.google.common.collect.Multimap;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.item.InsertionItemStack;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
 
 public class TileEntityPeacefulTable extends TileEntity {
 
+    ItemStack currentWeapon;
+    IInventory currentInventory;
+
     @Override
     public void updateEntity() {
         if (worldObj.isRemote || !(worldObj.difficultySetting == EnumDifficulty.PEACEFUL)) return;
-        if (worldObj.getTotalWorldTime() % 40 != 0) return;
+        if (worldObj.getTotalWorldTime() % 5 != 0) return;
 
-        BiomeGenBase biome = worldObj.getBiomeGenForCoords(xCoord, zCoord);
-        List<BiomeGenBase.SpawnListEntry> list = biome.getSpawnableList(EnumCreatureType.monster);
+        if (currentWeapon == null && !findWeapon()) return;
 
-        if (list == null || list.isEmpty()) return;
+        BiomeGenBase.SpawnListEntry entry = ((WorldServer) worldObj)
+            .spawnRandomCreature(EnumCreatureType.monster, xCoord, yCoord, zCoord);
 
-        BiomeGenBase.SpawnListEntry entry = (BiomeGenBase.SpawnListEntry) WeightedRandom
-            .getRandomItem(worldObj.rand, list);
-        EntityLiving entity = null;
+        EntityLiving entity;
         try {
-            entity = entry.entityClass.getConstructor(new Class[] { World.class })
+            entity = entry.entityClass.getConstructor(World.class)
                 .newInstance(worldObj);
         } catch (Exception exception) {
             UtilitiesInExcess.LOG.error("Failed to construct EntityLiving from constructor");
+            return;
         }
-        if (entity == null) return;
 
+        entity.onSpawnWithEgg(null);
         entity.setLocationAndAngles(xCoord + 0.5, yCoord + 1, zCoord + 0.5, worldObj.rand.nextFloat() * 360F, 0);
 
         worldObj.spawnEntityInWorld(entity);
@@ -64,7 +69,29 @@ public class TileEntityPeacefulTable extends TileEntity {
     }
 
     public void receiveItemStack(ItemStack stack) {
-        UtilitiesInExcess.LOG.info("Peaceful table captured {}", stack.getDisplayName());
+        if (currentInventory != null) {
+            ItemSink sink = ItemUtil.getItemSink(currentInventory, ForgeDirection.UP);
+            if (sink != null) sink.store(new InsertionItemStack(stack));
+        }
+    }
+
+    private boolean findWeapon() {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (worldObj.getTileEntity(
+                xCoord + dir.offsetX,
+                yCoord + dir.offsetY,
+                zCoord + dir.offsetZ) instanceof IInventory inv) {
+                for (int i = 0; i < inv.getSizeInventory(); i++) {
+                    ItemStack stack = inv.getStackInSlot(i);
+                    if (stack != null && stack.getItem() instanceof ItemSword) {
+                        currentWeapon = stack;
+                        currentInventory = inv;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private FakePlayer makeFakePlayer() {
@@ -72,11 +99,9 @@ public class TileEntityPeacefulTable extends TileEntity {
             (WorldServer) worldObj,
             new GameProfile(UUID.nameUUIDFromBytes("UIE_Peaceful".getBytes()), "[UIE Peaceful Table]"));
 
-        ItemStack fakeWeapon = new ItemStack(Items.diamond_axe);
+        fakePlayer.setCurrentItemOrArmor(0, currentWeapon);
 
-        fakePlayer.setCurrentItemOrArmor(0, fakeWeapon);
-
-        Multimap<String, AttributeModifier> modifiers = fakeWeapon.getAttributeModifiers();
+        Multimap<String, AttributeModifier> modifiers = currentWeapon.getAttributeModifiers();
         fakePlayer.getAttributeMap()
             .applyAttributeModifiers(modifiers);
 
