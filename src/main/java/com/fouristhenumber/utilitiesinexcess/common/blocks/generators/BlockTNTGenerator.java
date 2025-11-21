@@ -7,8 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockTNTGenerator extends BlockBaseGenerator {
 
-    public BlockTNTGenerator(String id) {
-        super(id);
+    public BlockTNTGenerator(String id, int mult) {
+        super(id, mult);
     }
 
     @Override
