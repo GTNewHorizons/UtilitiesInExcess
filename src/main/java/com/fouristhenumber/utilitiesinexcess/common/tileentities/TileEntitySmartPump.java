@@ -1,14 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import cofh.api.energy.IEnergyReceiver;
-import cofh.lib.util.position.ChunkCoord;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,28 +11,37 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+
+import cofh.api.energy.IEnergyReceiver;
 
 public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, IFluidHandler {
 
     boolean stalled = false;
-
-    private int currentChunkX;
-    private int currentChunkZ;
+    boolean finished = false;
 
     private int currentXInChunk = 0;
     private int currentZInChunk = 0;
 
-    private int currentY;
+    private int currentY = Integer.MIN_VALUE;
+
+    private static final int[][] CHUNK_OFFSETS = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 2 },
+        { 1, 1 }, { 2, 0 }, { 1, -1 }, { 0, -2 }, { -1, -1 }, { -2, 0 }, { -1, 1 }, { 0, 3 }, { 1, 2 }, { 2, 1 },
+        { 3, 0 }, { 2, -1 }, { 1, -2 }, { 0, -3 }, { -1, -2 }, { -2, -1 }, { -3, 0 }, { -2, 1 }, { -1, 2 }, { 0, 4 },
+        { 1, 3 }, { 2, 2 }, { 3, 1 }, { 4, 0 }, { 3, -1 }, { 2, -2 }, { 1, -3 }, { 0, -4 }, { -1, -3 }, { -2, -2 },
+        { -3, -1 }, { -4, 0 }, { -3, 1 }, { -2, 2 }, { -1, 3 }, { 0, 5 }, { 1, 4 }, { 2, 3 }, { 3, 2 }, { 4, 1 },
+        { 5, 0 }, { 4, -1 }, { 3, -2 }, { 2, -3 }, { 1, -4 }, { 0, -5 }, { -1, -4 }, { -2, -3 }, { -3, -2 }, { -4, -1 },
+        { -5, 0 }, { -4, 1 }, { -3, 2 }, { -2, 3 }, { -1, 4 } };
+
+    private int currentChunk = 0;
 
     FluidTank tank = new FluidTank(1000);
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) return;
+        if (worldObj.isRemote || finished) return;
 
-        if (currentY == 0) {
-            initializeScanner();
+        if (currentY == Integer.MIN_VALUE) {
+            currentY = yCoord - 1;
         }
         if (!stalled || worldObj.getTotalWorldTime() % 200 == 0) {
             stalled = false;
@@ -45,7 +49,16 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
             if (tank.getFluidAmount() > 0) {
                 if (worldObj.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IFluidHandler fluidHandler) {
                     int canDrain = fluidHandler.fill(ForgeDirection.DOWN, tank.getFluid(), false);
-                    fluidHandler.fill(ForgeDirection.DOWN, drain(ForgeDirection.UP, new FluidStack(tank.getFluid().getFluid(), canDrain), true), true);
+                    fluidHandler.fill(
+                        ForgeDirection.DOWN,
+                        drain(
+                            ForgeDirection.UP,
+                            new FluidStack(
+                                tank.getFluid()
+                                    .getFluid(),
+                                canDrain),
+                            true),
+                        true);
                 }
             }
 
@@ -53,16 +66,9 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         }
     }
 
-    private void initializeScanner() {
-        currentChunkX = xCoord >> 4;
-        currentChunkZ = zCoord >> 4;
-
-        currentY = yCoord - 1;
-    }
-
     private void scanStep() {
-        int worldX = (currentChunkX << 4) + currentXInChunk;
-        int worldZ = (currentChunkZ << 4) + currentZInChunk;
+        int worldX = (((xCoord >> 4) + (CHUNK_OFFSETS[currentChunk][0])) * 16) + currentXInChunk;
+        int worldZ = (((zCoord >> 4) + (CHUNK_OFFSETS[currentChunk][1])) * 16) + currentZInChunk;
 
         Block block = worldObj.getBlock(worldX, currentY, worldZ);
         FluidStack fluid;
@@ -103,12 +109,15 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
             currentZInChunk++;
 
             if (currentZInChunk >= 16) {
-                currentZInChunk = 0;
-                currentChunkX++;
+                if (currentChunk < CHUNK_OFFSETS.length - 1) {
+                    currentZInChunk = 0;
+                    currentChunk++;
+                } else {
+                    finished = true;
+                }
             }
         }
     }
-
 
     // IEnergyReceiver
     @Override
