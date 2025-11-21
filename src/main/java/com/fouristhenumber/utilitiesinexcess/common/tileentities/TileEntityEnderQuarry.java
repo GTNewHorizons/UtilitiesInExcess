@@ -1,17 +1,20 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
-public class TileEntityEnderQuarry extends TileEntity {
+public class TileEntityEnderQuarry extends LoadableTE {
 
     public static int STEPS_PER_TICK = 40;
-    public ForgeDirection facing;
+    private @Nullable ForgeChunkManager.Ticket ticket;
+    private ForgeDirection facing;
     private Area2d workArea;
     public QuarryWorkState state;
     private int dx;
@@ -20,6 +23,10 @@ public class TileEntityEnderQuarry extends TileEntity {
     private int chunkX;
     private int chunkZ;
     private int brokenBlocksTotal;
+
+    public TileEntityEnderQuarry() {
+        super();
+    }
 
     public ForgeDirection getFacing() {
         return this.facing;
@@ -78,6 +85,7 @@ public class TileEntityEnderQuarry extends TileEntity {
         }
         if (brokenBlocksTick < STEPS_PER_TICK) {
             state = QuarryWorkState.FINISHED;
+            unloadSelf();
         }
 
         this.brokenBlocksTotal += brokenBlocksTick;
@@ -119,16 +127,21 @@ public class TileEntityEnderQuarry extends TileEntity {
                     if (dz + 1 <= workArea.high.y) {
                         // just the next chunk
                         dz++;
+                        unloadChunkShifted(chunkX, chunkZ);
                         chunkZ++;
+                        loadChunkShifted(chunkX, chunkZ);
                         resetX = true;
                     } else {
                         // the next z slice
                         if (dx + 1 <= workArea.high.x) {
                             dx++;
+                            unloadChunkShifted(chunkX, chunkZ);
                             chunkX++;
                             dz = workArea.low.y;
                             chunkZ = workArea.low.y >> 4;
+                            loadChunkShifted(chunkX, chunkZ);
                         } else {
+                            unloadChunkShifted(chunkX, chunkZ);
                             // Finished with area
                             return false;
                         }
@@ -174,6 +187,17 @@ public class TileEntityEnderQuarry extends TileEntity {
         nbt.setInteger("dz", dz);
         nbt.setInteger("blocks", brokenBlocksTotal);
         workArea.writeNBTTag(nbt);
+    }
+
+    @Override
+    public void receiveTicketOnLoad(ForgeChunkManager.Ticket ticket) {
+        super.receiveTicketOnLoad(ticket);
+        loadChunk(chunkX, chunkZ);
+    }
+
+    @Override
+    public boolean keepsItselfLoaded() {
+        return state != QuarryWorkState.FINISHED;
     }
 
     public enum QuarryWorkState {

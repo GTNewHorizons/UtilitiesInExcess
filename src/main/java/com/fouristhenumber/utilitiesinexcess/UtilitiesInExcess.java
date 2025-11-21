@@ -1,8 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
+import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -67,6 +69,9 @@ public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
     public static final Logger LOG = LogManager.getLogger(MODID);
+
+    @Mod.Instance(MODID)
+    public static UtilitiesInExcess uieInstance;
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
@@ -166,6 +171,8 @@ public class UtilitiesInExcess {
         if (Mods.CraftTweaker.isLoaded()) {
             MineTweakerAPI.registerClass(QEDCraftTweakerSupport.class);
         }
+
+        ForgeChunkManager.setForcedChunkLoadingCallback(uieInstance, new TEChunkLoadingCallback());
     }
 
     @Mod.EventHandler
