@@ -31,7 +31,7 @@ public class BlockSpike extends Block {
         super(spikeType.material.getMaterial());
         this.spikeType = spikeType;
         setBlockName(name);
-        setBlockTextureName("utilitiesinexcess:spike");
+        setBlockTextureName("utilitiesinexcess:models/wood_spike");
         setHardness(spikeType.material.getBlockHardness(null, 0, 0, 0));
         setResistance(spikeType.material.getExplosionResistance(null));
         setHarvestLevel(spikeType.material.getHarvestTool(0), spikeType.material.getHarvestLevel(0));
@@ -144,10 +144,10 @@ public class BlockSpike extends Block {
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        icons[0] = reg.registerIcon("utilitiesinexcess:models/woodSpike");
-        icons[1] = reg.registerIcon("utilitiesinexcess:models/ironSpike");
-        icons[2] = reg.registerIcon("utilitiesinexcess:models/goldSpike");
-        icons[3] = reg.registerIcon("utilitiesinexcess:models/diamondSpike");
+        icons[0] = reg.registerIcon("utilitiesinexcess:models/wood_spike");
+        icons[1] = reg.registerIcon("utilitiesinexcess:models/iron_spike");
+        icons[2] = reg.registerIcon("utilitiesinexcess:models/gold_spike");
+        icons[3] = reg.registerIcon("utilitiesinexcess:models/diamond_spike");
         super.registerBlockIcons(reg);
     }
 

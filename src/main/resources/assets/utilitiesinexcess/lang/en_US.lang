@@ -172,20 +172,14 @@ tile.redstone_clock.name=Redstone Clock
 
 nei.infopage.uie.redstone_clock.1=A precisely calibrated redstone mechanism which will emit a pulse once every second. Will turn off when redstone powered.
 
-tile.woodSpike.name=Wooden Spikes
+tile.wood_spike.name=Wooden Spikes
+tile.iron_spike.name=Iron Spikes
+tile.gold_spike.name=Gold Spikes
+tile.diamond_spike.name=Diamond Spikes
 
 nei.infopage.uie.woodSpike.1=These spikes will damage anything that walks on them, but will not kill them, instead leaving them at the minimum health possible.
-
-tile.ironSpike.name=Iron Spikes
-
 nei.infopage.uie.ironSpike.1=Iron spikes will kill enemies that walk on them, dropping only their non-"player-only" loot.
-
-tile.goldSpike.name=Gold Spikes
-
 nei.infopage.uie.goldSpike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
-
-tile.diamondSpike.name=Diamond Spikes
-
 nei.infopage.uie.diamondSpike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
 item.heavenly_ring.name=Heavenly Ring
@@ -203,6 +197,14 @@ nei.infopage.uie.watering_can.1=Hydrates farmland and accelerates crop growth. C
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=RF %s / %s
 nei.infopage.uie.fire_battery.1=Can be charged with RF and charge can be expended to fuel a furnace.
+
+item.glove.name=Glove
+item.glove.desc.1=+2,147,483,647 Breeze Projection
+item.glove.desc.2=Allows you to click with an empty hand without
+item.glove.desc.3=needing to clear an inventory slot while held
+item.glove.desc.4=Can also be put in a baubles slot
+item.glove.desc.5=Press %s to activate.
+item.glove.desc.6=§oP.S. Breeze Projection does nothing.
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
@@ -412,3 +414,6 @@ nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there
 nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
+
+key.categories.uie=Utilities In Excess
+key.uie.glove=Activate Glove
