@@ -8,6 +8,9 @@ tile.compressed_cobblestone.6.name=Septuple Compressed Cobblestone
 tile.compressed_cobblestone.7.name=Octuple Compressed Cobblestone
 tile.compressed_cobblestone.desc=%,d Cobblestone
 
+time.minutes_abbreviation=m
+time.seconds_abbreviation=s
+
 tile.compressed_dirt.0.name=Compressed Dirt
 tile.compressed_dirt.1.name=Double Compressed Dirt
 tile.compressed_dirt.2.name=Triple Compressed Dirt
