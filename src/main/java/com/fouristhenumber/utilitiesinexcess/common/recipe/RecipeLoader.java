@@ -26,6 +26,7 @@ public class RecipeLoader {
         loadSpikeRecipes();
         loadGeneratorRecipes();
         loadQEDRecipes();
+        loadGlassRecipes();
 
         // Smart Pump
         // TODO: Replace obsidian with "ender-infused obsidian" equivalent
@@ -649,7 +650,15 @@ public class RecipeLoader {
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Dark Ethereal Glass
-        // TODO: Reliant on: Blackout Curtains, Dark Glass
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 2),
+            "ggg",
+            "gig",
+            "ggg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 10),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Ethereal Glass (Inverted)
         addShapelessRecipe(
@@ -686,6 +695,113 @@ public class RecipeLoader {
             new DisableableItemStack(ModBlocks.COMPRESSED_COBBLESTONE, 1, 7),
             ModBlocks.BEDROCKIUM_BLOCK,
             1F);
+    }
+
+    private static void loadGlassRecipes() {
+        // TODO: Smooth Glass reliant on "sandy glass"
+
+        // Rimmed Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(8, 1),
+            "ggg",
+            "g g",
+            "ggg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0));
+
+        // Bricked Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(4, 2),
+            "gg",
+            "gg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0));
+
+        // Creepy Glass
+        addShapelessRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 3),
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            Items.gunpowder);
+
+        // Gilded Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 4),
+            "nnn",
+            "ngn",
+            "nnn",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'n',
+            Items.gold_nugget);
+
+        // Obsidian Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(4, 5),
+            "gog",
+            "o o",
+            "gog",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'o',
+            Blocks.obsidian);
+
+        // Latticed Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(5, 6),
+            " g ",
+            "ggg",
+            " g ",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0));
+
+        // Glowing Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 7),
+            " d ",
+            "dgd",
+            " d ",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'd',
+            Items.glowstone_dust);
+
+        // Beloved Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(6, 8),
+            "gpg",
+            "ggg",
+            " g ",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'p',
+            new ItemStack(Items.dye, 1, 9));
+
+        // Tiled Glass
+        addShapelessRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 9),
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0));
+
+        // Dark Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(5, 10),
+            "gcg",
+            "cgc",
+            "gcg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'c',
+            ModBlocks.BLACKOUT_CURTAINS);
+
+        // Reinforced Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(4, 11),
+            "gog",
+            "o o",
+            "gog",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 10),
+            'o',
+            Blocks.obsidian);
     }
 
     private static void loadInversionRecipes() {
