@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -49,17 +50,15 @@ public class ForgeEventHandler {
         if (event.source.getEntity() == null) return;
         NBTTagCompound tag = event.source.getEntity()
             .getEntityData();
-        if (tag.getBoolean("isPacifistsBench")) {
-            if (event.entityLiving.worldObj.getTileEntity(
-                tag.getInteger("x"),
-                tag.getInteger("y"),
-                tag.getInteger("z")) instanceof TileEntityPacifistsBench table) {
-                if (event.entityLiving instanceof EntityLiving living) living.experienceValue = 0;
-                for (EntityItem drop : event.drops) {
-                    table.receiveItemStack(drop.getEntityItem());
-                }
-                event.setCanceled(true);
+        if (!tag.getBoolean("isPacifistsBench")) return;
+        TileEntity te = event.entityLiving.worldObj
+            .getTileEntity(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+        if (te instanceof TileEntityPacifistsBench table) {
+            if (event.entityLiving instanceof EntityLiving living) living.experienceValue = 0;
+            for (EntityItem drop : event.drops) {
+                table.receiveItemStack(drop.getEntityItem());
             }
+            event.setCanceled(true);
         }
     }
 
