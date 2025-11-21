@@ -64,6 +64,9 @@ public class BlockConfig {
     public static boolean enableRadicallyReducedChest;
 
     @Config.DefaultBoolean(true)
+    public static boolean enablePeacefulTable;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;
 
     @Config.DefaultBoolean(true)

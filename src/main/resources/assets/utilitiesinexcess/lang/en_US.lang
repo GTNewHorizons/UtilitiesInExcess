@@ -226,6 +226,8 @@ item.ender_lotus_seed.name=Ender-Lotus Seed
 
 tile.ender_lotus.name=Ender Lotus
 
+tile.peaceful_table.name=Peaceful Table
+
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
