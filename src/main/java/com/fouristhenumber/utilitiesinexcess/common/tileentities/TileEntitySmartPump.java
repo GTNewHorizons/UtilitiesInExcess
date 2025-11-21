@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -12,17 +13,24 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 
 public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, IFluidHandler {
 
+    protected EnergyStorage energyStorage = new EnergyStorage(10000);
+
     boolean stalled = false;
     boolean finished = false;
 
-    private int currentXInChunk = 0;
-    private int currentZInChunk = 0;
+    private byte xInChunk = 0;
+    private byte zInChunk = 0;
 
     private int currentY = Integer.MIN_VALUE;
+
+    private byte currentChunk = 0;
+
+    FluidTank tank = new FluidTank(1000);
 
     private static final int[][] CHUNK_OFFSETS = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 2 },
         { 1, 1 }, { 2, 0 }, { 1, -1 }, { 0, -2 }, { -1, -1 }, { -2, 0 }, { -1, 1 }, { 0, 3 }, { 1, 2 }, { 2, 1 },
@@ -31,10 +39,6 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         { -3, -1 }, { -4, 0 }, { -3, 1 }, { -2, 2 }, { -1, 3 }, { 0, 5 }, { 1, 4 }, { 2, 3 }, { 3, 2 }, { 4, 1 },
         { 5, 0 }, { 4, -1 }, { 3, -2 }, { 2, -3 }, { 1, -4 }, { 0, -5 }, { -1, -4 }, { -2, -3 }, { -3, -2 }, { -4, -1 },
         { -5, 0 }, { -4, 1 }, { -3, 2 }, { -2, 3 }, { -1, 4 } };
-
-    private int currentChunk = 0;
-
-    FluidTank tank = new FluidTank(1000);
 
     @Override
     public void updateEntity() {
@@ -67,11 +71,16 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
     }
 
     private void scanStep() {
-        int worldX = (((xCoord >> 4) + (CHUNK_OFFSETS[currentChunk][0])) * 16) + currentXInChunk;
-        int worldZ = (((zCoord >> 4) + (CHUNK_OFFSETS[currentChunk][1])) * 16) + currentZInChunk;
+        int worldX = (((xCoord >> 4) + (CHUNK_OFFSETS[currentChunk][0])) * 16) + xInChunk;
+        int worldZ = (((zCoord >> 4) + (CHUNK_OFFSETS[currentChunk][1])) * 16) + zInChunk;
 
         Block block = worldObj.getBlock(worldX, currentY, worldZ);
         FluidStack fluid;
+
+        if (getEnergyStored(ForgeDirection.DOWN) < 100) {
+            stalled = true;
+            return;
+        }
 
         // Gotta hardcode the vanilla ones ugh
         if (block == Blocks.water) {
@@ -84,6 +93,8 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
             advanceColumn();
             return;
         }
+
+        energyStorage.extractEnergy(100, true);
 
         if (tank.fill(fluid, false) >= fluid.amount) {
             tank.fill(fluid, true);
@@ -102,15 +113,15 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
     private void advanceColumn() {
         currentY = yCoord - 1;
 
-        currentXInChunk++;
+        xInChunk++;
 
-        if (currentXInChunk >= 16) {
-            currentXInChunk = 0;
-            currentZInChunk++;
+        if (xInChunk >= 16) {
+            xInChunk = 0;
+            zInChunk++;
 
-            if (currentZInChunk >= 16) {
+            if (zInChunk >= 16) {
                 if (currentChunk < CHUNK_OFFSETS.length - 1) {
-                    currentZInChunk = 0;
+                    zInChunk = 0;
                     currentChunk++;
                 } else {
                     finished = true;
@@ -119,20 +130,48 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         }
     }
 
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+
+        tag.setBoolean("finished", finished);
+        tag.setByte("xInChunk", xInChunk);
+        tag.setByte("zInChunk", zInChunk);
+        tag.setInteger("currentY", currentY);
+        tag.setByte("currentChunk", currentChunk);
+
+        energyStorage.writeToNBT(tag);
+        tank.writeToNBT(tag);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+
+        finished = tag.getBoolean("finished");
+        xInChunk = tag.getByte("xInChunk");
+        zInChunk = tag.getByte("zInChunk");
+        currentY = tag.getInteger("currentY");
+        currentChunk = tag.getByte("currentChunk");
+
+        energyStorage.readFromNBT(tag);
+        tank.readFromNBT(tag);
+    }
+
     // IEnergyReceiver
     @Override
     public int receiveEnergy(ForgeDirection forgeDirection, int i, boolean b) {
-        return 0;
+        return energyStorage.receiveEnergy(i, b);
     }
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return 0;
+        return energyStorage.getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return 10000;
+        return energyStorage.getMaxEnergyStored();
     }
 
     @Override
