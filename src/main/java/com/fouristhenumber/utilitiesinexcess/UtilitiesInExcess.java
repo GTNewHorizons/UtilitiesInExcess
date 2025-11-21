@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,6 +46,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweaker
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
+import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -67,6 +69,9 @@ public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
     public static final Logger LOG = LogManager.getLogger(MODID);
+
+    @Mod.Instance(MODID)
+    public static UtilitiesInExcess uieInstance;
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
@@ -157,6 +162,10 @@ public class UtilitiesInExcess {
             ChestGenHooks.addItem(
                 ChestGenHooks.STRONGHOLD_CROSSING,
                 new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+        }
+
+        if (ModBlocks.SMART_PUMP.isEnabled()) {
+            ForgeChunkManager.setForcedChunkLoadingCallback(uieInstance, new PumpChunkLoadingCallback());
         }
 
         if (ModBlocks.PINK_GENERATOR.isEnabled()) {

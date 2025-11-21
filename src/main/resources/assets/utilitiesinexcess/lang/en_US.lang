@@ -139,6 +139,8 @@ tile.ironSpike.desc=Enemies will drop regular loot
 tile.goldSpike.desc=Enemies will drop regular loot and experience
 tile.diamondSpike.desc=Enemies will drop "player-only" loot and experience
 
+tile.smart_pump.name=Smart Pump
+
 item.hungerAxe.name=Glutton's Axe
 item.hungerAxe.desc.1=Sates the bearer's hunger while held
 item.hungerAxe.desc.2=Can consume hunger to heal struck entities
