@@ -5,14 +5,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPeacefulTable;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 
-public class BlockPeacefulTable extends BlockContainer {
+public class BlockPacifistsBench extends BlockContainer {
 
-    public BlockPeacefulTable() {
+    public BlockPacifistsBench() {
         super(Material.wood);
-        setBlockTextureName("utilitiesinexcess:peaceful_table");
-        setBlockName("peaceful_table");
+        setBlockTextureName("utilitiesinexcess:pacifists_bench");
+        setBlockName("pacifists_bench");
     }
 
     @Override
@@ -22,6 +22,6 @@ public class BlockPeacefulTable extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityPeacefulTable();
+        return new TileEntityPacifistsBench();
     }
 }

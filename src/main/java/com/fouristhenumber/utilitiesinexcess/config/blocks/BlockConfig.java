@@ -64,7 +64,13 @@ public class BlockConfig {
     public static boolean enableRadicallyReducedChest;
 
     @Config.DefaultBoolean(true)
-    public static boolean enablePeacefulTable;
+    public static boolean enablePacifistsBench;
+
+    @Config.DefaultInt(600)
+    public static int pacifistsBenchCooldownInTicks;
+
+    @Config.DefaultBoolean(false)
+    public static boolean pacifistsBenchInNonPeaceful;
 
     @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;

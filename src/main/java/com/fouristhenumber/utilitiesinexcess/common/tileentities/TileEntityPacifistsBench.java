@@ -19,23 +19,26 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.item.InsertionItemStack;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
 
-public class TileEntityPeacefulTable extends TileEntity {
+public class TileEntityPacifistsBench extends TileEntity {
 
-    ItemStack currentWeapon;
+    int weaponLocation = -1;
     IInventory currentInventory;
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote || !(worldObj.difficultySetting == EnumDifficulty.PEACEFUL)) return;
-        if (worldObj.getTotalWorldTime() % 5 != 0) return;
+        if (worldObj.isRemote || worldObj.getTotalWorldTime() % BlockConfig.pacifistsBenchCooldownInTicks != 0) return;
+        if (!(worldObj.difficultySetting == EnumDifficulty.PEACEFUL) && !BlockConfig.pacifistsBenchInNonPeaceful)
+            return;
 
-        if (currentWeapon == null && !findWeapon()) return;
+        ItemStack weapon = findWeapon();
+        if (weapon == null) return;
 
         BiomeGenBase.SpawnListEntry entry = ((WorldServer) worldObj)
             .spawnRandomCreature(EnumCreatureType.monster, xCoord, yCoord, zCoord);
@@ -49,23 +52,26 @@ public class TileEntityPeacefulTable extends TileEntity {
             return;
         }
 
+        // Basically just makes wither skeletons spawn properly
         entity.onSpawnWithEgg(null);
         entity.setLocationAndAngles(xCoord + 0.5, yCoord + 1, zCoord + 0.5, worldObj.rand.nextFloat() * 360F, 0);
 
         worldObj.spawnEntityInWorld(entity);
 
-        FakePlayer fakePlayer = makeFakePlayer();
+        FakePlayer fakePlayer = makeFakePlayer(weapon);
 
         int hits = 0;
         // Hit repeatedly to correctly simulate damage and durability
-        while (!entity.isDead) {
-            // Just give up at this point, so it doesn't lock out
+        while (entity.getHealth() > 0.0) {
+            // Just give up at this point, so it doesn't lock out if there's some insane modded interaction
             if (hits > 500) return;
             entity.hurtResistantTime = 0;
             fakePlayer.attackTargetEntityWithCurrentItem(entity);
             entity.motionX = entity.motionY = entity.motionZ = 0;
             hits++;
         }
+
+        currentInventory.setInventorySlotContents(weaponLocation, fakePlayer.getCurrentEquippedItem());
     }
 
     public void receiveItemStack(ItemStack stack) {
@@ -75,7 +81,12 @@ public class TileEntityPeacefulTable extends TileEntity {
         }
     }
 
-    private boolean findWeapon() {
+    private ItemStack findWeapon() {
+        if (currentInventory != null) {
+            ItemStack weaponStack = currentInventory.getStackInSlot(weaponLocation);
+            if (weaponStack != null && weaponStack.getItem() instanceof ItemSword) return weaponStack;
+        }
+
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (worldObj.getTileEntity(
                 xCoord + dir.offsetX,
@@ -84,30 +95,30 @@ public class TileEntityPeacefulTable extends TileEntity {
                 for (int i = 0; i < inv.getSizeInventory(); i++) {
                     ItemStack stack = inv.getStackInSlot(i);
                     if (stack != null && stack.getItem() instanceof ItemSword) {
-                        currentWeapon = stack;
+                        weaponLocation = i;
                         currentInventory = inv;
-                        return true;
+                        return stack;
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
-    private FakePlayer makeFakePlayer() {
+    private FakePlayer makeFakePlayer(ItemStack weapon) {
         FakePlayer fakePlayer = FakePlayerFactory.get(
             (WorldServer) worldObj,
-            new GameProfile(UUID.nameUUIDFromBytes("UIE_Peaceful".getBytes()), "[UIE Peaceful Table]"));
+            new GameProfile(UUID.nameUUIDFromBytes("UIE_Pacifist".getBytes()), "[UIE Pacifist's Bench]"));
 
-        fakePlayer.setCurrentItemOrArmor(0, currentWeapon);
+        fakePlayer.setCurrentItemOrArmor(0, weapon);
 
-        Multimap<String, AttributeModifier> modifiers = currentWeapon.getAttributeModifiers();
+        Multimap<String, AttributeModifier> modifiers = weapon.getAttributeModifiers();
         fakePlayer.getAttributeMap()
             .applyAttributeModifiers(modifiers);
 
         NBTTagCompound tag = fakePlayer.getEntityData();
 
-        tag.setBoolean("isPeacefulTable", true);
+        tag.setBoolean("isPacifistsBench", true);
 
         tag.setInteger("x", xCoord);
         tag.setInteger("y", yCoord);

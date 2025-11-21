@@ -15,7 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlock
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPeacefulTable;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRadicallyReducedChest;
@@ -124,7 +124,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityTNTGenerator.class, "TileEntityTNTGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityPeacefulTable.class, "TileEntityPeacefulTableUIE");
+        GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

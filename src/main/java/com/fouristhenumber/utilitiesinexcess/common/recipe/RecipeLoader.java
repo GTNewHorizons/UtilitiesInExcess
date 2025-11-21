@@ -28,6 +28,19 @@ public class RecipeLoader {
         loadQEDRecipes();
         loadGlassRecipes();
 
+        // Pacifist's Bench
+        addShapedRecipe(
+            ModBlocks.PACIFISTS_BENCH,
+            "ewe",
+            "wpw",
+            "ewe",
+            'e',
+            Items.emerald,
+            'p',
+            Items.ender_pearl,
+            'w',
+            new ItemStack(Blocks.planks, 1, OreDictionary.WILDCARD_VALUE));
+
         // X-Ray Glasses
         addShapedRecipe(
             ModItems.BLOCK_ANALYZER,

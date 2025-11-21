@@ -33,7 +33,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionP
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPeacefulTable;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
@@ -49,11 +49,11 @@ public class ForgeEventHandler {
         if (event.source.getEntity() == null) return;
         NBTTagCompound tag = event.source.getEntity()
             .getEntityData();
-        if (tag.getBoolean("isPeacefulTable")) {
+        if (tag.getBoolean("isPacifistsBench")) {
             if (event.entityLiving.worldObj.getTileEntity(
                 tag.getInteger("x"),
                 tag.getInteger("y"),
-                tag.getInteger("z")) instanceof TileEntityPeacefulTable table) {
+                tag.getInteger("z")) instanceof TileEntityPacifistsBench table) {
                 if (event.entityLiving instanceof EntityLiving living) living.experienceValue = 0;
                 for (EntityItem drop : event.drops) {
                     table.receiveItemStack(drop.getEntityItem());
