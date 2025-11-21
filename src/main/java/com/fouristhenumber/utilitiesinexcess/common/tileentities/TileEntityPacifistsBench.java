@@ -64,7 +64,7 @@ public class TileEntityPacifistsBench extends TileEntity {
         // Hit repeatedly to correctly simulate damage and durability
         while (entity.getHealth() > 0.0) {
             // Just give up at this point, so it doesn't lock out if there's some insane modded interaction
-            if (hits > 500) return;
+            if (hits > 500) break;
             entity.hurtResistantTime = 0;
             fakePlayer.attackTargetEntityWithCurrentItem(entity);
             entity.motionX = entity.motionY = entity.motionZ = 0;
