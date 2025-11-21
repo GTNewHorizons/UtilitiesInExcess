@@ -84,7 +84,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableQED;
-  
+
     @Config.DefaultBoolean(true)
     public static boolean enableDecorativeGlass;
 
