@@ -7,8 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockLavaGenerator extends BlockBaseGenerator {
 
-    public BlockLavaGenerator(String id) {
-        super(id);
+    public BlockLavaGenerator(String id, int mult) {
+        super(id, mult);
     }
 
     @Override
