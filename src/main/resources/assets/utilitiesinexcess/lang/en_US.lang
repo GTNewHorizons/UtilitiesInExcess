@@ -177,10 +177,12 @@ item.fire_battery.name=Fire Battery
 item.fire_battery.desc=RF %s / %s
 
 item.glove.name=Glove
-item.glove.desc.1=Allows you to click with an empty hand without
-item.glove.desc.2=needing to clear an inventory slot while held
-item.glove.desc.3=Can also be put in a baubles slot
-item.glove.desc.4=Press %s to activate.
+item.glove.desc.1=+2,147,483,647 Breeze Projection
+item.glove.desc.2=Allows you to click with an empty hand without
+item.glove.desc.3=needing to clear an inventory slot while held
+item.glove.desc.4=Can also be put in a baubles slot
+item.glove.desc.5=Press %s to activate.
+item.glove.desc.6=§oP.S. Breeze Projection does nothing.
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
