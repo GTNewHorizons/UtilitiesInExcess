@@ -1,9 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
@@ -17,8 +14,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientProxy extends CommonProxy {
-
-    public static KeyBinding gloveKey;
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -38,7 +33,5 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
-        gloveKey = new KeyBinding("key.uie.glove", Keyboard.KEY_NUMPAD4, "key.categories.uie");
-        ClientRegistry.registerKeyBinding(gloveKey);
     }
 }

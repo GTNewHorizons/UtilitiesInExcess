@@ -15,9 +15,6 @@ public enum Mixins implements IMixins {
     // spotless:off
 
     // make sure to leave a trailing comma
-//    TESTING_CHATMESSAGE(new MixinBuilder("for testing")
-//        .addCommonMixins("minecraft.MixinEntityClientPlayerMP_Testing")
-//        .setPhase(Phase.EARLY)),
     CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed Earth")
         .addCommonMixins("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
@@ -30,8 +27,8 @@ public enum Mixins implements IMixins {
         .addExcludedMod(ANGELICA)
         /*.addRequiredMod(TargetedMod.VANILLA)*/
     ),
-    GLOVE(new MixinBuilder("Implements the Gloves special right click")
-        .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove", "minecraft.MixinItemRenderer_Glove")
+    GLOVE(new MixinBuilder("Implements the Glove's special right click")
+        .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove", "minecraft.MixinItemRenderer_Glove", "minecraft.MixinPlayerControllerMP_Glove")
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> ItemConfig.enableGlove)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
-import com.fouristhenumber.utilitiesinexcess.ClientProxy;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
 import baubles.api.BaubleType;
@@ -25,7 +25,7 @@ public class ItemGlove extends Item implements IBauble {
 
     public ItemGlove() {
         super();
-        this.setTextureName("utilitiesinexcess:block_analyzer");
+        this.setTextureName("utilitiesinexcess:glove");
         this.setUnlocalizedName("glove");
         this.setMaxStackSize(1);
     }
@@ -49,7 +49,7 @@ public class ItemGlove extends Item implements IBauble {
                     StatCollector.translateToLocal("item.glove.desc.4"),
                     EnumChatFormatting.WHITE + "["
                         + EnumChatFormatting.GOLD
-                        + Keyboard.getKeyName(ClientProxy.gloveKey.getKeyCode())
+                        + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
                         + EnumChatFormatting.WHITE
                         + "]"
                         + EnumChatFormatting.AQUA));
