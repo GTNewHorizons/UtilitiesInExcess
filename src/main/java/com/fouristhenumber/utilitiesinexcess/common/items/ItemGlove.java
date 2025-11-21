@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,7 +13,6 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 
 import baubles.api.BaubleType;
@@ -42,21 +40,19 @@ public class ItemGlove extends Item implements IBauble {
         super.addInformation(stack, player, tooltip, p_77624_4_);
         tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.1"));
 
-        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.2"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.3"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.4"));
-            tooltip.add(
-                EnumChatFormatting.AQUA + String.format(
-                    StatCollector.translateToLocal("item.glove.desc.5"),
-                    EnumChatFormatting.WHITE + "["
-                        + EnumChatFormatting.GOLD
-                        + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
-                        + EnumChatFormatting.WHITE
-                        + "]"
-                        + EnumChatFormatting.AQUA));
-            tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.6"));
-        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.2"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.3"));
+        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.4"));
+        tooltip.add(
+            EnumChatFormatting.AQUA + String.format(
+                StatCollector.translateToLocal("item.glove.desc.5"),
+                EnumChatFormatting.WHITE + "["
+                    + EnumChatFormatting.GOLD
+                    + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
+                    + EnumChatFormatting.WHITE
+                    + "]"
+                    + EnumChatFormatting.AQUA));
+        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.6"));
     }
 
     public static boolean isUsingGlove(EntityPlayer player) {
