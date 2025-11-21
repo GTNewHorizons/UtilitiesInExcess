@@ -176,6 +176,14 @@ item.watering_can.desc.4=automatic mode.
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=RF %s / %s
 
+item.glove.name=Glove
+item.glove.desc.1=+2,147,483,647 Breeze Projection
+item.glove.desc.2=Allows you to click with an empty hand without
+item.glove.desc.3=needing to clear an inventory slot while held
+item.glove.desc.4=Can also be put in a baubles slot
+item.glove.desc.5=Press %s to activate.
+item.glove.desc.6=§oP.S. Breeze Projection does nothing.
+
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plusplus.name=Low-Temp Furnace Generator
@@ -323,3 +331,6 @@ nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there
 nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
+
+key.categories.uie=Utilities In Excess
+key.uie.glove=Activate Glove

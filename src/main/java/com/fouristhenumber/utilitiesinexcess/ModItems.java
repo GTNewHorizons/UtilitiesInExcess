@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGoldenBag;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
@@ -67,6 +68,7 @@ public enum ModItems {
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
     XRAY_GLASSES(ItemConfig.enableXRayGlasses, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_glasses"),
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
+    GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
 
     ; // leave trailing semicolon
     // spotless:on
