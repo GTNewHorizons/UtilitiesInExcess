@@ -8,6 +8,9 @@ tile.compressed_cobblestone.6.name=Septuple Compressed Cobblestone
 tile.compressed_cobblestone.7.name=Octuple Compressed Cobblestone
 tile.compressed_cobblestone.desc=%,d Cobblestone
 
+time.minutes_abbreviation=m
+time.seconds_abbreviation=s
+
 tile.compressed_dirt.0.name=Compressed Dirt
 tile.compressed_dirt.1.name=Double Compressed Dirt
 tile.compressed_dirt.2.name=Triple Compressed Dirt
@@ -174,17 +177,41 @@ item.fire_battery.name=Fire Battery
 item.fire_battery.desc=RF %s / %s
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
+tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
+tile.low_temperature_furnace_generator_plusplus.name=Low-Temp Furnace Generator
 tile.furnace_generator.name=Furnace Generator
+tile.furnace_generator_plus.name=Furnace Generator
+tile.furnace_generator_plusplus.name=Furnace Generator
 tile.high_temperature_furnace_generator.name=High-Temp Furnace Generator
+tile.high_temperature_furnace_generator_plus.name=High-Temp Furnace Generator
+tile.high_temperature_furnace_generator_plusplus.name=High-Temp Furnace Generator
 tile.ender_generator.name=Ender Generator
+tile.ender_generator_plus.name=Ender Generator
+tile.ender_generator_plusplus.name=Ender Generator
 tile.food_generator.name=Food Generator
+tile.food_generator_plus.name=Food Generator
+tile.food_generator_plusplus.name=Food Generator
 tile.tnt_generator.name=TNT Generator
+tile.tnt_generator_plus.name=TNT Generator
+tile.tnt_generator_plusplus.name=TNT Generator
 tile.nether_star_generator.name=Nether Star Generator
+tile.nether_star_generator_plus.name=Nether Star Generator
+tile.nether_star_generator_plusplus.name=Nether Star Generator
 tile.pink_generator.name=Pink Generator
+tile.pink_generator_plus.name=Pink Generator
+tile.pink_generator_plusplus.name=Pink Generator
 tile.lava_generator.name=Lava Generator
+tile.lava_generator_plus.name=Lava Generator
+tile.lava_generator_plusplus.name=Lava Generator
 tile.solar_generator.name=Solar Generator
+tile.solar_generator_plus.name=Solar Generator
+tile.solar_generator_plusplus.name=Solar Generator
 tile.redstone_generator.name=Redstone Generator
+tile.redstone_generator_plus.name=Redstone Generator
+tile.redstone_generator_plusplus.name=Redstone Generator
 tile.potion_generator.name=Potion Generator
+tile.potion_generator_plus.name=Potion Generator
+tile.potion_generator_plusplus.name=Potion Generator
 
 gui.energy.tooltip=RF: %s / %s
 
