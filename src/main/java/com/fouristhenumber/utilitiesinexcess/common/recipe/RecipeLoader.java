@@ -664,7 +664,7 @@ public class RecipeLoader {
         }
 
         addShapedRecipe(
-            ModItems.INVERTED_INGOT,
+            ModItems.INVERTED_INGOT.newItemStack(1, 1),
             "i",
             "s",
             "d",
