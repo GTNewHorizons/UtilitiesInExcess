@@ -2,11 +2,80 @@ package com.fouristhenumber.utilitiesinexcess.client;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+
 import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMCForNEI {
 
     public static void IMCSender() {
+        sendInfoPage(
+            "utilitiesinexcess:compressed_cobblestone,utilitiesinexcess:compressed_dirt,utilitiesinexcess:compressed_gravel,utilitiesinexcess:compressed_sand",
+            "nei.infopage.uie.compressed.1");
+
+        sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.1");
+        if (InversionConfig.invertedIngotsImplode) {
+            sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.2");
+            sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.3");
+        }
+
+        sendInfoPage(
+            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
+            "nei.infopage.uie.inverted_ingot_stable.1");
+        sendInfoPage(
+            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
+            "nei.infopage.uie.inverted_ingot_stable.2");
+
+        sendInfoPage("<utilitiesinexcess:gluttons_axe>", "nei.infopage.uie.gluttons_axe.1");
+        sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "nei.infopage.uie.destruction_pickaxe.1");
+        sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "nei.infopage.uie.anti_particulate_shovel.1");
+        sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
+        sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
+        sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
+        sendInfoPage(
+            "<utilitiesinexcess:architectsWand>,<utilitiesinexcess:superArchitectsWand>",
+            "nei.infopage.uie.architects_wand.1");
+
+        sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
+
+        sendInfoPage("<utilitiesinexcess:floating_block>", "nei.infopage.uie.floating_block.1");
+
+        sendInfoPage("<utilitiesinexcess:redstone_clock>", "nei.infopage.uie.redstone_clock.1");
+
+        sendInfoPage("<utilitiesinexcess:woodSpike>", "nei.infopage.uie.woodSpike.1");
+        sendInfoPage("<utilitiesinexcess:ironSpike>", "nei.infopage.uie.ironSpike.1");
+        sendInfoPage("<utilitiesinexcess:goldSpike>", "nei.infopage.uie.goldSpike.1");
+        sendInfoPage("<utilitiesinexcess:diamondSpike>", "nei.infopage.uie.diamondSpike.1");
+
+        sendInfoPage("<utilitiesinexcess:fire_battery>", "nei.infopage.uie.fire_battery.1");
+
+        sendInfoPage("<utilitiesinexcess:block_analyzer>", "nei.infopage.uie.block_analyzer.1");
+
+        sendInfoPage("<utilitiesinexcess:conveyor>", "nei.infopage.uie.conveyor.1");
+
+        sendInfoPage("<utilitiesinexcess:marginally_maximised_chest>", "nei.infopage.uie.marginally_maximised_chest.1");
+        sendInfoPage("<utilitiesinexcess:significantly_shrunk_chest>", "nei.infopage.uie.significantly_shrunk_chest.1");
+        sendInfoPage("<utilitiesinexcess:radically_reduced_chest>", "nei.infopage.uie.radically_reduced_chest.1");
+
+        sendInfoPage("<utilitiesinexcess:pure_love>", "nei.infopage.uie.pure_love.1");
+
+        sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
+
+        sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
+
+        sendInfoPage("<utilitiesinexcess:rain_muffler>", "nei.infopage.uie.rain_muffler.1");
+        sendInfoPage("<utilitiesinexcess:sound_muffler>", "nei.infopage.uie.sound_muffler.1");
+
+        sendInfoPage(
+            "<utilitiesinexcess:bedrockium_ingot>,<utilitiesinexcess:bedrockium_block>",
+            "nei.infopage.uie.bedrockium.1");
+
+        sendInfoPage(
+            "<utilitiesinexcess:watering_can_basic>,<utilitiesinexcess:watering_can_advanced>,<utilitiesinexcess:watering_can_elite>",
+            "nei.infopage.uie.watering_can.1");
+
+        sendInfoPage("<utilitiesinexcess:heavenly_ring>", "nei.infopage.uie.heavenly_ring.1");
+
         sendInfoPage("<utilitiesinexcess:trash_can_item>", "nei.infopage.uie.trash_can_item.1");
         sendInfoPage("<utilitiesinexcess:trash_can_fluid>", "nei.infopage.uie.trash_can_fluid.1");
         sendInfoPage("<utilitiesinexcess:trash_can_energy>", "nei.infopage.uie.trash_can_energy.1");

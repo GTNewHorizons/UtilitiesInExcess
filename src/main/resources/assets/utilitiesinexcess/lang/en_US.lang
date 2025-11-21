@@ -41,8 +41,11 @@ tile.compressed_gravel.6.name=Septuple Compressed Gravel
 tile.compressed_gravel.7.name=Octuple Compressed Gravel
 tile.compressed_gravel.desc=%,d Gravel
 
+nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
+
 tile.floating_block.name=Floating Block
-tile.floating_block.desc=Can be placed in midair
+
+nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
 tile.ethereal_glass.2.name=Dark Ethereal Glass
@@ -73,6 +76,7 @@ tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
 item.block_analyzer.name=Block Analyzer
+nei.infopage.uie.block_analyzer.1=The block analyzer, when used on a block, will retrieve mysterious information about "block ids" and "NBT data". How strange...
 
 chat.block_analyzer.header=-----Analyzing Block-----
 chat.block_analyzer.blockid=Block ID: %s
@@ -89,14 +93,24 @@ item.inverted_ingot.desc.4=Does not stack.
 item.inverted_ingot.desc.5=Cannot be crafted outside of a vanilla crafting table.
 item.inverted_ingot.desc.c=Creatively spawned. Will not implode.
 
+nei.infopage.uie.inverted_ingot.1=Channeling a diamond into an Awakened Inversion Sigil will allow you to invert iron into this strange and highly unstable substance. Many powerful tools and items can be made through inversion...
+nei.infopage.uie.inverted_ingot.2=The process of creating inverted ingots is quite dangerous. Firstly, they may only be created in vanilla crafting tables. Once crafted, you will have a limited time to use them.
+nei.infopage.uie.inverted_ingot.3=Run out of time, leave the crafting table, or throw the ingots and your body will be rapidly inverted, killing you. They do not stack.
+
 item.inverted_ingot.stable.name=Stabilized Inverted Ingot
 item.inverted_ingot.stable.desc=This ingot has been stabilized and will not implode.
+
+nei.infopage.uie.inverted_ingot_stable.1=Creating inverted ingots can be dangerous and irritating. Fortunately, it is possible to stabilize the process by either crafting individual stable nuggets with an Awakened Inversion Sigil or by using a Pseudo-Inversion Sigil.
+nei.infopage.uie.inverted_ingot_stable.2=Inverted ingots created in this way will never implode, can stack, and can be safely removed from the crafting table.
 
 item.inverted_nugget.name=Stable Inverted Nugget
 
 death.attack.inverted_ingot=%1$s's insides were inverted!
 
 item.bedrockium_ingot.name=Bedrockium Ingot
+
+nei.infopage.uie.bedrockium.1=Bedrockium is a supremely strong material named after the virtually impervious foundation of the world. It is immensely heavy and will slow you to a crawl while holding it.
+
 item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
@@ -115,78 +129,80 @@ nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantm
 nei.infopage.uie.inversion_sigil.3=Place an Enchantment Table outdoors on grass with a clear view of the sky, surround it with a ring of redstone dust, and wait until midnight. Ensure the Enchantment Table is in complete darkness, and sacrifice a living creature upon the table.
 nei.infopage.uie.inversion_sigil.4=If the ritual has been completed successfully, lightning will strike the Enchantment Table, and the surrounding grass will transform into Cursed Earth, which rapidly summons hostile creatures. Be prepared for battle!
 
-item.gluttons_axe.name=Glutton's Axe
-item.gluttons_axe.desc.1=Sates the bearer's hunger while held
-item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
-item.gluttons_axe.desc.3=This effect is lethal to most undead
-
 item.architects_wand.name=Architect's Wand
-tooltip.architects_wand.1=Assists in placing many blocks
-tooltip.architects_wand.2=Can place up to %s blocks at once
+tooltip.architects_wand.1=Can place up to %s blocks at once
+
+nei.infopage.uie.architects_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, you will see a wireframe indicating how a set of blocks will be extended by the wand.
+
+item.gluttons_axe.name=Glutton's Axe
+
+nei.infopage.uie.gluttons_axe.1=This axe contains potent restorative magic that will restore the bearer's hunger while it is held. Attacking with the axe will heal whatever is hit at the cost of hunger - but this healing is deadly to the undead.
 
 item.destruction_pickaxe.name=Destruction Pickaxe
-item.destruction_pickaxe.desc.1=Mines smooth stone 5x faster than a diamond pickaxe
-item.destruction_pickaxe.desc.2=All other blocks are mined slower than your fist
-item.destruction_pickaxe.desc.3=Mined blocks will not drop anything
+
+nei.infopage.uie.destruction_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined will be destroyed instead of dropping.
 
 item.anti_particulate_shovel.name=Anti-Particulate Shovel
-item.anti_particulate_shovel.desc.1=Destroys all sand/gravel above blocks mined
-item.anti_particulate_shovel.desc.2=Mined blocks will not drop anything
+
+nei.infopage.uie.anti_particulate_shovel.1=This shovel will deal with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this will be destroyed instead of dropping.
 
 item.precision_shears.name=Precision Shears
-item.precision_shears.desc.1=Functions as shears as well as a stone multi-tool
-item.precision_shears.desc.2=Can right click to instantly break blocks
-item.precision_shears.desc.3=Drops are instantly teleported to your inventory
+
+nei.infopage.uie.precision_shears.1=These shears can break any block at a stone harvest level and mining speed. Shift-using the shears will break a block instantly. Any blocks broken will be instantly teleported to your inventory.
 
 item.etheric_sword.name=Etheric Sword
-item.etheric_sword.desc.1=Equivalent total damage to a diamond sword
-item.etheric_sword.desc.2=3 points of damage are magic, armor-piercing damage
+
+nei.infopage.uie.etheric_sword.1=This sword is partially ethereal and deals an additional 3 hearts of damage as magical armor-piercing damage.
 
 item.reversing_hoe.name=Reversing Hoe
-item.reversing_hoe.desc.1=Reverts wheat crop growth
-item.reversing_hoe.desc.2=Converts dirt -> grass and cobblestone -> stone
+
+nei.infopage.uie.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It will also convert dirt into grass and cobblestone into stone.
+
+item.unbreakable.desc=Unbreakable
 
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
 item.mob_jar.desc.empty=Empty
-item.mob_jar.desc.1=Right click a passive mob to trap it
-item.mob_jar.desc.2=Right click again to release
+
+nei.infopage.uie.mob_jar.1=A deceptively small jar that can hold the soul of a living creature. Use to capture a mob and again to release.
 
 item.disabled_item.name=Disabled Item '%s'
 
 tile.redstone_clock.name=Redstone Clock
-tile.redstone_clock.desc.1=Sends a redstone pulse every second
-tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
+
+nei.infopage.uie.redstone_clock.1=A precisely calibrated redstone mechanism which will emit a pulse once every second. Will turn off when redstone powered.
 
 tile.woodSpike.name=Wooden Spikes
-tile.ironSpike.name=Iron Spikes
-tile.goldSpike.name=Gold Spikes
-tile.diamondSpike.name=Diamond Spikes
-tile.woodSpike.desc=Will leave enemies at the brink of death
-tile.ironSpike.desc=Enemies will drop regular loot
-tile.goldSpike.desc=Enemies will drop regular loot and experience
-tile.diamondSpike.desc=Enemies will drop "player-only" loot and experience
 
-item.hungerAxe.name=Glutton's Axe
-item.hungerAxe.desc.1=Sates the bearer's hunger while held
-item.hungerAxe.desc.2=Can consume hunger to heal struck entities
-item.hungerAxe.desc.3=This effect is lethal to most undead
+nei.infopage.uie.woodSpike.1=These spikes will damage anything that walks on them, but will not kill them, instead leaving them at the minimum health possible.
+
+tile.ironSpike.name=Iron Spikes
+
+nei.infopage.uie.ironSpike.1=Iron spikes will kill enemies that walk on them, dropping only their non-"player-only" loot.
+
+tile.goldSpike.name=Gold Spikes
+
+nei.infopage.uie.goldSpike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
+
+tile.diamondSpike.name=Diamond Spikes
+
+nei.infopage.uie.diamondSpike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
 item.heavenly_ring.name=Heavenly Ring
-item.heavenly_ring.desc=Grants creative flight
+nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
 item.watering_can_elite.name=Elite Watering Can
 item.watering_can.activated=Activated (Toggle)
 item.watering_can.deactivated=Deactivated (Toggle)
-item.watering_can.desc.1=It hydrates and accelerates
-item.watering_can.desc.2=crop growth in a %dx%d area.
-item.watering_can.desc.3=Crouch and use to toggle
-item.watering_can.desc.4=automatic mode.
+item.watering_can.desc.1=Area: %dx%d
+
+nei.infopage.uie.watering_can.1=Hydrates farmland and accelerates crop growth. Crouch and use to toggle automatic mode.
 
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=RF %s / %s
+nei.infopage.uie.fire_battery.1=Can be charged with RF and charge can be expended to fuel a furnace.
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
@@ -280,13 +296,15 @@ utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 
 tile.block_update_detector.name=Block Update Detector
-tile.block_update_detector.desc=Emits a redstone pulse on neighbouring block update
+nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
+
+nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
 tile.trash_can_item.name=Trash Can (Item)
 tile.trash_can_fluid.name=Trash Can (Fluid)
@@ -297,7 +315,6 @@ nei.infopage.uie.trash_can_fluid.1=An endless drain for unwanted fluid! Where do
 nei.infopage.uie.trash_can_energy.1=A painless way to dispose of unwanted RF! Where does it go? Nobody knows.
 
 tile.magic_wood.name=Magic Wood
-tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
 
 nei.infopage.uie.magic_wood.1=The enchantments woven into this block give it the enchanting power of five bookshelves!
 
@@ -310,34 +327,39 @@ utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
 utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
 
-shift_for_description=Hold shift for description...
-
 tile.pure_love.name=Pure Love
-tile.pure_love.desc=Makes animals within %d blocks fall in love
+tile.pure_love.desc=Range: %d
+
+nei.infopage.uie.pure_love.1=This infectiously positive block will inspire nearby animals to fall in love. Cute!
 
 utilitiesinexcess.config.block.pure_love=Pure Love Configuration
 
 tile.marginally_maximised_chest.name=Marginally Maximised Chest
-tile.marginally_maximised_chest.desc1=Doesn't form double chests
-tile.marginally_maximised_chest.desc2=Can be opened even with a block above
+
+nei.infopage.uie.marginally_maximised_chest.1=This chest is ever-so-slightly larger than normal (not large enough to store any more items than usual). It will not form double chests and can be opened even if there is a block above it.
 
 tile.significantly_shrunk_chest.name=Significantly Shrunk Chest
-tile.significantly_shrunk_chest.desc=Holds just one item stack
+
+nei.infopage.uie.significantly_shrunk_chest.1=This tiny chest holds only a single stack of items. It's not very space-efficient, but look at how adorable it is!
 
 tile.radically_reduced_chest.name=Radically Reduced Chest
-tile.radically_reduced_chest.desc=Holds only a single item
+
+nei.infopage.uie.radically_reduced_chest.1=This chest is so small that it can only hold a single item. Maybe you can find some use for it?
 
 utilitiesinexcess.config.block.sound_muffler=Sound Muffler Configuration
 utilitiesinexcess.config.block.rain_muffler=Rain Muffler Configuration
 
 tile.sound_muffler.name=Sound Muffler
-tile.sound_muffler.desc.1=Muffles sounds within %s blocks to %s%% volume
-tile.sound_muffler.desc.2=Supply with a redstone signal to turn off
+tile.sound_muffler.desc.1=Range: %s blocks
+tile.sound_muffler.desc.2=Volume: %s%%
+
+nei.infopage.uie.sound_muffler.1=The calming presence of this block will lower the volume of nearby sounds. You can power it with redstone to turn it off.
 
 tile.rain_muffler.name=Rain Muffler
-tile.rain_muffler.desc.1=Silences weather sounds %s blocks
-tile.rain_muffler.desc.2=Supply with a redstone signal to turn off
-tile.rain_muffler.desc.3=Right click to toggle weather sounds globally
+tile.rain_muffler.desc.1=Range: %s blocks
+
+nei.infopage.uie.rain_muffler.1=This comforting block allows you tune out the sounds of nearby weather. You can power it with redstone to turn it off and can right click to toggle weather sounds globally.
+
 tile.rain_muffler.chat.global_enable=You dull your senses to the sound of the rain
 tile.rain_muffler.chat.global_disable=You become aware of the sound of the rain
 
@@ -365,6 +387,8 @@ tile.blackout_curtains.name=Blackout Curtains
 nei.infopage.uie.blackout_curtains.1=Blackout Curtains have no collision and block most light from passing through them.
 
 tile.conveyor.name=Conveyor
+
+nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible.
 
 tile.underworld_portal.name=Portal to the Underworld
 

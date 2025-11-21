@@ -37,10 +37,9 @@ public class ItemArchitectsWand extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.architects_wand.1"));
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("tooltip.architects_wand.2", this.buildLimit));
+                + StatCollector.translateToLocalFormatted("tooltip.architects_wand.1", this.buildLimit));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
