@@ -33,7 +33,7 @@ public class BlockSpike extends Block {
         super(spikeType.material.getMaterial());
         this.spikeType = spikeType;
         setBlockName(name);
-        setBlockTextureName("utilitiesinexcess:spike");
+        setBlockTextureName("utilitiesinexcess:models/wood_spike");
         setHardness(spikeType.material.getBlockHardness(null, 0, 0, 0));
         setResistance(spikeType.material.getExplosionResistance(null));
         setHarvestLevel(spikeType.material.getHarvestTool(0), spikeType.material.getHarvestLevel(0));
@@ -146,10 +146,10 @@ public class BlockSpike extends Block {
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        icons[0] = reg.registerIcon("utilitiesinexcess:models/woodSpike");
-        icons[1] = reg.registerIcon("utilitiesinexcess:models/ironSpike");
-        icons[2] = reg.registerIcon("utilitiesinexcess:models/goldSpike");
-        icons[3] = reg.registerIcon("utilitiesinexcess:models/diamondSpike");
+        icons[0] = reg.registerIcon("utilitiesinexcess:models/wood_spike");
+        icons[1] = reg.registerIcon("utilitiesinexcess:models/iron_spike");
+        icons[2] = reg.registerIcon("utilitiesinexcess:models/gold_spike");
+        icons[3] = reg.registerIcon("utilitiesinexcess:models/diamond_spike");
         super.registerBlockIcons(reg);
     }
 
@@ -207,16 +207,16 @@ public class BlockSpike extends Block {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             switch (((BlockSpike) field_150939_a).getSpikeType()) {
                 case WOOD:
-                    tooltip.add(StatCollector.translateToLocal("tile.woodSpike.desc"));
+                    tooltip.add(StatCollector.translateToLocal("tile.wood_spike.desc"));
                     break;
                 case IRON:
-                    tooltip.add(StatCollector.translateToLocal("tile.ironSpike.desc"));
+                    tooltip.add(StatCollector.translateToLocal("tile.iron_spike.desc"));
                     break;
                 case GOLD:
-                    tooltip.add(StatCollector.translateToLocal("tile.goldSpike.desc"));
+                    tooltip.add(StatCollector.translateToLocal("tile.gold_spike.desc"));
                     break;
                 case DIAMOND:
-                    tooltip.add(StatCollector.translateToLocal("tile.diamondSpike.desc"));
+                    tooltip.add(StatCollector.translateToLocal("tile.diamond_spike.desc"));
                     break;
                 default:
                     break;

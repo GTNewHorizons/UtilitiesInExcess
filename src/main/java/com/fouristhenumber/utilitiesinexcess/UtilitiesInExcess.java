@@ -94,20 +94,22 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
-        GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
-        GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItem");
-        GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluid");
+        GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClockUIE");
+        GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItemUIE");
+        GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluidUIE");
         GameRegistry.registerTileEntity(TileEntityTrashCanEnergy.class, "TileEntityTrashCanEnergyUIE");
-        GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
-        GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLove");
-        GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
-        GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
-        GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChest");
+        GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrumUIE");
+        GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLoveUIE");
+        GameRegistry
+            .registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChestUIE");
+        GameRegistry
+            .registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChestUIE");
+        GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChestUIE");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
-        GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
-        GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
-        GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
+        GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetectorUIE");
+        GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyorUIE");
+        GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorldUIE");
         GameRegistry.registerTileEntity(
             TileEntityLowTemperatureFurnaceGenerator.class,
             "TileEntityLowTemperatureFurnaceGeneratorUIE");
