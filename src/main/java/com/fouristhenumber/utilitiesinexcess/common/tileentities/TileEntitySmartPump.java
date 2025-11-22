@@ -31,8 +31,8 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
     boolean stalled = false;
     boolean finished = false;
 
-    private final int chunkX;
-    private final int chunkZ;
+    private int chunkX;
+    private int chunkZ;
 
     private byte xInChunk = 0;
     private byte zInChunk = 0;
@@ -51,11 +51,6 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         { 5, 0 }, { 4, -1 }, { 3, -2 }, { 2, -3 }, { 1, -4 }, { 0, -5 }, { -1, -4 }, { -2, -3 }, { -3, -2 }, { -4, -1 },
         { -5, 0 }, { -4, 1 }, { -3, 2 }, { -2, 3 }, { -1, 4 } };
 
-    public TileEntitySmartPump() {
-        chunkX = xCoord >> 4;
-        chunkZ = zCoord >> 4;
-    }
-
     @Override
     public void updateEntity() {
         if (worldObj.isRemote || finished) return;
@@ -67,6 +62,8 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
 
         if (currentY == Integer.MIN_VALUE) {
             currentY = yCoord - 1;
+            chunkX = xCoord >> 4;
+            chunkZ = zCoord >> 4;
         }
         if (!stalled || worldObj.getTotalWorldTime() % BlockConfig.smartPumpStallCooldownInTicks == 0) {
             stalled = false;
@@ -177,6 +174,8 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         tag.setBoolean("finished", finished);
         tag.setByte("xInChunk", xInChunk);
         tag.setByte("zInChunk", zInChunk);
+        tag.setInteger("chunkX", chunkX);
+        tag.setInteger("chunkZ", chunkZ);
         tag.setInteger("currentY", currentY);
         tag.setByte("currentChunk", currentChunk);
 
@@ -191,6 +190,8 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         finished = tag.getBoolean("finished");
         xInChunk = tag.getByte("xInChunk");
         zInChunk = tag.getByte("zInChunk");
+        chunkX = tag.getInteger("chunkX");
+        chunkZ = tag.getInteger("chunkZ");
         currentY = tag.getInteger("currentY");
         currentChunk = tag.getByte("currentChunk");
 
