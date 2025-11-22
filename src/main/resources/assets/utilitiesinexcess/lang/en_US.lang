@@ -164,7 +164,7 @@ item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
 item.mob_jar.desc.empty=Empty
 
-nei.infopage.uie.mob_jar.1=A deceptively small jar that can hold the soul of a living creature. Use to capture a mob and again to release.
+nei.infopage.uie.mob_jar.1=A deceptively small jar that can hold the soul of any passive creature. Use to capture a mob and again to release.
 
 item.disabled_item.name=Disabled Item '%s'
 
@@ -173,6 +173,8 @@ tile.redstone_clock.name=Redstone Clock
 nei.infopage.uie.redstone_clock.1=A precisely calibrated redstone mechanism which will emit a pulse once every second. Will turn off when redstone powered.
 
 tile.smart_pump.name=Smart Pump
+nei.infopage.uie.smart_pump.1=The Smart Pump is a lag-light way to gather in-world fluids. Place the pump directly above the surface of a fluid and feed it RF, and it will begin collecting fluid and replacing it with stone without triggering block updates.
+nei.infopage.uie.smart_pump.2=Before pumping, it will try to output fluid to tanks located directly above it. The pump works chunk-wise and works in a diamond with a radius of 5 chunks. During operation, the pump will keep its own chunk loaded as well as the current working chunk.
 
 tile.wood_spike.name=Wooden Spikes
 tile.iron_spike.name=Iron Spikes
@@ -186,6 +188,7 @@ nei.infopage.uie.diamondSpike.1=Diamond spikes will kill enemies that walk on th
 
 item.heavenly_ring.name=Heavenly Ring
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
+nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
@@ -201,12 +204,12 @@ item.fire_battery.desc=RF %s / %s
 nei.infopage.uie.fire_battery.1=Can be charged with RF and charge can be expended to fuel a furnace.
 
 item.glove.name=Glove
-item.glove.desc.1=+2,147,483,647 Breeze Projection
-item.glove.desc.2=Allows you to click with an empty hand without
-item.glove.desc.3=needing to clear an inventory slot while held
-item.glove.desc.4=Can also be put in a baubles slot
-item.glove.desc.5=Press %s to activate.
-item.glove.desc.6=§oP.S. Breeze Projection does nothing.
+item.glove.desc.1=Press %s to activate.
+item.glove.desc.2=+2,147,483,647 Breeze Projection
+item.glove.desc.3=§oP.S. Breeze Projection does nothing.
+
+nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot.
+nei.infopage.uie.glove.2=The glove can also be worn in a baubles slot. While equipped in this way, you can hold the "Activate Glove" keybind to be able to click with an empty hand at any time. 
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
@@ -296,6 +299,8 @@ nei.infopage.uie.ender_lotus_seed.1=This strange plant is native to The End and 
 tile.ender_lotus.name=Ender Lotus
 
 tile.pacifists_bench.name=Pacifist's Bench
+nei.infopage.uie.pacifists_bench.1=The Pacifist's Bench provides a solution for generating mob drops in peaceful mode. Simply place the bench next to a chest containing a sword and it will slowly gather mob drops. Enchantments will be applied, and the sword will take durability damage respective to the number of hits it takes to kill each mob.
+nei.infopage.uie.pacifists_bench.2=The bench will gather mob drops dependent on where it is placed (for instance, you must place it in a Nether Fortress to gather Wither Skeleton drops).
 
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
@@ -317,7 +322,7 @@ tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_energy.name=Trash Can (Energy)
 
 nei.infopage.uie.trash_can_item.1=A quick and easy way to destroy unwanted items! Where do they go? Nobody knows.
-nei.infopage.uie.trash_can_fluid.1=An endless drain for unwanted fluid! Where does it go? Nobody knows.
+nei.infopage.uie.trash_can_fluid.1=An endless drain for unwanted fluids! Where do they go? Nobody knows.
 nei.infopage.uie.trash_can_energy.1=A painless way to dispose of unwanted RF! Where does it go? Nobody knows.
 
 tile.magic_wood.name=Magic Wood

@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.client;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -37,6 +38,9 @@ public class IMCForNEI {
             "nei.infopage.uie.architects_wand.1");
 
         sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
+
+        sendInfoPage("<utilitiesinexcess:glove>", "nei.infopage.uie.glove.1");
+        if (Mods.Baubles.isLoaded()) sendInfoPage("<utilitiesinexcess:glove>", "nei.infopage.uie.glove.2");
 
         sendInfoPage("<utilitiesinexcess:floating_block>", "nei.infopage.uie.floating_block.1");
 
@@ -74,13 +78,23 @@ public class IMCForNEI {
             "<utilitiesinexcess:watering_can_basic>,<utilitiesinexcess:watering_can_advanced>,<utilitiesinexcess:watering_can_elite>",
             "nei.infopage.uie.watering_can.1");
 
-        sendInfoPage("<utilitiesinexcess:heavenly_ring>", "nei.infopage.uie.heavenly_ring.1");
+        if (Mods.Baubles.isLoaded()) {
+            sendInfoPage("<utilitiesinexcess:heavenly_ring>", "nei.infopage.uie.heavenly_ring.2");
+        } else {
+            sendInfoPage("<utilitiesinexcess:heavenly_ring>", "nei.infopage.uie.heavenly_ring.1");
+        }
 
         sendInfoPage("<utilitiesinexcess:trash_can_item>", "nei.infopage.uie.trash_can_item.1");
         sendInfoPage("<utilitiesinexcess:trash_can_fluid>", "nei.infopage.uie.trash_can_fluid.1");
         sendInfoPage("<utilitiesinexcess:trash_can_energy>", "nei.infopage.uie.trash_can_energy.1");
 
         sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.magic_wood.1");
+
+        sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");
+        sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.2");
+
+        sendInfoPage("<utilitiesinexcess:smart_pump>", "nei.infopage.uie.smart_pump.1");
+        sendInfoPage("<utilitiesinexcess:smart_pump>", "nei.infopage.uie.smart_pump.2");
 
         sendInfoPage("<utilitiesinexcess:ender_lotus_seed>", "nei.infopage.uie.ender_lotus_seed.1");
 
