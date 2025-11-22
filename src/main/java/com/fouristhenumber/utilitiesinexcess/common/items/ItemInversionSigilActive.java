@@ -4,6 +4,7 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,6 +32,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
@@ -116,48 +118,85 @@ public class ItemInversionSigilActive extends Item {
     }
 
     private boolean checkSpiral(World world, int x, int y, int z) {
-        int[][] BASE = { { 0, -1 }, { 1, -1 }, { 2, -1 }, { 2, 0 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 1, 3 }, { 0, 3 },
-            { -1, 3 }, { -2, 3 }, { -3, 3 }, { -4, 3 }, { -4, 2 }, { -4, 1 }, { -4, 0 }, { -4, -1 }, { -4, -2 },
-            { -4, -3 }, { -4, -4 } };
-        int[] current_base = new int[2];
-        int[][] REDSTONE_SPOTS = new int[40][2];
-        int[][] STRING_SPOTS = new int[40][2];
-        for (int pattern = 0; pattern < 2; pattern++) {
-            for (int i = 0; i < 20; i++) {
-                if (pattern == 0) {
-                    current_base = BASE[i];
-                } else {
-                    current_base[0] = -1 * BASE[i][1];
-                    current_base[1] = BASE[i][0];
-                    if (i == 19) {
-                        current_base[1] = -4;
-                    }
-                }
-                REDSTONE_SPOTS[2 * i][0] = current_base[0];
-                REDSTONE_SPOTS[2 * i][1] = current_base[1];
-                REDSTONE_SPOTS[2 * i + 1][0] = -1 * current_base[0];
-                REDSTONE_SPOTS[2 * i + 1][1] = -1 * current_base[1];
-                STRING_SPOTS[2 * i][0] = -1 * current_base[1];
-                STRING_SPOTS[2 * i][1] = current_base[0];
-                STRING_SPOTS[2 * i + 1][0] = current_base[1];
-                STRING_SPOTS[2 * i + 1][1] = -1 * current_base[0];
+        ForgeDirection[] directions = { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
+            ForgeDirection.WEST };
+        boolean clockwise = true;
+        boolean counterClockwise = true;
+        Block previousBlock = null;
+
+        for (ForgeDirection direction : directions) {
+            int partX = x + direction.offsetX;
+            int partY = y;
+            int partZ = z + direction.offsetZ;
+            Block block = world.getBlock(partX, partY, partZ);
+
+            if (block != Blocks.redstone_wire && block != Blocks.tripwire) {
+                return false;
             }
-            boolean isSpiralValid = true;
-            for (int i = 0; i < 40; i++) {
-                if (world.getBlock(x + REDSTONE_SPOTS[i][0], y, z + REDSTONE_SPOTS[i][1]) != Blocks.redstone_wire) {
-                    isSpiralValid = false;
-                    break;
-                }
-                if (world.getBlock(x + STRING_SPOTS[i][0], y, z + STRING_SPOTS[i][1]) != Blocks.tripwire) {
-                    isSpiralValid = false;
-                    break;
-                }
+            if (block == previousBlock) {
+                return false;
             }
-            if (isSpiralValid) {
-                return true;
+
+            // Every next part of a spiral should have an alternated block
+            previousBlock = block;
+
+            if (clockwise && checkSpiralPart(world, partX, partY, partZ, rotateClockwise(direction), block)) {
+                counterClockwise = false;
+                continue;
             }
+            if (counterClockwise
+                && checkSpiralPart(world, partX, partY, partZ, rotateCounterClockwise(direction), block)) {
+                clockwise = false;
+                continue;
+            }
+
+            return false;
         }
-        return false;
+
+        return true;
+    }
+
+    private boolean checkSpiralPart(World world, int x, int y, int z, ForgeDirection direction, Block block) {
+        int[] SPIRAL_SEGMENT_LENGTHS = { 3, 5, 7, 8 };
+
+        for (int segmentLength : SPIRAL_SEGMENT_LENGTHS) {
+            for (int i = 0; i < segmentLength; i++) {
+                if (world.getBlock(x, y, z) != block) {
+                    return false;
+                }
+
+                if (i != segmentLength - 1) {
+                    x += direction.offsetX;
+                    z += direction.offsetZ;
+                }
+            }
+
+            direction = rotateClockwise(direction);
+        }
+
+        return true;
+    }
+
+    private ForgeDirection rotateClockwise(ForgeDirection direction) {
+        return switch (direction) {
+            case NORTH -> ForgeDirection.EAST;
+            case EAST -> ForgeDirection.SOUTH;
+            case SOUTH -> ForgeDirection.WEST;
+            case WEST -> ForgeDirection.NORTH;
+            // should not happen
+            default -> direction;
+        };
+    }
+
+    private ForgeDirection rotateCounterClockwise(ForgeDirection direction) {
+        return switch (direction) {
+            case NORTH -> ForgeDirection.WEST;
+            case EAST -> ForgeDirection.NORTH;
+            case SOUTH -> ForgeDirection.EAST;
+            case WEST -> ForgeDirection.SOUTH;
+            // should not happen
+            default -> direction;
+        };
     }
 
     private void siegeStart(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
@@ -202,8 +241,7 @@ public class ItemInversionSigilActive extends Item {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stack = player.inventory.getStackInSlot(i);
                 if (stack != null && stack.getItem() == this) {
-                    player.inventory
-                        .setInventorySlotContents(i, new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get(), 1));
+                    player.inventory.setInventorySlotContents(i, ModItems.PSEUDO_INVERSION_SIGIL.newItemStack());
                     break;
                 }
             }
@@ -230,6 +268,34 @@ public class ItemInversionSigilActive extends Item {
         return foundItemsAmount >= requiredAmount;
     }
 
+    private boolean checkChestInDirection(String direction, int beaconX, int beaconY, int beaconZ, World world) {
+        ItemStack[] contents;
+        int requiredAmount;
+        if (Objects.equals(direction, "North")) {
+            beaconZ -= 5;
+            contents = CHEST_NORTH_CONTENTS;
+            requiredAmount = InversionConfig.northChestRequiredItems;
+        } else if (Objects.equals(direction, "South")) {
+            beaconZ += 5;
+            contents = CHEST_SOUTH_CONTENTS;
+            requiredAmount = InversionConfig.southChestRequiredItems;
+        } else if (Objects.equals(direction, "East")) {
+            beaconX += 5;
+            contents = CHEST_EAST_CONTENTS;
+            requiredAmount = InversionConfig.eastChestRequiredItems;
+        } else if (Objects.equals(direction, "West")) {
+            beaconX -= 5;
+            contents = CHEST_WEST_CONTENTS;
+            requiredAmount = InversionConfig.westChestRequiredItems;
+        } else {
+            throw new IllegalArgumentException("Invalid direction passed: " + direction);
+        }
+        if (world.getTileEntity(beaconX, beaconY, beaconZ) instanceof TileEntityChest chest) {
+            return checkChest(chest, contents, requiredAmount);
+        }
+        return false;
+    }
+
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
@@ -245,24 +311,11 @@ public class ItemInversionSigilActive extends Item {
         if (world.isRemote) return true;
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
-        boolean chestNorthContentsOk = false;
-        boolean chestEastContentsOk = false;
-        boolean chestSouthContentsOk = false;
-        boolean chestWestContentsOk = false;
         boolean spiralOk = checkSpiral(world, x, y, z);
-
-        if (world.getTileEntity(x, y, z - 5) instanceof TileEntityChest chest) {
-            chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
-        }
-        if (world.getTileEntity(x + 5, y, z) instanceof TileEntityChest chest) {
-            chestEastContentsOk = checkChest(chest, CHEST_EAST_CONTENTS, InversionConfig.eastChestRequiredItems);
-        }
-        if (world.getTileEntity(x, y, z + 5) instanceof TileEntityChest chest) {
-            chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems);
-        }
-        if (world.getTileEntity(x - 5, y, z) instanceof TileEntityChest chest) {
-            chestWestContentsOk = checkChest(chest, CHEST_WEST_CONTENTS, InversionConfig.westChestRequiredItems);
-        }
+        boolean chestNorthContentsOk = checkChestInDirection("North", x, y, z, world);
+        boolean chestEastContentsOk = checkChestInDirection("East", x, y, z, world);
+        boolean chestSouthContentsOk = checkChestInDirection("South", x, y, z, world);
+        boolean chestWestContentsOk = checkChestInDirection("West", x, y, z, world);
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
         if (dimensionOk) {
@@ -323,7 +376,7 @@ public class ItemInversionSigilActive extends Item {
             if (--properties.siegeTimer > 0) {
                 continue;
             }
-            properties.siegeTimer = 60 + player.getEntityWorld().rand.nextInt(41);
+            properties.siegeTimer = 30 + player.getEntityWorld().rand.nextInt(21);
             EntityMob entitymob = null;
             int mobType = player.getEntityWorld().rand.nextInt(4);
             switch (mobType) {
@@ -345,20 +398,34 @@ public class ItemInversionSigilActive extends Item {
                     entitymob = new EntityCreeper(player.getEntityWorld());
                     break;
             }
-            int offsetX = player.getEntityWorld().rand.nextInt(11) - 5;
-            int offsetZ = player.getEntityWorld().rand.nextInt(11) - 5;
-            entitymob.setPosition(
-                properties.beaconSpawnX + offsetX,
-                properties.beaconSpawnY,
-                properties.beaconSpawnZ + offsetZ);
-            player.getEntityWorld()
-                .spawnEntityInWorld(entitymob);
-            if (entitymob instanceof EntityGiantZombie) {
-                entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                    .setBaseValue(20.0D);
-            } else {
-                entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                    .setBaseValue(8.0D);
+            int offsetX = player.getEntityWorld().rand.nextInt(101) - 50;
+            int offsetZ = player.getEntityWorld().rand.nextInt(101) - 50;
+            int mobX = (int) player.posX + offsetX, mobY = -1, mobZ = (int) player.posZ + offsetZ;
+            for (int i = (int) player.posY + 10; i >= (int) player.posY - 10; i--) {
+                if (player.getEntityWorld()
+                    .getBlock(mobX, i + 1, mobZ) == Blocks.air
+                    && player.getEntityWorld()
+                        .getBlock(mobX, i + 2, mobZ) == Blocks.air
+                    && World.doesBlockHaveSolidTopSurface(player.getEntityWorld(), mobX, i, mobZ)) {
+                    mobY = i;
+                    break;
+                }
+            }
+            if (mobY != -1) {
+                entitymob.setPosition(mobX, mobY + 1, mobZ);
+                if (entitymob instanceof EntityGiantZombie) {
+                    if (player.getEntityWorld()
+                        .getCollidingBoundingBoxes(entitymob, entitymob.boundingBox)
+                        .isEmpty()) {
+                        entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                            .setBaseValue(20.0D);
+                    }
+                } else {
+                    player.getEntityWorld()
+                        .spawnEntityInWorld(entitymob);
+                    entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                        .setBaseValue(8.0D);
+                }
             }
         }
     }
@@ -405,22 +472,22 @@ public class ItemInversionSigilActive extends Item {
 
         if (event.entityLiving instanceof EntityMob && source.siege) {
             source.siegeMobsKilled++;
-            if (source.siegeMobsKilled >= InversionConfig.SiegeRequiredMobsKill) {
+            if (source.siegeMobsKilled >= InversionConfig.siegeRequiredMobsKill) {
                 player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
                 siegeEnd(true, player);
-            } else if (source.siegeMobsKilled == (3 * InversionConfig.SiegeRequiredMobsKill) / 4) {
+            } else if (source.siegeMobsKilled == (3 * InversionConfig.siegeRequiredMobsKill) / 4) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
                         StatCollector.translateToLocalFormatted(
                             "chat.pseudo_inversion_ritual.threequarters",
                             source.siegeMobsKilled)));
-            } else if (source.siegeMobsKilled == (InversionConfig.SiegeRequiredMobsKill) / 2) {
+            } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 2) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
                         StatCollector.translateToLocalFormatted(
                             "chat.pseudo_inversion_ritual.twoquarters",
                             source.siegeMobsKilled)));
-            } else if (source.siegeMobsKilled == (InversionConfig.SiegeRequiredMobsKill) / 4) {
+            } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 4) {
                 player.addChatMessage(
                     new ChatComponentTranslation(
                         StatCollector.translateToLocalFormatted(
@@ -463,30 +530,12 @@ public class ItemInversionSigilActive extends Item {
         if (!found) return;
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
-        boolean chestNorthContentsOk = false;
-        boolean chestEastContentsOk = false;
-        boolean chestSouthContentsOk = false;
-        boolean chestWestContentsOk = false;
         boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
-
-        if (world.getTileEntity(beaconX, beaconY, beaconZ - 5) instanceof TileEntityChest chest) {
-            chestNorthContentsOk = checkChest(chest, CHEST_NORTH_CONTENTS, InversionConfig.northChestRequiredItems);
-        }
-        if (world.getTileEntity(beaconX + 5, beaconY, beaconZ) instanceof TileEntityChest chest) {
-            chestEastContentsOk = checkChest(chest, CHEST_EAST_CONTENTS, InversionConfig.eastChestRequiredItems);
-        }
-        if (world.getTileEntity(beaconX, beaconY, beaconZ + 5) instanceof TileEntityChest chest) {
-            chestSouthContentsOk = checkChest(chest, CHEST_SOUTH_CONTENTS, InversionConfig.southChestRequiredItems);
-        }
-        if (world.getTileEntity(beaconX - 5, beaconY, beaconZ) instanceof TileEntityChest chest) {
-            chestWestContentsOk = checkChest(chest, CHEST_WEST_CONTENTS, InversionConfig.westChestRequiredItems);
-        }
-
         if (!(dimensionOk && spiralOk
-            && chestNorthContentsOk
-            && chestEastContentsOk
-            && chestSouthContentsOk
-            && chestWestContentsOk)) {
+            && checkChestInDirection("North", beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection("East", beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection("South", beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection("West", beaconX, beaconY, beaconZ, world))) {
             return;
         }
 

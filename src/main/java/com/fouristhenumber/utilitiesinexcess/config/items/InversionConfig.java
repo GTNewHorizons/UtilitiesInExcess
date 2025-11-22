@@ -46,7 +46,7 @@ public class InversionConfig {
     @Config.DefaultInt(100)
     @Config.RangeInt(min = 4)
     @Config.RequiresMcRestart
-    public static int SiegeRequiredMobsKill;
+    public static int siegeRequiredMobsKill;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart

@@ -35,6 +35,8 @@
  */
 dependencies {
     implementation("com.github.GTNewHorizons:GTNHLib:0.8.12:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.16:dev")
+    implementation("com.github.GTNewHorizons:worldedit-gtnh:v0.0.8")
     // TODO: remove MUI1 dep when the implicit dependency
     // TODO: in IItemHandlerModifiable is removed
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
