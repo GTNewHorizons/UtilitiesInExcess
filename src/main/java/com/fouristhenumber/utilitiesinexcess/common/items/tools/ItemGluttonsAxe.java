@@ -88,7 +88,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         if (target instanceof EntityZombie z && z.isVillager()) {
             attacker.addExhaustion(3 * 4);
             spawnParticles(target);
-            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).convertToVillager();
+            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).uie$convertToVillager();
             return true;
         }
         if (!target.isEntityUndead()) {
