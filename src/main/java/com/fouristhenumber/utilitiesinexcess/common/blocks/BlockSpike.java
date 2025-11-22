@@ -11,14 +11,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
@@ -201,26 +199,6 @@ public class BlockSpike extends Block {
         @Override
         public boolean isItemTool(ItemStack p_77616_1_) {
             return true;
-        }
-
-        @Override
-        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            switch (((BlockSpike) field_150939_a).getSpikeType()) {
-                case WOOD:
-                    tooltip.add(StatCollector.translateToLocal("tile.wood_spike.desc"));
-                    break;
-                case IRON:
-                    tooltip.add(StatCollector.translateToLocal("tile.iron_spike.desc"));
-                    break;
-                case GOLD:
-                    tooltip.add(StatCollector.translateToLocal("tile.gold_spike.desc"));
-                    break;
-                case DIAMOND:
-                    tooltip.add(StatCollector.translateToLocal("tile.diamond_spike.desc"));
-                    break;
-                default:
-                    break;
-            }
         }
 
         @Override

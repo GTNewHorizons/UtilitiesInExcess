@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -12,13 +11,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
@@ -166,19 +163,6 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
         } else {
             // Side
             return icons[2];
-        }
-    }
-
-    public static class ItemBlockMarginallyMaximisedChest extends ItemBlock {
-
-        public ItemBlockMarginallyMaximisedChest(Block block) {
-            super(block);
-        }
-
-        @Override
-        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocalFormatted("tile.marginally_maximised_chest.desc1"));
-            tooltip.add(StatCollector.translateToLocalFormatted("tile.marginally_maximised_chest.desc2"));
         }
     }
 }
