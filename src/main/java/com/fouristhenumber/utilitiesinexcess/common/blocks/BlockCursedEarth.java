@@ -89,8 +89,8 @@ public class BlockCursedEarth extends Block {
     public void updateTick(World world, int x, int y, int z, Random random) {
         super.updateTick(world, x, y, z, random);
         if (world.isRemote) return;
-        trySpawnMob(world, x, y, z, random);
         tryBurn(world, x, y, z, random);
+        trySpawnMob(world, x, y, z, random);
     }
 
     public void trySpawnMob(World world, int x, int y, int z, Random random) {
