@@ -225,6 +225,9 @@ item.golden_bag.desc=Carries a double chest worth of items
 
 item.xray_glasses.name=X-Ray Glasses
 
+tile.qed.name=QED
+tile.flux_crystal.name=Flux Crystal
+
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 
 item.ender_lotus_seed.name=Ender-Lotus Seed
