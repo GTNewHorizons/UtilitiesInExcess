@@ -106,12 +106,10 @@ public class ItemInversionSigilActive extends Item {
         if (DimensionManager.getWorld(1) == null) {
             return siegePlayers;
         }
-        for (Entity curentity : DimensionManager.getWorld(1).loadedEntityList) {
-            if (curentity instanceof EntityPlayer player
-                && curentity.getExtendedProperties(PROP_KEY) instanceof EntitySiegeProperty) {
-                if (getProperties(player).siege) {
-                    siegePlayers.add(player);
-                }
+        for (EntityPlayer player : DimensionManager.getWorld(1).playerEntities) {
+            EntitySiegeProperty properties = getProperties(player);
+            if (properties != null && properties.siege) {
+                siegePlayers.add(player);
             }
         }
         return siegePlayers;
@@ -358,7 +356,11 @@ public class ItemInversionSigilActive extends Item {
             new ChatComponentText(
                 StatCollector
                     .translateToLocalFormatted("chat.pseudo_inversion_ritual.spiral", (spiralOk ? "✓" : "✗"))));
-        if (dimensionOk && chestNorthContentsOk && chestEastContentsOk && chestSouthContentsOk && chestWestContentsOk) {
+        if (dimensionOk && chestNorthContentsOk
+            && chestEastContentsOk
+            && chestSouthContentsOk
+            && chestWestContentsOk
+            && spiralOk) {
             player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.ready"));
         }
         return true;
