@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFire;
+import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
@@ -18,26 +20,37 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 
 public class BlockCursedEarth extends Block {
 
+    public final boolean blessed;
+
     // TODO: Handle spreading? Look into how we wanna do that
     // if/when we handle the sigil etc
 
     // Most of the logic for cursed earth interactions with spawners is
     // implemented in mixins.early.minecraft.CursedEarthSpawner
-    public BlockCursedEarth() {
+    public BlockCursedEarth(boolean blessed) {
         super(Material.ground);
-        setBlockName("cursed_earth");
-        setBlockTextureName("utilitiesinexcess:cursed_earth");
+        this.blessed = blessed;
+        if (!blessed) {
+            setBlockName("cursed_earth");
+            setBlockTextureName("utilitiesinexcess:cursed_earth");
+            this.setStepSound(soundTypeGravel);
+        } else {
+            setBlockName("cursed_earth.blessed");
+            setBlockTextureName("utilitiesinexcess:blessed_earth");
+            this.setStepSound(soundTypeCloth);
+        }
         this.setHardness(0.5F);
         this.setResistance(200.0F);
-        this.setStepSound(soundTypeGravel);
         this.setTickRandomly(true);
     }
 
@@ -49,14 +62,15 @@ public class BlockCursedEarth extends Block {
 
     @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < (blessed ? 2 : 4); i++) {
             double px = x + random.nextFloat();
             double py = y + random.nextFloat();
             double pz = z + random.nextFloat();
             double vx = (random.nextFloat() - 0.5) * 0.5;
             double vy = (random.nextFloat() - 0.5) * 0.5;
             double vz = (random.nextFloat() - 0.5) * 0.5;
-            world.spawnParticle("portal", px, py, pz, vx, vy, vz);
+            if (blessed) world.spawnParticle("enchantmenttable", px, py + 0.7, pz, vx, vy, vz);
+            else world.spawnParticle("portal", px, py, pz, vx, vy, vz);
         }
     }
 
@@ -72,19 +86,28 @@ public class BlockCursedEarth extends Block {
     public void updateTick(World world, int x, int y, int z, Random random) {
         super.updateTick(world, x, y, z, random);
         if (world.isRemote) return;
+        trySpawnMob(world, x, y, z, random);
+        tryBurn(world, x, y, z, random);
+    }
+
+    public void trySpawnMob(World world, int x, int y, int z, Random random) {
         if (!world.isAirBlock(x, y + 1, z)) return;
-        if (world.getBlockLightValue(x, y + 1, z) >= 8) return;
+        int light = world.getBlockLightValue(x, y + 1, z);
+        if ((light >= 8 && !blessed) || light < 8 && blessed) return;
         if (!world.getGameRules()
             .getGameRuleBooleanValue("doMobSpawning")) return;
-        if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
-        if (random.nextInt(100) >= CursedEarthConfig.cursedEarthSpawnRate) return;
+        if (world.difficultySetting == EnumDifficulty.PEACEFUL && !blessed) return;
+        if (random.nextInt(100) + 1
+            >= (100 - (blessed ? CursedEarthConfig.blessedEarthSpawnRate : CursedEarthConfig.cursedEarthSpawnRate)))
+            return;
 
         AxisAlignedBB spawnArea = AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
         List<EntityLiving> entitiesAbove = world.getEntitiesWithinAABB(EntityLiving.class, spawnArea);
         if (!entitiesAbove.isEmpty()) return;
 
         BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        List<BiomeGenBase.SpawnListEntry> monsterList = biome.getSpawnableList(EnumCreatureType.monster);
+        List<BiomeGenBase.SpawnListEntry> monsterList = blessed ? biome.getSpawnableList(EnumCreatureType.creature)
+            : biome.getSpawnableList(EnumCreatureType.monster);
 
         if (monsterList == null || monsterList.isEmpty()) return;
 
@@ -110,6 +133,37 @@ public class BlockCursedEarth extends Block {
         world.spawnEntityInWorld(mob);
     }
 
+    public void tryBurn(World world, int x, int y, int z, Random random) {
+        if (random.nextInt(4) == 0) return;
+        Block aboveBlock = world.getBlock(x, y + 1, z);
+        if (!(world.isAirBlock(x, y + 1, z) || aboveBlock instanceof BlockMobSpawner)) {
+            world.setBlock(x, y, z, Blocks.dirt);
+            return;
+        }
+
+        if (shouldBurn(world, x, y, z) && !(aboveBlock instanceof BlockFire)) {
+            world.setBlock(x, y + 1, z, Blocks.fire);
+            return;
+        }
+
+        if (aboveBlock instanceof BlockFire) {
+            world.setBlock(x, y, z, Blocks.dirt);
+        }
+    }
+
+    public boolean shouldBurn(World world, int x, int y, int z) {
+        boolean lit = world.getBlockLightValue(x, y + 1, z) >= 8;
+        if (blessed) {
+            return !lit || (world.canBlockSeeTheSky(x, y + 1, z) && !world.isDaytime());
+        }
+        return lit;
+    }
+
+    @Override
+    public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return true;
+    }
+
     /*
      * @Override
      * public TileEntity createNewTileEntity(World worldIn, int meta) {
@@ -125,7 +179,9 @@ public class BlockCursedEarth extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-            tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.desc"));
+            if (((BlockCursedEarth) field_150939_a).blessed)
+                tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.blessed.desc"));
+            else tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.desc"));
             super.addInformation(stack, player, tooltip, p_77624_4_);
         }
     }
