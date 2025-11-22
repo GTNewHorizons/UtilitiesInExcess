@@ -98,8 +98,7 @@ public class BlockCursedEarth extends Block {
             .getGameRuleBooleanValue("doMobSpawning")) return;
         if (world.difficultySetting == EnumDifficulty.PEACEFUL && !blessed) return;
         if (random.nextInt(100) + 1
-            >= (100 - (blessed ? CursedEarthConfig.blessedEarthSpawnRate : CursedEarthConfig.cursedEarthSpawnRate)))
-            return;
+            >= (blessed ? CursedEarthConfig.blessedEarthSpawnRate : CursedEarthConfig.cursedEarthSpawnRate)) return;
 
         AxisAlignedBB spawnArea = AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
         List<EntityLiving> entitiesAbove = world.getEntitiesWithinAABB(EntityLiving.class, spawnArea);
