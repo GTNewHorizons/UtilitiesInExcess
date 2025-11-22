@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
@@ -28,9 +30,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class BlockCursedEarth extends Block {
 
     public final boolean blessed;
+
+    public IIcon sideTexture;
 
     // TODO: Handle spreading? Look into how we wanna do that
     // if/when we handle the sigil etc
@@ -132,6 +139,8 @@ public class BlockCursedEarth extends Block {
             MathHelper.wrapAngleTo180_float(random.nextFloat() * 360.0F),
             0.0F);
 
+        if (!mob.getCanSpawnHere()) return;
+
         world.spawnEntityInWorld(mob);
     }
 
@@ -161,6 +170,24 @@ public class BlockCursedEarth extends Block {
             return !lit || (world.canBlockSeeTheSky(x, y + 1, z) && !world.isDaytime());
         }
         return lit;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(this.getTextureName() + "_top");
+        this.sideTexture = reg.registerIcon(this.getTextureName() + "_side");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return side == 1 ? this.blockIcon : (side == 0 ? Blocks.dirt.getBlockTextureFromSide(side) : this.sideTexture);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
+        return getIcon(side, 0);
     }
 
     @Override
