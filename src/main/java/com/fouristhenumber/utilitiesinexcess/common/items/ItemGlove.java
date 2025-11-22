@@ -39,7 +39,7 @@ public class ItemGlove extends Item implements IBauble {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         super.addInformation(stack, player, tooltip, p_77624_4_);
         tooltip.add(
-            EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted(
+            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                 "item.glove.desc.1",
                 EnumChatFormatting.WHITE + "["
                     + EnumChatFormatting.GOLD
@@ -48,7 +48,7 @@ public class ItemGlove extends Item implements IBauble {
                     + "]"
                     + EnumChatFormatting.AQUA));
 
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.2"));
+        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.2"));
         tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.3"));
     }
 
