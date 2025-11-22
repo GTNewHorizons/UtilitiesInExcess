@@ -172,6 +172,8 @@ tile.redstone_clock.name=Redstone Clock
 
 nei.infopage.uie.redstone_clock.1=A precisely calibrated redstone mechanism which will emit a pulse once every second. Will turn off when redstone powered.
 
+tile.smart_pump.name=Smart Pump
+
 tile.wood_spike.name=Wooden Spikes
 tile.iron_spike.name=Iron Spikes
 tile.gold_spike.name=Gold Spikes

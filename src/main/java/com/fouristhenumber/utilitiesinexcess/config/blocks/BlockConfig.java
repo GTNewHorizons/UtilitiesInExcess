@@ -92,6 +92,18 @@ public class BlockConfig {
     public static boolean enableEndOfTimePortal;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableSmartPump;
+
+    @Config.DefaultInt(10000)
+    public static int smartPumpEnergyStorage;
+
+    @Config.DefaultInt(100)
+    public static int smartPumpEnergyUsePerBlock;
+
+    @Config.DefaultInt(200)
+    public static int smartPumpStallCooldownInTicks;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableDecorativeGlass;
 
     @Config.Comment("Pure Love Configuration")
