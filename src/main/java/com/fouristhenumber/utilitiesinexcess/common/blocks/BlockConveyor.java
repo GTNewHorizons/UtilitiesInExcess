@@ -1,9 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -24,15 +26,6 @@ public class BlockConveyor extends BlockContainer {
         super(Material.piston);
 
         setBlockName("conveyor");
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
-        super.onBlockPlacedBy(worldIn, x, y, z, placer, itemIn);
-
-        int direction = (int) (((placer.rotationYaw + 45f) / 90f + 4f) % 4f);
-
-        worldIn.setBlockMetadataWithNotify(x, y, z, direction, 2);
     }
 
     public static ForgeDirection getFacing(int meta) {
@@ -72,5 +65,29 @@ public class BlockConveyor extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityConveyor();
+    }
+
+    public static class ItemBlockConveyor extends ItemBlock {
+
+        public ItemBlockConveyor(Block block) {
+            super(block);
+        }
+
+        @Override
+        public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ, int metadata) {
+            int direction = Math.abs((int) ((((player.rotationYaw % 360) + 45f) / 90f + 4f) % 4f));
+
+            if (!world.setBlock(x, y, z, field_150939_a, direction, 3)) {
+                return false;
+            }
+
+            if (world.getBlock(x, y, z) == field_150939_a) {
+                field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
+                field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
+            }
+
+            return true;
+        }
     }
 }
