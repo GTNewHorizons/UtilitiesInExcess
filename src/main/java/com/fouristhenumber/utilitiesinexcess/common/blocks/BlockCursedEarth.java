@@ -133,7 +133,9 @@ public class BlockCursedEarth extends Block {
     }
 
     public void tryBurn(World world, int x, int y, int z, Random random) {
+        if (blessed && !CursedEarthConfig.enableBlessedEarthBurn) return;
         if (random.nextInt(4) == 0) return;
+
         Block aboveBlock = world.getBlock(x, y + 1, z);
         if (!(world.isAirBlock(x, y + 1, z) || aboveBlock instanceof BlockMobSpawner)) {
             world.setBlock(x, y, z, Blocks.dirt);

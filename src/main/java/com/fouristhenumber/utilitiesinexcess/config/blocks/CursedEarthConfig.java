@@ -14,6 +14,10 @@ public class CursedEarthConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableBlessedEarth;
 
+    @Config.Comment("Should blessed earth burn in darkness like cursed earth burns in the light")
+    @Config.DefaultBoolean(false)
+    public static boolean enableBlessedEarthBurn;
+
     @Config.Comment("Chance that a mob is spawned on a Cursed Earth block on a random tick.")
     @Config.DefaultInt(40)
     @Config.RangeInt(min = 0, max = 100)
