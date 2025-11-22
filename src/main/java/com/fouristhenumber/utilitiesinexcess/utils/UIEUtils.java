@@ -6,14 +6,12 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.world.World;
-
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
