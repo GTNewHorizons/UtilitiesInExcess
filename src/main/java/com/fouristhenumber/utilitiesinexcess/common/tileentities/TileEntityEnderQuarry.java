@@ -5,15 +5,12 @@ import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 public class TileEntityEnderQuarry extends LoadableTE {
 
-    public static int STEPS_PER_TICK = 40;
-    private @Nullable ForgeChunkManager.Ticket ticket;
+    public static int STEPS_PER_TICK = 400;
     private ForgeDirection facing;
     private Area2d workArea;
     public QuarryWorkState state;
@@ -25,7 +22,15 @@ public class TileEntityEnderQuarry extends LoadableTE {
     private int brokenBlocksTotal;
 
     public TileEntityEnderQuarry() {
-        super();
+        state = QuarryWorkState.STOPPED;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+        if (state != QuarryWorkState.FINISHED && workArea != null) {
+            loadChunkShifted(chunkX, chunkZ);
+        }
     }
 
     public ForgeDirection getFacing() {
@@ -36,9 +41,6 @@ public class TileEntityEnderQuarry extends LoadableTE {
         this.facing = facing;
     }
 
-    public Area2d getWorkArea() {
-        return this.workArea;
-    }
 
     public void resetState() {
         brokenBlocksTotal = 0;
@@ -53,6 +55,9 @@ public class TileEntityEnderQuarry extends LoadableTE {
         };
     }
 
+    public Area2d getWorkArea() {
+        return this.workArea;
+    }
     public void setWorkArea(Area2d area) {
         workArea = area;
         dx = area.low.x;
@@ -71,9 +76,11 @@ public class TileEntityEnderQuarry extends LoadableTE {
         int brokenBlocksTick = 0;
 
         while (brokenBlocksTick < STEPS_PER_TICK && stepPos()) {
-            if (!isInBounds() || this.chunkX > 1000) {
+            // TODO: Remove after this has been tested by others
+            if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
                 FMLLog.getLogger().error("Tried to quarry outside of work area at {} {} {}", dx, dy, dz);
                 state = QuarryWorkState.FINISHED;
+                worldObj.setBlock(dx, dy, dz, Blocks.gold_block);
                 return;
             }
             if (worldObj.isAirBlock(dx, dy, dz) || worldObj.getBlock(dx, dy, dz).getMaterial() == Material.air) {
@@ -150,8 +157,8 @@ public class TileEntityEnderQuarry extends LoadableTE {
             }
 
             if (resetX) {
-                // need to move x back left towards/to bounds
-                int toMove = dx + 1 > workArea.high.x ? workArea.chunkOffX.y : 15;
+                // the distance we have to move left now, lower if we would cross the high x bound
+                int toMove = dx + 1 > workArea.high.x ? workArea.chunkOffX : 15;
                 if (dx - toMove >= workArea.low.x) {
                     dx -= toMove;
                 } else {
@@ -167,14 +174,15 @@ public class TileEntityEnderQuarry extends LoadableTE {
         super.readFromNBT(nbt);
         facing = ForgeDirection.getOrientation(nbt.getInteger("facing"));
         state = QuarryWorkState.values()[nbt.getInteger("state")];
-        dx = nbt.getInteger("dy");
-        dy = nbt.getInteger("dz");
-        dz = nbt.getInteger("dx");
-        chunkX = dx >> 4;
-        chunkZ = dz >> 4;
+        if (state != QuarryWorkState.FINISHED) {
+            workArea = Area2d.fromNBTTag(nbt);
+            dx = nbt.getInteger("dx");
+            dy = nbt.getInteger("dy");
+            dz = nbt.getInteger("dz");
+            chunkX = dx >> 4;
+            chunkZ = dz >> 4;
+        }
         brokenBlocksTotal = nbt.getInteger("blocks");
-
-        workArea = Area2d.fromNBTTag(nbt);
     }
 
     @Override
@@ -182,17 +190,13 @@ public class TileEntityEnderQuarry extends LoadableTE {
         super.writeToNBT(nbt);
         nbt.setInteger("facing", facing.ordinal());
         nbt.setInteger("state", state.ordinal());
-        nbt.setInteger("dx", dx);
-        nbt.setInteger("dy", dy);
-        nbt.setInteger("dz", dz);
+        if (state != QuarryWorkState.FINISHED && workArea != null) {
+            workArea.writeNBTTag(nbt);
+            nbt.setInteger("dx", dx);
+            nbt.setInteger("dy", dy);
+            nbt.setInteger("dz", dz);
+        }
         nbt.setInteger("blocks", brokenBlocksTotal);
-        workArea.writeNBTTag(nbt);
-    }
-
-    @Override
-    public void receiveTicketOnLoad(ForgeChunkManager.Ticket ticket) {
-        super.receiveTicketOnLoad(ticket);
-        loadChunk(chunkX, chunkZ);
     }
 
     @Override
@@ -215,18 +219,8 @@ public class TileEntityEnderQuarry extends LoadableTE {
         public final int width;
         // The height of the entire working area
         public final int height;
-        /**
-        * The relative x offset to the chunk grid,
-         * with vec.x as the extra space to the left,
-         * and vec.y as the extra space to the right
-         * */
-        public final Vector2i chunkOffX;
-        /**
-         * The relative x offset to the chunk grid,
-         * with vec.x as the extra space to the bottom,
-         * and vec.y as the extra space to the top
-         * */
-        public final Vector2i chunkOffZ;
+        // The distance to the closest lower x chunk border from the high x bound
+        public final int chunkOffX;
 
         public Area2d(Vector2i first, Vector2i second) {
             int lowX = Math.min(first.x, second.x);
@@ -237,8 +231,7 @@ public class TileEntityEnderQuarry extends LoadableTE {
             this.high = new Vector2i(highX, highZ);
             this.width = highX - lowX;
             this.height = highZ - lowZ;
-            this.chunkOffX = new Vector2i(15 - lowX % 16, highX % 16);
-            this.chunkOffZ = new Vector2i(15 - lowZ % 16, highZ % 16);
+            this.chunkOffX = highX - (highX & -16);
         }
 
         public Area2d(int x1, int z1, int x2, int z2) {

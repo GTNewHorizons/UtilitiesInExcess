@@ -15,15 +15,26 @@ import javax.annotation.Nullable;
 public class LoadableTE extends TileEntity {
     /** The chunk loading ticket used to force chunks to stay loaded */
     @Nullable
-    ForgeChunkManager.Ticket ticket = null;
-    private final int selfChunkX = xCoord >> 4;
-    private final int selfChunkZ = zCoord >> 4;
-    protected boolean selfIsLoaded = false;
+    private ForgeChunkManager.Ticket ticket = null;
+    private int selfChunkX;
+    private int selfChunkZ;
+    protected boolean selfIsLoaded = true;
 
-    public LoadableTE() {
-        // TODO: Check why loads 0, 0 sometimes
-        if (keepsItselfLoaded()) {
-            loadSelf();
+    /**
+     * Initializes this class after the TE is loaded.
+     * Makes sure the TE itself will stay loaded if requested.
+     * Overwrite and call super() to load your own chunks after readFromNBT() is called
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        selfIsLoaded = false;
+        selfChunkX = xCoord >> 4;
+        selfChunkZ = zCoord >> 4;
+        if (worldObj != null && !worldObj.isRemote) {
+            if (keepsItselfLoaded()) {
+                loadSelf();
+            }
         }
     }
 
@@ -34,7 +45,7 @@ public class LoadableTE extends TileEntity {
      * @param chunkCoord The chunk coordinates to load
      */
     public void loadChunk(ChunkCoordIntPair chunkCoord) {
-        if (chunkCoord.chunkXPos == selfChunkX && chunkCoord.chunkZPos == selfChunkZ && keepsItselfLoaded()) return;
+        if (selfIsLoaded && chunkCoord.chunkXPos == selfChunkX && chunkCoord.chunkZPos == selfChunkZ && keepsItselfLoaded()) return;
         if (requestTicket()) {
             ForgeChunkManager.forceChunk(ticket, chunkCoord);
         } else {
@@ -102,7 +113,7 @@ public class LoadableTE extends TileEntity {
      */
     public void loadSelf() {
         if (!selfIsLoaded) {
-            loadChunk(selfChunkX, selfChunkZ);
+            loadChunkShifted(selfChunkX, selfChunkZ);
             selfIsLoaded = true;
         }
     }
@@ -112,7 +123,7 @@ public class LoadableTE extends TileEntity {
      */
     public void unloadSelf() {
         if (selfIsLoaded) {
-            unloadChunk(selfChunkX, selfChunkZ);
+            unloadChunkShifted(selfChunkX, selfChunkZ);
             selfIsLoaded = false;
         }
     }

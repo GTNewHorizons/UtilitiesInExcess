@@ -16,8 +16,8 @@ public class TEChunkLoadingCallback implements ForgeChunkManager.LoadingCallback
             int y = tag.getInteger("teY");
             int z = tag.getInteger("teZ");
 
-            if (world.getTileEntity(x, y, z) instanceof LoadableTE pump) {
-                pump.receiveTicketOnLoad(ticket);
+            if (world.getTileEntity(x, y, z) instanceof LoadableTE te) {
+                te.receiveTicketOnLoad(ticket);
             }
         }
     }
