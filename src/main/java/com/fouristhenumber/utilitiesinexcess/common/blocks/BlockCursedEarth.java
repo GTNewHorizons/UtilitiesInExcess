@@ -69,8 +69,11 @@ public class BlockCursedEarth extends Block {
             double vx = (random.nextFloat() - 0.5) * 0.5;
             double vy = (random.nextFloat() - 0.5) * 0.5;
             double vz = (random.nextFloat() - 0.5) * 0.5;
-            if (blessed) world.spawnParticle("enchantmenttable", px, py + 0.7, pz, vx, vy, vz);
-            else world.spawnParticle("portal", px, py, pz, vx, vy, vz);
+            if (blessed) {
+                world.spawnParticle("enchantmenttable", px, py + 0.7, pz, vx, vy, vz);
+            } else {
+                world.spawnParticle("portal", px, py, pz, vx, vy, vz);
+            }
         }
     }
 
@@ -97,7 +100,7 @@ public class BlockCursedEarth extends Block {
         if (!world.getGameRules()
             .getGameRuleBooleanValue("doMobSpawning")) return;
         if (world.difficultySetting == EnumDifficulty.PEACEFUL && !blessed) return;
-        if (random.nextInt(100) + 1
+        if (random.nextInt(100)
             >= (blessed ? CursedEarthConfig.blessedEarthSpawnRate : CursedEarthConfig.cursedEarthSpawnRate)) return;
 
         AxisAlignedBB spawnArea = AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
@@ -134,15 +137,15 @@ public class BlockCursedEarth extends Block {
 
     public void tryBurn(World world, int x, int y, int z, Random random) {
         if (blessed && !CursedEarthConfig.enableBlessedEarthBurn) return;
-        if (random.nextInt(4) == 0) return;
+        if (random.nextInt(4) != 0) return;
 
         Block aboveBlock = world.getBlock(x, y + 1, z);
-        if (!(world.isAirBlock(x, y + 1, z) || aboveBlock instanceof BlockMobSpawner)) {
+        if (world.isSideSolid(x, y + 1, z, ForgeDirection.DOWN) && !(aboveBlock instanceof BlockMobSpawner)) {
             world.setBlock(x, y, z, Blocks.dirt);
             return;
         }
 
-        if (shouldBurn(world, x, y, z) && !(aboveBlock instanceof BlockFire)) {
+        if (shouldBurn(world, x, y, z) && world.isAirBlock(x, y + 1, z)) {
             world.setBlock(x, y + 1, z, Blocks.fire);
             return;
         }
@@ -180,9 +183,11 @@ public class BlockCursedEarth extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-            if (((BlockCursedEarth) field_150939_a).blessed)
+            if (((BlockCursedEarth) field_150939_a).blessed) {
                 tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.blessed.desc"));
-            else tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.desc"));
+            } else {
+                tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.desc"));
+            }
             super.addInformation(stack, player, tooltip, p_77624_4_);
         }
     }
