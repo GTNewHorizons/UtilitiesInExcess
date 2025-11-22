@@ -28,7 +28,58 @@ public class RecipeLoader {
         loadQEDRecipes();
         loadGlassRecipes();
 
-        // X-Ray Glasses
+        // Pacifist's Bench
+        addShapedRecipe(
+            ModBlocks.PACIFISTS_BENCH,
+            "ewe",
+            "wpw",
+            "ewe",
+            'e',
+            Items.emerald,
+            'p',
+            Items.ender_pearl,
+            'w',
+            new ItemStack(Blocks.planks, 1, OreDictionary.WILDCARD_VALUE));
+
+        // Smart Pump
+        // TODO: Replace obsidian with "ender-infused obsidian" equivalent
+        addShapedRecipe(
+            ModBlocks.SMART_PUMP,
+            "odo",
+            "lew",
+            "opo",
+            'o',
+            Blocks.obsidian,
+            'd',
+            Items.diamond,
+            'l',
+            Items.lava_bucket,
+            'e',
+            Items.ender_eye,
+            'w',
+            Items.water_bucket,
+            'p',
+            Items.iron_pickaxe);
+
+        addShapedRecipe(
+            ModBlocks.SMART_PUMP,
+            "odo",
+            "wel",
+            "opo",
+            'o',
+            Blocks.obsidian,
+            'd',
+            Items.diamond,
+            'l',
+            Items.lava_bucket,
+            'e',
+            Items.ender_eye,
+            'w',
+            Items.water_bucket,
+            'p',
+            Items.iron_pickaxe);
+
+        // Block Analyzer
         addShapedRecipe(
             ModItems.BLOCK_ANALYZER,
             "iii",
@@ -889,6 +940,9 @@ public class RecipeLoader {
             "iii",
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
+        // Glove
+        addShapedRecipe(ModItems.GLOVE, "is", "si", 'i', Blocks.wool, 's', Items.string);
     }
 
     private static void loadQEDRecipes() {

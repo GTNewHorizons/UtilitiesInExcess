@@ -17,10 +17,13 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
@@ -31,6 +34,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionP
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
@@ -40,6 +44,23 @@ import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ForgeEventHandler {
+
+    @SubscribeEvent
+    public void onLivingDrops(LivingDropsEvent event) {
+        if (event.source.getEntity() == null) return;
+        NBTTagCompound tag = event.source.getEntity()
+            .getEntityData();
+        if (!tag.getBoolean("isPacifistsBench")) return;
+        TileEntity te = event.entityLiving.worldObj
+            .getTileEntity(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+        if (te instanceof TileEntityPacifistsBench table) {
+            if (event.entityLiving instanceof EntityLiving living) living.experienceValue = 0;
+            for (EntityItem drop : event.drops) {
+                table.receiveItemStack(drop.getEntityItem());
+            }
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {

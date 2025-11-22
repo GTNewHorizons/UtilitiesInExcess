@@ -10,6 +10,14 @@ import net.minecraft.world.World;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
+
 public class UIEUtils {
 
     public static final Random uieRandom = new Random();
@@ -30,6 +38,20 @@ public class UIEUtils {
 
     public static String formatNumber(float number) {
         return COMMA_FORMAT.format(number);
+    }
+
+    public static boolean hasBauble(EntityPlayer player, Class<?> clazz) {
+        if (!Mods.Baubles.isLoaded()) return false;
+
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            ItemStack stack = baubles.getStackInSlot(i);
+            if (stack != null && stack.getItem() != null && clazz.isInstance(stack.getItem())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static Set<BlockPos> scanForBlock(World world, int x, int y, int z, int radius, Block findBlock) {
