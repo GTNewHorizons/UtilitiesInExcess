@@ -193,7 +193,7 @@ public class BlockCursedEarth extends Block {
 
     @Override
     public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return true;
+        return face == ForgeDirection.UP;
     }
 
     /*
