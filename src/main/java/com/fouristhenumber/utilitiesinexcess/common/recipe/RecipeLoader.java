@@ -942,7 +942,17 @@ public class RecipeLoader {
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Glove
-        addShapedRecipe(ModItems.GLOVE, "is", "si", 'i', Blocks.wool, 's', Items.string);
+        if (ModItems.GLOVE.isEnabled()) {
+            GameRegistry.addRecipe(
+                new RecipeGlove(
+                    2,
+                    2,
+                    new ItemStack[] { new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
+                        new ItemStack(Items.string), new ItemStack(Items.string),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE) },
+                    ModItems.GLOVE.newItemStack()));
+        }
+        // addShapedRecipe(ModItems.GLOVE, "is", "si", 'i', Blocks.wool, 's', Items.string);
     }
 
     private static void loadQEDRecipes() {

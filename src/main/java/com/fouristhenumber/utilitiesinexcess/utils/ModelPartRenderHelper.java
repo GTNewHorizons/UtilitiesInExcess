@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import java.util.function.Consumer;
+
 import net.minecraft.client.model.ModelRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -7,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 public class ModelPartRenderHelper {
 
     // from ModelBiped.render
-    public static void renderBipedPart(float p_78785_1_, ModelRenderer model, Runnable renderer) {
+    public static <T> void renderBipedPart(float p_78785_1_, ModelRenderer model, Consumer<T> renderer, T data) {
 
         if (model.isHidden) return;
         if (!model.showModel) return;
@@ -17,14 +19,14 @@ public class ModelPartRenderHelper {
         if (model.rotateAngleX == 0.0F && model.rotateAngleY == 0.0F && model.rotateAngleZ == 0.0F) {
             if (model.rotationPointX == 0.0F && model.rotationPointY == 0.0F && model.rotationPointZ == 0.0F) {
                 // GL11.glCallList(model.displayList);
-                renderer.run();
+                renderer.accept(data);
             } else {
                 GL11.glTranslatef(
                     model.rotationPointX * p_78785_1_,
                     model.rotationPointY * p_78785_1_,
                     model.rotationPointZ * p_78785_1_);
                 // GL11.glCallList(model.displayList);
-                renderer.run();
+                renderer.accept(data);
                 GL11.glTranslatef(
                     -model.rotationPointX * p_78785_1_,
                     -model.rotationPointY * p_78785_1_,
@@ -50,7 +52,7 @@ public class ModelPartRenderHelper {
             }
 
             // GL11.glCallList(model.displayList);
-            renderer.run();
+            renderer.accept(data);
 
             GL11.glPopMatrix();
         }
