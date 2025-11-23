@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 public class ModelPartRenderHelper {
 
     // from ModelBiped.render
-    public static <T> void renderBipedPart(float p_78785_1_, ModelRenderer model, Runnable renderer) {
+    public static void renderBipedPart(float p_78785_1_, ModelRenderer model, Runnable renderer) {
 
         if (model.isHidden) return;
         if (!model.showModel) return;

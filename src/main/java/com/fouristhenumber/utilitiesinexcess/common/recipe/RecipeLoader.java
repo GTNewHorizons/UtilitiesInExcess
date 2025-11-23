@@ -947,9 +947,9 @@ public class RecipeLoader {
                 new RecipeGlove(
                     2,
                     2,
-                    new ItemStack[] { new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
-                        new ItemStack(Items.string), new ItemStack(Items.string),
-                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE) },
+                    new ItemStack[] { new ItemStack(Items.string),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.string) },
                     ModItems.GLOVE.newItemStack()));
         }
     }
