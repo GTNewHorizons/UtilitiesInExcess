@@ -29,7 +29,7 @@ public class SpikeRenderer implements ISimpleBlockRenderingHandler {
         Tessellator t = Tessellator.instance;
         IIcon icon = renderer.getBlockIcon(block);
         for (RenderableCube c : cubes) {
-            c.draw(t, x, y, z, icon, TEXTURE_SIZE);
+            c.draw(t, x, y, z, icon, TEXTURE_SIZE, true);
         }
         return true;
     }
@@ -40,7 +40,7 @@ public class SpikeRenderer implements ISimpleBlockRenderingHandler {
         IIcon icon = renderer.getBlockIcon(block);
         t.startDrawingQuads();
         for (RenderableCube c : cubes) {
-            c.draw(t, 0, 0, 0, icon, TEXTURE_SIZE);
+            c.draw(t, 0, 0, 0, icon, TEXTURE_SIZE, true);
         }
         t.draw();
     }

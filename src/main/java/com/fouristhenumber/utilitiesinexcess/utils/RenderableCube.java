@@ -18,16 +18,27 @@ public class RenderableCube {
         this.uv = uv;
     }
 
-    public void draw(Tessellator t, double x, double y, double z, float textureSize) {
-        draw(t, x, y, z, 0, 1, 0, 1, textureSize);
+    public void draw(Tessellator t, double x, double y, double z, float textureSize, boolean applyBlockShading) {
+        draw(t, x, y, z, 0, 1, 0, 1, textureSize, applyBlockShading);
     }
 
-    public void draw(Tessellator t, double x, double y, double z, IIcon icon, float textureSize) {
-        draw(t, x, y, z, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV(), textureSize);
+    public void draw(Tessellator t, double x, double y, double z, IIcon icon, float textureSize,
+        boolean applyBlockShading) {
+        draw(
+            t,
+            x,
+            y,
+            z,
+            icon.getMinU(),
+            icon.getMaxU(),
+            icon.getMinV(),
+            icon.getMaxV(),
+            textureSize,
+            applyBlockShading);
     }
 
     public void draw(Tessellator t, double x, double y, double z, float minU, float maxU, float minV, float maxV,
-        float textureSize) {
+        float textureSize, boolean applyBlockShading) {
         double X1 = x + minX, Y1 = y + minY, Z1 = z + minZ;
         double X2 = x + maxX, Y2 = y + maxY, Z2 = z + maxZ;
 
@@ -53,32 +64,32 @@ public class RenderableCube {
         float[] eastUV = uv[5];
 
         // +Y
-        t.setNormal(0, 1, 0);
         // These calls are to manually recreate the side brightness that minecraft applies to each face
-        t.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        if (applyBlockShading) t.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        t.setNormal(0, 1, 0);
         t.addVertexWithUV(X1, Y2, Z2, topUV[0], topUV[1]);
         t.addVertexWithUV(X2, Y2, Z2, topUV[2], topUV[1]);
         t.addVertexWithUV(X2, Y2, Z1, topUV[2], topUV[3]);
         t.addVertexWithUV(X1, Y2, Z1, topUV[0], topUV[3]);
 
         // -Y
+        if (applyBlockShading) t.setColorOpaque_F(0.5F, 0.5F, 0.5F);
         t.setNormal(0, -1, 0);
-        t.setColorOpaque_F(0.5F, 0.5F, 0.5F);
         t.addVertexWithUV(X1, Y1, Z1, bottomUV[0], bottomUV[3]);
         t.addVertexWithUV(X2, Y1, Z1, bottomUV[2], bottomUV[3]);
         t.addVertexWithUV(X2, Y1, Z2, bottomUV[2], bottomUV[1]);
         t.addVertexWithUV(X1, Y1, Z2, bottomUV[0], bottomUV[1]);
 
         // +Z
+        if (applyBlockShading) t.setColorOpaque_F(0.8F, 0.8F, 0.8F);
         t.setNormal(0, 0, 1);
-        t.setColorOpaque_F(0.8F, 0.8F, 0.8F);
         t.addVertexWithUV(X2, Y2, Z2, northUV[0], northUV[1]);
         t.addVertexWithUV(X1, Y2, Z2, northUV[2], northUV[1]);
         t.addVertexWithUV(X1, Y1, Z2, northUV[2], northUV[3]);
         t.addVertexWithUV(X2, Y1, Z2, northUV[0], northUV[3]);
 
         // -Z
-        t.setColorOpaque_F(0.8F, 0.8F, 0.8F);
+        if (applyBlockShading) t.setColorOpaque_F(0.8F, 0.8F, 0.8F);
         t.setNormal(0, 0, -1);
         t.addVertexWithUV(X2, Y1, Z1, southUV[0], southUV[3]);
         t.addVertexWithUV(X1, Y1, Z1, southUV[2], southUV[3]);
@@ -86,7 +97,7 @@ public class RenderableCube {
         t.addVertexWithUV(X2, Y2, Z1, southUV[0], southUV[1]);
 
         // +X
-        t.setColorOpaque_F(0.6F, 0.6F, 0.6F);
+        if (applyBlockShading) t.setColorOpaque_F(0.6F, 0.6F, 0.6F);
         t.setNormal(1, 0, 0);
         t.addVertexWithUV(X2, Y1, Z2, westUV[2], westUV[3]);
         t.addVertexWithUV(X2, Y1, Z1, westUV[0], westUV[3]);
@@ -94,7 +105,7 @@ public class RenderableCube {
         t.addVertexWithUV(X2, Y2, Z2, westUV[2], westUV[1]);
 
         // -X
-        t.setColorOpaque_F(0.6F, 0.6F, 0.6F);
+        if (applyBlockShading) t.setColorOpaque_F(0.6F, 0.6F, 0.6F);
         t.setNormal(-1, 0, 0);
         t.addVertexWithUV(X1, Y1, Z1, eastUV[0], eastUV[3]);
         t.addVertexWithUV(X1, Y1, Z2, eastUV[2], eastUV[3]);
