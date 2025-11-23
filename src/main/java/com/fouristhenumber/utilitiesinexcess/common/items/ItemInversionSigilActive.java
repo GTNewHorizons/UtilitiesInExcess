@@ -4,7 +4,6 @@ import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -54,7 +53,7 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
-    private final String PROP_KEY = "entity-siege";
+    private final String PROP_KEY = EntitySiegeProperty.PROP_KEY;
 
     private final ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
         new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
@@ -266,22 +265,23 @@ public class ItemInversionSigilActive extends Item {
         return foundItemsAmount >= requiredAmount;
     }
 
-    private boolean checkChestInDirection(String direction, int beaconX, int beaconY, int beaconZ, World world) {
+    private boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
+        World world) {
         ItemStack[] contents;
         int requiredAmount;
-        if (Objects.equals(direction, "North")) {
+        if (direction == ForgeDirection.NORTH) {
             beaconZ -= 5;
             contents = CHEST_NORTH_CONTENTS;
             requiredAmount = InversionConfig.northChestRequiredItems;
-        } else if (Objects.equals(direction, "South")) {
+        } else if (direction == ForgeDirection.SOUTH) {
             beaconZ += 5;
             contents = CHEST_SOUTH_CONTENTS;
             requiredAmount = InversionConfig.southChestRequiredItems;
-        } else if (Objects.equals(direction, "East")) {
+        } else if (direction == ForgeDirection.EAST) {
             beaconX += 5;
             contents = CHEST_EAST_CONTENTS;
             requiredAmount = InversionConfig.eastChestRequiredItems;
-        } else if (Objects.equals(direction, "West")) {
+        } else if (direction == ForgeDirection.WEST) {
             beaconX -= 5;
             contents = CHEST_WEST_CONTENTS;
             requiredAmount = InversionConfig.westChestRequiredItems;
@@ -310,10 +310,10 @@ public class ItemInversionSigilActive extends Item {
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
         boolean spiralOk = checkSpiral(world, x, y, z);
-        boolean chestNorthContentsOk = checkChestInDirection("North", x, y, z, world);
-        boolean chestEastContentsOk = checkChestInDirection("East", x, y, z, world);
-        boolean chestSouthContentsOk = checkChestInDirection("South", x, y, z, world);
-        boolean chestWestContentsOk = checkChestInDirection("West", x, y, z, world);
+        boolean chestNorthContentsOk = checkChestInDirection(ForgeDirection.NORTH, x, y, z, world);
+        boolean chestEastContentsOk = checkChestInDirection(ForgeDirection.EAST, x, y, z, world);
+        boolean chestSouthContentsOk = checkChestInDirection(ForgeDirection.SOUTH, x, y, z, world);
+        boolean chestWestContentsOk = checkChestInDirection(ForgeDirection.WEST, x, y, z, world);
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
         if (dimensionOk) {
@@ -371,63 +371,64 @@ public class ItemInversionSigilActive extends Item {
 
         List<EntityPlayer> playerList = getSiegePlayers();
         for (EntityPlayer player : playerList) {
+            World world = player.getEntityWorld();
             EntitySiegeProperty properties = getProperties(player);
-            if (!properties.siege) {
-                continue;
-            }
             if (--properties.siegeTimer > 0) {
                 continue;
             }
-            properties.siegeTimer = 30 + player.getEntityWorld().rand.nextInt(21);
+            properties.siegeTimer = 30 + world.rand.nextInt(21);
             EntityMob entitymob = null;
-            int mobType = player.getEntityWorld().rand.nextInt(4);
+            int mobType = world.rand.nextInt(4);
             switch (mobType) {
                 case 0:
-                    int zombieType = player.getEntityWorld().rand.nextInt(25);
+                    int zombieType = world.rand.nextInt(25);
                     if (zombieType == 0) {
-                        entitymob = new EntityGiantZombie(player.getEntityWorld());
+                        entitymob = new EntityGiantZombie(world);
                     } else {
-                        entitymob = new EntityZombie(player.getEntityWorld());
+                        entitymob = new EntityZombie(world);
                     }
                     break;
                 case 1:
-                    entitymob = new EntitySkeleton(player.getEntityWorld());
+                    entitymob = new EntitySkeleton(world);
                     break;
                 case 2:
-                    entitymob = new EntitySpider(player.getEntityWorld());
+                    entitymob = new EntitySpider(world);
                     break;
                 case 3:
-                    entitymob = new EntityCreeper(player.getEntityWorld());
+                    entitymob = new EntityCreeper(world);
                     break;
             }
-            int offsetX = player.getEntityWorld().rand.nextInt(101) - 50;
-            int offsetZ = player.getEntityWorld().rand.nextInt(101) - 50;
-            int mobX = (int) player.posX + offsetX, mobY = -1, mobZ = (int) player.posZ + offsetZ;
-            for (int i = (int) player.posY + 10; i >= (int) player.posY - 10; i--) {
-                if (player.getEntityWorld()
-                    .getBlock(mobX, i + 1, mobZ) == Blocks.air
-                    && player.getEntityWorld()
-                        .getBlock(mobX, i + 2, mobZ) == Blocks.air
-                    && World.doesBlockHaveSolidTopSurface(player.getEntityWorld(), mobX, i, mobZ)) {
-                    mobY = i;
+            int offsetX = world.rand.nextInt(101) - 50;
+            int offsetZ = world.rand.nextInt(101) - 50;
+
+            int mobX = (int) player.posX + offsetX;
+            int mobY = 0;
+            int mobZ = (int) player.posZ + offsetZ;
+
+            for (int y = (int) player.posY + 10; y >= 0; y--) {
+                if (!World.doesBlockHaveSolidTopSurface(world, mobX, y, mobZ)) {
+                    continue;
+                }
+
+                entitymob.setPosition(mobX, y + 1, mobZ);
+
+                if (!world.getCollidingBoundingBoxes(entitymob, entitymob.boundingBox)
+                    .isEmpty()) {
+                    continue;
+                }
+                if (!world.checkNoEntityCollision(entitymob.boundingBox)) {
                     break;
                 }
+
+                mobY = y + 1;
+                break;
             }
-            if (mobY != -1) {
-                entitymob.setPosition(mobX, mobY + 1, mobZ);
-                if (entitymob instanceof EntityGiantZombie) {
-                    if (player.getEntityWorld()
-                        .getCollidingBoundingBoxes(entitymob, entitymob.boundingBox)
-                        .isEmpty()) {
-                        entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                            .setBaseValue(20.0D);
-                    }
-                } else {
-                    player.getEntityWorld()
-                        .spawnEntityInWorld(entitymob);
-                    entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                        .setBaseValue(8.0D);
-                }
+
+            if (mobY != 0) {
+                double damage = entitymob instanceof EntityGiantZombie ? 16D : 8D;
+                entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                    .setBaseValue(damage);
+                world.spawnEntityInWorld(entitymob);
             }
         }
     }
@@ -534,10 +535,10 @@ public class ItemInversionSigilActive extends Item {
         boolean dimensionOk = (world.provider.dimensionId == 1);
         boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
         if (!(dimensionOk && spiralOk
-            && checkChestInDirection("North", beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection("East", beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection("South", beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection("West", beaconX, beaconY, beaconZ, world))) {
+            && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world))) {
             return;
         }
 
