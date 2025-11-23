@@ -952,7 +952,6 @@ public class RecipeLoader {
                         new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE) },
                     ModItems.GLOVE.newItemStack()));
         }
-        // addShapedRecipe(ModItems.GLOVE, "is", "si", 'i', Blocks.wool, 's', Items.string);
     }
 
     private static void loadQEDRecipes() {
