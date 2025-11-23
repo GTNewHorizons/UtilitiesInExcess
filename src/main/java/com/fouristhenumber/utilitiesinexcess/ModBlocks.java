@@ -125,7 +125,7 @@ public enum ModBlocks {
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), BlockUpdateDetector.ItemBlockUpdateDetector.class, "block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
-    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
+    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "wood_spike"), BlockSpike.ItemSpike.class, "wood_spike"),
     SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "iron_spike"), BlockSpike.ItemSpike.class, "iron_spike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "gold_spike"), BlockSpike.ItemSpike.class, "gold_spike"),
