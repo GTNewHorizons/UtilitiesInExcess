@@ -34,11 +34,11 @@ public class MixinModelRenderer_Baubles {
             stack = UIEUtils.getBauble(player, ItemGlove.class);
 
         if (stack != null) {
+            ItemStack finalStack = stack;
             ModelPartRenderHelper.renderBipedPart(
                 0.0625F,
                 thisObject.modelBipedMain.bipedRightArm,
-                GloveRenderer::renderGloveAsBauble,
-                stack.getItemDamage());
+                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage()));
         }
     }
 }
