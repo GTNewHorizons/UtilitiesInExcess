@@ -78,16 +78,7 @@ public class BlockConveyor extends BlockContainer {
             float hitX, float hitY, float hitZ, int metadata) {
             int direction = Math.abs((int) ((((player.rotationYaw % 360) + 45f) / 90f + 4f) % 4f));
 
-            if (!world.setBlock(x, y, z, field_150939_a, direction, 3)) {
-                return false;
-            }
-
-            if (world.getBlock(x, y, z) == field_150939_a) {
-                field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
-                field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
-            }
-
-            return true;
+            return super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, direction);
         }
     }
 }
