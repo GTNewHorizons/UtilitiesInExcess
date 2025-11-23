@@ -90,10 +90,11 @@ public class ItemInversionSigilActive extends Item {
             CHEST_EAST_CONTENTS[2 * i + 1] = new ItemStack(Items.potionitem, 1, POTION_IDS[i] + 8192);
         }
 
-        MinecraftForge.EVENT_BUS.register(this);
+        ItemInversionSigilActiveEvents eventHandler = new ItemInversionSigilActiveEvents();
+        MinecraftForge.EVENT_BUS.register(eventHandler);
         FMLCommonHandler.instance()
             .bus()
-            .register(this);
+            .register(eventHandler);
     }
 
     private EntitySiegeProperty getProperties(EntityPlayer player) {
@@ -366,187 +367,190 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void whenServerTick(TickEvent.ServerTickEvent event) {
+    public class ItemInversionSigilActiveEvents {
 
-        List<EntityPlayer> playerList = getSiegePlayers();
-        for (EntityPlayer player : playerList) {
-            World world = player.getEntityWorld();
-            EntitySiegeProperty properties = getProperties(player);
-            if (--properties.siegeTimer > 0) {
-                continue;
-            }
-            properties.siegeTimer = 30 + world.rand.nextInt(21);
-            EntityMob entitymob = null;
-            int mobType = world.rand.nextInt(4);
-            switch (mobType) {
-                case 0:
-                    int zombieType = world.rand.nextInt(25);
-                    if (zombieType == 0) {
-                        entitymob = new EntityGiantZombie(world);
-                    } else {
-                        entitymob = new EntityZombie(world);
-                    }
-                    break;
-                case 1:
-                    entitymob = new EntitySkeleton(world);
-                    break;
-                case 2:
-                    entitymob = new EntitySpider(world);
-                    break;
-                case 3:
-                    entitymob = new EntityCreeper(world);
-                    break;
-            }
-            int offsetX = world.rand.nextInt(101) - 50;
-            int offsetZ = world.rand.nextInt(101) - 50;
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public void whenServerTick(TickEvent.ServerTickEvent event) {
 
-            int mobX = (int) player.posX + offsetX;
-            int mobY = 0;
-            int mobZ = (int) player.posZ + offsetZ;
-
-            for (int y = (int) player.posY + 10; y >= 0; y--) {
-                if (!World.doesBlockHaveSolidTopSurface(world, mobX, y, mobZ)) {
+            List<EntityPlayer> playerList = getSiegePlayers();
+            for (EntityPlayer player : playerList) {
+                World world = player.getEntityWorld();
+                EntitySiegeProperty properties = getProperties(player);
+                if (--properties.siegeTimer > 0) {
                     continue;
                 }
-
-                entitymob.setPosition(mobX, y + 1, mobZ);
-
-                if (!world.getCollidingBoundingBoxes(entitymob, entitymob.boundingBox)
-                    .isEmpty()) {
-                    continue;
+                properties.siegeTimer = 30 + world.rand.nextInt(21);
+                EntityMob entitymob = null;
+                int mobType = world.rand.nextInt(4);
+                switch (mobType) {
+                    case 0:
+                        int zombieType = world.rand.nextInt(25);
+                        if (zombieType == 0) {
+                            entitymob = new EntityGiantZombie(world);
+                        } else {
+                            entitymob = new EntityZombie(world);
+                        }
+                        break;
+                    case 1:
+                        entitymob = new EntitySkeleton(world);
+                        break;
+                    case 2:
+                        entitymob = new EntitySpider(world);
+                        break;
+                    case 3:
+                        entitymob = new EntityCreeper(world);
+                        break;
                 }
-                if (!world.checkNoEntityCollision(entitymob.boundingBox)) {
+                int offsetX = world.rand.nextInt(101) - 50;
+                int offsetZ = world.rand.nextInt(101) - 50;
+
+                int mobX = (int) player.posX + offsetX;
+                int mobY = 0;
+                int mobZ = (int) player.posZ + offsetZ;
+
+                for (int y = (int) player.posY + 10; y >= 0; y--) {
+                    if (!World.doesBlockHaveSolidTopSurface(world, mobX, y, mobZ)) {
+                        continue;
+                    }
+
+                    entitymob.setPosition(mobX, y + 1, mobZ);
+
+                    if (!world.getCollidingBoundingBoxes(entitymob, entitymob.boundingBox)
+                        .isEmpty()) {
+                        continue;
+                    }
+                    if (!world.checkNoEntityCollision(entitymob.boundingBox)) {
+                        break;
+                    }
+
+                    mobY = y + 1;
                     break;
                 }
 
-                mobY = y + 1;
-                break;
-            }
-
-            if (mobY != 0) {
-                double damage = entitymob instanceof EntityGiantZombie ? 16D : 8D;
-                entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                    .setBaseValue(damage);
-                world.spawnEntityInWorld(entitymob);
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (getProperties(event.player).siege) {
-            event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
-            siegeEnd(false, event.player);
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void whenPlayerLeavesEnd2(PlayerEvent.PlayerRespawnEvent event) {
-        if (getProperties(event.player).siege) {
-            event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
-            siegeEnd(false, event.player);
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.world.provider.dimensionId == 1 && event.entity instanceof EntityEnderman
-            && !getSiegePlayers().isEmpty()) {
-            event.setResult(Event.Result.DENY);
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onLivingDeath(LivingDeathEvent event) {
-
-        World world = event.entityLiving.worldObj;
-
-        if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
-            if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
-                deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
-                siegeEnd(false, deadplayer);
-            }
-            return;
-        }
-        EntitySiegeProperty source = getProperties(player);
-
-        if (world.isRemote) return;
-
-        if (event.entityLiving instanceof EntityMob && source.siege) {
-            source.siegeMobsKilled++;
-            if (source.siegeMobsKilled >= InversionConfig.siegeRequiredMobsKill) {
-                player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
-                siegeEnd(true, player);
-            } else if (source.siegeMobsKilled == (3 * InversionConfig.siegeRequiredMobsKill) / 4) {
-                player.addChatMessage(
-                    new ChatComponentTranslation(
-                        StatCollector.translateToLocalFormatted(
-                            "chat.pseudo_inversion_ritual.threequarters",
-                            source.siegeMobsKilled)));
-            } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 2) {
-                player.addChatMessage(
-                    new ChatComponentTranslation(
-                        StatCollector.translateToLocalFormatted(
-                            "chat.pseudo_inversion_ritual.twoquarters",
-                            source.siegeMobsKilled)));
-            } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 4) {
-                player.addChatMessage(
-                    new ChatComponentTranslation(
-                        StatCollector.translateToLocalFormatted(
-                            "chat.pseudo_inversion_ritual.onequarter",
-                            source.siegeMobsKilled)));
-            }
-            return;
-        }
-
-        if (!(event.entityLiving instanceof EntityIronGolem)) {
-            return;
-        }
-
-        if (!player.inventory.hasItem(this)) return;
-
-        int radius = BEACON_SEARCH_RADIUS;
-        int mobX = (int) Math.floor(event.entityLiving.posX);
-        int mobY = (int) Math.floor(event.entityLiving.posY);
-        int mobZ = (int) Math.floor(event.entityLiving.posZ);
-
-        int beaconX = 0, beaconY = 0, beaconZ = 0;
-        boolean found = false;
-
-        for (int dx = -radius; dx <= radius && !found; dx++) {
-            for (int dy = -2; dy <= 2 && !found; dy++) {
-                for (int dz = -radius; dz <= radius && !found; dz++) {
-                    int bx = mobX + dx;
-                    int by = mobY + dy;
-                    int bz = mobZ + dz;
-                    if (world.getBlock(bx, by, bz) == Blocks.beacon) {
-                        beaconX = bx;
-                        beaconY = by;
-                        beaconZ = bz;
-                        found = true;
-                    }
+                if (mobY != 0) {
+                    double damage = entitymob instanceof EntityGiantZombie ? 16D : 8D;
+                    entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                        .setBaseValue(damage);
+                    world.spawnEntityInWorld(entitymob);
                 }
             }
         }
 
-        if (!found) return;
-
-        boolean dimensionOk = (world.provider.dimensionId == 1);
-        boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
-        if (!(dimensionOk && spiralOk
-            && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world))) {
-            return;
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
+            if (getProperties(event.player).siege) {
+                event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
+                siegeEnd(false, event.player);
+            }
         }
 
-        // Ritual has now succeeded
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public void whenPlayerLeavesEnd2(PlayerEvent.PlayerRespawnEvent event) {
+            if (getProperties(event.player).siege) {
+                event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
+                siegeEnd(false, event.player);
+            }
+        }
 
-        if (!source.siege) {
-            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
-            siegeStart(world, beaconX, beaconY, beaconZ, player);
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
+            if (event.world.provider.dimensionId == 1 && event.entity instanceof EntityEnderman
+                && !getSiegePlayers().isEmpty()) {
+                event.setResult(Event.Result.DENY);
+            }
+        }
+
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public void onLivingDeath(LivingDeathEvent event) {
+
+            World world = event.entityLiving.worldObj;
+
+            if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
+                if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
+                    deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
+                    siegeEnd(false, deadplayer);
+                }
+                return;
+            }
+            EntitySiegeProperty source = getProperties(player);
+
+            if (world.isRemote) return;
+
+            if (event.entityLiving instanceof EntityMob && source.siege) {
+                source.siegeMobsKilled++;
+                if (source.siegeMobsKilled >= InversionConfig.siegeRequiredMobsKill) {
+                    player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
+                    siegeEnd(true, player);
+                } else if (source.siegeMobsKilled == (3 * InversionConfig.siegeRequiredMobsKill) / 4) {
+                    player.addChatMessage(
+                        new ChatComponentTranslation(
+                            StatCollector.translateToLocalFormatted(
+                                "chat.pseudo_inversion_ritual.threequarters",
+                                source.siegeMobsKilled)));
+                } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 2) {
+                    player.addChatMessage(
+                        new ChatComponentTranslation(
+                            StatCollector.translateToLocalFormatted(
+                                "chat.pseudo_inversion_ritual.twoquarters",
+                                source.siegeMobsKilled)));
+                } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 4) {
+                    player.addChatMessage(
+                        new ChatComponentTranslation(
+                            StatCollector.translateToLocalFormatted(
+                                "chat.pseudo_inversion_ritual.onequarter",
+                                source.siegeMobsKilled)));
+                }
+                return;
+            }
+
+            if (!(event.entityLiving instanceof EntityIronGolem)) {
+                return;
+            }
+
+            if (!player.inventory.hasItem(ModItems.INVERSION_SIGIL_ACTIVE.get())) return;
+
+            int radius = BEACON_SEARCH_RADIUS;
+            int mobX = (int) Math.floor(event.entityLiving.posX);
+            int mobY = (int) Math.floor(event.entityLiving.posY);
+            int mobZ = (int) Math.floor(event.entityLiving.posZ);
+
+            int beaconX = 0, beaconY = 0, beaconZ = 0;
+            boolean found = false;
+
+            for (int dx = -radius; dx <= radius && !found; dx++) {
+                for (int dy = -2; dy <= 2 && !found; dy++) {
+                    for (int dz = -radius; dz <= radius && !found; dz++) {
+                        int bx = mobX + dx;
+                        int by = mobY + dy;
+                        int bz = mobZ + dz;
+                        if (world.getBlock(bx, by, bz) == Blocks.beacon) {
+                            beaconX = bx;
+                            beaconY = by;
+                            beaconZ = bz;
+                            found = true;
+                        }
+                    }
+                }
+            }
+
+            if (!found) return;
+
+            boolean dimensionOk = (world.provider.dimensionId == 1);
+            boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
+            if (!(dimensionOk && spiralOk
+                && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
+                && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
+                && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
+                && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world))) {
+                return;
+            }
+
+            // Ritual has now succeeded
+
+            if (!source.siege) {
+                player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
+                siegeStart(world, beaconX, beaconY, beaconZ, player);
+            }
         }
     }
 
