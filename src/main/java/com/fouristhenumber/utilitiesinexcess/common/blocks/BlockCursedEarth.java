@@ -155,7 +155,7 @@ public class BlockCursedEarth extends Block {
 
         if (blessed && !CursedEarthConfig.enableBlessedEarthBurn) return;
 
-        if (shouldBurn(world, x, y, z) && world.isAirBlock(x, y + 1, z)) {
+        if (world.isAirBlock(x, y + 1, z) && shouldBurn(world, x, y, z)) {
             world.setBlock(x, y + 1, z, Blocks.fire);
             return;
         }

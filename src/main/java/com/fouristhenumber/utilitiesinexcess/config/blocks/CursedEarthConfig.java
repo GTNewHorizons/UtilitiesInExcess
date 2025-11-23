@@ -9,9 +9,11 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 public class CursedEarthConfig {
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableCursedEarth;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableBlessedEarth;
 
     @Config.Comment("Should blessed earth burn in darkness like cursed earth burns in the light")
