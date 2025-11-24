@@ -52,7 +52,6 @@ public class ItemInversionSigilActive extends Item {
     private static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
-    private final String PROP_KEY = EntitySiegeProperty.PROP_KEY;
 
     private final ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
         new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
@@ -97,7 +96,7 @@ public class ItemInversionSigilActive extends Item {
     }
 
     private EntitySiegeProperty getProperties(EntityPlayer player) {
-        return (EntitySiegeProperty) player.getExtendedProperties(PROP_KEY);
+        return (EntitySiegeProperty) player.getExtendedProperties(EntitySiegeProperty.PROP_KEY);
     }
 
     private List<EntityPlayer> getSiegePlayers() {
@@ -196,7 +195,7 @@ public class ItemInversionSigilActive extends Item {
         };
     }
 
-    private void siegeStart(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
+    private void startSiege(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
         EntitySiegeProperty source = getProperties(player);
         source.beaconSpawnX = beaconX;
         source.beaconSpawnY = beaconY;
@@ -224,7 +223,7 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private void siegeEnd(boolean won, EntityPlayer player) {
+    private void endSiege(boolean won, EntityPlayer player) {
         EntitySiegeProperty source = getProperties(player);
         source.siege = false;
         source.siegeMobsKilled = 0;
@@ -269,6 +268,7 @@ public class ItemInversionSigilActive extends Item {
         World world) {
         ItemStack[] contents;
         int requiredAmount;
+
         if (direction == ForgeDirection.NORTH) {
             beaconZ -= 5;
             contents = CHEST_NORTH_CONTENTS;
@@ -288,6 +288,7 @@ public class ItemInversionSigilActive extends Item {
         } else {
             throw new IllegalArgumentException("Invalid direction passed: " + direction);
         }
+
         if (world.getTileEntity(beaconX, beaconY, beaconZ) instanceof TileEntityChest chest) {
             return checkChest(chest, contents, requiredAmount);
         }
@@ -314,6 +315,7 @@ public class ItemInversionSigilActive extends Item {
         boolean chestEastContentsOk = checkChestInDirection(ForgeDirection.EAST, x, y, z, world);
         boolean chestSouthContentsOk = checkChestInDirection(ForgeDirection.SOUTH, x, y, z, world);
         boolean chestWestContentsOk = checkChestInDirection(ForgeDirection.WEST, x, y, z, world);
+
         player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.header"));
         if (dimensionOk) {
             player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.correctDimension"));
@@ -362,32 +364,29 @@ public class ItemInversionSigilActive extends Item {
             List<EntityPlayer> playerList = getSiegePlayers();
             for (EntityPlayer player : playerList) {
                 World world = player.getEntityWorld();
+
                 EntitySiegeProperty properties = getProperties(player);
                 if (--properties.siegeTimer > 0) {
                     continue;
                 }
                 properties.siegeTimer = 30 + world.rand.nextInt(21);
-                EntityMob entitymob = null;
+
                 int mobType = world.rand.nextInt(4);
-                switch (mobType) {
-                    case 0:
+                EntityMob entityMob = switch (mobType) {
+                    case 0 -> {
                         int zombieType = world.rand.nextInt(25);
                         if (zombieType == 0) {
-                            entitymob = new EntityGiantZombie(world);
+                            yield new EntityGiantZombie(world);
                         } else {
-                            entitymob = new EntityZombie(world);
+                            yield new EntityZombie(world);
                         }
-                        break;
-                    case 1:
-                        entitymob = new EntitySkeleton(world);
-                        break;
-                    case 2:
-                        entitymob = new EntitySpider(world);
-                        break;
-                    case 3:
-                        entitymob = new EntityCreeper(world);
-                        break;
-                }
+                    }
+                    case 1 -> new EntitySkeleton(world);
+                    case 2 -> new EntitySpider(world);
+                    case 3 -> new EntityCreeper(world);
+                    default -> throw new IllegalStateException("Unexpected value: " + mobType);
+                };
+
                 int offsetX = world.rand.nextInt(101) - 50;
                 int offsetZ = world.rand.nextInt(101) - 50;
 
@@ -400,13 +399,13 @@ public class ItemInversionSigilActive extends Item {
                         continue;
                     }
 
-                    entitymob.setPosition(mobX, y + 1, mobZ);
+                    entityMob.setPosition(mobX, y + 1, mobZ);
 
-                    if (!world.getCollidingBoundingBoxes(entitymob, entitymob.boundingBox)
+                    if (!world.getCollidingBoundingBoxes(entityMob, entityMob.boundingBox)
                         .isEmpty()) {
                         continue;
                     }
-                    if (!world.checkNoEntityCollision(entitymob.boundingBox)) {
+                    if (!world.checkNoEntityCollision(entityMob.boundingBox)) {
                         break;
                     }
 
@@ -415,10 +414,10 @@ public class ItemInversionSigilActive extends Item {
                 }
 
                 if (mobY != 0) {
-                    double damage = entitymob instanceof EntityGiantZombie ? 16D : 8D;
-                    entitymob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                    double damage = entityMob instanceof EntityGiantZombie ? 16D : 8D;
+                    entityMob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
                         .setBaseValue(damage);
-                    world.spawnEntityInWorld(entitymob);
+                    world.spawnEntityInWorld(entityMob);
                 }
             }
         }
@@ -427,7 +426,7 @@ public class ItemInversionSigilActive extends Item {
         public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
-                siegeEnd(false, event.player);
+                endSiege(false, event.player);
             }
         }
 
@@ -435,7 +434,7 @@ public class ItemInversionSigilActive extends Item {
         public void whenPlayerLeavesEnd2(PlayerEvent.PlayerRespawnEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
-                siegeEnd(false, event.player);
+                endSiege(false, event.player);
             }
         }
 
@@ -454,7 +453,7 @@ public class ItemInversionSigilActive extends Item {
 
             if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
                 deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
-                siegeEnd(false, deadplayer);
+                endSiege(false, deadplayer);
                 return;
             }
             if (event.source == null || !(event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
@@ -468,7 +467,7 @@ public class ItemInversionSigilActive extends Item {
                 source.siegeMobsKilled++;
                 if (source.siegeMobsKilled >= InversionConfig.siegeRequiredMobsKill) {
                     player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
-                    siegeEnd(true, player);
+                    endSiege(true, player);
                 } else if (source.siegeMobsKilled == (3 * InversionConfig.siegeRequiredMobsKill) / 4) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
@@ -534,7 +533,7 @@ public class ItemInversionSigilActive extends Item {
 
             if (!source.siege) {
                 player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
-                siegeStart(world, beaconX, beaconY, beaconZ, player);
+                startSiege(world, beaconX, beaconY, beaconZ, player);
             }
         }
     }
