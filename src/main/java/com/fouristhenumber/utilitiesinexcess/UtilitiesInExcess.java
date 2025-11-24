@@ -1,5 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -58,6 +61,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import minetweaker.MineTweakerAPI;
 
 @Mod(
@@ -192,4 +197,21 @@ public class UtilitiesInExcess {
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
     }
+
+    @SideOnly(Side.CLIENT)
+    public static CreativeTabs uieTab = new CreativeTabs(MODID) {
+
+        @Override
+        public Item getTabIconItem() {
+            return this.getIconItemStack()
+                .getItem();
+        }
+
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GLUTTONS_AXE.get());
+
+        @Override
+        public ItemStack getIconItemStack() {
+            return ICON_ITEM;
+        }
+    };
 }
