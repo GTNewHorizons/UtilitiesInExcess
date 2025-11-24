@@ -25,7 +25,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -315,48 +314,36 @@ public class ItemInversionSigilActive extends Item {
         boolean chestEastContentsOk = checkChestInDirection(ForgeDirection.EAST, x, y, z, world);
         boolean chestSouthContentsOk = checkChestInDirection(ForgeDirection.SOUTH, x, y, z, world);
         boolean chestWestContentsOk = checkChestInDirection(ForgeDirection.WEST, x, y, z, world);
-        player.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.header")));
+        player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.header"));
         if (dimensionOk) {
-            player.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("chat.pseudo_inversion_ritual.correctDimension")));
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.correctDimension"));
         } else if (world.provider.dimensionId == 0) {
             player.addChatMessage(
-                new ChatComponentText(
-                    StatCollector.translateToLocal("chat.pseudo_inversion_ritual.incorrectDimensionOverworld")));
+                new ChatComponentTranslation("chat.pseudo_inversion_ritual.incorrectDimensionOverworld"));
         } else if (world.provider.dimensionId == -1) {
-            player.addChatMessage(
-                new ChatComponentText(
-                    StatCollector.translateToLocal("chat.pseudo_inversion_ritual.incorrectDimensionNether")));
+            player
+                .addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.incorrectDimensionNether"));
         } else {
-            player.addChatMessage(
-                new ChatComponentText(
-                    StatCollector.translateToLocal("chat.pseudo_inversion_ritual.incorrectDimensionOther")));
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.incorrectDimensionOther"));
         }
         player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestNorthContents",
-                    (chestNorthContentsOk ? "✓" : "✗"))));
+            new ChatComponentTranslation(
+                "chat.pseudo_inversion_ritual.chestNorthContents",
+                chestNorthContentsOk ? "✓" : "✗"));
         player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestEastContents",
-                    (chestEastContentsOk ? "✓" : "✗"))));
+            new ChatComponentTranslation(
+                "chat.pseudo_inversion_ritual.chestEastContents",
+                chestEastContentsOk ? "✓" : "✗"));
         player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestSouthContents",
-                    (chestSouthContentsOk ? "✓" : "✗"))));
+            new ChatComponentTranslation(
+                "chat.pseudo_inversion_ritual.chestSouthContents",
+                chestSouthContentsOk ? "✓" : "✗"));
         player.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted(
-                    "chat.pseudo_inversion_ritual.chestWestContents",
-                    (chestWestContentsOk ? "✓" : "✗"))));
-        player.addChatMessage(
-            new ChatComponentText(
-                StatCollector
-                    .translateToLocalFormatted("chat.pseudo_inversion_ritual.spiral", (spiralOk ? "✓" : "✗"))));
+            new ChatComponentTranslation(
+                "chat.pseudo_inversion_ritual.chestWestContents",
+                chestWestContentsOk ? "✓" : "✗"));
+        player
+            .addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.spiral", spiralOk ? "✓" : "✗"));
         if (dimensionOk && chestNorthContentsOk
             && chestEastContentsOk
             && chestSouthContentsOk
@@ -465,11 +452,12 @@ public class ItemInversionSigilActive extends Item {
 
             World world = event.entityLiving.worldObj;
 
-            if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
-                if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
-                    deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
-                    siegeEnd(false, deadplayer);
-                }
+            if (event.entityLiving instanceof EntityPlayer deadplayer && getProperties(deadplayer).siege) {
+                deadplayer.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.death"));
+                siegeEnd(false, deadplayer);
+                return;
+            }
+            if (event.source == null || !(event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
                 return;
             }
             EntitySiegeProperty source = getProperties(player);
@@ -484,21 +472,18 @@ public class ItemInversionSigilActive extends Item {
                 } else if (source.siegeMobsKilled == (3 * InversionConfig.siegeRequiredMobsKill) / 4) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
-                            StatCollector.translateToLocalFormatted(
-                                "chat.pseudo_inversion_ritual.threequarters",
-                                source.siegeMobsKilled)));
+                            "chat.pseudo_inversion_ritual.threequarters",
+                            source.siegeMobsKilled));
                 } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 2) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
-                            StatCollector.translateToLocalFormatted(
-                                "chat.pseudo_inversion_ritual.twoquarters",
-                                source.siegeMobsKilled)));
+                            "chat.pseudo_inversion_ritual.twoquarters",
+                            source.siegeMobsKilled));
                 } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 4) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
-                            StatCollector.translateToLocalFormatted(
-                                "chat.pseudo_inversion_ritual.onequarter",
-                                source.siegeMobsKilled)));
+                            "chat.pseudo_inversion_ritual.onequarter",
+                            source.siegeMobsKilled));
                 }
                 return;
             }
@@ -507,7 +492,7 @@ public class ItemInversionSigilActive extends Item {
                 return;
             }
 
-            if (!player.inventory.hasItem(ModItems.INVERSION_SIGIL_ACTIVE.get())) return;
+            if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
 
             int radius = BEACON_SEARCH_RADIUS;
             int mobX = (int) Math.floor(event.entityLiving.posX);
