@@ -86,7 +86,7 @@ public class LoadableTE extends TileEntity {
      *
      * @param chunkCoord The chunk coordinates to unload
      */
-    void unloadChunk(ChunkCoordIntPair chunkCoord) {
+    public void unloadChunk(ChunkCoordIntPair chunkCoord) {
         if (chunkCoord.chunkXPos == selfChunkX && chunkCoord.chunkZPos == selfChunkZ && keepsItselfLoaded()) return;
         if (requestTicket()) {
             ForgeChunkManager.unforceChunk(ticket, chunkCoord);
@@ -201,7 +201,8 @@ public class LoadableTE extends TileEntity {
      */
     public boolean areWeLoadingThisChunk(int chunkX, int chunkY) {
         ChunkCoordIntPair chunk = new ChunkCoordIntPair(chunkX, chunkY);
-        return this.ticket != null && this.ticket.getChunkList().contains(chunk);
+        return this.ticket != null && this.ticket.getChunkList()
+            .contains(chunk);
     }
 
     /**
@@ -223,4 +224,5 @@ public class LoadableTE extends TileEntity {
         super.invalidate();
         invalidateTicket();
     }
+
 }

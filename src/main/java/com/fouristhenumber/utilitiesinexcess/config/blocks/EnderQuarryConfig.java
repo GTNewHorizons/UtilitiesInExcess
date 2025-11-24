@@ -23,4 +23,9 @@ public class EnderQuarryConfig {
     @Config.DefaultInt(128_000)
     @Config.RangeInt(min = 16_000, max = 1_024_000)
     public static int enderQuarryFluidTankStorage;
+
+    @Config.Comment("Base factor of RF that is used per operation. Is influenced by upgrades & block hardness.")
+    @Config.DefaultInt(1_000)
+    @Config.RangeInt(min = 100, max = 1_024_000)
+    public static int enderQuarryBaseRFCost;
 }

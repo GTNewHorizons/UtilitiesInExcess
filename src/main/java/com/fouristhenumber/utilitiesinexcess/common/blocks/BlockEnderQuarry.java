@@ -7,7 +7,6 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -63,10 +62,10 @@ public class BlockEnderQuarry extends BlockContainer {
                 BlockPos farFront = offsetByForward(inFront, quarry.facing, 64, 0);
                 farFront = offsetByRight(farFront, quarry.facing, 64, 0);
 
-                for (int i = 1; i < 256; i++) {
-                    worldIn.setBlock(inFront.x, i, inFront.z, Blocks.diamond_block);
-                    worldIn.setBlock(farFront.x, i, farFront.z, Blocks.diamond_block);
-                }
+                // for (int i = 1; i < 256; i++) {
+                // worldIn.setBlock(inFront.x, i, inFront.z, Blocks.diamond_block);
+                // worldIn.setBlock(farFront.x, i, farFront.z, Blocks.diamond_block);
+                // }
 
                 player.addChatComponentMessage(
                     new ChatComponentText(String.format("Set up work area from %s to %s", inFront, farFront)));

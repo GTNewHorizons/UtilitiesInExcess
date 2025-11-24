@@ -8,8 +8,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -19,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -34,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 
@@ -58,7 +56,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int chunkX;
     private int chunkZ;
     private int brokenBlocksTotal;
-    private final HashMap<ForgeDirection, IInventory> sidedItemAcceptors = new HashMap<>();
+    private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new HashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
 
     protected final EnergyStorage energyStorage = new EnergyStorage(EnderQuarryConfig.enderQuarryEnergyStorage);
@@ -86,8 +84,13 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 .format("Quarry is currently mining at %d %d %d, has already mined %d", dx, dy, dz, brokenBlocksTotal);
             case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids";
             case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items";
+            case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy";
+            case THROTTLED_BY_ENERGY -> "Quarry is running, but not at full speed because of missing energy";
             case STOPPED -> "Quarry is stopped.";
-            case FINISHED -> String.format("Quarry has finished after mining %d blocks, still holding %d items", brokenBlocksTotal, storedItems);
+            case FINISHED -> String.format(
+                "Quarry has finished after mining %d blocks%s",
+                brokenBlocksTotal,
+                String.format(storedItems > 0 ? ", still holding %d items" : "", storedItems));
         };
     }
 
@@ -173,15 +176,34 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      * Tries to store the resulting resources of the block at the current position,
      * and store the items / fluid to the internal storage.
      *
-     * @return True if we managed to harvest the current block, false if we couldn't / weren't allowed to touch/harvest
-     *         it.
+     * @return A boolean tuple of: &lt;Could we work & harvest the block, Did we skip this block&gt;
      */
-    private boolean tryHarvestCurrentBlock() {
-        if (worldObj.isAirBlock(dx, dy, dz) || worldObj.getBlock(dx, dy, dz)
-            .getMaterial() == Material.air) return false;
-
+    private boolean[] tryHarvestCurrentBlock() {
         Block block = worldObj.getBlock(dx, dy, dz);
-        return harvestAndStoreBlock(block);
+        if (block.getMaterial() == Material.air || worldObj.isAirBlock(dx, dy, dz)
+            || block.getBlockHardness(worldObj, dx, dy, dz) < 0
+            || block.getBlockHardness(worldObj, dx, dy, dz) > 100) {
+            return new boolean[] { tryConsumeEnergy(0.0f, false), true };
+        } ;
+
+        float hardness = block.getBlockHardness(worldObj, dx, dy, dz);
+        if (tryConsumeEnergy(hardness, true)) {
+            return new boolean[] { (harvestAndStoreBlock(block) && tryConsumeEnergy(hardness, false)), false };
+        }
+        return new boolean[] { false, false };
+    }
+
+    private boolean tryConsumeEnergy(float hardness, boolean simulate) {
+        float costMultiplier = 1.0f;
+        int cost = (int) ((hardness == 0 ? 100 : EnderQuarryConfig.enderQuarryBaseRFCost) * costMultiplier);
+        if (energyStorage.extractEnergy(cost, true) >= cost) {
+            if (!simulate) {
+                energyStorage.extractEnergy(cost, false);
+            }
+            return true;
+        }
+        state = QuarryWorkState.STOPPED_WAITING_FOR_ENERGY;
+        return false;
     }
 
     private boolean harvestAndStoreBlock(Block block) {
@@ -211,7 +233,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             // Block just has no drops
             return true;
         } catch (Exception ignored) {
-            UtilitiesInExcess.LOG.error("Failed while trying to harvest block {} at {} {} {}.", block.toString(), dx, dy, dz);
+            UtilitiesInExcess.LOG
+                .error("Failed while trying to harvest block {} at {} {} {}.", block.toString(), dx, dy, dz);
             return false;
         }
     }
@@ -285,7 +308,6 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      * @return False if the adjacent TEs changed without us noticing, and we need to rescan
      */
     private boolean ejectStoredToAdjacent() {
-        // TODO: call markDirty()
         if (storedItems > 0) {
             for (IInventory inventory : sidedItemAcceptors.values()) {
                 if (inventory != null) {
@@ -399,22 +421,25 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         sidedItemAcceptors.clear();
         ArrayList<ChunkCoordIntPair> loadedAdjacentChunks = new ArrayList<>();
 
-        // TODO: Load cross around if some side is in an adajcent chunk, only for the duration of this scan
+        // Make sure the directly adjacent blocks in different chunks are loaded whilst checking
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
             int directionChunkX = (direction.offsetX + this.xCoord) >> 4;
             int directionChunkZ = (direction.offsetZ + this.zCoord) >> 4;
-            if ((directionChunkX != this.selfChunkX || directionChunkZ != this.selfChunkZ) && !areWeLoadingThisChunk(directionChunkX, directionChunkZ)) {
+            if ((directionChunkX != this.selfChunkX || directionChunkZ != this.selfChunkZ)
+                && !areWeLoadingThisChunk(directionChunkX, directionChunkZ)) {
                 loadChunkShifted(directionChunkX, directionChunkZ);
                 loadedAdjacentChunks.add(new ChunkCoordIntPair(directionChunkX, directionChunkZ));
             }
         }
 
-        // TODO: remove adjacent chunks that contain a valid side, from loadedAdjacentChunks
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity te = this.worldObj.getTileEntity(
                 direction.offsetX + this.xCoord,
                 direction.offsetY + this.yCoord,
                 direction.offsetZ + this.zCoord);
+            ChunkCoordIntPair chunk = new ChunkCoordIntPair(
+                (direction.offsetX + this.xCoord) >> 4,
+                (direction.offsetZ + this.zCoord) >> 4);
 
             // TODO: Upgrades people
             // if (te instanceof IQuarryUpgrade quarryUpgrade) {
@@ -423,7 +448,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
             if (te instanceof IFluidHandler fluidHandler) {
                 sidedFluidAcceptors.put(direction, fluidHandler);
-
+                // If there is actually a TE present that we want, keep this chunk loaded (if it is a different one)
+                loadedAdjacentChunks.remove(chunk);
             }
 
             if (direction == ForgeDirection.UP) {
@@ -433,7 +459,18 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
         }
 
-        // TODO: Unload chunks in loadedAdjacentChunks
+        // Unload all the temporarily loaded chunks
+        for (ChunkCoordIntPair loadedChunk : loadedAdjacentChunks) {
+            unloadChunk(loadedChunk);
+        }
+    }
+
+    /**
+     * Remove / replace the current block.
+     * Does not check for anything, should be called after tryHarvestCurrentBlock() returns true.
+     */
+    private void removeCurrentBlock() {
+        worldObj.setBlock(dx, dy, dz, Blocks.air);
     }
 
     // TileEntity & LoadableTE
@@ -444,7 +481,13 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             if (workArea != null) {
                 loadChunkShifted(chunkX, chunkZ);
             }
-            scanSidesForTEs();
+            /*
+             * preferably we would call scanSidesForTEs() here, however
+             * the contained getTileEntity() seems to always re-load the chunk at this stage
+             * which then re-validates back to this function, eventually leading to a stackoverflow
+             * Instead we add a null inventory, so that it gets rechecked later
+             **/
+            sidedItemAcceptors.put(ForgeDirection.UP, null);
         }
     }
 
@@ -456,12 +499,16 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         if (state == QuarryWorkState.FINISHED && storedItems == 0 && fluidStorageIsEmpty()) return;
 
         int brokenBlocksTick = 0;
-        if (state == QuarryWorkState.STOPPED_WAITING_FOR_FLUID_SPACE
-            || state == QuarryWorkState.STOPPED_WAITING_FOR_ITEM_SPACE) {
-            if (tryHarvestCurrentBlock()) {
+        if (state != QuarryWorkState.RUNNING && state != QuarryWorkState.FINISHED && state != QuarryWorkState.STOPPED) {
+            boolean[] harvestResult = tryHarvestCurrentBlock();
+            boolean wasAbleToHarvest = harvestResult[0];
+            boolean blockWasSkipped = harvestResult[1];
+            if (wasAbleToHarvest) {
                 state = QuarryWorkState.RUNNING;
-                worldObj.setBlock(dx, dy, dz, Blocks.air);
-                brokenBlocksTick++;
+                if (!blockWasSkipped) {
+                    removeCurrentBlock();
+                    brokenBlocksTick++;
+                }
             }
         }
 
@@ -473,13 +520,17 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
                 }
 
-                if (tryHarvestCurrentBlock()) {
-                    worldObj.setBlock(dx, dy, dz, Blocks.air);
-                    brokenBlocksTick++;
+                boolean[] harvestResult = tryHarvestCurrentBlock();
+                boolean wasAbleToHarvest = harvestResult[0];
+                boolean blockWasSkipped = harvestResult[1];
+                if (wasAbleToHarvest) {
+                    if (!blockWasSkipped) {
+                        removeCurrentBlock();
+                        brokenBlocksTick++;
+                    }
                 } else {
-                    if (state != QuarryWorkState.RUNNING)
-                        break;
-                    // energy cost for moving but not breaking
+                    // Check if something has stopped us (out of space / energy)
+                    if (state != QuarryWorkState.RUNNING) break;
                 }
             }
             if (brokenBlocksTick < STEPS_PER_TICK && state == QuarryWorkState.RUNNING) {
@@ -488,6 +539,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
             if (brokenBlocksTick > 0) {
                 markDirty();
+                if (state == QuarryWorkState.STOPPED_WAITING_FOR_ENERGY) {
+                    // We were still able to mine some blocks this tick, so we don't consider this fully stopped
+                    // If we fail to harvest again at the start of the next tick, it will be set to STOPPED_... either
+                    // way
+                    state = QuarryWorkState.THROTTLED_BY_ENERGY;
+                }
             }
 
             this.brokenBlocksTotal += brokenBlocksTick;
@@ -564,7 +621,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         for (Object2IntMap.Entry<ItemStack> entry : itemStorage.object2IntEntrySet()) {
             if (entry.getIntValue() > 0 && entry.getKey() != null) {
                 NBTTagCompound tag = new NBTTagCompound();
-                ItemStack item = entry.getKey().copy();
+                ItemStack item = entry.getKey()
+                    .copy();
                 item.stackSize = entry.getIntValue();
                 item.writeToNBT(tag);
                 itemsNBT.appendTag(tag);
@@ -647,6 +705,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         STOPPED,
         STOPPED_WAITING_FOR_FLUID_SPACE,
         STOPPED_WAITING_FOR_ITEM_SPACE,
+        STOPPED_WAITING_FOR_ENERGY,
+        THROTTLED_BY_ENERGY,
         FINISHED,
         RUNNING
     }
