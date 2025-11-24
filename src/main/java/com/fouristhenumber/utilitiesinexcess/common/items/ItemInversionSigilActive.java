@@ -492,6 +492,7 @@ public class ItemInversionSigilActive extends Item {
             }
 
             if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
+            if (source.siege) return; // Cannot start a second siege while in a siege.
 
             int radius = BEACON_SEARCH_RADIUS;
             int mobX = (int) Math.floor(event.entityLiving.posX);
@@ -530,11 +531,8 @@ public class ItemInversionSigilActive extends Item {
             }
 
             // Ritual has now succeeded
-
-            if (!source.siege) {
-                player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
-                startSiege(world, beaconX, beaconY, beaconZ, player);
-            }
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
+            startSiege(world, beaconX, beaconY, beaconZ, player);
         }
     }
 
