@@ -1,24 +1,26 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.utils;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 
-import javax.annotation.Nullable;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 /**
  * Base class for TileEntities that need to keep chunks loaded.
  * Handles chunk loading tickets and manages forced chunk loading through Forge's ChunkManager.
  */
 public class LoadableTE extends TileEntity {
+
     /** The chunk loading ticket used to force chunks to stay loaded */
     @Nullable
     private ForgeChunkManager.Ticket ticket = null;
-    private int selfChunkX;
-    private int selfChunkZ;
-    protected boolean selfIsLoaded = true;
+    protected int selfChunkX;
+    protected int selfChunkZ;
+    protected boolean selfIsLoaded = false;
 
     /**
      * Initializes this class after the TE is loaded.
@@ -28,7 +30,6 @@ public class LoadableTE extends TileEntity {
     @Override
     public void validate() {
         super.validate();
-        selfIsLoaded = false;
         selfChunkX = xCoord >> 4;
         selfChunkZ = zCoord >> 4;
         if (worldObj != null && !worldObj.isRemote) {
@@ -45,11 +46,17 @@ public class LoadableTE extends TileEntity {
      * @param chunkCoord The chunk coordinates to load
      */
     public void loadChunk(ChunkCoordIntPair chunkCoord) {
-        if (selfIsLoaded && chunkCoord.chunkXPos == selfChunkX && chunkCoord.chunkZPos == selfChunkZ && keepsItselfLoaded()) return;
+        if (selfIsLoaded && chunkCoord.chunkXPos == selfChunkX
+            && chunkCoord.chunkZPos == selfChunkZ
+            && keepsItselfLoaded()) return;
         if (requestTicket()) {
             ForgeChunkManager.forceChunk(ticket, chunkCoord);
         } else {
-            UtilitiesInExcess.LOG.error("Failed to get ticket to load chunk at {} {} for Mod {}", chunkCoord.chunkXPos, chunkCoord.chunkZPos, UtilitiesInExcess.MODID);
+            UtilitiesInExcess.LOG.error(
+                "Failed to get ticket to load chunk at {} {} for Mod {}",
+                chunkCoord.chunkXPos,
+                chunkCoord.chunkZPos,
+                UtilitiesInExcess.MODID);
         }
     }
 
@@ -70,7 +77,7 @@ public class LoadableTE extends TileEntity {
      * @param z Block Z coordinate
      */
     public void loadChunk(int x, int z) {
-         loadChunk(new ChunkCoordIntPair(x >> 4, z >> 4));
+        loadChunk(new ChunkCoordIntPair(x >> 4, z >> 4));
     }
 
     /**
@@ -84,7 +91,11 @@ public class LoadableTE extends TileEntity {
         if (requestTicket()) {
             ForgeChunkManager.unforceChunk(ticket, chunkCoord);
         } else {
-            UtilitiesInExcess.LOG.error("Failed to get ticket to unload? chunk at {} {} for Mod {}", chunkCoord.chunkXPos, chunkCoord.chunkZPos, UtilitiesInExcess.MODID);
+            UtilitiesInExcess.LOG.error(
+                "Failed to get ticket to unload? chunk at {} {} for Mod {}",
+                chunkCoord.chunkXPos,
+                chunkCoord.chunkZPos,
+                UtilitiesInExcess.MODID);
         }
     }
 
@@ -123,8 +134,8 @@ public class LoadableTE extends TileEntity {
      */
     public void unloadSelf() {
         if (selfIsLoaded) {
-            unloadChunkShifted(selfChunkX, selfChunkZ);
             selfIsLoaded = false;
+            unloadChunkShifted(selfChunkX, selfChunkZ);
         }
     }
 
@@ -146,7 +157,8 @@ public class LoadableTE extends TileEntity {
      */
     private boolean requestTicket() {
         if (ticket != null) return true;
-        ticket = ForgeChunkManager.requestTicket(UtilitiesInExcess.uieInstance, worldObj, ForgeChunkManager.Type.NORMAL);
+        ticket = ForgeChunkManager
+            .requestTicket(UtilitiesInExcess.uieInstance, worldObj, ForgeChunkManager.Type.NORMAL);
 
         if (ticket != null) {
             // Store TileEntity coordinates in ticket data for reloading
@@ -178,6 +190,18 @@ public class LoadableTE extends TileEntity {
      */
     public boolean keepsItselfLoaded() {
         return false;
+    }
+
+    /**
+     * Check if this TE is already forcing a specific chunk to stay loaded.
+     * It is advised to load a chunk that is required for the TE to function properly, even if it is already laoded by
+     * another mod, because that mod may for some reason stop force-loading it.
+     *
+     * @return True if we are already loading this chunk, otherwise false.
+     */
+    public boolean areWeLoadingThisChunk(int chunkX, int chunkY) {
+        ChunkCoordIntPair chunk = new ChunkCoordIntPair(chunkX, chunkY);
+        return this.ticket != null && this.ticket.getChunkList().contains(chunk);
     }
 
     /**

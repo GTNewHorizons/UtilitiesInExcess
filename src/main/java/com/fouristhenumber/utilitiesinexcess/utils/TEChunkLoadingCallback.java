@@ -1,13 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 
 public class TEChunkLoadingCallback implements ForgeChunkManager.LoadingCallback {
+
     @Override
     public void ticketsLoaded(List<ForgeChunkManager.Ticket> tickets, World world) {
         for (ForgeChunkManager.Ticket ticket : tickets) {

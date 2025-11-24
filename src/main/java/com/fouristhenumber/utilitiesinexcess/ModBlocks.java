@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderQuarry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -14,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
@@ -48,6 +48,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGe
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
@@ -105,7 +106,7 @@ public enum ModBlocks {
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
-    ENDER_QUARRY(BlockConfig.enableEnderQuarry, new BlockEnderQuarry(), "ender_quarry"),
+    ENDER_QUARRY(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarry(), "ender_quarry"),
     ; // leave trailing semicolon
     // spotless:on
 

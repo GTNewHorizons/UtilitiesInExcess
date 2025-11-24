@@ -51,4 +51,8 @@ dependencies {
 
     // For debugging chunkloading
     runtimeOnlyNonPublishable('curse.maven:chicken-chunks-229316:2233250')
+
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:WAILAPlugins:0.7.2:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:waila:1.9.15:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.5:dev")
 }

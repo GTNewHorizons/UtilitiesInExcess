@@ -13,6 +13,7 @@ public class BlockConfig {
         ConfigurationManager.registerConfig(CursedEarthConfig.class);
         ConfigurationManager.registerConfig(EnderLotusConfig.class);
         ConfigurationManager.registerConfig(GeneratorConfig.class);
+        ConfigurationManager.registerConfig(EnderQuarryConfig.class);
     }
 
     @Config.DefaultBoolean(true)
@@ -81,9 +82,6 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableEndOfTimePortal;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableEnderQuarry;
 
     @Config.Comment("Cursed Earth Configuration")
     public static final CursedEarth cursedEarth = new CursedEarth();

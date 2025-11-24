@@ -2,8 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +13,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 public class BlockEnderQuarry extends BlockContainer {
 
@@ -43,29 +45,31 @@ public class BlockEnderQuarry extends BlockContainer {
 
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityEnderQuarry quarry) {
-            quarry.setFacing(getFacing(direction));
+            quarry.facing = getFacing(direction);
             quarry.resetState();
         }
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
         if (worldIn.isRemote) {
             return true;
         }
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityEnderQuarry quarry) {
             if (quarry.state == TileEntityEnderQuarry.QuarryWorkState.STOPPED) {
-                BlockPos inFront = offsetByForward(x, y, z, quarry.getFacing(), 1, 0);
-                BlockPos farFront = offsetByForward(inFront, quarry.getFacing(), 64, 0);
-                farFront = offsetByRight(farFront, quarry.getFacing(), 64, 0);
+                BlockPos inFront = offsetByForward(x, y, z, quarry.facing, 1, 0);
+                BlockPos farFront = offsetByForward(inFront, quarry.facing, 64, 0);
+                farFront = offsetByRight(farFront, quarry.facing, 64, 0);
 
                 for (int i = 1; i < 256; i++) {
                     worldIn.setBlock(inFront.x, i, inFront.z, Blocks.diamond_block);
                     worldIn.setBlock(farFront.x, i, farFront.z, Blocks.diamond_block);
                 }
 
-                player.addChatComponentMessage(new ChatComponentText(String.format("Set up work area from %s to %s", inFront, farFront)));
+                player.addChatComponentMessage(
+                    new ChatComponentText(String.format("Set up work area from %s to %s", inFront, farFront)));
 
                 quarry.setWorkArea(new TileEntityEnderQuarry.Area2d(inFront.x, inFront.z, farFront.x, farFront.z));
                 quarry.state = TileEntityEnderQuarry.QuarryWorkState.RUNNING;
@@ -73,6 +77,15 @@ public class BlockEnderQuarry extends BlockContainer {
             player.addChatComponentMessage(new ChatComponentText(quarry.getState()));
         }
         return true;
+    }
+
+    @Override
+    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
+        super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (!worldIn.isRemote && te instanceof TileEntityEnderQuarry quarry) {
+            quarry.scanSidesForTEs();
+        }
     }
 
     public static ForgeDirection getFacing(int meta) {
@@ -89,7 +102,6 @@ public class BlockEnderQuarry extends BlockContainer {
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityEnderQuarry();
     }
-
 
     // TODO: REMOVE
     public static ForgeDirection turnRight90(ForgeDirection dir) {
@@ -171,7 +183,7 @@ public class BlockEnderQuarry extends BlockContainer {
      * @return New BlockPos offset to the right
      */
     public static BlockPos offsetByRight(int x, int y, int z, ForgeDirection facing, int amount, int vertical,
-                                         boolean relative) {
+        boolean relative) {
         BlockPos pos = offsetByRight(new BlockPos(x, y, z), facing, amount, vertical);
         if (relative) {
             pos.x = x - pos.x;
@@ -222,7 +234,7 @@ public class BlockEnderQuarry extends BlockContainer {
      * @return New BlockPos offset to the left
      */
     public static BlockPos offsetByLeft(int x, int y, int z, ForgeDirection facing, int amount, int vertical,
-                                        boolean relative) {
+        boolean relative) {
         BlockPos pos = offsetByLeft(new BlockPos(x, y, z), facing, amount, vertical);
         if (relative) {
             pos.x = x - pos.x;
@@ -273,7 +285,7 @@ public class BlockEnderQuarry extends BlockContainer {
      * @return New BlockPos offset backwards
      */
     public static BlockPos offsetByBack(int x, int y, int z, ForgeDirection facing, int amount, int vertical,
-                                        boolean relative) {
+        boolean relative) {
         BlockPos pos = offsetByBack(new BlockPos(x, y, z), facing, amount, vertical);
         if (relative) {
             pos.x = x - pos.x;
@@ -323,7 +335,7 @@ public class BlockEnderQuarry extends BlockContainer {
      * @return New BlockPos offset forward
      */
     public static BlockPos offsetByForward(int x, int y, int z, ForgeDirection facing, int amount, int vertical,
-                                           boolean relative) {
+        boolean relative) {
         BlockPos pos = offsetByForward(new BlockPos(x, y, z), facing, amount, vertical);
         if (relative) {
             pos.x = x - pos.x;

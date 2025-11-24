@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
-import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -17,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
@@ -47,6 +46,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweaker
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
+import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
