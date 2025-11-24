@@ -61,8 +61,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import minetweaker.MineTweakerAPI;
 
 @Mod(
@@ -198,7 +196,6 @@ public class UtilitiesInExcess {
         proxy.serverStarting(event);
     }
 
-    @SideOnly(Side.CLIENT)
     public static CreativeTabs uieTab = new CreativeTabs(MODID) {
 
         @Override
