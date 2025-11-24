@@ -46,4 +46,8 @@ public class UIEUtils {
 
         return false;
     }
+
+    public static float lerp(float cur, float target, float speed) {
+        return cur + (target - cur) * speed;
+    }
 }

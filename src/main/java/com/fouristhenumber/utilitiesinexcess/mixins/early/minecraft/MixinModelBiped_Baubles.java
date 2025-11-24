@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,7 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.HeavenlyRingRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ModelPartRenderHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 
@@ -46,6 +49,8 @@ public class MixinModelBiped_Baubles {
         uie$doExtraRender(p_78088_1_, p_78088_7_);
     }
 
+    private float uie$heavenlyRingWing = 1;
+
     private void uie$doExtraRender(Entity p_78088_1_, float p_78088_7_) {
         ModelBiped thisObject = (ModelBiped) (Object) this;
 
@@ -57,6 +62,19 @@ public class MixinModelBiped_Baubles {
             .getItem() instanceof ItemGlove) || UIEUtils.hasBauble(player, ItemGlove.class)) {
             ModelPartRenderHelper
                 .renderBipedPart(p_78088_7_, thisObject.bipedRightArm, GloveRenderer::renderGloveAsBauble);
+        }
+
+        ItemStack ring = player.getHeldItem();
+        if (ring == null || !(ring.getItem() instanceof ItemHeavenlyRing))
+            ring = UIEUtils.getBauble(player, ItemHeavenlyRing.class);
+        if (ring != null) {
+            final ItemStack finalRing = ring;
+            uie$heavenlyRingWing = HeavenlyRingRenderer
+                .getNextAngle(uie$heavenlyRingWing, player.capabilities.isFlying);
+            ModelPartRenderHelper.renderBipedPart(
+                p_78088_7_,
+                thisObject.bipedBody,
+                () -> { HeavenlyRingRenderer.render(finalRing.getItemDamage(), uie$heavenlyRingWing); });
         }
     }
 }

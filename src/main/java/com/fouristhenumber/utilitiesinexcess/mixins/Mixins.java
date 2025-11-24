@@ -15,6 +15,9 @@ public enum Mixins implements IMixins {
     // spotless:off
 
     // make sure to leave a trailing comma
+//    TESTING_CHAT(new MixinBuilder("For modifying client side variables at runtime using chat messages")
+//        .addCommonMixins("minecraft.MixinEntityClientPlayerMP_Testing")
+//        .setPhase(Phase.EARLY)),
     CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed / Blessed Earth")
         .addCommonMixins("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
