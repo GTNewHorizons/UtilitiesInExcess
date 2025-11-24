@@ -1,3 +1,5 @@
+itemGroup.utilitiesinexcess=Utilities In Excess
+
 tile.compressed_cobblestone.0.name=Compressed Cobblestone
 tile.compressed_cobblestone.1.name=Double Compressed Cobblestone
 tile.compressed_cobblestone.2.name=Triple Compressed Cobblestone
@@ -166,19 +168,16 @@ tile.redstone_clock.name=Redstone Clock
 tile.redstone_clock.desc.1=Sends a redstone pulse every second
 tile.redstone_clock.desc.2=Supply with a redstone signal to turn off
 
-tile.woodSpike.name=Wooden Spikes
-tile.ironSpike.name=Iron Spikes
-tile.goldSpike.name=Gold Spikes
-tile.diamondSpike.name=Diamond Spikes
-tile.woodSpike.desc=Will leave enemies at the brink of death
-tile.ironSpike.desc=Enemies will drop regular loot
-tile.goldSpike.desc=Enemies will drop regular loot and experience
-tile.diamondSpike.desc=Enemies will drop "player-only" loot and experience
+tile.smart_pump.name=Smart Pump
 
-item.hungerAxe.name=Glutton's Axe
-item.hungerAxe.desc.1=Sates the bearer's hunger while held
-item.hungerAxe.desc.2=Can consume hunger to heal struck entities
-item.hungerAxe.desc.3=This effect is lethal to most undead
+tile.wood_spike.name=Wooden Spikes
+tile.iron_spike.name=Iron Spikes
+tile.gold_spike.name=Gold Spikes
+tile.diamond_spike.name=Diamond Spikes
+tile.wood_spike.desc=Will leave enemies at the brink of death
+tile.iron_spike.desc=Enemies will drop regular loot
+tile.gold_spike.desc=Enemies will drop regular loot and experience
+tile.diamond_spike.desc=Enemies will drop "player-only" loot and experience
 
 item.heavenly_ring.name=Heavenly Ring
 item.heavenly_ring.desc=Grants creative flight
@@ -195,6 +194,14 @@ item.watering_can.desc.4=automatic mode.
 
 item.fire_battery.name=Fire Battery
 item.fire_battery.desc=RF %s / %s
+
+item.glove.name=Glove
+item.glove.desc.1=+2,147,483,647 Breeze Projection
+item.glove.desc.2=Allows you to click with an empty hand without
+item.glove.desc.3=needing to clear an inventory slot while held
+item.glove.desc.4=Can also be put in a baubles slot
+item.glove.desc.5=Press %s to activate.
+item.glove.desc.6=§oP.S. Breeze Projection does nothing.
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
@@ -246,6 +253,8 @@ item.ender_lotus_seed.name=Ender-Lotus Seed
 
 tile.ender_lotus.name=Ender Lotus
 
+tile.pacifists_bench.name=Pacifist's Bench
+
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
@@ -268,6 +277,8 @@ tile.magic_wood.desc=Has the enchanting power of 5 bookshelves
 
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
+tile.cursed_earth.blessed.name=Blessed Earth
+tile.cursed_earth.blessed.desc=Spawns passive mobs aggressively
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
@@ -341,3 +352,6 @@ nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there
 nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
+
+key.categories.uie=Utilities In Excess
+key.uie.glove=Activate Glove

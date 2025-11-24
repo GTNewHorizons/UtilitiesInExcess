@@ -20,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalEndOfTime;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
@@ -27,6 +28,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRadicallyReduced
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
@@ -79,7 +81,8 @@ public enum ModBlocks {
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), BlockMarginallyMaximisedChest.ItemBlockMarginallyMaximisedChest.class, "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), BlockSignificantlyShrunkChest.ItemBlockSignificantlyShrunkChest.class, "significantly_shrunk_chest"),
     RADICALLY_REDUCED_CHEST(BlockConfig.enableRadicallyReducedChest, new BlockRadicallyReducedChest(), BlockRadicallyReducedChest.ItemBlockRadicallyReducedChest.class, "radically_reduced_chest"),
-    CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
+    CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
+    BLESSED_EARTH(CursedEarthConfig.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
@@ -122,14 +125,16 @@ public enum ModBlocks {
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), BlockUpdateDetector.ItemBlockUpdateDetector.class, "block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
-    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
-    SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "woodSpike"), BlockSpike.ItemSpike.class, "woodSpike"),
-    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "ironSpike"), BlockSpike.ItemSpike.class, "ironSpike"),
-    SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "goldSpike"), BlockSpike.ItemSpike.class, "goldSpike"),
-    SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
+    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
+    SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "wood_spike"), BlockSpike.ItemSpike.class, "wood_spike"),
+    SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "iron_spike"), BlockSpike.ItemSpike.class, "iron_spike"),
+    SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "gold_spike"), BlockSpike.ItemSpike.class, "gold_spike"),
+    SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamond_spike"), BlockSpike.ItemSpike.class, "diamond_spike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
+    PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
+    SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump")
     ; // leave trailing semicolon
     // spotless:on
 
@@ -138,6 +143,7 @@ public enum ModBlocks {
     public static void init() {
         for (ModBlocks block : VALUES) {
             if (block.isEnabled()) {
+                block.theBlock.setCreativeTab(UtilitiesInExcess.uieTab);
                 if (block.getItemBlock() != null || !block.getHasItemBlock()) {
                     GameRegistry.registerBlock(block.get(), block.getItemBlock(), block.name);
                     // This part is used if the getItemBlock() is not ItemBlock.class, so we register a custom ItemBlock
