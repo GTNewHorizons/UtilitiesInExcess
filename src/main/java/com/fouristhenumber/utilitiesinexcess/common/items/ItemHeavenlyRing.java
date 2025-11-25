@@ -1,13 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
@@ -29,12 +25,6 @@ public class ItemHeavenlyRing extends Item implements IBauble {
         setTextureName("utilitiesinexcess:heavenly_ring");
         setUnlocalizedName("heavenly_ring");
         setMaxDamage(0);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.heavenly_ring.desc"));
-        super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     @Optional.Method(modid = "Baubles")
