@@ -78,6 +78,7 @@ public enum ModItems {
     public static void init() {
         for (ModItems item : VALUES) {
             if (item.isEnabled()) {
+                item.theItem.setCreativeTab(UtilitiesInExcess.uieTab);
                 GameRegistry.registerItem(item.get(), item.name);
             } else if (ItemConfig.registerDisabledItems) GameRegistry.registerItem(item.disabledVersion, item.name);
         }
