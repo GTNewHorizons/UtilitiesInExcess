@@ -81,7 +81,8 @@ public enum ModBlocks {
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), "significantly_shrunk_chest"),
     RADICALLY_REDUCED_CHEST(BlockConfig.enableRadicallyReducedChest, new BlockRadicallyReducedChest(), "radically_reduced_chest"),
-    CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
+    CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
+    BLESSED_EARTH(CursedEarthConfig.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
@@ -124,7 +125,7 @@ public enum ModBlocks {
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), "block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
-    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), "conveyor"),
+    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "wood_spike"), BlockSpike.ItemSpike.class, "wood_spike"),
     SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "iron_spike"), BlockSpike.ItemSpike.class, "iron_spike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "gold_spike"), BlockSpike.ItemSpike.class, "gold_spike"),
@@ -142,6 +143,7 @@ public enum ModBlocks {
     public static void init() {
         for (ModBlocks block : VALUES) {
             if (block.isEnabled()) {
+                block.theBlock.setCreativeTab(UtilitiesInExcess.uieTab);
                 if (block.getItemBlock() != null || !block.getHasItemBlock()) {
                     GameRegistry.registerBlock(block.get(), block.getItemBlock(), block.name);
                     // This part is used if the getItemBlock() is not ItemBlock.class, so we register a custom ItemBlock

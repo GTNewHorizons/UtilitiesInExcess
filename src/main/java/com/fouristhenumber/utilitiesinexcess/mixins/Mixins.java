@@ -15,10 +15,10 @@ public enum Mixins implements IMixins {
     // spotless:off
 
     // make sure to leave a trailing comma
-    CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed Earth")
+    CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed / Blessed Earth")
         .addCommonMixins("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
-        .setApplyIf(() -> CursedEarthConfig.enableCursedEarth)
+        .setApplyIf(() -> CursedEarthConfig.enableCursedEarth || CursedEarthConfig.enableBlessedEarth)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
     MAGIC_WOOD_PARTICLES(new MixinBuilder("Adds particles for Magic Wood when connected to an Enchantment Table")
         .addClientMixins("minecraft.MixinBlockEnchantmentTable_MagicWood")

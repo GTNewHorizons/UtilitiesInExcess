@@ -11,6 +11,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 
 // TODO: Add new features to the reversing hoe
@@ -33,6 +36,12 @@ public class ItemReversingHoe extends ItemHoe {
             return true;
         } else if (block == Blocks.cobblestone) {
             world.setBlock(x, y, z, Blocks.stone);
+            return true;
+        } else if (block == ModBlocks.CURSED_EARTH.get() && CursedEarthConfig.enableBlessedEarth) {
+            world.setBlock(x, y, z, ModBlocks.BLESSED_EARTH.get());
+            return true;
+        } else if (block == ModBlocks.BLESSED_EARTH.get() && CursedEarthConfig.enableCursedEarth) {
+            world.setBlock(x, y, z, ModBlocks.CURSED_EARTH.get());
             return true;
         } else if (block == Blocks.wheat) {
             int meta = world.getBlockMetadata(x, y, z);

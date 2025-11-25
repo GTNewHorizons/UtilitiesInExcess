@@ -1,3 +1,5 @@
+itemGroup.utilitiesinexcess=Utilities In Excess
+
 tile.compressed_cobblestone.0.name=Compressed Cobblestone
 tile.compressed_cobblestone.1.name=Double Compressed Cobblestone
 tile.compressed_cobblestone.2.name=Triple Compressed Cobblestone
@@ -331,6 +333,8 @@ nei.infopage.uie.magic_wood.1=The enchantments woven into this block give it the
 
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
+tile.cursed_earth.blessed.name=Blessed Earth
+tile.cursed_earth.blessed.desc=Spawns passive mobs aggressively
 
 nei.infopage.uie.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's Awakening Ritual. It rapidly spawns monsters, spreads in darkness, and burns away in bright light. Monster Spawners are supercharged when Cursed Earth is below them, and they will continue to operate even when a player is not nearby.
 
