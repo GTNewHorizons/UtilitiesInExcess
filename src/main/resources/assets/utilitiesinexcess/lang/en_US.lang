@@ -128,6 +128,7 @@ chat.inversion_ritual.moon= - Can see the moon: %s
 chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
 
 chat.pseudo_inversion_ritual.header=Ritual Of Pseudo-Inversion:
+chat.pseudo_inversion_ritual.difficultyPeaceful= - Difficulty is incorrect: World is too peaceful
 chat.pseudo_inversion_ritual.correctDimension= - Dimension is correct: ✓ 
 chat.pseudo_inversion_ritual.incorrectDimensionOverworld= - Dimension is incorrect: Too much natural earth 
 chat.pseudo_inversion_ritual.incorrectDimensionNether= - Dimension is incorrect: Too hot 

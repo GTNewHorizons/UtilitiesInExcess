@@ -27,6 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -310,6 +311,7 @@ public class ItemInversionSigilActive extends Item {
         if (world.isRemote) return true;
 
         boolean dimensionOk = (world.provider.dimensionId == 1);
+        boolean difficultyOk = world.difficultySetting != EnumDifficulty.PEACEFUL;
         boolean spiralOk = checkSpiral(world, x, y, z);
         boolean chestNorthContentsOk = checkChestInDirection(ForgeDirection.NORTH, x, y, z, world);
         boolean chestEastContentsOk = checkChestInDirection(ForgeDirection.EAST, x, y, z, world);
@@ -317,6 +319,11 @@ public class ItemInversionSigilActive extends Item {
         boolean chestWestContentsOk = checkChestInDirection(ForgeDirection.WEST, x, y, z, world);
 
         player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.header"));
+
+        if (!difficultyOk) {
+            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.difficultyPeaceful"));
+        }
+
         if (dimensionOk) {
             player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.correctDimension"));
         } else if (world.provider.dimensionId == 0) {
@@ -328,6 +335,7 @@ public class ItemInversionSigilActive extends Item {
         } else {
             player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.incorrectDimensionOther"));
         }
+
         player.addChatMessage(
             new ChatComponentTranslation(
                 "chat.pseudo_inversion_ritual.chestNorthContents",
@@ -346,7 +354,9 @@ public class ItemInversionSigilActive extends Item {
                 chestWestContentsOk ? "✓" : "✗"));
         player
             .addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.spiral", spiralOk ? "✓" : "✗"));
-        if (dimensionOk && chestNorthContentsOk
+
+        if (dimensionOk && difficultyOk
+            && chestNorthContentsOk
             && chestEastContentsOk
             && chestSouthContentsOk
             && chestWestContentsOk
@@ -503,6 +513,7 @@ public class ItemInversionSigilActive extends Item {
             }
 
             if (source.siege) return; // Cannot start a second siege while in a siege.
+            if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
             if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
 
             int radius = BEACON_SEARCH_RADIUS;
