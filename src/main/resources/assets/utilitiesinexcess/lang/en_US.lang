@@ -210,7 +210,7 @@ item.glove.desc.1=Press %s to activate.
 item.glove.desc.2=+2,147,483,647 Breeze Projection
 item.glove.desc.3=§oP.S. Breeze Projection does nothing.
 
-nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot.
+nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot. The colors of wool used to craft it will determine the top and bottom color of the item and its model.
 nei.infopage.uie.glove.2=The glove can also be worn in a baubles slot. While equipped in this way, you can hold the "Activate Glove" keybind to be able to click with an empty hand at any time. 
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
