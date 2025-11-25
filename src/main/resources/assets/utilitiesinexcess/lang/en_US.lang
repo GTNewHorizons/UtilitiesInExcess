@@ -146,10 +146,6 @@ chat.pseudo_inversion_ritual.twoquarters=You're halfway there. Can you do it? %s
 chat.pseudo_inversion_ritual.threequarters=You're almost done, don't let up now. %s mobs killed.
 chat.pseudo_inversion_ritual.victory=You've proven yourself, and your sigil has been refreshed anew as a reward. Cherish it.
 
-item.gluttons_axe.name=Glutton's Axe
-item.gluttons_axe.desc.1=Sates the bearer's hunger while held
-item.gluttons_axe.desc.2=Can consume hunger to heal struck entities
-item.gluttons_axe.desc.3=This effect is lethal to most undead
 nei.infopage.uie.inversion_sigil.1=The Inversion Sigil is a powerful item that may be found in various structures, such as dungeons. It may also be dropped by the Wither. It is used in the creation of Inverted Ingots, but it must first be awakened by a dark ritual.
 nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantment Table while sneaking will give some hints on how to complete the ritual, or read on for precise instructions.
 nei.infopage.uie.inversion_sigil.3=Place an Enchantment Table outdoors on grass with a clear view of the sky, surround it with a ring of redstone dust, and wait until midnight. Ensure the Enchantment Table is in complete darkness, and sacrifice a living creature upon the table.
