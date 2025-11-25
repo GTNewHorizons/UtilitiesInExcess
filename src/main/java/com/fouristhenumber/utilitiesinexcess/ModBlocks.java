@@ -6,35 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorativeGlass;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPacifistsBench;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalEndOfTime;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRadicallyReducedChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSmartPump;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
@@ -134,7 +106,8 @@ public enum ModBlocks {
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
-    SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump")
+    SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
+    TRADING_POST(BlockConfig.enableSmartPump, new BlockTradingPost(), "trading_post") // TODO add tp config
     ; // leave trailing semicolon
     // spotless:on
 

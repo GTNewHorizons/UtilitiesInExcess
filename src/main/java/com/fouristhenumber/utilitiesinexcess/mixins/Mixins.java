@@ -45,7 +45,8 @@ public enum Mixins implements IMixins {
             "minecraft.accessors.AccessorEntityLivingBase",
             "minecraft.accessors.AccessorPotionEffect",
             "minecraft.accessors.AccessorItemRenderer",
-            "minecraft.accessors.AccessorClientMinecraft")
+            "minecraft.accessors.AccessorClientMinecraft",
+            "minecraft.accessors.AccessorMerchantRecipe")
     )
     ; // leave trailing semicolon
     // spotless:on
