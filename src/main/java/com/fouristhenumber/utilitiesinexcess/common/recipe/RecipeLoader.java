@@ -830,6 +830,18 @@ public class RecipeLoader {
                     ModItems.INVERTED_INGOT.newItemStack()));
         }
 
+        addShapedRecipe(
+            ModItems.INVERTED_INGOT.newItemStack(1, 1),
+            "i",
+            "s",
+            "d",
+            'i',
+            Items.iron_ingot,
+            's',
+            ModItems.PSEUDO_INVERSION_SIGIL,
+            'd',
+            Items.diamond);
+
         // Inverted Nugget
         addShapedRecipe(
             ModItems.INVERTED_NUGGET,
