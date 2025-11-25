@@ -356,6 +356,17 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
+    private boolean isValidRitualBeacon(World world, int beaconX, int beaconY, int beaconZ) {
+        boolean dimensionOk = (world.provider.dimensionId == 1);
+
+        return dimensionOk && world.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon
+            && checkSpiral(world, beaconX, beaconY, beaconZ)
+            && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world);
+    }
+
     public class ItemInversionSigilActiveEvents {
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -491,48 +502,31 @@ public class ItemInversionSigilActive extends Item {
                 return;
             }
 
-            if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
             if (source.siege) return; // Cannot start a second siege while in a siege.
+            if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
 
             int radius = BEACON_SEARCH_RADIUS;
             int mobX = (int) Math.floor(event.entityLiving.posX);
             int mobY = (int) Math.floor(event.entityLiving.posY);
             int mobZ = (int) Math.floor(event.entityLiving.posZ);
 
-            int beaconX = 0, beaconY = 0, beaconZ = 0;
-            boolean found = false;
+            for (int dx = -radius; dx <= radius; dx++) {
+                for (int dy = -2; dy <= 2; dy++) {
+                    for (int dz = -radius; dz <= radius; dz++) {
+                        int beaconX = mobX + dx;
+                        int beaconY = mobY + dy;
+                        int beaconZ = mobZ + dz;
 
-            for (int dx = -radius; dx <= radius && !found; dx++) {
-                for (int dy = -2; dy <= 2 && !found; dy++) {
-                    for (int dz = -radius; dz <= radius && !found; dz++) {
-                        int bx = mobX + dx;
-                        int by = mobY + dy;
-                        int bz = mobZ + dz;
-                        if (world.getBlock(bx, by, bz) == Blocks.beacon) {
-                            beaconX = bx;
-                            beaconY = by;
-                            beaconZ = bz;
-                            found = true;
+                        if (isValidRitualBeacon(world, beaconX, beaconY, beaconZ)) {
+                            // Ritual has now succeeded
+                            player
+                                .addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
+                            startSiege(world, beaconX, beaconY, beaconZ, player);
+                            return;
                         }
                     }
                 }
             }
-
-            if (!found) return;
-
-            boolean dimensionOk = (world.provider.dimensionId == 1);
-            boolean spiralOk = checkSpiral(world, beaconX, beaconY, beaconZ);
-            if (!(dimensionOk && spiralOk
-                && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
-                && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
-                && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
-                && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world))) {
-                return;
-            }
-
-            // Ritual has now succeeded
-            player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.complete"));
-            startSiege(world, beaconX, beaconY, beaconZ, player);
         }
     }
 
