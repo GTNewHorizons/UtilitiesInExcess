@@ -451,6 +451,10 @@ nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension t
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
+tile.trading_post.name=Trading Post
+tile.trading_post.villager_count=Found %,d Villagers
+tile.trading_post.search_hint=Search...
+
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
 
