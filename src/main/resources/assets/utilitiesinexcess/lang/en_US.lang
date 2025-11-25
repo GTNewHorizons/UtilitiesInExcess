@@ -183,10 +183,10 @@ tile.iron_spike.name=Iron Spikes
 tile.gold_spike.name=Gold Spikes
 tile.diamond_spike.name=Diamond Spikes
 
-nei.infopage.uie.woodSpike.1=These spikes will damage anything that walks on them, but will not kill them, instead leaving them at the minimum health possible.
-nei.infopage.uie.ironSpike.1=Iron spikes will kill enemies that walk on them, dropping only their non-"player-only" loot.
-nei.infopage.uie.goldSpike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
-nei.infopage.uie.diamondSpike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
+nei.infopage.uie.wood_spike.1=These spikes will damage anything that walks on them, but will not kill them, instead leaving them at the minimum health possible.
+nei.infopage.uie.iron_spike.1=Iron spikes will kill enemies that walk on them, dropping only their non-"player-only" loot.
+nei.infopage.uie.gold_spike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
+nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
 item.heavenly_ring.name=Heavenly Ring
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.

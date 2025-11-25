@@ -34,7 +34,7 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
         sendInfoPage(
-            "<utilitiesinexcess:architectsWand>,<utilitiesinexcess:superArchitectsWand>",
+            "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
             "nei.infopage.uie.architects_wand.1");
 
         sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
@@ -46,10 +46,10 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:redstone_clock>", "nei.infopage.uie.redstone_clock.1");
 
-        sendInfoPage("<utilitiesinexcess:woodSpike>", "nei.infopage.uie.woodSpike.1");
-        sendInfoPage("<utilitiesinexcess:ironSpike>", "nei.infopage.uie.ironSpike.1");
-        sendInfoPage("<utilitiesinexcess:goldSpike>", "nei.infopage.uie.goldSpike.1");
-        sendInfoPage("<utilitiesinexcess:diamondSpike>", "nei.infopage.uie.diamondSpike.1");
+        sendInfoPage("<utilitiesinexcess:wood_spike>", "nei.infopage.uie.wood_spike.1");
+        sendInfoPage("<utilitiesinexcess:iron_spike>", "nei.infopage.uie.iron_spike.1");
+        sendInfoPage("<utilitiesinexcess:gold_spike>", "nei.infopage.uie.gold_spike.1");
+        sendInfoPage("<utilitiesinexcess:diamond_spike>", "nei.infopage.uie.diamond_spike.1");
 
         sendInfoPage("<utilitiesinexcess:fire_battery>", "nei.infopage.uie.fire_battery.1");
 

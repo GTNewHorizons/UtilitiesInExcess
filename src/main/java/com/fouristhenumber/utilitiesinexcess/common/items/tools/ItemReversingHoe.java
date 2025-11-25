@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 
 // TODO: Add new features to the reversing hoe
