@@ -1,5 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -194,4 +197,20 @@ public class UtilitiesInExcess {
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
     }
+
+    public static CreativeTabs uieTab = new CreativeTabs(MODID) {
+
+        @Override
+        public Item getTabIconItem() {
+            return this.getIconItemStack()
+                .getItem();
+        }
+
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GLUTTONS_AXE.get());
+
+        @Override
+        public ItemStack getIconItemStack() {
+            return ICON_ITEM;
+        }
+    };
 }

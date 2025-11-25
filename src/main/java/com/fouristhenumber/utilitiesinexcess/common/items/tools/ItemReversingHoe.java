@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemHoe;
@@ -12,7 +11,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 
 // TODO: Add new features to the reversing hoe
@@ -36,6 +36,12 @@ public class ItemReversingHoe extends ItemHoe {
         } else if (block == Blocks.cobblestone) {
             world.setBlock(x, y, z, Blocks.stone);
             return true;
+        } else if (block == ModBlocks.CURSED_EARTH.get() && CursedEarthConfig.enableBlessedEarth) {
+            world.setBlock(x, y, z, ModBlocks.BLESSED_EARTH.get());
+            return true;
+        } else if (block == ModBlocks.BLESSED_EARTH.get() && CursedEarthConfig.enableCursedEarth) {
+            world.setBlock(x, y, z, ModBlocks.CURSED_EARTH.get());
+            return true;
         } else if (block == Blocks.wheat) {
             int meta = world.getBlockMetadata(x, y, z);
             if (meta > 0) {
@@ -50,12 +56,8 @@ public class ItemReversingHoe extends ItemHoe {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.1"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.reversing_hoe.desc.2"));
-        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
-
-        super.addInformation(stack, player, tooltip, p_77624_4_);
+        if (ReversingHoeConfig.unbreakable)
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
