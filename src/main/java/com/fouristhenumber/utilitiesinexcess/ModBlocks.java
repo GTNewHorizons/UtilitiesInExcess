@@ -149,7 +149,7 @@ public enum ModBlocks {
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
-    TRADING_POST(BlockConfig.enableSmartPump, new BlockTradingPost(), "trading_post") // TODO add tp config
+    TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post")
     ; // leave trailing semicolon
     // spotless:on
 

@@ -454,6 +454,10 @@ nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there
 tile.trading_post.name=Trading Post
 tile.trading_post.villager_count=Found %,d Villagers
 tile.trading_post.search_hint=Search...
+tile.trading_post.trade_tooltip.0=§6Left-Click§7 to Trade
+tile.trading_post.trade_tooltip.1=§6Shift + Left-Click§7 to Trade Stack
+tile.trading_post.trade_tooltip.2=§6Alt + Left-Click§7 to Favorite Trade
+tile.trading_post.trade_tooltip.3=§6Right-Click§7 to Highlight Villager
 
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove

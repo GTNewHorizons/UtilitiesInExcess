@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.village.MerchantRecipe;
 
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.Color;
@@ -17,6 +19,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 import com.fouristhenumber.utilitiesinexcess.utils.mui.TooltipItemDisplayWidget;
 
@@ -87,6 +90,14 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         this.child(wholeRow);
     }
 
+    public static void buildToolTip(RichTooltip tooltip) {
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.0"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.1"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.2"));
+        if (Mods.FindIt.isLoaded())
+            tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.3"));
+    }
+
     @Override
     public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
         super.draw(context, widgetTheme);
@@ -104,8 +115,9 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         if (!alt && mouseButton == 0) {
             columnSyncHandler.executeTrade(index, shift);
         } else if (alt && mouseButton == 0) {
-            columnSyncHandler.addFavorite(index);
             isFavorite = !isFavorite;
+        } else if (mouseButton == 1 && Mods.FindIt.isLoaded()) {
+            columnSyncHandler.highLightVillager();
         }
 
         return Interactable.super.onMousePressed(mouseButton);
