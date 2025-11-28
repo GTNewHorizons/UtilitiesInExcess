@@ -8,6 +8,9 @@ import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.ObjectValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
@@ -26,6 +29,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     public MerchantRecipe recipe;
     private int index;
     private VillagerSyncHandler columnSyncHandler;
+    private boolean isFavorite = false;
     private boolean isDummy = false;
 
     private final TooltipItemDisplayWidget itemToBuy;
@@ -38,11 +42,6 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
 
         background(GuiTextures.BUTTON_CLEAN);
         this.coverChildren();
-        // this.child(
-        // IKey.str("*")
-        // .asWidget()
-        // .margin(0, 0, 0, 0)
-        // .setEnabledIf(w -> getRecipe() != null && getRecipe().getFavorite()));
 
         ItemStack item;
         if (_recipe != null) {
@@ -89,17 +88,25 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     }
 
     @Override
-    public @NotNull Result onMousePressed(int mouseButton) {
-        if (mouseButton == 0 && Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-            // getRecipe().setFavorite(!getRecipe().getFavorite());
-            // this.getHandler()
-            // .syncToServer(0, buffer -> { buffer.writeBoolean(getRecipe().getFavorite()); });
-            return Result.SUCCESS;
+    public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+        super.draw(context, widgetTheme);
+        if (isFavorite) {
+            Color.setGlColorOpaque(Color.YELLOW.main);
+            GuiTextures.FAVORITE.draw(0, 0, 6, 6);
         }
+    }
 
+    @Override
+    public @NotNull Result onMousePressed(int mouseButton) {
         boolean shift = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-        columnSyncHandler.tradeClick(index, shift);
-        columnSyncHandler.executeTrade(index, shift);
+        boolean alt = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+        columnSyncHandler.tradeClick(mouseButton, index, shift, alt);
+        if (!alt && mouseButton == 0) {
+            columnSyncHandler.executeTrade(index, shift);
+        } else if (alt && mouseButton == 0) {
+            columnSyncHandler.addFavorite(index);
+            isFavorite = !isFavorite;
+        }
 
         return Interactable.super.onMousePressed(mouseButton);
     }
@@ -125,6 +132,15 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     public TradeWidget index(int index) {
         this.index = index;
         return this;
+    }
+
+    public TradeWidget favorite(boolean favorite) {
+        this.isFavorite = favorite;
+        return this;
+    }
+
+    public boolean isFavorite() {
+        return this.isFavorite;
     }
 
     public TradeWidget dummy() {

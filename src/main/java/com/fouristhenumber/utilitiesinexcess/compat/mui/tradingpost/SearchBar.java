@@ -58,6 +58,7 @@ public class SearchBar extends TextFieldWidget {
 
     public void doSearch(String search) {
         for (IWidget villagerColumn : villagerParent.getChildren()) {
+            int foundCount = 0;
             for (int i = 0; i < villagerColumn.getChildren()
                 .size(); i++) {
                 VillagerWidget villagerWidget = (VillagerWidget) villagerColumn.getChildren()
@@ -65,7 +66,10 @@ public class SearchBar extends TextFieldWidget {
 
                 boolean isEnabled = villagerWidget.matches(search.toLowerCase());
                 villagerWidget.setEnabled(isEnabled);
-                if (isEnabled) ((VillagerColumn) villagerColumn).moveChild(i, 0);
+                if (isEnabled) {
+                    ((VillagerColumn) villagerColumn).moveChild(i, foundCount);
+                    foundCount++;
+                }
                 villagerWidget.scheduleResize();
             }
             villagerColumn.scheduleResize();

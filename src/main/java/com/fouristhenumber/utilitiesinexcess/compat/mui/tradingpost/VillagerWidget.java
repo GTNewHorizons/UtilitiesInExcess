@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost;
 
 import java.util.List;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
@@ -17,14 +18,26 @@ public class VillagerWidget extends Column {
 
     private final PosGuiData data;
     private final PanelSyncManager manager;
+    private final VillagerSyncHandler villagerSyncHandler;
+    private final VillagerColumn villagerColumn;
 
-    public VillagerWidget(PosGuiData data, PanelSyncManager manager, IMerchant merchant) {
+    public VillagerWidget(PosGuiData data, PanelSyncManager manager, IMerchant merchant,
+        VillagerColumn villagerColumn) {
         super();
         this.data = data;
         this.manager = manager;
 
-        if (merchant != null) setSyncHandler(
-            new VillagerSyncHandler(this, data, new MerchantRecipeListWrapper(merchant, data.getPlayer())));
+        if (merchant != null) {
+            villagerSyncHandler = new VillagerSyncHandler(
+                this,
+                data,
+                new MerchantRecipeListWrapper(merchant, data.getPlayer()));
+            setSyncHandler(villagerSyncHandler);
+        } else {
+            villagerSyncHandler = null;
+        }
+
+        this.villagerColumn = villagerColumn;
     }
 
     @Override
@@ -42,13 +55,21 @@ public class VillagerWidget extends Column {
             if (i < children.size()) {
                 ((TradeWidget) children.get(i)).setRecipe(recipe)
                     .index(i)
+                    .favorite(recipeList.isFavorite(i))
                     .columnSyncHandler((VillagerSyncHandler) this.getSyncHandler());
             } else {
                 child(
                     new TradeWidget(recipe).index(i)
+                        .favorite(recipeList.isFavorite(i))
                         .columnSyncHandler((VillagerSyncHandler) this.getSyncHandler()));
             }
         }
+
+        if (isFavorite()) {
+            VillagerColumn villagerColumn = this.villagerColumn;
+            villagerColumn.moveChild(this, 0);
+        }
+
         scheduleResize();
     }
 
@@ -56,7 +77,25 @@ public class VillagerWidget extends Column {
         for (IWidget widget : getChildren()) {
             if (widget instanceof TradeWidget && ((TradeWidget) widget).matches(search)) return true;
         }
+        if (villagerSyncHandler != null && villagerSyncHandler.getRecipeList() != null
+            && villagerSyncHandler.getRecipeList()
+                .getMerchant() != null
+            && villagerSyncHandler.getRecipeList()
+                .getMerchant() instanceof EntityLiving
+            && ((EntityLiving) villagerSyncHandler.getRecipeList()
+                .getMerchant()).getCustomNameTag()
+                    .toLowerCase()
+                    .contains(search))
+            return true;
 
+        return false;
+    }
+
+    public boolean isFavorite() {
+        for (IWidget widget : getChildren()) {
+            TradeWidget tradeWidget = (TradeWidget) widget;
+            if (tradeWidget.isFavorite()) return true;
+        }
         return false;
     }
 }

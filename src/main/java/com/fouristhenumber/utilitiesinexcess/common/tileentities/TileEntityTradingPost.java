@@ -14,18 +14,19 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.TradeWidget;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
 
+    // Trading post UI heirarchy:
+    // panel > mainColumn > (topRow > (villagercount - SearchBar)) - (TradeList > tradeListRow >
+    // 3x(VillagerColumn > VillagerWidget > TradeWidget))
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager guiSyncManager, UISettings settings) {
         List<IMerchant> lm = getMerchants();
@@ -50,13 +51,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .coverChildren()
                 .childPadding(2);
 
-            VillagerWidget villagerTrades2 = new VillagerWidget(guiData, guiSyncManager, null);
-            villagerTrades2.child(
-                new TradeWidget(null).dummy()
-                    .height(1))
-                .height(1)
-                .setEnabled(false);
-            columnOfVillagers.child(villagerTrades2);
+            // In MUI2 latest I had issues with the dynamic sizing of the panel
+            // So these dummy trades were required to always keep it the same size
+            // VillagerWidget villagerTrades2 = new VillagerWidget(guiData, guiSyncManager, null, columnOfVillagers);
+            // villagerTrades2.child(
+            // new TradeWidget(null).dummy()
+            // .height(1))
+            // .height(1)
+            // .setEnabled(false);
+            // columnOfVillagers.child(villagerTrades2);
 
             tradeListRow.child(columnOfVillagers);
         }
@@ -64,10 +67,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         List<IMerchant> merchants = getMerchants();
         int i = 0;
         for (IMerchant merchant : merchants) {
-            VillagerWidget villagerTrades = new VillagerWidget(guiData, guiSyncManager, merchant);
+            VillagerWidget villagerTrades = new VillagerWidget(
+                guiData,
+                guiSyncManager,
+                merchant,
+                ((VillagerColumn) tradeListRow.getChildren()
+                    .get(i)));
             villagerTrades.coverChildren();
-            ((Column) tradeListRow.getChildren()
-                .get(i)).child(0, villagerTrades);
+            ((VillagerColumn) tradeListRow.getChildren()
+                .get(i)).child(villagerTrades);
             i = i < 2 ? i + 1 : 0;
         }
         tradeList.child(tradeListRow);
@@ -94,11 +102,10 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         mainColumn.child(
             tradeList.margin(5, 5)
                 .marginRight(10));
-        ParentWidget bottomRow = new ParentWidget();
+        Row bottomRow = new Row();
         bottomRow.coverChildrenHeight()
             .alignX(1)
             .width(174);
-        // bottomRow.alignX(1).size(200);
 
         var inventory = SlotGroupWidget.playerInventory(0, false);
         bottomRow.child(

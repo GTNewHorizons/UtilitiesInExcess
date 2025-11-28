@@ -25,7 +25,6 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements NEIIn
             ItemStack stack = getItemStack();
             buildTooltip(stack, tooltip);
         });
-        tooltip().markDirty();
         background(IDrawable.EMPTY);
     }
 
