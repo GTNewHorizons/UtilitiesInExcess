@@ -52,13 +52,21 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         }
 
         itemToBuy = new TooltipItemDisplayWidget();
-        itemToBuy.paddingRight(0).displayAmount(true).item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToBuy() : item, i -> {}));
+        itemToBuy.paddingRight(0)
+            .displayAmount(true)
+            .item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToBuy() : item, i -> {}));
 
         itemToBuy2 = new TooltipItemDisplayWidget();
-        itemToBuy2.paddingLeft(0).displayAmount(true).item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getSecondItemToBuy() : item, i -> {}));
+        itemToBuy2.paddingLeft(0)
+            .displayAmount(true)
+            .item(
+                new ObjectValue.Dynamic<>(
+                    () -> this.recipe != null ? this.recipe.getSecondItemToBuy() : item,
+                    i -> {}));
 
         itemToSell = new TooltipItemDisplayWidget();
-        itemToSell.displayAmount(true).item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToSell() : item, i -> {}));
+        itemToSell.displayAmount(true)
+            .item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToSell() : item, i -> {}));
 
         Flow inputItems = new Row().childPadding(1)
             .coverChildren()

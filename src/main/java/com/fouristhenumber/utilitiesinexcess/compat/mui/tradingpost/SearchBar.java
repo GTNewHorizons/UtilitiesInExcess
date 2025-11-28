@@ -1,16 +1,16 @@
 package com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
-import net.minecraft.util.StatCollector;
 
 public class SearchBar extends TextFieldWidget {
 
@@ -20,7 +20,8 @@ public class SearchBar extends TextFieldWidget {
         .location(UtilitiesInExcess.MODID, "gui/vanilla_search")
         .imageSize(18, 18)
         .adaptable(1)
-        .name("vanilla_search").canApplyTheme()
+        .name("vanilla_search")
+        .canApplyTheme()
         .build();
 
     public SearchBar() {
@@ -43,6 +44,7 @@ public class SearchBar extends TextFieldWidget {
     }
 
     private String prevText = "";
+
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -56,8 +58,10 @@ public class SearchBar extends TextFieldWidget {
 
     public void doSearch(String search) {
         for (IWidget villagerColumn : villagerParent.getChildren()) {
-            for (int i = 0; i < villagerColumn.getChildren().size(); i++) {
-                VillagerWidget villagerWidget = (VillagerWidget) villagerColumn.getChildren().get(i);
+            for (int i = 0; i < villagerColumn.getChildren()
+                .size(); i++) {
+                VillagerWidget villagerWidget = (VillagerWidget) villagerColumn.getChildren()
+                    .get(i);
 
                 boolean isEnabled = villagerWidget.matches(search.toLowerCase());
                 villagerWidget.setEnabled(isEnabled);
@@ -66,7 +70,7 @@ public class SearchBar extends TextFieldWidget {
             }
             villagerColumn.scheduleResize();
         }
-        ((TileEntityTradingPost.TradeList) villagerParent.getParent()).getScrollData().scrollTo(
-            ((TileEntityTradingPost.TradeList) villagerParent.getParent()).getScrollArea(), 0);
+        ((TileEntityTradingPost.TradeList) villagerParent.getParent()).getScrollData()
+            .scrollTo(((TileEntityTradingPost.TradeList) villagerParent.getParent()).getScrollArea(), 0);
     }
 }

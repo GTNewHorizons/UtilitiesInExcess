@@ -53,7 +53,7 @@ public class VillagerWidget extends Column {
     }
 
     public boolean matches(String search) {
-        for  (IWidget widget : getChildren()) {
+        for (IWidget widget : getChildren()) {
             if (widget instanceof TradeWidget && ((TradeWidget) widget).matches(search)) return true;
         }
 

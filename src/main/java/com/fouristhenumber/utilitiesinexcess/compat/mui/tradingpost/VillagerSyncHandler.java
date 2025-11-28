@@ -76,7 +76,8 @@ public class VillagerSyncHandler extends SyncHandler {
 
     public boolean executeTrade(int index, boolean shift) {
         EntityPlayer player = data.getPlayer();
-        MerchantRecipe recipe = (MerchantRecipe) recipeList.getRecipeList().get(index);
+        MerchantRecipe recipe = (MerchantRecipe) recipeList.getRecipeList()
+            .get(index);
         ItemStack price1 = recipe.getItemToBuy();
         ItemStack price2 = recipe.getSecondItemToBuy();
         ItemStack result = recipe.getItemToSell();
@@ -91,17 +92,18 @@ public class VillagerSyncHandler extends SyncHandler {
             if (ItemStack.areItemStackTagsEqual(itemStack, price1) && itemStack.isItemEqual(price1)) {
                 count1 += itemStack.stackSize;
                 price1slots.add(i);
-            } else if (ItemStack.areItemStackTagsEqual(itemStack, price2) && price2 != null && itemStack.isItemEqual(price2)) {
-                count2 += itemStack.stackSize;
-                price2slots.add(i);
-            }
+            } else if (ItemStack.areItemStackTagsEqual(itemStack, price2) && price2 != null
+                && itemStack.isItemEqual(price2)) {
+                    count2 += itemStack.stackSize;
+                    price2slots.add(i);
+                }
         }
 
         int a = count1 / price1.stackSize;
         int b = price2 != null ? count2 / price2.stackSize : Integer.MAX_VALUE;
-        int c = result.getItem().getItemStackLimit(result) / result.stackSize;
-        int d = ((AccessorMerchantRecipe) recipe).getMaxUses()
-            - (((AccessorMerchantRecipe) recipe).getCurrentUses());
+        int c = result.getItem()
+            .getItemStackLimit(result) / result.stackSize;
+        int d = ((AccessorMerchantRecipe) recipe).getMaxUses() - (((AccessorMerchantRecipe) recipe).getCurrentUses());
         int count = Math.min(Math.min(Math.min(a, b), shift ? c : 1), d);
 
         if (count < 1) return false;
@@ -150,6 +152,5 @@ public class VillagerSyncHandler extends SyncHandler {
 
         return true;
     }
-
 
 }
