@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
@@ -13,12 +15,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.ChunkPosition;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.fouristhenumber.utilitiesinexcess.common.wrappers.MerchantRecipeListWrapper;
+import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
+import com.gtnh.findit.util.ClientFinderHelperUtils;
 
 public class VillagerSyncHandler extends SyncHandler {
 
@@ -62,8 +67,12 @@ public class VillagerSyncHandler extends SyncHandler {
         });
     }
 
+    // public static long lastRecieved = 0;
+
     @Override
     public void readOnClient(int id, PacketBuffer buf) throws IOException {
+        // lastRecieved = System.currentTimeMillis();
+
         if (id == 0) {
             NBTTagCompound recipeTag = buf.readNBTTagCompoundFromBuffer();
             try {
@@ -269,6 +278,22 @@ public class VillagerSyncHandler extends SyncHandler {
 
     public MerchantRecipeListWrapper getRecipeList() {
         return recipeList;
+    }
+
+    public void highLightVillager() {
+        IMerchant merchant = recipeList.getMerchant();
+        if (merchant == null || (merchant instanceof EntityLiving && !((EntityLiving) merchant).isEntityAlive()))
+            return;
+        Entity villager = (Entity) merchant;
+
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        player.closeScreen();
+        ArrayList<Integer> ids = new ArrayList<>();
+        ids.add(villager.getEntityId());
+        FindItHelper.entityHighlighter.highlightEntities(ids, System.currentTimeMillis() + 10000);
+        ArrayList<ChunkPosition> positions = new ArrayList<>();
+        positions.add(new ChunkPosition((int) villager.posX, (int) villager.posY, (int) villager.posZ));
+        ClientFinderHelperUtils.rotateViewHelper((EntityClientPlayerMP) player, positions);
     }
 
 }

@@ -10,15 +10,21 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.TradeWidget;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
 
@@ -85,9 +91,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             .coverChildrenWidth()
             .height(10);
         topRow.child(
+            new HelpWidget().top(2)
+                .left(1)
+                .size(12)
+                .paddingRight(2)
+                .tooltipBuilder(TradeWidget::buildToolTip));
+        topRow.child(
             IKey.str(StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
                 .asWidget()
-                .left(5)
+                .left(15)
                 .top(5));
         panel.child(
             new SearchBar().villagerParent(tradeListRow)
@@ -129,5 +141,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static class TradeList extends ListWidget<Row, TradeList> {
 
+    }
+
+    public static class HelpWidget extends Widget<HelpWidget> {
+
+        @Override
+        public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+            super.draw(context, widgetTheme);
+            Color.setGlColorOpaque(Color.BLUE.main);
+            GuiTextures.HELP.draw(0, 0, 12, 12);
+        }
     }
 }
