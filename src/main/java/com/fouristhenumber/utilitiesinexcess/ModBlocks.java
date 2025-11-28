@@ -13,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderMarker;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
@@ -107,6 +108,7 @@ public enum ModBlocks {
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     ENDER_QUARRY(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarry(), "ender_quarry"),
+    ENDER_MARKER(EnderQuarryConfig.enableEnderQuarry, new BlockEnderMarker(), "ender_marker"),
     ; // leave trailing semicolon
     // spotless:on
 

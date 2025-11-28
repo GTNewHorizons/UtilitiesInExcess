@@ -6,8 +6,11 @@ import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.Spi
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot.INVERTED_INGOT;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,6 +41,7 @@ import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.Ac
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 public class ForgeEventHandler {
 
@@ -148,6 +152,20 @@ public class ForgeEventHandler {
             }
             player.inventoryContainer.detectAndSendChanges();
             event.drops.clear();
+        }
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (event.world.isRemote) return;
+
+        // Clear the entire dimension registry
+        ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry =
+            TileEntityEnderMarker.registeredMarkers.get(event.world.provider.dimensionId);
+
+        if (dimRegistry != null) {
+            dimRegistry.clear();
+            TileEntityEnderMarker.registeredMarkers.remove(event.world.provider.dimensionId);
         }
     }
 }

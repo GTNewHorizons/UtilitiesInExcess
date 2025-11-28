@@ -1,8 +1,5 @@
 {
   "variants": {
-    "meta=0": { "model": "utilitiesinexcess:blocks/ender_quarry", "y": 270 },
-    "meta=1": { "model": "utilitiesinexcess:blocks/ender_quarry", "y": 90 },
-    "meta=2": { "model": "utilitiesinexcess:blocks/ender_quarry", "y": 0 },
-    "meta=3": { "model": "utilitiesinexcess:blocks/ender_quarry", "y": 180 }
+    "": { "model": "utilitiesinexcess:blocks/ender_quarry"}
   }
 }

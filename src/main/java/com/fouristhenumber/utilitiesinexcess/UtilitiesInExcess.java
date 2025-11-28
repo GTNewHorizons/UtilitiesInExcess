@@ -15,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -131,6 +132,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityEnderQuarry.class, "TileEntityEnderQuarryUIE");
+        GameRegistry.registerTileEntity(TileEntityEnderMarker.class, "TileEntityEnderMarkerUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
