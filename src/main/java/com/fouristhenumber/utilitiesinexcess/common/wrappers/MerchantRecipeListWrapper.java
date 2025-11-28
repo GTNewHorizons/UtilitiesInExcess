@@ -17,61 +17,27 @@ import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.Ac
 public class MerchantRecipeListWrapper {
 
     private MerchantRecipeList recipeList;
-
     private int recipeListHash;
-
-    // private final EntityPlayer player;
-
     private final IMerchant merchant;
-
-    // private final int index;
+    private int[] favorites;
 
     public MerchantRecipeListWrapper(IMerchant merchant, EntityPlayer player) {
         this.recipeList = merchant.getRecipes(player);
         updateRecipeListHash();
-        // this.player = player;
         this.merchant = merchant;
-        // this.index = index;
     }
 
     public MerchantRecipeListWrapper(NBTTagCompound tagCompound) throws IOException {
         recipeList = new MerchantRecipeList(tagCompound);
-
         World world = Minecraft.getMinecraft().theWorld;
-        String playerId = tagCompound.getString("player");
-        // index = tagCompound.getInteger("index");
-        if (world == null) throw new IOException("Trying to create MerchantRecipeWrapper with null World");
-        // if (playerId.isEmpty()) throw new IOException("Trying to create MerchantRecipeWrapper with null playerID");
-        // EntityPlayer _player = null;
-        // for (EntityPlayer playerEntity : world.playerEntities) {
-        // if (playerEntity.getGameProfile()
-        // .getId()
-        // .toString()
-        // .equals(playerId)) {
-        // _player = playerEntity;
-        // break;
-        // }
-        // }
-        // if (_player == null) throw new IOException("Trying to create MerchantRecipeWrapper but couldn't find
-        // player");
-        // this.player = _player;
         merchant = (IMerchant) world.getEntityByID(tagCompound.getInteger("merchant"));
+        favorites = tagCompound.getIntArray("favorites");
     }
-
-    public void readFromTags(NBTTagCompound compound) {}
 
     public NBTTagCompound writeToTags() {
         NBTTagCompound compound = recipeList.getRecipiesAsTags();
-        // if (this.getPlayer() != null) {
-        // compound.setString(
-        // "player",
-        // this.getPlayer()
-        // .getGameProfile()
-        // .getId()
-        // .toString());
-        // }
         if (this.getMerchant() != null) compound.setInteger("merchant", ((Entity) this.getMerchant()).getEntityId());
-        // compound.setInteger("index", this.getListIndex());
+        if (this.getFavorites() != null) compound.setIntArray("favorites", this.getFavorites());
         return compound;
     }
 
@@ -102,15 +68,28 @@ public class MerchantRecipeListWrapper {
         return recipeList.hashCode() + useCounts.hashCode();
     }
 
-    // public EntityPlayer getPlayer() {
-    // return player;
-    // }
-
     public IMerchant getMerchant() {
         return merchant;
     }
 
-    // public int getListIndex() {
-    // return index;
-    // }
+    public int[] getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(int[] favorites) {
+        this.favorites = favorites;
+    }
+
+    public boolean isFavorite(int index) {
+        int[] favorites = getFavorites();
+        if (favorites == null) {
+            return false;
+        }
+
+        for (int x : favorites) {
+            if (x == index) return true;
+        }
+
+        return false;
+    }
 }

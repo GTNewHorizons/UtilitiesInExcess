@@ -13,4 +13,16 @@ public class VillagerColumn extends Column {
         this.getChildren()
             .add(nextIndex, child);
     }
+
+    public void moveChild(IWidget widget, int nextIndex) {
+        int index = -1;
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) == widget) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index != -1) moveChild(index, nextIndex);
+    }
 }
