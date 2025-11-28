@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.wrappers;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IMerchant;
@@ -12,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 
 public class MerchantRecipeListWrapper {
 

@@ -2,16 +2,14 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import java.util.List;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -21,8 +19,10 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.TradeWidget;
-import net.minecraft.util.StatCollector;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
 
@@ -42,7 +42,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         Row tradeListRow = new Row();
         tradeListRow.coverChildren()
             .childPadding(1)
-//            .paddingRight(2) // For latest
+        // .paddingRight(2) // For latest
         ;
         for (int i = 0; i < 3; i++) {
             VillagerColumn columnOfVillagers = new VillagerColumn();
@@ -51,7 +51,9 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .childPadding(2);
 
             VillagerWidget villagerTrades2 = new VillagerWidget(guiData, guiSyncManager, null);
-            villagerTrades2.child(new TradeWidget(null).dummy().height(1))
+            villagerTrades2.child(
+                new TradeWidget(null).dummy()
+                    .height(1))
                 .height(1)
                 .setEnabled(false);
             columnOfVillagers.child(villagerTrades2);
@@ -71,11 +73,22 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         tradeList.child(tradeListRow);
 
         Row topRow = new Row();
-        topRow.alignX(0).coverChildrenWidth().height(10);
-        topRow.child(IKey.str(
-            StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
-            .asWidget().left(5).top(5));
-        panel.child(new SearchBar().villagerParent(tradeListRow).alignX(1).alignY(0).top(2).right(1).height(10).width(70));
+        topRow.alignX(0)
+            .coverChildrenWidth()
+            .height(10);
+        topRow.child(
+            IKey.str(StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
+                .asWidget()
+                .left(5)
+                .top(5));
+        panel.child(
+            new SearchBar().villagerParent(tradeListRow)
+                .alignX(1)
+                .alignY(0)
+                .top(2)
+                .right(1)
+                .height(10)
+                .width(70));
 
         mainColumn.child(topRow);
         mainColumn.child(
