@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
@@ -68,6 +69,8 @@ public enum ModBlocks {
     COMPRESSED_DIRT(BlockConfig.enableCompressedDirt, new BlockCompressed(Blocks.dirt, "compressed_dirt"), BlockCompressed.ItemCompressedBlock.class, "compressed_dirt"),
     COMPRESSED_SAND(BlockConfig.enableCompressedSand, new BlockCompressed(Blocks.sand, "compressed_sand"), BlockCompressed.ItemCompressedBlock.class, "compressed_sand"),
     COMPRESSED_GRAVEL(BlockConfig.enableCompressedGravel, new BlockCompressed(Blocks.gravel, "compressed_gravel"), BlockCompressed.ItemCompressedBlock.class, "compressed_gravel"),
+    COLORED_STONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stone),  BlockColored.ItemBlockColored.class, "colored_stone"),
+    COLORED_SAND(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.sand),  BlockColored.ItemBlockColored.class, "colored_sand"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), "redstone_clock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "ethereal_glass"),
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),
