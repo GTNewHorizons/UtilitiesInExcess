@@ -160,7 +160,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public List<IMerchant> getMerchants() {
         // Baby villagers shouldn't trade :P
-        AxisAlignedBB boundingBox = this.getRenderBoundingBox()
+        AxisAlignedBB boundingBox = getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord)
             .expand(32, this.worldObj.getHeight(), 32);
         return this.worldObj.selectEntitiesWithinAABB(IMerchant.class, boundingBox, entity -> {
             if (entity instanceof EntityAgeable ageable) return ageable.getGrowingAge() >= 0;

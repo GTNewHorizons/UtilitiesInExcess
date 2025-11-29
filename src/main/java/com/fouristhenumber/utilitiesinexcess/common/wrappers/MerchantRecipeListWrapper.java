@@ -14,6 +14,9 @@ import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class MerchantRecipeListWrapper {
 
     private MerchantRecipeList recipeList;
@@ -27,6 +30,7 @@ public class MerchantRecipeListWrapper {
         this.merchant = merchant;
     }
 
+    @SideOnly(Side.CLIENT)
     public MerchantRecipeListWrapper(NBTTagCompound tagCompound) throws IOException {
         recipeList = new MerchantRecipeList(tagCompound);
         World world = Minecraft.getMinecraft().theWorld;
