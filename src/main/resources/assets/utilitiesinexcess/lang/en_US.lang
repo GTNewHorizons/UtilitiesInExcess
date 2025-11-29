@@ -454,6 +454,15 @@ tile.trading_post.trade_tooltip.0=§6Left-Click§7 to Trade
 tile.trading_post.trade_tooltip.1=§6Shift + Left-Click§7 to Trade Stack
 tile.trading_post.trade_tooltip.2=§6Alt + Left-Click§7 to Favorite Trade
 tile.trading_post.trade_tooltip.3=§6Right-Click§7 to Highlight Villager
+tile.trading_post.trade_tooltip.0=Trade Controls:
+tile.trading_post.trade_tooltip.1=§6Left-Click§7 to Trade
+tile.trading_post.trade_tooltip.2=§6Shift + Left-Click§7 to Trade Stack
+tile.trading_post.trade_tooltip.3=§6Alt + Left-Click§7 to Favorite Trade
+tile.trading_post.trade_tooltip.4=§6Right-Click§7 to Highlight Villager
+tile.trading_post.trade_tooltip.5=You can search for:
+tile.trading_post.trade_tooltip.6=§7 - Item names & tooltips
+tile.trading_post.trade_tooltip.7=§7 - Villager professions
+tile.trading_post.trade_tooltip.8=§7 - Villager name tags
 
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove

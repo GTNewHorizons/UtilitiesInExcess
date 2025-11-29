@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.drawable.text.StringKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -29,8 +30,8 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.TradeWidget;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerEntityDisplay;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
@@ -113,7 +114,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .left(1)
                 .size(12)
                 .paddingRight(2)
-                .tooltipBuilder(TradeWidget::buildToolTip));
+                .tooltipBuilder(TileEntityTradingPost::buildHelpToolTip));
         topRow.child(
             IKey.str(StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
                 .asWidget()
@@ -180,6 +181,20 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             Color.setGlColorOpaque(Color.BLUE.main);
             GuiTextures.HELP.draw(0, 0, 12, 12);
         }
+    }
+
+    public static void buildHelpToolTip(RichTooltip tooltip) {
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.0"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.1"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.2"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.3"));
+        if (Mods.FindIt.isLoaded())
+            tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.4"));
+        tooltip.addLine("§7"); // If the line is empty it gets skipped
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.5"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.6"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.7"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.8"));
     }
 
     public class TradingPostPanel extends ModularPanel {
