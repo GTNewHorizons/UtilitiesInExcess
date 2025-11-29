@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
@@ -15,6 +16,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradi
 public class SearchBar extends TextFieldWidget {
 
     Row villagerParent;
+
+    static protected String prevText = "";
 
     UITexture VANILLA_SEARCH_BACKGROUND = UITexture.builder()
         .location(UtilitiesInExcess.MODID, "gui/vanilla_search")
@@ -28,6 +31,7 @@ public class SearchBar extends TextFieldWidget {
         super();
         background(VANILLA_SEARCH_BACKGROUND);
         hintText(StatCollector.translateToLocal("tile.trading_post.search_hint"));
+        value(new StringValue(prevText));
     }
 
     @Override
@@ -42,8 +46,6 @@ public class SearchBar extends TextFieldWidget {
         villagerParent = parent;
         return this;
     }
-
-    private String prevText = "";
 
     @Override
     public void onUpdate() {
@@ -64,11 +66,14 @@ public class SearchBar extends TextFieldWidget {
                 VillagerWidget villagerWidget = (VillagerWidget) villagerColumn.getChildren()
                     .get(i);
 
-                boolean isEnabled = villagerWidget.matches(search.toLowerCase());
-                villagerWidget.setEnabled(isEnabled);
-                if (isEnabled) {
-                    ((VillagerColumn) villagerColumn).moveChild(i, foundCount);
-                    foundCount++;
+                villagerWidget.setEnabled(villagerWidget.matches(search));
+                if (villagerWidget.isEnabled()) {
+                    if (villagerWidget.isFavorite()) {
+                        ((VillagerColumn) villagerColumn).moveChild(i, 0);
+                    } else {
+                        ((VillagerColumn) villagerColumn).moveChild(i, foundCount);
+                        foundCount++;
+                    }
                 }
                 villagerWidget.scheduleResize();
             }

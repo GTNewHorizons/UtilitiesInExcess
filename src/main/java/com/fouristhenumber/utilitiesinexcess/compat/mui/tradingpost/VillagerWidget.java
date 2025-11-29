@@ -8,10 +8,12 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.wrappers.MerchantRecipeListWrapper;
 
 public class VillagerWidget extends Column {
@@ -20,12 +22,16 @@ public class VillagerWidget extends Column {
     private final PanelSyncManager manager;
     private final VillagerSyncHandler villagerSyncHandler;
     private final VillagerColumn villagerColumn;
+    private boolean initializedRecipes;
+    private TileEntityTradingPost.TradingPostPanel tradingPostPanel;
+    private int columnNumber;
 
     public VillagerWidget(PosGuiData data, PanelSyncManager manager, IMerchant merchant,
         VillagerColumn villagerColumn) {
         super();
         this.data = data;
         this.manager = manager;
+        background(GuiTextures.BUTTON_CLEAN);
 
         if (merchant != null) {
             villagerSyncHandler = new VillagerSyncHandler(
@@ -38,6 +44,7 @@ public class VillagerWidget extends Column {
         }
 
         this.villagerColumn = villagerColumn;
+        initializedRecipes = false;
     }
 
     @Override
@@ -65,9 +72,19 @@ public class VillagerWidget extends Column {
             }
         }
 
-        if (isFavorite()) {
-            VillagerColumn villagerColumn = this.villagerColumn;
-            villagerColumn.moveChild(this, 0);
+        if (!initializedRecipes && data.getWorld().isRemote) {
+            setEnabled(matches(SearchBar.prevText.toLowerCase()));
+
+            if (isEnabled()) {
+                if (isFavorite()) {
+                    villagerColumn.moveChild(this, 0);
+                } else {
+                    villagerColumn.moveChild(this, tradingPostPanel.columnCounts[columnNumber]);
+                    tradingPostPanel.columnCounts[columnNumber]++;
+                }
+            }
+
+            initializedRecipes = true;
         }
 
         scheduleResize();
@@ -97,5 +114,15 @@ public class VillagerWidget extends Column {
             if (tradeWidget.isFavorite()) return true;
         }
         return false;
+    }
+
+    public VillagerWidget tradingPostPanel(TileEntityTradingPost.TradingPostPanel tradingPostPanel) {
+        this.tradingPostPanel = tradingPostPanel;
+        return this;
+    }
+
+    public VillagerWidget setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
+        return this;
     }
 }
