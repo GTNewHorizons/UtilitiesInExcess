@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.text.StringKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
@@ -30,6 +32,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.TradeWidget;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerEntityDisplay;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
@@ -37,7 +40,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     public static ArrayList<VillagerColumn> villagerColumns;
 
     // Trading post UI heirarchy:
-    // panel > mainColumn > (topRow > (villagercount - SearchBar)) - (TradeList > tradeListRow >
+    // panel > mainColumn > (topRow > villagercount) - (TradeList > tradeListRow >
     // 3x(VillagerColumn > VillagerWidget > TradeWidget))
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager guiSyncManager, UISettings settings) {
@@ -132,13 +135,24 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         Row bottomRow = new Row();
         bottomRow.coverChildrenHeight()
             .alignX(1)
-            .width(174);
+            .width(256); // This is the only hard-coded width in the panel,
+        // and the panel could (somewhat) support resizing if it wasn't. The inventory widget breaks if it's relative.
 
         var inventory = SlotGroupWidget.playerInventory(0, false);
         bottomRow.child(
             inventory.marginBottom(6)
                 .paddingRight(6)
                 .alignX(1));
+        bottomRow.child(
+            new VillagerEntityDisplay(() -> VillagerWidget.lastVillager).left(26)
+                .bottom(20));
+        bottomRow.child(
+            new Row().child(
+                new MerchantNameKey().asWidget()
+                    .center())
+                .width(86)
+                .height(26)
+                .alignY(1));
         mainColumn.child(bottomRow);
         panel.child(mainColumn);
         return panel;
@@ -185,5 +199,29 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             // the villager widgets
             columnCounts = new int[3];
         }
+    }
+
+    public class MerchantNameKey extends StringKey {
+
+        public MerchantNameKey() {
+            super("");
+        }
+
+        @Override
+        public String get() {
+            if (VillagerWidget.lastVillager instanceof EntityVillager villager) {
+                return getVillagerDisplayName(villager);
+            }
+
+            return "";
+        }
+    }
+
+    public static String getVillagerDisplayName(EntityVillager villager) {
+        String key = "tile.trading_post.villager_name." + villager.getProfession();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        return "";
     }
 }

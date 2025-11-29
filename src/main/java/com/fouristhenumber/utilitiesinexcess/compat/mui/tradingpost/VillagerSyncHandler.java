@@ -218,7 +218,7 @@ public class VillagerSyncHandler extends SyncHandler {
                 }
         }
 
-        // How many times can we pay the first time
+        // How many times can we pay the first item
         int a = count1 / price1.stackSize;
         // How many times can we pay the second item
         int b = price2 != null ? count2 / price2.stackSize : Integer.MAX_VALUE;

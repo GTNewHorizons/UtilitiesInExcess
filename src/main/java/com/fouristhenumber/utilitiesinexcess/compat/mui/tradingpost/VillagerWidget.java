@@ -3,7 +3,9 @@ package com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost;
 import java.util.List;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 
@@ -25,6 +27,8 @@ public class VillagerWidget extends Column {
     private boolean initializedRecipes;
     private TileEntityTradingPost.TradingPostPanel tradingPostPanel;
     private int columnNumber;
+
+    public static EntityLivingBase lastVillager;
 
     public VillagerWidget(PosGuiData data, PanelSyncManager manager, IMerchant merchant,
         VillagerColumn villagerColumn) {
@@ -98,14 +102,29 @@ public class VillagerWidget extends Column {
             && villagerSyncHandler.getRecipeList()
                 .getMerchant() != null
             && villagerSyncHandler.getRecipeList()
-                .getMerchant() instanceof EntityLiving
-            && ((EntityLiving) villagerSyncHandler.getRecipeList()
-                .getMerchant()).getCustomNameTag()
+                .getMerchant() instanceof EntityLiving living
+            && (living.getCustomNameTag()
+                .toLowerCase()
+                .contains(search)
+                || (living instanceof EntityVillager villager && TileEntityTradingPost.getVillagerDisplayName(villager)
                     .toLowerCase()
-                    .contains(search))
+                    .contains(search))))
             return true;
 
         return false;
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (!data.getWorld().isRemote) return;
+
+        if (isHovering() || isBelowMouse()) {
+            if (villagerSyncHandler.getRecipeList()
+                .getMerchant() instanceof EntityLivingBase entityMerchant) {
+                lastVillager = entityMerchant;
+            }
+        }
     }
 
     public boolean isFavorite() {
