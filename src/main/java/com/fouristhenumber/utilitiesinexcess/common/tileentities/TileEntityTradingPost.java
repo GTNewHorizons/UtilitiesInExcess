@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.EntityAgeable;
@@ -8,11 +9,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -30,13 +34,16 @@ import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidg
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
 
+    public static ArrayList<VillagerColumn> villagerColumns;
+
     // Trading post UI heirarchy:
     // panel > mainColumn > (topRow > (villagercount - SearchBar)) - (TradeList > tradeListRow >
     // 3x(VillagerColumn > VillagerWidget > TradeWidget))
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager guiSyncManager, UISettings settings) {
-        List<IMerchant> lm = getMerchants();
-        ModularPanel panel = new ModularPanel("uie:trading_post");
+        villagerColumns = new ArrayList<>();
+
+        TradingPostPanel panel = new TradingPostPanel("uie:trading_post");
         panel.coverChildren();
         Column mainColumn = new Column();
         mainColumn.coverChildren();
@@ -48,14 +55,14 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             .height(125);
         Row tradeListRow = new Row();
         tradeListRow.coverChildren()
-            .childPadding(1)
+            .childPadding(3)
         // .paddingRight(2) // For latest
         ;
         for (int i = 0; i < 3; i++) {
             VillagerColumn columnOfVillagers = new VillagerColumn();
             columnOfVillagers.alignY(0)
                 .coverChildren()
-                .childPadding(2);
+                .childPadding(3);
 
             // In MUI2 latest I had issues with the dynamic sizing of the panel
             // So these dummy trades were required to always keep it the same size
@@ -66,6 +73,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             // .height(1)
             // .setEnabled(false);
             // columnOfVillagers.child(villagerTrades2);
+
+            villagerColumns.add(columnOfVillagers);
 
             tradeListRow.child(columnOfVillagers);
         }
@@ -79,9 +88,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 merchant,
                 ((VillagerColumn) tradeListRow.getChildren()
                     .get(i)));
-            villagerTrades.coverChildren();
+
+            villagerTrades.tradingPostPanel(panel)
+                .setColumnNumber(i)
+                .coverChildren()
+                .childPadding(3);
+
             ((VillagerColumn) tradeListRow.getChildren()
                 .get(i)).child(villagerTrades);
+
             i = i < 2 ? i + 1 : 0;
         }
         tradeList.child(tradeListRow);
@@ -150,6 +165,25 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             super.draw(context, widgetTheme);
             Color.setGlColorOpaque(Color.BLUE.main);
             GuiTextures.HELP.draw(0, 0, 12, 12);
+        }
+    }
+
+    public class TradingPostPanel extends ModularPanel {
+
+        // I love boiler-plate code
+        public TradingPostPanel(@NotNull String name) {
+            super(name);
+        }
+
+        public int[] columnCounts = new int[3];
+
+        @Override
+        public void onOpen(ModularScreen screen) {
+            super.onOpen(screen);
+
+            // These are used to keep track of how many villagers are in each column while initializing
+            // the villager widgets
+            columnCounts = new int[3];
         }
     }
 }

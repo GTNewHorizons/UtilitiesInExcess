@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost;
 
+import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.village.MerchantRecipe;
@@ -7,8 +8,10 @@ import net.minecraft.village.MerchantRecipe;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -19,15 +22,19 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 import com.fouristhenumber.utilitiesinexcess.utils.mui.TooltipItemDisplayWidget;
 
 public class TradeWidget extends ParentWidget<TradeWidget> implements Interactable {
 
-    // public void setSyncHandler(TradeWidgetSH handler) {
-    // super.setSyncHandler(handler);
-    // }
+    UITexture HIGHLIGHT_BACKGROUND = UITexture.builder()
+        .location(UtilitiesInExcess.MODID, "gui/trade_highlight")
+        .imageSize(18, 18)
+        .name("trade_highlight")
+        .canApplyTheme()
+        .build();
 
     public MerchantRecipe recipe;
     private int index;
@@ -39,11 +46,23 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     private final TooltipItemDisplayWidget itemToBuy2;
     private final TooltipItemDisplayWidget itemToSell;
 
+    public class TradeProgressWidget extends ProgressWidget {
+
+        @Override
+        public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+            super.draw(context, widgetTheme);
+            float progress = getCurrentProgress();
+            if (progress <= 0) {
+                Color.setGlColorOpaque(Color.RED.main);
+                GuiTextures.CLOSE.draw(0, 0, getArea().width, getArea().height);
+            }
+        }
+    }
+
     public TradeWidget(MerchantRecipe _recipe) {
         super();
         this.recipe = _recipe;
 
-        background(GuiTextures.BUTTON_CLEAN);
         this.coverChildren();
 
         ItemStack item;
@@ -74,7 +93,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             .coverChildren()
             .child(itemToBuy)
             .child(itemToBuy2);
-        ProgressWidget progress = new ProgressWidget().direction(ProgressWidget.Direction.RIGHT)
+        ProgressWidget progress = new TradeProgressWidget().direction(ProgressWidget.Direction.RIGHT)
             .texture(GuiTextures.PROGRESS_ARROW, 20)
             .progress(() -> {
                 var trade = getRecipe();
@@ -83,11 +102,14 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
                     / (double) (((AccessorMerchantRecipe) trade).getMaxUses()));
             });
         Flow wholeRow = new Row().coverChildren()
+            .padding(1)
             .childPadding(2)
             .child(inputItems)
             .child(progress)
             .child(itemToSell);
         this.child(wholeRow);
+
+        hoverBackground(HIGHLIGHT_BACKGROUND);
     }
 
     public static void buildToolTip(RichTooltip tooltip) {
@@ -101,10 +123,23 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     @Override
     public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
         super.draw(context, widgetTheme);
+
+        if (index > 0) {
+            Gui.drawRect(10, -2, getArea().width - 10, -1, 0x1FFFFFFF);
+        }
+
+        // Yes. Both this *and* hoverBackground(HIGHLIGHT_BACKGROUND) *and* the drawBackground override are needed.
+        if (isBelowMouse() || isHovering()) Gui.drawRect(1, 1, getArea().width - 1, getArea().height - 1, 0xFFA1A1A1);
+
         if (isFavorite) {
             Color.setGlColorOpaque(Color.YELLOW.main);
             GuiTextures.FAVORITE.draw(0, 0, 6, 6);
         }
+    }
+
+    @Override
+    public void drawBackground(ModularGuiContext context, WidgetTheme widgetTheme) {
+
     }
 
     @Override
