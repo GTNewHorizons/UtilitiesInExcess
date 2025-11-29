@@ -172,6 +172,8 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.1");
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.2");
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
+
+        sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
     }
 
     private static void sendInfoPage(String filter, String page) {

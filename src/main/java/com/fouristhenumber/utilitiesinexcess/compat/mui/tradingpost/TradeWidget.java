@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.village.MerchantRecipe;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +10,6 @@ import org.lwjgl.input.Keyboard;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.Color;
@@ -28,7 +26,7 @@ import com.fouristhenumber.utilitiesinexcess.utils.mui.TooltipItemDisplayWidget;
 
 public class TradeWidget extends ParentWidget<TradeWidget> implements Interactable {
 
-    UITexture HIGHLIGHT_BACKGROUND = UITexture.builder()
+    public static final UITexture HIGHLIGHT_BACKGROUND = UITexture.builder()
         .location(UtilitiesInExcess.MODID, "gui/trade_highlight")
         .imageSize(18, 18)
         .name("trade_highlight")
@@ -95,10 +93,11 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         ProgressWidget progress = new TradeProgressWidget().direction(ProgressWidget.Direction.RIGHT)
             .texture(GuiTextures.PROGRESS_ARROW, 20)
             .progress(() -> {
-                var trade = getRecipe();
+                AccessorMerchantRecipe trade = (AccessorMerchantRecipe) getRecipe();
                 if (trade == null) return 0.69;
-                return 1 - (((AccessorMerchantRecipe) trade).getCurrentUses()
-                    / (double) (((AccessorMerchantRecipe) trade).getMaxUses()));
+                if (trade.getMaxUses() > 7) // After the initial 7 uses every recipe gets 2 to 12 additional uses
+                    return ((double) trade.getMaxUses() - trade.getCurrentUses()) / 12;
+                return 1 - (trade.getCurrentUses() / (double) (trade.getMaxUses()));
             });
         Flow wholeRow = new Row().coverChildren()
             .padding(1)
@@ -109,14 +108,6 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         this.child(wholeRow);
 
         hoverBackground(HIGHLIGHT_BACKGROUND);
-    }
-
-    public static void buildToolTip(RichTooltip tooltip) {
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.0"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.1"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.2"));
-        if (Mods.FindIt.isLoaded())
-            tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.3"));
     }
 
     @Override

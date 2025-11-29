@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;

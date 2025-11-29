@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
@@ -23,7 +21,6 @@ import com.fouristhenumber.utilitiesinexcess.common.wrappers.MerchantRecipeListW
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
-import com.gtnh.findit.util.ClientFinderHelperUtils;
 
 public class VillagerSyncHandler extends SyncHandler {
 
@@ -157,6 +154,20 @@ public class VillagerSyncHandler extends SyncHandler {
         setFavorites(favorites);
     }
 
+    private void clearFavorites() {
+        String merchantID;
+        if (recipeList.getMerchant() instanceof Entity) {
+            merchantID = ((Entity) recipeList.getMerchant()).getUniqueID()
+                .toString();
+        } else {
+            return;
+        }
+
+        NBTTagCompound allFavoritesTag = getFavoritesTag();
+
+        allFavoritesTag.removeTag(merchantID);
+    }
+
     public void removeFavorite(int index) {
         int[] favorites = getFavorites();
         if (favorites == null) {
@@ -167,7 +178,8 @@ public class VillagerSyncHandler extends SyncHandler {
             .filter(x -> x != index)
             .toArray();
 
-        setFavorites(favorites);
+        if (favorites.length == 0) clearFavorites();
+        else setFavorites(favorites);
     }
 
     public boolean isFavorite(int index) {
@@ -286,14 +298,12 @@ public class VillagerSyncHandler extends SyncHandler {
             return;
         Entity villager = (Entity) merchant;
 
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        player.closeScreen();
         ArrayList<Integer> ids = new ArrayList<>();
         ids.add(villager.getEntityId());
         FindItHelper.entityHighlighter.highlightEntities(ids, System.currentTimeMillis() + 10000);
         ArrayList<ChunkPosition> positions = new ArrayList<>();
         positions.add(new ChunkPosition((int) villager.posX, (int) villager.posY, (int) villager.posZ));
-        ClientFinderHelperUtils.rotateViewHelper((EntityClientPlayerMP) player, positions);
+        FindItHelper.rotateViewHelper(positions);
     }
 
 }
