@@ -10,12 +10,14 @@ import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,10 +32,12 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.joml.Vector4i;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
+import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
@@ -107,11 +111,56 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         chunkZ = dz >> 4;
     }
 
+    public void scanForWorkAreaFromMarkers(EntityPlayer player) {
+        boolean foundMarkers = false;
+        for (ForgeDirection dir : DirectionUtil.HORIZONTAL_DIRECTIONS) {
+            TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+            if (te instanceof TileEntityEnderMarker marker) {
+                @Nullable
+                Vector4i scanReturn = marker.checkForBoundary(dir);
+                if (scanReturn != null) {
+                    // Pad work area by one (inwards), so that we don't mine the markers
+                    Vector2i low = new Vector2i(
+                        Math.min(scanReturn.x, scanReturn.z) + 1,
+                        Math.min(scanReturn.y, scanReturn.w) + 1);
+                    Vector2i high = new Vector2i(
+                        Math.max(scanReturn.x, scanReturn.z) - 1,
+                        Math.max(scanReturn.y, scanReturn.w) - 1);
+                    setWorkArea(new Area2d(low, high));
+                    state = QuarryWorkState.RUNNING;
+
+                    int estBlocks = (worldObj.getHeightValue(dx, dy) + 5) * workArea.height * workArea.width;
+                    player.addChatComponentMessage(
+                        new ChatComponentText(
+                            String.format(
+                                "Found ender marker fence boundary, setting up work area from (%d %d) to (%d %d). Should roughly contain %d blocks.",
+                                workArea.low.x,
+                                workArea.low.y,
+                                workArea.high.x,
+                                workArea.high.y,
+                                estBlocks)));
+                    return;
+                } else {
+                    player.addChatComponentMessage(
+                        new ChatComponentText(
+                            String.format(
+                                "Ender marker at (%d %d %d) failed to set up a fence boundary.",
+                                marker.xCoord,
+                                marker.yCoord,
+                                marker.zCoord)));
+                    foundMarkers = true;
+                }
+            }
+        }
+        if (!foundMarkers)
+            player.addChatComponentMessage(new ChatComponentText("Found no ender markers around quarry."));
+    }
+
     /**
      * Are the current dx & dy & dz in work area bounds
      */
     private boolean isInBounds() {
-        return dy > 1 && this.workArea.isInBounds(dx, dz);
+        return dy > 0 && this.workArea.isInBounds(dx, dz);
     }
 
     /**
@@ -121,7 +170,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      */
     private boolean stepPos() {
         dy--;
-        if (dy <= 1) {
+        if (dy <= 0) {
             // stack is done, move back up
             dy = this.yCoord + 5;
 

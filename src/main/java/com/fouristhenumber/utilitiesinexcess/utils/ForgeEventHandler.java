@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +23,7 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
@@ -34,14 +33,15 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionP
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.event.world.WorldEvent;
 
 public class ForgeEventHandler {
 
@@ -160,8 +160,8 @@ public class ForgeEventHandler {
         if (event.world.isRemote) return;
 
         // Clear the entire dimension registry
-        ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry =
-            TileEntityEnderMarker.registeredMarkers.get(event.world.provider.dimensionId);
+        ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry = TileEntityEnderMarker.registeredMarkers
+            .get(event.world.provider.dimensionId);
 
         if (dimRegistry != null) {
             dimRegistry.clear();

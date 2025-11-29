@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -12,35 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRadicallyReducedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityHighTemperatureFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityLavaGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityLowTemperatureFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityNetherStarGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityPinkGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityPotionGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityRedstoneGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
@@ -83,6 +56,10 @@ public class UtilitiesInExcess {
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
     public static CommonProxy proxy;
 
+    public static void chat(String text) {
+        Minecraft.getMinecraft().thePlayer.sendChatMessage(text);
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
@@ -99,40 +76,6 @@ public class UtilitiesInExcess {
         FMLCommonHandler.instance()
             .bus()
             .register(new FMLEventHandler());
-
-        GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClock");
-        GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItem");
-        GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluid");
-        GameRegistry.registerTileEntity(TileEntityTrashCanEnergy.class, "TileEntityTrashCanEnergyUIE");
-        GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrum");
-        GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLove");
-        GameRegistry.registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChest");
-        GameRegistry.registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChest");
-        GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChest");
-        GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
-        GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
-        GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
-        GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
-        GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
-
-        GameRegistry.registerTileEntity(
-            TileEntityLowTemperatureFurnaceGenerator.class,
-            "TileEntityLowTemperatureFurnaceGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityFurnaceGenerator.class, "TileEntityFurnaceGeneratorUIE");
-        GameRegistry.registerTileEntity(
-            TileEntityHighTemperatureFurnaceGenerator.class,
-            "TileEntityHighTemperatureFurnaceGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityLavaGenerator.class, "TileEntityLavaGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityEnderGenerator.class, "TileEntityEnderGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityRedstoneGenerator.class, "TileEntityRedstoneGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityFoodGenerator.class, "TileEntityFoodGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityPotionGenerator.class, "TileEntityPotionGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntitySolarGenerator.class, "TileEntitySolarGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityTNTGenerator.class, "TileEntityTNTGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityEnderQuarry.class, "TileEntityEnderQuarryUIE");
-        GameRegistry.registerTileEntity(TileEntityEnderMarker.class, "TileEntityEnderMarkerUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

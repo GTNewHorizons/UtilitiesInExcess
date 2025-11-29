@@ -34,6 +34,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
+        ModTileEntities.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {}

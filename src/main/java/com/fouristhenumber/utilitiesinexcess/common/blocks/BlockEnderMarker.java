@@ -18,11 +18,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
+import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 
 public class BlockEnderMarker extends BlockContainer {
-
-    public static final ForgeDirection[] HORIZONTAL_DIRECTIONS = new ForgeDirection[] { ForgeDirection.NORTH,
-        ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST };
 
     public BlockEnderMarker() {
         super(Material.iron);
@@ -74,7 +72,7 @@ public class BlockEnderMarker extends BlockContainer {
     @Override
     public void randomDisplayTick(World worldIn, int x, int y, int z, Random random) {
         int meta = worldIn.getBlockMetadata(x, y, z);
-        for (ForgeDirection dir : HORIZONTAL_DIRECTIONS) {
+        for (ForgeDirection dir : DirectionUtil.HORIZONTAL_DIRECTIONS) {
             if ((meta & (1 << (dir.ordinal() - 2))) != 0) {
                 for (int i = 0; i < 7; i++) {
                     worldIn.spawnParticle(
