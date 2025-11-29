@@ -3,12 +3,16 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockDecorative extends Block {
 
@@ -26,6 +30,13 @@ public class BlockDecorative extends Block {
     @Override
     public int damageDropped(int meta) {
         return meta;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        for (int i = 0; i < META_VALUES; ++i) {
+            list.add(new ItemStack(itemIn, 1, i));
+        }
     }
 
     @Override
