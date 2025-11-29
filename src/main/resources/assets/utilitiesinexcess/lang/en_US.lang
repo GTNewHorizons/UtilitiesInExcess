@@ -74,6 +74,8 @@ tile.decorative_glass.9.name=Tiled Glass
 tile.decorative_glass.10.name=Dark Glass
 tile.decorative_glass.11.name=Reinforced Dark Glass
 
+tile.decorative_block.0.name=Diamond-Etched Computational Matrix
+
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
