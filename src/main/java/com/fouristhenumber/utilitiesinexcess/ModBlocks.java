@@ -137,6 +137,7 @@ public enum ModBlocks {
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
+    DIAMOND_ETCHED_COMPUTATIONAL_MATRIX(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), "diamond_etched_computational_matrix"),
     ; // leave trailing semicolon
     // spotless:on
 
