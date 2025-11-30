@@ -39,8 +39,8 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
 
-        sendInfoPage("<utilitiesinexcess:glove>", "nei.infopage.uie.glove.1");
-        if (Mods.Baubles.isLoaded()) sendInfoPage("<utilitiesinexcess:glove>", "nei.infopage.uie.glove.2");
+        sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.1");
+        if (Mods.Baubles.isLoaded()) sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.2");
 
         sendInfoPage("<utilitiesinexcess:floating_block>", "nei.infopage.uie.floating_block.1");
 
