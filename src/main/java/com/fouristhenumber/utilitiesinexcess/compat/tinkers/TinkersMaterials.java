@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.tinkers;
 
-import static net.minecraft.util.EnumChatFormatting.BLACK;
+import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 
@@ -50,7 +50,7 @@ public class TinkersMaterials {
                 1.75F,
                 0,
                 0,
-                BLACK.toString(),
+                DARK_GRAY.toString(),
                 0xFFFFFF);
 
             TConstructRegistry.addBowMaterial(bedrockiumID, 200, 3f);
@@ -60,7 +60,7 @@ public class TinkersMaterials {
         }
         if (BlockConfig.enableMagicWood) {
             TConstructRegistry
-                .addToolMaterial(magicalWoodID, "magicalWood", 2, 97, 150, 0, 1F, 0, 0, GOLD.toString(), 0x734829);
+                .addToolMaterial(magicalWoodID, "magical_wood", 2, 97, 150, 0, 1F, 0, 0, GOLD.toString(), 0x734829);
 
             TConstructRegistry.addBowMaterial(magicalWoodID, 18, 3f);
             TConstructRegistry.addArrowMaterial(magicalWoodID, 0.69F, 0.5F);
@@ -76,7 +76,7 @@ public class TinkersMaterials {
                 }
             }
 
-            doGenericRegistration(magicalWoodID, "magicalWood", new ItemStack(ModBlocks.MAGIC_WOOD.getItem(), 1, 0));
+            doGenericRegistration(magicalWoodID, "magical_wood", new ItemStack(ModBlocks.MAGIC_WOOD.getItem(), 1, 0));
         }
     }
 
