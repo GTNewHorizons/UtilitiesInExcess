@@ -19,7 +19,7 @@ public class SearchBar extends TextFieldWidget {
 
     static protected String prevText = "";
 
-    UITexture VANILLA_SEARCH_BACKGROUND = UITexture.builder()
+    public static final UITexture VANILLA_SEARCH_BACKGROUND = UITexture.builder()
         .location(UtilitiesInExcess.MODID, "gui/vanilla_search")
         .imageSize(18, 18)
         .adaptable(1)

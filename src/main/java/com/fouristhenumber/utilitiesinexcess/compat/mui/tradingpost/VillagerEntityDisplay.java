@@ -67,9 +67,9 @@ public class VillagerEntityDisplay extends Widget<VillagerEntityDisplay> {
         // float f4 = p_147046_5_.rotationPitch;
         float f5 = p_147046_5_.prevRotationYawHead;
         float f6 = p_147046_5_.rotationYawHead;
-        GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
+        // GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         // RenderHelper.enableStandardItemLighting();
-        GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
+        // GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
         // GL11.glRotatef(-((float)Math.atan((double)(p_147046_4_ / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
         p_147046_5_.renderYawOffset = (float) Math.atan((double) (p_147046_3_ / 40.0F)) * 20.0F;
         p_147046_5_.rotationYaw = (float) Math.atan((double) (p_147046_3_ / 40.0F)) * 40.0F;

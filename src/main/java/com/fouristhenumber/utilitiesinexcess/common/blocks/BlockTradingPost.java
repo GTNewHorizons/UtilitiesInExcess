@@ -21,7 +21,7 @@ public class BlockTradingPost extends BlockContainer {
     public IIcon bottomTexture;
 
     public BlockTradingPost() {
-        super(Material.iron);
+        super(Material.wood);
         setBlockName("trading_post");
         setBlockTextureName("utilitiesinexcess:trading_post");
     }

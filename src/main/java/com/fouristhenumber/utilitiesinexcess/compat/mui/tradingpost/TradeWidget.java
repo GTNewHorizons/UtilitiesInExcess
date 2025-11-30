@@ -26,7 +26,7 @@ import com.fouristhenumber.utilitiesinexcess.utils.mui.TooltipItemDisplayWidget;
 
 public class TradeWidget extends ParentWidget<TradeWidget> implements Interactable {
 
-    UITexture HIGHLIGHT_BACKGROUND = UITexture.builder()
+    public static final UITexture HIGHLIGHT_BACKGROUND = UITexture.builder()
         .location(UtilitiesInExcess.MODID, "gui/trade_highlight")
         .imageSize(18, 18)
         .name("trade_highlight")
