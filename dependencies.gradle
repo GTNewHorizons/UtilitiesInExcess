@@ -44,11 +44,18 @@ dependencies {
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
     compileOnly('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev')
 
+    api("com.github.GTNewHorizons:Postea:1.1.4:dev")
+
     devOnlyNonPublishable("com.github.GTNewHorizons:Baubles-Expanded:2.2.4-GTNH:dev")
     devOnlyNonPublishable("io.github.legacymoddingmc:unimixins:0.1.23:dev")
 
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.40-GTNH:dev" )
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.40-GTNH:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:worldedit-gtnh:v0.0.8:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:waila:1.9.15:dev")
+
+    // For testing NBT data (/nbtedit)
+     runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.6:dev")
     // For testing glove
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Translocators:1.4.0:dev")
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Backhand:1.8.2:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Backhand:1.8.0:dev")
 }
