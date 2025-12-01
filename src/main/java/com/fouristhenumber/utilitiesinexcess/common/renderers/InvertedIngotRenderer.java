@@ -126,6 +126,8 @@ public class InvertedIngotRenderer implements IItemRenderer {
         if (icon == null) {
             return;
         }
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        GL11.glEnable(GL11.GL_BLEND);
         final Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
         tess.setNormal(nx, ny, nz);
