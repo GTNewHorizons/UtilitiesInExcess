@@ -61,7 +61,6 @@ public enum ModItems {
     PSEUDO_INVERSION_SIGIL(InversionConfig.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
     INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new Item().setUnlocalizedName("inverted_nugget").setTextureName("utilitiesinexcess:inverted_nugget"), "inverted_nugget"),
-    DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
     ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
     SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
