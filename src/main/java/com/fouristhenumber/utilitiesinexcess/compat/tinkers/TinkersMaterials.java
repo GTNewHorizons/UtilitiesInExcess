@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
@@ -33,14 +34,14 @@ import tconstruct.tools.TinkerTools;
 
 public class TinkersMaterials {
 
-    public static int invertedID = 5657;
-    public static int bedrockiumID = 5658;
-    public static int magicalWoodID = 5659;
-
     public static Fluid invertedFluid = TinkerSmeltery.registerFluid("inverted");
     public static Fluid bedrockiumFluid = TinkerSmeltery.registerFluid("bedrockium");
 
     public static void registerMaterials() {
+
+        int invertedID = OtherConfig.invertedTinkersID;
+        int bedrockiumID = OtherConfig.bedrockiumTinkersID;
+        int magicalWoodID = OtherConfig.magicalWoodTinkersID;
 
         if (InversionConfig.enableInvertedIngot) {
             TConstructRegistry

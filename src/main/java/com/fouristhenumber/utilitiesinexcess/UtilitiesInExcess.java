@@ -50,6 +50,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweaker
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.BedrockiumActiveToolMod;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersEvents;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMaterials;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -194,7 +195,7 @@ public class UtilitiesInExcess {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
 
-        if (Mods.Tinkers.isLoaded()) {
+        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersEvents tinkersEvents = new TinkersEvents();
             MinecraftForge.EVENT_BUS.register(tinkersEvents);
             FMLCommonHandler.instance()

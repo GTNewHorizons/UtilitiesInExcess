@@ -1,12 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.compat.tinkers;
 
-import static com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMaterials.bedrockiumID;
-import static com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMaterials.invertedID;
-import static com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMaterials.magicalWoodID;
-
 import java.util.ArrayList;
 
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import tconstruct.library.event.ToolCraftEvent;
@@ -24,7 +22,7 @@ public class TinkersEvents {
         components.add("Extra");
 
         for (String component : components) {
-            if (toolTag.getInteger(component) == bedrockiumID) {
+            if (toolTag.getInteger(component) == OtherConfig.bedrockiumTinkersID) {
                 toolTag.setBoolean("Heavy", true);
                 break;
             }
@@ -32,7 +30,7 @@ public class TinkersEvents {
 
         boolean allInverted = true;
         for (String component : components) {
-            if (toolTag.hasKey(component) && toolTag.getInteger(component) != invertedID) {
+            if (toolTag.hasKey(component) && toolTag.getInteger(component) != OtherConfig.invertedTinkersID) {
                 allInverted = false;
                 break;
             }
@@ -41,7 +39,7 @@ public class TinkersEvents {
 
         boolean allMagicWood = true;
         for (String component : components) {
-            if (toolTag.hasKey(component) && toolTag.getInteger(component) != magicalWoodID) {
+            if (toolTag.hasKey(component) && toolTag.getInteger(component) != OtherConfig.magicalWoodTinkersID) {
                 allMagicWood = false;
                 break;
             }
