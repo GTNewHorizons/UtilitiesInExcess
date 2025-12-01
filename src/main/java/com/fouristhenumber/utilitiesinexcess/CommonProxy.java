@@ -6,6 +6,8 @@ import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTimeEvents;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
@@ -35,6 +37,13 @@ public class CommonProxy {
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
+        Remappings.init();
+        if (!Mods.ExtraUtilities.isLoaded()) {
+            for (IPosteaTransformation transformation : Remappings.transformations) {
+                transformation.registerDummies();
+            }
+        }
+        Remappings.initTransformationMappings();
     }
 
     public void init(FMLInitializationEvent event) {
@@ -42,7 +51,11 @@ public class CommonProxy {
         GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
     }
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+        for (IPosteaTransformation transformation : Remappings.transformations) {
+            transformation.registerTransformations();
+        }
+    }
 
     public void serverStarting(FMLServerStartingEvent event) {}
 }
