@@ -3,6 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.compat.tinkers;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
+import static tconstruct.TConstruct.basinCasting;
+import static tconstruct.TConstruct.tableCasting;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +21,8 @@ import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.registry.GameRegistry;
+import tconstruct.TConstruct;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.client.TConstructClientRegistry;
 import tconstruct.library.crafting.FluidType;
@@ -77,6 +81,11 @@ public class TinkersMaterials {
                 850,
                 new FluidStack(invertedFluid, 144));
 
+            basinCasting.addCastingRecipe(
+                ModBlocks.INVERTED_BLOCK.newItemStack(),
+                new FluidStack(invertedFluid, TConstruct.blockLiquidValue),
+                100);
+
             NBTTagCompound smelteryTag = new NBTTagCompound();
             smelteryTag.setInteger("MaterialId", invertedID);
             smelteryTag.setString("FluidName", invertedFluid.getName());
@@ -121,6 +130,25 @@ public class TinkersMaterials {
                 0,
                 850,
                 new FluidStack(bedrockiumFluid, 144));
+
+            tableCasting.addCastingRecipe(
+                ModItems.BEDROCKIUM_INGOT.newItemStack(),
+                new FluidStack(bedrockiumFluid, TConstruct.ingotLiquidValue),
+                new ItemStack(TinkerSmeltery.metalPattern, 1, 0),
+                false,
+                50);
+            if (GameRegistry.findItem("TConstruct", "clayPattern") != null) {
+                tableCasting.addCastingRecipe(
+                    ModItems.BEDROCKIUM_INGOT.newItemStack(),
+                    new FluidStack(bedrockiumFluid, TConstruct.ingotLiquidValue),
+                    new ItemStack(TinkerSmeltery.clayPattern, 1, 0),
+                    true,
+                    50);
+            }
+            basinCasting.addCastingRecipe(
+                ModBlocks.BEDROCKIUM_BLOCK.newItemStack(),
+                new FluidStack(bedrockiumFluid, TConstruct.blockLiquidValue),
+                100);
 
             NBTTagCompound smelteryTag = new NBTTagCompound();
             smelteryTag.setInteger("MaterialId", bedrockiumID);
