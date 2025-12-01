@@ -6,13 +6,9 @@ import static com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMateri
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import tconstruct.library.event.ToolCraftEvent;
 
 public class TinkersEvents {
@@ -53,19 +49,6 @@ public class TinkersEvents {
         if (allMagicWood) {
             toolTag.setInteger("Modifiers", toolTag.getInteger("Modifiers") + 8);
             toolTag.setBoolean("MagicallyModifiable", true);
-        }
-    }
-
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        ItemStack held = event.player.getHeldItem();
-        if (held == null) return;
-        NBTTagCompound tag = held.getTagCompound();
-        if (tag == null || !tag.hasKey("InfiTool")) return;
-        NBTTagCompound toolTag = tag.getCompoundTag("InfiTool");
-
-        if (toolTag.getBoolean("Heavy")) {
-            event.player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 0, 1, true));
         }
     }
 }

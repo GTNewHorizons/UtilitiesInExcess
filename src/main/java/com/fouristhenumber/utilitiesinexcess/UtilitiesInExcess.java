@@ -47,6 +47,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.BedrockiumActiveToolMod;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersEvents;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMaterials;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
@@ -64,6 +65,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import minetweaker.MineTweakerAPI;
+import tconstruct.library.TConstructRegistry;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -199,6 +201,7 @@ public class UtilitiesInExcess {
                 .bus()
                 .register(tinkersEvents);
 
+            TConstructRegistry.registerActiveToolMod(new BedrockiumActiveToolMod());
             TinkersMaterials.registerMaterials();
         }
     }
