@@ -145,6 +145,7 @@ public class TinkersMaterials {
             FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", partTag);
 
             doGenericRegistration(magicalWoodID, "magical_wood", new ItemStack(ModBlocks.MAGIC_WOOD.getItem(), 1, 0));
+
         }
     }
 
