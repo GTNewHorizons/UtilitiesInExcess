@@ -21,9 +21,6 @@ public class ItemConfig {
     }
 
     @Config.DefaultBoolean(true)
-    public static boolean enableDiamondStick;
-
-    @Config.DefaultBoolean(true)
     public static boolean enableHeavenlyRing;
 
     @Config.DefaultBoolean(true)
