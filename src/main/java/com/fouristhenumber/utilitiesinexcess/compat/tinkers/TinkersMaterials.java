@@ -5,7 +5,11 @@ import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
@@ -14,8 +18,13 @@ import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
+import cpw.mods.fml.common.event.FMLInterModComms;
 import tconstruct.library.TConstructRegistry;
+import tconstruct.library.client.TConstructClientRegistry;
+import tconstruct.library.crafting.FluidType;
 import tconstruct.library.crafting.PatternBuilder;
+import tconstruct.library.crafting.Smeltery;
+import tconstruct.smeltery.TinkerSmeltery;
 import tconstruct.tools.TinkerTools;
 
 public class TinkersMaterials {
@@ -24,8 +33,10 @@ public class TinkersMaterials {
     public static int bedrockiumID = 5658;
     public static int magicalWoodID = 5659;
 
+    public static Fluid invertedFluid = TinkerSmeltery.registerFluid("inverted");
+    public static Fluid bedrockiumFluid = TinkerSmeltery.registerFluid("bedrockium");
+
     public static void registerMaterials() {
-        // TConstructClientRegistry.addMaterialRenderMapping(MaterialID.NagaScale, "tinker", "nagascale", true);
 
         if (InversionConfig.enableInvertedIngot) {
             TConstructRegistry
@@ -38,6 +49,38 @@ public class TinkersMaterials {
                 invertedID,
                 "inverted",
                 new ItemStack(ModItems.INVERTED_INGOT.get(), 1, OreDictionary.WILDCARD_VALUE));
+
+            FluidRegistry.registerFluid(invertedFluid);
+            FluidType.registerFluidType(
+                invertedFluid.getName(),
+                ModBlocks.INVERTED_BLOCK.get(),
+                0,
+                850,
+                invertedFluid,
+                true);
+            Smeltery.addMelting(
+                ModBlocks.INVERTED_BLOCK.newItemStack(),
+                ModBlocks.INVERTED_BLOCK.get(),
+                0,
+                850,
+                new FluidStack(invertedFluid, 1296));
+            Smeltery.addMelting(
+                ModItems.INVERTED_INGOT.newItemStack(1, 0),
+                ModBlocks.INVERTED_BLOCK.get(),
+                0,
+                850,
+                new FluidStack(invertedFluid, 144));
+            Smeltery.addMelting(
+                ModItems.INVERTED_INGOT.newItemStack(1, 1),
+                ModBlocks.INVERTED_BLOCK.get(),
+                0,
+                850,
+                new FluidStack(invertedFluid, 144));
+
+            NBTTagCompound smelteryTag = new NBTTagCompound();
+            smelteryTag.setInteger("MaterialId", invertedID);
+            smelteryTag.setString("FluidName", invertedFluid.getName());
+            FMLInterModComms.sendMessage("TConstruct", "addPartCastingMaterial", smelteryTag);
         }
         if (ItemConfig.enableBedrockium) {
             TConstructRegistry.addToolMaterial(
@@ -57,6 +100,32 @@ public class TinkersMaterials {
             TConstructRegistry.addArrowMaterial(bedrockiumID, 40F, 0.4F);
 
             doGenericRegistration(bedrockiumID, "bedrockium_uie", new ItemStack(ModItems.BEDROCKIUM_INGOT.get(), 1, 0));
+
+            FluidRegistry.registerFluid(bedrockiumFluid);
+            FluidType.registerFluidType(
+                bedrockiumFluid.getName(),
+                ModBlocks.BEDROCKIUM_BLOCK.get(),
+                0,
+                850,
+                bedrockiumFluid,
+                true);
+            Smeltery.addMelting(
+                ModBlocks.BEDROCKIUM_BLOCK.newItemStack(),
+                ModBlocks.BEDROCKIUM_BLOCK.get(),
+                0,
+                850,
+                new FluidStack(bedrockiumFluid, 1296));
+            Smeltery.addMelting(
+                ModItems.BEDROCKIUM_INGOT.newItemStack(),
+                ModBlocks.BEDROCKIUM_BLOCK.get(),
+                0,
+                850,
+                new FluidStack(bedrockiumFluid, 144));
+
+            NBTTagCompound smelteryTag = new NBTTagCompound();
+            smelteryTag.setInteger("MaterialId", bedrockiumID);
+            smelteryTag.setString("FluidName", bedrockiumFluid.getName());
+            FMLInterModComms.sendMessage("TConstruct", "addPartCastingMaterial", smelteryTag);
         }
         if (BlockConfig.enableMagicWood) {
             TConstructRegistry
@@ -65,22 +134,23 @@ public class TinkersMaterials {
             TConstructRegistry.addBowMaterial(magicalWoodID, 18, 3f);
             TConstructRegistry.addArrowMaterial(magicalWoodID, 0.69F, 0.5F);
 
-            // Makes part builder recipes for magical wood
-            for (int meta = 0; meta < TinkerTools.patternOutputs.length; meta++) {
-                if (TinkerTools.patternOutputs[meta] != null) {
-                    TConstructRegistry.addPartMapping(
-                        TinkerTools.woodPattern,
-                        meta + 1,
-                        magicalWoodID,
-                        new ItemStack(TinkerTools.patternOutputs[meta], 1, magicalWoodID));
-                }
-            }
+            NBTTagCompound woodTag = new NBTTagCompound();
+            ModBlocks.MAGIC_WOOD.newItemStack()
+                .writeToNBT(woodTag);
+
+            NBTTagCompound partTag = new NBTTagCompound();
+            partTag.setTag("Item", woodTag);
+            partTag.setInteger("MaterialId", magicalWoodID);
+            partTag.setInteger("Value", 2);
+            FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", partTag);
 
             doGenericRegistration(magicalWoodID, "magical_wood", new ItemStack(ModBlocks.MAGIC_WOOD.getItem(), 1, 0));
         }
     }
 
     private static void doGenericRegistration(int id, String name, ItemStack item) {
+        TConstructClientRegistry.addMaterialRenderMapping(id, "tinker", name, true);
+
         TConstructRegistry.toolMaterialStrings
             .put(StatCollector.translateToLocal("material." + name), TConstructRegistry.toolMaterials.get(id));
 
