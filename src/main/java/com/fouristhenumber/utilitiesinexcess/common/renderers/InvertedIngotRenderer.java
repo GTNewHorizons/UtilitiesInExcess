@@ -61,7 +61,7 @@ public class InvertedIngotRenderer implements IItemRenderer {
 
             float r = 1F;
             float g = MathHelper.clamp_float(progress, 0f, 1f);
-            float b = MathHelper.clamp_float(progress * 0.8f, 0f, 1f);
+            float b = MathHelper.clamp_float(progress, 0f, 1f);
 
             if (remaining < 60) {
                 int blink = remaining / 10;
@@ -77,7 +77,6 @@ public class InvertedIngotRenderer implements IItemRenderer {
 
         switch (type) {
             case ENTITY -> {
-                //GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
                 GL11.glEnable(GL11.GL_BLEND);
                 OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
