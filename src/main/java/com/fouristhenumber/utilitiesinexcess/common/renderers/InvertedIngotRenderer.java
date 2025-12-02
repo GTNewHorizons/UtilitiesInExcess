@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -76,8 +77,9 @@ public class InvertedIngotRenderer implements IItemRenderer {
 
         switch (type) {
             case ENTITY -> {
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+                //GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
                 GL11.glEnable(GL11.GL_BLEND);
+                OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
                 if (RenderItem.renderInFrame) {
                     GL11.glScalef(1.025641F, 1.025641F, 1.025641F);
