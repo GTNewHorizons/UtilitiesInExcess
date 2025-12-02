@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -59,16 +58,15 @@ public class InvertedIngotRenderer implements IItemRenderer {
             float progress = MathHelper
                 .clamp_float((float) remaining / InversionConfig.invertedIngotImplosionTimer, 0f, 1f);
 
-            float r = MathHelper.clamp_float(1.0f, 0f, 1f);
+            float r = 1F;
             float g = MathHelper.clamp_float(progress, 0f, 1f);
             float b = MathHelper.clamp_float(progress * 0.8f, 0f, 1f);
 
             if (remaining < 60) {
-                double blink = Math.sin(world.getTotalWorldTime() / 3.0);
-                if (blink > 0) {
-                    r = 0.8f;
-                    g = 1f;
-                    b = 0.1f;
+                int blink = remaining / 10;
+                if (blink == 1 || blink == 3 || blink == 5) {
+                    g = 0.9f;
+                    b = 0f;
                 }
             }
 
@@ -78,7 +76,20 @@ public class InvertedIngotRenderer implements IItemRenderer {
 
         switch (type) {
             case ENTITY -> {
+                GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+                GL11.glEnable(GL11.GL_BLEND);
+
+                if (RenderItem.renderInFrame) {
+                    GL11.glScalef(1.025641F, 1.025641F, 1.025641F);
+                    GL11.glTranslatef(0.0F, -0.05F, 0.0F);
+                }
+
                 if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                    if (RenderItem.renderInFrame) {
+                        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                    }
+                    GL11.glTranslatef(-0.5F, -0.25F, 0.0421875F);
+
                     ItemRenderer.renderItemIn2D(
                         tess,
                         maxU,
@@ -89,12 +100,6 @@ public class InvertedIngotRenderer implements IItemRenderer {
                         icon.getIconHeight(),
                         0.0625F);
                 } else {
-                    GL11.glPushMatrix();
-
-                    if (!RenderItem.renderInFrame) {
-                        GL11.glRotatef(180.0F - RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
-                    }
-
                     tess.startDrawingQuads();
                     tess.setNormal(0.0F, 1.0F, 0.0F);
                     tess.addVertexWithUV(0.0F - 0.5F, 0.0F - 0.25F, 0.0D, minU, maxV);
@@ -102,8 +107,6 @@ public class InvertedIngotRenderer implements IItemRenderer {
                     tess.addVertexWithUV(1.0F - 0.5F, 1.0F - 0.25F, 0.0D, maxU, minV);
                     tess.addVertexWithUV(0.0F - 0.5F, 1.0F - 0.25F, 0.0D, minU, minV);
                     tess.draw();
-
-                    GL11.glPopMatrix();
                 }
             }
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
@@ -126,6 +129,8 @@ public class InvertedIngotRenderer implements IItemRenderer {
         if (icon == null) {
             return;
         }
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        GL11.glEnable(GL11.GL_BLEND);
         final Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
         tess.setNormal(nx, ny, nz);
