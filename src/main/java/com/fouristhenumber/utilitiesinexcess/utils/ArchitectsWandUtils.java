@@ -1,8 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -77,70 +75,83 @@ public class ArchitectsWandUtils {
         if (findCount <= 0) {
             return region;
         }
-        Set<BlockPos> visited = new HashSet<>();
-        Queue<BlockPos> queue = new LinkedList<>();
 
         // Determine allowed offsets depending on the face that was clicked.
         int[][] allowedOffsets = switch (clickedSide) {
             case UP, DOWN ->
                 // Plane: x/z plane (y remains constant)
-                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 0, 1 }, { 0, 0, -1 } };
+                new int[][] { { 1, 0, 0 }, { 0, 0, 1 }, { -1, 0, 0 }, { 0, 0, -1 } };
             case NORTH, SOUTH ->
                 // Plane: x/y plane (z remains constant)
-                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 } };
+                new int[][] { { 1, 0, 0 }, { 0, 1, 0 }, { -1, 0, 0 }, { 0, -1, 0 } };
             case EAST, WEST ->
                 // Plane: y/z plane (x remains constant)
-                new int[][] { { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 } };
+                new int[][] { { 0, 1, 0 }, { 0, 0, 1 }, { 0, -1, 0 }, { 0, 0, -1 } };
             default -> throw new RuntimeException("UE's BuilderWand's findAdjacentBlocks called with invalid side");
         };
 
-        int sx = startPos.x;
-        int sy = startPos.y;
-        int sz = startPos.z;
+        HashSet<BlockPos> validBlocks = new HashSet<>();
 
-        // Base case
-        if (world.getBlock(sx, sy, sz) == blockToFind && world.getBlockMetadata(sx, sy, sz) == metaToFind
-            && world.isAirBlock(sx + clickedSide.offsetX, sy + clickedSide.offsetY, sz + clickedSide.offsetZ)) {
+        int cx = startPos.x;
+        int cy = startPos.y;
+        int cz = startPos.z;
 
-            BlockPos neighbor = new BlockPos(sx, sy, sz);
-            region.add(neighbor);
-            queue.add(neighbor);
-            visited.add(startPos);
-        } else {
-            return region;
+        int airx = cx + clickedSide.offsetX;
+        int airy = cy + clickedSide.offsetY;
+        int airz = cz + clickedSide.offsetZ;
+        // base case
+        if (world.getBlock(cx, cy, cz) == blockToFind && world.getBlockMetadata(cx, cy, cz) == metaToFind
+            && world.isAirBlock(airx, airy, airz)) {
+            region.add(new BlockPos(cx, cy, cz));
+            for (int i = 0; i < allowedOffsets.length; i++) {
+                int[] o = allowedOffsets[i];
+                validBlocks.add(new BlockPos(cx + o[0], cy + o[1], cz + o[2]));
+                int[] o2 = allowedOffsets[i == 3 ? 0 : i + 1];
+                validBlocks.add(new BlockPos(cx + o[0] + o2[0], cy + o[1] + o2[1], cz + o[2] + o2[2]));
+            }
         }
 
-        // Flood-fill the contiguous region in the allowed plane.
-        while (!queue.isEmpty() && region.size() < findCount) {
-            BlockPos current = queue.poll();
-            int cx = current.x;
-            int cy = current.y;
-            int cz = current.z;
+        // Rotate around the center and check
+        int curOffset = 0;
+        int curCount = 0;
+        int maxCount = 1;
+        while (region.size() < findCount && maxCount < findCount + 1) {
+            int[] o = allowedOffsets[curOffset];
+            cx += o[0];
+            cy += o[1];
+            cz += o[2];
 
-            for (int[] off : allowedOffsets) {
-                // Check if already visited
-                int nx = cx + off[0];
-                int ny = cy + off[1];
-                int nz = cz + off[2];
+            airx = cx + clickedSide.offsetX;
+            airy = cy + clickedSide.offsetY;
+            airz = cz + clickedSide.offsetZ;
 
-                BlockPos key = new BlockPos(nx, ny, nz);
-                if (visited.contains(key)) {
-                    continue;
+            // check if this is a valid location
+            if (world.getBlock(cx, cy, cz) == blockToFind && world.getBlockMetadata(cx, cy, cz) == metaToFind
+                && world.isAirBlock(airx, airy, airz)) {
+
+                BlockPos pos = new BlockPos(cx, cy, cz);
+
+                if (validBlocks.remove(pos)) {
+                    region.add(pos);
+
+                    // mark adjacent blocks as valid
+                    for (int i = 0; i < allowedOffsets.length; i++) {
+                        int[] b = allowedOffsets[i];
+                        validBlocks.add(new BlockPos(cx + b[0], cy + b[1], cz + b[2]));
+                        int[] b2 = allowedOffsets[i == 3 ? 0 : i + 1];
+                        validBlocks.add(new BlockPos(cx + b[0] + b2[0], cy + b[1] + b2[1], cz + b[2] + b2[2]));
+                    }
                 }
-                visited.add(key);
+            }
 
-                // Check and add to region+queue
-                int airx = nx + clickedSide.offsetX;
-                int airy = ny + clickedSide.offsetY;
-                int airz = nz + clickedSide.offsetZ;
-
-                if (world.getBlock(nx, ny, nz) == blockToFind && world.getBlockMetadata(nx, ny, nz) == metaToFind
-                    && world.isAirBlock(airx, airy, airz)) {
-
-                    BlockPos neighbor = new BlockPos(nx, ny, nz);
-                    region.add(neighbor);
-                    queue.add(neighbor);
+            // Increment for next iteration
+            curCount++;
+            if (curCount == maxCount) {
+                if (curOffset == 1 || curOffset == 3) {
+                    maxCount++;
                 }
+                curCount = 0;
+                curOffset = curOffset == 3 ? 0 : curOffset + 1;
             }
         }
 
