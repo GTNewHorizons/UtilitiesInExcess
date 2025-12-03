@@ -100,7 +100,7 @@ public class ArchitectsWandUtils {
 
         // Base case
         if (world.getBlock(sx, sy, sz) == blockToFind && world.getBlockMetadata(sx, sy, sz) == metaToFind
-            && world.isAirBlock(sz + clickedSide.offsetX, sy + clickedSide.offsetY, sz + clickedSide.offsetZ)) {
+            && world.isAirBlock(sx + clickedSide.offsetX, sy + clickedSide.offsetY, sz + clickedSide.offsetZ)) {
 
             BlockPos neighbor = new BlockPos(sx, sy, sz);
             region.add(neighbor);

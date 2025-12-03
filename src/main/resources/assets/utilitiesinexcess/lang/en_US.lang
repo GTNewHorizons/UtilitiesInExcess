@@ -113,9 +113,9 @@ item.bedrockium_ingot.name=Bedrockium Ingot
 
 nei.infopage.uie.bedrockium.1=Bedrockium is a supremely strong material named after the virtually impervious foundation of the world. It is immensely heavy and will slow you to a crawl while holding it.
 
-item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.pseudo_inversion_sigil.name=Pseudo-Inversion Sigil
 item.inversion_sigil_active.desc=Uses Remaining: %s
 
 chat.inversion_ritual.header=Ritual Of Inversion:
@@ -125,6 +125,26 @@ chat.inversion_ritual.grass= - Surrounded by natural earth: %s
 chat.inversion_ritual.darkness= - There is no light: %s
 chat.inversion_ritual.moon= - Can see the moon: %s
 chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
+
+chat.pseudo_inversion_ritual.header=Ritual Of Pseudo-Inversion:
+chat.pseudo_inversion_ritual.difficultyPeaceful= - Difficulty is incorrect: World is too peaceful
+chat.pseudo_inversion_ritual.correctDimension= - Dimension is correct: ✓ 
+chat.pseudo_inversion_ritual.incorrectDimensionOverworld= - Dimension is incorrect: Too much natural earth 
+chat.pseudo_inversion_ritual.incorrectDimensionNether= - Dimension is incorrect: Too hot 
+chat.pseudo_inversion_ritual.incorrectDimensionOther= - Dimension is incorrect: Too otherworldly
+chat.pseudo_inversion_ritual.chestNorthContents= - North chest: %s
+chat.pseudo_inversion_ritual.chestEastContents= - East chest: %s
+chat.pseudo_inversion_ritual.chestSouthContents= - South chest: %s
+chat.pseudo_inversion_ritual.chestWestContents= - West chest: %s
+chat.pseudo_inversion_ritual.spiral= - Redstone and String spiral done correctly: %s
+chat.pseudo_inversion_ritual.complete=Good luck. Survival is key...
+chat.pseudo_inversion_ritual.ready=Perform the ritual
+chat.pseudo_inversion_ritual.death=Unfortunately, your untimely demise has resulted in a fruitless ritual...
+chat.pseudo_inversion_ritual.leftEnd=Unfortunately, your sudden departure has resulted in a fruitless ritual...
+chat.pseudo_inversion_ritual.onequarter=You've held strong, but there is still a long way to go. %s mobs killed.
+chat.pseudo_inversion_ritual.twoquarters=You're halfway there. Can you do it? %s mobs killed.
+chat.pseudo_inversion_ritual.threequarters=You're almost done, don't let up now. %s mobs killed.
+chat.pseudo_inversion_ritual.victory=You've proven yourself, and your sigil has been refreshed anew as a reward. Cherish it.
 
 nei.infopage.uie.inversion_sigil.1=The Inversion Sigil is a powerful item that may be found in various structures, such as dungeons. It may also be dropped by the Wither. It is used in the creation of Inverted Ingots, but it must first be awakened by a dark ritual.
 nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantment Table while sneaking will give some hints on how to complete the ritual, or read on for precise instructions.
