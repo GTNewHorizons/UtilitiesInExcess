@@ -92,6 +92,9 @@ public class BlockConfig {
     public static boolean enableEndOfTimePortal;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableQED;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableSmartPump;
 
     @Config.DefaultInt(10000)

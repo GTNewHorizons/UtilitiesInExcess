@@ -313,6 +313,9 @@ nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth
 item.xray_glasses.name=X-Ray Glasses
 nei.infopage.uie.xray_glasses.1=These stylish spectacles will highlight like blocks adjacent to the one you are looking at through walls. Spot entire ore veins with ease!
 
+tile.qed.name=QED
+tile.flux_crystal.name=Flux Crystal
+
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 
 item.ender_lotus_seed.name=Ender-Lotus Seed
