@@ -2,11 +2,13 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -18,6 +20,8 @@ import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemGlove extends Item implements IBauble {
@@ -50,6 +54,17 @@ public class ItemGlove extends Item implements IBauble {
 
         tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.2"));
         tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.3"));
+    }
+
+    public IIcon topIcon;
+    public IIcon bottomIcon;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister aIconRegister) {
+        super.registerIcons(aIconRegister);
+        topIcon = aIconRegister.registerIcon("utilitiesinexcess:glove_top");
+        bottomIcon = aIconRegister.registerIcon("utilitiesinexcess:glove_bottom");
     }
 
     public static boolean isUsingGlove(EntityPlayer player) {

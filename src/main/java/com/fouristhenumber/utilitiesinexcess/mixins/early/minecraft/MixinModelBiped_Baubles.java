@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,10 +54,16 @@ public class MixinModelBiped_Baubles {
         if (!(p_78088_1_ instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) p_78088_1_;
 
-        if ((player.getHeldItem() != null && player.getHeldItem()
-            .getItem() instanceof ItemGlove) || UIEUtils.hasBauble(player, ItemGlove.class)) {
-            ModelPartRenderHelper
-                .renderBipedPart(p_78088_7_, thisObject.bipedRightArm, GloveRenderer::renderGloveAsBauble);
+        ItemStack stack = player.getHeldItem();
+        if (stack == null || !(stack.getItem() instanceof ItemGlove))
+            stack = UIEUtils.getBauble(player, ItemGlove.class);
+
+        if (stack != null) {
+            ItemStack finalStack = stack;
+            ModelPartRenderHelper.renderBipedPart(
+                0.0625F,
+                thisObject.bipedRightArm,
+                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage()));
         }
     }
 }
