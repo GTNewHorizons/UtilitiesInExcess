@@ -33,6 +33,20 @@ public class UIEUtils {
         return COMMA_FORMAT.format(number);
     }
 
+    public static ItemStack getBauble(EntityPlayer player, Class<?> clazz) {
+        if (!Mods.Baubles.isLoaded()) return null;
+
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            ItemStack stack = baubles.getStackInSlot(i);
+            if (stack != null && stack.getItem() != null && clazz.isInstance(stack.getItem())) {
+                return stack;
+            }
+        }
+
+        return null;
+    }
+
     public static boolean hasBauble(EntityPlayer player, Class<?> clazz) {
         if (!Mods.Baubles.isLoaded()) return false;
 
