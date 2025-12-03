@@ -78,6 +78,7 @@ tile.decorative_block.0.name=Diamond-Etched Computational Matrix
 tile.decorative_block.1.name=Sand-Infused Endstone
 tile.decorative_block.2.name=Burnt Quartz
 tile.decorative_block.3.name=Sandy Glass
+tile.decorative_block.4.name=Frosted Stone
 
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
