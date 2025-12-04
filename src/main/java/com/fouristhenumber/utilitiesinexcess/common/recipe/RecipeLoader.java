@@ -840,7 +840,6 @@ public class RecipeLoader {
         loadColoredBlockRecipe(ModBlocks.COLORED_OBSIDIAN, dyes);
         loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_BLOCK, dyes);
         loadColoredBlockRecipe(ModBlocks.COLORED_COAL_BLOCK, dyes);
-        // loadColoredBlockRecipe(ModBlocks.COLORED_SAND, dyes);
     }
 
     private static void loadColoredBlockRecipe(ModBlocks block, ItemStack[] dyes) {
