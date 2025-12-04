@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
-import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
 
 public class BlockColoredTexture extends TextureAtlasSprite {
 
@@ -33,7 +33,7 @@ public class BlockColoredTexture extends TextureAtlasSprite {
     @Override
     public boolean load(IResourceManager manager, ResourceLocation location) {
         try {
-            String textureName = ((AccessorBlock) base).uie$getTextureName();
+            String textureName = ((AccessorBlock_Client) base).uie$getTextureName();
             textureName = textureName.equals("planks") ? textureName + "_oak" : textureName;
             textureName = textureName.equals("quartz_block") ? textureName + "_top" : textureName;
             textureName = textureName.equals("redstone_lamp_off") ? "redstone_lamp_on" : textureName;

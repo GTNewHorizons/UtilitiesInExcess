@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
 import com.fouristhenumber.utilitiesinexcess.render.BlockColoredTexture;
 import com.fouristhenumber.utilitiesinexcess.utils.ColorUtils;
 
@@ -37,13 +38,13 @@ public class BlockColored extends Block {
         this.colorMultiplier = colorMultiplier;
 
         setStepSound(base.stepSound);
-        setBlockName(((AccessorBlock) base).uie$getTextureName() + "_colored");
+        setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        String textureName = ((AccessorBlock) base).uie$getTextureName() + "_colored_grayscale";
+        String textureName = ((AccessorBlock_Client) base).uie$getTextureName() + "_colored_grayscale";
         blockIcon = new BlockColoredTexture(textureName, base, colorMultiplier);
 
         if (!(reg instanceof TextureMap tm)) return;
