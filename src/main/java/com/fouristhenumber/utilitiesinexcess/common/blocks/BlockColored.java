@@ -20,6 +20,8 @@ import com.fouristhenumber.utilitiesinexcess.utils.ColorUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+// These are intentionally not ore dictionary'd to their originals
+// to avoid flooding nei crafting recipes with them.
 public class BlockColored extends Block {
 
     private final Block base;
@@ -65,6 +67,10 @@ public class BlockColored extends Block {
     @SideOnly(Side.CLIENT)
     public int getRenderColor(int meta) {
         return ColorUtils.getHexColorFromWoolMeta(meta);
+    }
+
+    public Block getBase() {
+        return base;
     }
 
     public static class ItemBlockColored extends ItemBlock {
