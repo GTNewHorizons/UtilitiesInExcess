@@ -80,7 +80,6 @@ public class UtilitiesInExcess {
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
     public static int spikeRenderID;
-    public static int coloredBlockRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
