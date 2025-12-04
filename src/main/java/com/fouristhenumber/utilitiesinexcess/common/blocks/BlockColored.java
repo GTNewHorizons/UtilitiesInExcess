@@ -37,6 +37,7 @@ public class BlockColored extends Block {
         this.base = base;
         this.colorMultiplier = colorMultiplier;
 
+        setHardness(base.getBlockHardness(null, 0, 0, 0));
         setStepSound(base.stepSound);
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
     }
