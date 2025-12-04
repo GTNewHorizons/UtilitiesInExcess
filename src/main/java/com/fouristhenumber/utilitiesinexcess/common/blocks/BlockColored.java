@@ -41,6 +41,11 @@ public class BlockColored extends Block {
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
     }
 
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister reg) {
