@@ -154,6 +154,20 @@ public class VillagerSyncHandler extends SyncHandler {
         setFavorites(favorites);
     }
 
+    private void clearFavorites() {
+        String merchantID;
+        if (recipeList.getMerchant() instanceof Entity) {
+            merchantID = ((Entity) recipeList.getMerchant()).getUniqueID()
+                .toString();
+        } else {
+            return;
+        }
+
+        NBTTagCompound allFavoritesTag = getFavoritesTag();
+
+        allFavoritesTag.removeTag(merchantID);
+    }
+
     public void removeFavorite(int index) {
         int[] favorites = getFavorites();
         if (favorites == null) {
@@ -164,7 +178,8 @@ public class VillagerSyncHandler extends SyncHandler {
             .filter(x -> x != index)
             .toArray();
 
-        setFavorites(favorites);
+        if (favorites.length == 0) clearFavorites();
+        else setFavorites(favorites);
     }
 
     public boolean isFavorite(int index) {
