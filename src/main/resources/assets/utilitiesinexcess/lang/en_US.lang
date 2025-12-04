@@ -79,6 +79,7 @@ tile.decorative_block.1.name=Sand-Infused Endstone
 tile.decorative_block.2.name=Burnt Quartz
 tile.decorative_block.3.name=Sandy Glass
 tile.decorative_block.4.name=Frosted Stone
+tile.decorative_block.5.name=Ender-Infused Obsidian
 
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
