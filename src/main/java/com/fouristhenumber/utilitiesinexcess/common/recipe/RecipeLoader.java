@@ -871,9 +871,6 @@ public class RecipeLoader {
         // Inverted Ingot (stable)
         addShapedRecipe(ModItems.INVERTED_INGOT.newItemStack(1, 1), "nnn", "nnn", "nnn", 'n', ModItems.INVERTED_NUGGET);
 
-        // Diamond Stick
-        addShapedRecipe(new DisableableItemStack(ModItems.DIAMOND_STICK, 4), "#", "#", '#', Items.diamond);
-
         // Glutton's Axe
         addShapedRecipe(
             ModItems.GLUTTONS_AXE,
@@ -883,7 +880,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
-            ModItems.DIAMOND_STICK);
+            Blocks.obsidian);
 
         // Destruction Pickaxe
         addShapedRecipe(
@@ -894,7 +891,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
-            ModItems.DIAMOND_STICK);
+            Blocks.obsidian);
 
         // Reversing Hoe
         addShapedRecipe(
@@ -905,7 +902,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
-            ModItems.DIAMOND_STICK);
+            Blocks.obsidian);
 
         // Anti-Particulate Shovel
         addShapedRecipe(
@@ -916,7 +913,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
-            ModItems.DIAMOND_STICK);
+            Blocks.obsidian);
 
         // Etheric Sword
         addShapedRecipe(
@@ -927,15 +924,17 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
-            ModItems.DIAMOND_STICK);
+            Blocks.obsidian);
 
         // Precision Shears
         addShapedRecipe(
             ModItems.PRECISION_SHEARS,
-            " i",
-            "i ",
+            "fi",
+            "if",
             'i',
-            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'f',
+            ModBlocks.FLOATING_BLOCK);
 
         // Architect's Wand
         addShapedRecipe(
@@ -945,7 +944,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
-            ModItems.DIAMOND_STICK);
+            Blocks.obsidian);
 
         // Super Architect's Wand
         addShapedRecipe(
@@ -967,7 +966,16 @@ public class RecipeLoader {
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Glove
-        addShapedRecipe(ModItems.GLOVE, "is", "si", 'i', Blocks.wool, 's', Items.string);
+        if (ModItems.GLOVE.isEnabled()) {
+            GameRegistry.addRecipe(
+                new RecipeGlove(
+                    2,
+                    2,
+                    new ItemStack[] { new ItemStack(Items.string),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.string) },
+                    ModItems.GLOVE.newItemStack()));
+        }
     }
 
     private static void loadQEDRecipes() {

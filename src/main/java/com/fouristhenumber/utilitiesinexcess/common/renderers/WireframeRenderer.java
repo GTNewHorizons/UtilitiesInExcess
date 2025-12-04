@@ -1,12 +1,16 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
@@ -40,6 +44,14 @@ public class WireframeRenderer {
 
     @SubscribeEvent
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
+        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return;
+        ItemStack held = player.getHeldItem();
+        if (held == null || !(held.getItem() instanceof ItemArchitectsWand)) {
+            clearCandidatePositions();
+            return;
+        }
+
         if (candidatePositions.isEmpty()) {
             return;
         }

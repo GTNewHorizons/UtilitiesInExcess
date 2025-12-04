@@ -50,11 +50,8 @@ public class ItemArchitectsWand extends Item {
             return;
         }
 
-        if (player.getHeldItem() == null || !(player.getHeldItem()
-            .getItem() instanceof ItemArchitectsWand)) {
-            WireframeRenderer.clearCandidatePositions();
-            return;
-        }
+        if (!isSelected) return;
+
         MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
 
         // Check if player is looking at a block.

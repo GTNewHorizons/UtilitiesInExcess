@@ -18,11 +18,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemInvertedIngot extends Item {
+public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
     public ItemInvertedIngot() {
         this.setTextureName("utilitiesinexcess:inverted_ingot");
