@@ -17,7 +17,7 @@ public interface IPosteaTransformation {
      * This method is called during a common FMLPreInitializationEvent,
      * do all your GameRegistry.registerItem and GameRegistry.registerBlock calls here.
      */
-    void registerDummies();
+    default void registerDummies() {}
 
     /**
      * This method is called during a common FMLInitializationEvent,
@@ -48,11 +48,10 @@ public interface IPosteaTransformation {
      */
     default void addBlockRemappings(Map<String, Block> remappings) {}
 
-    // Called in FMLPostInitializationEvent
     /**
      * This method is called during a common FMLPostInitializationEvent,
      * do all your BlockReplacementManager.addBlockReplacement and
      * ItemStackReplacementManager.addItemReplacement calls here.
      */
-    void registerTransformations();
+    default void registerTransformations() {}
 }
