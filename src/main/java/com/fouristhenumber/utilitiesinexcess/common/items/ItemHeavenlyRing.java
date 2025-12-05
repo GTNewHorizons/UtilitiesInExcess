@@ -1,11 +1,22 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
+import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -16,15 +27,55 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @EventBusSubscriber()
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemHeavenlyRing extends Item implements IBauble {
 
+    private static final int RING_COUNT = 5;
+
+    private static IIcon[] itemIcons = new IIcon[RING_COUNT];
+    public static IIcon[] wingIcons = new IIcon[RING_COUNT];
+
     public ItemHeavenlyRing() {
         setTextureName("utilitiesinexcess:heavenly_ring");
         setUnlocalizedName("heavenly_ring");
         setMaxDamage(0);
+        setHasSubtypes(true);
+        setMaxStackSize(1);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> itemList) {
+        for (int i = 0; i < RING_COUNT; ++i) {
+            itemList.add(new ItemStack(item, 1, i));
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        for (int i = 0; i < RING_COUNT; ++i) {
+            itemIcons[i] = register.registerIcon(this.getIconString() + "." + i);
+            wingIcons[i] = register.registerIcon(this.getIconString() + ".wing." + i);
+        }
+        this.itemIcon = itemIcons[0];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int meta) {
+        return itemIcons[meta];
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        tooltip.add(
+            EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("item.heavenly_ring.type." + stack.getItemDamage()));
+        super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     @Optional.Method(modid = "Baubles")
@@ -77,6 +128,29 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @EventBusSubscriber.Condition
     public static boolean shouldEventBusSubscribe() {
         return !Mods.Baubles.isLoaded();
+    }
+
+    public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onPlayerRender(RenderPlayerEvent.Pre event) {
+        if (ClientProxy.frameCount % 40 > 1) return;
+
+        EntityPlayer player = event.entityPlayer;
+
+        boolean hasRing = false;
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            ItemStack stack = player.inventory.getStackInSlot(i);
+            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                hasRing = true;
+                wingedPlayers.putIfAbsent(player, stack);
+                break;
+            }
+        }
+
+        if (!hasRing) {
+            wingedPlayers.remove(player);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

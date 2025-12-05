@@ -211,6 +211,11 @@ nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on t
 item.heavenly_ring.name=Heavenly Ring
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
 nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
+item.heavenly_ring.type.0=No wings
+item.heavenly_ring.type.1=type 1
+item.heavenly_ring.type.2=type 2
+item.heavenly_ring.type.3=type 3
+item.heavenly_ring.type.4=type 4
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
