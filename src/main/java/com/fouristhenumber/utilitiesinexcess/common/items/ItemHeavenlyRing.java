@@ -17,6 +17,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.fouristhenumber.utilitiesinexcess.ClientProxy;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.api.BaubleType;
@@ -124,10 +125,10 @@ public class ItemHeavenlyRing extends Item implements IBauble {
         return true;
     }
 
-    // @EventBusSubscriber.Condition
-    // public static boolean shouldEventBusSubscribe() {
-    // return !Mods.Baubles.isLoaded();
-    // }
+    @EventBusSubscriber.Condition
+    public static boolean shouldEventBusSubscribe() {
+        return !Mods.Baubles.isLoaded();
+    }
 
     public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();
 
