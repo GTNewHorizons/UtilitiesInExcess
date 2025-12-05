@@ -17,6 +17,13 @@ import com.gtnewhorizons.postea.utility.BlockConversionInfo;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * A simple {@link IPosteaTransformation} that transforms a single block.
+ * Extend and use setDummyName and setOldName
+ * then do your transformations in doItemTransformation and doBlockTransformation
+ * <p>
+ * See {@link SoundMufflerTransformation} for an example.
+ */
 public abstract class AbstractBlockTransformation implements IPosteaTransformation {
 
     private final Block dummyBlock;
@@ -55,10 +62,20 @@ public abstract class AbstractBlockTransformation implements IPosteaTransformati
 
     public abstract BlockConversionInfo doBlockTransformation(BlockConversionInfo blockConversionInfo, World world);
 
+    /**
+     * Set the name for this transformation's dummy block *without* the modid, e.g. "dummy_golden_bag".
+     *
+     * @param dummyName The registry name for this transformation's dummy block
+     */
     public void setDummyName(String dummyName) {
         this.dummyName = dummyName;
     }
 
+    /**
+     * Set the *full registry name* (e.g. "modid:item") of the old block this transformation is replacing
+     *
+     * @param oldName The registry name for the block this transformation is replacing
+     */
     public void setOldName(String oldName) {
         this.oldName = oldName;
     }
