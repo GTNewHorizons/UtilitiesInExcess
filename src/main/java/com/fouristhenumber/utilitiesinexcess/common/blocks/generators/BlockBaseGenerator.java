@@ -11,6 +11,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public abstract class BlockBaseGenerator extends BlockContainer {
 
+    public String TILE_ENTITY_ID;
+
     public int multiplier;
 
     protected BlockBaseGenerator(String id, int mult) {
@@ -37,4 +39,6 @@ public abstract class BlockBaseGenerator extends BlockContainer {
         }
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
     }
+
+    public abstract String getGeneratorTEID();
 }

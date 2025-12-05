@@ -3,8 +3,9 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -14,12 +15,13 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemEnderLotusSeed extends Item implements IPlantable {
+// This unfortunately has to be an ItemBlock for remapping EXU to work
+public class ItemEnderLotusSeed extends ItemBlock implements IPlantable {
 
     private final Block cropBlock;
 
     public ItemEnderLotusSeed(Block cropBlock) {
-        super();
+        super(cropBlock);
         this.cropBlock = cropBlock;
         this.setUnlocalizedName("ender_lotus_seed");
     }
@@ -43,9 +45,19 @@ public class ItemEnderLotusSeed extends Item implements IPlantable {
     }
 
     @SideOnly(Side.CLIENT)
+    public int getSpriteNumber() {
+        return 1; // Use item atlas instead of block atlas
+    }
+
+    @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister reg) {
         this.itemIcon = reg.registerIcon("utilitiesinexcess:ender_lotus_seed");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int p_77617_1_) {
+        return this.itemIcon;
     }
 
     @Override
