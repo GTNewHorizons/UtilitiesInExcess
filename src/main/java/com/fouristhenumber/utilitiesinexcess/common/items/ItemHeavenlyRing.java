@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,9 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.api.BaubleType;
@@ -121,9 +124,32 @@ public class ItemHeavenlyRing extends Item implements IBauble {
         return true;
     }
 
-    @EventBusSubscriber.Condition
-    public static boolean shouldEventBusSubscribe() {
-        return !Mods.Baubles.isLoaded();
+    // @EventBusSubscriber.Condition
+    // public static boolean shouldEventBusSubscribe() {
+    // return !Mods.Baubles.isLoaded();
+    // }
+
+    public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onPlayerRender(RenderPlayerEvent.Pre event) {
+        if (ClientProxy.frameCount % 40 > 1) return;
+
+        EntityPlayer player = event.entityPlayer;
+
+        boolean hasRing = false;
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            ItemStack stack = player.inventory.getStackInSlot(i);
+            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                hasRing = true;
+                wingedPlayers.putIfAbsent(player, stack);
+                break;
+            }
+        }
+
+        if (!hasRing) {
+            wingedPlayers.remove(player);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

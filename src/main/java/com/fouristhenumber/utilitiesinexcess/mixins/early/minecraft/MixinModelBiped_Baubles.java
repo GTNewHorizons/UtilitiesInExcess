@@ -70,9 +70,10 @@ public class MixinModelBiped_Baubles {
                 () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage()));
         }
 
-        ItemStack ring = player.getHeldItem();
-        if (ring == null || !(ring.getItem() instanceof ItemHeavenlyRing))
+        ItemStack ring = ItemHeavenlyRing.wingedPlayers.getOrDefault(player, null);
+        if (ring == null) {
             ring = UIEUtils.getBauble(player, ItemHeavenlyRing.class);
+        }
         if (ring != null && ring.getItemDamage() != 0) {
             final ItemStack finalRing = ring;
             uie$heavenlyRingWing = HeavenlyRingRenderer
