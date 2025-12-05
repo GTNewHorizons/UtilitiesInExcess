@@ -17,11 +17,13 @@ public class GoldenLassoTransformation extends AbstractItemTransformation {
     public NBTTagCompound doTransformation(NBTTagCompound tag) {
         IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModItems.MOB_JAR.get()));
 
-        NBTTagCompound tagtag = tag.getCompoundTag("tag");
-        NBTTagCompound newTagtag = new NBTTagCompound();
-        newTagtag.setTag("MobData", tagtag);
+        if (tag.hasKey("tag")) {
+            NBTTagCompound tagtag = tag.getCompoundTag("tag");
+            NBTTagCompound newTagtag = new NBTTagCompound();
+            newTagtag.setTag("MobData", tagtag);
 
-        tag.setTag("tag", newTagtag);
+            tag.setTag("tag", newTagtag);
+        }
 
         return tag;
     }

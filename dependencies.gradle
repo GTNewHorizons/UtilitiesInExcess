@@ -44,7 +44,7 @@ dependencies {
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
     compileOnly('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev')
 
-    api("com.github.GTNewHorizons:Postea:1.1.4:dev")
+    api("com.github.GTNewHorizons:Postea:1.1.5:dev")
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Baubles-Expanded:2.2.4-GTNH:dev")
     devOnlyNonPublishable("io.github.legacymoddingmc:unimixins:0.1.23:dev")

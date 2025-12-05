@@ -7,6 +7,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockHighTemperatureFurnaceGenerator extends BlockBaseGenerator {
 
+    @Override
+    public String getGeneratorTEID() {
+        return "TileEntityHighTemperatureFurnaceGenerator";
+    }
+
     public BlockHighTemperatureFurnaceGenerator(String id, int mult) {
         super(id, mult);
     }
