@@ -27,6 +27,9 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
+    // This is just a number that ticks up every frame.
+    public static int frameCount = 0;
+
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
@@ -59,6 +62,7 @@ public class ClientProxy extends CommonProxy {
 
     @SubscribeEvent
     public void tickRender(TickEvent.RenderTickEvent event) {
+        frameCount++;
         if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
             if (!(mc.currentScreen == null && mc.theWorld != null
