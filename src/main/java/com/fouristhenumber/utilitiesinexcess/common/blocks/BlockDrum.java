@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,9 +17,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.cleanroommc.modularui.utils.NumberFormat;
@@ -51,48 +52,123 @@ public class BlockDrum extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
         float hitY, float hitZ) {
-        if (world.isRemote) {
+        FluidTank tank = null;
+        ItemStack heldItem = player.getCurrentEquippedItem();
+        if (heldItem == null) {
+            return false;
+        }
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (!(tile instanceof TileEntityDrum drum)) {
+            return false;
+        }
+
+        if (!world.isRemote) {
+            tank = drum.tank;
+        }
+
+        if (tank == null) {
             return true;
         }
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityDrum drum) {
-            ItemStack heldItem = player.getCurrentEquippedItem();
-            FluidStack heldFluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
 
-            if (FluidContainerRegistry.isFilledContainer(heldItem)) {
+        if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
+            FluidStack stored = tank.getFluid();
+            if (stored == null || stored.amount <= 0) {
+                return false;
+            }
 
-                if (drum.tank.getFluid() == null) {
-                    drum.setFluid(new FluidStack(heldFluid.getFluid(), 0));
-                }
+            FluidStack available = new FluidStack(stored.getFluid(), Math.min(1000, stored.amount));
+            ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(available, heldItem);
+            if (filledContainer == null) {
+                return false;
+            }
 
-                if (drum.fill(ForgeDirection.UP, heldFluid, true) == heldFluid.amount) {
-                    FluidContainerRegistry.drainFluidContainer(heldItem);
-                    ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
-                    emptyContainer.stackSize = 1;
+            FluidStack fluidInContainer = FluidContainerRegistry.getFluidForFilledItem(filledContainer);
+            if (fluidInContainer == null) return false;
+
+            tank.drain(fluidInContainer.amount, true);
+
+            if (!player.capabilities.isCreativeMode) {
+                if (heldItem.stackSize == 1) {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                } else {
                     heldItem.stackSize--;
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
-                    player.inventory.addItemStackToInventory(emptyContainer);
+                    if (!player.inventory.addItemStackToInventory(filledContainer)) {
+                        player.dropPlayerItemWithRandomChoice(filledContainer, false);
+                    }
 
-                    player.addChatMessage(
-                        new ChatComponentTranslation(
-                            "tile.drum.chat.filled",
-                            drum.tank.getFluid()
-                                .getLocalizedName(),
-                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
                 }
-            } else if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
-                if (drum.tank.getFluid() != null) {
-                    FluidStack drainedFluid = drum.drain(ForgeDirection.UP, 1000, true);
-
-                    if (drainedFluid.amount == 1000) {
-                        ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(drainedFluid, heldItem);
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                if (!world.isRemote) {
+                    if (drum.tank.getFluid() == null) {
+                        player.addChatMessage(new ChatComponentTranslation("tile.drum.chat.empty"));
+                    } else {
+                        player.addChatMessage(
+                            new ChatComponentTranslation(
+                                "tile.drum.chat.filled",
+                                drum.tank.getFluid()
+                                    .getLocalizedName(),
+                                NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
                     }
                 }
+
+                player.inventory.markDirty();
+            }
+
+            drum.markDirty();
+            world.markBlockForUpdate(x, y, z);
+            return true;
+        }
+
+        FluidStack fluid = null;
+        Item item = heldItem.getItem();
+
+        if (item instanceof IFluidContainerItem fluidContainer) {
+            fluid = fluidContainer.getFluid(heldItem);
+        } else {
+            fluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+        }
+
+        if (fluid != null && fluid.getFluid() != null) {
+            int filled = tank.fill(fluid, true);
+            if (filled > 0) {
+                ItemStack emptyContainer = null;
+
+                if (item instanceof IFluidContainerItem fluidContainer) {
+                    fluidContainer.drain(heldItem, filled, true);
+                    emptyContainer = heldItem;
+                } else {
+                    emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
+                }
+
+                if (!player.capabilities.isCreativeMode) {
+                    if (heldItem.stackSize == 1) {
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, emptyContainer);
+                    } else {
+                        heldItem.stackSize--;
+                        if (emptyContainer != null && !player.inventory.addItemStackToInventory(emptyContainer)) {
+                            player.dropPlayerItemWithRandomChoice(emptyContainer, false);
+                        }
+
+                    }
+                    if (world.isRemote) {
+                        player.addChatMessage(
+                            new ChatComponentTranslation(
+                                "tile.drum.chat.filled",
+                                drum.tank.getFluid()
+                                    .getLocalizedName(),
+                                NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
+                    }
+
+                    player.inventory.markDirty();
+                }
+
+                drum.markDirty();
+                world.markBlockForUpdate(x, y, z);
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override
