@@ -40,31 +40,31 @@ public enum ModTileEntities {
     REDSTONE_CLOCK(TileEntityRedstoneClock .class                              , "RedstoneClock"),
     TRASH_CAN_ITEM(TileEntityTrashCanItem.class                                , "TrashCanItem"),
     TRASH_CAN_FLUID(TileEntityTrashCanFluid.class                              , "TrashCanFluid"),
-    TRASH_CAN_ENERGY(TileEntityTrashCanEnergy.class                            , "TrashCanEnergyUIE"),
+    TRASH_CAN_ENERGY(TileEntityTrashCanEnergy.class                            , "TrashCanEnergy"),
     DRUM(TileEntityDrum.class                                                  , "Drum"),
     PURE_LOVE(TileEntityPureLove.class                                         , "PureLove"),
     CHEST_MAX(TileEntityMarginallyMaximisedChest.class                         , "MarginallyMaximisedChest"),
     CHEST_SHRUNK(TileEntitySignificantlyShrunkChest.class                      , "SignificantlyShrunkChest"),
     CHEST_SMALL(TileEntityRadicallyReducedChest.class                          , "RadicallyReducedChest"),
-    MUFFLER_SOUND(TileEntitySoundMuffler.class                                 , "SoundMufflerUIE"),
-    MUFFLER_RAIN(TileEntityRainMuffler.class                                   , "RainMufflerUIE"),
+    MUFFLER_SOUND(TileEntitySoundMuffler.class                                 , "SoundMuffler"),
+    MUFFLER_RAIN(TileEntityRainMuffler.class                                   , "RainMuffler"),
     BLOCK_UPDATE_DETECTOR(TileEntityBlockUpdateDetector.class                  , "BlockUpdateDetector"),
     CONVEYOR(TileEntityConveyor.class                                          , "Conveyor"),
     PORTAL_UNDERWORLD(TileEntityPortalUnderWorld.class                         , "PortalUnderWorld"),
-    GENERATOR_LOW_TEMP_FURNACE(TileEntityLowTemperatureFurnaceGenerator.class  , "LowTemperatureFurnaceGeneratorUIE"),
-    GENERATOR_FURNACE(TileEntityFurnaceGenerator.class                         , "FurnaceGeneratorUIE"),
-    GENERATOR_HIGH_TEMP_FURNACE(TileEntityHighTemperatureFurnaceGenerator.class, "HighTemperatureFurnaceGeneratorUIE"),
-    GENERATOR_LAVA(TileEntityLavaGenerator.class                               , "LavaGeneratorUIE"),
-    GENERATOR_ENDER(TileEntityEnderGenerator.class                             , "EnderGeneratorUIE"),
-    GENERATOR_REDSTONE(TileEntityRedstoneGenerator.class                       , "RedstoneGeneratorUIE"),
-    GENERATOR_FOOD(TileEntityFoodGenerator.class                               , "FoodGeneratorUIE"),
-    GENERATOR_POTION(TileEntityPotionGenerator.class                           , "PotionGeneratorUIE"),
-    GENERATOR_SOLAR(TileEntitySolarGenerator.class                             , "SolarGeneratorUIE"),
-    GENERATOR_TNT(TileEntityTNTGenerator.class                                 , "TNTGeneratorUIE"),
-    GENERATOR_PINK(TileEntityPinkGenerator.class                               , "PinkGeneratorUIE"),
-    GENERATOR_NETHER_STAR(TileEntityNetherStarGenerator.class                  , "NetherStarGeneratorUIE"),
-    ENDER_QUARRY(TileEntityEnderQuarry.class                                   , "EnderQuarryUIE"),
-    ENDER_MARKER(TileEntityEnderMarker.class                                   , "EnderMarkerUIE"),
+    GENERATOR_LOW_TEMP_FURNACE(TileEntityLowTemperatureFurnaceGenerator.class  , "LowTemperatureFurnaceGenerator"),
+    GENERATOR_FURNACE(TileEntityFurnaceGenerator.class                         , "FurnaceGenerator"),
+    GENERATOR_HIGH_TEMP_FURNACE(TileEntityHighTemperatureFurnaceGenerator.class, "HighTemperatureFurnaceGenerator"),
+    GENERATOR_LAVA(TileEntityLavaGenerator.class                               , "LavaGenerator"),
+    GENERATOR_ENDER(TileEntityEnderGenerator.class                             , "EnderGenerator"),
+    GENERATOR_REDSTONE(TileEntityRedstoneGenerator.class                       , "RedstoneGenerator"),
+    GENERATOR_FOOD(TileEntityFoodGenerator.class                               , "FoodGenerator"),
+    GENERATOR_POTION(TileEntityPotionGenerator.class                           , "PotionGenerator"),
+    GENERATOR_SOLAR(TileEntitySolarGenerator.class                             , "SolarGenerator"),
+    GENERATOR_TNT(TileEntityTNTGenerator.class                                 , "TNTGenerator"),
+    GENERATOR_PINK(TileEntityPinkGenerator.class                               , "PinkGenerator"),
+    GENERATOR_NETHER_STAR(TileEntityNetherStarGenerator.class                  , "NetherStarGenerator"),
+    ENDER_QUARRY(TileEntityEnderQuarry.class                                   , "EnderQuarry"),
+    ENDER_MARKER(TileEntityEnderMarker.class                                   , "EnderMarker"),
     ;
     // spotless:on
 
@@ -89,7 +89,7 @@ public enum ModTileEntities {
     ModTileEntities(Boolean enabled, Class<? extends TileEntity> clazz, String name) {
         this.isEnabled = enabled;
         this.clazz = clazz;
-        this.name = "TileEntity" + name;
+        this.name = "TileEntity" + name + "UIE";
     }
 
     public boolean isEnabled() {

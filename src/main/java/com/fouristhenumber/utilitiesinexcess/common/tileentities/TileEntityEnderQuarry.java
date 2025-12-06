@@ -47,9 +47,10 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
 public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
-    public static final int STEPS_PER_TICK = 400;
+    public static final int BASE_STEPS_PER_TICK = 400;
     public static final int ITEM_BUFFER_CAPACITY = 256;
     public static final Block REPLACE_BLOCK = Blocks.dirt;
+    public boolean isCreativeBoosted = false;
     private int storedItems;
     public ForgeDirection facing;
     private Area2d workArea;
@@ -117,15 +118,18 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
             if (te instanceof TileEntityEnderMarker marker) {
                 @Nullable
-                Vector4i scanReturn = marker.checkForBoundary(dir);
+                List<Vector2i> scanReturn = marker.checkForBoundary(dir);
                 if (scanReturn != null) {
+                    Vector2i firstCorner = scanReturn.get(0);
+                    Vector2i secondCorner = scanReturn.get(1);
+
                     // Pad work area by one (inwards), so that we don't mine the markers
                     Vector2i low = new Vector2i(
-                        Math.min(scanReturn.x, scanReturn.z) + 1,
-                        Math.min(scanReturn.y, scanReturn.w) + 1);
+                        Math.min(firstCorner.x, secondCorner.x) + 1,
+                        Math.min(firstCorner.y, secondCorner.y) + 1);
                     Vector2i high = new Vector2i(
-                        Math.max(scanReturn.x, scanReturn.z) - 1,
-                        Math.max(scanReturn.y, scanReturn.w) - 1);
+                        Math.max(firstCorner.x, secondCorner.x) - 1,
+                        Math.max(firstCorner.y, secondCorner.y) - 1);
                     setWorkArea(new Area2d(low, high));
                     state = QuarryWorkState.RUNNING;
 
@@ -562,7 +566,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
 
         if (state == QuarryWorkState.RUNNING) {
-            while (brokenBlocksTick < STEPS_PER_TICK && stepPos()) {
+            while (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)) && stepPos()) {
                 // TODO: Remove after this has been tested by others
                 if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
                     throw new RuntimeException(
@@ -582,7 +586,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     if (state != QuarryWorkState.RUNNING) break;
                 }
             }
-            if (brokenBlocksTick < STEPS_PER_TICK && state == QuarryWorkState.RUNNING) {
+            if (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)) && state == QuarryWorkState.RUNNING) {
                 state = QuarryWorkState.FINISHED;
                 unloadSelf();
             }

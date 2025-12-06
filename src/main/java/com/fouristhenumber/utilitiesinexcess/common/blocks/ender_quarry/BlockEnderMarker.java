@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
@@ -10,9 +10,11 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -67,6 +69,26 @@ public class BlockEnderMarker extends BlockContainer {
         if (!worldIn.isRemote && te instanceof TileEntityEnderMarker marker) {
             marker.checkForAlignedMarkers();
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+        if (worldIn.isRemote) return true;
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof TileEntityEnderMarker marker) {
+            if (player.isSneaking()) {
+                if (marker.operationMode == TileEntityEnderMarker.MarkerOperationMode.ARBITRARY_LOOP) {
+                    marker.boundaryForArbitraryLoop();
+                }
+                int newCuboidSize = marker.increaseCuboidSize();
+                player.addChatComponentMessage(new ChatComponentText("Increased cuboid size to " + newCuboidSize + "."));
+            } else {
+                marker.rotateMode();
+                player.addChatComponentMessage(new ChatComponentText(marker.getMode()));
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

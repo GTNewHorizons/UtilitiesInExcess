@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "meta=0": { "model": "utilitiesinexcess:blocks/upgrade_speed_1" },
+    "meta=1": { "model": "utilitiesinexcess:blocks/upgrade_speed_2" },
+    "meta=2": { "model": "utilitiesinexcess:blocks/upgrade_speed_3" }
+  }
+}

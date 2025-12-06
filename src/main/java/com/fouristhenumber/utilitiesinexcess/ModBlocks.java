@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarryUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -13,8 +14,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderMarker;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderQuarry;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderMarker;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
@@ -109,6 +110,7 @@ public enum ModBlocks {
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     ENDER_QUARRY(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarry(), "ender_quarry"),
     ENDER_MARKER(EnderQuarryConfig.enableEnderQuarry, new BlockEnderMarker(), "ender_marker"),
+    ENDER_QUARRY_UPGRADE(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarryUpgrade(), "ender_quarry_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

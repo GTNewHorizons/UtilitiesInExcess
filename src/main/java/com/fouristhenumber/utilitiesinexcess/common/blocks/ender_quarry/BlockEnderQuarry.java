@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
@@ -51,11 +51,14 @@ public class BlockEnderQuarry extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        if (worldIn.isRemote) {
-            return true;
-        }
+        if (worldIn.isRemote) return true;
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityEnderQuarry quarry) {
+            if (player.isSneaking() && player.capabilities.isCreativeMode) {
+                quarry.isCreativeBoosted = !quarry.isCreativeBoosted;
+                player.addChatComponentMessage(new ChatComponentText((quarry.isCreativeBoosted ? "" : "Un-") + "Creative-Boosted Quarry."));
+                return true;
+            }
             if (quarry.state == TileEntityEnderQuarry.QuarryWorkState.STOPPED) {
                 quarry.scanForWorkAreaFromMarkers(player);
                 if (quarry.state == TileEntityEnderQuarry.QuarryWorkState.RUNNING) {
