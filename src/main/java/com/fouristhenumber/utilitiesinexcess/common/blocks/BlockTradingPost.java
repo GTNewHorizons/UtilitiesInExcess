@@ -24,6 +24,8 @@ public class BlockTradingPost extends BlockContainer {
         super(Material.wood);
         setBlockName("trading_post");
         setBlockTextureName("utilitiesinexcess:trading_post");
+        setHardness(3.0F);
+        setResistance(7.0F);
     }
 
     @Override
