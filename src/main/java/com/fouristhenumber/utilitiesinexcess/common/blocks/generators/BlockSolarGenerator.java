@@ -7,6 +7,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockSolarGenerator extends BlockBaseGenerator {
 
+    @Override
+    public String getGeneratorTEID() {
+        return "TileEntitySolarGeneratorUIE";
+    }
+
     public BlockSolarGenerator(String id, int mult) {
         super(id, mult);
     }
