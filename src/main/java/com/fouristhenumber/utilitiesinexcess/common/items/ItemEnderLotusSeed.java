@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -15,13 +15,12 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-// This unfortunately has to be an ItemBlock for remapping EXU to work
-public class ItemEnderLotusSeed extends ItemBlock implements IPlantable {
+public class ItemEnderLotusSeed extends Item implements IPlantable {
 
     private final Block cropBlock;
 
     public ItemEnderLotusSeed(Block cropBlock) {
-        super(cropBlock);
+        super();
         this.cropBlock = cropBlock;
         this.setUnlocalizedName("ender_lotus_seed");
     }

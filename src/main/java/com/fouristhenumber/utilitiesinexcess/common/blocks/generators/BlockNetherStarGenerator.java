@@ -7,11 +7,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockNetherStarGenerator extends BlockBaseGenerator {
 
-    @Override
-    public String getGeneratorTEID() {
-        return "TileEntityNetherStarGeneratorUIE";
-    }
-
     public BlockNetherStarGenerator(String id, int mult) {
         super(id, mult);
     }

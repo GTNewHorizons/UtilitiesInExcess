@@ -7,10 +7,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockTNTGenerator extends BlockBaseGenerator {
 
-    public String getGeneratorTEID() {
-        return "TileEntityTNTGeneratorUIE";
-    }
-
     public BlockTNTGenerator(String id, int mult) {
         super(id, mult);
     }
