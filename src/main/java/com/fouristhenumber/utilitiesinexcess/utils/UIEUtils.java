@@ -3,10 +3,13 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.nei.NEIUtils;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
@@ -63,5 +66,15 @@ public class UIEUtils {
 
     public static float lerp(float cur, float target, float speed) {
         return cur + (target - cur) * speed;
+    }
+
+    public static void hideInNei(Block block) {
+        hideInNei(Item.getItemFromBlock(block));
+    }
+
+    public static void hideInNei(Item item) {
+        if (!Mods.NEI.isLoaded()) return;
+
+        NEIUtils.hideItem(item);
     }
 }

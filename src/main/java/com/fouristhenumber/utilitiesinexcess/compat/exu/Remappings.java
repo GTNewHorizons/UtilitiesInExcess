@@ -1,8 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.exu;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -11,6 +9,7 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.CompressedBlocksTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.ConveyorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.DarkPortalTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.DecoBlock1Transformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.SoundMufflerTransformation;
@@ -21,7 +20,10 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTr
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.UnstableIngotTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.WateringCanTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.SpikeTransformation;
 
 public enum Remappings {
     // spotless:off
@@ -31,12 +33,9 @@ public enum Remappings {
     ANGEL_BLOCK("ExtraUtilities:angelBlock", ModBlocks.FLOATING_BLOCK),
     BUD("ExtraUtilities:budoff", ModBlocks.BLOCK_UPDATE_DETECTOR),
     DECO_BLOCK_2("ExtraUtilities:decorativeBlock2", ModBlocks.DECORATIVE_GLASS),
-    MINI_CHEST("ExtraUtilities:chestMini", ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST),
-    FULL_CHEST("ExtraUtilities:chestFull", ModBlocks.MARGINALLY_MAXIMISED_CHEST),
     CURTAINS("ExtraUtilities:curtains", ModBlocks.BLACKOUT_CURTAINS),
     PURE_LOVE("ExtraUtilities:pureLove", ModBlocks.PURE_LOVE),
     BEDROCKUIM_BLOCK("ExtraUtilities:block_bedrockium", ModBlocks.BEDROCKIUM_BLOCK),
-    CONVEYOR("ExtraUtilities:conveyor", ModBlocks.CONVEYOR),
     GREENSCREEN("ExtraUtilities:greenscreen", ModBlocks.LAPIS_AETHERIUS),
 //    PEACEFUL_TABLE("ExtraUtilities:peaceful_table_top", ModBlocks.abc), // TODO: add here once merged
     CURSED_EARTH("ExtraUtilities:cursedearthside", ModBlocks.CURSED_EARTH),
@@ -47,23 +46,23 @@ public enum Remappings {
     TIMER("ExtraUtilities:timer", ModBlocks.REDSTONE_CLOCK),
     ETHEREAL_GLASS("ExtraUtilities:etherealglass", ModBlocks.ETHEREAL_GLASS),
 //    ENDER_PUMP("ExtraUtilities:enderThermicPump", ModBlocks.abc), // TODO: add here once merged
-//    COLORED_STONE_BRICK("ExtraUtilities:colorStoneBrick", ModBlocks.abc),
-//    COLORED_PLANKS("ExtraUtilities:colorWoodPlanks", ModBlocks.abc),
-//    COLORED_GLOWSTONE("ExtraUtilities:color_lightgem", ModBlocks.abc),
-//    COLORED_STONE("ExtraUtilities:color_stone", ModBlocks.abc),
-//    COLORED_QUARTZ_BLOCK("ExtraUtilities:color_quartzBlock", ModBlocks.abc),
-//    COLORED_SOUL_SAND("ExtraUtilities:color_hellsand", ModBlocks.abc),
-//    COLORED_REDSTONE_LAMP("ExtraUtilities:color_redstoneLight", ModBlocks.abc),
-//    COLORED_BRICKS("ExtraUtilities:color_brick", ModBlocks.abc),
-//    COLORED_COBBLESTONE("ExtraUtilities:color_stonebrick", ModBlocks.abc),
-//    COLORED_LAPIS_BLOCK("ExtraUtilities:color_blockLapis", ModBlocks.abc),
-//    COLORED_OBSIDIAN("ExtraUtilities:color_obsidian", ModBlocks.abc),
-//    COLORED_REDSTONE_BLOCK("ExtraUtilities:color_blockRedstone", ModBlocks.abc),
-//    COLORED_COAL_BLOCK("ExtraUtilities:color_blockCoal", ModBlocks.abc),
+    COLORED_STONE_BRICK("ExtraUtilities:colorStoneBrick", ModBlocks.COLORED_STONE_BRICKS),
+    COLORED_PLANKS("ExtraUtilities:colorWoodPlanks", ModBlocks.COLORED_WOOD_PLANKS),
+    COLORED_GLOWSTONE("ExtraUtilities:color_lightgem", ModBlocks.COLORED_GLOWSTONE),
+    COLORED_STONE("ExtraUtilities:color_stone", ModBlocks.COLORED_STONE),
+    COLORED_QUARTZ_BLOCK("ExtraUtilities:color_quartzBlock", ModBlocks.COLORED_QUARTZ_BLOCK),
+    COLORED_SOUL_SAND("ExtraUtilities:color_hellsand", ModBlocks.COLORED_SOUL_SAND),
+    COLORED_REDSTONE_LAMP("ExtraUtilities:color_redstoneLight", ModBlocks.COLORED_REDSTONE_LAMP),
+    COLORED_BRICKS("ExtraUtilities:color_brick", ModBlocks.COLORED_BRICKS),
+    COLORED_COBBLESTONE("ExtraUtilities:color_stonebrick", ModBlocks.COLORED_COBBLESTONE),
+    COLORED_LAPIS_BLOCK("ExtraUtilities:color_blockLapis", ModBlocks.COLORED_LAPIS_BLOCK),
+    COLORED_OBSIDIAN("ExtraUtilities:color_obsidian", ModBlocks.COLORED_OBSIDIAN),
+    COLORED_REDSTONE_BLOCK("ExtraUtilities:color_blockRedstone", ModBlocks.COLORED_REDSTONE_BLOCK),
+    COLORED_COAL_BLOCK("ExtraUtilities:color_blockCoal", ModBlocks.COLORED_COAL_BLOCK),
 
     // Direct item remappings
     GLOVE("ExtraUtilities:glove", ModItems.GLOVE),
-    HEAVENLY_RING("ExtraUtilities:angelRing", ModItems.HEAVENLY_RING), // TODO validate when ring variations are merged
+    HEAVENLY_RING("ExtraUtilities:angelRing", ModItems.HEAVENLY_RING),
     FIRE_BATTERY("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY),
     ARCHITECTS_WAND("ExtraUtilities:buildersWand", ModItems.ARCHITECTS_WAND),
     SUPER_ARCHITECTS_WAND("ExtraUtilities:creativeBuildersWand", ModItems.ARCHITECTS_WAND),
@@ -89,8 +88,15 @@ public enum Remappings {
     DARK_PORTAL(new DarkPortalTransformation()),
     TRASH_CANS(new TrashCanTransformation()),
     ENDER_LOTUS(new EnderLilyTransformation()),
+    CONVEYOR(new ConveyorTransformation()),
     // Tile Entity Transformation
     GENERATORS(new GeneratorTransformation()),
+    FULL_CHEST(new FullChestTransformation()),
+    MINI_CHEST(new MiniChestTransformation()),
+    SPIKES(new SpikeTransformation()),
+    // Skipped mappings
+    PAINT_BRUSH("ExtraUtilities:paintbrush"),
+    DATABLOCK("ExtraUtilities:datablock"),
 
     ; // leave trailing semicolon
     // spotless:on
@@ -100,6 +106,7 @@ public enum Remappings {
     public static final HashMap<String, Item> itemMappings = new HashMap<>();
     public static final HashMap<String, Block> blockMappings = new HashMap<>();
     public static final List<IPosteaTransformation> transformations = new ArrayList<>();
+    public static final Set<String> skippedMappings = new HashSet<>();
 
     public static void init() {
         for (Remappings remapping : VALUES) {
@@ -111,6 +118,9 @@ public enum Remappings {
             }
             if (remapping.transformation != null) {
                 transformations.add(remapping.transformation);
+            }
+            if (remapping.isSkipped) {
+                skippedMappings.add(remapping.getName());
             }
         }
     }
@@ -129,6 +139,8 @@ public enum Remappings {
     private Item replacementItem = null;
     private IPosteaTransformation transformation = null;
 
+    private boolean isSkipped = false;
+
     Remappings(String oldName, ModBlocks modBlock) {
         this.oldName = oldName;
         this.replacementBlock = modBlock.get();
@@ -138,6 +150,11 @@ public enum Remappings {
     Remappings(String oldName, ModItems modItem) {
         this.oldName = oldName;
         this.replacementItem = modItem.get();
+    }
+
+    Remappings(String oldName) {
+        this.oldName = oldName;
+        isSkipped = true;
     }
 
     Remappings(IPosteaTransformation posteaTransformation) {

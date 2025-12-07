@@ -11,10 +11,6 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransforma
 
 public class EnderLilyTransformation implements IPosteaTransformation {
 
-    public EnderLilyTransformation() {
-
-    }
-
     @Override
     public void addItemRemappings(Map<String, Item> remappings) {
         remappings.put("ExtraUtilities:plant/ender_lilly", ModItems.ENDER_LOTUS_SEED.get());

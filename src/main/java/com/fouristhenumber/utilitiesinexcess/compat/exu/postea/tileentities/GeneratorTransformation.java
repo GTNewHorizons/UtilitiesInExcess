@@ -15,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockBaseG
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.DummyBlock;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
+import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
@@ -44,6 +45,9 @@ public class GeneratorTransformation implements IPosteaTransformation {
         GameRegistry.registerBlock(dummyBlock1, dummyName1);
         GameRegistry.registerBlock(dummyBlock8, dummyName8);
         GameRegistry.registerBlock(dummyBlock64, dummyName64);
+        UIEUtils.hideInNei(dummyBlock1);
+        UIEUtils.hideInNei(dummyBlock8);
+        UIEUtils.hideInNei(dummyBlock64);
     }
 
     @Override
