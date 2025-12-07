@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -12,6 +14,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRende
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
+import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -25,6 +28,12 @@ public class ClientProxy extends CommonProxy {
 
     // This is just a number that ticks up every frame.
     public static int frameCount = 0;
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+        ModelRegistry.registerModid(MODID);
+    }
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -43,11 +52,6 @@ public class ClientProxy extends CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-    }
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
     }
 
     @SubscribeEvent
