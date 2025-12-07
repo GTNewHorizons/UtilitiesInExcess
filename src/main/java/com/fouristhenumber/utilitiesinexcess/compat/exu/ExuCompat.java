@@ -12,6 +12,11 @@ public class ExuCompat {
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
             if (mapping == null) continue;
 
+            if (Remappings.skippedMappings.contains(mapping.name)) {
+                mapping.ignore();
+                continue;
+            }
+
             if (mapping.type == GameRegistry.Type.ITEM) {
                 Item newItem = Remappings.itemMappings.getOrDefault(mapping.name, null);
                 if (newItem != null) {
