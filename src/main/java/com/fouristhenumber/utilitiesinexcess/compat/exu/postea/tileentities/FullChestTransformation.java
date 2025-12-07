@@ -1,12 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities;
 
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.gtnewhorizons.postea.utility.PosteaUtilities;
 
@@ -14,15 +12,9 @@ public class FullChestTransformation extends AbstractTileEntityTransformation {
 
     public FullChestTransformation() {
         super();
-        setDummyBlockName("dummy_full_chest");
         setOldBlockName("ExtraUtilities:chestFull");
         setOldTileEntityId("TileFullChest");
-    }
-
-    @Override
-    public NBTTagCompound doItemTransformation(NBTTagCompound tag) {
-        IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModBlocks.MARGINALLY_MAXIMISED_CHEST.getItem()));
-        return tag;
+        setNewBlock(ModBlocks.MARGINALLY_MAXIMISED_CHEST);
     }
 
     @Override

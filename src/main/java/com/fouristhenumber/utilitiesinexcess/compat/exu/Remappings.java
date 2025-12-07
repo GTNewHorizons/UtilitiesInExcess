@@ -1,6 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.compat.exu;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,10 +16,10 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.Compressed
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.ConveyorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.DarkPortalTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.DecoBlock1Transformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.EnderLilyTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.SoundMufflerTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.TrashCanTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.EnderLilyTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.UnstableIngotTransformation;
@@ -45,7 +49,7 @@ public enum Remappings {
     SPIKE_DIAMOND("ExtraUtilities:spike_base_diamond", ModBlocks.SPIKE_DIAMOND),
     TIMER("ExtraUtilities:timer", ModBlocks.REDSTONE_CLOCK),
     ETHEREAL_GLASS("ExtraUtilities:etherealglass", ModBlocks.ETHEREAL_GLASS),
-//    ENDER_PUMP("ExtraUtilities:enderThermicPump", ModBlocks.abc), // TODO: add here once merged
+    ENDER_PUMP("ExtraUtilities:enderThermicPump", ModBlocks.SMART_PUMP),
     COLORED_STONE_BRICK("ExtraUtilities:colorStoneBrick", ModBlocks.COLORED_STONE_BRICKS),
     COLORED_PLANKS("ExtraUtilities:colorWoodPlanks", ModBlocks.COLORED_WOOD_PLANKS),
     COLORED_GLOWSTONE("ExtraUtilities:color_lightgem", ModBlocks.COLORED_GLOWSTONE),
@@ -75,12 +79,14 @@ public enum Remappings {
     XRAY_GLASSES("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES),
     BEDROCKUIM_INGOT("ExtraUtilities:bedrockiumIngot", ModItems.BEDROCKIUM_INGOT),
     SCANNER("ExtraUtilities:scanner", ModItems.BLOCK_ANALYZER),
+
     // Item Transformations
     GOLDEN_BAG(new GoldenBagTransformation()),
     WATERING_CAN(new WateringCanTransformation()),
     INVERSION_SIGIL(new DivisionSigilTransformation()),
     MOB_JAR(new GoldenLassoTransformation()),
     INVERTED_INGOT(new UnstableIngotTransformation()),
+
     // Block Transformations
     SOUND_MUFFLER(new SoundMufflerTransformation()),
     DECO_BLOCK_1(new DecoBlock1Transformation()),
@@ -89,11 +95,14 @@ public enum Remappings {
     TRASH_CANS(new TrashCanTransformation()),
     ENDER_LOTUS(new EnderLilyTransformation()),
     CONVEYOR(new ConveyorTransformation()),
+
     // Tile Entity Transformation
     GENERATORS(new GeneratorTransformation()),
     FULL_CHEST(new FullChestTransformation()),
     MINI_CHEST(new MiniChestTransformation()),
     SPIKES(new SpikeTransformation()),
+//    ENDER_PUMP(new EnderPumpTransformation()),
+
     // Skipped mappings
     PAINT_BRUSH("ExtraUtilities:paintbrush"),
     DATABLOCK("ExtraUtilities:datablock"),

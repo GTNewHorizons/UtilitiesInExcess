@@ -11,8 +11,17 @@ import net.minecraft.world.chunk.Chunk;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockBaseGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockHighTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLavaGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockLowTemperatureFurnaceGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockNetherStarGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPinkGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotionGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.DummyBlock;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
@@ -133,7 +142,7 @@ public class GeneratorTransformation implements IPosteaTransformation {
         Block newBlock = getGeneratorFromMetaAndMult(meta, mult).get();
 
         return new BlockInfo(newBlock, 0, (oldTag) -> {
-            NBTTagCompound tag = PosteaUtilities.cleanseNBT(((BlockBaseGenerator) newBlock).getGeneratorTEID(), oldTag);
+            NBTTagCompound tag = PosteaUtilities.cleanseNBT(getGeneratorTEID(newBlock), oldTag);
             tag.setInteger("Energy", oldTag.getInteger("Energy"));
             int burnTime = (int) oldTag.getDouble("coolDown");
             int rfPerTick = oldTag.getInteger("curLevel");
@@ -236,5 +245,34 @@ public class GeneratorTransformation implements IPosteaTransformation {
 
             default -> throw new IllegalStateException("No defined generator with EXU meta: " + meta);
         };
+    }
+
+    // TODO replace this once malteez's quarry PR gets merged with the TEID enum
+    private static String getGeneratorTEID(Block block) {
+        if (block instanceof BlockEnderGenerator) {
+            return "TileEntityEnderGeneratorUIE";
+        } else if (block instanceof BlockFoodGenerator) {
+            return "TileEntityFoodGeneratorUIE";
+        } else if (block instanceof BlockFurnaceGenerator) {
+            return "TileEntityFurnaceGeneratorUIE";
+        } else if (block instanceof BlockHighTemperatureFurnaceGenerator) {
+            return "TileEntityHighTemperatureFurnaceGenerator";
+        } else if (block instanceof BlockLavaGenerator) {
+            return "TileEntityLowTemperatureFurnaceGeneratorUIE";
+        } else if (block instanceof BlockLowTemperatureFurnaceGenerator) {
+            return "TileEntityNetherStarGeneratorUIE";
+        } else if (block instanceof BlockNetherStarGenerator) {
+            return "TileEntityPinkGeneratorUIE";
+        } else if (block instanceof BlockPinkGenerator) {
+            return "TileEntityPotionGeneratorUIE";
+        } else if (block instanceof BlockPotionGenerator) {
+            return "TileEntityRedstoneGeneratorUIE";
+        } else if (block instanceof BlockRedstoneGenerator) {
+            return "TileEntitySolarGeneratorUIE";
+        } else if (block instanceof BlockSolarGenerator) {
+            return "TileEntityTNTGeneratorUIE";
+        }
+
+        return "";
     }
 }

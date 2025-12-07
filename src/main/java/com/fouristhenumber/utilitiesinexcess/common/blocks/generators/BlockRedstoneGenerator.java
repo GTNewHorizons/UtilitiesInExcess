@@ -7,11 +7,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockRedstoneGenerator extends BlockBaseGenerator {
 
-    @Override
-    public String getGeneratorTEID() {
-        return "TileEntityRedstoneGeneratorUIE";
-    }
-
     public BlockRedstoneGenerator(String id, int mult) {
         super(id, mult);
     }
