@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 public class BlockTrashCanEnergy extends BlockContainer {
 
@@ -18,5 +19,20 @@ public class BlockTrashCanEnergy extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityTrashCanEnergy();
+    }
+
+    @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 }
