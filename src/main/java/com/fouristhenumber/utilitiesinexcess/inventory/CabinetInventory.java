@@ -22,7 +22,6 @@ public class CabinetInventory extends ItemStackHandler {
     @Nullable
     private Predicate<ItemStack> itemMatcher = null;
 
-
     public CabinetInventory(TileFilingCabinetBaseItem cabinet, int numSlots, int baseCapacity, int capacityPerUpgrade) {
         super(numSlots);
         this.cabinet = cabinet;
@@ -102,7 +101,7 @@ public class CabinetInventory extends ItemStackHandler {
     }
 
     public int getCapacity() {
-         return baseCapacity + capacityPerUpgrade * cabinet.getNumberOfUpgrades();
+        return baseCapacity + capacityPerUpgrade * cabinet.getNumberOfUpgrades();
     }
 
     public int getSlotsUsed() {
