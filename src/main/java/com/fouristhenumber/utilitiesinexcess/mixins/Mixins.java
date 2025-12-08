@@ -39,13 +39,17 @@ public enum Mixins implements IMixins {
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
     ACCESSORS(new MixinBuilder("Accessors for the mod to use")
         .setPhase(Phase.EARLY)
-        .addCommonMixins("minecraft.accessors.AccessorEntityZombie",
+        .addCommonMixins(
+            "minecraft.accessors.AccessorBlock",
+            "minecraft.accessors.AccessorEntityZombie",
             "minecraft.accessors.AccessorItemTool",
             "minecraft.accessors.AccessorItemSword",
             "minecraft.accessors.AccessorEntityLivingBase",
             "minecraft.accessors.AccessorPotionEffect",
             "minecraft.accessors.AccessorItemRenderer",
             "minecraft.accessors.AccessorClientMinecraft")
+        .addClientMixins(
+            "minecraft.accessors.AccessorBlock_Client")
     )
     ; // leave trailing semicolon
     // spotless:on
