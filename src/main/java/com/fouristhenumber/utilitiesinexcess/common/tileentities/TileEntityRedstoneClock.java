@@ -8,48 +8,50 @@ public class TileEntityRedstoneClock extends TileEntity {
     private boolean powered = false;
     private boolean outputOn = false;
     private int timer = 0;
-    private final int TIMER_FREQUENCY_IN_TICKS = 20;
 
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
 
-        if (!powered) {
-            timer = (timer + 1) % TIMER_FREQUENCY_IN_TICKS;
-            boolean newState = (timer < 2);
-            if (newState != outputOn) {
-                outputOn = newState;
-                notifyNeighbors();
-            }
-        } else {
-            if (outputOn) {
-                outputOn = false;
-                notifyNeighbors();
-            }
-            timer = 0;
+        boolean prevOutput = outputOn;
+
+        outputOn = false;
+        // If the clock is being powered outside the window where it is active, it must have come from an external
+        // source
+        timer--;
+        if (timer <= 1) {
+            outputOn = true;
+            if (timer == 0) timer = 20;
+        } else if (powered) {
+            timer = 20;
+        }
+
+        if (prevOutput != outputOn) {
+            notifyNeighbors();
         }
     }
 
     public void onInputChanged() {
-        boolean nowPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-        if (nowPowered != powered) {
-            powered = nowPowered;
-            if (powered) {
-                outputOn = false;
-                notifyNeighbors();
-            }
+        powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+    }
+
+    private void updateBlockState() {
+        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+        int newMeta = outputOn ? 1 : 0;
+
+        if (meta != newMeta) {
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord), 1);
         }
     }
 
-    // Return 0 or 15 for our block’s power output
     public int getOutputPower() {
         return outputOn ? 15 : 0;
     }
 
     private void notifyNeighbors() {
         worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord));
+        updateBlockState();
     }
 
     @Override
