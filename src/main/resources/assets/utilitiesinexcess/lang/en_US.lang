@@ -428,7 +428,7 @@ nei.infopage.uie.blackout_curtains.1=Blackout Curtains have no collision and blo
 
 tile.conveyor.name=Conveyor
 
-nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible.
+nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible. If a conveyor pushes an item into the side of another conveyor, it will be pushed up and onto it.
 
 tile.underworld_portal.name=Portal to the Underworld
 
