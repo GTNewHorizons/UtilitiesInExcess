@@ -22,7 +22,7 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
@@ -48,9 +48,12 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         villagerColumns = new ArrayList<>();
 
         TradingPostPanel panel = new TradingPostPanel("uie:trading_post");
-        panel.coverChildren();
+        panel.height(229)
+            .width(265);
         Column mainColumn = new Column();
-        mainColumn.coverChildren();
+        mainColumn.sizeRel(1)
+            .paddingRight(2)
+            .childPadding(0);
 
         TradeList tradeList = new TradeList().coverChildrenWidth()
             .padding(0)
@@ -59,24 +62,14 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             .height(125);
         Row tradeListRow = new Row();
         tradeListRow.coverChildren()
+            .height(1500)
             .childPadding(3)
-        // .paddingRight(2) // For latest
-        ;
+            .paddingRight(2);
         for (int i = 0; i < 3; i++) {
             VillagerColumn columnOfVillagers = new VillagerColumn();
             columnOfVillagers.alignY(0)
                 .coverChildren()
                 .childPadding(3);
-
-            // In MUI2 latest I had issues with the dynamic sizing of the panel
-            // So these dummy trades were required to always keep it the same size
-            // VillagerWidget villagerTrades2 = new VillagerWidget(guiData, guiSyncManager, null, columnOfVillagers);
-            // villagerTrades2.child(
-            // new TradeWidget(null).dummy()
-            // .height(1))
-            // .height(1)
-            // .setEnabled(false);
-            // columnOfVillagers.child(villagerTrades2);
 
             villagerColumns.add(columnOfVillagers);
 
@@ -118,13 +111,13 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         topRow.child(
             IKey.str(StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
                 .asWidget()
-                .left(15)
-                .top(5));
+                .left(14)
+                .top(4));
         panel.child(
             new SearchBar().villagerParent(tradeListRow)
                 .alignX(1)
                 .alignY(0)
-                .top(2)
+                .top(4)
                 .right(1)
                 .height(10)
                 .width(70));
@@ -136,8 +129,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         Row bottomRow = new Row();
         bottomRow.coverChildrenHeight()
             .alignX(1)
-            .width(256); // This is the only hard-coded width in the panel,
-        // and the panel could (somewhat) support resizing if it wasn't. The inventory widget breaks if it's relative.
+            .width(256);
 
         var inventory = SlotGroupWidget.playerInventory(0, false);
         bottomRow.child(
@@ -176,7 +168,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     public static class HelpWidget extends Widget<HelpWidget> {
 
         @Override
-        public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+        public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
             super.draw(context, widgetTheme);
             Color.setGlColorOpaque(Color.BLUE.main);
             GuiTextures.HELP.draw(0, 0, 12, 12);
@@ -184,17 +176,16 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     }
 
     public static void buildHelpToolTip(RichTooltip tooltip) {
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.0"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.1"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.2"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.3"));
-        if (Mods.FindIt.isLoaded())
-            tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.4"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.0"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.1"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.2"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.3"));
+        if (Mods.FindIt.isLoaded()) tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.4"));
         tooltip.addLine("§7"); // If the line is empty it gets skipped
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.5"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.6"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.7"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.trade_tooltip.8"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.5"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.6"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.7"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.8"));
     }
 
     public class TradingPostPanel extends ModularPanel {

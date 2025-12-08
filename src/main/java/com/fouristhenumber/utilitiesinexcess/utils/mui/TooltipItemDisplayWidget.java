@@ -8,19 +8,19 @@ import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.drawable.text.RichText;
-import com.cleanroommc.modularui.integration.nei.NEIIngredientProvider;
+import com.cleanroommc.modularui.integration.recipeviewer.RecipeViewerIngredientProvider;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 
-// NEIIngredientProvider is called RecipeViewerIngredientProvider in mui2 latest
-public class TooltipItemDisplayWidget extends ItemDisplayWidget implements NEIIngredientProvider {
+public class TooltipItemDisplayWidget extends ItemDisplayWidget implements RecipeViewerIngredientProvider {
 
     public TooltipItemDisplayWidget() {
         super();
-        tooltip().setAutoUpdate(true);// .setHasTitleMargin(true);
+        tooltip().setAutoUpdate(true)
+            .titleMargin(1);
         tooltipBuilder(tooltip -> {
             ItemStack stack = getItemStack();
             buildTooltip(stack, tooltip);
@@ -29,8 +29,7 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements NEIIn
     }
 
     public ItemStack getItemStack() {
-        var v = (ItemStack) getValue().getValue();
-        return v;
+        return (ItemStack) getValue().getValue();
     }
 
     public boolean doDisplayAmount = false;
@@ -43,8 +42,7 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements NEIIn
 
     @Override
     // For latest use
-    // public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-    public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+    public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
         ItemStack item = getItemStack();
         if (!Platform.isStackEmpty(item)) {
             GuiDraw.drawItem(item, 1, 1, 16, 16, context.getCurrentDrawingZ());
@@ -70,8 +68,7 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements NEIIn
 
     @Override
     // For latest use
-    // public @Nullable ItemStack getStackForRecipeViewer() {
-    public @Nullable ItemStack getStackForNEI() {
+    public @Nullable ItemStack getStackForRecipeViewer() {
         return getItemStack();
     }
 

@@ -38,7 +38,7 @@ dependencies {
     // TODO: remove MUI1 dep when the implicit dependency
     // TODO: in IItemHandlerModifiable is removed
     api("com.github.GTNewHorizons:ModularUI:1.2.20:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.2.16-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.21-1.7.10:dev")
     api("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev")
     api('curse.maven:cofh-lib-220333:2388748')
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')

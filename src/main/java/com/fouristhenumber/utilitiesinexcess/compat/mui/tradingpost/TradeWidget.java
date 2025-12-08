@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.ObjectValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -37,16 +37,15 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     private int index;
     private VillagerSyncHandler columnSyncHandler;
     private boolean isFavorite = false;
-    private boolean isDummy = false;
 
     private final TooltipItemDisplayWidget itemToBuy;
     private final TooltipItemDisplayWidget itemToBuy2;
     private final TooltipItemDisplayWidget itemToSell;
 
-    public class TradeProgressWidget extends ProgressWidget {
+    public static class TradeProgressWidget extends ProgressWidget {
 
         @Override
-        public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+        public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
             super.draw(context, widgetTheme);
             float progress = getCurrentProgress();
             if (progress <= 0) {
@@ -111,7 +110,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     }
 
     @Override
-    public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
+    public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
         super.draw(context, widgetTheme);
 
         if (index > 0) {
@@ -128,7 +127,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     }
 
     @Override
-    public void drawBackground(ModularGuiContext context, WidgetTheme widgetTheme) {
+    public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
 
     }
 
@@ -180,12 +179,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         return this.isFavorite;
     }
 
-    public TradeWidget dummy() {
-        this.isDummy = true;
-        return this;
-    }
-
     public boolean matches(String search) {
-        return (itemToBuy.matches(search) || itemToBuy2.matches(search) || itemToSell.matches(search)) && !isDummy;
+        return itemToBuy.matches(search) || itemToBuy2.matches(search) || itemToSell.matches(search);
     }
 }
