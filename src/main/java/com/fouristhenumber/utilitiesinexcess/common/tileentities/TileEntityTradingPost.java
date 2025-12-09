@@ -35,6 +35,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerEntityDisplay;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerWidget;
+import com.gtnewhorizon.gtnhlib.client.VillagerNames;
 
 public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosGuiData> {
 
@@ -224,7 +225,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     }
 
     public static String getVillagerDisplayName(EntityVillager villager) {
-        String key = "tile.trading_post.villager_name." + villager.getProfession();
+        String key = "description.villager.profession." + VillagerNames.getVillagerName(villager.getProfession());
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);
         }
