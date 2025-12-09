@@ -53,8 +53,10 @@ dependencies {
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:worldedit-gtnh:v0.0.8:dev")
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:waila:1.9.15:dev")
 
-    // For testing NBT data (/nbtedit)
-     runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.6:dev")
+    // Misc testing utilities
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.6:dev") // (/nbtedit)
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:worldedit-gtnh:v0.0.8:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:waila:1.9.15:dev")
     // For testing glove
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Translocators:1.4.0:dev")
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Backhand:1.8.0:dev")

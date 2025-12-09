@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -44,19 +43,9 @@ public class ItemEnderLotusSeed extends Item implements IPlantable {
     }
 
     @SideOnly(Side.CLIENT)
-    public int getSpriteNumber() {
-        return 1; // Use item atlas instead of block atlas
-    }
-
-    @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister reg) {
         this.itemIcon = reg.registerIcon("utilitiesinexcess:ender_lotus_seed");
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int p_77617_1_) {
-        return this.itemIcon;
     }
 
     @Override

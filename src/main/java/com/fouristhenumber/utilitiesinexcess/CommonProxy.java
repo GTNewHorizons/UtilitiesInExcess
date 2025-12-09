@@ -37,7 +37,7 @@ public class CommonProxy {
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
-        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded()) {
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             Remappings.preInit();
         }
     }
@@ -48,7 +48,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded()) {
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             Remappings.postInit();
         }
     }

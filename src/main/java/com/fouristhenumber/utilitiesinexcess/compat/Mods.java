@@ -13,6 +13,7 @@ public enum Mods {
     NEI("NotEnoughItems"),
     CraftTweaker("MineTweaker3"),
     ExtraUtilities("ExtraUtilities"),
+    Postea("postea"),
 
     ;
     // spotless:on
