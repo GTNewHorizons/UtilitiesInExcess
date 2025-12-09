@@ -49,7 +49,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -144,8 +144,8 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
-        for (IPosteaTransformation transformation : Remappings.transformations) {
-            transformation.registerTEDummies();
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded()) {
+            Remappings.init();
         }
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();

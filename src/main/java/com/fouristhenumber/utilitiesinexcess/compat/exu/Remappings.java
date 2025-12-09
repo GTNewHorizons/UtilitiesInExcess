@@ -101,7 +101,6 @@ public enum Remappings {
     FULL_CHEST(new FullChestTransformation()),
     MINI_CHEST(new MiniChestTransformation()),
     SPIKES(new SpikeTransformation()),
-//    ENDER_PUMP(new EnderPumpTransformation()),
 
     // Skipped mappings
     PAINT_BRUSH("ExtraUtilities:paintbrush"),
@@ -117,7 +116,7 @@ public enum Remappings {
     public static final List<IPosteaTransformation> transformations = new ArrayList<>();
     public static final Set<String> skippedMappings = new HashSet<>();
 
-    public static void init() {
+    public static void preInit() {
         for (Remappings remapping : VALUES) {
             if (remapping.replacementItem != null) {
                 itemMappings.put(remapping.getName(), remapping.replacementItem);
@@ -131,15 +130,23 @@ public enum Remappings {
             if (remapping.isSkipped) {
                 skippedMappings.add(remapping.getName());
             }
-        }
-    }
-
-    public static void initTransformationMappings() {
-        for (Remappings remapping : VALUES) {
             if (remapping.transformation != null) {
+                remapping.transformation.registerDummies();
                 remapping.transformation.addItemRemappings(itemMappings);
                 remapping.transformation.addBlockRemappings(blockMappings);
             }
+        }
+    }
+
+    public static void init() {
+        for (IPosteaTransformation transformation : transformations) {
+            transformation.registerTEDummies();
+        }
+    }
+
+    public static void postInit() {
+        for (IPosteaTransformation transformation : transformations) {
+            transformation.registerTransformations();
         }
     }
 

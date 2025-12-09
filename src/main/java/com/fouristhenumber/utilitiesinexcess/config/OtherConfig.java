@@ -14,6 +14,11 @@ public class OtherConfig {
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
+    @Config.Comment("Enable the Extra Utilities to Utilities In Excess world conversion system")
+    public static boolean enableWorldConversion;
+
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     @Config.Comment("Enable rendering some UIE baubles on players who have them equipped")
     public static boolean enableBaubleRenders;
 }

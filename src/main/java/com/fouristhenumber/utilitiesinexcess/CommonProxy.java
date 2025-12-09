@@ -7,7 +7,7 @@ import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTi
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
@@ -37,13 +37,9 @@ public class CommonProxy {
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
-        Remappings.init();
-        if (!Mods.ExtraUtilities.isLoaded()) {
-            for (IPosteaTransformation transformation : Remappings.transformations) {
-                transformation.registerDummies();
-            }
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded()) {
+            Remappings.preInit();
         }
-        Remappings.initTransformationMappings();
     }
 
     public void init(FMLInitializationEvent event) {
@@ -52,8 +48,8 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        for (IPosteaTransformation transformation : Remappings.transformations) {
-            transformation.registerTransformations();
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded()) {
+            Remappings.postInit();
         }
     }
 
