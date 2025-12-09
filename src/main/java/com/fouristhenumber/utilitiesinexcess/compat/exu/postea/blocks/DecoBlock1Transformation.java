@@ -17,6 +17,7 @@ public class DecoBlock1Transformation extends AbstractBlockTransformation {
         setOldName("ExtraUtilities:decorativeBlock1");
     }
 
+    // TODO Add the remaining decorative block metas once they get implemented
     public NBTTagCompound doItemTransformation(NBTTagCompound tag) {
         int dmg = tag.getInteger("Damage");
         switch (dmg) {
