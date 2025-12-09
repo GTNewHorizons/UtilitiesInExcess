@@ -83,6 +83,7 @@ tile.decorative_block.5.name=Ender-Infused Obsidian
 tile.decorative_block.6.name=Gravel Bricks
 tile.decorative_block.7.name=Edged Stone Bricks
 tile.decorative_block.8.name=Border Stone
+tile.decorative_block.9.name=Border Stone (Alternate)
 
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
