@@ -124,4 +124,12 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
     }
+
+    public static class InvertedNugget extends Item implements ITranslucentItem {
+
+        public InvertedNugget() {
+            setUnlocalizedName("inverted_nugget");
+            setTextureName("utilitiesinexcess:inverted_nugget");
+        }
+    }
 }
