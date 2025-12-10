@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderItemIcon;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.utils.RenderableCube;
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,12 +45,14 @@ public class GloveRenderer implements IItemRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_BLEND);
 
+        ItemRenderUtil.applyStandardItemTransform(type);
+
         float[] rgb = woolMetaToRGB(meta / 16);
         GL11.glColor3f(rgb[0], rgb[1], rgb[2]);
-        renderItemIcon(glove.topIcon, 0.0D, 0.0D, 16.0D, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);
+        ItemRenderUtil.renderItem(type, glove.topIcon);
         rgb = woolMetaToRGB(meta % 16);
         GL11.glColor3f(rgb[0], rgb[1], rgb[2]);
-        renderItemIcon(glove.bottomIcon, 0.0D, 0.0D, 16.0D, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);
+        ItemRenderUtil.renderItem(type, glove.bottomIcon);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
