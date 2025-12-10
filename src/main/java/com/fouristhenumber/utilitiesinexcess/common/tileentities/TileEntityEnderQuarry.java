@@ -1,10 +1,16 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,18 +38,19 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
-import org.joml.Vector4i;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker.FacingVector2i;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
+import org.joml.Vector4i;
 
 public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
@@ -54,6 +61,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int storedItems;
     public ForgeDirection facing;
     private Area2d workArea;
+    private Queue<Area2d> nextWorkAreas = new LinkedList<>();
     public QuarryWorkState state;
     private int dx;
     private int dy;
@@ -118,32 +126,96 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
             if (te instanceof TileEntityEnderMarker marker) {
                 @Nullable
-                List<Vector2i> scanReturn = marker.checkForBoundary(dir);
+                List<TileEntityEnderMarker.FacingVector2i> scanReturn = marker.checkForBoundary(dir);
                 if (scanReturn != null) {
-                    Vector2i firstCorner = scanReturn.get(0);
-                    Vector2i secondCorner = scanReturn.get(1);
+                    nextWorkAreas.clear();
+                    // Do we have a simple rectangle as defined by two points
+                    if (scanReturn.size() == 2) {
+                        Vector2i firstCorner = scanReturn.get(0);
+                        Vector2i secondCorner = scanReturn.get(1);
 
-                    // Pad work area by one (inwards), so that we don't mine the markers
-                    Vector2i low = new Vector2i(
-                        Math.min(firstCorner.x, secondCorner.x) + 1,
-                        Math.min(firstCorner.y, secondCorner.y) + 1);
-                    Vector2i high = new Vector2i(
-                        Math.max(firstCorner.x, secondCorner.x) - 1,
-                        Math.max(firstCorner.y, secondCorner.y) - 1);
-                    setWorkArea(new Area2d(low, high));
-                    state = QuarryWorkState.RUNNING;
+                        // Pad work area by one (inwards), so that we don't mine the markers
+                        Vector2i low = new Vector2i(
+                            Math.min(firstCorner.x, secondCorner.x) + 1,
+                            Math.min(firstCorner.y, secondCorner.y) + 1);
+                        Vector2i high = new Vector2i(
+                            Math.max(firstCorner.x, secondCorner.x) - 1,
+                            Math.max(firstCorner.y, secondCorner.y) - 1);
+                        setWorkArea(new Area2d(low, high));
+                        state = QuarryWorkState.RUNNING;
 
-                    int estBlocks = (worldObj.getHeightValue(dx, dy) + 5) * workArea.height * workArea.width;
-                    player.addChatComponentMessage(
-                        new ChatComponentText(
-                            String.format(
-                                "Found ender marker fence boundary, setting up work area from (%d %d) to (%d %d). Should roughly contain %d blocks.",
-                                workArea.low.x,
-                                workArea.low.y,
-                                workArea.high.x,
-                                workArea.high.y,
-                                estBlocks)));
-                    return;
+                        int estBlocks = (worldObj.getHeightValue(dx, dy) + 5) * workArea.height * workArea.width;
+                        player.addChatComponentMessage(
+                            new ChatComponentText(
+                                String.format(
+                                    "Found ender marker fence boundary, setting up work area from (%d %d) to (%d %d). Should roughly contain %d blocks.",
+                                    workArea.low.x,
+                                    workArea.low.y,
+                                    workArea.high.x,
+                                    workArea.high.y,
+                                    estBlocks)));
+                        return;
+                        // Or do we have a more complex rectilinear polygon as defined by many points
+                    } else {
+                        // DEBUG: Clear work area of debug blocks
+                        Vector2i low = new Vector2i(Integer.MAX_VALUE);
+                        Vector2i high = new Vector2i(Integer.MIN_VALUE);
+                        for (Vector2i point : scanReturn) {
+                            if (point.x < low.x) {
+                                low.x = point.x;
+                            }
+                            if (point.y < low.y) {
+                                low.y = point.y;
+                            }
+                            if (point.x > high.x) {
+                                high.x = point.x;
+                            }
+                            if (point.y > high.y) {
+                                high.y = point.y;
+                            }
+                        }
+                        LinkedList<Area2d> subRectangles;
+
+                        for (int x = low.x; x <= high.x; x++) {
+                            for (int z = low.y; z <= high.y; z++) {
+                                worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
+                            }
+                        }
+
+                        for (int dy = 1; dy < 51; dy++) {
+                            for (int x = low.x; x <= high.x; x++) {
+                                for (int z = low.y; z <= high.y; z++) {
+                                    worldObj.setBlock(x, this.yCoord + dy, z, Blocks.air);
+                                }
+                            }
+                        }
+
+                        for (Vector2i point : scanReturn) {
+                            worldObj
+                                .setBlock(point.x, this.yCoord + 2, point.y, Blocks.brick_block);
+                        }
+
+                        try {
+                             subRectangles = computeRectanglesFromRectilinearPointPolygon(scanReturn);
+                        } catch (RuntimeException e) {
+                            StackTraceElement[] stackTrace = e.getStackTrace();
+                            StackTraceElement lastElement = stackTrace[0];
+                            String lastFileAndLine = lastElement.getFileName() + ":" + lastElement.getLineNumber();
+                            player.addChatComponentMessage(
+                                new ChatComponentText(
+                                    String.format(
+                                        "Ender marker at (%d %d %d) failed to set up a fence boundary: %s - [%s:%s]",
+                                        marker.xCoord,
+                                        marker.yCoord,
+                                        marker.zCoord,
+                                        e.getMessage(),
+                                        lastElement.getFileName(),
+                                        lastElement.getLineNumber())));
+                            return;
+                        }
+                        return;
+                        //nextWorkAreas = subRectangles;
+                    }
                 } else {
                     player.addChatComponentMessage(
                         new ChatComponentText(
@@ -158,6 +230,257 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
         if (!foundMarkers)
             player.addChatComponentMessage(new ChatComponentText("Found no ender markers around quarry."));
+    }
+
+    private LinkedList<Area2d> computeRectanglesFromRectilinearPointPolygon(List<TileEntityEnderMarker.FacingVector2i> points) {
+        RectilinearPointPoly poly = new RectilinearPointPoly(points);
+        LinkedList<Area2d> subAreas = new LinkedList<>();
+        UtilitiesInExcess.LOG.info("Starting subarea compute from {} markers", points.size());
+        int color = 0;
+
+        while (poly.canFormRectangle()) {
+            FacingVector2i rectMinPoint = poly.shiftPoint();
+
+            if (worldObj.getBlock(rectMinPoint.x, this.yCoord - 2, rectMinPoint.y) == Blocks.diamond_block) {
+                UtilitiesInExcess.chat("Point-Info: " + rectMinPoint);
+            }
+
+            // Is this a bottom right corner?
+            if (rectMinPoint.hasConnectionTowards(ForgeDirection.EAST) && rectMinPoint.hasConnectionTowards(ForgeDirection.NORTH))
+                continue;
+
+            @Nullable
+            Integer highXBound = null;
+            @Nullable
+            Integer highYBound = null;
+            for (FacingVector2i higherPoint : poly.remainingPoints) {
+                // Don't include if y is below our minimum y or on the same as what we already see as the lower y bound
+                if (higherPoint.y < rectMinPoint.y || (highYBound != null && higherPoint.y > highYBound)) continue;
+                // Do we have an early simple turn left?
+                if (higherPoint.x == rectMinPoint.x) {
+                    if (higherPoint.hasConnectionTowards(ForgeDirection.EAST))
+                        highYBound = higherPoint.y;
+                    // Don't include points for x bound on the same x (left line)
+                    continue;
+                }
+
+                highXBound = higherPoint.x;
+
+                if (higherPoint.hasConnectionTowards(ForgeDirection.SOUTH) || higherPoint.hasConnectionTowards(ForgeDirection.NORTH)) {
+                    break;
+                } else {
+                    // Preliminary y bound
+                    highYBound = higherPoint.y;
+                }
+            }
+
+            if (highXBound == null) {
+                throw new RuntimeException(
+                    "Failed to find right side boundary of rectangle starting at x " + rectMinPoint.x);
+            }
+
+            boolean foundBetterYBound = false;
+            var iter = poly.remainingPoints.iterator();
+            while (iter.hasNext()) {
+                FacingVector2i higherPoint = iter.next();
+                // Don't include points below our minimum y,
+                // Don't include points which have an x outside the x bounds
+                // (in theory higherPoint.x >= rectMinPoint.x is redundant since rectMinPoint.x should be the lowest
+                // available x left, but is there for visibility),
+                // Don't include points with a y value that is higher than an already present high y bound
+                if (higherPoint.y <= rectMinPoint.y || higherPoint.x < rectMinPoint.x)
+                    continue;
+                if (higherPoint.x > highXBound) break;
+
+                if (!foundBetterYBound && (highYBound == null || higherPoint.y > highYBound)) {
+                    highYBound = higherPoint.y;
+                }
+                if (foundBetterYBound && higherPoint.hasConnectionTowards(ForgeDirection.NORTH)) {
+                    if ( (!iter.hasNext() && higherPoint.hasConnectionTowards(ForgeDirection.NORTH)) || (higherPoint.x == rectMinPoint.x && higherPoint.y > highYBound && higherPoint.hasConnectionTowards(ForgeDirection.EAST))) {
+                        highYBound = higherPoint.y;
+                    }
+                }
+                foundBetterYBound = true;
+            }
+
+            if (highYBound == null) {
+                throw new RuntimeException(
+                    "Failed to find top side boundary of rectangle starting at " + rectMinPoint);
+            }
+
+            FacingVector2i rectMaxPoint = new FacingVector2i(highXBound, highYBound, ForgeDirection.UNKNOWN);
+
+            // Finished sub-rectangle, add it to the list and remove all points on the edges of it
+            Area2d subArea = new Area2d(rectMinPoint, rectMaxPoint, new Vector4i(0, 0, 0, 0));
+
+            boolean isLineArea = subArea.width <= 1 || subArea.height <= 1;
+            if (!isLineArea) subAreas.add(subArea);
+
+            HashSet<FacingVector2i> containedPoints = poly.getRemainingPointsInRect(rectMinPoint, rectMaxPoint);
+            for (FacingVector2i containedPoint : containedPoints) {
+                // Is point on the top edge and has a connection to something further out that isn't covered by this rectangle?
+                if (containedPoint.y != rectMaxPoint.y && containedPoint.hasConnectionTowards(ForgeDirection.EAST)) {
+                    // Was point connected to the left boundary that we moved right with this rectangle?
+                    if (containedPoint.hasConnectionTowards(ForgeDirection.NORTH)) {
+                        containedPoint.facings.remove(ForgeDirection.NORTH);
+                        containedPoint.facings.add(ForgeDirection.SOUTH);
+                    }
+                    continue;
+                } else if (containedPoint.y == rectMaxPoint.y && containedPoint.hasConnectionTowards(ForgeDirection.SOUTH)) {
+                    // Point is on the top edge and has a connection to the right, leave it for later rectangles
+                    continue;
+                }
+                poly.removeFromRemainingPoints(containedPoint);
+            }
+
+            if (!isLineArea) {
+                // DEBUG: Draw new sub area on floor
+                for (int x = subArea.low.x; x <= subArea.high.x; x++) {
+                    for (int z = subArea.low.y; z <= subArea.high.y; z++) {
+                        if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.gold_block) {
+                            worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
+                            //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
+                        } else {
+                            worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
+                        }
+                    }
+                }
+            }
+
+            // Add the new points on the high x-axis that might be relevant to future areas
+            if (poly.hasRemaining()) {
+                List<FacingVector2i> newPoints = new ArrayList<>();
+                // Determine facing of top right corner
+                FacingVector2i topLeftCorner = new FacingVector2i(highXBound, rectMinPoint.y, ForgeDirection.UNKNOWN);
+                if (containedPoints.contains(topLeftCorner)) {
+                    rectMaxPoint.facings.add(ForgeDirection.NORTH);
+                }
+                if (poly.maxY == rectMaxPoint.y) {
+                    rectMaxPoint.facings.add(ForgeDirection.EAST);
+                }
+
+
+                FacingVector2i bottomRightCorner = new FacingVector2i(rectMinPoint.x, highYBound, Stream.of(ForgeDirection.EAST, ForgeDirection.SOUTH).collect(Collectors.toList()));
+                if (!containedPoints.contains(topLeftCorner)) {
+                    newPoints.add(topLeftCorner);
+                }
+                newPoints.add(rectMaxPoint);
+                poly.unshiftPointsToRemainingPointsIfMissing(newPoints);
+
+            }
+
+            if (!isLineArea) {
+                // DEBUG: Show points used for area & remaining points one above that
+                for (Vector2i remainingPoint : poly.remainingPoints) {
+                    worldObj.setBlock(remainingPoint.x, this.yCoord + 2 + subAreas.size() * 2, remainingPoint.y, Blocks.stained_glass, color, 2);
+                }
+                worldObj.setBlock(rectMinPoint.x, this.yCoord + 1 + subAreas.size() * 2, rectMinPoint.y, Blocks.wool, color, 2);
+                worldObj.setBlock(rectMaxPoint.x, this.yCoord + 1 + subAreas.size() * 2, rectMaxPoint.y, Blocks.wool, color, 2);
+
+                color++;
+                if (color == 16) {
+                    color = 0;
+                }
+            }
+
+            UtilitiesInExcess.LOG.info("Added subarea at {}", subArea.toString());
+        }
+
+        return subAreas;
+    }
+
+    private static class RectilinearPointPoly {
+
+        LinkedHashSet<FacingVector2i> remainingPoints = new LinkedHashSet<>();
+        ArrayDeque<FacingVector2i> stackPoints = new ArrayDeque<>();
+        private int maxY = Integer.MIN_VALUE;
+
+        RectilinearPointPoly(List<FacingVector2i> points) {
+            points.sort(
+                Comparator.comparingInt(FacingVector2i::x)
+                    .thenComparingInt(FacingVector2i::y));
+            for (FacingVector2i sortedPoint : points) {
+                this.stackPoints.add(sortedPoint);
+                this.remainingPoints.add(sortedPoint);
+                if (sortedPoint.y > maxY) {
+                    maxY = sortedPoint.y;
+                }
+            }
+        }
+
+        void unshiftPointsToRemainingPointsIfMissing(List<FacingVector2i> newPoints) {
+            @SuppressWarnings("SimplifyStreamApiCallChains") // Not supported by modern java transpiler
+            List<FacingVector2i> missingPoints = newPoints.stream()
+                .filter((point) -> !remainingPoints.contains(point))
+                .collect(Collectors.toList());
+
+            if (!missingPoints.isEmpty()) {
+                List<FacingVector2i> points = new ArrayList<>(stackPoints);
+                points.addAll(missingPoints);
+
+                stackPoints.clear();
+                remainingPoints.clear();
+                maxY = Integer.MIN_VALUE;
+
+                // Same logic as in constructor - sort random remaining pool of points by x & y, then add in low to high
+                // order
+                points.sort(
+                    Comparator.comparingInt(FacingVector2i::x)
+                        .thenComparingInt(FacingVector2i::y));
+                for (FacingVector2i sortedPoint : points) {
+                    this.stackPoints.add(sortedPoint);
+                    this.remainingPoints.add(sortedPoint);
+                    if (sortedPoint.y > maxY) {
+                        maxY = sortedPoint.y;
+                    }
+                }
+            }
+        }
+
+        void removeFromRemainingPoints(FacingVector2i point) {
+            this.remainingPoints.remove(point);
+            this.stackPoints.remove(point);
+            // If we removed the max Y point, recalculate
+            if (point.y == maxY) {
+                maxY = remainingPoints.stream()
+                    .mapToInt(p -> p.y)
+                    .max()
+                    .orElse(Integer.MIN_VALUE);
+            }
+        }
+
+        HashSet<FacingVector2i> getRemainingPointsInRect(FacingVector2i low, FacingVector2i high) {
+            HashSet<FacingVector2i> points = new HashSet<>();
+            for (FacingVector2i remainingPoint : this.remainingPoints) {
+                if (remainingPoint.x < low.x || remainingPoint.y < low.y || remainingPoint.y > high.y)
+                    continue;
+                if (remainingPoint.x > high.x) break;
+                points.add(remainingPoint);
+            }
+            return points;
+        }
+
+        FacingVector2i shiftPoint() {
+            FacingVector2i point = stackPoints.removeFirst();
+            this.removeFromRemainingPoints(point);
+            return point;
+        }
+
+        /**
+         * Check if we have remaining points to process
+         * This does not check if there are any remaining points but if there are enough points left to form a rectangle
+         */
+        boolean hasRemaining() {
+            return !stackPoints.isEmpty();
+        }
+
+        boolean canFormRectangle() {
+            return stackPoints.size() >= 4;
+        }
+
+        boolean hasPointAt(Vector2i point) {
+            return remainingPoints.stream().anyMatch(p -> p.x == point.x && p.y == point.y);
+        }
     }
 
     /**
@@ -586,9 +909,14 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     if (state != QuarryWorkState.RUNNING) break;
                 }
             }
-            if (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)) && state == QuarryWorkState.RUNNING) {
-                state = QuarryWorkState.FINISHED;
-                unloadSelf();
+            if (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1))
+                && state == QuarryWorkState.RUNNING) {
+                if (nextWorkAreas.isEmpty()) {
+                    state = QuarryWorkState.FINISHED;
+                    unloadSelf();
+                } else {
+                    workArea = nextWorkAreas.remove();
+                }
             }
             if (brokenBlocksTick > 0) {
                 markDirty();
@@ -615,12 +943,23 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         facing = ForgeDirection.getOrientation(nbt.getInteger("facing"));
         state = QuarryWorkState.values()[nbt.getInteger("state")];
         if (state != QuarryWorkState.FINISHED) {
+            // Current work area
             workArea = Area2d.fromNBTTag(nbt);
             dx = nbt.getInteger("dx");
             dy = nbt.getInteger("dy");
             dz = nbt.getInteger("dz");
             chunkX = dx >> 4;
             chunkZ = dz >> 4;
+
+            // Possible next work areas
+            NBTTagList possibleNextAreas = nbt.getTagList("nextAreas", Constants.NBT.TAG_COMPOUND);
+            if (possibleNextAreas.tagCount() > 0) {
+                nextWorkAreas.clear();
+                for (int i = 0; i < possibleNextAreas.tagCount(); i++) {
+                    NBTTagCompound tag = possibleNextAreas.getCompoundTagAt(i);
+                    nextWorkAreas.add(Area2d.fromNBTTag(tag));
+                }
+            }
         }
         brokenBlocksTotal = nbt.getInteger("blocks");
         energyStorage.readFromNBT(nbt);
@@ -656,6 +995,14 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             nbt.setInteger("dx", dx);
             nbt.setInteger("dy", dy);
             nbt.setInteger("dz", dz);
+
+            NBTTagList areasNBT = new NBTTagList();
+            for (Area2d nextArea : nextWorkAreas) {
+                NBTTagCompound tag = new NBTTagCompound();
+                nextArea.writeNBTTag(tag);
+                areasNBT.appendTag(tag);
+            }
+            nbt.setTag("nextAreas", areasNBT);
         }
         nbt.setInteger("blocks", brokenBlocksTotal);
         energyStorage.writeToNBT(nbt);
@@ -777,11 +1124,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         // The distance to the closest lower x chunk border from the high x bound
         public final int chunkOffX;
 
-        public Area2d(Vector2i first, Vector2i second) {
-            int lowX = Math.min(first.x, second.x);
-            int lowZ = Math.min(first.y, second.y);
-            int highX = Math.max(first.x, second.x);
-            int highZ = Math.max(first.y, second.y);
+        public Area2d(Vector2i first, Vector2i second, Vector4i shrinkMatrix) {
+            int lowX = Math.min(first.x, second.x) + (shrinkMatrix.x); // Side: left
+            int lowZ = Math.min(first.y, second.y) + (shrinkMatrix.y); // Side: bottom
+            int highX = Math.max(first.x, second.x) - (shrinkMatrix.z); // Side: right
+            int highZ = Math.max(first.y, second.y) - (shrinkMatrix.w); // Side: top
             this.low = new Vector2i(lowX, lowZ);
             this.high = new Vector2i(highX, highZ);
             this.width = highX - lowX;
@@ -791,6 +1138,16 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
         public Area2d(int x1, int z1, int x2, int z2) {
             this(new Vector2i(x1, z1), new Vector2i(x2, z2));
+        }
+
+        public Area2d(Vector2i first, Vector2i second) {
+            // Don't shrink anywhere
+            this(first, second, new Vector4i(0, 0, 0, 0));
+        }
+
+        public Area2d(Vector2i first, Vector2i second, boolean shouldShrink) {
+            // Shrink equally on all sides if requested
+            this(first, second, shouldShrink ? new Vector4i(1, 1, 1, 1) : new Vector4i(0, 0, 0, 0));
         }
 
         public boolean isInBounds(int x, int z) {
@@ -821,6 +1178,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             if (this == obj) return true;
             if (!(obj instanceof Area2d other)) return false;
             return low.equals(other.low) && high.equals(other.high);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[(%d, %d), (%d, %d)]", this.low.x, this.low.y, this.high.x, this.high.y);
         }
     }
 

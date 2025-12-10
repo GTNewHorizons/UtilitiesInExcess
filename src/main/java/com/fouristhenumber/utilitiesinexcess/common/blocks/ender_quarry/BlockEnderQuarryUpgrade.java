@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockEnderQuarryUpgrade extends Block implements IEnderQuarryUpgrade {
+
     private IIcon[] icons;
 
     public BlockEnderQuarryUpgrade() {
@@ -28,7 +29,8 @@ public class BlockEnderQuarryUpgrade extends Block implements IEnderQuarryUpgrad
     }
 
     @Override
-    public int onBlockPlaced(World worldIn, int x, int y, int z, int side, float subX, float subY, float subZ, int meta) {
+    public int onBlockPlaced(World worldIn, int x, int y, int z, int side, float subX, float subY, float subZ,
+        int meta) {
         return 0;
     }
 

@@ -72,7 +72,8 @@ public class BlockEnderMarker extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
         if (worldIn.isRemote) return true;
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityEnderMarker marker) {
@@ -81,7 +82,8 @@ public class BlockEnderMarker extends BlockContainer {
                     marker.boundaryForArbitraryLoop();
                 }
                 int newCuboidSize = marker.increaseCuboidSize();
-                player.addChatComponentMessage(new ChatComponentText("Increased cuboid size to " + newCuboidSize + "."));
+                player
+                    .addChatComponentMessage(new ChatComponentText("Increased cuboid size to " + newCuboidSize + "."));
             } else {
                 marker.rotateMode();
                 player.addChatComponentMessage(new ChatComponentText(marker.getMode()));

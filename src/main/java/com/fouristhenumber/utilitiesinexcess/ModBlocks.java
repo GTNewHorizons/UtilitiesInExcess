@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarryUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -14,8 +13,6 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderMarker;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
@@ -35,6 +32,9 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderMarker;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarry;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarryUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;

@@ -56,7 +56,8 @@ public class BlockEnderQuarry extends BlockContainer {
         if (te instanceof TileEntityEnderQuarry quarry) {
             if (player.isSneaking() && player.capabilities.isCreativeMode) {
                 quarry.isCreativeBoosted = !quarry.isCreativeBoosted;
-                player.addChatComponentMessage(new ChatComponentText((quarry.isCreativeBoosted ? "" : "Un-") + "Creative-Boosted Quarry."));
+                player.addChatComponentMessage(
+                    new ChatComponentText((quarry.isCreativeBoosted ? "" : "Un-") + "Creative-Boosted Quarry."));
                 return true;
             }
             if (quarry.state == TileEntityEnderQuarry.QuarryWorkState.STOPPED) {

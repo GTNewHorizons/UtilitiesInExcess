@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +20,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.IFacingTE;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
@@ -52,7 +54,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         return registeredMarkers.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
     }
 
-    public @Nullable List<Vector2i> checkForBoundary(ForgeDirection starterFacing) {
+    public @Nullable List<FacingVector2i> checkForBoundary(ForgeDirection starterFacing) {
         return switch (operationMode) {
             case DEFAULT -> boundaryFromThree(starterFacing);
             case SINGLE -> boundaryForSizedCuboid(starterFacing);
@@ -60,7 +62,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         };
     }
 
-    private @Nullable List<Vector2i> boundaryFromThree(ForgeDirection starterFacing) {
+    private @Nullable List<FacingVector2i> boundaryFromThree(ForgeDirection starterFacing) {
         Tuple<TileEntityEnderMarker, BlockPos> secondCorner = alignedMarkers.getOrDefault(starterFacing, null);
         if (secondCorner != null && secondCorner.getKey() != null) {
             Tuple<TileEntityEnderMarker, BlockPos> thirdCorner = Optional
@@ -69,19 +71,27 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
                 .orElse(
                     secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnLeft90(starterFacing), null));
             if (thirdCorner != null) {
-                return Stream.of(new Vector2i(this.xCoord, this.zCoord), new Vector2i(thirdCorner.getValue().x, thirdCorner.getValue().z)).collect(Collectors.toList());
+                return Stream
+                    .of(
+                        new FacingVector2i(this.xCoord, this.zCoord, ForgeDirection.UNKNOWN),
+                        new FacingVector2i(thirdCorner.getValue().x, thirdCorner.getValue().z, ForgeDirection.UNKNOWN))
+                    .collect(Collectors.toList());
             }
         }
         return null;
     }
 
-    private List<Vector2i> boundaryForSizedCuboid(ForgeDirection facing) {
-        BlockPos otherCorner = DirectionUtil.offsetByForward(this.xCoord, this.yCoord, this.zCoord, facing, cuboidSize, 0);
+    private List<FacingVector2i> boundaryForSizedCuboid(ForgeDirection facing) {
+        BlockPos otherCorner = DirectionUtil
+            .offsetByForward(this.xCoord, this.yCoord, this.zCoord, facing, cuboidSize, 0);
         otherCorner = DirectionUtil.offsetByRight(otherCorner, facing, cuboidSize, 0);
-        return Stream.of(new Vector2i(this.xCoord, this.zCoord), new Vector2i(otherCorner.x, otherCorner.z)).collect(Collectors.toList());
+        return Stream.of(new FacingVector2i(this.xCoord, this.zCoord, ForgeDirection.UNKNOWN), new FacingVector2i(otherCorner.x, otherCorner.z, ForgeDirection.UNKNOWN))
+            .collect(Collectors.toList());
     }
 
-    public List<Vector2i> boundaryForArbitraryLoop() {
+    public List<FacingVector2i> boundaryForArbitraryLoop() {
+        // TODO: Has issues with markers that have more than 2 connections (uses not boundary not intendeed by player) -
+        //  maybe limit to 2 connections if this mode is used and propagate that other markers in chain?
         ArrayList<StackEntry> stack = new ArrayList<>();
         stack.add(new StackEntry(new LinkedHashMap<>(), this));
         Set<TileEntityEnderMarker> markerChain = null;
@@ -89,29 +99,44 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         searchStack: do {
             StackEntry entry = stack.remove(stack.size() - 1);
 
-            if (entry.current.alignedMarkers.isEmpty()
-                || entry.current.alignedMarkers.size() == 1
+            if (entry.current.alignedMarkers.isEmpty() || entry.current.alignedMarkers.size() == 1
                 && entry.current.alignedMarkers.get(entry.lastVisited.getValue()) != null
-                && entry.current.alignedMarkers.get(entry.lastVisited.getValue()).getKey() == entry.lastVisited.getKey()) {
+                && entry.current.alignedMarkers.get(entry.lastVisited.getValue())
+                    .getKey() == entry.lastVisited.getKey()) {
                 entry.current.checkForAlignedMarkers();
-                worldObj.setBlock(entry.current.xCoord, entry.current.yCoord + 3, entry.current.zCoord, Blocks.brick_block);
             }
 
-            for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> otherMarker : entry.current.alignedMarkers.entrySet()) {
-                if (otherMarker.getValue().getKey() != null) {
+            for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> otherMarker : entry.current.alignedMarkers
+                .entrySet()) {
+                if (otherMarker.getValue()
+                    .getKey() != null) {
                     // Has not already been visited
-                    if (!entry.visitedMarkers.containsKey(otherMarker.getValue().getKey())) {
+                    if (!entry.visitedMarkers.containsKey(
+                        otherMarker.getValue()
+                            .getKey())) {
                         @SuppressWarnings("unchecked") // Same type
-                        LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers = (LinkedHashMap<TileEntityEnderMarker, ForgeDirection>) entry.visitedMarkers.clone();
-                        StackEntry stackEntry = new StackEntry(visitedMarkers, otherMarker.getValue().getKey(), entry.current, otherMarker.getKey().getOpposite());
+                        LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers = (LinkedHashMap<TileEntityEnderMarker, ForgeDirection>) entry.visitedMarkers
+                            .clone();
+                        StackEntry stackEntry = new StackEntry(
+                            visitedMarkers,
+                            otherMarker.getValue()
+                                .getKey(),
+                            entry.current,
+                            otherMarker.getKey()
+                                .getOpposite());
                         stack.add(stackEntry);
 
-                        worldObj.setBlock(entry.current.xCoord, entry.current.yCoord + 2, entry.current.zCoord, Blocks.tnt);
                         continue;
                     }
 
                     // Check if we have completed a loop by arriving at the starter from a different direction
-                    if (otherMarker.getValue().getKey() == this && entry.visitedMarkers.get(otherMarker.getValue().getKey()) != otherMarker.getKey() && !entry.visitedMarkers.isEmpty()) {
+                    if (otherMarker.getValue()
+                        .getKey() == this
+                        && entry.visitedMarkers.get(
+                            otherMarker.getValue()
+                                .getKey())
+                            != otherMarker.getKey()
+                        && !entry.visitedMarkers.isEmpty()) {
                         // Append the last marker
                         entry.visitedMarkers.put(entry.current, otherMarker.getKey());
                         markerChain = entry.visitedMarkers.keySet();
@@ -123,8 +148,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
 
         if (markerChain != null) {
             UtilitiesInExcess.chat("Completed marker chain with " + markerChain.size() + " entries.");
-            ArrayList<Vector2i> pointChain = new ArrayList<>(markerChain.size());
-            markerChain.forEach((e) -> pointChain.add(new Vector2i(e.xCoord, e.zCoord)));
+            ArrayList<FacingVector2i> pointChain = new ArrayList<>(markerChain.size());
+            markerChain.forEach((e) -> pointChain.add(new FacingVector2i(e.xCoord, e.zCoord, e.alignedMarkers.keySet().stream().collect(Collectors.toList()))));
             return pointChain;
         }
         UtilitiesInExcess.chat("Failed to complete marker chain.");
@@ -133,6 +158,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     }
 
     private static class StackEntry {
+
         // A map of previously visited markers further down the stack & the direction they were visited from
         LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers;
         TileEntityEnderMarker current;
@@ -144,7 +170,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             this.lastVisited = null;
         }
 
-        StackEntry(LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers, TileEntityEnderMarker current, TileEntityEnderMarker previous, ForgeDirection previousDir) {
+        StackEntry(LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers, TileEntityEnderMarker current,
+            TileEntityEnderMarker previous, ForgeDirection previousDir) {
             this(visitedMarkers, current);
             this.visitedMarkers.put(previous, previousDir);
             lastVisited = new Tuple<>(previous, previousDir);
@@ -157,7 +184,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
 
     public void checkForAlignedMarkers(@NotNull ForgeDirection[] dirs, boolean onlyValidate) {
         ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry = getRegistryForDimension();
-        for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> entry : new ArrayList<>(alignedMarkers.entrySet())) {
+        for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> entry : new ArrayList<>(
+            alignedMarkers.entrySet())) {
             if (entry.getValue()
                 .getKey() == null) {
                 BlockPos alignedMarkerPos = entry.getValue()
@@ -279,9 +307,10 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     }
 
     public String getMode() {
-        return switch(operationMode) {
+        return switch (operationMode) {
             case DEFAULT -> "Marker is set to establish a rectangular fence from the first 3 in chain.";
-            case SINGLE -> "Marker is set to establish a cuboid of length " + this.cuboidSize + ". Sneak + R-Click to adjust size.";
+            case SINGLE -> "Marker is set to establish a cuboid of length " + this.cuboidSize
+                + ". Sneak + R-Click to adjust size.";
             case ARBITRARY_LOOP -> "Marker is set to establish a full loop of markers that make up a rectilinear polygon back this marker of arbitrary size and shape.";
         };
     }
@@ -358,5 +387,33 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         DEFAULT,
         SINGLE,
         ARBITRARY_LOOP
+    }
+
+    public static class FacingVector2i extends Vector2i {
+
+        HashSet<ForgeDirection> facings;
+
+        public FacingVector2i(int x, int z, List<ForgeDirection> facings) {
+            super(x, z);
+            this.facings = new HashSet<>();
+            this.facings.addAll(facings);
+        }
+
+        public FacingVector2i(int x, int z, ForgeDirection facing) {
+            super(x, z);
+            this.facings = new HashSet<>();
+            if (facing != ForgeDirection.UNKNOWN)
+                this.facings.add(facing);
+        }
+
+
+        boolean hasConnectionTowards(ForgeDirection dir) {
+            return facings.contains(dir);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(%d, %d | %s)", x, y, facings.toString());
+        }
     }
 }
