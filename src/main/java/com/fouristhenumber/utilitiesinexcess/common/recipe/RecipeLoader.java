@@ -27,6 +27,7 @@ public class RecipeLoader {
         loadGeneratorRecipes();
         loadQEDRecipes();
         loadGlassRecipes();
+        loadDecorativeBlocksRecipes();
 
         // Pacifist's Bench
         addShapedRecipe(
@@ -648,6 +649,109 @@ public class RecipeLoader {
             Items.bowl,
             'm',
             new ItemStack(Items.dye, 1, 15));
+    }
+
+    private static void loadDecorativeBlocksRecipes() {
+        // Ender-Infused Obsidian
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 5),
+            " o ",
+            "oeo",
+            " o ",
+            'o',
+            Blocks.obsidian,
+            'e',
+            Items.ender_pearl);
+        // Diamond-Etched Computational Matrix
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 0),
+            "bdb",
+            "ded",
+            "bdb",
+            'b',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+            'd',
+            Items.diamond,
+            'e',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+        // Sand-Infused Endstone
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 1),
+            "es",
+            "se",
+            'e',
+            Blocks.end_stone,
+            's',
+            Blocks.sandstone);
+        // Sandy Glass
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 3),
+            "sg",
+            "gs",
+            's',
+            Blocks.sand,
+            'g',
+            Blocks.glass);
+        // Frosted Stone
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 5, 4),
+            " i ",
+            "isi",
+            " i ",
+            'i',
+            Blocks.ice,
+            's',
+            Blocks.stone);
+        // Gravel Bricks
+        addShapedRecipe(new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 6), "gg", "gg", 'g', Blocks.gravel);
+        // Edged Stone Bricks
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 9, 7),
+            "sbs",
+            "bbb",
+            "sbs",
+            's',
+            Blocks.stone,
+            'b',
+            new ItemStack(Blocks.stonebrick));
+        // Border Stone
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 8),
+            "bb",
+            "bb",
+            'b',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 7));
+        // Border Stone (Alternate)
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 9),
+            "bb",
+            "bb",
+            'b',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 8));
+        // Gravel Road
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 8, 10),
+            "sgs",
+            "ggg",
+            "sgs",
+            's',
+            new ItemStack(Blocks.stone_slab, 1, 5),
+            'g',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 6));
+        // Carved 'Eminence' Stone
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 11),
+            "mpe",
+            "ss ",
+            "ss ",
+            'm',
+            new ItemStack(Items.dye, 1, 13),
+            'p',
+            new ItemStack(Items.dye, 1, 5),
+            'e',
+            Items.ender_pearl,
+            's',
+            Blocks.stone);
     }
 
     private static void loadEtherealGlassRecipes() {
