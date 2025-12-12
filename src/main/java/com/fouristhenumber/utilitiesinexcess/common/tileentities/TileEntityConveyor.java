@@ -59,6 +59,14 @@ public class TileEntityConveyor extends TileEntity {
             }
 
             entity.moveEntity(facing.offsetX * SPEED, 0, facing.offsetZ * SPEED);
+
+            // Move items up to next belt if there is one
+            if (worldObj
+                .getBlock(xCoord + facing.offsetX, yCoord + 1, zCoord + facing.offsetZ) instanceof BlockConveyor) {
+                if (entity instanceof EntityItem && entity.isCollidedHorizontally) {
+                    entity.moveEntity(facing.offsetX * SPEED, 1, facing.offsetY * SPEED);
+                }
+            }
         }
     }
 }

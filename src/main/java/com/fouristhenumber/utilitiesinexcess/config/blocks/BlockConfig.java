@@ -19,6 +19,9 @@ public class BlockConfig {
     public static boolean enableFloatingBlock;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableColoredBlocks;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableCompressedCobblestone;
 
     @Config.DefaultBoolean(true)

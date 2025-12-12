@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
@@ -69,6 +70,19 @@ public enum ModBlocks {
     COMPRESSED_DIRT(BlockConfig.enableCompressedDirt, new BlockCompressed(Blocks.dirt, "compressed_dirt"), BlockCompressed.ItemCompressedBlock.class, "compressed_dirt"),
     COMPRESSED_SAND(BlockConfig.enableCompressedSand, new BlockCompressed(Blocks.sand, "compressed_sand"), BlockCompressed.ItemCompressedBlock.class, "compressed_sand"),
     COMPRESSED_GRAVEL(BlockConfig.enableCompressedGravel, new BlockCompressed(Blocks.gravel, "compressed_gravel"), BlockCompressed.ItemCompressedBlock.class, "compressed_gravel"),
+    COLORED_WOOD_PLANKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.planks), BlockColored.ItemBlockColored.class, "colored_planks"),
+    COLORED_GLOWSTONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.glowstone).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_glowstone"),
+    COLORED_STONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stone), BlockColored.ItemBlockColored.class, "colored_stone"),
+    COLORED_COBBLESTONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.cobblestone), BlockColored.ItemBlockColored.class, "colored_cobblestone"),
+    COLORED_QUARTZ_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.quartz_block, 1f), BlockColored.ItemBlockColored.class, "colored_quartz_block"),
+    COLORED_SOUL_SAND(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.soul_sand), BlockColored.ItemBlockColored.class, "colored_soul_sand"),
+    COLORED_REDSTONE_LAMP(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.redstone_lamp).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_redstone_lamp"),
+    COLORED_BRICKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.brick_block), BlockColored.ItemBlockColored.class, "colored_bricks"),
+    COLORED_STONE_BRICKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stonebrick), BlockColored.ItemBlockColored.class, "colored_stone_bricks"),
+    COLORED_LAPIS_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.lapis_block), BlockColored.ItemBlockColored.class, "colored_lapis_block"),
+    COLORED_OBSIDIAN(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.obsidian), BlockColored.ItemBlockColored.class, "colored_obsidian"),
+    COLORED_REDSTONE_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.redstone_block, 2f), BlockColored.ItemBlockColored.class, "colored_redstone_block"),
+    COLORED_COAL_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.coal_block), BlockColored.ItemBlockColored.class, "colored_coal_block"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), "redstone_clock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "ethereal_glass"),
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),

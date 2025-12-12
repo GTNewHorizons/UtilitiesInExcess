@@ -54,6 +54,7 @@ public class ItemXRayGlasses extends ItemArmor {
             int y = mop.blockY;
             int z = mop.blockZ;
             Block targetBlock = world.getBlock(x, y, z);
+            int targetMeta = world.getBlockMetadata(x, y, z);
 
             XRayRenderer.addCandidatePosition(new BlockPos(x, y, z));
 
@@ -83,7 +84,8 @@ public class ItemXRayGlasses extends ItemArmor {
                                 continue;
 
                             Block b = world.getBlock(nx, ny, nz);
-                            if (b == targetBlock) {
+                            int m = world.getBlockMetadata(nx, ny, nz);
+                            if (b == targetBlock && m == targetMeta) {
                                 visited.add(neighbor);
                                 toVisit.add(neighbor);
                                 XRayRenderer.addCandidatePosition(neighbor);
