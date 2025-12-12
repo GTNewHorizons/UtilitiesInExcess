@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
+import static net.minecraft.item.Item.getItemFromBlock;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -662,6 +664,8 @@ public class RecipeLoader {
             Blocks.obsidian,
             'e',
             Items.ender_pearl);
+        // Burnt Quartz
+        addFurnaceRecipe(getItemFromBlock(Blocks.quartz_block), ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2), 0.7F);
         // Diamond-Etched Computational Matrix
         addShapedRecipe(
             new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 0),
