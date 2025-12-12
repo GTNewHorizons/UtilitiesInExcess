@@ -85,6 +85,7 @@ tile.decorative_block.7.name=Edged Stone Bricks
 tile.decorative_block.8.name=Border Stone
 tile.decorative_block.9.name=Border Stone (Alternate)
 tile.decorative_block.10.name=Gravel Road
+tile.decorative_block.11.name=Carved 'Eminence' Stone
 
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
