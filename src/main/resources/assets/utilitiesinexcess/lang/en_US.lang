@@ -211,6 +211,11 @@ nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on t
 item.heavenly_ring.name=Heavenly Ring
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
 nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
+item.heavenly_ring.type.0=No wings
+item.heavenly_ring.type.1=type 1
+item.heavenly_ring.type.2=type 2
+item.heavenly_ring.type.3=type 3
+item.heavenly_ring.type.4=type 4
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
@@ -230,7 +235,7 @@ item.glove.desc.1=Press %s to activate.
 item.glove.desc.2=+2,147,483,647 Breeze Projection
 item.glove.desc.3=§oP.S. Breeze Projection does nothing.
 
-nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot.
+nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot. The colors of wool used to craft it will determine the top and bottom color of the item and its model.
 nei.infopage.uie.glove.2=The glove can also be worn in a baubles slot. While equipped in this way, you can hold the "Activate Glove" keybind to be able to click with an empty hand at any time. 
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
@@ -423,7 +428,7 @@ nei.infopage.uie.blackout_curtains.1=Blackout Curtains have no collision and blo
 
 tile.conveyor.name=Conveyor
 
-nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible.
+nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible. If a conveyor pushes an item into the side of another conveyor, it will be pushed up and onto it.
 
 tile.underworld_portal.name=Portal to the Underworld
 
@@ -448,6 +453,23 @@ nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there
 
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
+
+uie.colored_blocks.color.0=Colored %s (White)
+uie.colored_blocks.color.1=Colored %s (Orange)
+uie.colored_blocks.color.2=Colored %s (Magenta)
+uie.colored_blocks.color.3=Colored %s (Light Blue)
+uie.colored_blocks.color.4=Colored %s (Yellow)
+uie.colored_blocks.color.5=Colored %s (Lime)
+uie.colored_blocks.color.6=Colored %s (Pink)
+uie.colored_blocks.color.7=Colored %s (Gray)
+uie.colored_blocks.color.8=Colored %s (Light Gray)
+uie.colored_blocks.color.9=Colored %s (Cyan)
+uie.colored_blocks.color.10=Colored %s (Purple)
+uie.colored_blocks.color.11=Colored %s (Blue)
+uie.colored_blocks.color.12=Colored %s (Brown)
+uie.colored_blocks.color.13=Colored %s (Dark Green)
+uie.colored_blocks.color.14=Colored %s (Red)
+uie.colored_blocks.color.15=Colored %s (Black)
 
 material.bedrockium_uie=Bedrockium
 material.bedrockium_uie.ability=Heavy
