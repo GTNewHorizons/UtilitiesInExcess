@@ -3,7 +3,9 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -11,10 +13,25 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedst
 
 public class BlockRedstoneClock extends BlockContainer {
 
+    private IIcon iconInactive;
+    private IIcon iconActive;
+
     public BlockRedstoneClock() {
         super(Material.rock);
         setBlockName("redstone_clock");
         setBlockTextureName("utilitiesinexcess:redstone_clock");
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        iconInactive = reg.registerIcon("utilitiesinexcess:redstone_clock_inactive");
+        iconActive = reg.registerIcon("utilitiesinexcess:redstone_clock_active");
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        boolean active = (meta) == 1;
+        return active ? iconActive : iconInactive;
     }
 
     @Override
