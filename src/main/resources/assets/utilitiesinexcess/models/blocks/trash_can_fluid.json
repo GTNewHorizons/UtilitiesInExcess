@@ -1,0 +1,6 @@
+{
+  "parent": "utilitiesinexcess:blocks/trash_can_item",
+  "textures": {
+    "0": "utilitiesinexcess:models/trash_can_fluid"
+  }
+}

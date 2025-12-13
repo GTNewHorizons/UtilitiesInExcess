@@ -6,6 +6,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import com.fouristhenumber.utilitiesinexcess.common.dimensions.UIEWorldChunkManager;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 
 import cpw.mods.fml.relauncher.Side;
@@ -15,7 +16,7 @@ public class WorldProviderUnderWorld extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new WorldChunkManagerUnderWorld(BiomeGenBase.getBiome(UnderWorldConfig.defaultBiomeId));
+        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(UnderWorldConfig.defaultBiomeId));
         this.dimensionId = UnderWorldConfig.underWorldDimensionId;
         this.hasNoSky = true;
     }

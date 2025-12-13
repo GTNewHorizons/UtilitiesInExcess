@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +15,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
 
 public class ItemPrecisionShears extends ItemShears {
@@ -77,16 +75,6 @@ public class ItemPrecisionShears extends ItemShears {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.1"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.2"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.precision_shears.desc.3"));
-        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
-        super.addInformation(stack, player, tooltip, p_77624_4_);
-    }
-
-    @Override
     public void registerIcons(IIconRegister register) {
         super.registerIcons(register);
         cooldownIcon = register.registerIcon("utilitiesinexcess:precision_shears_cooldown");
@@ -101,6 +89,12 @@ public class ItemPrecisionShears extends ItemShears {
             }
         }
         return super.getIcon(stack, pass);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        if (PrecisionShearsConfig.unbreakable)
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable

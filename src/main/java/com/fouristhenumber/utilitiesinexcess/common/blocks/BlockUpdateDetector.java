@@ -1,16 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -65,17 +59,5 @@ public class BlockUpdateDetector extends BlockContainer {
     @Override
     public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
         return true;
-    }
-
-    public static class ItemBlockUpdateDetector extends ItemBlock {
-
-        public ItemBlockUpdateDetector(Block block) {
-            super(block);
-        }
-
-        @Override
-        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.block_update_detector.desc"));
-        }
     }
 }

@@ -1,19 +1,25 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemDisabled;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGoldenBag;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoInversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
@@ -52,14 +58,18 @@ public enum ModItems {
     WATERING_CAN_ELITE(WateringCanConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
     INVERSION_SIGIL_INACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
     INVERSION_SIGIL_ACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
+    PSEUDO_INVERSION_SIGIL(InversionConfig.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
-    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new Item().setUnlocalizedName("inverted_nugget").setTextureName("utilitiesinexcess:inverted_nugget"), "inverted_nugget"),
-    DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
-    ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(16), "architectsWand"),
-    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new Item().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
+    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
+    ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
+    SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
+    BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
     FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
     ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
+    XRAY_GLASSES(ItemConfig.enableXRayGlasses, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_glasses"),
+    BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
+    GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
 
     ; // leave trailing semicolon
     // spotless:on
@@ -69,6 +79,7 @@ public enum ModItems {
     public static void init() {
         for (ModItems item : VALUES) {
             if (item.isEnabled()) {
+                item.theItem.setCreativeTab(UtilitiesInExcess.uieTab);
                 GameRegistry.registerItem(item.get(), item.name);
             } else if (ItemConfig.registerDisabledItems) GameRegistry.registerItem(item.disabledVersion, item.name);
         }
