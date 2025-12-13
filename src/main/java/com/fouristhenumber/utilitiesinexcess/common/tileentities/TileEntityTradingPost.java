@@ -13,7 +13,9 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.text.StringKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -22,10 +24,14 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.scroll.ScrollArea;
+import com.cleanroommc.modularui.widget.scroll.ScrollData;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -49,23 +55,22 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         villagerColumns = new ArrayList<>();
 
         TradingPostPanel panel = new TradingPostPanel("uie:trading_post");
-        panel.height(229)
-            .width(265);
+        panel.height(226)
+            .width(259);
         Column mainColumn = new Column();
-        mainColumn.sizeRel(1)
+        mainColumn.height(229)
+            .width(265)
+            .pos(0, 0)
             .paddingRight(2)
             .childPadding(0);
 
         TradeList tradeList = new TradeList().coverChildrenWidth()
-            .padding(0)
-            .margin(0)
-            .paddingRight(1)
-            .height(125);
+            .height(125)
+            .pos(6, 15);
         Row tradeListRow = new Row();
         tradeListRow.coverChildren()
-            .height(1500)
             .childPadding(3)
-            .paddingRight(2);
+            .left(0);
         for (int i = 0; i < 3; i++) {
             VillagerColumn columnOfVillagers = new VillagerColumn();
             columnOfVillagers.alignY(0)
@@ -129,8 +134,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .marginRight(10));
         Row bottomRow = new Row();
         bottomRow.coverChildrenHeight()
-            .alignX(1)
-            .width(256);
+            .width(259)
+            .pos(0, 229 - 85);
 
         var inventory = SlotGroupWidget.playerInventory(0, false);
         bottomRow.child(
@@ -164,6 +169,37 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static class TradeList extends ListWidget<Row, TradeList> {
 
+        @Override
+        public void onInit() {
+            if (getScrollData() == null) {
+                scrollDirection(new TradeListScrollData());
+            }
+        }
+    }
+
+    public static class TradeListScrollData extends VerticalScrollData {
+
+        // For some reason for the first couple of frames the scroll bar is in the wrong position
+        // I've seen this phenomenon in other people's PRs, but I don't know if this is an MUI2 bug or not
+        // So for now, I'm just going to hard-code it's x position.
+        @Override
+        public void drawScrollbar(ScrollArea area, ModularGuiContext context, WidgetTheme widgetTheme,
+            IDrawable texture) {
+            boolean isOtherActive = isOtherScrollBarActive(area, true);
+            int l = this.getScrollBarLength(area);
+            int y = 0;
+            int w = getThickness();
+            int h = area.height;
+            GuiDraw.drawRect(243, y, w, h, area.getScrollBarBackgroundColor());
+
+            y = getScrollBarStart(area, l, isOtherActive);
+            ScrollData data2 = getOtherScrollData(area);
+            if (data2 != null && isOtherActive && data2.isOnAxisStart()) {
+                y += data2.getThickness();
+            }
+            h = l;
+            drawScrollBar(context, 243, y, w, h, widgetTheme, texture);
+        }
     }
 
     public static class HelpWidget extends Widget<HelpWidget> {
