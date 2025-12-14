@@ -57,57 +57,50 @@ public class BlockDrum extends BlockContainer {
 
         TileEntity te = world.getTileEntity(x, y, z);
 
-       // all the drum things in variables so i can just ref them later xd
-        if(!(te instanceof TileEntityDrum drum)) return false;
+        // all the drum things in variables so i can just ref them later xd
+        if (!(te instanceof TileEntityDrum drum)) return false;
         FluidTank drumTank = drum.tank;
-        FluidStack fluid =  drumTank.getFluid();
+        FluidStack fluid = drumTank.getFluid();
         int capacity = drumTank.getCapacity();
 
         ItemStack itemStack = player.inventory.getCurrentItem();
         if (itemStack == null) {
-            if(world.isRemote) {
+            if (world.isRemote) {
                 return false;
             }
 
-                // Print drum capacity to player chat
-                player.addChatComponentMessage(
-                    new ChatComponentTranslation(
-                        "%s mB",
-                        NumberFormat.DEFAULT.format(drumTank.getFluidAmount())
-                    )
-                );
-                return true;
+            // Print drum capacity to player chat
+            player.addChatComponentMessage(
+                new ChatComponentTranslation("%s mB", NumberFormat.DEFAULT.format(drumTank.getFluidAmount())));
+            return true;
         }
         Item item = itemStack.getItem();
 
-
-        if(fluid == null){
-            //empty drum cases
-            if(item instanceof IFluidContainerItem fluidTank){
+        if (fluid == null) {
+            // empty drum cases
+            if (item instanceof IFluidContainerItem fluidTank) {
                 FluidStack playerFluid = fluidTank.getFluid(itemStack);
                 int playerCapacity = fluidTank.getCapacity(itemStack);
 
-                if( playerFluid== null){
-                    //both the tank and the drum are false
+                if (playerFluid == null) {
+                    // both the tank and the drum are false
                     return true;
-                }else{
-                    //either the capacity of the drum, or the amount in the player hand
+                } else {
+                    // either the capacity of the drum, or the amount in the player hand
                     int fillAmount = Math.min(capacity, playerCapacity);
-                    //copy the fluid add hte amount and fill the drum and empty the hand
+                    // copy the fluid add hte amount and fill the drum and empty the hand
                     FluidStack fillFluid = playerFluid.copy();
                     fillFluid.amount = fillAmount;
                     int filedAmount = drumTank.fill(fillFluid, true);
                     fluidTank.drain(itemStack, filedAmount, true);
 
-                    //todo: pull this to its own helper method?
+                    // todo: pull this to its own helper method?
                     if (!world.isRemote) {
                         player.addChatComponentMessage(
                             new ChatComponentTranslation(
                                 "message.drum.filled",
                                 filedAmount,
-                                playerFluid.getLocalizedName()
-                            )
-                        );
+                                playerFluid.getLocalizedName()));
                     }
 
                     world.markBlockForUpdate(x, y, z);
@@ -115,35 +108,31 @@ public class BlockDrum extends BlockContainer {
                 }
 
             }
-            //empty and full bucket, maybe can pull this out to a helper method as well?
-            else if(item instanceof ItemBucket){
+            // empty and full bucket, maybe can pull this out to a helper method as well?
+            else if (item instanceof ItemBucket) {
 
                 FluidStack bucketFluid = FluidContainerRegistry.getFluidForFilledItem(itemStack);
-                if(bucketFluid == null){
+                if (bucketFluid == null) {
                     return false;
                 }
-                //this SHOULD be 1000 i THINK
+                // this SHOULD be 1000 i THINK
                 int fillAmount = Math.min(capacity, bucketFluid.amount);
                 FluidStack fillFluid = bucketFluid.copy();
                 fillFluid.amount = fillAmount;
                 int filedAmount = drumTank.fill(fillFluid, true);
 
-                //if the drum works?
-                if (filedAmount > 0){
+                // if the drum works?
+                if (filedAmount > 0) {
 
-                    if(!world.isRemote) {
-                        player.inventory.setInventorySlotContents(
-                            player.inventory.currentItem,
-                            new ItemStack(Items.bucket)
-                        );
+                    if (!world.isRemote) {
+                        player.inventory
+                            .setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.bucket));
 
                         player.addChatComponentMessage(
                             new ChatComponentTranslation(
                                 "message.drum.filled",
                                 fillAmount,
-                                fillFluid.getLocalizedName()
-                            )
-                        );
+                                fillFluid.getLocalizedName()));
                     }
                     world.markBlockForUpdate(x, y, z);
 
@@ -152,17 +141,16 @@ public class BlockDrum extends BlockContainer {
             }
         }
         // if the drum has any fluid at all
-        else{
-            if ( item instanceof IFluidContainerItem fluidItem){
+        else {
+            if (item instanceof IFluidContainerItem fluidItem) {
 
                 FluidStack itemFluid = fluidItem.getFluid(itemStack);
 
-                if( itemFluid != null && !itemFluid.isFluidEqual(fluid)){
-                    return  true;
+                if (itemFluid != null && !itemFluid.isFluidEqual(fluid)) {
+                    return true;
                 }
 
-                int space = fluidItem.getCapacity(itemStack)
-                - (itemFluid == null ? 0 : itemFluid.amount);
+                int space = fluidItem.getCapacity(itemStack) - (itemFluid == null ? 0 : itemFluid.amount);
 
                 if (space <= 0) return false;
                 int transfer = Math.min(space, fluid.amount);
@@ -174,12 +162,7 @@ public class BlockDrum extends BlockContainer {
 
                 if (!world.isRemote) {
                     player.addChatComponentMessage(
-                        new ChatComponentTranslation(
-                            "message.drum.drained",
-                            filled,
-                            fluid.getLocalizedName()
-                        )
-                    );
+                        new ChatComponentTranslation("message.drum.drained", filled, fluid.getLocalizedName()));
                 }
 
                 world.markBlockForUpdate(x, y, z);
@@ -189,8 +172,7 @@ public class BlockDrum extends BlockContainer {
 
             else if (item instanceof ItemBucket) {
 
-                FluidStack bucketFluid =
-                    FluidContainerRegistry.getFluidForFilledItem(itemStack);
+                FluidStack bucketFluid = FluidContainerRegistry.getFluidForFilledItem(itemStack);
                 if (bucketFluid != null) {
                     if (fluid != null && !fluid.isFluidEqual(bucketFluid)) {
                         return true;
@@ -202,18 +184,14 @@ public class BlockDrum extends BlockContainer {
                     }
 
                     if (!world.isRemote) {
-                        player.inventory.setInventorySlotContents(
-                            player.inventory.currentItem,
-                            new ItemStack(Items.bucket)
-                        );
+                        player.inventory
+                            .setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.bucket));
 
                         player.addChatComponentMessage(
                             new ChatComponentTranslation(
                                 "message.drum.filled",
                                 FluidContainerRegistry.BUCKET_VOLUME,
-                                bucketFluid.getLocalizedName()
-                            )
-                        );
+                                bucketFluid.getLocalizedName()));
                     }
 
                     world.markBlockForUpdate(x, y, z);
@@ -226,26 +204,20 @@ public class BlockDrum extends BlockContainer {
                 FluidStack take = fluid.copy();
                 take.amount = FluidContainerRegistry.BUCKET_VOLUME;
 
-                ItemStack filledBucket =
-                    FluidContainerRegistry.fillFluidContainer(take, itemStack);
+                ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(take, itemStack);
 
                 if (filledBucket == null) {
                     return true;
                 }
 
                 if (!world.isRemote) {
-                    player.inventory.setInventorySlotContents(
-                        player.inventory.currentItem,
-                        filledBucket
-                    );
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledBucket);
 
                     player.addChatComponentMessage(
                         new ChatComponentTranslation(
                             "message.drum.drained",
                             FluidContainerRegistry.BUCKET_VOLUME,
-                            fluid.getLocalizedName()
-                        )
-                    );
+                            fluid.getLocalizedName()));
                 }
 
                 drumTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
@@ -253,13 +225,9 @@ public class BlockDrum extends BlockContainer {
                 return true;
             }
 
-
         }
         return true;
     }
-
-
-
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
