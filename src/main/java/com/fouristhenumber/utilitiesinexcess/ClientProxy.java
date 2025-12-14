@@ -5,6 +5,7 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -13,6 +14,8 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRendere
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
@@ -25,6 +28,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
+@SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
     // This is just a number that ticks up every frame.
@@ -56,6 +60,12 @@ public class ClientProxy extends CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
+
+        if (Mods.FindIt.isLoaded()) {
+            FindItHelper.init();
+            FindItHelper.INSTANCE = new FindItHelper();
+            MinecraftForge.EVENT_BUS.register(FindItHelper.INSTANCE);
+        }
     }
 
     @SubscribeEvent
