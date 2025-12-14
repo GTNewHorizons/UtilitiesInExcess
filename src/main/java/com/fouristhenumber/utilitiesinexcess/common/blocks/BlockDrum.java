@@ -87,7 +87,7 @@ public class BlockDrum extends BlockContainer {
                     return true;
                 } else {
                     // either the capacity of the drum, or the amount in the player hand
-                    int fillAmount = Math.min(capacity, playerCapacity);
+                    int fillAmount = Math.min(capacity, playerFluid.amount);
                     // copy the fluid add hte amount and fill the drum and empty the hand
                     FluidStack fillFluid = playerFluid.copy();
                     fillFluid.amount = fillAmount;
