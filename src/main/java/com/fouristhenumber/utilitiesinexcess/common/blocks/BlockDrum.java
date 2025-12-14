@@ -63,11 +63,23 @@ public class BlockDrum extends BlockContainer {
         FluidStack fluid =  drumTank.getFluid();
         int capacity = drumTank.getCapacity();
 
-        ItemStack itemStack = player.getItemInUse();
-        Item item = itemStack.getItem();
-        if(item == null){
-            return false;
+        ItemStack itemStack = player.inventory.getCurrentItem();
+        if (itemStack == null) {
+            if(world.isRemote) {
+                return false;
+            }
+
+                // Print drum capacity to player chat
+                player.addChatComponentMessage(
+                    new ChatComponentTranslation(
+                        "%s mB",
+                        NumberFormat.DEFAULT.format(drumTank.getFluidAmount())
+                    )
+                );
+                return true;
         }
+        Item item = itemStack.getItem();
+
 
         if(fluid == null){
             //empty drum cases
@@ -77,7 +89,7 @@ public class BlockDrum extends BlockContainer {
 
                 if( playerFluid== null){
                     //both the tank and the drum are false
-                    return false;
+                    return true;
                 }else{
                     //either the capacity of the drum, or the amount in the player hand
                     int fillAmount = Math.min(capacity, playerCapacity);
@@ -107,6 +119,9 @@ public class BlockDrum extends BlockContainer {
             else if(item instanceof ItemBucket){
 
                 FluidStack bucketFluid = FluidContainerRegistry.getFluidForFilledItem(itemStack);
+                if(bucketFluid == null){
+                    return false;
+                }
                 //this SHOULD be 1000 i THINK
                 int fillAmount = Math.min(capacity, bucketFluid.amount);
                 FluidStack fillFluid = bucketFluid.copy();
@@ -131,18 +146,116 @@ public class BlockDrum extends BlockContainer {
                         );
                     }
                     world.markBlockForUpdate(x, y, z);
-                    return true;
 
                 }
 
             }
         }
-        // if the drum is full
+        // if the drum has any fluid at all
         else{
+            if ( item instanceof IFluidContainerItem fluidItem){
 
-            return  false;
+                FluidStack itemFluid = fluidItem.getFluid(itemStack);
+
+                if( itemFluid != null && !itemFluid.isFluidEqual(fluid)){
+                    return  true;
+                }
+
+                int space = fluidItem.getCapacity(itemStack)
+                - (itemFluid == null ? 0 : itemFluid.amount);
+
+                if (space <= 0) return false;
+                int transfer = Math.min(space, fluid.amount);
+                FluidStack transferFluid = fluid.copy();
+                transferFluid.amount = transfer;
+
+                int filled = fluidItem.fill(itemStack, transferFluid, true);
+                drumTank.drain(filled, true);
+
+                if (!world.isRemote) {
+                    player.addChatComponentMessage(
+                        new ChatComponentTranslation(
+                            "message.drum.drained",
+                            filled,
+                            fluid.getLocalizedName()
+                        )
+                    );
+                }
+
+                world.markBlockForUpdate(x, y, z);
+                return true;
+
+            }
+
+            else if (item instanceof ItemBucket) {
+
+                FluidStack bucketFluid =
+                    FluidContainerRegistry.getFluidForFilledItem(itemStack);
+                if (bucketFluid != null) {
+                    if (fluid != null && !fluid.isFluidEqual(bucketFluid)) {
+                        return true;
+                    }
+                    int fill = drumTank.fill(bucketFluid.copy(), true);
+
+                    if (fill < FluidContainerRegistry.BUCKET_VOLUME) {
+                        return true;
+                    }
+
+                    if (!world.isRemote) {
+                        player.inventory.setInventorySlotContents(
+                            player.inventory.currentItem,
+                            new ItemStack(Items.bucket)
+                        );
+
+                        player.addChatComponentMessage(
+                            new ChatComponentTranslation(
+                                "message.drum.filled",
+                                FluidContainerRegistry.BUCKET_VOLUME,
+                                bucketFluid.getLocalizedName()
+                            )
+                        );
+                    }
+
+                    world.markBlockForUpdate(x, y, z);
+                    return true;
+                }
+                if (fluid == null || fluid.amount < FluidContainerRegistry.BUCKET_VOLUME) {
+                    return true;
+                }
+
+                FluidStack take = fluid.copy();
+                take.amount = FluidContainerRegistry.BUCKET_VOLUME;
+
+                ItemStack filledBucket =
+                    FluidContainerRegistry.fillFluidContainer(take, itemStack);
+
+                if (filledBucket == null) {
+                    return true;
+                }
+
+                if (!world.isRemote) {
+                    player.inventory.setInventorySlotContents(
+                        player.inventory.currentItem,
+                        filledBucket
+                    );
+
+                    player.addChatComponentMessage(
+                        new ChatComponentTranslation(
+                            "message.drum.drained",
+                            FluidContainerRegistry.BUCKET_VOLUME,
+                            fluid.getLocalizedName()
+                        )
+                    );
+                }
+
+                drumTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
+                world.markBlockForUpdate(x, y, z);
+                return true;
+            }
+
+
         }
-        return false;
+        return true;
     }
 
 
