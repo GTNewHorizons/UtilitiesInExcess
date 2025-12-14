@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
@@ -79,7 +78,6 @@ public class UtilitiesInExcess {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
-    public static int spikeRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -142,8 +140,6 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
-        spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new SpikeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
