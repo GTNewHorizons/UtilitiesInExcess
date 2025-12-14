@@ -125,8 +125,8 @@ public class BlockDrum extends BlockContainer {
                 if (filedAmount > 0) {
 
                     if (!world.isRemote) {
-                        player.inventory
-                            .setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.bucket));
+
+                        consumeItemStack(player, itemStack, new ItemStack(Items.bucket));
 
                         player.addChatComponentMessage(
                             new ChatComponentTranslation(
@@ -156,11 +156,17 @@ public class BlockDrum extends BlockContainer {
                 int transfer = Math.min(space, fluid.amount);
                 FluidStack transferFluid = fluid.copy();
                 transferFluid.amount = transfer;
+                ItemStack single = itemStack.copy();
+                single.stackSize = 1;
 
-                int filled = fluidItem.fill(itemStack, transferFluid, true);
+                int filled = fluidItem.fill(single, transferFluid, true);
+                if (filled <= 0) return true;
+
                 drumTank.drain(filled, true);
 
                 if (!world.isRemote) {
+                    consumeItemStack(player, itemStack, single);
+
                     player.addChatComponentMessage(
                         new ChatComponentTranslation("message.drum.drained", filled, fluid.getLocalizedName()));
                 }
@@ -205,13 +211,10 @@ public class BlockDrum extends BlockContainer {
                 take.amount = FluidContainerRegistry.BUCKET_VOLUME;
 
                 ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(take, itemStack);
-
-                if (filledBucket == null) {
-                    return true;
-                }
+                if (filledBucket == null) return true;
 
                 if (!world.isRemote) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledBucket);
+                    consumeItemStack(player, itemStack, filledBucket);
 
                     player.addChatComponentMessage(
                         new ChatComponentTranslation(
@@ -223,10 +226,25 @@ public class BlockDrum extends BlockContainer {
                 drumTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
                 world.markBlockForUpdate(x, y, z);
                 return true;
+
             }
 
         }
         return true;
+    }
+
+    private static void consumeItemStack(EntityPlayer player, ItemStack hand, ItemStack result) {
+        if (hand.stackSize == 1) {
+            player.inventory.setInventorySlotContents(player.inventory.currentItem, result);
+        } else {
+            hand.stackSize--;
+            if (!player.inventory.addItemStackToInventory(result)) {
+                player.dropPlayerItemWithRandomChoice(result, false);
+            }
+        }
+        player.inventoryContainer.detectAndSendChanges();
+        player.inventory.markDirty();
+
     }
 
     @Override
