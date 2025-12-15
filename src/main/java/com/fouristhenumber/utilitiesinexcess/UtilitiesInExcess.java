@@ -47,9 +47,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
-import com.fouristhenumber.utilitiesinexcess.compat.tinkers.BedrockiumActiveToolMod;
-import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersEvents;
-import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersMaterials;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
@@ -59,7 +57,6 @@ import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -67,7 +64,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import minetweaker.MineTweakerAPI;
-import tconstruct.library.TConstructRegistry;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -197,20 +193,8 @@ public class UtilitiesInExcess {
         proxy.postInit(event);
 
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
-            initTinkersIntegration();
+            TinkersCompat.init();
         }
-    }
-
-    @Optional.Method(modid = "TConstruct")
-    private void initTinkersIntegration() {
-        TinkersEvents tinkersEvents = new TinkersEvents();
-        MinecraftForge.EVENT_BUS.register(tinkersEvents);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(tinkersEvents);
-
-        TConstructRegistry.registerActiveToolMod(new BedrockiumActiveToolMod());
-        TinkersMaterials.registerMaterials();
     }
 
     @Mod.EventHandler
