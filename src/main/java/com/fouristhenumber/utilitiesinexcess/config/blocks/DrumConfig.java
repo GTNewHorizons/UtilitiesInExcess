@@ -11,5 +11,4 @@ public class DrumConfig {
     @Config.Comment("Change it to MB vs L's")
     public static boolean unitToDisplay;
 
-
 }
