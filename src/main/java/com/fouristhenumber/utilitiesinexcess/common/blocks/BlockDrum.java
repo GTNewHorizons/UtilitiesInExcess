@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.config.blocks.DrumConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -27,6 +26,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.DrumConfig;
 
 public class BlockDrum extends BlockContainer {
 
@@ -71,13 +71,11 @@ public class BlockDrum extends BlockContainer {
             }
 
             // Print drum capacity to player chat
-                player.addChatComponentMessage(
-                    new ChatComponentTranslation(
-                        "%s %s",
-                             NumberFormat.DEFAULT.format(drumTank.getFluidAmount()),
-                        DrumConfig.unitToDisplay ? "mB" : "L"
-                    )
-                );
+            player.addChatComponentMessage(
+                new ChatComponentTranslation(
+                    "%s %s",
+                    NumberFormat.DEFAULT.format(drumTank.getFluidAmount()),
+                    DrumConfig.unitToDisplay ? "mB" : "L"));
 
             return true;
         }
@@ -213,14 +211,14 @@ public class BlockDrum extends BlockContainer {
                     return true;
                 }
                 if (fluid == null || fluid.amount < FluidContainerRegistry.BUCKET_VOLUME) {
-                    return true;
+                    return false;
                 }
 
                 FluidStack take = fluid.copy();
                 take.amount = FluidContainerRegistry.BUCKET_VOLUME;
 
                 ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(take, itemStack);
-                if (filledBucket == null) return true;
+                if (filledBucket == null) return false;
 
                 if (!world.isRemote) {
                     consumeItemStack(player, itemStack, filledBucket);

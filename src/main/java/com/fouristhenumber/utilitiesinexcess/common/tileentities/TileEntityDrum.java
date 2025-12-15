@@ -14,7 +14,7 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     public FluidTank tank = new FluidTank(0);
 
     public TileEntityDrum() {
-        this(16000);
+        this(256000);
     }
 
     public TileEntityDrum(int capacity) {
