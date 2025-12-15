@@ -147,7 +147,7 @@ public class BlockDrum extends BlockContainer {
                 FluidStack itemFluid = fluidItem.getFluid(itemStack);
 
                 if (itemFluid != null && !itemFluid.isFluidEqual(fluid)) {
-                    return true;
+                    return false;
                 }
 
                 int space = fluidItem.getCapacity(itemStack) - (itemFluid == null ? 0 : itemFluid.amount);
@@ -160,7 +160,7 @@ public class BlockDrum extends BlockContainer {
                 single.stackSize = 1;
 
                 int filled = fluidItem.fill(single, transferFluid, true);
-                if (filled <= 0) return true;
+                if (filled <= 0) return false;
 
                 drumTank.drain(filled, true);
 
@@ -181,13 +181,15 @@ public class BlockDrum extends BlockContainer {
                 FluidStack bucketFluid = FluidContainerRegistry.getFluidForFilledItem(itemStack);
                 if (bucketFluid != null) {
                     if (fluid != null && !fluid.isFluidEqual(bucketFluid)) {
-                        return true;
+                        return false;
                     }
-                    int fill = drumTank.fill(bucketFluid.copy(), true);
+                    int fill = drumTank.fill(bucketFluid.copy(), false);
 
                     if (fill < FluidContainerRegistry.BUCKET_VOLUME) {
-                        return true;
+                        return false;
                     }
+
+                    drumTank.fill(bucketFluid.copy(), true);
 
                     if (!world.isRemote) {
                         player.inventory
