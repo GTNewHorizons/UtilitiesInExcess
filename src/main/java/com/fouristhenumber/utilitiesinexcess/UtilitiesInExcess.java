@@ -59,6 +59,7 @@ import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -196,15 +197,20 @@ public class UtilitiesInExcess {
         proxy.postInit(event);
 
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
-            TinkersEvents tinkersEvents = new TinkersEvents();
-            MinecraftForge.EVENT_BUS.register(tinkersEvents);
-            FMLCommonHandler.instance()
-                .bus()
-                .register(tinkersEvents);
-
-            TConstructRegistry.registerActiveToolMod(new BedrockiumActiveToolMod());
-            TinkersMaterials.registerMaterials();
+            initTinkersIntegration();
         }
+    }
+
+    @Optional.Method(modid = "TConstruct")
+    private void initTinkersIntegration() {
+        TinkersEvents tinkersEvents = new TinkersEvents();
+        MinecraftForge.EVENT_BUS.register(tinkersEvents);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(tinkersEvents);
+
+        TConstructRegistry.registerActiveToolMod(new BedrockiumActiveToolMod());
+        TinkersMaterials.registerMaterials();
     }
 
     @Mod.EventHandler
