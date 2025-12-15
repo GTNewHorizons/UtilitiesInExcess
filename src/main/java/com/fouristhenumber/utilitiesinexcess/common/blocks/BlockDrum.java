@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fouristhenumber.utilitiesinexcess.config.blocks.DrumConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -70,8 +71,14 @@ public class BlockDrum extends BlockContainer {
             }
 
             // Print drum capacity to player chat
-            player.addChatComponentMessage(
-                new ChatComponentTranslation("%s mB", NumberFormat.DEFAULT.format(drumTank.getFluidAmount())));
+                player.addChatComponentMessage(
+                    new ChatComponentTranslation(
+                        "%s %s",
+                             NumberFormat.DEFAULT.format(drumTank.getFluidAmount()),
+                        DrumConfig.unitToDisplay ? "mB" : "L"
+                    )
+                );
+
             return true;
         }
         Item item = itemStack.getItem();
