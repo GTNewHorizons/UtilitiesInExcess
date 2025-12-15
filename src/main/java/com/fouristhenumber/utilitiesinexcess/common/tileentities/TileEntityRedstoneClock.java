@@ -7,7 +7,7 @@ public class TileEntityRedstoneClock extends TileEntity {
 
     private boolean powered = false;
     private boolean outputOn = false;
-    private int timer = 0;
+    private int timer = 20;
 
     @Override
     public void updateEntity() {
@@ -21,7 +21,7 @@ public class TileEntityRedstoneClock extends TileEntity {
         timer--;
         if (timer <= 1) {
             outputOn = true;
-            if (timer == 0) timer = 20;
+            if (timer <= 0) timer = 20;
         } else if (powered) {
             timer = 20;
         }
