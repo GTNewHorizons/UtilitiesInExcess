@@ -9,6 +9,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -47,6 +48,9 @@ public class ClientProxy extends CommonProxy {
         }
         if (ModItems.GLOVE.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.GLOVE.get(), new GloveRenderer());
+        }
+        if (ModItems.FIRE_BATTERY.isEnabled()) {
+            MinecraftForgeClient.registerItemRenderer(ModItems.FIRE_BATTERY.get(), new FireBatteryRenderer());
         }
 
         FMLCommonHandler.instance()
