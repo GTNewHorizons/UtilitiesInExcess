@@ -38,3 +38,5 @@ Thank you for your understanding 🙏
 - We have never met 🤝❌
 
 😇😇😇
+
+### Written by the official UiE lawyer, plasmachicken. Please contact in case of any legal inquiries.
