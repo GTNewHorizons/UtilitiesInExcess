@@ -349,6 +349,9 @@ utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
+tile.advanced_block_update_detector.name=Advanced Block Update Detector
+nei.infopage.uie.advanced_block_update_detector.1=The Advanced Block Update Detector, similarly to it's regular version will check for block updates, however it also reacts at changes within internal data, such as storage.
+
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL

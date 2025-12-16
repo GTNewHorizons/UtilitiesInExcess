@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
@@ -138,6 +139,7 @@ public enum ModBlocks {
     NETHER_STAR_GENERATOR_PLUS(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator_plus", 8), "nether_star_generator_plus"),
     NETHER_STAR_GENERATOR_PLUSPLUS(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator_plusplus", 64), "nether_star_generator_plusplus"),
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), "block_update_detector"),
+    ADVANCED_BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockAdvancedUpdateDetector(), "advanced_block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
