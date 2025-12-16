@@ -20,11 +20,11 @@ I have NOT ❌
 of Extra Utilities in ANY way, shape, or form.
 
 My work on Utilities In Excess (aka the ✨ CLEANROOM ✨ rewrite) is based solely on:
-✔️ vibes
-✔️ documented behavior 📚
-✔️ public knowledge 🌍
-✔️ divine inspiration ⚡
-✔️ and sheer willpower 💪
+<br>✔️ vibes
+<br>✔️ documented behavior 📚
+<br>✔️ public knowledge 🌍
+<br>✔️ divine inspiration ⚡
+<br>✔️ and sheer willpower 💪
 
 At no point did I obtain, observe, memorize, hallucinate, or spiritually channel any proprietary or original Extra Utilities implementation.
 
