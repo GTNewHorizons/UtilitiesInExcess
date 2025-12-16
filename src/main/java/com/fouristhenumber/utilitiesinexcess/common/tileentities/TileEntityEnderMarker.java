@@ -54,7 +54,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         return registeredMarkers.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
     }
 
-    public @Nullable List<FacingVector2i> checkForBoundary(ForgeDirection starterFacing) {
+    public @Nullable List<Vector2i> checkForBoundary(ForgeDirection starterFacing) {
         return switch (operationMode) {
             case DEFAULT -> boundaryFromThree(starterFacing);
             case SINGLE -> boundaryForSizedCuboid(starterFacing);
@@ -62,7 +62,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         };
     }
 
-    private @Nullable List<FacingVector2i> boundaryFromThree(ForgeDirection starterFacing) {
+    private @Nullable List<Vector2i> boundaryFromThree(ForgeDirection starterFacing) {
         Tuple<TileEntityEnderMarker, BlockPos> secondCorner = alignedMarkers.getOrDefault(starterFacing, null);
         if (secondCorner != null && secondCorner.getKey() != null) {
             Tuple<TileEntityEnderMarker, BlockPos> thirdCorner = Optional
@@ -73,23 +73,23 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             if (thirdCorner != null) {
                 return Stream
                     .of(
-                        new FacingVector2i(this.xCoord, this.zCoord, ForgeDirection.UNKNOWN),
-                        new FacingVector2i(thirdCorner.getValue().x, thirdCorner.getValue().z, ForgeDirection.UNKNOWN))
+                        new Vector2i(this.xCoord, this.zCoord),
+                        new Vector2i(thirdCorner.getValue().x, thirdCorner.getValue().z))
                     .collect(Collectors.toList());
             }
         }
         return null;
     }
 
-    private List<FacingVector2i> boundaryForSizedCuboid(ForgeDirection facing) {
+    private List<Vector2i> boundaryForSizedCuboid(ForgeDirection facing) {
         BlockPos otherCorner = DirectionUtil
             .offsetByForward(this.xCoord, this.yCoord, this.zCoord, facing, cuboidSize, 0);
         otherCorner = DirectionUtil.offsetByRight(otherCorner, facing, cuboidSize, 0);
-        return Stream.of(new FacingVector2i(this.xCoord, this.zCoord, ForgeDirection.UNKNOWN), new FacingVector2i(otherCorner.x, otherCorner.z, ForgeDirection.UNKNOWN))
+        return Stream.of(new Vector2i(this.xCoord, this.zCoord), new Vector2i(otherCorner.x, otherCorner.z))
             .collect(Collectors.toList());
     }
 
-    public List<FacingVector2i> boundaryForArbitraryLoop() {
+    public List<Vector2i> boundaryForArbitraryLoop() {
         // TODO: Has issues with markers that have more than 2 connections (uses not boundary not intendeed by player) -
         //  maybe limit to 2 connections if this mode is used and propagate that other markers in chain?
         ArrayList<StackEntry> stack = new ArrayList<>();
@@ -148,8 +148,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
 
         if (markerChain != null) {
             UtilitiesInExcess.chat("Completed marker chain with " + markerChain.size() + " entries.");
-            ArrayList<FacingVector2i> pointChain = new ArrayList<>(markerChain.size());
-            markerChain.forEach((e) -> pointChain.add(new FacingVector2i(e.xCoord, e.zCoord, e.alignedMarkers.keySet().stream().collect(Collectors.toList()))));
+            ArrayList<Vector2i> pointChain = new ArrayList<>(markerChain.size());
+            markerChain.forEach((e) -> pointChain.add(new Vector2i(e.xCoord, e.zCoord)));
             return pointChain;
         }
         UtilitiesInExcess.chat("Failed to complete marker chain.");
