@@ -28,14 +28,14 @@ My work on Utilities In Excess (aka the ✨ CLEANROOM ✨ rewrite) is based sole
 
 At no point did I obtain, observe, memorize, hallucinate, or spiritually channel any proprietary or original Extra Utilities implementation.
 
-- Any similarities are PURELY COINCIDENTAL 🎲
-- Any accusations are BASELESS 🧱
-- Any lawyers are SCARY 😨
+Any similarities are PURELY COINCIDENTAL 🎲
+<br>Any accusations are BASELESS 🧱
+<br>Any lawyers are SCARY 😨
 
 Thank you for your understanding 🙏
-- I do not know Extra Utilities
-- Extra Utilities does not know me
-- We have never met 🤝❌
+<br>I do not know Extra Utilities
+<br>Extra Utilities does not know me
+<br>We have never met 🤝❌
 
 😇😇😇
 
