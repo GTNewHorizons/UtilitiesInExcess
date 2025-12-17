@@ -8,16 +8,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDetector;
-
 public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
 
     private boolean isProvidingPower = false;
     private int pulseTimer = 0;
-    private boolean[] scanningOnFace = { true, true, true, true, true, true };
-    private Block[] blockOnPreviousTick = new Block[6];
-    private int[] blockMetadataOnPreviousTick = new int[6];
-    private String[] tileEntityNBTSerializedOnPreviousTick = new String[6];
+    private final boolean[] scanningOnFace = { true, true, true, true, true, true };
+    private final Block[] blockOnPreviousTick = new Block[6];
+    private final int[] blockMetadataOnPreviousTick = new int[6];
+    private final NBTTagCompound[] tileEntityNBTCompoundOnPreviousTick = new NBTTagCompound[6];
 
     @Override
     public void updateEntity() {
@@ -27,68 +25,63 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
 
         if (isProvidingPower && pulseTimer > 0) {
             pulseTimer--;
-            if (pulseTimer <= 0) {
-                isProvidingPower = false;
-                worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-            }
+            isProvidingPower = false;
+            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
         }
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             if (!scanningOnFace[i]) {
                 continue;
             }
+            ForgeDirection neighborDirection = ForgeDirection.getOrientation(i);
             Block blockOnCurrentTick = worldObj.getBlock(
-                xCoord + ForgeDirection.getOrientation(i).offsetX,
-                yCoord + ForgeDirection.getOrientation(i).offsetY,
-                zCoord + ForgeDirection.getOrientation(i).offsetZ);
-            if (blockOnPreviousTick[i] == null) {
+                xCoord + neighborDirection.offsetX,
+                yCoord + neighborDirection.offsetY,
+                zCoord + neighborDirection.offsetZ);
+            int blockMetadataOnCurrentTick = worldObj.getBlockMetadata(
+                xCoord + neighborDirection.offsetX,
+                yCoord + neighborDirection.offsetY,
+                zCoord + neighborDirection.offsetZ);
+            if (Objects.equals(blockOnPreviousTick[i], null)) {
                 blockOnPreviousTick[i] = blockOnCurrentTick;
-            } else if (blockOnCurrentTick != blockOnPreviousTick[i]
-                && !(blockOnCurrentTick instanceof BlockAdvancedUpdateDetector)
-                && !(blockOnCurrentTick == Blocks.redstone_wire)) {
+            } else if (blockOnCurrentTick != blockOnPreviousTick[i] && !(blockOnCurrentTick == Blocks.redstone_wire)) {
+                sendRedstonePulse();
+                blockOnPreviousTick[i] = blockOnCurrentTick;
+                blockMetadataOnPreviousTick[i] = blockMetadataOnCurrentTick;
+                break;
+            } else {
+                if (blockMetadataOnCurrentTick != blockMetadataOnPreviousTick[i]) {
                     sendRedstonePulse();
                     blockOnPreviousTick[i] = blockOnCurrentTick;
-                    break;
-                } else {
-                    int blockMetadataOnCurrentTick = worldObj.getBlockMetadata(
-                        xCoord + ForgeDirection.getOrientation(i).offsetX,
-                        yCoord + ForgeDirection.getOrientation(i).offsetY,
-                        zCoord + ForgeDirection.getOrientation(i).offsetZ);
-                    if (blockMetadataOnCurrentTick != blockMetadataOnPreviousTick[i]) {
-                        sendRedstonePulse();
-                        blockOnPreviousTick[i] = blockOnCurrentTick;
-                        blockMetadataOnPreviousTick[i] = blockMetadataOnCurrentTick;
-                        break;
-                    }
                     blockMetadataOnPreviousTick[i] = blockMetadataOnCurrentTick;
+                    break;
                 }
-            if (blockOnCurrentTick.hasTileEntity(0)) {
-                if (blockOnPreviousTick[i] == null) {
-                    blockOnPreviousTick[i] = blockOnCurrentTick;
-                } else if (!blockOnPreviousTick[i].hasTileEntity(0)) {
+                blockMetadataOnPreviousTick[i] = blockMetadataOnCurrentTick;
+            }
+            if (blockOnCurrentTick.hasTileEntity(blockMetadataOnPreviousTick[i])) {
+                if (!blockOnPreviousTick[i].hasTileEntity(blockMetadataOnPreviousTick[i])) {
                     sendRedstonePulse();
                     blockOnPreviousTick[i] = blockOnCurrentTick;
                     break;
                 }
-                NBTTagCompound compound = new NBTTagCompound();
+                NBTTagCompound tileEntityNBTCompoundOnCurrentTick = new NBTTagCompound();
                 worldObj
                     .getTileEntity(
-                        xCoord + ForgeDirection.getOrientation(i).offsetX,
-                        yCoord + ForgeDirection.getOrientation(i).offsetY,
-                        zCoord + ForgeDirection.getOrientation(i).offsetZ)
-                    .writeToNBT(compound);
-                String tileEntityNBTSerializedOnCurrentTick = compound.toString();
-                if (tileEntityNBTSerializedOnPreviousTick[i] == null) {
+                        xCoord + neighborDirection.offsetX,
+                        yCoord + neighborDirection.offsetY,
+                        zCoord + neighborDirection.offsetZ)
+                    .writeToNBT(tileEntityNBTCompoundOnCurrentTick);
+                if (tileEntityNBTCompoundOnPreviousTick[i] == null) {
                     blockOnPreviousTick[i] = blockOnCurrentTick;
-                    tileEntityNBTSerializedOnPreviousTick[i] = tileEntityNBTSerializedOnCurrentTick;
-                } else if (!Objects
-                    .equals(tileEntityNBTSerializedOnCurrentTick, tileEntityNBTSerializedOnPreviousTick[i])) {
+                    tileEntityNBTCompoundOnPreviousTick[i] = tileEntityNBTCompoundOnCurrentTick;
+                } else
+                    if (!Objects.equals(tileEntityNBTCompoundOnCurrentTick, tileEntityNBTCompoundOnPreviousTick[i])) {
                         sendRedstonePulse();
                         blockOnPreviousTick[i] = blockOnCurrentTick;
-                        tileEntityNBTSerializedOnPreviousTick[i] = tileEntityNBTSerializedOnCurrentTick;
+                        tileEntityNBTCompoundOnPreviousTick[i] = tileEntityNBTCompoundOnCurrentTick;
                         break;
                     }
-                tileEntityNBTSerializedOnPreviousTick[i] = tileEntityNBTSerializedOnCurrentTick;
+                tileEntityNBTCompoundOnPreviousTick[i] = tileEntityNBTCompoundOnCurrentTick;
             }
             blockOnPreviousTick[i] = blockOnCurrentTick;
         }
