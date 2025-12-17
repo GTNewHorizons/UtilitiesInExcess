@@ -78,7 +78,7 @@ public class IMCForNEI {
             "<utilitiesinexcess:bedrockium_ingot>,<utilitiesinexcess:bedrockium_block>",
             "nei.infopage.uie.bedrockium.1");
         if (Mods.Tinkers.isLoaded()) {
-            sendInfoPage("utilitiesinexcess:bedrockium_ingot", "nei.infopage.uie.ticon_bedrockium");
+            sendInfoPage("<utilitiesinexcess:bedrockium_ingot>", "nei.infopage.uie.ticon_bedrockium");
         }
 
         sendInfoPage(
@@ -97,7 +97,7 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.magic_wood.1");
         if (Mods.Tinkers.isLoaded()) {
-            sendInfoPage("utilitiesinexcess:magic_wood", "nei.infopage.uie.ticon_magic_wood");
+            sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.ticon_magic_wood");
         }
 
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");

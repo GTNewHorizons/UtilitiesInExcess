@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.tinkers;
 
-import java.util.ArrayList;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
