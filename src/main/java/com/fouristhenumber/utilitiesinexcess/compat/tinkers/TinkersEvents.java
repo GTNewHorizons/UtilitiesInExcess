@@ -11,15 +11,11 @@ import tconstruct.library.event.ToolCraftEvent;
 
 public class TinkersEvents {
 
+    private static final String[] components = new String[] { "Head", "Handle", "Accessory", "Extra" };
+
     @SubscribeEvent
     public void craftTool(ToolCraftEvent.NormalTool event) {
         NBTTagCompound toolTag = event.toolTag.getCompoundTag("InfiTool");
-
-        ArrayList<String> components = new ArrayList<>();
-        components.add("Head");
-        components.add("Handle");
-        components.add("Accessory");
-        components.add("Extra");
 
         for (String component : components) {
             if (toolTag.getInteger(component) == OtherConfig.bedrockiumTinkersID) {
