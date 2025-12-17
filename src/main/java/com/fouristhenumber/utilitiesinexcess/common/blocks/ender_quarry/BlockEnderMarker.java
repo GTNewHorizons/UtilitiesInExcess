@@ -78,9 +78,6 @@ public class BlockEnderMarker extends BlockContainer {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityEnderMarker marker) {
             if (player.isSneaking()) {
-                if (marker.operationMode == TileEntityEnderMarker.MarkerOperationMode.ARBITRARY_LOOP) {
-                    marker.boundaryForArbitraryLoop();
-                }
                 int newCuboidSize = marker.increaseCuboidSize();
                 player
                     .addChatComponentMessage(new ChatComponentText("Increased cuboid size to " + newCuboidSize + "."));

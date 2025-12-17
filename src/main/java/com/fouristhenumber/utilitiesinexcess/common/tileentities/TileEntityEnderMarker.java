@@ -12,9 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -54,11 +59,11 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         return registeredMarkers.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
     }
 
-    public @Nullable List<Vector2i> checkForBoundary(ForgeDirection starterFacing) {
+    public @Nullable List<Vector2i> checkForBoundary(ForgeDirection starterFacing, EntityPlayer player) {
         return switch (operationMode) {
             case DEFAULT -> boundaryFromThree(starterFacing);
             case SINGLE -> boundaryForSizedCuboid(starterFacing);
-            case ARBITRARY_LOOP -> boundaryForArbitraryLoop();
+            case ARBITRARY_LOOP -> boundaryForArbitraryLoop(player);
         };
     }
 
@@ -89,20 +94,25 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             .collect(Collectors.toList());
     }
 
-    public List<Vector2i> boundaryForArbitraryLoop() {
-        // TODO: Has issues with markers that have more than 2 connections (uses not boundary not intendeed by player) -
-        //  maybe limit to 2 connections if this mode is used and propagate that other markers in chain?
+    public List<Vector2i> boundaryForArbitraryLoop(EntityPlayer player) {
+        // TODO: Has issues with markers that have more than 2 connections (uses not boundary not intended by player) -
+        // maybe limit to 2 connections if this mode is used and propagate that to other markers in chain?
         ArrayList<StackEntry> stack = new ArrayList<>();
         stack.add(new StackEntry(new LinkedHashMap<>(), this));
+        StackEntry lastVisited;
         Set<TileEntityEnderMarker> markerChain = null;
 
         searchStack: do {
             StackEntry entry = stack.remove(stack.size() - 1);
+            lastVisited = entry;
 
+            // If we have no discovered aligned markers yet, or the only discovered marker
+            // is the one we came from (a single back-connection), refresh discovery so we
+            // can populate any missing/stale connections (e.g. after chunk reload).
             if (entry.current.alignedMarkers.isEmpty() || entry.current.alignedMarkers.size() == 1
-                && entry.current.alignedMarkers.get(entry.lastVisited.getValue()) != null
-                && entry.current.alignedMarkers.get(entry.lastVisited.getValue())
-                    .getKey() == entry.lastVisited.getKey()) {
+                && (entry.lastVisited == null || (entry.current.alignedMarkers.get(entry.lastVisited.getValue()) != null
+                    && entry.current.alignedMarkers.get(entry.lastVisited.getValue())
+                        .getKey() == entry.lastVisited.getKey()))) {
                 entry.current.checkForAlignedMarkers();
             }
 
@@ -152,7 +162,27 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             markerChain.forEach((e) -> pointChain.add(new Vector2i(e.xCoord, e.zCoord)));
             return pointChain;
         }
-        UtilitiesInExcess.chat("Failed to complete marker chain.");
+        player.addChatComponentMessage(new ChatComponentText(String.format("Failed to complete marker chain, with last marker at (%d %d %d).",
+            lastVisited.current.xCoord, lastVisited.current.yCoord, lastVisited.current.zCoord)));
+        // Spawn particles to show where the chain broke
+        for (Object obj : worldObj.playerEntities) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) obj;
+            double distance = player.getDistanceSq(xCoord, yCoord, zCoord);
+            if (distance < 1024) { // 32 block range
+                    S2APacketParticles packet = new S2APacketParticles(
+                        "flame",
+                        (float)(lastVisited.current.xCoord + 0.5),
+                        (float)(lastVisited.current.yCoord + 3.25),
+                        (float)(lastVisited.current.zCoord + 0.5),
+                        0.0F,
+                        1F,
+                        0.0F,
+                        0.04F, // speed
+                        400 // count
+                    );
+                playerMP.playerNetServerHandler.sendPacket(packet);
+            }
+        }
 
         return null;
     }
@@ -402,10 +432,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         public FacingVector2i(int x, int z, ForgeDirection facing) {
             super(x, z);
             this.facings = new HashSet<>();
-            if (facing != ForgeDirection.UNKNOWN)
-                this.facings.add(facing);
+            if (facing != ForgeDirection.UNKNOWN) this.facings.add(facing);
         }
-
 
         boolean hasConnectionTowards(ForgeDirection dir) {
             return facings.contains(dir);

@@ -17,16 +17,16 @@ import java.util.stream.Stream;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.IWorldAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.joml.Vector4i;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
@@ -51,7 +52,6 @@ import cofh.api.energy.IEnergyReceiver;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
-import org.joml.Vector4i;
 
 public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
@@ -95,7 +95,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     public String getState() {
         return switch (state) {
             case RUNNING -> String
-                .format("Quarry is currently mining at %d %d %d, has already mined %d", dx, dy, dz, brokenBlocksTotal);
+                .format("Quarry is currently mining at %d %d %d, has already mined %d blocks", dx, dy, dz, brokenBlocksTotal);
             case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids";
             case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items";
             case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy";
@@ -127,7 +127,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
             if (te instanceof TileEntityEnderMarker marker) {
                 @Nullable
-                List<Vector2i> scanReturn = marker.checkForBoundary(dir);
+                List<Vector2i> scanReturn = marker.checkForBoundary(dir, player);
                 if (scanReturn != null) {
                     nextWorkAreas.clear();
                     // Do we have a simple rectangle as defined by two points
@@ -158,63 +158,35 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         return;
                         // Or do we have a more complex rectilinear polygon as defined by many points
                     } else {
-                        // DEBUG: Clear work area of debug blocks
-                        Vector2i low = new Vector2i(Integer.MAX_VALUE);
-                        Vector2i high = new Vector2i(Integer.MIN_VALUE);
-                        for (Vector2i point : scanReturn) {
-                            if (point.x < low.x) {
-                                low.x = point.x;
-                            }
-                            if (point.y < low.y) {
-                                low.y = point.y;
-                            }
-                            if (point.x > high.x) {
-                                high.x = point.x;
-                            }
-                            if (point.y > high.y) {
-                                high.y = point.y;
-                            }
-                        }
+                        /*
+                         * // DEBUG: Clear work area of debug blocks
+                         * Vector2i low = new Vector2i(Integer.MAX_VALUE);
+                         * Vector2i high = new Vector2i(Integer.MIN_VALUE);
+                         * for (Vector2i point : scanReturn) {
+                         * if (point.x < low.x) {
+                         * low.x = point.x;
+                         * }
+                         * if (point.y < low.y) {
+                         * low.y = point.y;
+                         * }
+                         * if (point.x > high.x) {
+                         * high.x = point.x;
+                         * }
+                         * if (point.y > high.y) {
+                         * high.y = point.y;
+                         * }
+                         * }
+                         * for (int x = low.x; x <= high.x; x++) {
+                         * for (int z = low.y; z <= high.y; z++) {
+                         * worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
+                         * }
+                         * }
+                         */
 
-                        for (int x = low.x; x <= high.x; x++) {
-                            for (int z = low.y; z <= high.y; z++) {
-                                worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
-                            }
-                        }
-
-                        for (int dy = 1; dy < 51; dy++) {
-                            for (int x = low.x; x <= high.x; x++) {
-                                for (int z = low.y; z <= high.y; z++) {
-                                    worldObj.setBlock(x, this.yCoord + dy, z, Blocks.air);
-                                }
-                            }
-                        }
-
-                        for (Vector2i point : scanReturn) {
-                            worldObj
-                                .setBlock(point.x, this.yCoord + 2, point.y, Blocks.brick_block);
-                        }
-
-                        List<Area2d> subRectangles;
-                        try {
-                             subRectangles = computeRectanglesFromRectilinearPointPolygon(scanReturn);
-                        } catch (RuntimeException e) {
-                            StackTraceElement[] stackTrace = e.getStackTrace();
-                            StackTraceElement lastElement = stackTrace[0];
-                            player.addChatComponentMessage(
-                                new ChatComponentText(
-                                    String.format(
-                                        "Ender marker at (%d %d %d) failed to set up a fence boundary: %s - [%s:%s]",
-                                        marker.xCoord,
-                                        marker.yCoord,
-                                        marker.zCoord,
-                                        e.getMessage(),
-                                        lastElement.getFileName(),
-                                        lastElement.getLineNumber())));
-                            return;
-                        }
+                        nextWorkAreas = computeRectanglesFromRectilinearPointPolygon(scanReturn);
+                        setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
+                        state = QuarryWorkState.RUNNING;
                         return;
-                        //nextWorkAreas = subRectangles;
                     }
                 } else {
                     player.addChatComponentMessage(
@@ -235,7 +207,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private List<Area2d> computeRectanglesFromRectilinearPointPolygon(List<Vector2i> points) {
         RectilinearEdgePoly poly = new RectilinearEdgePoly(points);
         List<Area2d> subAreas = new ArrayList<>();
-        int color = 0;
+        // int color = 0;
 
         List<RectilinearEdgePoly.Span> activeSpans = new ArrayList<>();
 
@@ -267,19 +239,22 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     // Check if bottom and top align with actual boundary edges
                     int lowX = Math.min(active.x1, active.x2) + 1;
                     int highX = Math.max(active.x1, active.x2) - 1;
-                    boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(
-                        active.y, lowX, highX, worldObj, color, this.yCoord + 4);
-                    boolean intersectsWithTopBoundary = poly.intersectsWithHorizontalBoundary(
-                        y, lowX, highX, worldObj, color, this.yCoord + 4);
+                    boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(active.y, lowX, highX)
+                        && (active.y != y);
+                    boolean intersectsWithTopBoundary = poly.intersectsWithHorizontalBoundary(y, lowX, highX)
+                        && (active.y != y);
 
-//                    subAreas.add(new Area2d(active.x1, active.y, active.x2, y - 1,
-//                        new Vector4i(1, intersectsWithBottomBoundary ? 1 : 0, 1, intersectsWithTopBoundary ? 1 : 0)));
-                    subAreas.add(new Area2d(active.x1, active.y, active.x2, y - 1,
-                        new Vector4i(1, 0, 1, 0)));
-                    color++;
-                    if (color == 16) {
-                        color = 0;
-                    }
+                    subAreas.add(
+                        new Area2d(
+                            active.x1,
+                            active.y,
+                            active.x2,
+                            y,
+                            new Vector4i(
+                                1,
+                                intersectsWithBottomBoundary ? 1 : 0,
+                                1,
+                                intersectsWithTopBoundary ? 1 : 0)));
                 }
             }
 
@@ -296,36 +271,40 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         // Output remaining active spans that can't be extended anymore
         int lastY = poly.yCoords.get(poly.yCoords.size() - 1);
         for (RectilinearEdgePoly.Span span : activeSpans) {
-            subAreas.add(new Area2d(span.x1, span.y, span.x2, lastY, new Vector4i(1, 1, 1, 1)));
+            boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(
+                span.y,
+                Math.min(span.x1, span.x2) + 1,
+                Math.max(span.x1, span.x2) - 1) && (span.y != lastY);
+            // Always shrink top side on last rectangle
+            subAreas.add(
+                new Area2d(
+                    span.x1,
+                    span.y,
+                    span.x2,
+                    lastY,
+                    new Vector4i(1, intersectsWithBottomBoundary ? 1 : 0, 1, 1)));
         }
-        color = 0;
 
-        for (int i = 1; i < subAreas.size() - 1; i++) {
-            Area2d currentArea = subAreas.get(i);
-            Area2d nextArea = subAreas.get(i + 1);
-            if (currentArea.width < nextArea.width) {
-                //currentArea.applyShrinkMatrix(new Vector4i(0, 0, 0, -1));
-            }
-        }
-
-//        DEBUG: Draw sub areas on floor
-        for (Area2d subArea : subAreas) {
-            for (int x = subArea.low.x; x <= subArea.high.x; x++) {
-                for (int z = subArea.low.y; z <= subArea.high.y; z++) {
-                    if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.gold_block) {
-                        worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
-                        //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
-                    } else {
-                        worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
-                    }
-                }
-            }
-
-            color++;
-            if (color == 16) {
-                color = 0;
-            }
-        }
+        /*
+         * // DEBUG: Draw sub areas on floor
+         * for (Area2d subArea : subAreas) {
+         * for (int x = subArea.low.x; x <= subArea.high.x; x++) {
+         * for (int z = subArea.low.y; z <= subArea.high.y; z++) {
+         * if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) ==
+         * Blocks.gold_block) {
+         * worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
+         * //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
+         * } else {
+         * worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
+         * }
+         * }
+         * }
+         * color++;
+         * if (color == 16) {
+         * color = 0;
+         * }
+         * }
+         */
 
         return subAreas;
     }
@@ -360,9 +339,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 ySet.add(edge.p1.y);
                 ySet.add(edge.p2.y);
                 if (edge.isVertical()) {
-                    verticalEdgesByX.computeIfAbsent(edge.getX(), k -> new ArrayList<>()).add(edge);
+                    verticalEdgesByX.computeIfAbsent(edge.getX(), k -> new ArrayList<>())
+                        .add(edge);
                 } else if (edge.isHorizontal()) {
-                    horizontalEdgesByY.computeIfAbsent(edge.getY(), k -> new ArrayList<>()).add(edge);
+                    horizontalEdgesByY.computeIfAbsent(edge.getY(), k -> new ArrayList<>())
+                        .add(edge);
                 }
             }
             yCoords = new ArrayList<>(ySet);
@@ -398,23 +379,19 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             return spans;
         }
 
-        boolean intersectsWithHorizontalBoundary(int y, int x1, int x2, World world, int color, int actualY) {
+        boolean intersectsWithHorizontalBoundary(int y, int x1, int x2) {
             List<Edge> boundaries = horizontalEdgesByY.getOrDefault(y, Collections.emptyList());
             for (Edge edge : boundaries) {
                 // Check if [x1, x2] overlaps with [boundary.x1, boundary.x2]
                 if (x1 <= edge.getMaxX() && x2 >= edge.getMinX()) {
-                    for (int i = edge.getMinX(); i <= edge.getMaxX(); i++) {
-                        world.setBlock(i, actualY, y, Blocks.wool, color, 2);
-                    }
-                    world.setBlock(x1, actualY, y, Blocks.stained_glass, color, 2);
-                    world.setBlock(x2, actualY, y, Blocks.stained_glass, color, 2);
-                    return true;  // Our span is contained within a boundary edge
+                    return true; // Our span is contained within a boundary edge
                 }
             }
             return false;
         }
 
         static class Edge {
+
             Vector2i p1, p2;
 
             Edge(Vector2i p1, Vector2i p2) {
@@ -461,6 +438,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
 
         static class Span {
+
             int x1, x2, y;
 
             Span(int x1, int x2, int y) {
@@ -884,8 +862,10 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             while (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)) && stepPos()) {
                 // TODO: Remove after this has been tested by others
                 if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
-                    throw new RuntimeException(
-                        String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
+                    UtilitiesInExcess.LOG.warn("Tried to quarry outside of work area at {} {} {}", dx, dy, dz);
+                    return;
+                    // throw new RuntimeException(
+                    // String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
                 }
 
                 boolean[] harvestResult = tryHarvestCurrentBlock();
@@ -907,7 +887,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     state = QuarryWorkState.FINISHED;
                     unloadSelf();
                 } else {
-                    workArea = nextWorkAreas.remove(nextWorkAreas.size() - 1);
+                    setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
                 }
             }
             if (brokenBlocksTick > 0) {
