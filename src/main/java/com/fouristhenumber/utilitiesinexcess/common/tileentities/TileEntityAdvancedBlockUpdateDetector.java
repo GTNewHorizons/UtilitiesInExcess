@@ -12,6 +12,7 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
     private int pulseTimer = 0;
     private boolean[] scanningOnFace = { true, true, true, true, true, true };
     private Block[] blockOnPreviousTick = new Block[6];
+    private int[] blockMetadataOnPreviousTick = new int[6];
 
     @Override
     public void updateEntity() {
@@ -37,14 +38,32 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
                 zCoord + ForgeDirection.getOrientation(i).offsetZ);
             if (blockOnCurrentTick != blockOnPreviousTick[i]
                 && !(blockOnCurrentTick instanceof BlockAdvancedUpdateDetector)) {
-                if (!isProvidingPower) {
-                    isProvidingPower = true;
-                    pulseTimer++;
-                    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-                    worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType(), 1);
+                sendRedstonePulse();
+                blockOnPreviousTick[i] = blockOnCurrentTick;
+                break;
+            } else {
+                int blockMetadataOnCurrentTick = worldObj.getBlockMetadata(
+                    xCoord + ForgeDirection.getOrientation(i).offsetX,
+                    yCoord + ForgeDirection.getOrientation(i).offsetY,
+                    zCoord + ForgeDirection.getOrientation(i).offsetZ);
+                if (blockMetadataOnCurrentTick != blockMetadataOnPreviousTick[i]) {
+                    sendRedstonePulse();
+                    blockOnPreviousTick[i] = blockOnCurrentTick;
+                    blockMetadataOnPreviousTick[i] = blockMetadataOnCurrentTick;
+                    break;
                 }
+                blockMetadataOnPreviousTick[i] = blockMetadataOnCurrentTick;
             }
             blockOnPreviousTick[i] = blockOnCurrentTick;
+        }
+    }
+
+    private void sendRedstonePulse() {
+        if (!isProvidingPower) {
+            isProvidingPower = true;
+            pulseTimer++;
+            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType(), 1);
         }
     }
 
