@@ -27,6 +27,10 @@ public class IMCForNEI {
             "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
             "nei.infopage.uie.inverted_ingot_stable.2");
 
+        if (Mods.Tinkers.isLoaded()) {
+            sendInfoPage("utilitiesinexcess:inverted_ingot", "nei.infopage.uie.ticon_inverted");
+        }
+
         sendInfoPage("<utilitiesinexcess:gluttons_axe>", "nei.infopage.uie.gluttons_axe.1");
         sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "nei.infopage.uie.destruction_pickaxe.1");
         sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "nei.infopage.uie.anti_particulate_shovel.1");
@@ -73,6 +77,9 @@ public class IMCForNEI {
         sendInfoPage(
             "<utilitiesinexcess:bedrockium_ingot>,<utilitiesinexcess:bedrockium_block>",
             "nei.infopage.uie.bedrockium.1");
+        if (Mods.Tinkers.isLoaded()) {
+            sendInfoPage("<utilitiesinexcess:bedrockium_ingot>", "nei.infopage.uie.ticon_bedrockium");
+        }
 
         sendInfoPage(
             "<utilitiesinexcess:watering_can_basic>,<utilitiesinexcess:watering_can_advanced>,<utilitiesinexcess:watering_can_elite>",
@@ -89,6 +96,9 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:trash_can_energy>", "nei.infopage.uie.trash_can_energy.1");
 
         sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.magic_wood.1");
+        if (Mods.Tinkers.isLoaded()) {
+            sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.ticon_magic_wood");
+        }
 
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.2");

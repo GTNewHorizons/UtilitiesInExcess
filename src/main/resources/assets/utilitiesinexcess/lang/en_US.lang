@@ -483,3 +483,14 @@ uie.colored_blocks.color.12=Colored %s (Brown)
 uie.colored_blocks.color.13=Colored %s (Dark Green)
 uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
+
+material.bedrockium_uie=Bedrockium
+material.bedrockium_uie.ability=Heavy
+material.magical_wood=Magical Wooden
+material.magical_wood.ability=Magically Modifiable
+material.inverted=Inverted
+material.inverted.ability=Fully Inverted
+
+nei.infopage.uie.ticon_inverted=If a Tinker's Construct tool is made using entirely inverted parts, it will be unbreakable.
+nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using entirely magical wooden parts, it will gain 8 additional modifiers.
+nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.
