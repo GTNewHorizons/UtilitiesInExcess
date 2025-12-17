@@ -66,6 +66,9 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
 
         sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
+        sendInfoPage(
+            "<utilitiesinexcess:advanced_block_update_detector>",
+            "nei.infopage.uie.advanced.block_update_detector.1");
 
         sendInfoPage("<utilitiesinexcess:rain_muffler>", "nei.infopage.uie.rain_muffler.1");
         sendInfoPage("<utilitiesinexcess:sound_muffler>", "nei.infopage.uie.sound_muffler.1");

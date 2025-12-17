@@ -163,6 +163,19 @@ public class RecipeLoader {
             'p',
             Blocks.sticky_piston);
 
+        // Advanced Block Update Detector
+        addShapedRecipe(
+            ModBlocks.ADVANCED_BLOCK_UPDATE_DETECTOR,
+            "srs",
+            "rbr",
+            "srs",
+            's',
+            Blocks.stone,
+            'r',
+            Blocks.redstone_block,
+            'b',
+            ModBlocks.BLOCK_UPDATE_DETECTOR);
+
         // Trash Can (Items)
         addShapedRecipe(
             ModBlocks.TRASH_CAN_ITEM,
