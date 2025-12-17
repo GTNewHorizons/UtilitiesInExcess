@@ -68,19 +68,25 @@ public class TinkersMaterials {
                 ModBlocks.INVERTED_BLOCK.get(),
                 0,
                 850,
-                new FluidStack(invertedFluid, 1296));
+                new FluidStack(invertedFluid, TConstruct.blockLiquidValue));
             Smeltery.addMelting(
-                ModItems.INVERTED_INGOT.newItemStack(1, 0),
+                ModItems.INVERTED_INGOT.newItemStack(),
                 ModBlocks.INVERTED_BLOCK.get(),
                 0,
                 850,
-                new FluidStack(invertedFluid, 144));
+                new FluidStack(invertedFluid, TConstruct.ingotLiquidValue));
             Smeltery.addMelting(
                 ModItems.INVERTED_INGOT.newItemStack(1, 1),
                 ModBlocks.INVERTED_BLOCK.get(),
                 0,
                 850,
-                new FluidStack(invertedFluid, 144));
+                new FluidStack(invertedFluid, TConstruct.ingotLiquidValue));
+            Smeltery.addMelting(
+                ModItems.INVERTED_NUGGET.newItemStack(),
+                ModBlocks.INVERTED_BLOCK.get(),
+                0,
+                850,
+                new FluidStack(invertedFluid, TConstruct.nuggetLiquidValue));
 
             basinCasting.addCastingRecipe(
                 ModBlocks.INVERTED_BLOCK.newItemStack(),
@@ -109,7 +115,7 @@ public class TinkersMaterials {
             TConstructRegistry.addBowMaterial(bedrockiumID, 200, 3f);
             TConstructRegistry.addArrowMaterial(bedrockiumID, 40F, 0.4F);
 
-            doGenericRegistration(bedrockiumID, "bedrockium_uie", new ItemStack(ModItems.BEDROCKIUM_INGOT.get(), 1, 0));
+            doGenericRegistration(bedrockiumID, "bedrockium_uie", new ItemStack(ModItems.BEDROCKIUM_INGOT.get()));
 
             FluidRegistry.registerFluid(bedrockiumFluid);
             FluidType.registerFluidType(
@@ -124,13 +130,13 @@ public class TinkersMaterials {
                 ModBlocks.BEDROCKIUM_BLOCK.get(),
                 0,
                 850,
-                new FluidStack(bedrockiumFluid, 1296));
+                new FluidStack(bedrockiumFluid, TConstruct.blockLiquidValue));
             Smeltery.addMelting(
                 ModItems.BEDROCKIUM_INGOT.newItemStack(),
                 ModBlocks.BEDROCKIUM_BLOCK.get(),
                 0,
                 850,
-                new FluidStack(bedrockiumFluid, 144));
+                new FluidStack(bedrockiumFluid, TConstruct.ingotLiquidValue));
 
             tableCasting.addCastingRecipe(
                 ModItems.BEDROCKIUM_INGOT.newItemStack(),
@@ -173,7 +179,7 @@ public class TinkersMaterials {
             partTag.setInteger("Value", 2);
             FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", partTag);
 
-            doGenericRegistration(magicalWoodID, "magical_wood", new ItemStack(ModBlocks.MAGIC_WOOD.getItem(), 1, 0));
+            doGenericRegistration(magicalWoodID, "magical_wood", new ItemStack(ModBlocks.MAGIC_WOOD.getItem()));
 
         }
     }
