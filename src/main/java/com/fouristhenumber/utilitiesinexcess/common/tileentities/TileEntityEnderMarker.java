@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.IFacingTE;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
@@ -74,10 +73,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             Tuple<TileEntityEnderMarker, BlockPos> secondCorner = alignedMarkers.getOrDefault(dir, null);
             if (secondCorner != null && secondCorner.getKey() != null) {
                 Tuple<TileEntityEnderMarker, BlockPos> thirdCorner = Optional
-                    .ofNullable(
-                        secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnRight90(dir), null))
-                    .orElse(
-                        secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnLeft90(dir), null));
+                    .ofNullable(secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnRight90(dir), null))
+                    .orElse(secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnLeft90(dir), null));
                 if (thirdCorner != null) {
                     return Stream
                         .of(
@@ -236,20 +233,22 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
      * This method performs two main operations:
      * <p>
      * Attempts to resolve any null aligned markers by loading their chunks and retrieving
-     *   the actual {@link TileEntityEnderMarker} instances from saved positions.</li>
+     * the actual {@link TileEntityEnderMarker} instances from saved positions.</li>
      *
      * Scans the dimension registry for new markers that can be connected in the given directions,
-     *   respecting ARBITRARY_LOOP operation mode constraints.</li>
+     * respecting ARBITRARY_LOOP operation mode constraints.</li>
      *
-     * @param dirs The {@link ForgeDirection}s to check for aligned markers
-     * @param onlyValidate If true, only validates existing connections without establishing new ones
+     * @param dirs                The {@link ForgeDirection}s to check for aligned markers
+     * @param onlyValidate        If true, only validates existing connections without establishing new ones
      * @param forceMetaDirections If true, only accepts connections where the target marker's metadata
-     *                         indicates a connection back to this marker - meant to be used to restore stale connections
+     *                            indicates a connection back to this marker - meant to be used to restore stale
+     *                            connections
      *
      * @see #setAlignedMarker(ForgeDirection, TileEntityEnderMarker)
      * @see #removeAlignedMarker(ForgeDirection)
      */
-    public void checkForAlignedMarkers(@NotNull ForgeDirection[] dirs, boolean onlyValidate, boolean forceMetaDirections) {
+    public void checkForAlignedMarkers(@NotNull ForgeDirection[] dirs, boolean onlyValidate,
+        boolean forceMetaDirections) {
         ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry = getRegistryForDimension();
 
         // First try to resolve any null aligned markers from saved positions
@@ -301,22 +300,30 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
                         if (markerDirection == dir) {
                             if (forceMetaDirections
                                 && (worldObj.getBlockMetadata(entry.getKey().x, entry.getKey().y, entry.getKey().z)
-                                    & (1 << (dir.getOpposite().ordinal() - 2))) == 0) {
+                                    & (1 << (dir.getOpposite()
+                                        .ordinal() - 2)))
+                                    == 0) {
                                 // The other marker's metadata does not indicate a (stale) connection to us, skip
                                 continue;
                             }
                             // If this other marker is in loop mode only link if it has free connections (less than 2)
-                            if (!onlyValidate && (entry.getValue().operationMode != MarkerOperationMode.ARBITRARY_LOOP || entry.getValue().alignedMarkers.size() < 2)) {
+                            if (!onlyValidate && (entry.getValue().operationMode != MarkerOperationMode.ARBITRARY_LOOP
+                                || entry.getValue().alignedMarkers.size() < 2)) {
                                 setAlignedMarker(dir, entry.getValue());
                                 entry.getValue()
                                     .setAlignedMarker(dir.getOpposite(), this);
-                                // If we aren't in loop mode and just linked to a marker in loop mode, switch to loop mode (if we have less than 3 connections)
-                                if (entry.getValue().operationMode == MarkerOperationMode.ARBITRARY_LOOP && this.operationMode != MarkerOperationMode.ARBITRARY_LOOP && this.alignedMarkers.size() < 3) {
+                                // If we aren't in loop mode and just linked to a marker in loop mode, switch to loop
+                                // mode (if we have less than 3 connections)
+                                if (entry.getValue().operationMode == MarkerOperationMode.ARBITRARY_LOOP
+                                    && this.operationMode != MarkerOperationMode.ARBITRARY_LOOP
+                                    && this.alignedMarkers.size() < 3) {
                                     this.operationMode = MarkerOperationMode.ARBITRARY_LOOP;
                                 }
                             } else if (!entry.getValue().alignedMarkers.containsKey(dir.getOpposite())
                                 && (worldObj.getBlockMetadata(entry.getKey().x, entry.getKey().y, entry.getKey().z)
-                                    & (1 << (dir.getOpposite().ordinal() - 2))) != 0) {
+                                    & (1 << (dir.getOpposite()
+                                        .ordinal() - 2)))
+                                    != 0) {
                                         // Does the active store for this marker not contain us & but the metadata does?
                                         // Suggests we reloaded with previous connections,
                                         // and since we would usually link from "this" to "entry" unlink (just from the
@@ -358,7 +365,8 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
 
     public ForgeDirection[] getActiveDirsFromMeta() {
         // Make sure the loaded meta matches the blocks meta
-        if (worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord).equals(ModBlocks.ENDER_MARKER.get())
+        if (worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord)
+            .equals(ModBlocks.ENDER_MARKER.get())
             && worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) != this.activeDirections) {
             this.activeDirections = worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         }

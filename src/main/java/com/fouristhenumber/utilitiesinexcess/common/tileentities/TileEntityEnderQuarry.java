@@ -157,11 +157,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                                     workArea.high.x,
                                     workArea.high.y,
                                     estBlocks)));
-                        return;
                         // Or do we have a more complex rectilinear polygon as defined by many points
                     } else {
+
+                        // DEBUG: Clear work area of debug blocks
                         /*
-                         * // DEBUG: Clear work area of debug blocks
                          * Vector2i low = new Vector2i(Integer.MAX_VALUE);
                          * Vector2i high = new Vector2i(Integer.MIN_VALUE);
                          * for (Vector2i point : scanReturn) {
@@ -188,8 +188,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         nextWorkAreas = computeRectanglesFromRectilinearPointPolygon(scanReturn);
                         setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
                         state = QuarryWorkState.RUNNING;
-                        return;
                     }
+                    return;
                 } else {
                     player.addChatComponentMessage(
                         new ChatComponentText(
@@ -209,7 +209,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private List<Area2d> computeRectanglesFromRectilinearPointPolygon(List<Vector2i> points) {
         RectilinearEdgePoly poly = new RectilinearEdgePoly(points);
         List<Area2d> subAreas = new ArrayList<>();
-        // int color = 0;
+        // DEBUG: int color = 0;
 
         List<RectilinearEdgePoly.Span> activeSpans = new ArrayList<>();
 
@@ -246,17 +246,16 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     boolean intersectsWithTopBoundary = poly.intersectsWithHorizontalBoundary(y, lowX, highX)
                         && (active.y != y);
 
-                    subAreas.add(
-                        new Area2d(
-                            active.x1,
-                            active.y,
-                            active.x2,
-                            y,
-                            new Vector4i(
-                                1,
-                                intersectsWithBottomBoundary ? 1 : 0,
-                                1,
-                                intersectsWithTopBoundary ? 1 : 0)));
+                    Area2d subArea = new Area2d(
+                        active.x1,
+                        active.y,
+                        active.x2,
+                        y,
+                        new Vector4i(1, intersectsWithBottomBoundary ? 1 : 0, 1, intersectsWithTopBoundary ? 1 : 0));
+
+                    // The base area should have a width and height greater than zero, but that might change after
+                    // applying shrinkage
+                    if (subArea.height > 0 && subArea.width > 0) subAreas.add(subArea);
                 }
             }
 
@@ -287,8 +286,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     new Vector4i(1, intersectsWithBottomBoundary ? 1 : 0, 1, 1)));
         }
 
+        // DEBUG: Draw sub areas on floor
         /*
-         * // DEBUG: Draw sub areas on floor
          * for (Area2d subArea : subAreas) {
          * for (int x = subArea.low.x; x <= subArea.high.x; x++) {
          * for (int z = subArea.low.y; z <= subArea.high.y; z++) {
@@ -864,10 +863,15 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             while (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)) && stepPos()) {
                 // TODO: Remove after this has been tested by others
                 if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
-                    UtilitiesInExcess.LOG.warn("Tried to quarry outside of work area at {} {} {}", dx, dy, dz);
-                    return;
-                    // throw new RuntimeException(
-                    // String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
+                    UtilitiesInExcess.LOG.warn(
+                        "Tried to quarry outside of work area at {} {} {} for work area {}",
+                        dx,
+                        dy,
+                        dz,
+                        this.workArea.toString());
+                    worldObj.setBlock(dx, dy + 8, dz, Blocks.glass);
+                    throw new RuntimeException(
+                        String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
                 }
 
                 boolean[] harvestResult = tryHarvestCurrentBlock();
@@ -1103,6 +1107,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             int lowZ = Math.min(first.y, second.y) + (shrinkMatrix.y); // Side: bottom
             int highX = Math.max(first.x, second.x) - (shrinkMatrix.z); // Side: right
             int highZ = Math.max(first.y, second.y) - (shrinkMatrix.w); // Side: top
+            // We explicitly do not rerun min & max here since the shrink matrix might have inverted the area,
+            // But rather leave it to the caller to handle a 0 null width / height
             this.low = new Vector2i(lowX, lowZ);
             this.high = new Vector2i(highX, highZ);
             this.width = highX - lowX;
@@ -1133,10 +1139,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
 
         public void applyShrinkMatrix(Vector4i shrinkMatrix) {
+            // Same here, we do not check a null / inverted area, but rather leave it up to the caller
             this.low.x += shrinkMatrix.x;
             this.low.y += shrinkMatrix.y;
             this.high.x -= shrinkMatrix.z;
             this.high.y -= shrinkMatrix.w;
+
             this.width = this.high.x - this.low.x;
             this.height = this.high.y - this.low.y;
             this.chunkOffX = this.high.x - (this.high.x & -16);
