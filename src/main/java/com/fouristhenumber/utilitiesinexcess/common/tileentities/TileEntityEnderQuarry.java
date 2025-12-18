@@ -17,13 +17,11 @@ import java.util.stream.Stream;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -94,8 +92,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
     public String getState() {
         return switch (state) {
-            case RUNNING -> String
-                .format("Quarry is currently mining at %d %d %d, has already mined %d blocks", dx, dy, dz, brokenBlocksTotal);
+            case RUNNING -> String.format(
+                "Quarry is currently mining at %d %d %d, has already mined %d blocks",
+                dx,
+                dy,
+                dz,
+                brokenBlocksTotal);
             case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids";
             case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items";
             case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy";
