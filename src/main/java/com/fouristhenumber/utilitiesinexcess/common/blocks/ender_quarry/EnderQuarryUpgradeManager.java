@@ -63,6 +63,10 @@ public class EnderQuarryUpgradeManager {
         activeUpgrades.clear();
     }
 
+    public double getTotalCostMultiplier() {
+        return activeUpgrades.values().stream().mapToDouble(EnderQuarryUpgrade::getCost).sum();
+    }
+
     public enum EnderQuarryUpgrade {
         // Boolean upgrades (presence only)
         WORLD_HOLE(1.2, "upgrade_world_hole"),

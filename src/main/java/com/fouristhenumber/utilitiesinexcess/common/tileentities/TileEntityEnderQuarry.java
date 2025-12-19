@@ -60,7 +60,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
     public static final int BASE_STEPS_PER_TICK = 400;
     public static final int ITEM_BUFFER_CAPACITY = 256;
-    public static final Block REPLACE_BLOCK = Blocks.dirt;
+    public static final Block REPLACE_BLOCK = EnderQuarryConfig.enderQuarryReplaceBlock.block;
     public boolean isCreativeBoosted = false;
     private int storedItems;
     public ForgeDirection facing;
@@ -547,7 +547,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     private boolean tryConsumeEnergy(float hardness, boolean simulate) {
-        float costMultiplier = 1.0f;
+        double costMultiplier = upgradeManager.getTotalCostMultiplier();
         int cost = (int) ((hardness == 0 ? 100 : EnderQuarryConfig.enderQuarryBaseRFCost) * costMultiplier);
         if (energyStorage.extractEnergy(cost, true) >= cost) {
             if (!simulate) {
@@ -852,7 +852,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      * Does not check for anything, should be called after tryHarvestCurrentBlock() returns true.
      */
     private void removeCurrentBlock() {
-        worldObj.setBlock(dx, dy, dz, Blocks.air);
+        worldObj.setBlock(dx, dy, dz, upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
     }
 
     // TileEntity & LoadableTE

@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.config.blocks;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 @Config(modid = UtilitiesInExcess.MODID, category = "blocks.ender_quarry")
 @Config.Comment("Ender Quarry Configuration")
@@ -28,4 +30,23 @@ public class EnderQuarryConfig {
     @Config.DefaultInt(1_000)
     @Config.RangeInt(min = 100, max = 1_024_000)
     public static int enderQuarryBaseRFCost;
+
+    @Config.DefaultEnum("COBBLE")
+    @Config.Comment("Block type to replace mined blocks with if the world hole upgrade isn't present.")
+    public static EnderQuarryReplaceBlock enderQuarryReplaceBlock;
+
+
+    public enum EnderQuarryReplaceBlock {
+        COBBLE(Blocks.cobblestone),
+        DIRT(Blocks.dirt),
+        GLASS(Blocks.glass),
+        SNOW(Blocks.snow),
+        STONE(Blocks.stone);
+
+        public final Block block;
+
+        EnderQuarryReplaceBlock(Block block) {
+            this.block = block;
+        }
+    }
 }
