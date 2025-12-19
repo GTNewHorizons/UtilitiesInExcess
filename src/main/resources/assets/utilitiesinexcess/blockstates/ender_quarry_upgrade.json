@@ -1,7 +1,13 @@
 {
   "variants": {
-    "meta=0": { "model": "utilitiesinexcess:blocks/upgrade_speed_1" },
-    "meta=1": { "model": "utilitiesinexcess:blocks/upgrade_speed_2" },
-    "meta=2": { "model": "utilitiesinexcess:blocks/upgrade_speed_3" }
+    "meta=0": { "model": "utilitiesinexcess:blocks/upgrade_world_hole" },
+    "meta=1": { "model": "utilitiesinexcess:blocks/upgrade_silk_touch" },
+    "meta=2": { "model": "utilitiesinexcess:blocks/upgrade_pump_fluids" },
+    "meta=3": { "model": "utilitiesinexcess:blocks/upgrade_speed_1" },
+    "meta=4": { "model": "utilitiesinexcess:blocks/upgrade_speed_2" },
+    "meta=5": { "model": "utilitiesinexcess:blocks/upgrade_speed_3" },
+    "meta=6": { "model": "utilitiesinexcess:blocks/upgrade_fortune_1" },
+    "meta=7": { "model": "utilitiesinexcess:blocks/upgrade_fortune_2" },
+    "meta=8": { "model": "utilitiesinexcess:blocks/upgrade_fortune_3" }
   }
 }

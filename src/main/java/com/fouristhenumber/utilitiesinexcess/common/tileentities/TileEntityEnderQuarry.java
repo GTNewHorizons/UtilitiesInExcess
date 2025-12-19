@@ -19,13 +19,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -41,6 +44,8 @@ import org.joml.Vector2i;
 import org.joml.Vector4i;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarryUpgrade;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.EnderQuarryUpgradeManager;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
@@ -70,6 +75,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int brokenBlocksTotal;
     private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new HashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
+    private final EnderQuarryUpgradeManager upgradeManager = new EnderQuarryUpgradeManager();
 
     protected final EnergyStorage energyStorage = new EnergyStorage(EnderQuarryConfig.enderQuarryEnergyStorage);
     protected final List<FluidTank> fluidStorage = Stream
@@ -555,8 +561,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
     private boolean harvestAndStoreBlock(Block block) {
         try {
-            // TODO: Use "shouldPumpFluids" or similar from upgrades
-            if (true) {
+            if (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.PUMP_FLUIDS)) {
                 FluidStack fluid = null;
                 if (block == Blocks.water) {
                     fluid = new FluidStack(FluidRegistry.WATER, 1000);
@@ -570,18 +575,39 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 }
             }
 
-            // TODO: Use fake player? Make sure to use fortune upgrade
+            EntityPlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) worldObj);
+            @Nullable List<ItemStack> drops = null;
+            int meta = worldObj.getBlockMetadata(dx, dy, dz);
+            // Try to silk touch if we have the upgrade
+            if (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.SILK_TOUCH)) {
+                if (block.canSilkHarvest(worldObj, fakePlayer, dx, dy, dz, meta)) {
+                    Item item = Item.getItemFromBlock(block);
+                    if (item != null) {
+                        // Set item damage from meta if the BlockItem has subtypes
+                        drops = Collections.singletonList(new ItemStack(item, 1, item.getHasSubtypes() ? meta : 0));
+                    }
+                }
+            }
+            // If not silk or we failed to resolve to reasonable drops, get normal drops (with fortune if applicable)
+            if (drops == null) {
+                drops = block.getDrops(
+                    worldObj,
+                    dx,
+                    dy,
+                    dz,
+                    meta,
+                    (int) upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.FORTUNE, 0));
+            }
             // We can accept that the maximum stored amount is sometimes overrun by fortune
-            ArrayList<ItemStack> drops = block.getDrops(worldObj, dx, dy, dz, worldObj.getBlockMetadata(dx, dy, dz), 0);
             if (!drops.isEmpty()) {
                 return tryStoreItems(drops);
             }
 
-            // Block just has no drops
+            // Block probably just has no drops
             return true;
         } catch (Exception ignored) {
             UtilitiesInExcess.LOG
-                .error("Failed while trying to harvest block {} at {} {} {}.", block.toString(), dx, dy, dz);
+                .error("EQ Failed while trying to harvest block {} at {} {} {}.", block.toString(), dx, dy, dz);
             return false;
         }
     }
@@ -620,7 +646,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      *
      * @return If we could store all the provided items
      */
-    private boolean tryStoreItems(ArrayList<ItemStack> items) {
+    private boolean tryStoreItems(List<ItemStack> items) {
         int toStore = items.stream()
             .mapToInt((item) -> item != null ? item.stackSize : 0)
             .sum();
@@ -766,6 +792,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     public void scanSidesForTEs() {
         sidedFluidAcceptors.clear();
         sidedItemAcceptors.clear();
+        upgradeManager.clear();
         ArrayList<ChunkCoordIntPair> loadedAdjacentChunks = new ArrayList<>();
 
         // Make sure the directly adjacent blocks in different chunks are loaded whilst checking
@@ -784,14 +811,22 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 direction.offsetX + this.xCoord,
                 direction.offsetY + this.yCoord,
                 direction.offsetZ + this.zCoord);
+            Block block = this.worldObj.getBlock(
+                direction.offsetX + this.xCoord,
+                direction.offsetY + this.yCoord,
+                direction.offsetZ + this.zCoord);
+
             ChunkCoordIntPair chunk = new ChunkCoordIntPair(
                 (direction.offsetX + this.xCoord) >> 4,
                 (direction.offsetZ + this.zCoord) >> 4);
 
-            // TODO: Upgrades people
-            // if (te instanceof IQuarryUpgrade quarryUpgrade) {
-            //
-            // }
+            if (block instanceof BlockEnderQuarryUpgrade) {
+                int meta = this.worldObj.getBlockMetadata(
+                    direction.offsetX + this.xCoord,
+                    direction.offsetY + this.yCoord,
+                    direction.offsetZ + this.zCoord);
+                upgradeManager.addUpgrade(EnderQuarryUpgradeManager.EnderQuarryUpgrade.VALUES[meta]);
+            }
 
             if (te instanceof IFluidHandler fluidHandler) {
                 sidedFluidAcceptors.put(direction, fluidHandler);

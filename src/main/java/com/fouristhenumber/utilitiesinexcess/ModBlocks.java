@@ -110,7 +110,7 @@ public enum ModBlocks {
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     ENDER_QUARRY(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarry(), "ender_quarry"),
     ENDER_MARKER(EnderQuarryConfig.enableEnderQuarry, new BlockEnderMarker(), "ender_marker"),
-    ENDER_QUARRY_UPGRADE(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarryUpgrade(), "ender_quarry_upgrade"),
+    ENDER_QUARRY_UPGRADE(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarryUpgrade(), BlockEnderQuarryUpgrade.ItemEnderQuarryUpgrade.class, "ender_quarry_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

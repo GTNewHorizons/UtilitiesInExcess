@@ -96,8 +96,6 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     }
 
     public List<Vector2i> boundaryForArbitraryLoop(EntityPlayer player) {
-        // TODO: Has issues with markers that have more than 2 connections (uses not boundary not intended by player) -
-        // maybe limit to 2 connections if this mode is used and propagate that to other markers in chain?
         ArrayList<StackEntry> stack = new ArrayList<>();
         stack.add(new StackEntry(new LinkedHashMap<>(), this));
         StackEntry lastVisited;
