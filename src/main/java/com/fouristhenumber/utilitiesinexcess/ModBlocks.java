@@ -18,11 +18,13 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPacifistsBench;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPendantLight;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalEndOfTime;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPureLove;
@@ -151,6 +153,8 @@ public enum ModBlocks {
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
+    PENDANT_LIGHT(BlockConfig.pendantLight.enablePendantLight, new BlockPendantLight(), BlockPendantLight.ItemBlockPendantLight.class, "pendant_light"),
+    GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     ; // leave trailing semicolon
     // spotless:on
 
