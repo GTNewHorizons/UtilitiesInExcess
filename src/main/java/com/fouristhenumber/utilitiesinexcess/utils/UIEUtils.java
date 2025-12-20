@@ -70,7 +70,7 @@ public class UIEUtils {
     public static float lerp(float cur, float target, float speed) {
         return cur + (target - cur) * speed;
     }
-  
+
     public static NBTTagCompound getUIETag(EntityPlayer player) {
         NBTTagCompound playerNBT = player.getEntityData();
         NBTTagCompound uieTag;

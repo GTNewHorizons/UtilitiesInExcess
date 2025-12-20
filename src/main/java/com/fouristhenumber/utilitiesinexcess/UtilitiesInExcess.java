@@ -48,7 +48,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
-
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
