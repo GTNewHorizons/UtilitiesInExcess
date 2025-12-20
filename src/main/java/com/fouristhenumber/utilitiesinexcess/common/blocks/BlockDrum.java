@@ -9,20 +9,24 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.DrumConfig;
 
 public class BlockDrum extends BlockContainer {
 
@@ -51,48 +55,203 @@ public class BlockDrum extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
         float hitY, float hitZ) {
-        if (world.isRemote) {
+
+        TileEntity te = world.getTileEntity(x, y, z);
+
+        // all the drum things in variables so i can just ref them later xd
+        if (!(te instanceof TileEntityDrum drum)) return false;
+        FluidTank drumTank = drum.tank;
+        FluidStack fluid = drumTank.getFluid();
+        int capacity = drumTank.getCapacity();
+
+        ItemStack itemStack = player.inventory.getCurrentItem();
+        if (itemStack == null) {
+            if (world.isRemote) {
+                return false;
+            }
+
+            // Print drum capacity to player chat
+            player.addChatComponentMessage(
+                new ChatComponentTranslation(
+                    "%s %s",
+                    NumberFormat.DEFAULT.format(drumTank.getFluidAmount()),
+                    DrumConfig.unitToDisplay ? "mB" : "L"));
+
             return true;
         }
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityDrum drum) {
-            ItemStack heldItem = player.getCurrentEquippedItem();
-            FluidStack heldFluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+        Item item = itemStack.getItem();
 
-            if (FluidContainerRegistry.isFilledContainer(heldItem)) {
+        if (fluid == null) {
+            // empty drum cases
+            if (item instanceof IFluidContainerItem fluidTank) {
+                FluidStack playerFluid = fluidTank.getFluid(itemStack);
+                int playerCapacity = fluidTank.getCapacity(itemStack);
 
-                if (drum.tank.getFluid() == null) {
-                    drum.setFluid(new FluidStack(heldFluid.getFluid(), 0));
-                }
+                if (playerFluid == null) {
+                    // both the tank and the drum are false
+                    return true;
+                } else {
+                    // either the capacity of the drum, or the amount in the player hand
+                    int fillAmount = Math.min(capacity, playerFluid.amount);
+                    // copy the fluid add hte amount and fill the drum and empty the hand
+                    FluidStack fillFluid = playerFluid.copy();
+                    fillFluid.amount = fillAmount;
+                    int filedAmount = drumTank.fill(fillFluid, true);
+                    fluidTank.drain(itemStack, filedAmount, true);
 
-                if (drum.fill(ForgeDirection.UP, heldFluid, true) == heldFluid.amount) {
-                    FluidContainerRegistry.drainFluidContainer(heldItem);
-                    ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
-                    emptyContainer.stackSize = 1;
-                    heldItem.stackSize--;
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
-                    player.inventory.addItemStackToInventory(emptyContainer);
-
-                    player.addChatMessage(
-                        new ChatComponentTranslation(
-                            "tile.drum.chat.filled",
-                            drum.tank.getFluid()
-                                .getLocalizedName(),
-                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
-                }
-            } else if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
-                if (drum.tank.getFluid() != null) {
-                    FluidStack drainedFluid = drum.drain(ForgeDirection.UP, 1000, true);
-
-                    if (drainedFluid.amount == 1000) {
-                        ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(drainedFluid, heldItem);
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
+                    // todo: pull this to its own helper method?
+                    if (!world.isRemote) {
+                        player.addChatComponentMessage(
+                            new ChatComponentTranslation(
+                                "message.drum.filled",
+                                filedAmount,
+                                playerFluid.getLocalizedName()));
                     }
+
+                    world.markBlockForUpdate(x, y, z);
+                    return true;
                 }
+
+            }
+            // empty and full bucket, maybe can pull this out to a helper method as well?
+            else if (item instanceof ItemBucket) {
+
+                FluidStack bucketFluid = FluidContainerRegistry.getFluidForFilledItem(itemStack);
+                if (bucketFluid == null) {
+                    return false;
+                }
+                // this SHOULD be 1000 i THINK
+                int fillAmount = Math.min(capacity, bucketFluid.amount);
+                FluidStack fillFluid = bucketFluid.copy();
+                fillFluid.amount = fillAmount;
+                int filedAmount = drumTank.fill(fillFluid, true);
+
+                // if the drum works?
+                if (filedAmount > 0) {
+
+                    if (!world.isRemote) {
+
+                        consumeItemStack(player, itemStack, new ItemStack(Items.bucket));
+
+                        player.addChatComponentMessage(
+                            new ChatComponentTranslation(
+                                "message.drum.filled",
+                                fillAmount,
+                                fillFluid.getLocalizedName()));
+                    }
+                    world.markBlockForUpdate(x, y, z);
+
+                }
+
             }
         }
+        // if the drum has any fluid at all
+        else {
+            if (item instanceof IFluidContainerItem fluidItem) {
 
+                FluidStack itemFluid = fluidItem.getFluid(itemStack);
+
+                if (itemFluid != null && !itemFluid.isFluidEqual(fluid)) {
+                    return false;
+                }
+
+                int space = fluidItem.getCapacity(itemStack) - (itemFluid == null ? 0 : itemFluid.amount);
+
+                if (space <= 0) return false;
+                int transfer = Math.min(space, fluid.amount);
+                FluidStack transferFluid = fluid.copy();
+                transferFluid.amount = transfer;
+                ItemStack single = itemStack.copy();
+                single.stackSize = 1;
+
+                int filled = fluidItem.fill(single, transferFluid, true);
+                if (filled <= 0) return false;
+
+                drumTank.drain(filled, true);
+
+                if (!world.isRemote) {
+                    consumeItemStack(player, itemStack, single);
+
+                    player.addChatComponentMessage(
+                        new ChatComponentTranslation("message.drum.drained", filled, fluid.getLocalizedName()));
+                }
+
+                world.markBlockForUpdate(x, y, z);
+                return true;
+
+            }
+
+            else if (item instanceof ItemBucket) {
+
+                FluidStack bucketFluid = FluidContainerRegistry.getFluidForFilledItem(itemStack);
+                if (bucketFluid != null) {
+                    if (fluid != null && !fluid.isFluidEqual(bucketFluid)) {
+                        return false;
+                    }
+                    int fill = drumTank.fill(bucketFluid.copy(), false);
+
+                    if (fill < FluidContainerRegistry.BUCKET_VOLUME) {
+                        return false;
+                    }
+
+                    drumTank.fill(bucketFluid.copy(), true);
+
+                    if (!world.isRemote) {
+                        player.inventory
+                            .setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.bucket));
+
+                        player.addChatComponentMessage(
+                            new ChatComponentTranslation(
+                                "message.drum.filled",
+                                FluidContainerRegistry.BUCKET_VOLUME,
+                                bucketFluid.getLocalizedName()));
+                    }
+
+                    world.markBlockForUpdate(x, y, z);
+                    return true;
+                }
+                if (fluid == null || fluid.amount < FluidContainerRegistry.BUCKET_VOLUME) {
+                    return false;
+                }
+
+                FluidStack take = fluid.copy();
+                take.amount = FluidContainerRegistry.BUCKET_VOLUME;
+
+                ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(take, itemStack);
+                if (filledBucket == null) return false;
+
+                if (!world.isRemote) {
+                    consumeItemStack(player, itemStack, filledBucket);
+
+                    player.addChatComponentMessage(
+                        new ChatComponentTranslation(
+                            "message.drum.drained",
+                            FluidContainerRegistry.BUCKET_VOLUME,
+                            fluid.getLocalizedName()));
+                }
+
+                drumTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
+                world.markBlockForUpdate(x, y, z);
+                return true;
+
+            }
+
+        }
         return true;
+    }
+
+    private static void consumeItemStack(EntityPlayer player, ItemStack hand, ItemStack result) {
+        if (hand.stackSize == 1) {
+            player.inventory.setInventorySlotContents(player.inventory.currentItem, result);
+        } else {
+            hand.stackSize--;
+            if (!player.inventory.addItemStackToInventory(result)) {
+                player.dropPlayerItemWithRandomChoice(result, false);
+            }
+        }
+        player.inventoryContainer.detectAndSendChanges();
+        player.inventory.markDirty();
+
     }
 
     @Override
