@@ -29,6 +29,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySigni
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
@@ -47,8 +48,10 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
@@ -144,6 +147,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
+        GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
         if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             Remappings.init();
         }
@@ -196,6 +200,10 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
+            TinkersCompat.init();
+        }
     }
 
     @Mod.EventHandler
