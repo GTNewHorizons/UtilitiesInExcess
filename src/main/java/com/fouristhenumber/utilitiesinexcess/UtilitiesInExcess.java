@@ -48,6 +48,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -191,6 +193,10 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
+            TinkersCompat.init();
+        }
     }
 
     @Mod.EventHandler
