@@ -8,12 +8,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +52,6 @@ import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
-import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
@@ -84,7 +83,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         .collect(Collectors.toList());
     protected final Object2IntMap<@NotNull ItemStack> itemStorage = new Object2IntOpenCustomHashMap<>(
         ITEM_BUFFER_CAPACITY,
-        ItemStackHashStrategy.instance);
+        UIEUtils.ItemStackHashStrategy.instance);
 
     public TileEntityEnderQuarry() {
         resetState();
@@ -1214,25 +1213,6 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         @Override
         public String toString() {
             return String.format("[(%d, %d), (%d, %d)]", this.low.x, this.low.y, this.high.x, this.high.y);
-        }
-    }
-
-    protected static class ItemStackHashStrategy implements Hash.Strategy<ItemStack> {
-
-        public static final ItemStackHashStrategy instance = new ItemStackHashStrategy();
-
-        @Override
-        public int hashCode(ItemStack itemStack) {
-            if (itemStack == null || itemStack.getItem() == null) return 0;
-            return Objects.hash(itemStack.getItem(), itemStack.getItemDamage(), itemStack.getTagCompound());
-        }
-
-        @Override
-        public boolean equals(ItemStack a, ItemStack b) {
-            if (a == null && b == null) return true;
-            if (a == null || b == null) return false;
-            return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage()
-                && Objects.equals(a.getTagCompound(), b.getTagCompound());
         }
     }
 }
