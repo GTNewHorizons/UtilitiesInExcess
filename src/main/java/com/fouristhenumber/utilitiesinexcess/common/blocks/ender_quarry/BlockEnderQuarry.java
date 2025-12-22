@@ -46,7 +46,7 @@ public class BlockEnderQuarry extends BlockContainer {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof TileEntityEnderQuarry quarry) {
             quarry.facing = getFacing(direction);
-            quarry.resetState();
+            quarry.ownerUUID = placer.getUniqueID();
         }
     }
 

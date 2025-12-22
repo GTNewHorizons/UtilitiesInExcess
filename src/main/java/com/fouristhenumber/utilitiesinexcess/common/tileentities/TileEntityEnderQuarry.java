@@ -10,18 +10,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -73,6 +76,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int chunkZ;
     private int brokenBlocksTotal;
     private boolean sidesValidated = false;
+    public @Nullable UUID ownerUUID = null;
     private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new HashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
     private final EnderQuarryUpgradeManager upgradeManager = new EnderQuarryUpgradeManager();
@@ -92,7 +96,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         storedItems = 0;
     }
 
-    public void resetState() {
+    private void resetState() {
         state = QuarryWorkState.STOPPED;
         brokenBlocksTotal = 0;
     }
@@ -100,18 +104,18 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     public String getState() {
         return switch (state) {
             case RUNNING -> String.format(
-                "Quarry is currently mining at %d %d %d, has already mined %d blocks",
+                "Quarry is currently mining at %d %d %d, has already mined %d blocks.",
                 dx,
                 dy,
                 dz,
                 brokenBlocksTotal);
-            case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids";
-            case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items";
-            case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy";
-            case THROTTLED_BY_ENERGY -> "Quarry is running, but not at full speed because of missing energy";
+            case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids.";
+            case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items.";
+            case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy.";
+            case THROTTLED_BY_ENERGY -> "Quarry is running, but not at full speed because of missing energy.";
             case STOPPED -> "Quarry is stopped.";
             case FINISHED -> String.format(
-                "Quarry has finished after mining %d blocks%s",
+                "Quarry has finished after mining %d blocks%s.",
                 brokenBlocksTotal,
                 String.format(storedItems > 0 ? ", still holding %d items" : "", storedItems));
         };
@@ -906,7 +910,21 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     public void updateEntity() {
         if (worldObj.isRemote) return;
         if (facing == ForgeDirection.UNKNOWN) return;
-        if (state == QuarryWorkState.FINISHED && storedItems == 0 && fluidStorageIsEmpty()) return;
+        if (state == QuarryWorkState.FINISHED && storedItems == 0 && fluidStorageIsEmpty() && ownerUUID == null) {
+            if (selfIsLoaded) unloadSelf();
+            return;
+        };
+        if (state == QuarryWorkState.FINISHED && ownerUUID != null && worldObj.getTotalWorldTime() % 100 == 0) {
+            // Check if owner is online
+            MinecraftServer server = MinecraftServer.getServer();
+            if (server != null) {
+                EntityPlayerMP owner = server.getConfigurationManager().playerEntityList.stream().filter((EntityPlayerMP player) -> player.getUniqueID().equals(ownerUUID)).findFirst().orElse(null);
+                if (owner != null) {
+                    owner.addChatMessage(new ChatComponentText(String.format("Your Ender Quarry at (%d %d %d) in DIM %d has finished.", xCoord, yCoord, zCoord, worldObj.provider.dimensionId)));
+                    ownerUUID = null;
+                }
+            }
+        }
         if (!sidesValidated) {
             scanSidesForTEs();
             sidesValidated = true;
@@ -959,7 +977,6 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 && state == QuarryWorkState.RUNNING) {
                 if (nextWorkAreas.isEmpty()) {
                     state = QuarryWorkState.FINISHED;
-                    unloadSelf();
                 } else {
                     setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
                 }
@@ -977,7 +994,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             this.brokenBlocksTotal += brokenBlocksTick;
         }
 
-        if (worldObj.getTotalWorldTime() % 4 == 0) {
+        if (worldObj.getTotalWorldTime() % 4 == 0 && (storedItems > 0 || !fluidStorageIsEmpty())) {
             // Move internally stored stuff to adjacent blocks
             if (!ejectStoredToAdjacent()) scanSidesForTEs();
         }
@@ -1008,6 +1025,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
         }
         brokenBlocksTotal = nbt.getInteger("blocks");
+        ownerUUID = nbt.getString("owner").isEmpty() ? null : UUID.fromString(nbt.getString("owner"));
+
         energyStorage.readFromNBT(nbt);
 
         NBTTagList tanksNBT = nbt.getTagList("tanks", Constants.NBT.TAG_COMPOUND);
@@ -1051,6 +1070,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             nbt.setTag("nextAreas", areasNBT);
         }
         nbt.setInteger("blocks", brokenBlocksTotal);
+        nbt.setString("owner", ownerUUID != null ? ownerUUID.toString() : "");
+
         energyStorage.writeToNBT(nbt);
 
         NBTTagList tanksNBT = new NBTTagList();
