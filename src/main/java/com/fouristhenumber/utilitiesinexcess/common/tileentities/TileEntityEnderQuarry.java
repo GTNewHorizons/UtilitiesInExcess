@@ -13,7 +13,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +48,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.EnderQua
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
+import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
@@ -57,9 +57,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
 public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
-    public static final int BASE_STEPS_PER_TICK = 400;
-    public static final int ITEM_BUFFER_CAPACITY = 256;
-    public static final Block REPLACE_BLOCK = EnderQuarryConfig.enderQuarryReplaceBlock.block;
+    public static final int BASE_STEPS_PER_TICK = EnderQuarryConfig.enderQuarryBaseSpeed;
+    public static final int ITEM_BUFFER_CAPACITY = 1024;
+    public static Block REPLACE_BLOCK = Blocks.dirt;
     public boolean isCreativeBoosted = false;
     private int storedItems;
     public ForgeDirection facing;
@@ -72,6 +72,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int chunkX;
     private int chunkZ;
     private int brokenBlocksTotal;
+    private boolean sidesValidated = false;
     private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new HashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
     private final EnderQuarryUpgradeManager upgradeManager = new EnderQuarryUpgradeManager();
@@ -86,6 +87,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         UIEUtils.ItemStackHashStrategy.instance);
 
     public TileEntityEnderQuarry() {
+        REPLACE_BLOCK = EnderQuarryReplaceBlock.valueOf(EnderQuarryConfig.enderQuarryReplaceBlock).block;
         resetState();
         storedItems = 0;
     }
@@ -558,13 +560,18 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         return false;
     }
 
+    /**
+     * Harvests the block at the current position, and tries to store the resulting items / fluids to internal storage
+     * @return If we could store all resulting items / fluids
+     */
     private boolean harvestAndStoreBlock(Block block) {
         try {
+            int meta = worldObj.getBlockMetadata(dx, dy, dz);
             if (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.PUMP_FLUIDS)) {
                 FluidStack fluid = null;
-                if (block == Blocks.water) {
+                if ((block == Blocks.water || block == Blocks.flowing_water) && meta == 0) {
                     fluid = new FluidStack(FluidRegistry.WATER, 1000);
-                } else if (block == Blocks.lava) {
+                } else if ((block == Blocks.lava || block == Blocks.flowing_water) && meta == 0) {
                     fluid = new FluidStack(FluidRegistry.LAVA, 1000);
                 } else if (block instanceof IFluidBlock fluidBlock) {
                     fluid = fluidBlock.drain(worldObj, dx, dy, dz, false);
@@ -575,8 +582,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
 
             EntityPlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) worldObj);
-            @Nullable List<ItemStack> drops = null;
-            int meta = worldObj.getBlockMetadata(dx, dy, dz);
+            @Nullable
+            List<ItemStack> drops = null;
             // Try to silk touch if we have the upgrade
             if (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.SILK_TOUCH)) {
                 if (block.canSilkHarvest(worldObj, fakePlayer, dx, dy, dz, meta)) {
@@ -788,6 +795,24 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         return null;
     }
 
+    /**
+     * Retrieve all stored items, i.e. for the quarry is broke, and we need to drop its contents
+     * @return A list of all stored items as ItemStacks with correct stack sizes
+     */
+    public List<ItemStack> retrieveAllItems() {
+        List<ItemStack> items = new ArrayList<>();
+        for (Object2IntMap.Entry<ItemStack> entry : itemStorage.object2IntEntrySet()) {
+            if (entry.getIntValue() > 0) {
+                ItemStack item = entry.getKey().copy();
+                item.stackSize = entry.getIntValue();
+                items.add(item);
+            }
+        }
+        itemStorage.clear();
+        storedItems = 0;
+        return items;
+    }
+
     public void scanSidesForTEs() {
         sidedFluidAcceptors.clear();
         sidedItemAcceptors.clear();
@@ -851,7 +876,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      * Does not check for anything, should be called after tryHarvestCurrentBlock() returns true.
      */
     private void removeCurrentBlock() {
-        worldObj.setBlock(dx, dy, dz, upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
+        worldObj.setBlock(
+            dx,
+            dy,
+            dz,
+            upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
     }
 
     // TileEntity & LoadableTE
@@ -866,9 +895,9 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
              * preferably we would call scanSidesForTEs() here, however
              * the contained getTileEntity() seems to always re-load the chunk at this stage
              * which then re-validates back to this function, eventually leading to a stackoverflow
-             * Instead we add a null inventory, so that it gets rechecked later
-             **/
-            sidedItemAcceptors.put(ForgeDirection.UP, null);
+             * Instead we set the side check state to false, so that the next updateEntity() call does the scan
+             */
+            sidesValidated = false;
         }
     }
 
@@ -878,6 +907,10 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         if (worldObj.isRemote) return;
         if (facing == ForgeDirection.UNKNOWN) return;
         if (state == QuarryWorkState.FINISHED && storedItems == 0 && fluidStorageIsEmpty()) return;
+        if (!sidesValidated) {
+            scanSidesForTEs();
+            sidesValidated = true;
+        }
 
         int brokenBlocksTick = 0;
         if (state != QuarryWorkState.RUNNING && state != QuarryWorkState.FINISHED && state != QuarryWorkState.STOPPED) {
@@ -893,8 +926,9 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
         }
 
+        int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1) * upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.SPEED, 1.0));
         if (state == QuarryWorkState.RUNNING) {
-            while (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)) && stepPos()) {
+            while (brokenBlocksTick < (stepsPerTick) && stepPos()) {
                 // TODO: Remove after this has been tested by others
                 if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
                     UtilitiesInExcess.LOG.warn(
@@ -1213,6 +1247,21 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         @Override
         public String toString() {
             return String.format("[(%d, %d), (%d, %d)]", this.low.x, this.low.y, this.high.x, this.high.y);
+        }
+    }
+
+    private enum EnderQuarryReplaceBlock {
+
+        COBBLE(Blocks.cobblestone),
+        DIRT(Blocks.dirt),
+        GLASS(Blocks.glass),
+        SNOW(Blocks.snow),
+        STONE(Blocks.stone);
+
+        public final Block block;
+
+        EnderQuarryReplaceBlock(Block block) {
+            this.block = block;
         }
     }
 }

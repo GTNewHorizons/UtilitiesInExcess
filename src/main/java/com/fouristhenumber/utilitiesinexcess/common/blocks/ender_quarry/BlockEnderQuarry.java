@@ -6,8 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -69,6 +71,48 @@ public class BlockEnderQuarry extends BlockContainer {
             player.addChatComponentMessage(new ChatComponentText(quarry.getState()));
         }
         return true;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof TileEntityEnderQuarry quarry) {
+            dropContent(quarry, worldIn);
+        }
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
+    }
+
+    public void dropContent(TileEntityEnderQuarry quarry, World world) {
+        for (ItemStack item : quarry.retrieveAllItems()) {
+            float dx = world.rand.nextFloat() * 0.8F + 0.1F;
+            float dy = world.rand.nextFloat() * 0.8F + 0.1F;
+            float dz = world.rand.nextFloat() * 0.8F + 0.1F;
+            float f3 = 0.05F;
+
+            while (item.stackSize > 0) {
+                int stackSize = Math.min(item.stackSize, 64);
+                item.stackSize -= stackSize;
+
+                EntityItem entityitem = new EntityItem(
+                    world,
+                    (float) quarry.xCoord + dx,
+                    (float) quarry.yCoord + dy,
+                    (float) quarry.zCoord + dz,
+                    new ItemStack(item.getItem(), stackSize, item.getItemDamage()));
+
+                entityitem.motionX = (float) world.rand.nextGaussian() * f3;
+                entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
+                entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
+
+                if (item.hasTagCompound()) {
+                    entityitem.getEntityItem()
+                        .setTagCompound(
+                            (NBTTagCompound) item.getTagCompound()
+                                .copy());
+                }
+                world.spawnEntityInWorld(entityitem);
+            }
+        }
     }
 
     @Override

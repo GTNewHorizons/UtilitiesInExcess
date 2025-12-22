@@ -472,6 +472,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         registeredMarkers.computeIfAbsent(dim, k -> new ConcurrentHashMap<>())
             .put(new BlockPos(xCoord, yCoord, zCoord), this);
         this.operationMode = MarkerOperationMode.values()[compound.getInteger("mode")];
+        this.cuboidSize = compound.getInteger("cuboidSize");
     }
 
     @Override
@@ -481,6 +482,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         compound.setInteger("meta", this.activeDirections);
         compound.setInteger("dim", this.worldObj.provider.dimensionId);
         compound.setInteger("mode", this.operationMode.ordinal());
+        compound.setInteger("cuboidSize", this.cuboidSize);
     }
 
     public enum MarkerOperationMode {

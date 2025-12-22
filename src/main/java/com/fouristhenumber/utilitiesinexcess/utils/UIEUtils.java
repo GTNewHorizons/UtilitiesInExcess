@@ -1,11 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import it.unimi.dsi.fastutil.Hash;
-import net.minecraft.item.ItemStack;
-
 import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Random;
+
+import net.minecraft.item.ItemStack;
+
+import it.unimi.dsi.fastutil.Hash;
 
 public class UIEUtils {
 

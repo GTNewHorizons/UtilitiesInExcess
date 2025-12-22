@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
 
 import java.util.HashMap;
 
+import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import org.jetbrains.annotations.Nullable;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
@@ -64,24 +65,27 @@ public class EnderQuarryUpgradeManager {
     }
 
     public double getTotalCostMultiplier() {
-        return activeUpgrades.values().stream().mapToDouble(EnderQuarryUpgrade::getCost).sum();
+        return activeUpgrades.values()
+            .stream()
+            .mapToDouble(EnderQuarryUpgrade::getCost)
+            .sum();
     }
 
     public enum EnderQuarryUpgrade {
+
         // Boolean upgrades (presence only)
-        WORLD_HOLE(1.2, "upgrade_world_hole"),
-        SILK_TOUCH(8, "upgrade_silk_touch"),
-        PUMP_FLUIDS(3, "upgrade_pump_fluids"),
+        WORLD_HOLE(EnderQuarryConfig.enderQuarryWorldHoleEnergyMultiplier, "upgrade_world_hole"),
+        SILK_TOUCH(EnderQuarryConfig.enderQuarrySilkTouchEnergyMultiplier, "upgrade_silk_touch"),
+        PUMP_FLUIDS(EnderQuarryConfig.enderQuarryFluidPumpEnergyMultiplier, "upgrade_pump_fluids"),
 
         // Tiered upgrades with hardcoded values
-        SPEED_1(TieredEnderQuarryUpgrade.SPEED, 1, 16, 2.0, "upgrade_speed_1"),
-        SPEED_2(TieredEnderQuarryUpgrade.SPEED, 2, 32, 4.0, "upgrade_speed_2"),
-        SPEED_3(TieredEnderQuarryUpgrade.SPEED, 3, 80, 7.0, "upgrade_speed_3"),
+        SPEED_1(TieredEnderQuarryUpgrade.SPEED, 1, EnderQuarryConfig.enderQuarrySpeed1EnergyMultiplier, EnderQuarryConfig.enderQuarrySpeed1Multiplier, "upgrade_speed_1"),
+        SPEED_2(TieredEnderQuarryUpgrade.SPEED, 2, EnderQuarryConfig.enderQuarrySpeed2EnergyMultiplier, EnderQuarryConfig.enderQuarrySpeed2Multiplier, "upgrade_speed_2"),
+        SPEED_3(TieredEnderQuarryUpgrade.SPEED, 3, EnderQuarryConfig.enderQuarrySpeed3EnergyMultiplier, EnderQuarryConfig.enderQuarrySpeed3Multiplier, "upgrade_speed_3"),
 
-        FORTUNE_1(TieredEnderQuarryUpgrade.FORTUNE, 1, 12, 1, "upgrade_fortune_1"),
-        FORTUNE_2(TieredEnderQuarryUpgrade.FORTUNE, 2, 40, 2, "upgrade_fortune_2"),
-        FORTUNE_3(TieredEnderQuarryUpgrade.FORTUNE, 3, 100, 3, "upgrade_fortune_3");
-
+        FORTUNE_1(TieredEnderQuarryUpgrade.FORTUNE, 1, EnderQuarryConfig.enderQuarryFortune1EnergyMultiplier, 1, "upgrade_fortune_1"),
+        FORTUNE_2(TieredEnderQuarryUpgrade.FORTUNE, 2, EnderQuarryConfig.enderQuarryFortune2EnergyMultiplier, 2, "upgrade_fortune_2"),
+        FORTUNE_3(TieredEnderQuarryUpgrade.FORTUNE, 3, EnderQuarryConfig.enderQuarryFortune3EnergyMultiplier, 3, "upgrade_fortune_3");
 
         public static final EnderQuarryUpgrade[] VALUES = values();
 
