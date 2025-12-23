@@ -111,41 +111,41 @@ public enum Remappings {
 
     public static final Remappings[] VALUES = values();
 
-    public static final HashMap<String, Item> itemMappings = new HashMap<>();
-    public static final HashMap<String, Block> blockMappings = new HashMap<>();
-    public static final List<IPosteaTransformation> transformations = new ArrayList<>();
-    public static final Set<String> skippedMappings = new HashSet<>();
+    public static final HashMap<String, Item> ITEM_MAPPINGS = new HashMap<>();
+    public static final HashMap<String, Block> BLOCK_MAPPINGS = new HashMap<>();
+    public static final List<IPosteaTransformation> TRANSFORMATIONS = new ArrayList<>();
+    public static final Set<String> SKIPPED_MAPPINGS = new HashSet<>();
 
     public static void preInit() {
         for (Remappings remapping : VALUES) {
             if (remapping.replacementItem != null) {
-                itemMappings.put(remapping.getName(), remapping.replacementItem);
+                ITEM_MAPPINGS.put(remapping.getName(), remapping.replacementItem);
             }
             if (remapping.replacementBlock != null) {
-                blockMappings.put(remapping.getName(), remapping.replacementBlock);
+                BLOCK_MAPPINGS.put(remapping.getName(), remapping.replacementBlock);
             }
             if (remapping.transformation != null) {
-                transformations.add(remapping.transformation);
+                TRANSFORMATIONS.add(remapping.transformation);
             }
             if (remapping.isSkipped) {
-                skippedMappings.add(remapping.getName());
+                SKIPPED_MAPPINGS.add(remapping.getName());
             }
             if (remapping.transformation != null) {
                 remapping.transformation.registerDummies();
-                remapping.transformation.addItemRemappings(itemMappings);
-                remapping.transformation.addBlockRemappings(blockMappings);
+                remapping.transformation.addItemRemappings(ITEM_MAPPINGS);
+                remapping.transformation.addBlockRemappings(BLOCK_MAPPINGS);
             }
         }
     }
 
     public static void init() {
-        for (IPosteaTransformation transformation : transformations) {
+        for (IPosteaTransformation transformation : TRANSFORMATIONS) {
             transformation.registerTEDummies();
         }
     }
 
     public static void postInit() {
-        for (IPosteaTransformation transformation : transformations) {
+        for (IPosteaTransformation transformation : TRANSFORMATIONS) {
             transformation.registerTransformations();
         }
     }

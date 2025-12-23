@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.compat.nei.NEIUtils;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import codechicken.nei.api.API;
 
 public class UIEUtils {
 
@@ -91,6 +91,6 @@ public class UIEUtils {
     public static void hideInNei(Item item) {
         if (!Mods.NEI.isLoaded()) return;
 
-        NEIUtils.hideItem(item);
+        API.hideItem(new ItemStack(item));
     }
 }
