@@ -50,7 +50,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class ItemInversionSigilActive extends Item {
 
-    private static final String DURABILITY_NBT_KEY = "RemainingUses";
+    public static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
