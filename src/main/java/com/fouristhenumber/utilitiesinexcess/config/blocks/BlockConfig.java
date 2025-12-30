@@ -20,6 +20,9 @@ public class BlockConfig {
     public static boolean enableFloatingBlock;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableColoredBlocks;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableCompressedCobblestone;
 
     @Config.DefaultBoolean(true)
@@ -95,6 +98,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableSmartPump;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableTradingPost;
+
     @Config.DefaultInt(10000)
     public static int smartPumpEnergyStorage;
 
@@ -106,6 +112,9 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableDecorativeGlass;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeBlocks;
 
     @Config.Comment("Pure Love Configuration")
     public static final PureLove pureLove = new PureLove();

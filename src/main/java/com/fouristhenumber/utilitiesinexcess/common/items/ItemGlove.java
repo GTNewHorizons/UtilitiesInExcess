@@ -2,24 +2,26 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemGlove extends Item implements IBauble {
@@ -40,23 +42,29 @@ public class ItemGlove extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         super.addInformation(stack, player, tooltip, p_77624_4_);
-        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.1"));
+        tooltip.add(
+            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                "item.glove.desc.1",
+                EnumChatFormatting.WHITE + "["
+                    + EnumChatFormatting.GOLD
+                    + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
+                    + EnumChatFormatting.WHITE
+                    + "]"
+                    + EnumChatFormatting.AQUA));
 
-        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.2"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.3"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.glove.desc.4"));
-            tooltip.add(
-                EnumChatFormatting.AQUA + String.format(
-                    StatCollector.translateToLocal("item.glove.desc.5"),
-                    EnumChatFormatting.WHITE + "["
-                        + EnumChatFormatting.GOLD
-                        + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
-                        + EnumChatFormatting.WHITE
-                        + "]"
-                        + EnumChatFormatting.AQUA));
-            tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.6"));
-        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
+        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.2"));
+        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.3"));
+    }
+
+    public IIcon topIcon;
+    public IIcon bottomIcon;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister aIconRegister) {
+        super.registerIcons(aIconRegister);
+        topIcon = aIconRegister.registerIcon("utilitiesinexcess:glove_top");
+        bottomIcon = aIconRegister.registerIcon("utilitiesinexcess:glove_bottom");
     }
 
     public static boolean isUsingGlove(EntityPlayer player) {

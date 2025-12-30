@@ -17,6 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoInversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
@@ -57,9 +58,9 @@ public enum ModItems {
     WATERING_CAN_ELITE(WateringCanConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
     INVERSION_SIGIL_INACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
     INVERSION_SIGIL_ACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
+    PSEUDO_INVERSION_SIGIL(InversionConfig.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
-    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new Item().setUnlocalizedName("inverted_nugget").setTextureName("utilitiesinexcess:inverted_nugget"), "inverted_nugget"),
-    DIAMOND_STICK(ItemConfig.enableDiamondStick, new Item().setUnlocalizedName("diamond_stick").setTextureName("utilitiesinexcess:diamond_stick"), "diamond_stick"),
+    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
     ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
     SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
@@ -78,6 +79,7 @@ public enum ModItems {
     public static void init() {
         for (ModItems item : VALUES) {
             if (item.isEnabled()) {
+                item.theItem.setCreativeTab(UtilitiesInExcess.uieTab);
                 GameRegistry.registerItem(item.get(), item.name);
             } else if (ItemConfig.registerDisabledItems) GameRegistry.registerItem(item.disabledVersion, item.name);
         }

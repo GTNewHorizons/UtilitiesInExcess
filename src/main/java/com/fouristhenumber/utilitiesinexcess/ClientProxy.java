@@ -1,17 +1,24 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
+import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -21,7 +28,17 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
+@SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
+
+    // This is just a number that ticks up every frame.
+    public static int frameCount = 0;
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+        ModelRegistry.registerModid(MODID);
+    }
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -36,19 +53,24 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.GLOVE.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.GLOVE.get(), new GloveRenderer());
         }
+        if (ModItems.FIRE_BATTERY.isEnabled()) {
+            MinecraftForgeClient.registerItemRenderer(ModItems.FIRE_BATTERY.get(), new FireBatteryRenderer());
+        }
 
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-    }
 
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
+        if (Mods.FindIt.isLoaded()) {
+            FindItHelper.init();
+            FindItHelper.INSTANCE = new FindItHelper();
+            MinecraftForge.EVENT_BUS.register(FindItHelper.INSTANCE);
+        }
     }
 
     @SubscribeEvent
     public void tickRender(TickEvent.RenderTickEvent event) {
+        frameCount++;
         if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
             if (!(mc.currentScreen == null && mc.theWorld != null

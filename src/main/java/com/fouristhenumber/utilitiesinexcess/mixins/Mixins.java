@@ -15,10 +15,10 @@ public enum Mixins implements IMixins {
     // spotless:off
 
     // make sure to leave a trailing comma
-    CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed Earth")
+    CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed / Blessed Earth")
         .addCommonMixins("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
-        .setApplyIf(() -> CursedEarthConfig.enableCursedEarth)
+        .setApplyIf(() -> CursedEarthConfig.enableCursedEarth || CursedEarthConfig.enableBlessedEarth)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
     MAGIC_WOOD_PARTICLES(new MixinBuilder("Adds particles for Magic Wood when connected to an Enchantment Table")
         .addClientMixins("minecraft.MixinBlockEnchantmentTable_MagicWood")
@@ -39,13 +39,18 @@ public enum Mixins implements IMixins {
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
     ACCESSORS(new MixinBuilder("Accessors for the mod to use")
         .setPhase(Phase.EARLY)
-        .addCommonMixins("minecraft.accessors.AccessorEntityZombie",
+        .addCommonMixins(
+            "minecraft.accessors.AccessorBlock",
+            "minecraft.accessors.AccessorEntityZombie",
             "minecraft.accessors.AccessorItemTool",
             "minecraft.accessors.AccessorItemSword",
             "minecraft.accessors.AccessorEntityLivingBase",
             "minecraft.accessors.AccessorPotionEffect",
             "minecraft.accessors.AccessorItemRenderer",
-            "minecraft.accessors.AccessorClientMinecraft")
+            "minecraft.accessors.AccessorClientMinecraft",
+            "minecraft.accessors.AccessorMerchantRecipe")
+        .addClientMixins(
+            "minecraft.accessors.AccessorBlock_Client")
     )
     ; // leave trailing semicolon
     // spotless:on
