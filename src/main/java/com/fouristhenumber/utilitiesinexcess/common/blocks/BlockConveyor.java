@@ -51,11 +51,14 @@ public class BlockConveyor extends BlockContainer {
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int s, int meta) {
-        if (s == getFacing(meta).getOpposite()
+        ForgeDirection facing = getFacing(meta);
+        if (s == facing.ordinal()) return belt_down;
+        if (s == facing.getOpposite()
             .ordinal()) return belt_up;
-        if (s != ForgeDirection.UP.ordinal()) return blank;
+        if (s != ForgeDirection.UP.ordinal() && s != ForgeDirection.DOWN.ordinal()) return blank;
 
-        return switch (getFacing(meta)) {
+        if (s == ForgeDirection.DOWN.ordinal()) facing = facing.getOpposite();
+        return switch (facing) {
             case NORTH -> belt_up;
             case SOUTH -> belt_down;
             case WEST -> belt_left;
