@@ -34,6 +34,7 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
         if (isProvidingPower && pulseTimer > 0) {
             pulseTimer--;
             isProvidingPower = false;
+            updateBlockState();
             worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
         }
 
@@ -95,6 +96,16 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
         }
     }
 
+    private void updateBlockState() {
+        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+        int newMeta = isProvidingPower ? 1 : 0;
+
+        if (meta != newMeta) {
+            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -122,6 +133,7 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
         if (!isProvidingPower) {
             isProvidingPower = true;
             pulseTimer++;
+            updateBlockState();
             worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
             worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType(), 1);
         }

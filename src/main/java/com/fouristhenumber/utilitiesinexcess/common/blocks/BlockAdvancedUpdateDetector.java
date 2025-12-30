@@ -4,9 +4,11 @@ import static net.minecraft.util.Facing.facings;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -14,12 +16,26 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvan
 
 public class BlockAdvancedUpdateDetector extends BlockContainer {
 
+    private IIcon iconInactive;
+    private IIcon iconActive;
+
     public BlockAdvancedUpdateDetector() {
         super(Material.rock);
         setBlockName("advanced_block_update_detector");
-        setBlockTextureName("utilitiesinexcess:advanced_block_update_detector");
         setHardness(1.0F);
         setHarvestLevel("pickaxe", 0);
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg){
+        iconInactive = reg.registerIcon("utilitiesinexcess:advanced_block_update_detector_inactive");
+        iconActive = reg.registerIcon("utilitiesinexcess:advanced_block_update_detector_active");
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        boolean active = (meta) == 1;
+        return active ? iconActive : iconInactive;
     }
 
     @Override
