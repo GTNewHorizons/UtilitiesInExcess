@@ -30,6 +30,9 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetAdvanced;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetBasic;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetElite;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
@@ -139,6 +142,9 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
+        GameRegistry.registerTileEntity(TileFilingCabinetBasic.class, "TileFilingCabinetBasicUIE");
+        GameRegistry.registerTileEntity(TileFilingCabinetAdvanced.class, "TileFilingCabinetAdvancedUIE");
+        GameRegistry.registerTileEntity(TileFilingCabinetElite.class, "TileFilingCabinetEliteUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+// todo change it to use GTNHLib models instead
 public class RotatableBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override

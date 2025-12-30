@@ -331,3 +331,16 @@ nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there
 
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
+
+
+tile.filing_cabinet.basic.name=Filing Cabinet
+tile.filing_cabinet.basic.desc=Stores variants of one type of item.
+tile.filing_cabinet.advanced.name=Adv. Filing Cabinet
+tile.filing_cabinet.advanced.desc=Stores unstackable items.
+
+tile.filing_cabinet.capacity_upgrade.success=Installed capacity upgrade.
+tile.filing_cabinet.capacity_upgrade.maxed=Cabinet already upgraded to max!
+
+gui.cabinet.storage=Storage: %s / %s
+gui.cabinet.slot=Slot: %s / %s
+
