@@ -151,7 +151,7 @@ public abstract class TileFilingCabinetBase extends TileEntity implements IGuiHo
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("UpgradeCount", upgradeCount);
-        compound.setByte("Yaw", (byte) this.yaw.ordinal()); // Save yaw
+        compound.setByte("Yaw", (byte) this.yaw.ordinal());
         compound.setByte("Facing", (byte) this.facing.ordinal());
     }
 

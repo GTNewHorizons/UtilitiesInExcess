@@ -350,7 +350,6 @@ public abstract class TileFilingCabinetBaseItem extends TileFilingCabinetBase im
             CabinetSetting.SlotDirection.values(),
             CabinetSetting.SlotDirection.HORIZONTAL);
 
-        UtilitiesInExcess.LOG.info("Loading Tile Data: " + compound);
     }
 
     @Override

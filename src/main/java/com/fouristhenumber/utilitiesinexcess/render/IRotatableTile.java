@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+//remove when GTNHLib models are ready
 public interface IRotatableTile {
 
     /**
@@ -63,20 +64,17 @@ public interface IRotatableTile {
      * This rotation value is NOT based on ForgeDirection.ordinal().
      */
     default ForgeDirection getRotationForSide(ForgeDirection side, int meta) {
-        // 1. Only the UP and DOWN faces ever get rotated
         if (side != ForgeDirection.UP && side != ForgeDirection.DOWN) {
-            return ForgeDirection.NORTH; // No rotation for horizontal sides
+            return ForgeDirection.NORTH;
         }
 
         ForgeDirection facing = this.getFacing();
         ForgeDirection yaw = this.getYaw();
 
-        // 2. Only apply rotation if the block is on the floor (UP) or ceiling (DOWN)
         if (facing == ForgeDirection.UP || facing == ForgeDirection.DOWN) {
 
             ForgeDirection effectiveYaw = yaw;
 
-            // 3. If the block is on the ceiling, invert the yaw
             if (facing == ForgeDirection.UP) {
                 effectiveYaw = yaw.getOpposite();
             }
@@ -84,7 +82,6 @@ public interface IRotatableTile {
             return effectiveYaw;
         }
 
-        // Block is on a wall, so UP/DOWN faces don't rotate
         return ForgeDirection.NORTH;
     }
 }
