@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.inventory;
 
-import java.util.*;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
