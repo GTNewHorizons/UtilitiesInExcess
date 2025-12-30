@@ -40,9 +40,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFilingCabinet extends BlockContainer {
 
-    @SideOnly(Side.CLIENT)
-    private final Map<Type, IIcon[]> icons = new HashMap<>();
-
     public enum Type {
 
         BASIC(TileFilingCabinetBasic::new, FilingCabinetsConfig.cabinetBasic.enable),
@@ -159,9 +156,14 @@ public class BlockFilingCabinet extends BlockContainer {
             .createTileEntity();
     }
 
+
+    @SideOnly(Side.CLIENT)
+    private Map<Type, IIcon[]> icons;
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
+        icons = new HashMap<>();
         for (Type type : Type.VALUES) {
             String basePath = String.format("%s:filing_cabinet/%s/", UtilitiesInExcess.MODID, type.getName());
             IIcon side = reg.registerIcon(basePath + "side");
