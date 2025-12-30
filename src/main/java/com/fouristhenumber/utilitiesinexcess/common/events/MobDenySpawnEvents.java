@@ -20,6 +20,7 @@ public class MobDenySpawnEvents {
         return ModBlocks.GIGA_TORCH.isEnabled();
     }
 
+    // context https://github.com/GTNewHorizons/GT5-Unofficial/pull/905
     @SubscribeEvent
     public static void denySpawn(LivingSpawnEvent.CheckSpawn event) {
         if (event.getResult() == Event.Result.DENY) return;
