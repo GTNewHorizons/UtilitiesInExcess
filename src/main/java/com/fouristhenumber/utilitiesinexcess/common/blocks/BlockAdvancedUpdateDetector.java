@@ -27,7 +27,7 @@ public class BlockAdvancedUpdateDetector extends BlockContainer {
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister reg){
+    public void registerBlockIcons(IIconRegister reg) {
         iconInactive = reg.registerIcon("utilitiesinexcess:advanced_block_update_detector_inactive");
         iconActive = reg.registerIcon("utilitiesinexcess:advanced_block_update_detector_active");
     }
