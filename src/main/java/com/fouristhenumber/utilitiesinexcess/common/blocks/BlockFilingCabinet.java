@@ -156,7 +156,6 @@ public class BlockFilingCabinet extends BlockContainer {
             .createTileEntity();
     }
 
-
     @SideOnly(Side.CLIENT)
     private Map<Type, IIcon[]> icons;
 

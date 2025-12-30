@@ -14,8 +14,6 @@ import com.fouristhenumber.utilitiesinexcess.render.HelperAO;
 import com.fouristhenumber.utilitiesinexcess.render.IRotatableTile;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 // todo change it to use GTNHLib models instead
 public class RotatableBlockRenderer implements ISimpleBlockRenderingHandler {
