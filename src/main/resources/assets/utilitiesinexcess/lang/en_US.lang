@@ -74,6 +74,19 @@ tile.decorative_glass.9.name=Tiled Glass
 tile.decorative_glass.10.name=Dark Glass
 tile.decorative_glass.11.name=Reinforced Dark Glass
 
+tile.decorative_block.0.name=Diamond-Etched Computational Matrix
+tile.decorative_block.1.name=Sand-Infused Endstone
+tile.decorative_block.2.name=Burnt Quartz
+tile.decorative_block.3.name=Sandy Glass
+tile.decorative_block.4.name=Frosted Stone
+tile.decorative_block.5.name=Ender-Infused Obsidian
+tile.decorative_block.6.name=Gravel Bricks
+tile.decorative_block.7.name=Edged Stone Bricks
+tile.decorative_block.8.name=Border Stone
+tile.decorative_block.9.name=Border Stone (Alternate)
+tile.decorative_block.10.name=Gravel Road
+tile.decorative_block.11.name=Carved 'Eminence' Stone
+
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
 
@@ -451,6 +464,21 @@ nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension t
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
+tile.trading_post.name=Trading Post
+tile.trading_post.villager_count=Found %,d Villagers
+tile.trading_post.search_hint=Search...
+tile.trading_post.help_tooltip.0=Trade Controls:
+tile.trading_post.help_tooltip.1=§6Left-Click§7 to Trade
+tile.trading_post.help_tooltip.2=§6Shift + Left-Click§7 to Trade Stack
+tile.trading_post.help_tooltip.3=§6Alt + Left-Click§7 to Favorite Trade
+tile.trading_post.help_tooltip.4=§6Right-Click§7 to Highlight Villager
+tile.trading_post.help_tooltip.5=You can search for:
+tile.trading_post.help_tooltip.6=§7 - Item names & tooltips
+tile.trading_post.help_tooltip.7=§7 - Villager professions
+tile.trading_post.help_tooltip.8=§7 - Villager name tags
+
+nei.infopage.uie.trading_post.1=This block allows you to trade with every villager in 32 block area all in one place! Simply click on a trade from the list to trade.
+
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
 
@@ -470,3 +498,14 @@ uie.colored_blocks.color.12=Colored %s (Brown)
 uie.colored_blocks.color.13=Colored %s (Dark Green)
 uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
+
+material.bedrockium_uie=Bedrockium
+material.bedrockium_uie.ability=Heavy
+material.magical_wood=Magical Wooden
+material.magical_wood.ability=Magically Modifiable
+material.inverted=Inverted
+material.inverted.ability=Fully Inverted
+
+nei.infopage.uie.ticon_inverted=If a Tinker's Construct tool is made using entirely inverted parts, it will be unbreakable.
+nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using entirely magical wooden parts, it will gain 8 additional modifiers.
+nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.

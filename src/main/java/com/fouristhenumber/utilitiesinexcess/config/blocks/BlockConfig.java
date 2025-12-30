@@ -97,6 +97,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableSmartPump;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableTradingPost;
+
     @Config.DefaultInt(10000)
     public static int smartPumpEnergyStorage;
 
@@ -108,6 +111,9 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableDecorativeGlass;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeBlocks;
 
     @Config.Comment("Pure Love Configuration")
     public static final PureLove pureLove = new PureLove();

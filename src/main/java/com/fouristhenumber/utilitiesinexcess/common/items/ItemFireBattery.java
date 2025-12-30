@@ -4,8 +4,10 @@ import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
@@ -16,6 +18,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemFireBattery extends ItemEnergyContainer implements IFuelHandler {
 
+    public static IIcon background;
+    public static IIcon[] overlays;
+
     public ItemFireBattery() {
         super(
             FireBatteryConfig.fireBatteryRFStorage,
@@ -25,6 +30,16 @@ public class ItemFireBattery extends ItemEnergyContainer implements IFuelHandler
         setTextureName("utilitiesinexcess:fire_battery");
         setMaxStackSize(1);
         GameRegistry.registerFuelHandler(this);
+    }
+
+    @Override
+    public void registerIcons(IIconRegister register) {
+        super.registerIcons(register);
+        background = register.registerIcon("utilitiesinexcess:fire_battery_bg");
+        overlays = new IIcon[6];
+        for (int i = 0; i < overlays.length; i++) {
+            overlays[i] = register.registerIcon("utilitiesinexcess:fire_battery_overlay_" + i);
+        }
     }
 
     @Override
