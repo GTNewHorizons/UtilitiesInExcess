@@ -472,6 +472,21 @@ tile.giga_torch.name=Giga Torch
 tile.giga_torch.desc=%d block radius (square)
 nei.infopage.uie.giga_torch.1=A torch that prevents natural mob spawning in range. Spawners are not affected.
 
+tile.trading_post.name=Trading Post
+tile.trading_post.villager_count=Found %,d Villagers
+tile.trading_post.search_hint=Search...
+tile.trading_post.help_tooltip.0=Trade Controls:
+tile.trading_post.help_tooltip.1=§6Left-Click§7 to Trade
+tile.trading_post.help_tooltip.2=§6Shift + Left-Click§7 to Trade Stack
+tile.trading_post.help_tooltip.3=§6Alt + Left-Click§7 to Favorite Trade
+tile.trading_post.help_tooltip.4=§6Right-Click§7 to Highlight Villager
+tile.trading_post.help_tooltip.5=You can search for:
+tile.trading_post.help_tooltip.6=§7 - Item names & tooltips
+tile.trading_post.help_tooltip.7=§7 - Villager professions
+tile.trading_post.help_tooltip.8=§7 - Villager name tags
+
+nei.infopage.uie.trading_post.1=This block allows you to trade with every villager in 32 block area all in one place! Simply click on a trade from the list to trade.
+
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
 

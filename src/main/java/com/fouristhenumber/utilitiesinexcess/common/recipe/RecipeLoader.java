@@ -357,6 +357,19 @@ public class RecipeLoader {
             Items.clock,
             'g',
             Blocks.glass_pane);
+
+        // Trading Post
+        addShapedRecipe(
+            ModBlocks.TRADING_POST,
+            "pep",
+            "pjp",
+            "ppp",
+            'p',
+            Blocks.planks,
+            'e',
+            Blocks.emerald_block,
+            'j',
+            Blocks.jukebox);
     }
 
     private static void loadGeneratorRecipes() {

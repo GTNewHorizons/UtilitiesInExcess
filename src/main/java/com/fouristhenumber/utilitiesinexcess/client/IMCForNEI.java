@@ -185,6 +185,7 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:pendant_light>", "nei.infopage.uie.pendant_light.1");
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
+        sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
     }
 
     private static void sendInfoPage(String filter, String page) {
