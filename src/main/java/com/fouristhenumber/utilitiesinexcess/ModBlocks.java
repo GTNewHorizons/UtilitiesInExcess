@@ -153,7 +153,7 @@ public enum ModBlocks {
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
-    FILING_CABINET(FilingCabinetsConfig.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet")
+    FILING_CABINET(FilingCabinetsConfig.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet"),
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     ; // leave trailing semicolon

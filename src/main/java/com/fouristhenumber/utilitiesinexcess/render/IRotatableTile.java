@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
-//remove when GTNHLib models are ready
+// remove when GTNHLib models are ready
 public interface IRotatableTile {
 
     /**
