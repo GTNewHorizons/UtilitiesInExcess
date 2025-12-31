@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 
 import akka.japi.Pair;
@@ -61,12 +59,8 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.destruction_pickaxe.desc.1"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.destruction_pickaxe.desc.2"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.destruction_pickaxe.desc.3"));
-        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
-        super.addInformation(stack, player, tooltip, p_77624_4_);
+        if (DestructionPickaxeConfig.unbreakable)
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable

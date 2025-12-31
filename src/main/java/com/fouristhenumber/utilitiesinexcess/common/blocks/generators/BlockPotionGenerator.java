@@ -7,8 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockPotionGenerator extends BlockBaseGenerator {
 
-    public BlockPotionGenerator(String id) {
-        super(id);
+    public BlockPotionGenerator(String id, int mult) {
+        super(id, mult);
     }
 
     @Override

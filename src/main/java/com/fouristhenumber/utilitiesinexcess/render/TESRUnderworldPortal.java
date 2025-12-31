@@ -1,7 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.render;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
@@ -23,9 +24,7 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
     private VertexBuffer core;
 
     private void initCoreVBO() {
-        TessellatorManager.startCapturing();
-
-        Tessellator tessellator = TessellatorManager.get();
+        Tessellator tessellator = TessellatorManager.startCapturingAndGet();
 
         tessellator.startDrawingQuads();
 
@@ -74,11 +73,6 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glTranslated(x + 0.5, y, z + 0.5);
 
-        float light = tile.getWorldObj()
-            .getLightBrightness(tile.xCoord, tile.yCoord, tile.zCoord);
-
-        Tessellator.instance.setBrightness((int) (light * 16));
-
         bindTexture(new ResourceLocation(UtilitiesInExcess.MODID, "textures/blocks/bedrockium_block.png"));
         FRAME.renderAll();
 
@@ -96,16 +90,15 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
         GL11.glRotated(counter / 400d * Math.PI * 2, 0, 0, 1);
         GL11.glRotated(counter / 200d * Math.PI * 2, 0, 1, 1);
 
-        UnderworldPortalShader.INSTANCE.use();
-        UnderworldPortalShader.setLightFromLocation(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
-
-        bindTexture(TextureMap.locationBlocksTexture);
+        UniversiumShader.getInstance()
+            .setLightFromLocation(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord)
+            .use();
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         core.render();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        UnderworldPortalShader.clear();
+        ShaderProgram.clear();
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
     }

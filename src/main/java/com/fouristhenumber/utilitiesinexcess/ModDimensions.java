@@ -3,7 +3,9 @@ package com.fouristhenumber.utilitiesinexcess;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 
+import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.WorldProviderEndOfTime;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.WorldProviderUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 
 /// Adapted from [ModBlocks]
@@ -12,6 +14,7 @@ public enum ModDimensions {
 
     // make sure to leave a trailing comma
     UNDERWORLD(UnderWorldConfig.enableUnderWorld, UnderWorldConfig.underWorldDimensionId, WorldProviderUnderWorld.class),
+    END_OF_TIME(EndOfTimeConfig.enableEndOfTime, EndOfTimeConfig.endOfTimeDimensionId, WorldProviderEndOfTime.class),
     ; // leave trailing semicolon
     // spotless:on
 

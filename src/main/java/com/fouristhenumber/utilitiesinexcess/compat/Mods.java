@@ -10,7 +10,10 @@ public enum Mods {
     Baubles("Baubles"),
     Dreamcraft("dreamcraft"),
     Thaumcraft("Thaumcraft"),
-
+    NEI("NotEnoughItems"),
+    CraftTweaker("MineTweaker3"),
+    FindIt("findit"),
+    Tinkers("TConstruct")
     ;
     // spotless:on
 

@@ -26,12 +26,15 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.common.events.WateringCanEvent;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -46,10 +49,12 @@ public class ItemWateringCan extends Item {
     // A map to track the last time each player used the watering can
     public static final Map<EntityPlayer, Long> lastWaterTick = new WeakHashMap<>();
     private final int cooldownTicks = 4; // Watering delay
+    private final int tier;
 
     public ItemWateringCan(int tier, int effectArea) {
         // Ensure effectArea is odd, since it should be centered (3, 5, 7, etc.)
         this.range = (effectArea - 1) / 2;;
+        this.tier = tier;
         setTextureName("utilitiesinexcess:" + getNameFromTier(tier));
         setUnlocalizedName(getNameFromTier(tier));
         setMaxStackSize(1);
@@ -182,6 +187,8 @@ public class ItemWateringCan extends Item {
                         int by = y + dy;
                         int bz = z + dz;
                         Block plant = world.getBlock(bx, by, bz);
+                        MinecraftForge.EVENT_BUS
+                            .post(new WateringCanEvent(new BlockPos(bx, by, bz), new BlockPos(x, y, z), tier));
                         if (plant instanceof IGrowable || plant instanceof IPlantable || plant == mycelium) {
                             world.scheduleBlockUpdateWithPriority(bx, by, bz, plant, 0, 1000);
                         }
@@ -320,18 +327,9 @@ public class ItemWateringCan extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         int range = (this.range * 2 + 1);
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.watering_can.desc.1"));
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("item.watering_can.desc.2", range, range));
-        if (wateringCan.allowWateringCanToggle) {
-            tooltip.add(
-                EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC.toString()
-                    + StatCollector.translateToLocal("item.watering_can.desc.3"));
-            tooltip.add(
-                EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC.toString()
-                    + StatCollector.translateToLocal("item.watering_can.desc.4"));
-        }
+                + StatCollector.translateToLocalFormatted("item.watering_can.desc.1", range, range));
     }
 
     public boolean isActive(ItemStack stack) {

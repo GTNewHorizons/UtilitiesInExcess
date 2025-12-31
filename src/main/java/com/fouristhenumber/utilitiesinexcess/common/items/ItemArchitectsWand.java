@@ -25,12 +25,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemArchitectsWand extends Item {
 
-    public int buildLimit = -1;
+    public int buildLimit;
 
     public ItemArchitectsWand(int buildLimit) {
         super();
         this.buildLimit = buildLimit;
-        setTextureName("utilitiesinexcess:architects_wand");
         setUnlocalizedName("architects_wand");
         setMaxDamage(0);
         setMaxStackSize(1);
@@ -38,10 +37,9 @@ public class ItemArchitectsWand extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip.architects_wand.1"));
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("tooltip.architects_wand.2", this.buildLimit));
+                + StatCollector.translateToLocalFormatted("tooltip.architects_wand.1", this.buildLimit));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -52,11 +50,8 @@ public class ItemArchitectsWand extends Item {
             return;
         }
 
-        if (player.getHeldItem() == null || !(player.getHeldItem()
-            .getItem() instanceof ItemArchitectsWand)) {
-            WireframeRenderer.clearCandidatePositions();
-            return;
-        }
+        if (!isSelected) return;
+
         MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
 
         // Check if player is looking at a block.
