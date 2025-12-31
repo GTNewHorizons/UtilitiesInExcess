@@ -271,3 +271,5 @@ uie.chat.underworld_safe=§5§oYou no longer feel watched.
 uie.chat.underworld_aggressive=§5§oYour skin begins to crawl. Something does not want you here.
 
 death.attack.underworld-ghost=%1$s wasn't afraid of the dark.
+
+tile.transfer_pipe.name=Transfer Pipe
