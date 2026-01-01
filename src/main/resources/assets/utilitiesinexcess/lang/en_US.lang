@@ -323,7 +323,8 @@ tile.potion_generator_plusplus.name=Potion Generator
 
 nei.infopage.uie.potion_generator.1=Generates RF from potions. The more complex the potion is (the more steps involved in making it) the more RF/t it will generate.
 
-gui.energy.tooltip=RF: %s / %s
+gui.tooltip.energy-max=RF: %s / %s
+gui.tooltip.energy-tick=  RF/t
 
 item.golden_bag.name=Golden Bag of Holding
 nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth of items. Right click to open.
@@ -357,6 +358,7 @@ tile.drum.chat.empty=Drum is empty
 
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
+gui.title.trash_can.name=Trash Can
 tile.trash_can_item.name=Trash Can (Item)
 tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_energy.name=Trash Can (Energy)
