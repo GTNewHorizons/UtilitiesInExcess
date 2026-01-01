@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.utils;
+package com.fouristhenumber.utilitiesinexcess.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

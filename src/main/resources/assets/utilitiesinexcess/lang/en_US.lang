@@ -487,6 +487,17 @@ nei.infopage.uie.trading_post.1=This block allows you to trade with every villag
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
 
+tile.filing_cabinet.basic.name=Filing Cabinet
+tile.filing_cabinet.basic.desc=Stores variants of one type of item.
+tile.filing_cabinet.advanced.name=Adv. Filing Cabinet
+tile.filing_cabinet.advanced.desc=Stores unstackable items.
+
+tile.filing_cabinet.capacity_upgrade.success=Installed capacity upgrade.
+tile.filing_cabinet.capacity_upgrade.maxed=Cabinet already upgraded to max!
+
+gui.cabinet.storage=Storage: %s / %s
+gui.cabinet.slot=Slot: %s / %s
+
 uie.colored_blocks.color.0=Colored %s (White)
 uie.colored_blocks.color.1=Colored %s (Orange)
 uie.colored_blocks.color.2=Colored %s (Magenta)

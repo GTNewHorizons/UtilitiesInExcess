@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.RotatableBlockRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
@@ -33,6 +34,9 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradi
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetAdvanced;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetBasic;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetElite;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
@@ -83,6 +87,7 @@ public class UtilitiesInExcess {
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
     public static int spikeRenderID;
+    public static int rotatableblockRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -143,6 +148,9 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
+        GameRegistry.registerTileEntity(TileFilingCabinetBasic.class, "TileFilingCabinetBasicUIE");
+        GameRegistry.registerTileEntity(TileFilingCabinetAdvanced.class, "TileFilingCabinetAdvancedUIE");
+        GameRegistry.registerTileEntity(TileFilingCabinetElite.class, "TileFilingCabinetEliteUIE");
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -151,6 +159,8 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
         spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new SpikeRenderer());
+        rotatableblockRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new RotatableBlockRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 

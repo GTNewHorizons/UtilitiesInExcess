@@ -21,7 +21,7 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
-import com.fouristhenumber.utilitiesinexcess.utils.VoidingInventory;
+import com.fouristhenumber.utilitiesinexcess.inventory.VoidingInventory;
 
 public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<PosGuiData>, ISidedInventory {
 
