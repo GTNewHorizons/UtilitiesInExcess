@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -123,7 +123,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         }
         renderer.renderStandardBlock(block, x, y, z);
 
-        TileEntityTransferNode te = (TileEntityTransferNode) world.getTileEntity(x, y, z);
+        TileEntityTransferNodeBase te = (TileEntityTransferNodeBase) world.getTileEntity(x, y, z);
         if (te == null) return false;
 
         int mask = te.getConnectionsMask();

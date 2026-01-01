@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -58,7 +58,7 @@ public class BlockTransferNodeBase extends BlockContainer {
 
     protected void updateConnections(World world, int x, int y, int z) {
         if (!world.isRemote) {
-            TileEntityTransferNode te = (TileEntityTransferNode) world.getTileEntity(x, y, z);
+            TileEntityTransferNodeBase te = (TileEntityTransferNodeBase) world.getTileEntity(x, y, z);
             if (te != null) {
                 boolean changed = te.updateConnections(world, x, y, z);
                 if (changed) {

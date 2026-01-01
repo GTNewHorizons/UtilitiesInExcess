@@ -530,3 +530,6 @@ tile.transfer_node_energy.name=Transfer Node (Energy)
 tile.transfer_node_hyper_energy.name=Transfer Node (Hyper Energy)
 tile.retrieval_node.name=Retrieval Node
 tile.retrieval_node_fluid.name=Retrieval Node (Fluids)
+
+gui.title.transfer_node.name=Transfer Node
+gui.title.transfer_node_fluid.name=Fluid Transfer Node

@@ -48,6 +48,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
@@ -152,6 +153,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
         GameRegistry.registerTileEntity(TileEntityTransferPipe.class, "TileEntityTransferPipeUIE");
         GameRegistry.registerTileEntity(TileEntityTransferNode.class, "TileEntityTransferNodeUIE");
+        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
