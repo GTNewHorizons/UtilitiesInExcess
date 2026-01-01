@@ -1,20 +1,19 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
-import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferPipe;
 
 import cofh.api.energy.IEnergyReceiver;
 
-public class TileEntityTransferPipe extends TileEntity {
+public class TileEntityTransferPipe extends TileEntity implements ITransferNetworkComponent {
 
     private int connectionsMask = 0;
 
@@ -25,12 +24,12 @@ public class TileEntityTransferPipe extends TileEntity {
     public boolean updateConnections(World world, int x, int y, int z) {
         int old = connectionsMask;
         int mask = 0;
-        if (connectsTo(world, x + 1, y, z)) mask |= 1;
-        if (connectsTo(world, x - 1, y, z)) mask |= 1 << 1;
-        if (connectsTo(world, x, y + 1, z)) mask |= 1 << 2;
-        if (connectsTo(world, x, y - 1, z)) mask |= 1 << 3;
-        if (connectsTo(world, x, y, z + 1)) mask |= 1 << 4;
-        if (connectsTo(world, x, y, z - 1)) mask |= 1 << 5;
+        if (canConnectTo(world, x + 1, y, z, 5)) mask |= 1;
+        if (canConnectTo(world, x - 1, y, z, 4)) mask |= 1 << 1;
+        if (canConnectTo(world, x, y + 1, z, 1)) mask |= 1 << 2;
+        if (canConnectTo(world, x, y - 1, z, 0)) mask |= 1 << 3;
+        if (canConnectTo(world, x, y, z + 1, 3)) mask |= 1 << 4;
+        if (canConnectTo(world, x, y, z - 1, 2)) mask |= 1 << 5;
 
         connectionsMask = mask;
         if (old != mask) {
@@ -40,12 +39,24 @@ public class TileEntityTransferPipe extends TileEntity {
         return false;
     }
 
-    private boolean connectsTo(World world, int x, int y, int z) {
-        Block b = world.getBlock(x, y, z);
-        if (b instanceof BlockTransferPipe) return true;
+    @Override
+    public boolean canConnectTo(World world, int x, int y, int z, int side) {
         TileEntity te = world.getTileEntity(x, y, z);
 
-        return te instanceof IInventory || te instanceof IFluidHandler || te instanceof IEnergyReceiver;
+        if (te instanceof ITransferNetworkComponent transfer) {
+            return transfer.canConnectFrom(ForgeDirection.getOrientation(side));
+        }
+
+        if (te instanceof ISidedInventory sided) {
+            int[] slots = sided.getAccessibleSlotsFromSide(side);
+            if (slots != null && slots.length > 0) return true;
+        } else if (te instanceof IInventory) return true;
+
+        if (te instanceof IEnergyReceiver energy && energy.canConnectEnergy(ForgeDirection.getOrientation(side))) {
+            return true;
+        }
+
+        return te instanceof IFluidHandler;
     }
 
     @Override
@@ -73,5 +84,10 @@ public class TileEntityTransferPipe extends TileEntity {
         if (worldObj != null) {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
+    }
+
+    @Override
+    public boolean canConnectFrom(ForgeDirection side) {
+        return true;
     }
 }

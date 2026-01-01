@@ -523,3 +523,10 @@ nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using ent
 nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.
 
 tile.transfer_pipe.name=Transfer Pipe
+
+tile.transfer_node.name=Transfer Node
+tile.transfer_node_fluid.name=Transfer Node (Fluid)
+tile.transfer_node_energy.name=Transfer Node (Energy)
+tile.transfer_node_hyper_energy.name=Transfer Node (Hyper Energy)
+tile.retrieval_node.name=Retrieval Node
+tile.retrieval_node_fluid.name=Retrieval Node (Fluids)
