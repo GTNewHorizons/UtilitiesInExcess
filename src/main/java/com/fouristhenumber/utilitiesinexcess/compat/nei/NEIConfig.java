@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
+import net.minecraft.util.StatCollector;
+
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 import codechicken.nei.api.IConfigureNEI;
@@ -13,7 +15,7 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public String getName() {
-        return "UtilitiesInExcess NEI Plugin";
+        return StatCollector.translateToLocal("nei.title.uie.plugin");
     }
 
     @Override
