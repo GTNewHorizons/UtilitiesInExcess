@@ -38,7 +38,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str(StatCollector.translateToLocal("tile.trash_can_item.name"))
+                    IKey.str(StatCollector.translateToLocal("gui.title.trash_can.name"))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)
@@ -94,7 +94,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
 
     @Override
     public String getInventoryName() {
-        return StatCollector.translateToLocal("tile.trash_can_item.name");
+        return StatCollector.translateToLocal("gui.title.trash_can.name");
     }
 
     @Override
