@@ -362,6 +362,7 @@ tile.drum.chat.empty=Drum is empty
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
 gui.title.trash_can.name=Trash Can
+gui.title.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_item.name=Trash Can (Item)
 tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_energy.name=Trash Can (Energy)
