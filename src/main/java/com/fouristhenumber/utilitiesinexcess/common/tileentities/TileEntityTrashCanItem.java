@@ -43,7 +43,9 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
         IItemHandler itemHandler = new InvWrapper(this);
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
 
-        panel.child(new ItemSlot().slot(slot).pos(79, 34));
+        panel.child(
+            new ItemSlot().slot(slot)
+                .pos(79, 34));
 
         return panel;
     }
