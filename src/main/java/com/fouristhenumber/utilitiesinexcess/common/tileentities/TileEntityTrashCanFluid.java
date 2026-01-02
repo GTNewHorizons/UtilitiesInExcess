@@ -112,6 +112,13 @@ public class TileEntityTrashCanFluid extends TileEntity
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+        ItemStack stackIn = mInventory[INPUT_SLOT];
+        if (stackIn != null) {
+            NBTTagCompound slotIn = new NBTTagCompound();
+            stackIn.writeToNBT(slotIn);
+            compound.setTag("slotIn", slotIn);
+        }
+
         ItemStack stackOut = mInventory[OUTPUT_SLOT];
         if (stackOut != null) {
             NBTTagCompound slotOut = new NBTTagCompound();
@@ -123,6 +130,11 @@ public class TileEntityTrashCanFluid extends TileEntity
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+        if (compound.hasKey("slotIn")) {
+            ItemStack slotIn = new ItemStack(Items.feather, 1);
+            slotIn.readFromNBT(compound.getCompoundTag("slotIn"));
+            mInventory[INPUT_SLOT] = slotIn;
+        }
         if (compound.hasKey("slotOut")) {
             ItemStack slotOut = new ItemStack(Items.feather, 1);
             slotOut.readFromNBT(compound.getCompoundTag("slotOut"));
