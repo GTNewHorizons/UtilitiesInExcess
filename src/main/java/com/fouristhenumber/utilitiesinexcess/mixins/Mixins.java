@@ -32,7 +32,7 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> ItemConfig.enableGlove)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
-    BUABLE_RENDERS(new MixinBuilder("Renders equipped baubles on the player")
+    BAUBLE_RENDERS(new MixinBuilder("Renders equipped baubles on the player")
         .addCommonMixins("minecraft.MixinModelBiped_Baubles", "minecraft.MixinModelRenderer_Baubles")
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> OtherConfig.enableBaubleRenders)
