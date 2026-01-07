@@ -3,8 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.config.items.unstabletools;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.unstable_tools.gluttons_axe")
-public class GluttonsAxeConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.unstable_tools.gourmands_axe")
+public class GourmandsAxeConfig {
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart

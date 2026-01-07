@@ -31,7 +31,7 @@ public class IMCForNEI {
             sendInfoPage("utilitiesinexcess:inverted_ingot", "nei.infopage.uie.ticon_inverted");
         }
 
-        sendInfoPage("<utilitiesinexcess:gluttons_axe>", "nei.infopage.uie.gluttons_axe.1");
+        sendInfoPage("<utilitiesinexcess:gourmands_axe>", "nei.infopage.uie.gourmands_axe.1");
         sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "nei.infopage.uie.destruction_pickaxe.1");
         sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "nei.infopage.uie.anti_particulate_shovel.1");
         sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
