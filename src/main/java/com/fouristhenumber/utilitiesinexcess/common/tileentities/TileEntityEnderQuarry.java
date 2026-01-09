@@ -75,6 +75,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int chunkX;
     private int chunkZ;
     private int brokenBlocksTotal;
+    private int estimatedTotalBlocks;
+    private int startedAt;
     private boolean sidesValidated = false;
     public @Nullable UUID ownerUUID = null;
     private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new HashMap<>();
@@ -172,29 +174,27 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     } else {
 
                         // DEBUG: Clear work area of debug blocks
-                        /*
-                         * Vector2i low = new Vector2i(Integer.MAX_VALUE);
-                         * Vector2i high = new Vector2i(Integer.MIN_VALUE);
-                         * for (Vector2i point : scanReturn) {
-                         * if (point.x < low.x) {
-                         * low.x = point.x;
-                         * }
-                         * if (point.y < low.y) {
-                         * low.y = point.y;
-                         * }
-                         * if (point.x > high.x) {
-                         * high.x = point.x;
-                         * }
-                         * if (point.y > high.y) {
-                         * high.y = point.y;
-                         * }
-                         * }
-                         * for (int x = low.x; x <= high.x; x++) {
-                         * for (int z = low.y; z <= high.y; z++) {
-                         * worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
-                         * }
-                         * }
-                         */
+//                         Vector2i low = new Vector2i(Integer.MAX_VALUE);
+//                         Vector2i high = new Vector2i(Integer.MIN_VALUE);
+//                         for (Vector2i point : scanReturn) {
+//                         if (point.x < low.x) {
+//                         low.x = point.x;
+//                         }
+//                         if (point.y < low.y) {
+//                         low.y = point.y;
+//                         }
+//                         if (point.x > high.x) {
+//                         high.x = point.x;
+//                         }
+//                         if (point.y > high.y) {
+//                         high.y = point.y;
+//                         }
+//                         }
+//                         for (int x = low.x; x <= high.x; x++) {
+//                         for (int z = low.y; z <= high.y; z++) {
+//                         worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
+//                         }
+//                         }
 
                         nextWorkAreas = computeRectanglesFromRectilinearPointPolygon(scanReturn);
                         setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
@@ -220,9 +220,9 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private List<Area2d> computeRectanglesFromRectilinearPointPolygon(List<Vector2i> points) {
         RectilinearEdgePoly poly = new RectilinearEdgePoly(points);
         List<Area2d> subAreas = new ArrayList<>();
-        // DEBUG: int color = 0;
 
         List<RectilinearEdgePoly.Span> activeSpans = new ArrayList<>();
+        HashMap<Integer, List<RectilinearEdgePoly.Span>> shrunkSpansByY = new HashMap<>();
 
         // Sweep through y coordinates from bottom to top, skip last since we handle active spans after the loop
         for (int i = 0; i < poly.yCoords.size() - 1; i++) {
@@ -257,6 +257,34 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     boolean intersectsWithTopBoundary = poly.intersectsWithHorizontalBoundary(y, lowX, highX)
                         && (active.y != y);
 
+                    // Check for overlaps with previously shrunk spans which would be excluded,
+                    // And create smaller single-line areas for them
+                    // Store bottom and top spans that were shrunk inwards due to boundary intersections
+                    if (intersectsWithBottomBoundary) {
+                        for (RectilinearEdgePoly.Span span : shrunkSpansByY.getOrDefault(active.y, Collections.emptyList())) {
+                            // Check if the two intersect horizontally
+                            if (span.pointIsInSpan(lowX)) {
+                                subAreas.add(new Area2d(lowX, active.y, span.getMaxX(), active.y));
+                            } else if (span.pointIsInSpan(highX)) {
+                                subAreas.add(new Area2d(span.getMinX(), active.y, highX, active.y));
+                            }
+                        }
+                        shrunkSpansByY.computeIfAbsent(active.y, k -> new ArrayList<>())
+                            .add(new RectilinearEdgePoly.Span(lowX, highX, active.y));
+                    }
+                    if (intersectsWithTopBoundary) {
+                        for (RectilinearEdgePoly.Span span : shrunkSpansByY.getOrDefault(y, Collections.emptyList())) {
+                            // Check if the two intersect horizontally
+                            if (span.pointIsInSpan(lowX)) {
+                                subAreas.add(new Area2d(lowX, y, span.getMaxX(), y));
+                            } else if (span.pointIsInSpan(highX)) {
+                                subAreas.add(new Area2d(span.getMinX(), y, highX, y));
+                            }
+                        }
+                        shrunkSpansByY.computeIfAbsent(y, k -> new ArrayList<>())
+                            .add(new RectilinearEdgePoly.Span(lowX, highX, y));
+                    }
+
                     Area2d subArea = new Area2d(
                         active.x1,
                         active.y,
@@ -264,9 +292,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         y,
                         new Vector4i(1, intersectsWithBottomBoundary ? 1 : 0, 1, intersectsWithTopBoundary ? 1 : 0));
 
-                    // The base area should have a width and height greater than zero, but that might change after
-                    // applying shrinkage
-                    if (subArea.height > 0 && subArea.width > 0) subAreas.add(subArea);
+                    // The base area should have a width and height on init greater than zero, but that might change after
+                    // applying shrinkage.
+                    // We keep any area with width >= 0 and height >= 0 to allow for weird cases with single line areas.
+                    if (subArea.height >= 0 && subArea.width >= 0)
+                        subAreas.add(subArea);
                 }
             }
 
@@ -283,10 +313,22 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         // Output remaining active spans that can't be extended anymore
         int lastY = poly.yCoords.get(poly.yCoords.size() - 1);
         for (RectilinearEdgePoly.Span span : activeSpans) {
-            boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(
-                span.y,
-                Math.min(span.x1, span.x2) + 1,
-                Math.max(span.x1, span.x2) - 1) && (span.y != lastY);
+            int lowX = Math.min(span.x1, span.x2) + 1;
+            int highX = Math.max(span.x1, span.x2) - 1;
+            boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(span.y, lowX, highX) && (span.y != lastY);
+
+            // Same overlap check as before, just for bottom side now
+            if (intersectsWithBottomBoundary) {
+                for (RectilinearEdgePoly.Span shrunkSpan : shrunkSpansByY.getOrDefault(span.y, Collections.emptyList())) {
+                    // Check if the two intersect horizontally
+                    if (shrunkSpan.pointIsInSpan(lowX)) {
+                        subAreas.add(new Area2d(lowX, span.y, shrunkSpan.getMaxX(), span.y));
+                    } else if (shrunkSpan.pointIsInSpan(highX)) {
+                        subAreas.add(new Area2d(shrunkSpan.getMinX(), span.y, highX, span.y));
+                    }
+                }
+            }
+
             // Always shrink top side on last rectangle
             subAreas.add(
                 new Area2d(
@@ -298,25 +340,26 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
 
         // DEBUG: Draw sub areas on floor
-        /*
-         * for (Area2d subArea : subAreas) {
-         * for (int x = subArea.low.x; x <= subArea.high.x; x++) {
-         * for (int z = subArea.low.y; z <= subArea.high.y; z++) {
-         * if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) ==
-         * Blocks.gold_block) {
-         * worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
-         * //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
-         * } else {
-         * worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
-         * }
-         * }
-         * }
-         * color++;
-         * if (color == 16) {
-         * color = 0;
-         * }
-         * }
-         */
+//        int color = 0;
+//         for (Area2d subArea : subAreas) {
+//         for (int x = subArea.low.x; x <= subArea.high.x; x++) {
+//         for (int z = subArea.low.y; z <= subArea.high.y; z++) {
+//         if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) ==
+//         Blocks.gold_block) {
+//            worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
+//             //worldObj.setBlock(x, this.yCoord + 3 + color, z, Blocks.stained_glass, color, 2);
+//
+//             //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
+//         } else {
+//         worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
+//         }
+//         }
+//         }
+//         color++;
+//         if (color == 16) {
+//         color = 0;
+//         }
+//         }
 
         return subAreas;
     }
@@ -461,6 +504,21 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
             boolean matches(Span other) {
                 return this.x1 == other.x1 && this.x2 == other.x2;
+            }
+
+            int getMinX() {
+                return Math.min(x1, x2);
+            }
+
+            int getMaxX() {
+                return Math.max(x1, x2);
+            }
+
+            /**
+             * Check if an x value is within the span, assuming y is the same
+             */
+            boolean pointIsInSpan(int x) {
+                return x >= getMinX() && x <= getMaxX();
             }
         }
     }
@@ -1169,13 +1227,21 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     public enum QuarryWorkState {
-        STOPPED,
-        STOPPED_WAITING_FOR_FLUID_SPACE,
-        STOPPED_WAITING_FOR_ITEM_SPACE,
-        STOPPED_WAITING_FOR_ENERGY,
-        THROTTLED_BY_ENERGY,
-        FINISHED,
-        RUNNING
+        STOPPED("uie.quarry.state.1"),
+        STOPPED_WAITING_FOR_FLUID_SPACE("uie.quarry.state.2"),
+        STOPPED_WAITING_FOR_ITEM_SPACE("uie.quarry.state.3"),
+        STOPPED_WAITING_FOR_ENERGY("uie.quarry.state.4"),
+        THROTTLED_BY_ENERGY("uie.quarry.state.5"),
+        FINISHED("uie.quarry.state.6"),
+        RUNNING("uie.quarry.state.7");
+
+        public static final QuarryWorkState[] VALUES = values();
+
+        public final String localKey;
+
+        QuarryWorkState(String localKey) {
+            this.localKey = localKey;
+        }
     }
 
     public static class Area2d {

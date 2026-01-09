@@ -8,6 +8,7 @@ import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -35,6 +36,9 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
         ModTileEntities.init();
+        if (Mods.Waila.isLoaded()) {
+            FMLInterModComms.sendMessage("Waila", "register", "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaHandler.callbackRegister");
+        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {}

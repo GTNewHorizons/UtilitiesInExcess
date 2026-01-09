@@ -58,6 +58,6 @@ dependencies {
     runtimeOnlyNonPublishable('curse.maven:chicken-chunks-229316:2233250')
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:WAILAPlugins:0.7.2:dev") { transitive = false }
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:waila:1.9.15:dev") { transitive = false }
+    api("com.github.GTNewHorizons:waila:1.9.15:dev") { transitive = false }
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.5:dev") { transitive = false }
 }

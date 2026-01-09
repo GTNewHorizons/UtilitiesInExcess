@@ -281,3 +281,13 @@ nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there
 nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
+
+uie.quarry.state.1=Stopped
+uie.quarry.state.2=Waiting for Fluid Space
+uie.quarry.state.3=Waiting for Item Space
+uie.quarry.state.4=Waiting for Energy
+uie.quarry.state.5=Throttled by Energy
+uie.quarry.state.6=Finished
+uie.quarry.state.7=Running
+
+uie.quarry.waila.state=Status: %s
