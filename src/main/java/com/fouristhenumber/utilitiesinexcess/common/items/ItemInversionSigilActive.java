@@ -1,8 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.awakenedInversionDurability;
+import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.chestSplashPotionsValid;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -35,6 +37,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
+import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
@@ -42,11 +45,13 @@ import com.fouristhenumber.utilitiesinexcess.common.entities.EntitySiegeProperty
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemInversionSigilActive extends Item {
 
@@ -54,28 +59,13 @@ public class ItemInversionSigilActive extends Item {
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
-    private final ItemStack[] CHEST_NORTH_CONTENTS = { new ItemStack(Blocks.stone), new ItemStack(Items.brick),
-        new ItemStack(Blocks.glass), new ItemStack(Items.cooked_fished), new ItemStack(Blocks.hardened_clay),
-        new ItemStack(Items.dye, 1, 2), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.cooked_beef),
-        new ItemStack(Items.iron_ingot), new ItemStack(Items.cooked_chicken), new ItemStack(Items.gold_ingot),
-        new ItemStack(Items.baked_potato), new ItemStack(Items.cooked_porkchop), new ItemStack(Items.netherbrick) };
+    private HashSet<ItemStack> CHEST_NORTH_CONTENTS = new HashSet<>();
 
-    private final int[] POTION_IDS = { 8193, 8194, 8195, 8196, 8197, 8198, 8200, 8201, 8202, 8204, 8205, 8206, 8225,
-        8226, 8228, 8229, 8232, 8233, 8234, 8236, 8257, 8258, 8259, 8260, 8262, 8264, 8265, 8267, 8268, 8269, 8270 };
+    private HashSet<ItemStack> CHEST_EAST_CONTENTS = new HashSet<>();
 
-    private final ItemStack[] CHEST_EAST_CONTENTS = new ItemStack[62];
+    private HashSet<ItemStack> CHEST_SOUTH_CONTENTS = new HashSet<>();
 
-    private final ItemStack[] CHEST_SOUTH_CONTENTS = { new ItemStack(Blocks.grass), new ItemStack(Blocks.lapis_ore),
-        new ItemStack(Blocks.dirt), new ItemStack(Blocks.obsidian), new ItemStack(Blocks.sand),
-        new ItemStack(Blocks.diamond_ore), new ItemStack(Blocks.gravel), new ItemStack(Blocks.redstone_ore),
-        new ItemStack(Blocks.gold_ore), new ItemStack(Blocks.clay), new ItemStack(Blocks.iron_ore),
-        new ItemStack(Blocks.emerald_ore), new ItemStack(Blocks.coal_ore) };
-
-    private final ItemStack[] CHEST_WEST_CONTENTS = { new ItemStack(Items.record_13),
-        new ItemStack(Items.record_mellohi), new ItemStack(Items.record_cat), new ItemStack(Items.record_stal),
-        new ItemStack(Items.record_blocks), new ItemStack(Items.record_strad), new ItemStack(Items.record_chirp),
-        new ItemStack(Items.record_ward), new ItemStack(Items.record_far), new ItemStack(Items.record_11),
-        new ItemStack(Items.record_mall), new ItemStack(Items.record_wait) };
+    private HashSet<ItemStack> CHEST_WEST_CONTENTS = new HashSet<>();
 
     public ItemInversionSigilActive() {
         super();
@@ -84,16 +74,77 @@ public class ItemInversionSigilActive extends Item {
         setMaxStackSize(1);
         setContainerItem(this);
 
-        for (int i = 0; i < 31; i++) {
-            CHEST_EAST_CONTENTS[2 * i] = new ItemStack(Items.potionitem, 1, POTION_IDS[i]);
-            CHEST_EAST_CONTENTS[2 * i + 1] = new ItemStack(Items.potionitem, 1, POTION_IDS[i] + 8192);
-        }
+        CHEST_NORTH_CONTENTS = getValidChestContents(
+            ForgeDirection.NORTH,
+            InversionConfig.northChestValidItems,
+            InversionConfig.northChestRequiredItems);
+
+        CHEST_EAST_CONTENTS = getValidChestContents(
+            ForgeDirection.EAST,
+            InversionConfig.eastChestValidItems,
+            InversionConfig.eastChestRequiredItems);
+
+        CHEST_SOUTH_CONTENTS = getValidChestContents(
+            ForgeDirection.SOUTH,
+            InversionConfig.southChestValidItems,
+            InversionConfig.southChestRequiredItems);
+
+        CHEST_WEST_CONTENTS = getValidChestContents(
+            ForgeDirection.WEST,
+            InversionConfig.westChestValidItems,
+            InversionConfig.westChestRequiredItems);
 
         ItemInversionSigilActiveEvents eventHandler = new ItemInversionSigilActiveEvents();
         MinecraftForge.EVENT_BUS.register(eventHandler);
         FMLCommonHandler.instance()
             .bus()
             .register(eventHandler);
+    }
+
+    private HashSet<ItemStack> getValidChestContents(ForgeDirection direction, String[] itemIds, int itemReq) {
+        int length = itemIds.length;
+        HashSet<ItemStack> validChestContents = new HashSet<>();
+        if (itemReq > length) {
+            FMLLog.log(
+                Level.WARN,
+                "There are only %s valid items for the %s ritual, but there are %s required items! The ritual will be impossible!",
+                length,
+                direction.toString(),
+                itemReq);
+        }
+        for (String itemId : itemIds) {
+            String[] itemIdSplit = itemId.split(":");
+            ItemStack validChestItemStack;
+            if (itemIdSplit.length == 1) {
+                validChestItemStack = null;
+            } else if (itemIdSplit.length == 2) {
+                validChestItemStack = new ItemStack(GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]));
+            } else {
+                Item validChestItem = GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]);
+                int validChestItemMeta = Integer.parseInt(itemIdSplit[2]);
+                validChestItemStack = new ItemStack(validChestItem, 1, validChestItemMeta);
+                if (validChestItem == Items.potionitem && chestSplashPotionsValid) {
+                    validChestContents.add(new ItemStack(validChestItem, 1, validChestItemMeta + 8192));
+                    FMLLog.log(
+                        Level.DEBUG,
+                        "Used splash potion %s as siege requirement from item id %s.",
+                        StatCollector.translateToLocal(
+                            new ItemStack(validChestItem, 1, validChestItemMeta + 8192).getDisplayName()),
+                        itemId);
+                }
+            }
+            if (validChestItemStack == null) {
+                FMLLog.log(Level.WARN, "Could not parse item id %s for the %s ritual!", itemId, direction.toString());
+            } else {
+                FMLLog.log(
+                    Level.DEBUG,
+                    "Used item %s as siege requirement from item id %s.",
+                    StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                    itemId);
+            }
+            validChestContents.add(validChestItemStack);
+        }
+        return validChestContents;
     }
 
     private EntitySiegeProperty getProperties(EntityPlayer player) {
@@ -209,18 +260,14 @@ public class ItemInversionSigilActive extends Item {
                 curentity.setDead();
             }
         }
-        for (int i = 0; i < LIGHTNING_POSITIONS.length; i++) {
+        for (int[] lightningPosition : LIGHTNING_POSITIONS) {
             EntityLightningBolt lightningBolt = new EntityLightningBolt(
                 world,
-                beaconX + LIGHTNING_POSITIONS[i][0] + 0.5,
+                beaconX + lightningPosition[0] + 0.5,
                 beaconY + 0.5,
-                beaconZ + LIGHTNING_POSITIONS[i][1] + 0.5);
+                beaconZ + lightningPosition[1] + 0.5);
             world.addWeatherEffect(lightningBolt);
-            world.setBlock(
-                beaconX + LIGHTNING_POSITIONS[i][0],
-                beaconY,
-                beaconZ + LIGHTNING_POSITIONS[i][1],
-                Blocks.air);
+            world.setBlock(beaconX + lightningPosition[0], beaconY, beaconZ + lightningPosition[1], Blocks.air);
         }
     }
 
@@ -246,28 +293,25 @@ public class ItemInversionSigilActive extends Item {
     }
 
     private boolean checkChest(TileEntityChest chest, ItemStack[] itemsToCheck, int requiredAmount) {
-        int foundItemsAmount = 0;
-        boolean[] hasItem = new boolean[itemsToCheck.length];
+        int confirmedItems = 0;
+        boolean[] hasItems = new boolean[itemsToCheck.length];
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
             for (int j = 0; j < itemsToCheck.length; j++) {
-                if (stack != null && ItemStack.areItemStacksEqual(stack, itemsToCheck[j])) {
-                    hasItem[j] = true;
-                    break;
+                if (ItemStack.areItemStackTagsEqual(stack, itemsToCheck[j])) {
+                    hasItems[j] = true;
                 }
             }
         }
         for (int i = 0; i < itemsToCheck.length; i++) {
-            if (hasItem[i]) {
-                foundItemsAmount++;
-            }
+            confirmedItems++;
         }
-        return foundItemsAmount >= requiredAmount;
+        return confirmedItems >= requiredAmount;
     }
 
     private boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
         World world) {
-        ItemStack[] contents;
+        HashSet<ItemStack> contents;
         int requiredAmount;
 
         if (direction == ForgeDirection.NORTH) {
@@ -290,8 +334,16 @@ public class ItemInversionSigilActive extends Item {
             throw new IllegalArgumentException("Invalid direction passed: " + direction);
         }
 
+        ItemStack[] contentsArray = new ItemStack[contents.size()];
+        int index = 0;
+
+        for (ItemStack content : contents) {
+            contentsArray[index] = content;
+            index++;
+        }
+
         if (world.getTileEntity(beaconX, beaconY, beaconZ) instanceof TileEntityChest chest) {
-            return checkChest(chest, contents, requiredAmount);
+            return checkChest(chest, contentsArray, requiredAmount);
         }
         return false;
     }
@@ -452,7 +504,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEnd2(PlayerEvent.PlayerRespawnEvent event) {
+        public void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
