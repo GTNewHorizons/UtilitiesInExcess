@@ -60,13 +60,13 @@ public class ItemInversionSigilActive extends Item {
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
-    private HashSet<ItemStack> CHEST_NORTH_CONTENTS = new HashSet<>();
+    private HashSet<ItemStackBaseCompare> CHEST_NORTH_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStack> CHEST_EAST_CONTENTS = new HashSet<>();
+    private HashSet<ItemStackBaseCompare> CHEST_EAST_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStack> CHEST_SOUTH_CONTENTS = new HashSet<>();
+    private HashSet<ItemStackBaseCompare> CHEST_SOUTH_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStack> CHEST_WEST_CONTENTS = new HashSet<>();
+    private HashSet<ItemStackBaseCompare> CHEST_WEST_CONTENTS = new HashSet<>();
 
     public ItemInversionSigilActive() {
         super();
@@ -102,17 +102,9 @@ public class ItemInversionSigilActive extends Item {
             .register(eventHandler);
     }
 
-    private HashSet<ItemStack> getValidChestContents(ForgeDirection direction, String[] itemIds, int itemReq) {
-        int length = itemIds.length;
-        HashSet<ItemStack> validChestContents = new HashSet<>();
-        if (itemReq > length) {
-            FMLLog.log(
-                Level.WARN,
-                "There are only %s valid items for the %s ritual, but there are %s required items! The ritual will be impossible!",
-                length,
-                direction.toString(),
-                itemReq);
-        }
+    private HashSet<ItemStackBaseCompare> getValidChestContents(ForgeDirection direction, String[] itemIds,
+        int itemReq) {
+        HashSet<ItemStackBaseCompare> validChestContents = new HashSet<>();
         for (String itemId : itemIds) {
             String[] itemIdSplit = itemId.split(":");
             ItemStack validChestItemStack;
@@ -125,25 +117,51 @@ public class ItemInversionSigilActive extends Item {
                 int validChestItemMeta = Integer.parseInt(itemIdSplit[2]);
                 validChestItemStack = new ItemStack(validChestItem, 1, validChestItemMeta);
                 if (validChestItem == Items.potionitem && chestSplashPotionsValid) {
-                    validChestContents.add(new ItemStack(validChestItem, 1, validChestItemMeta + 8192));
-                    FMLLog.log(
-                        Level.DEBUG,
-                        "Used splash potion %s as siege requirement from item id %s.",
-                        StatCollector.translateToLocal(
-                            new ItemStack(validChestItem, 1, validChestItemMeta + 8192).getDisplayName()),
-                        itemId);
+                    boolean successfulAdd = validChestContents
+                        .add(new ItemStackBaseCompare(new ItemStack(validChestItem, 1, validChestItemMeta + 8192)));
+                    if (successfulAdd) {
+                        FMLLog.log(
+                            Level.DEBUG,
+                            "Used splash potion %s as siege requirement from item id %s.",
+                            StatCollector.translateToLocal(
+                                new ItemStack(validChestItem, 1, validChestItemMeta + 8192).getDisplayName()),
+                            itemId);
+                    } else {
+                        FMLLog.log(
+                            Level.DEBUG,
+                            "Could not add splash potion %s as siege requirement from item id %s since it was a duplicate!",
+                            StatCollector.translateToLocal(
+                                new ItemStack(validChestItem, 1, validChestItemMeta + 8192).getDisplayName()),
+                            itemId);
+                    }
                 }
             }
             if (validChestItemStack == null) {
                 FMLLog.log(Level.WARN, "Could not parse item id %s for the %s ritual!", itemId, direction.toString());
             } else {
-                FMLLog.log(
-                    Level.DEBUG,
-                    "Used item %s as siege requirement from item id %s.",
-                    StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
-                    itemId);
+                boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(validChestItemStack));
+                if (successfulAdd) {
+                    FMLLog.log(
+                        Level.DEBUG,
+                        "Used item %s as siege requirement from item id %s.",
+                        StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                        itemId);
+                } else {
+                    FMLLog.log(
+                        Level.DEBUG,
+                        "Could not add item %s as siege requirement from item id %s since it was a duplicate!",
+                        StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                        itemId);
+                }
             }
-            validChestContents.add(validChestItemStack);
+        }
+        if (itemReq > validChestContents.size()) {
+            FMLLog.log(
+                Level.WARN,
+                "There are only %s valid items for the %s ritual, but there are %s required items! The ritual will be impossible!",
+                validChestContents.size(),
+                direction.toString(),
+                itemReq);
         }
         return validChestContents;
     }
@@ -293,17 +311,13 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private boolean checkChest(TileEntityChest chest, HashSet<ItemStack> itemsToCheck, int requiredAmount) {
-        HashSet<ItemStackBaseCompare> itemsToCheckCustomCompare = new HashSet<>();
-        for (ItemStack itemToCheck : itemsToCheck) {
-            itemsToCheckCustomCompare.add(new ItemStackBaseCompare(itemToCheck));
-        }
+    private boolean checkChest(TileEntityChest chest, HashSet<ItemStackBaseCompare> itemsToCheck, int requiredAmount) {
         HashSet<ItemStackBaseCompare> confirmedItems = new HashSet<>();
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
             if (stack == null) continue;
             ItemStackBaseCompare stackCustomCompare = new ItemStackBaseCompare(stack);
-            if (itemsToCheckCustomCompare.contains(stackCustomCompare)) {
+            if (itemsToCheck.contains(stackCustomCompare)) {
                 confirmedItems.add(stackCustomCompare);
             }
         }
@@ -312,7 +326,7 @@ public class ItemInversionSigilActive extends Item {
 
     private boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
         World world) {
-        HashSet<ItemStack> contents;
+        HashSet<ItemStackBaseCompare> contents;
         int requiredAmount;
 
         if (direction == ForgeDirection.NORTH) {
