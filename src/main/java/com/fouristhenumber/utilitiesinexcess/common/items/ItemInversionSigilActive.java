@@ -298,7 +298,7 @@ public class ItemInversionSigilActive extends Item {
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
             for (int j = 0; j < itemsToCheck.length; j++) {
-                if (ItemStack.areItemStackTagsEqual(stack, itemsToCheck[j])) {
+                if (ItemStack.areItemStacksEqual(stack, itemsToCheck[j])) {
                     hasItems[j] = true;
                 }
             }
