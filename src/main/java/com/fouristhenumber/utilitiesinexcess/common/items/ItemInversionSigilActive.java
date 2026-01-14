@@ -41,6 +41,7 @@ import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.api.ItemStackBaseCompare;
 import com.fouristhenumber.utilitiesinexcess.common.entities.EntitySiegeProperty;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
@@ -292,21 +293,21 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private boolean checkChest(TileEntityChest chest, ItemStack[] itemsToCheck, int requiredAmount) {
-        int confirmedItems = 0;
-        boolean[] hasItems = new boolean[itemsToCheck.length];
+    private boolean checkChest(TileEntityChest chest, HashSet<ItemStack> itemsToCheck, int requiredAmount) {
+        HashSet<ItemStackBaseCompare> itemsToCheckCustomCompare = new HashSet<>();
+        for (ItemStack itemToCheck : itemsToCheck) {
+            itemsToCheckCustomCompare.add(new ItemStackBaseCompare(itemToCheck));
+        }
+        HashSet<ItemStackBaseCompare> confirmedItems = new HashSet<>();
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
-            for (int j = 0; j < itemsToCheck.length; j++) {
-                if (ItemStack.areItemStacksEqual(stack, itemsToCheck[j])) {
-                    hasItems[j] = true;
-                }
+            if (stack == null) continue;
+            ItemStackBaseCompare stackCustomCompare = new ItemStackBaseCompare(stack);
+            if (itemsToCheckCustomCompare.contains(stackCustomCompare)) {
+                confirmedItems.add(stackCustomCompare);
             }
         }
-        for (int i = 0; i < itemsToCheck.length; i++) {
-            confirmedItems++;
-        }
-        return confirmedItems >= requiredAmount;
+        return confirmedItems.size() >= requiredAmount;
     }
 
     private boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
@@ -334,16 +335,8 @@ public class ItemInversionSigilActive extends Item {
             throw new IllegalArgumentException("Invalid direction passed: " + direction);
         }
 
-        ItemStack[] contentsArray = new ItemStack[contents.size()];
-        int index = 0;
-
-        for (ItemStack content : contents) {
-            contentsArray[index] = content;
-            index++;
-        }
-
         if (world.getTileEntity(beaconX, beaconY, beaconZ) instanceof TileEntityChest chest) {
-            return checkChest(chest, contentsArray, requiredAmount);
+            return checkChest(chest, contents, requiredAmount);
         }
         return false;
     }
