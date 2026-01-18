@@ -56,6 +56,11 @@ dependencies {
 
     // For debugging chunkloading
     runtimeOnlyNonPublishable('curse.maven:chicken-chunks-229316:2233250')
+    // Testing performance with ender quarry inserts
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritiaddons:1.9.3-GTNH:dev') { transitive = true }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritia:1.81-pre:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-789-GTNH:dev') { transitive = true }
+    runtimeOnlyNonPublishable rfg.deobf(files("libs/spark-1.10.pre-forge-1.7.10.jar"))
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:WAILAPlugins:0.7.2:dev") { transitive = false }
     api("com.github.GTNewHorizons:waila:1.9.15:dev") { transitive = false }

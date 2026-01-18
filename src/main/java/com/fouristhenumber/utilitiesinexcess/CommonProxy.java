@@ -37,7 +37,10 @@ public class CommonProxy {
         soundVolumeChecks = new SoundVolumeChecks();
         ModTileEntities.init();
         if (Mods.Waila.isLoaded()) {
-            FMLInterModComms.sendMessage("Waila", "register", "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaHandler.callbackRegister");
+            FMLInterModComms.sendMessage(
+                "Waila",
+                "register",
+                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaHandler.callbackRegister");
         }
     }
 

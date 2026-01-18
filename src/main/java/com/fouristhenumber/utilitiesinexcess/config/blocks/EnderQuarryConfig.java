@@ -26,44 +26,42 @@ public class EnderQuarryConfig {
     public static int enderQuarryFluidTankStorage;
 
     @Config.Comment("Base factor of RF that is used per operation. Is influenced by upgrades & block hardness.")
-    @Config.DefaultInt(1_000)
+    @Config.DefaultInt(100)
     @Config.RangeInt(min = 100, max = 1_024_000)
     public static int enderQuarryBaseRFCost;
 
-     @Config.DefaultStringList({"COBBLE", "DIRT", "GLASS", "SNOW", "STONE"})
-     @Config.DefaultString("COBBLE")
-     @Config.Comment("Block type to replace mined blocks with if the world hole upgrade isn't present.")
-     public static String enderQuarryReplaceBlock;
+    @Config.DefaultStringList({ "COBBLE", "DIRT", "GLASS", "SNOW", "STONE" })
+    @Config.DefaultString("COBBLE")
+    @Config.Comment("Block type to replace mined blocks with if the world hole upgrade isn't present.")
+    public static String enderQuarryReplaceBlock;
 
-     @Config.DefaultInt(400)
-     @Config.Comment("The amount of blocks the quarry tries to mine per tick, without speed upgrades.")
-     public static int enderQuarryBaseSpeed;
+    @Config.DefaultInt(400)
+    @Config.Comment("The amount of blocks the quarry tries to mine per tick, without speed upgrades.")
+    public static int enderQuarryBaseSpeed;
 
+    @Config.DefaultDouble(2D)
+    @Config.Comment("The multiplier applied to the base speed mine speed.")
+    public static double enderQuarrySpeed1Multiplier;
 
-     @Config.DefaultDouble(2D)
-     @Config.Comment("The multiplier applied to the base speed mine speed.")
-     public static double enderQuarrySpeed1Multiplier;
+    @Config.DefaultDouble(8D)
+    @Config.Comment("The energy multiplier applied when the upgrade is active.")
+    public static double enderQuarrySpeed1EnergyMultiplier;
 
-     @Config.DefaultDouble(8D)
-     @Config.Comment("The energy multiplier applied when the upgrade is active.")
-     public static double enderQuarrySpeed1EnergyMultiplier;
+    @Config.DefaultDouble(4D)
+    @Config.Comment("The multiplier applied to the base speed mine speed.")
+    public static double enderQuarrySpeed2Multiplier;
 
-     @Config.DefaultDouble(4D)
-     @Config.Comment("The multiplier applied to the base speed mine speed.")
-     public static double enderQuarrySpeed2Multiplier;
+    @Config.DefaultDouble(16D)
+    @Config.Comment("The energy multiplier applied when the upgrade is active.")
+    public static double enderQuarrySpeed2EnergyMultiplier;
 
-     @Config.DefaultDouble(16D)
-     @Config.Comment("The energy multiplier applied when the upgrade is active.")
-     public static double enderQuarrySpeed2EnergyMultiplier;
+    @Config.DefaultDouble(7D)
+    @Config.Comment("The multiplier applied to the base speed mine speed.")
+    public static double enderQuarrySpeed3Multiplier;
 
-     @Config.DefaultDouble(7D)
-     @Config.Comment("The multiplier applied to the base speed mine speed.")
-     public static double enderQuarrySpeed3Multiplier;
-
-     @Config.DefaultDouble(32D)
-     @Config.Comment("The energy multiplier applied when the upgrade is active.")
-     public static double enderQuarrySpeed3EnergyMultiplier;
-
+    @Config.DefaultDouble(32D)
+    @Config.Comment("The energy multiplier applied when the upgrade is active.")
+    public static double enderQuarrySpeed3EnergyMultiplier;
 
     @Config.DefaultDouble(12D)
     @Config.Comment("The energy multiplier applied when the upgrade is active.")
@@ -76,7 +74,6 @@ public class EnderQuarryConfig {
     @Config.DefaultDouble(100D)
     @Config.Comment("The energy multiplier applied when the upgrade is active.")
     public static double enderQuarryFortune3EnergyMultiplier;
-
 
     @Config.DefaultDouble(1.2D)
     @Config.Comment("The energy multiplier applied when the upgrade is active.")

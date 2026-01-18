@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableT
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InsertionItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
@@ -79,7 +85,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int startedAt;
     private boolean sidesValidated = false;
     public @Nullable UUID ownerUUID = null;
-    private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new HashMap<>();
+    private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new LinkedHashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
     private final EnderQuarryUpgradeManager upgradeManager = new EnderQuarryUpgradeManager();
 
@@ -174,27 +180,27 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     } else {
 
                         // DEBUG: Clear work area of debug blocks
-//                         Vector2i low = new Vector2i(Integer.MAX_VALUE);
-//                         Vector2i high = new Vector2i(Integer.MIN_VALUE);
-//                         for (Vector2i point : scanReturn) {
-//                         if (point.x < low.x) {
-//                         low.x = point.x;
-//                         }
-//                         if (point.y < low.y) {
-//                         low.y = point.y;
-//                         }
-//                         if (point.x > high.x) {
-//                         high.x = point.x;
-//                         }
-//                         if (point.y > high.y) {
-//                         high.y = point.y;
-//                         }
-//                         }
-//                         for (int x = low.x; x <= high.x; x++) {
-//                         for (int z = low.y; z <= high.y; z++) {
-//                         worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
-//                         }
-//                         }
+                        // Vector2i low = new Vector2i(Integer.MAX_VALUE);
+                        // Vector2i high = new Vector2i(Integer.MIN_VALUE);
+                        // for (Vector2i point : scanReturn) {
+                        // if (point.x < low.x) {
+                        // low.x = point.x;
+                        // }
+                        // if (point.y < low.y) {
+                        // low.y = point.y;
+                        // }
+                        // if (point.x > high.x) {
+                        // high.x = point.x;
+                        // }
+                        // if (point.y > high.y) {
+                        // high.y = point.y;
+                        // }
+                        // }
+                        // for (int x = low.x; x <= high.x; x++) {
+                        // for (int z = low.y; z <= high.y; z++) {
+                        // worldObj.setBlock(x, this.yCoord - 1, z, Blocks.grass);
+                        // }
+                        // }
 
                         nextWorkAreas = computeRectanglesFromRectilinearPointPolygon(scanReturn);
                         setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
@@ -261,7 +267,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     // And create smaller single-line areas for them
                     // Store bottom and top spans that were shrunk inwards due to boundary intersections
                     if (intersectsWithBottomBoundary) {
-                        for (RectilinearEdgePoly.Span span : shrunkSpansByY.getOrDefault(active.y, Collections.emptyList())) {
+                        for (RectilinearEdgePoly.Span span : shrunkSpansByY
+                            .getOrDefault(active.y, Collections.emptyList())) {
                             // Check if the two intersect horizontally
                             if (span.pointIsInSpan(lowX)) {
                                 subAreas.add(new Area2d(lowX, active.y, span.getMaxX(), active.y));
@@ -292,11 +299,11 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         y,
                         new Vector4i(1, intersectsWithBottomBoundary ? 1 : 0, 1, intersectsWithTopBoundary ? 1 : 0));
 
-                    // The base area should have a width and height on init greater than zero, but that might change after
+                    // The base area should have a width and height on init greater than zero, but that might change
+                    // after
                     // applying shrinkage.
                     // We keep any area with width >= 0 and height >= 0 to allow for weird cases with single line areas.
-                    if (subArea.height >= 0 && subArea.width >= 0)
-                        subAreas.add(subArea);
+                    if (subArea.height >= 0 && subArea.width >= 0) subAreas.add(subArea);
                 }
             }
 
@@ -315,11 +322,13 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         for (RectilinearEdgePoly.Span span : activeSpans) {
             int lowX = Math.min(span.x1, span.x2) + 1;
             int highX = Math.max(span.x1, span.x2) - 1;
-            boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(span.y, lowX, highX) && (span.y != lastY);
+            boolean intersectsWithBottomBoundary = poly.intersectsWithHorizontalBoundary(span.y, lowX, highX)
+                && (span.y != lastY);
 
             // Same overlap check as before, just for bottom side now
             if (intersectsWithBottomBoundary) {
-                for (RectilinearEdgePoly.Span shrunkSpan : shrunkSpansByY.getOrDefault(span.y, Collections.emptyList())) {
+                for (RectilinearEdgePoly.Span shrunkSpan : shrunkSpansByY
+                    .getOrDefault(span.y, Collections.emptyList())) {
                     // Check if the two intersect horizontally
                     if (shrunkSpan.pointIsInSpan(lowX)) {
                         subAreas.add(new Area2d(lowX, span.y, shrunkSpan.getMaxX(), span.y));
@@ -340,26 +349,26 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
 
         // DEBUG: Draw sub areas on floor
-//        int color = 0;
-//         for (Area2d subArea : subAreas) {
-//         for (int x = subArea.low.x; x <= subArea.high.x; x++) {
-//         for (int z = subArea.low.y; z <= subArea.high.y; z++) {
-//         if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) ==
-//         Blocks.gold_block) {
-//            worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
-//             //worldObj.setBlock(x, this.yCoord + 3 + color, z, Blocks.stained_glass, color, 2);
-//
-//             //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
-//         } else {
-//         worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
-//         }
-//         }
-//         }
-//         color++;
-//         if (color == 16) {
-//         color = 0;
-//         }
-//         }
+        // int color = 0;
+        // for (Area2d subArea : subAreas) {
+        // for (int x = subArea.low.x; x <= subArea.high.x; x++) {
+        // for (int z = subArea.low.y; z <= subArea.high.y; z++) {
+        // if (worldObj.getBlock(x, this.yCoord - 1, z) == Blocks.wool || worldObj.getBlock(x, this.yCoord - 1, z) ==
+        // Blocks.gold_block) {
+        // worldObj.setBlock(x, this.yCoord - 1, z, Blocks.gold_block);
+        // //worldObj.setBlock(x, this.yCoord + 3 + color, z, Blocks.stained_glass, color, 2);
+        //
+        // //throw new RuntimeException("Overlapping sub-areas detected at " + x + ", " + z);
+        // } else {
+        // worldObj.setBlock(x, this.yCoord - 1, z, Blocks.wool, color, 2);
+        // }
+        // }
+        // }
+        // color++;
+        // if (color == 16) {
+        // color = 0;
+        // }
+        // }
 
         return subAreas;
     }
@@ -597,9 +606,10 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private boolean[] tryHarvestCurrentBlock() {
         Block block = worldObj.getBlock(dx, dy, dz);
         if (block.getMaterial() == Material.air || worldObj.isAirBlock(dx, dy, dz)
+            || block == REPLACE_BLOCK
             || block.getBlockHardness(worldObj, dx, dy, dz) < 0
             || block.getBlockHardness(worldObj, dx, dy, dz) > 100) {
-            return new boolean[] { tryConsumeEnergy(0.0f, false), true };
+            return new boolean[] { tryConsumeEnergy(0f, false), true };
         } ;
 
         float hardness = block.getBlockHardness(worldObj, dx, dy, dz);
@@ -610,8 +620,10 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     private boolean tryConsumeEnergy(float hardness, boolean simulate) {
-        double costMultiplier = upgradeManager.getTotalCostMultiplier();
-        int cost = (int) ((hardness == 0 ? 100 : EnderQuarryConfig.enderQuarryBaseRFCost) * costMultiplier);
+        // Get base cost multiplier from upgrades, add a multiplier based on hardness (that roughly scales 0 - 10 to 1.0
+        // - 1.66)
+        double costMultiplier = upgradeManager.totalCostMultiplier + (1.0 + 0.8 * (hardness / (hardness + 2)));
+        int cost = (int) (EnderQuarryConfig.enderQuarryBaseRFCost * costMultiplier);
         if (energyStorage.extractEnergy(cost, true) >= cost) {
             if (!simulate) {
                 energyStorage.extractEnergy(cost, false);
@@ -624,6 +636,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
     /**
      * Harvests the block at the current position, and tries to store the resulting items / fluids to internal storage
+     *
      * @return If we could store all resulting items / fluids
      */
     private boolean harvestAndStoreBlock(Block block) {
@@ -715,9 +728,10 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      * @return If we could store all the provided items
      */
     private boolean tryStoreItems(List<ItemStack> items) {
-        int toStore = items.stream()
-            .mapToInt((item) -> item != null ? item.stackSize : 0)
-            .sum();
+        int toStore = 0;
+        for (ItemStack item : items) {
+            toStore += item != null ? item.stackSize : 0;
+        }
         if (storedItems + toStore <= ITEM_BUFFER_CAPACITY) {
             for (ItemStack item : items) {
                 storeItemToStorage(item);
@@ -738,9 +752,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     private boolean fluidStorageIsEmpty() {
-        return fluidStorage.stream()
-            .mapToInt(FluidTank::getFluidAmount)
-            .sum() == 0;
+        for (FluidTank tank : fluidStorage) {
+            if (tank.getFluidAmount() > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -750,54 +767,50 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      */
     private boolean ejectStoredToAdjacent() {
         if (storedItems > 0) {
-            for (IInventory inventory : sidedItemAcceptors.values()) {
-                if (inventory != null) {
-                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                        ItemStack slotItem = inventory.getStackInSlot(i);
-                        if (slotItem != null) {
-                            // There is already an item in this slot, see if we can merge with it
-                            int canBeAddedToStack = Math
-                                .min(slotItem.getMaxStackSize(), inventory.getInventoryStackLimit())
-                                - slotItem.stackSize;
-                            if (canBeAddedToStack > 0) {
-                                ItemStack key = slotItem.copy();
-                                key.stackSize = 0;
+            for (Map.Entry<ForgeDirection, @Nullable IInventory> inventory : sidedItemAcceptors.entrySet()) {
+                if (inventory.getValue() != null) {
+                    ItemSink sink = ItemUtil.getItemSink(inventory.getValue(), inventory.getKey());
+                    InventoryIterator iter = sink.sinkIterator();
+                    if (iter == null) {
+                        continue;
+                    }
 
-                                // Do we also have this item type in our storage?
-                                int storedAmount = itemStorage.getOrDefault(key, -1);
-                                if (storedAmount > 0) {
-                                    int toBeAdded = Math.min(storedAmount, canBeAddedToStack);
+                    while (iter.hasNext() && storedItems > 0) {
+                        ImmutableItemStack slotContent = iter.next();
+                        if (slotContent != null) {
+                            // There is already an item in this slot, see if we have more of the same type to add
+                            ItemStack slotItem = slotContent.toStack();
+                            ItemStack key = slotItem.copy();
+                            key.stackSize = 0;
 
-                                    ItemStack modifiedStack = key.copy();
-                                    modifiedStack.stackSize = slotItem.stackSize + toBeAdded;
-                                    if (inventory.isItemValidForSlot(i, modifiedStack)) {
-                                        inventory.setInventorySlotContents(i, modifiedStack);
-
-                                        itemStorage.put(key, storedAmount - toBeAdded);
-                                        storedItems -= toBeAdded;
-                                    }
+                            int storedAmount = itemStorage.getOrDefault(key, -1);
+                            if (storedAmount > 0) {
+                                // modifiedStack.stackSize = slotItem.stackSize + toBeAdded; Stack size is handled by
+                                // InsertionItemStack
+                                int addedAmount = storedAmount
+                                    - iter.insert(new InsertionItemStack(key.copy(), storedAmount), false);
+                                if (addedAmount > 0) {
+                                    itemStorage.put(key, storedAmount - addedAmount);
+                                    storedItems -= addedAmount;
                                 }
                             }
                         } else {
                             // Empty slot, don't mind us
                             Object2IntMap.Entry<ItemStack> entry = peekItem();
                             if (entry != null) {
-                                int canBeAddedToSlot = Math
-                                    .min(entry.getIntValue(), inventory.getInventoryStackLimit());
-                                if (canBeAddedToSlot > 0) {
-                                    ItemStack item = entry.getKey()
-                                        .copy();
-                                    item.stackSize = canBeAddedToSlot;
-                                    if (inventory.isItemValidForSlot(i, item)) {
-                                        inventory.setInventorySlotContents(i, item);
-
-                                        itemStorage.put(entry.getKey(), entry.getIntValue() - canBeAddedToSlot);
-                                        storedItems -= canBeAddedToSlot;
-                                    }
+                                ItemStack item = entry.getKey()
+                                    .copy();
+                                int storedAmount = entry.getIntValue();
+                                // item.stackSize = canBeAddedToSlot; Stack size is handled by InsertionItemStack
+                                int addedAmount = storedAmount
+                                    - iter.insert(new InsertionItemStack(item, storedAmount), false);
+                                if (addedAmount > 0) {
+                                    itemStorage.put(entry.getKey(), storedAmount - addedAmount);
+                                    storedItems -= addedAmount;
                                 }
                             } else {
                                 // Not sure why, but it seems our inventory is empty even though we thought it wasn't
-                                // Lets re-count
+                                // Lets re-count instead of breaking things
                                 storedItems = itemStorage.values()
                                     .intStream()
                                     .sum();
@@ -858,14 +871,16 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     /**
-     * Retrieve all stored items, i.e. for the quarry is broke, and we need to drop its contents
+     * Retrieve all stored items, i.e. for the quarry is broken, and we need to drop its contents
+     *
      * @return A list of all stored items as ItemStacks with correct stack sizes
      */
     public List<ItemStack> retrieveAllItems() {
         List<ItemStack> items = new ArrayList<>();
         for (Object2IntMap.Entry<ItemStack> entry : itemStorage.object2IntEntrySet()) {
             if (entry.getIntValue() > 0) {
-                ItemStack item = entry.getKey().copy();
+                ItemStack item = entry.getKey()
+                    .copy();
                 item.stackSize = entry.getIntValue();
                 items.add(item);
             }
@@ -971,14 +986,26 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         if (state == QuarryWorkState.FINISHED && storedItems == 0 && fluidStorageIsEmpty() && ownerUUID == null) {
             if (selfIsLoaded) unloadSelf();
             return;
-        };
+        } ;
         if (state == QuarryWorkState.FINISHED && ownerUUID != null && worldObj.getTotalWorldTime() % 100 == 0) {
             // Check if owner is online
             MinecraftServer server = MinecraftServer.getServer();
             if (server != null) {
-                EntityPlayerMP owner = server.getConfigurationManager().playerEntityList.stream().filter((EntityPlayerMP player) -> player.getUniqueID().equals(ownerUUID)).findFirst().orElse(null);
+                EntityPlayerMP owner = server.getConfigurationManager().playerEntityList.stream()
+                    .filter(
+                        (EntityPlayerMP player) -> player.getUniqueID()
+                            .equals(ownerUUID))
+                    .findFirst()
+                    .orElse(null);
                 if (owner != null) {
-                    owner.addChatMessage(new ChatComponentText(String.format("Your Ender Quarry at (%d %d %d) in DIM %d has finished.", xCoord, yCoord, zCoord, worldObj.provider.dimensionId)));
+                    owner.addChatMessage(
+                        new ChatComponentText(
+                            String.format(
+                                "Your Ender Quarry at (%d %d %d) in DIM %d has finished.",
+                                xCoord,
+                                yCoord,
+                                zCoord,
+                                worldObj.provider.dimensionId)));
                     ownerUUID = null;
                 }
             }
@@ -1002,7 +1029,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
         }
 
-        int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1) * upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.SPEED, 1.0));
+        int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)
+            * upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.SPEED, 1.0));
         if (state == QuarryWorkState.RUNNING) {
             while (brokenBlocksTick < (stepsPerTick) && stepPos()) {
                 // TODO: Remove after this has been tested by others
@@ -1083,7 +1111,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
         }
         brokenBlocksTotal = nbt.getInteger("blocks");
-        ownerUUID = nbt.getString("owner").isEmpty() ? null : UUID.fromString(nbt.getString("owner"));
+        ownerUUID = nbt.getString("owner")
+            .isEmpty() ? null : UUID.fromString(nbt.getString("owner"));
 
         energyStorage.readFromNBT(nbt);
 
@@ -1103,6 +1132,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             NBTTagCompound tag = itemsNBT.getCompoundTagAt(i);
             ItemStack item = ItemStack.loadItemStackFromNBT(tag);
             if (item != null) {
+                item.stackSize = tag.getShort("Count");
                 storeItemToStorage(item);
             }
         }
@@ -1148,8 +1178,10 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 NBTTagCompound tag = new NBTTagCompound();
                 ItemStack item = entry.getKey()
                     .copy();
-                item.stackSize = entry.getIntValue();
                 item.writeToNBT(tag);
+                // Default itemstack uses byte for count, but we can have more than 255 of an item
+                tag.setShort("Count", (short) entry.getIntValue());
+
                 itemsNBT.appendTag(tag);
             }
         }
@@ -1227,6 +1259,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     public enum QuarryWorkState {
+
         STOPPED("uie.quarry.state.1"),
         STOPPED_WAITING_FOR_FLUID_SPACE("uie.quarry.state.2"),
         STOPPED_WAITING_FOR_ITEM_SPACE("uie.quarry.state.3"),

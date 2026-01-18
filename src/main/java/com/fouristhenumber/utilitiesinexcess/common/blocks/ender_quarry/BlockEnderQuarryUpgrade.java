@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,12 +14,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.World;
-
-import java.util.List;
 
 public class BlockEnderQuarryUpgrade extends Block {
 
@@ -34,7 +34,7 @@ public class BlockEnderQuarryUpgrade extends Block {
 
     @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask,
-                                        List<AxisAlignedBB> list, Entity collider) {
+        List<AxisAlignedBB> list, Entity collider) {
         this.setBlockBounds(0.5F / 16F, 1.5F / 16F, 0.5F / 16F, 15.5F / 16F, 15F / 16F, 15.5F / 16F);
         super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
     }
