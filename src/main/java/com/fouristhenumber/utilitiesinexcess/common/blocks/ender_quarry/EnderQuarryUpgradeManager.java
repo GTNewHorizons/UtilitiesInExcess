@@ -11,7 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 public class EnderQuarryUpgradeManager {
 
     private final HashMap<String, EnderQuarryUpgrade> activeUpgrades = new HashMap<>();
-    public double totalCostMultiplier = 1.0;
+    public double totalCostMultiplier = 0.0;
 
     // Add an upgrade - keeps highest tier
     public void addUpgrade(EnderQuarryUpgrade upgrade) {
@@ -66,7 +66,7 @@ public class EnderQuarryUpgradeManager {
 
     public void clear() {
         activeUpgrades.clear();
-        totalCostMultiplier = 1.0;
+        totalCostMultiplier = 0.0;
     }
 
     /**
@@ -74,7 +74,7 @@ public class EnderQuarryUpgradeManager {
      * Use totalCostMultiplier field for fewer recalculations instead.
      */
     public double getTotalCostMultiplier() {
-        double total = 1.0;
+        double total = 0.0;
         HashSet<TieredEnderQuarryUpgrade> countedTieredUpgrades = new HashSet<>();
         for (EnderQuarryUpgrade upgrade : EnderQuarryUpgrade.VALUES) {
             if (this.has(upgrade)) {

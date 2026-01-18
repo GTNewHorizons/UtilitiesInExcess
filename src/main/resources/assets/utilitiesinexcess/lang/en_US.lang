@@ -289,5 +289,11 @@ uie.quarry.state.4=Waiting for Energy
 uie.quarry.state.5=Throttled by Energy
 uie.quarry.state.6=Finished
 uie.quarry.state.7=Running
-
 uie.quarry.waila.state=Status: %s
+uie.quarry.waila.timeleft=Est. Time Left: %s
+uie.quarry.scanmessage.1=Found ender marker fence boundary, setting up work area from (%d %d) to (%d %d). Should require %d steps.
+uie.quarry.scanmessage.2=Found ender marker fence boundary from %d markers, setting up complex work area. Should require %d steps.
+uie.quarry.scanmessage.3=Ender marker at (%d %d %d) failed to set up a fence boundary.
+uie.quarry.scanmessage.4=Found no ender markers around quarry.
+uie.quarry.scanmessage.5=Failed to complete marker chain, with last marker at (%d %d %d).
+

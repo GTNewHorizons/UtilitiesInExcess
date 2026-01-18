@@ -15,6 +15,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.SpecialChars;
 import mcp.mobius.waila.cbcore.LangUtil;
 
 /**
@@ -43,13 +44,27 @@ public class WailaHandler implements IWailaDataProvider {
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         if (accessor.getTileEntity() instanceof TileEntityEnderQuarry) {
-            TileEntityEnderQuarry.QuarryWorkState state = TileEntityEnderQuarry.QuarryWorkState.VALUES[accessor
-                .getNBTData()
+            NBTTagCompound nbt = accessor.getNBTData();
+            int estimatedSecondsLeft = nbt.getInteger("estSecondsLeft");
+            if (estimatedSecondsLeft > 0) currenttip.add(
+                SpecialChars.getRenderString(
+                    "waila.uie.progress",
+                    String.valueOf(nbt.getLong("brokenBlocks")),
+                    String.valueOf(nbt.getLong("estBlocks")),
+                    // Can't pass the time format string via the localization system since it seems to remove the
+                    // leading zero formatting
+                    LangUtil.instance.translate(
+                        "uie.quarry.waila.timeleft",
+                        String.format(
+                            "%02d:%02d:%02d",
+                            estimatedSecondsLeft / 3600,
+                            (estimatedSecondsLeft % 3600) / 60,
+                            (estimatedSecondsLeft % 60)))));
+
+            TileEntityEnderQuarry.QuarryWorkState state = TileEntityEnderQuarry.QuarryWorkState.VALUES[nbt
                 .getInteger("state")];
             currenttip.add(
-                String.format(
-                    LangUtil.instance.translate("uie.quarry.waila.state"),
-                    LangUtil.instance.translate(state.localKey)));
+                LangUtil.instance.translate("uie.quarry.waila.state", LangUtil.instance.translate(state.localKey)));
         }
         return currenttip;
     }

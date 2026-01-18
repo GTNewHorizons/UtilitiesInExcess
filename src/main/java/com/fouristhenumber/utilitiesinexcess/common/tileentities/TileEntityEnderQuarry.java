@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
@@ -52,6 +54,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.EnderQua
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
+import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
@@ -67,7 +70,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
     public static final int BASE_STEPS_PER_TICK = EnderQuarryConfig.enderQuarryBaseSpeed;
-    public static final int ITEM_BUFFER_CAPACITY = 1024;
+    public static final int ITEM_BUFFER_CAPACITY = BASE_STEPS_PER_TICK * 5; // Emptied every 4 ticks + some margin for
+                                                                            // more than one item per block
     public static Block REPLACE_BLOCK = Blocks.dirt;
     public boolean isCreativeBoosted = false;
     private int storedItems;
@@ -78,13 +82,16 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private int dx;
     private int dy;
     private int dz;
+    private int lowerYBound;
+    private int upperYBound;
     private int chunkX;
     private int chunkZ;
-    private int brokenBlocksTotal;
-    private int estimatedTotalBlocks;
-    private int startedAt;
+    private long brokenBlocksTotal;
+    private long estimatedTotalBlocks;
+    private int estimatedSecondsLeft = -1;
     private boolean sidesValidated = false;
     public @Nullable UUID ownerUUID = null;
+    private final ArrayDeque<Integer> brokenBlocksSlidingWindow = new ArrayDeque<>();
     private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new LinkedHashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
     private final EnderQuarryUpgradeManager upgradeManager = new EnderQuarryUpgradeManager();
@@ -100,23 +107,23 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
     public TileEntityEnderQuarry() {
         REPLACE_BLOCK = EnderQuarryReplaceBlock.valueOf(EnderQuarryConfig.enderQuarryReplaceBlock).block;
-        resetState();
+        resetQuarry();
         storedItems = 0;
-    }
-
-    private void resetState() {
-        state = QuarryWorkState.STOPPED;
-        brokenBlocksTotal = 0;
     }
 
     public String getState() {
         return switch (state) {
             case RUNNING -> String.format(
-                "Quarry is currently mining at %d %d %d, has already mined %d blocks.",
+                "Quarry is currently mining at %d %d %d, has already mined/scanned %d blocks.%s",
                 dx,
                 dy,
                 dz,
-                brokenBlocksTotal);
+                brokenBlocksTotal,
+                estimatedSecondsLeft > 0 ? String.format(
+                    " Estimated time remaining: %02d:%02d:%02d.",
+                    estimatedSecondsLeft / 3600,
+                    (estimatedSecondsLeft % 3600) / 60,
+                    (estimatedSecondsLeft % 60)) : "");
             case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids.";
             case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items.";
             case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy.";
@@ -129,17 +136,66 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         };
     }
 
-    public Area2d getWorkArea() {
-        return this.workArea;
+    private void resetQuarry() {
+        state = QuarryWorkState.STOPPED;
+        brokenBlocksTotal = 0;
+        workArea = null;
+        nextWorkAreas.clear();
     }
 
     public void setWorkArea(Area2d area) {
         workArea = area;
         dx = area.low.x;
-        dy = yCoord + 5;
+        dy = upperYBound;
         dz = area.low.y;
         chunkX = dx >> 4;
         chunkZ = dz >> 4;
+    }
+
+    /**
+     * Starts the quarry if it is currently stopped and has a valid work area.
+     * Attempts to harvest the first block, because updateEntity steps before harvesting.
+     */
+    public void startQuarry() {
+        if (state == QuarryWorkState.STOPPED && workArea != null) {
+            state = QuarryWorkState.RUNNING;
+            Tuple<Boolean, Boolean> harvestResult = tryHarvestCurrentBlock();
+            boolean wasAbleToHarvest = harvestResult.first;
+            boolean blockWasSkipped = harvestResult.second;
+            if (wasAbleToHarvest) {
+                if (!blockWasSkipped) {
+                    removeCurrentBlock();
+                }
+                brokenBlocksTotal++;
+            }
+        }
+    }
+
+    /**
+     * Tries to find a lower Y bound than the default of bedrock level (1), by scanning downwards from the quarry,
+     * looking for the first marker. (Returns block above the marker, since we don't want to mine the marker itself.)
+     */
+    public int findLowerYBound() {
+        for (int i = this.yCoord - 2; i > 1; i--) {
+            if (worldObj.getTileEntity(xCoord, i, zCoord) instanceof TileEntityEnderMarker) {
+                return i + 1;
+            }
+        }
+        return 1;
+    }
+
+    /**
+     * Tries to find a higher Y bound than the default of 5 blocks above the quarry (also configurable), by scanning
+     * upwards from the quarry,
+     * looking for the first marker. (Returns block below the marker, since we don't want to mine the marker itself.)
+     */
+    public int findUpperYBound() {
+        for (int i = this.yCoord + 2; i < 255; i++) {
+            if (worldObj.getTileEntity(xCoord, i, zCoord) instanceof TileEntityEnderMarker) {
+                return i - 1;
+            }
+        }
+        return Math.min(this.yCoord + EnderQuarryConfig.enderQuarryDefaultTopPadding, 255);
     }
 
     public void scanForWorkAreaFromMarkers(EntityPlayer player) {
@@ -150,35 +206,31 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 @Nullable
                 List<Vector2i> scanReturn = marker.checkForBoundary(dir, player);
                 if (scanReturn != null) {
+                    lowerYBound = findLowerYBound();
+                    upperYBound = findUpperYBound();
+                    long estBlocks = 0;
                     nextWorkAreas.clear();
+
                     // Do we have a simple rectangle as defined by two points
                     if (scanReturn.size() == 2) {
-                        Vector2i firstCorner = scanReturn.get(0);
-                        Vector2i secondCorner = scanReturn.get(1);
-
-                        // Pad work area by one (inwards), so that we don't mine the markers
-                        Vector2i low = new Vector2i(
-                            Math.min(firstCorner.x, secondCorner.x) + 1,
-                            Math.min(firstCorner.y, secondCorner.y) + 1);
-                        Vector2i high = new Vector2i(
-                            Math.max(firstCorner.x, secondCorner.x) - 1,
-                            Math.max(firstCorner.y, secondCorner.y) - 1);
-                        setWorkArea(new Area2d(low, high));
-                        state = QuarryWorkState.RUNNING;
-
-                        int estBlocks = (worldObj.getHeightValue(dx, dy) + 5) * workArea.height * workArea.width;
+                        setWorkArea(new Area2d(scanReturn.get(0), scanReturn.get(1), true));
+                        startQuarry();
+                        // Estimate total blocks to be scanned, based upon work area size and vertical bounds. (Add one
+                        // to each dimension to make it inclusive)
+                        estBlocks = (long) (upperYBound - lowerYBound + 1) * (workArea.height + 1)
+                            * (workArea.width + 1);
                         player.addChatComponentMessage(
                             new ChatComponentText(
                                 String.format(
-                                    "Found ender marker fence boundary, setting up work area from (%d %d) to (%d %d). Should roughly contain %d blocks.",
+                                    StatCollector.translateToLocal("uie.quarry.scanmessage.1"),
                                     workArea.low.x,
                                     workArea.low.y,
                                     workArea.high.x,
                                     workArea.high.y,
                                     estBlocks)));
+
                         // Or do we have a more complex rectilinear polygon as defined by many points
                     } else {
-
                         // DEBUG: Clear work area of debug blocks
                         // Vector2i low = new Vector2i(Integer.MAX_VALUE);
                         // Vector2i high = new Vector2i(Integer.MIN_VALUE);
@@ -203,15 +255,31 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         // }
 
                         nextWorkAreas = computeRectanglesFromRectilinearPointPolygon(scanReturn);
+                        for (Area2d nextWorkArea : nextWorkAreas) {
+                            // Estimate blocks in this area to be scanned, based upon work area size and vertical
+                            // bounds. (Add one to each dimension to make it inclusive)
+                            estBlocks += (long) (upperYBound - lowerYBound + 1) * (nextWorkArea.height + 1)
+                                * (nextWorkArea.width + 1);
+                        }
+
+                        player.addChatComponentMessage(
+                            new ChatComponentText(
+                                String.format(
+                                    StatCollector.translateToLocal("uie.quarry.scanmessage.2"),
+                                    scanReturn.size(),
+                                    estBlocks)));
+
                         setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
-                        state = QuarryWorkState.RUNNING;
+                        startQuarry();
                     }
+
+                    estimatedTotalBlocks = estBlocks;
                     return;
                 } else {
                     player.addChatComponentMessage(
                         new ChatComponentText(
                             String.format(
-                                "Ender marker at (%d %d %d) failed to set up a fence boundary.",
+                                StatCollector.translateToLocal("uie.quarry.scanmessage.3"),
                                 marker.xCoord,
                                 marker.yCoord,
                                 marker.zCoord)));
@@ -219,8 +287,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 }
             }
         }
-        if (!foundMarkers)
-            player.addChatComponentMessage(new ChatComponentText("Found no ender markers around quarry."));
+        if (!foundMarkers) player
+            .addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("uie.quarry.scanmessage.4")));
     }
 
     private List<Area2d> computeRectanglesFromRectilinearPointPolygon(List<Vector2i> points) {
@@ -536,7 +604,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      * Are the current dx & dy & dz in work area bounds
      */
     private boolean isInBounds() {
-        return dy > 0 && this.workArea.isInBounds(dx, dz);
+        return dy >= lowerYBound && dy <= upperYBound && this.workArea.isInBounds(dx, dz);
     }
 
     /**
@@ -546,9 +614,9 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      */
     private boolean stepPos() {
         dy--;
-        if (dy <= 0) {
+        if (dy < lowerYBound) {
             // stack is done, move back up
-            dy = this.yCoord + 5;
+            dy = upperYBound;
 
             boolean resetX = false;
             if (dx + 1 >> 4 == chunkX && dx + 1 <= workArea.high.x) {
@@ -603,20 +671,21 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      *
      * @return A boolean tuple of: &lt;Could we work & harvest the block, Did we skip this block&gt;
      */
-    private boolean[] tryHarvestCurrentBlock() {
+    private Tuple<Boolean, Boolean> tryHarvestCurrentBlock() {
         Block block = worldObj.getBlock(dx, dy, dz);
         if (block.getMaterial() == Material.air || worldObj.isAirBlock(dx, dy, dz)
-            || block == REPLACE_BLOCK
+            || block == (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.WORLD_HOLE) ? Blocks.air
+                : REPLACE_BLOCK)
             || block.getBlockHardness(worldObj, dx, dy, dz) < 0
             || block.getBlockHardness(worldObj, dx, dy, dz) > 100) {
-            return new boolean[] { tryConsumeEnergy(0f, false), true };
+            return new Tuple<>(tryConsumeEnergy(0f, false), true);
         } ;
 
         float hardness = block.getBlockHardness(worldObj, dx, dy, dz);
         if (tryConsumeEnergy(hardness, true)) {
-            return new boolean[] { (harvestAndStoreBlock(block) && tryConsumeEnergy(hardness, false)), false };
+            return new Tuple<>((harvestAndStoreBlock(block) && tryConsumeEnergy(hardness, false)), false);
         }
-        return new boolean[] { false, false };
+        return new Tuple<>(false, false);
     }
 
     private boolean tryConsumeEnergy(float hardness, boolean simulate) {
@@ -978,6 +1047,40 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
     }
 
+    /**
+     * Update the time left data with a new data point of blocks broken this tick & recalculate the estimate every
+     * second
+     */
+    private void updateTimeLeftEstimate(int newDataPoint) {
+        brokenBlocksSlidingWindow.add(newDataPoint);
+        if (brokenBlocksSlidingWindow.size() > 300) brokenBlocksSlidingWindow.removeFirst();
+
+        if (worldObj.getTotalWorldTime() % 20 == 0 && estimatedTotalBlocks > brokenBlocksTotal) {
+            double averageBlocksPerTick = getAverageBlocksPerTick();
+            if (averageBlocksPerTick > 0) {
+                long blocksLeft = estimatedTotalBlocks - brokenBlocksTotal;
+                estimatedSecondsLeft = (int) (blocksLeft / averageBlocksPerTick / 20);
+            } else {
+                estimatedSecondsLeft = -1;
+            }
+        }
+    }
+
+    private double getAverageBlocksPerTick() {
+        int queuePos = 1;
+        int currentWeight = 1;
+        int weightedSum = 0;
+        int weightTotal = 0;
+        for (int blocksBrokenInTick : brokenBlocksSlidingWindow) {
+            weightedSum += blocksBrokenInTick * currentWeight;
+            weightTotal += currentWeight;
+            // Increase weight every 20 ticks, to reduce the impact of short-lived spikes that only happened once
+            if (queuePos % 20 == 0) currentWeight++;
+            queuePos++;
+        }
+        return (double) weightedSum / weightTotal;
+    }
+
     // TileEntity
     @Override
     public void updateEntity() {
@@ -986,7 +1089,8 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         if (state == QuarryWorkState.FINISHED && storedItems == 0 && fluidStorageIsEmpty() && ownerUUID == null) {
             if (selfIsLoaded) unloadSelf();
             return;
-        } ;
+        }
+        // Try to notify owner if the quarry has finished
         if (state == QuarryWorkState.FINISHED && ownerUUID != null && worldObj.getTotalWorldTime() % 100 == 0) {
             // Check if owner is online
             MinecraftServer server = MinecraftServer.getServer();
@@ -1015,24 +1119,26 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             sidesValidated = true;
         }
 
-        int brokenBlocksTick = 0;
+        // This may mean any mix of: Blocks broken & Blocks skipped
+        int blocksVisitedThisTick = 0;
+        // Check if we can harvest the current block if we are stopped by something, but have already started working
         if (state != QuarryWorkState.RUNNING && state != QuarryWorkState.FINISHED && state != QuarryWorkState.STOPPED) {
-            boolean[] harvestResult = tryHarvestCurrentBlock();
-            boolean wasAbleToHarvest = harvestResult[0];
-            boolean blockWasSkipped = harvestResult[1];
+            Tuple<Boolean, Boolean> harvestResult = tryHarvestCurrentBlock();
+            boolean wasAbleToHarvest = harvestResult.first;
+            boolean blockWasSkipped = harvestResult.second;
             if (wasAbleToHarvest) {
                 state = QuarryWorkState.RUNNING;
                 if (!blockWasSkipped) {
                     removeCurrentBlock();
-                    brokenBlocksTick++;
                 }
+                blocksVisitedThisTick++;
             }
         }
 
-        int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)
-            * upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.SPEED, 1.0));
         if (state == QuarryWorkState.RUNNING) {
-            while (brokenBlocksTick < (stepsPerTick) && stepPos()) {
+            int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)
+                * upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.SPEED, 1.0));
+            while (blocksVisitedThisTick < stepsPerTick && stepPos()) {
                 // TODO: Remove after this has been tested by others
                 if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
                     UtilitiesInExcess.LOG.warn(
@@ -1046,28 +1152,27 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
                 }
 
-                boolean[] harvestResult = tryHarvestCurrentBlock();
-                boolean wasAbleToHarvest = harvestResult[0];
-                boolean blockWasSkipped = harvestResult[1];
+                Tuple<Boolean, Boolean> harvestResult = tryHarvestCurrentBlock();
+                boolean wasAbleToHarvest = harvestResult.first;
+                boolean blockWasSkipped = harvestResult.second;
                 if (wasAbleToHarvest) {
                     if (!blockWasSkipped) {
                         removeCurrentBlock();
-                        brokenBlocksTick++;
                     }
+                    blocksVisitedThisTick++;
                 } else {
                     // Check if something has stopped us (out of space / energy)
                     if (state != QuarryWorkState.RUNNING) break;
                 }
             }
-            if (brokenBlocksTick < (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1))
-                && state == QuarryWorkState.RUNNING) {
+            if (blocksVisitedThisTick < stepsPerTick && state == QuarryWorkState.RUNNING) {
                 if (nextWorkAreas.isEmpty()) {
                     state = QuarryWorkState.FINISHED;
                 } else {
                     setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
                 }
             }
-            if (brokenBlocksTick > 0) {
+            if (blocksVisitedThisTick > 0) {
                 markDirty();
                 if (state == QuarryWorkState.STOPPED_WAITING_FOR_ENERGY) {
                     // We were still able to mine some blocks this tick, so we don't consider this fully stopped
@@ -1077,11 +1182,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 }
             }
 
-            this.brokenBlocksTotal += brokenBlocksTick;
+            updateTimeLeftEstimate(blocksVisitedThisTick);
+            this.brokenBlocksTotal += blocksVisitedThisTick;
         }
 
+        // Move internally stored stuff to adjacent blocks
         if (worldObj.getTotalWorldTime() % 4 == 0 && (storedItems > 0 || !fluidStorageIsEmpty())) {
-            // Move internally stored stuff to adjacent blocks
             if (!ejectStoredToAdjacent()) scanSidesForTEs();
         }
     }
@@ -1099,8 +1205,13 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             dz = nbt.getInteger("dz");
             chunkX = dx >> 4;
             chunkZ = dz >> 4;
+            // Y bounds
+            lowerYBound = nbt.getInteger("lowerYBound");
+            upperYBound = nbt.getInteger("upperYBound");
+            // Fix for cases where upperYBound was not present yet
+            if (lowerYBound == upperYBound) upperYBound = findUpperYBound();
 
-            // Possible next work areas
+            // Possible next work areas for complex markers
             NBTTagList possibleNextAreas = nbt.getTagList("nextAreas", Constants.NBT.TAG_COMPOUND);
             if (possibleNextAreas.tagCount() > 0) {
                 nextWorkAreas.clear();
@@ -1110,7 +1221,9 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 }
             }
         }
-        brokenBlocksTotal = nbt.getInteger("blocks");
+        brokenBlocksTotal = nbt.getLong("brokenBlocks");
+        estimatedTotalBlocks = nbt.getLong("estBlocks");
+        estimatedSecondsLeft = nbt.getInteger("estSecondsLeft");
         ownerUUID = nbt.getString("owner")
             .isEmpty() ? null : UUID.fromString(nbt.getString("owner"));
 
@@ -1144,11 +1257,15 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         nbt.setInteger("facing", facing.ordinal());
         nbt.setInteger("state", state.ordinal());
         if (state != QuarryWorkState.FINISHED && workArea != null) {
+            // Work area
             workArea.writeNBTTag(nbt);
             nbt.setInteger("dx", dx);
             nbt.setInteger("dy", dy);
             nbt.setInteger("dz", dz);
-
+            // Y bounds
+            nbt.setInteger("lowerYBound", lowerYBound);
+            nbt.setInteger("upperYBound", upperYBound);
+            // Possible next work areas for complex markers
             NBTTagList areasNBT = new NBTTagList();
             for (Area2d nextArea : nextWorkAreas) {
                 NBTTagCompound tag = new NBTTagCompound();
@@ -1157,7 +1274,9 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             }
             nbt.setTag("nextAreas", areasNBT);
         }
-        nbt.setInteger("blocks", brokenBlocksTotal);
+        nbt.setLong("brokenBlocks", brokenBlocksTotal);
+        nbt.setLong("estBlocks", estimatedTotalBlocks);
+        nbt.setInteger("estSecondsLeft", estimatedSecondsLeft);
         nbt.setString("owner", ownerUUID != null ? ownerUUID.toString() : "");
 
         energyStorage.writeToNBT(nbt);

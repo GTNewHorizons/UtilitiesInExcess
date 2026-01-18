@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.IFacingTE;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
@@ -164,7 +164,6 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         } while (!stack.isEmpty());
 
         if (markerChain != null) {
-            UtilitiesInExcess.chat("Completed marker chain with " + markerChain.size() + " entries.");
             ArrayList<Vector2i> pointChain = new ArrayList<>(markerChain.size());
             markerChain.forEach((e) -> pointChain.add(new Vector2i(e.xCoord, e.zCoord)));
             return pointChain;
@@ -173,10 +172,11 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         player.addChatComponentMessage(
             new ChatComponentText(
                 String.format(
-                    "Failed to complete marker chain, with last marker at (%d %d %d).",
+                    StatCollector.translateToLocal("uie.quarry.scanmessage.5"),
                     lastVisited.current.xCoord,
                     lastVisited.current.yCoord,
                     lastVisited.current.zCoord)));
+
         // Spawn particles to show where the chain broke
         for (Object obj : worldObj.playerEntities) {
             EntityPlayerMP playerMP = (EntityPlayerMP) obj;

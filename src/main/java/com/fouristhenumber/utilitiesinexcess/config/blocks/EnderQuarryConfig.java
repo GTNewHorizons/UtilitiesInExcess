@@ -12,6 +12,10 @@ public class EnderQuarryConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableEnderQuarry;
 
+    @Config.Comment("Default amount of blocks the quarry will mine upwards, added to its own y position.")
+    @Config.DefaultInt(5)
+    public static int enderQuarryDefaultTopPadding;
+
     @Config.Comment("Energy (RF) capacity of the machine.")
     @Config.DefaultInt(10_000_000)
     public static int enderQuarryEnergyStorage;
