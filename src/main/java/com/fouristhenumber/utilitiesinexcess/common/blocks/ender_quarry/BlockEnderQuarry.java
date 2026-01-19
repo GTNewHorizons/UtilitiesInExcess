@@ -39,14 +39,9 @@ public class BlockEnderQuarry extends BlockContainer {
     public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
         super.onBlockPlacedBy(worldIn, x, y, z, placer, itemIn);
 
-        int direction = (int) (((placer.rotationYaw + 45f) / 90f + 4f) % 4f);
-
-        worldIn.setBlockMetadataWithNotify(x, y, z, direction, 2);
-
-        TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntityEnderQuarry quarry) {
-            quarry.facing = getFacing(direction);
+        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityEnderQuarry quarry) {
             quarry.ownerUUID = placer.getUniqueID();
+            quarry.updateRedstoneState();
         }
     }
 
@@ -82,7 +77,7 @@ public class BlockEnderQuarry extends BlockContainer {
         super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 
-    public void dropContent(TileEntityEnderQuarry quarry, World world) {
+    private void dropContent(TileEntityEnderQuarry quarry, World world) {
         for (ItemStack item : quarry.retrieveAllItems()) {
             float dx = world.rand.nextFloat() * 0.8F + 0.1F;
             float dy = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -121,17 +116,22 @@ public class BlockEnderQuarry extends BlockContainer {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (!worldIn.isRemote && te instanceof TileEntityEnderQuarry quarry) {
             quarry.scanSidesForTEs();
+            quarry.updateRedstoneState();
         }
     }
 
-    public static ForgeDirection getFacing(int meta) {
-        return switch (meta) {
-            case 0 -> ForgeDirection.SOUTH;
-            case 1 -> ForgeDirection.WEST;
-            case 2 -> ForgeDirection.NORTH;
-            case 3 -> ForgeDirection.EAST;
-            default -> ForgeDirection.UNKNOWN;
-        };
+    @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(World worldIn, int x, int y, int z, int side) {
+        if (worldIn.isRemote) return 0;
+        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityEnderQuarry quarry) {
+            return quarry.getComparatorOutput();
+        }
+        return 0;
     }
 
     @Override
