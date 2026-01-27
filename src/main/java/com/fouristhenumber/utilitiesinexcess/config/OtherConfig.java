@@ -12,6 +12,11 @@ public class OtherConfig {
         ConfigurationManager.registerConfig(OtherConfig.class);
     }
 
+    @Config.DefaultBoolean(true) // TODO Set default to false before release
+    @Config.RequiresMcRestart
+    @Config.Comment("Enable the Extra Utilities to Utilities In Excess world conversion system")
+    public static boolean enableWorldConversion;
+
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     @Config.Comment("Enable rendering some UIE baubles on players who have them equipped")
