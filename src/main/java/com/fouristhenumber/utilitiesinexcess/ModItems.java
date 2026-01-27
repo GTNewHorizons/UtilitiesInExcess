@@ -23,7 +23,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -34,7 +34,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 
@@ -45,7 +45,7 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    GLUTTONS_AXE(GluttonsAxeConfig.enable, new ItemGluttonsAxe(), "gluttons_axe"),
+    GOURMANDS_AXE(GourmandsAxeConfig.enable, new ItemGourmandsAxe(), "gourmands_axe"),
     DESTRUCTION_PICKAXE(DestructionPickaxeConfig.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
     ANTI_PARTICULATE_SHOVEL(AntiParticulateShovelConfig.enable, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.enable, new ItemPrecisionShears(), "precision_shears"),

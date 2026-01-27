@@ -13,7 +13,7 @@ public class UnstableTools {
     // Not sure abt nested categories, lets disccuss that later
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(UnstableTools.class);
-        ConfigurationManager.registerConfig(GluttonsAxeConfig.class);
+        ConfigurationManager.registerConfig(GourmandsAxeConfig.class);
         ConfigurationManager.registerConfig(EthericSwordConfig.class);
         ConfigurationManager.registerConfig(AntiParticulateShovelConfig.class);
         ConfigurationManager.registerConfig(DestructionPickaxeConfig.class);
