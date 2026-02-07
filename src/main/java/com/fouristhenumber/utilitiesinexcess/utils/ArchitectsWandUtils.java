@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,13 +11,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-
-import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
 
 public class ArchitectsWandUtils {
 
@@ -88,15 +87,15 @@ public class ArchitectsWandUtils {
             case UP, DOWN ->
                 // Plane: x/z plane (y remains constant)
                 new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, // Cardinal
-                              { 1, 0, 1 }, { 1, 0, -1 }, { -1, 0, 1 }, {-1, 0, -1}}; // Diagonal
+                    { 1, 0, 1 }, { 1, 0, -1 }, { -1, 0, 1 }, { -1, 0, -1 } }; // Diagonal
             case NORTH, SOUTH ->
                 // Plane: x/y plane (z remains constant)
                 new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, // Cardinal
-                              { 1, 1, 0 }, { 1, -1, 0 }, { -1, 1, 0}, { -1, -1, 0}}; // Diagonal
+                    { 1, 1, 0 }, { 1, -1, 0 }, { -1, 1, 0 }, { -1, -1, 0 } }; // Diagonal
             case EAST, WEST ->
                 // Plane: y/z plane (x remains constant)
                 new int[][] { { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, // Cardinal
-                              { 0, 1, 1 }, { 0, 1, -1 }, { 0, -1, 1}, { 0, -1, -1}}; // Diagonal
+                    { 0, 1, 1 }, { 0, 1, -1 }, { 0, -1, 1 }, { 0, -1, -1 } }; // Diagonal
             default -> throw new RuntimeException("UE's BuilderWand's findAdjacentBlocks called with invalid side");
         };
 
@@ -117,8 +116,7 @@ public class ArchitectsWandUtils {
             BlockPos current = queue.poll();
 
             for (int[] off : allowedOffsets) {
-                if (region.size() >= findCount)
-                {
+                if (region.size() >= findCount) {
                     break;
                 }
 
@@ -140,30 +138,39 @@ public class ArchitectsWandUtils {
         return region;
     }
 
-    private static boolean IsValidForWireFrame(World world,
-                                               ItemStack itemStackToPlace,
-                                               BlockPos targetLocation,
-                                               MovingObjectPosition movingObjectPosition,
-                                               EntityPlayer player,
-                                               ForgeDirection clickedSide)
-    {
+    private static boolean IsValidForWireFrame(World world, ItemStack itemStackToPlace, BlockPos targetLocation,
+        MovingObjectPosition movingObjectPosition, EntityPlayer player, ForgeDirection clickedSide) {
         ItemStack stack = getItemStackToPlace(world, targetLocation, movingObjectPosition, player);
-        if (stack != null)
-        {
+        if (stack != null) {
             Block block = Block.getBlockFromItem(stack.getItem());
             return ItemStack.areItemStacksEqual(stack, itemStackToPlace)
-                && world.isAirBlock(targetLocation.x + clickedSide.offsetX, targetLocation.y + clickedSide.offsetY, targetLocation.z + clickedSide.offsetZ)
-                && block.canPlaceBlockOnSide(world, targetLocation.x + clickedSide.offsetX, targetLocation.y + clickedSide.offsetY, targetLocation.z + clickedSide.offsetZ, clickedSide.ordinal())
-                && world.canPlaceEntityOnSide(block, targetLocation.x + clickedSide.offsetX, targetLocation.y + clickedSide.offsetY, targetLocation.z + clickedSide.offsetZ, false, clickedSide.ordinal(), null, stack);
+                && world.isAirBlock(
+                    targetLocation.x + clickedSide.offsetX,
+                    targetLocation.y + clickedSide.offsetY,
+                    targetLocation.z + clickedSide.offsetZ)
+                && block.canPlaceBlockOnSide(
+                    world,
+                    targetLocation.x + clickedSide.offsetX,
+                    targetLocation.y + clickedSide.offsetY,
+                    targetLocation.z + clickedSide.offsetZ,
+                    clickedSide.ordinal())
+                && world.canPlaceEntityOnSide(
+                    block,
+                    targetLocation.x + clickedSide.offsetX,
+                    targetLocation.y + clickedSide.offsetY,
+                    targetLocation.z + clickedSide.offsetZ,
+                    false,
+                    clickedSide.ordinal(),
+                    null,
+                    stack);
         }
         return false;
     }
 
-    public static ItemStack getItemStackToPlace(World world, BlockPos pos, MovingObjectPosition movingObjectPosition, EntityPlayer player)
-    {
+    public static ItemStack getItemStackToPlace(World world, BlockPos pos, MovingObjectPosition movingObjectPosition,
+        EntityPlayer player) {
         Block block = world.getBlock(pos.x, pos.y, pos.z);
-        if (block != null)
-        {
+        if (block != null) {
             return block.getPickBlock(movingObjectPosition, world, pos.x, pos.y, pos.z, player);
         }
         return null;

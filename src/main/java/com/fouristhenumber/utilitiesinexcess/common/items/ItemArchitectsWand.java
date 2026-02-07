@@ -1,9 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.getItemStackToPlace;
+
 import java.util.List;
 import java.util.Set;
 
-import com.github.bsideup.jabel.Desugar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -21,12 +22,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
+import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.getItemStackToPlace;
 
 public class ItemArchitectsWand extends Item {
 
@@ -50,20 +50,14 @@ public class ItemArchitectsWand extends Item {
 
     @Desugar
     @SideOnly(Side.CLIENT)
-    record RenderContext(
-        BlockPos target,
-        ForgeDirection side,
-        ItemStack stack,
-        int placeCount,
-        Vec3 playerPosition)
-    {
+    record RenderContext(BlockPos target, ForgeDirection side, ItemStack stack, int placeCount, Vec3 playerPosition) {
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof RenderContext other)) return false;
 
-            return placeCount == other.placeCount
-                && target.equals(other.target)
+            return placeCount == other.placeCount && target.equals(other.target)
                 && side == other.side
                 && ItemStack.areItemStacksEqual(stack, other.stack)
                 && playerPosition.xCoord == other.playerPosition.xCoord
@@ -82,8 +76,7 @@ public class ItemArchitectsWand extends Item {
             return;
         }
 
-        if (!isSelected)
-        {
+        if (!isSelected) {
             oldContext = null;
             return;
         }
@@ -92,14 +85,18 @@ public class ItemArchitectsWand extends Item {
         MovingObjectPosition movingObjectPosition = Minecraft.getMinecraft().objectMouseOver;
 
         // Check if player is looking at a block.
-        if (movingObjectPosition == null || movingObjectPosition.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
+        if (movingObjectPosition == null
+            || movingObjectPosition.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
             WireframeRenderer.clearCandidatePositions();
             oldContext = null;
             return;
         }
 
         // 1. Target block location
-        BlockPos target = new BlockPos(movingObjectPosition.blockX, movingObjectPosition.blockY, movingObjectPosition.blockZ);
+        BlockPos target = new BlockPos(
+            movingObjectPosition.blockX,
+            movingObjectPosition.blockY,
+            movingObjectPosition.blockZ);
 
         // 2. Side
         int side = movingObjectPosition.sideHit;
@@ -112,8 +109,7 @@ public class ItemArchitectsWand extends Item {
 
         // 4. Target block to place
         ItemStack itemStackToPlace = getItemStackToPlace(world, target, movingObjectPosition, player);
-        if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock))
-        {
+        if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) {
             WireframeRenderer.clearCandidatePositions();
             oldContext = null;
             return;
@@ -130,9 +126,13 @@ public class ItemArchitectsWand extends Item {
         // 3. Total Amount we can place is different
         // 4. Target block is different
         // 5. Player location is different (comes from function args)
-        RenderContext newContext = new RenderContext(target, forgeSide, itemStackToPlace, placeCount, player.getPosition(1.0F));
-        if (newContext.equals(oldContext))
-        {
+        RenderContext newContext = new RenderContext(
+            target,
+            forgeSide,
+            itemStackToPlace,
+            placeCount,
+            player.getPosition(1.0F));
+        if (newContext.equals(oldContext)) {
             return;
         }
         oldContext = newContext;
@@ -175,24 +175,17 @@ public class ItemArchitectsWand extends Item {
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils
             .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player);
-        itemStackToPlace.stackSize = blocksToPlace.size(); // Since now, we actually create a stack we have to set the size. Strange kinda...
+        itemStackToPlace.stackSize = blocksToPlace.size(); // Since now, we actually create a stack we have to set the
+                                                           // size. Strange kinda...
 
-
-        for (BlockPos pos : blocksToPlace)
-        {
+        for (BlockPos pos : blocksToPlace) {
             // TODO: Group these by a bigger number instead of decreasing by 1 every time.
-            if (player.capabilities.isCreativeMode || ArchitectsWandUtils.decreaseFromInventory(player, itemStackToPlace))
-            {
-                if (useCompatPlacement)
-                {
-                    itemStackToPlace.getItem().onItemUse(itemStackToPlace,
-                        player, world,
-                        pos.x, pos.y,
-                        pos.z, side,
-                        hitX, hitY, hitZ);
-                }
-                else
-                {
+            if (player.capabilities.isCreativeMode
+                || ArchitectsWandUtils.decreaseFromInventory(player, itemStackToPlace)) {
+                if (useCompatPlacement) {
+                    itemStackToPlace.getItem()
+                        .onItemUse(itemStackToPlace, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
+                } else {
                     world.setBlock(
                         pos.x + forgeSide.offsetX,
                         pos.y + forgeSide.offsetY,
