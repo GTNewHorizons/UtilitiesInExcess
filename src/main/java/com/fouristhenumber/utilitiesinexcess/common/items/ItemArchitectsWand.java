@@ -48,27 +48,6 @@ public class ItemArchitectsWand extends Item {
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
-    @Desugar
-    @SideOnly(Side.CLIENT)
-    record RenderContext(BlockPos target, ForgeDirection side, ItemStack stack, int placeCount, Vec3 playerPosition) {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof RenderContext other)) return false;
-
-            return placeCount == other.placeCount && target.equals(other.target)
-                && side == other.side
-                && ItemStack.areItemStacksEqual(stack, other.stack)
-                && playerPosition.xCoord == other.playerPosition.xCoord
-                && playerPosition.yCoord == other.playerPosition.yCoord
-                && playerPosition.zCoord == other.playerPosition.zCoord;
-        }
-
-    }
-
-    private RenderContext oldContext;
-
     @SideOnly(Side.CLIENT)
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
@@ -77,7 +56,6 @@ public class ItemArchitectsWand extends Item {
         }
 
         if (!isSelected) {
-            oldContext = null;
             return;
         }
 
@@ -88,7 +66,6 @@ public class ItemArchitectsWand extends Item {
         if (movingObjectPosition == null
             || movingObjectPosition.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
             WireframeRenderer.clearCandidatePositions();
-            oldContext = null;
             return;
         }
 
@@ -111,7 +88,6 @@ public class ItemArchitectsWand extends Item {
         ItemStack itemStackToPlace = getItemStackToPlace(world, target, movingObjectPosition, player);
         if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) {
             WireframeRenderer.clearCandidatePositions();
-            oldContext = null;
             return;
         }
 
@@ -119,23 +95,6 @@ public class ItemArchitectsWand extends Item {
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(ArchitectsWandUtils.countItemInInventory(player, itemStackToPlace), this.buildLimit);
 
-        // Check the context to see if we really do need to recompute. Don't do it every frame.
-        // Reasons to recompute:
-        // 1. Target block location is different
-        // 2. Side is different
-        // 3. Total Amount we can place is different
-        // 4. Target block is different
-        // 5. Player location is different (comes from function args)
-        RenderContext newContext = new RenderContext(
-            target,
-            forgeSide,
-            itemStackToPlace,
-            placeCount,
-            player.getPosition(1.0F));
-        if (newContext.equals(oldContext)) {
-            return;
-        }
-        oldContext = newContext;
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils
             .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, movingObjectPosition, player);
