@@ -22,7 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
-import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
@@ -94,7 +93,6 @@ public class ItemArchitectsWand extends Item {
         // 3. Total amount to place
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(ArchitectsWandUtils.countItemInInventory(player, itemStackToPlace), this.buildLimit);
-
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils
             .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, movingObjectPosition, player);
