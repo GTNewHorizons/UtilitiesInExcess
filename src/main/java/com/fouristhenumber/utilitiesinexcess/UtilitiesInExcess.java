@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.Content;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.6.31,)")
+    dependencies = "required-after:gtnhlib@[0.6.31,); after:ForgeMultipart")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -92,6 +93,7 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
+        new Content().init();
         proxy.preInit(event);
     }
 
