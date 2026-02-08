@@ -1,8 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.awakenedInversionDurability;
-import static com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig.chestSplashPotionsValid;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -115,14 +112,14 @@ public class ItemInversionSigilActive extends Item {
         HashSet<ItemStackBaseCompare> validChestContents = new HashSet<>();
         for (String itemId : itemIds) {
             String[] itemIdSplit = itemId.split(":");
-            ItemStack validChestItemStack = null;
+            ItemStack validChestItemStack;
             if (itemIdSplit.length == 2) {
                 validChestItemStack = new ItemStack(GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]));
             } else if (itemIdSplit.length == 3) {
                 Item validChestItem = GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]);
                 int validChestItemMeta = parseItemMetaFromString(itemIdSplit[2]);
                 validChestItemStack = new ItemStack(validChestItem, 1, validChestItemMeta);
-                if (validChestItem == Items.potionitem && chestSplashPotionsValid) {
+                if (validChestItem == Items.potionitem && InversionConfig.chestSplashPotionsValid) {
                     ItemStack splashPotion = new ItemStack(validChestItem, 1, validChestItemMeta + 8192);
                     boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(splashPotion));
                     if (successfulAdd) {
@@ -139,8 +136,7 @@ public class ItemInversionSigilActive extends Item {
                             itemId);
                     }
                 }
-            }
-            if (validChestItemStack == null) {
+            } else {
                 FMLLog.log(Level.WARN, "Could not parse item id %s for the %s ritual!", itemId, direction.toString());
                 continue;
             }
@@ -613,7 +609,7 @@ public class ItemInversionSigilActive extends Item {
         ItemStack stack = new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get(), 1);
 
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger(DURABILITY_NBT_KEY, awakenedInversionDurability);
+        tag.setInteger(DURABILITY_NBT_KEY, InversionConfig.awakenedInversionDurability);
         stack.setTagCompound(tag);
         return stack;
     }
@@ -625,7 +621,7 @@ public class ItemInversionSigilActive extends Item {
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        if (awakenedInversionDurability == 0) return itemStack;
+        if (InversionConfig.awakenedInversionDurability == 0) return itemStack;
 
         NBTTagCompound tag = itemStack.getTagCompound();
         if (tag == null) return null;
@@ -641,7 +637,7 @@ public class ItemInversionSigilActive extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tt, boolean p_77624_4_) {
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && awakenedInversionDurability != 0) {
+        if (tag != null && InversionConfig.awakenedInversionDurability != 0) {
             tt.add(
                 StatCollector
                     .translateToLocalFormatted("item.inversion_sigil_active.desc", tag.getInteger(DURABILITY_NBT_KEY)));

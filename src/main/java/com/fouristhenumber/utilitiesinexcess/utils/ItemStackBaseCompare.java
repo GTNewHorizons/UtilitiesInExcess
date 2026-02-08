@@ -22,7 +22,7 @@ public class ItemStackBaseCompare {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ItemStackBaseCompare that)) return false;
-        return count == that.count && damage == that.damage && item.equals(that.item);
+        return count == that.count && damage == that.damage && item == that.item;
     }
 
     @Override
