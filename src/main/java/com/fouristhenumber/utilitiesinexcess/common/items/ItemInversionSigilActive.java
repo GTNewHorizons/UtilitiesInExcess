@@ -126,18 +126,18 @@ public class ItemInversionSigilActive extends Item {
                         FMLLog.log(
                             Level.DEBUG,
                             "Used splash potion %s as siege requirement from item id %s.",
-                            StatCollector.translateToLocal(splashPotion.getDisplayName()),
+                            splashPotion.getDisplayName(),
                             itemId);
                     } else {
                         FMLLog.log(
                             Level.DEBUG,
                             "Could not add splash potion %s as siege requirement from item id %s since it was a duplicate!",
-                            StatCollector.translateToLocal(splashPotion.getDisplayName()),
+                            splashPotion.getDisplayName(),
                             itemId);
                     }
                 }
             } else {
-                FMLLog.log(Level.WARN, "Could not parse item id %s for the %s ritual!", itemId, direction.toString());
+                FMLLog.log(Level.WARN, "Could not parse item id %s for the %s chest!", itemId, direction.toString());
                 continue;
             }
             boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(validChestItemStack));
@@ -145,20 +145,20 @@ public class ItemInversionSigilActive extends Item {
                 FMLLog.log(
                     Level.DEBUG,
                     "Used item %s as siege requirement from item id %s.",
-                    StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                    validChestItemStack.getDisplayName(),
                     itemId);
             } else {
                 FMLLog.log(
                     Level.DEBUG,
                     "Could not add item %s as siege requirement from item id %s since it was a duplicate!",
-                    StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                    validChestItemStack.getDisplayName(),
                     itemId);
             }
         }
         if (itemReq > validChestContents.size()) {
             FMLLog.log(
                 Level.WARN,
-                "There are only %s valid items for the %s ritual, but there are %s required items! The ritual will be impossible!",
+                "There are only %s valid items for the %s chest, but there are %s required items! The ritual will be impossible!",
                 validChestContents.size(),
                 direction.toString(),
                 itemReq);
