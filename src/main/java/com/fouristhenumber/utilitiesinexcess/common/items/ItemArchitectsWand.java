@@ -18,12 +18,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemArchitectsWand extends Item {
+public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
     public int buildLimit;
 

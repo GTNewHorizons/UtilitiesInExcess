@@ -16,8 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
-public class ItemPrecisionShears extends ItemShears {
+public class ItemPrecisionShears extends ItemShears implements ITranslucentItem {
 
     public static final String COOLDOWN_NBT_TAG = "uie:cooldown";
     private IIcon cooldownIcon;
