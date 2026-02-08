@@ -41,9 +41,9 @@ import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.api.ItemStackBaseCompare;
 import com.fouristhenumber.utilitiesinexcess.common.entities.EntitySiegeProperty;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackBaseCompare;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -102,57 +102,61 @@ public class ItemInversionSigilActive extends Item {
             .register(eventHandler);
     }
 
+    private int parseItemMetaFromString(String string) {
+        try {
+            return Integer.parseInt(string);
+        } catch (NumberFormatException ignored) {
+            return -1;
+        }
+    }
+
     private HashSet<ItemStackBaseCompare> getValidChestContents(ForgeDirection direction, String[] itemIds,
         int itemReq) {
         HashSet<ItemStackBaseCompare> validChestContents = new HashSet<>();
         for (String itemId : itemIds) {
             String[] itemIdSplit = itemId.split(":");
-            ItemStack validChestItemStack;
-            if (itemIdSplit.length == 1) {
-                validChestItemStack = null;
-            } else if (itemIdSplit.length == 2) {
+            ItemStack validChestItemStack = null;
+            if (itemIdSplit.length == 2) {
                 validChestItemStack = new ItemStack(GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]));
-            } else {
+            } else if (itemIdSplit.length == 3) {
                 Item validChestItem = GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]);
-                int validChestItemMeta = Integer.parseInt(itemIdSplit[2]);
+                int validChestItemMeta = parseItemMetaFromString(itemIdSplit[2]);
                 validChestItemStack = new ItemStack(validChestItem, 1, validChestItemMeta);
                 if (validChestItem == Items.potionitem && chestSplashPotionsValid) {
-                    boolean successfulAdd = validChestContents
-                        .add(new ItemStackBaseCompare(new ItemStack(validChestItem, 1, validChestItemMeta + 8192)));
+                    ItemStack splashPotion = new ItemStack(validChestItem, 1, validChestItemMeta + 8192);
+                    boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(splashPotion));
                     if (successfulAdd) {
                         FMLLog.log(
                             Level.DEBUG,
                             "Used splash potion %s as siege requirement from item id %s.",
-                            StatCollector.translateToLocal(
-                                new ItemStack(validChestItem, 1, validChestItemMeta + 8192).getDisplayName()),
+                            StatCollector.translateToLocal(splashPotion.getDisplayName()),
                             itemId);
                     } else {
                         FMLLog.log(
                             Level.DEBUG,
                             "Could not add splash potion %s as siege requirement from item id %s since it was a duplicate!",
-                            StatCollector.translateToLocal(
-                                new ItemStack(validChestItem, 1, validChestItemMeta + 8192).getDisplayName()),
+                            StatCollector.translateToLocal(splashPotion.getDisplayName()),
                             itemId);
                     }
                 }
             }
             if (validChestItemStack == null) {
                 FMLLog.log(Level.WARN, "Could not parse item id %s for the %s ritual!", itemId, direction.toString());
+                continue;
+            }
+            boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(validChestItemStack));
+            if (successfulAdd) {
+                FMLLog.log(
+                    Level.DEBUG,
+                    "Used item %s as siege requirement from item id %s.",
+                    StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                    itemId);
             } else {
-                boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(validChestItemStack));
-                if (successfulAdd) {
-                    FMLLog.log(
-                        Level.DEBUG,
-                        "Used item %s as siege requirement from item id %s.",
-                        StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
-                        itemId);
-                } else {
-                    FMLLog.log(
-                        Level.DEBUG,
-                        "Could not add item %s as siege requirement from item id %s since it was a duplicate!",
-                        StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
-                        itemId);
-                }
+                FMLLog.log(
+                    Level.DEBUG,
+                    "Could not add item %s as siege requirement from item id %s since it was a duplicate!",
+                    StatCollector.translateToLocal(validChestItemStack.getDisplayName()),
+                    itemId);
             }
         }
         if (itemReq > validChestContents.size()) {
