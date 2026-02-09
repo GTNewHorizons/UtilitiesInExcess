@@ -33,6 +33,15 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
         }
 
         GL11.glPushMatrix();
+        if (type == ItemRenderType.ENTITY)
+        {
+            GL11.glScaled(0.5, 0.5, 0.5);
+        }
+
+        if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY)
+        {
+            GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
+        }
 
         TextureUtils.bindAtlas(0);
         CCRenderState state = CCRenderState.instance();
@@ -43,7 +52,7 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
 
         int materialId = MicroMaterialRegistry.materialID(item.getTagCompound().getString("mat"));
         UEMultiPart part = new Content().createUEMultiPart(true, materialId, partNames[item.getItemDamage()]);
-        part.render(new Vector3(0.5f, 0.5f, 0.5f), -1);
+        part.render(new Vector3(0, 0, 0), -1);
 
         state.drawInstance();
         GL11.glPopMatrix();

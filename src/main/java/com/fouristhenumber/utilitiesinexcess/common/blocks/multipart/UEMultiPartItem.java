@@ -1,11 +1,19 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.vec.BlockCoord;
 import codechicken.microblock.MicroMaterialRegistry;
+import codechicken.multipart.TileMultipart;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,9 +55,44 @@ public class UEMultiPartItem extends Item {
         );
     }
 
-    private ItemStack createStack(String material, int damage)
+    @Override
+    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-        ItemStack stack = new ItemStack(this, 1, damage);
+        int materialID = getMaterialID(item);
+        int damage = item.getItemDamage();
+        if (materialID < 0 || damage > partNames.length)
+        {
+            return false;
+        }
+
+        MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+        if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            if (!world.isRemote) {
+                TileMultipart.addPart(world, new BlockCoord(x, y, z).offset(side), new Content().createUEMultiPart(false, materialID, partNames[damage]));
+                if (!player.capabilities.isCreativeMode)
+                    item.stackSize--;
+
+                Block.SoundType sound = MicroMaterialRegistry.getMaterial(materialID).getSound();
+                if (sound != null)
+                    world.playSoundEffect(
+                        x + 0.5d,
+                        y + 0.5d,
+                        z + 0.5d,
+                        sound.func_150496_b(),
+                        (sound.getVolume() + 1.0f) / 2.0f,
+                        sound.getPitch() * 0.8f
+                    );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static ItemStack createStack(String material, int damage)
+    {
+        ItemStack stack = new ItemStack(ModItems.UE_MULTI_PART.get(), 1, damage);
         stack.stackTagCompound = new NBTTagCompound();
         stack.getTagCompound().setString("mat", material);
         return stack;
@@ -66,5 +109,18 @@ public class UEMultiPartItem extends Item {
             return MicroMaterialRegistry.getMaterial(stack.getTagCompound().getString("mat"));
         }
         return null;
+    }
+
+    public static int getMaterialID(ItemStack stack)
+    {
+        if (stack.hasTagCompound())
+        {
+            if (!stack.getTagCompound().hasKey("mat"))
+            {
+                return 0;
+            }
+            return MicroMaterialRegistry.materialID(stack.getTagCompound().getString("mat"));
+        }
+        return 0;
     }
 }
