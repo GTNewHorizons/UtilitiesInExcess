@@ -9,13 +9,19 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.fouristhenumber.utilitiesinexcess.config.blocks.DrumConfig;
+
 public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
-    public final FluidTank tank;
+    public FluidTank tank = new FluidTank(0);
+
+    public TileEntityDrum() {
+        this(DrumConfig.drumSize);
+    }
 
     public TileEntityDrum(int capacity) {
         super();
-        this.tank = new FluidTank(capacity);
+        tank = new FluidTank(capacity);
     }
 
     public void setTank(FluidTank tank) {
