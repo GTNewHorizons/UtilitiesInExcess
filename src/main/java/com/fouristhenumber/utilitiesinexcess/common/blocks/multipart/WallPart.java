@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class WallPart extends ConnectablePart
 {
@@ -21,7 +22,7 @@ public class WallPart extends ConnectablePart
     }
 
     @Override
-    public Cuboid6 getConnectionBounds(int side) {
+    public Cuboid6 getConnectionBounds(ForgeDirection side) {
         return null;
     }
 
@@ -31,7 +32,17 @@ public class WallPart extends ConnectablePart
     }
 
     @Override
-    public Cuboid6 getCollisionConnectionBounds(int side) {
+    public Cuboid6 getCollisionConnectionBounds(ForgeDirection side) {
+        return null;
+    }
+
+    @Override
+    public Cuboid6 getBounds() {
+        return null;
+    }
+
+    @Override
+    public Iterable<Cuboid6> getOcclusionBoxes() {
         return null;
     }
 }

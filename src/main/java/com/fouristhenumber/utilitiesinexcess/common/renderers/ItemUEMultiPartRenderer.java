@@ -6,7 +6,9 @@ import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroMaterialRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.UEMultiPart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
@@ -56,5 +58,10 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
 
         state.drawInstance();
         GL11.glPopMatrix();
+    }
+
+    public void renderHighlight(EntityPlayer player, ItemStack currentItem, MovingObjectPosition hit)
+    {
+
     }
 }

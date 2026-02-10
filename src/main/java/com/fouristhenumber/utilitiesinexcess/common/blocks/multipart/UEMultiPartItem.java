@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.microblock.MicroMaterialRegistry;
+import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import net.minecraft.block.Block;
@@ -90,12 +91,22 @@ public class UEMultiPartItem extends Item {
         return false;
     }
 
-    private static ItemStack createStack(String material, int damage)
+    public static ItemStack createStack(String material, int damage)
     {
         ItemStack stack = new ItemStack(ModItems.UE_MULTI_PART.get(), 1, damage);
         stack.stackTagCompound = new NBTTagCompound();
         stack.getTagCompound().setString("mat", material);
         return stack;
+    }
+
+    public static ItemStack createStack(UEMultiPart part)
+    {
+        return createStack(part.material, Content.partMap.get(part.getType()));
+    }
+
+    public static ItemStack createStack(int materialID, int damage)
+    {
+        return createStack(MicroMaterialRegistry.materialName(materialID), damage);
     }
 
     public static MicroMaterialRegistry.IMicroMaterial getMaterial(ItemStack stack)

@@ -3,14 +3,29 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroblockRender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import javax.annotation.Nonnull;
+import java.util.Collections;
 
 public class FencePart extends ConnectablePart
 {
     public static final String name = "ue_fence";
 
-    public static final Cuboid6 postBounds = new Cuboid6(.375f, 0, .375f, .625f, 1, .625f);
-    public static final Cuboid6 postCollisionBounds = new Cuboid6(.375f, 0, .375f, .625f, 1.5, .625f);
+    // Selection bounds
+    public static final Cuboid6 postBounds = new Cuboid6(.375, 0, .375, .625, 1, .625);
+    public static final Cuboid6 connectorBoundsEW = new Cuboid6(0, 0, .375, .375,1, .625);
+    public static final Cuboid6 connectorBoundsNS = new Cuboid6(.375, 0, 0, .625,1, .375);
+
+    // Collision bounds
+    public static final Cuboid6 postCollisionBounds = new Cuboid6(.375, 0, .375, .625, 1.5, .625);
+    public static final Cuboid6 connectorCollisionBoundsEW = new Cuboid6(0, 0, .375, .375,1.5, .625);
+    public static final Cuboid6 connectorCollisionBoundsNS = new Cuboid6(.375, 0, 0, .625,1.5, .375);
+
+    // Item rendering helpers
     public static final Cuboid6 itemConnectorMiddle = new Cuboid6(.4375, 0, .25, .5625, .125, .75);
     public static final Cuboid6 itemConnectorNotch = new Cuboid6(.4375, 0, 0, .5625, .125, .125);
 
@@ -82,8 +97,14 @@ public class FencePart extends ConnectablePart
     }
 
     @Override
-    public Cuboid6 getConnectionBounds(int side) {
-        return null;
+    public Cuboid6 getConnectionBounds(ForgeDirection side) {
+        return switch (side) {
+            case NORTH -> connectorBoundsNS;
+            case SOUTH -> connectorBoundsNS.copy().offset(new Cuboid6(0, 0, 0.625, 0, 0, 0.625));
+            case EAST -> connectorBoundsEW.copy().offset(new Cuboid6(0.625, 0, 0, 0.625, 0, 0));
+            case WEST -> connectorBoundsEW;
+            default -> null;
+        };
     }
 
     @Override
@@ -93,7 +114,30 @@ public class FencePart extends ConnectablePart
     }
 
     @Override
-    public Cuboid6 getCollisionConnectionBounds(int side) {
-        return null;
+    public Cuboid6 getCollisionConnectionBounds(ForgeDirection side) {
+        return switch (side) {
+            case NORTH -> connectorCollisionBoundsNS;
+            case SOUTH -> connectorCollisionBoundsNS.copy().offset(new Cuboid6(0, 0, 0.625, 0, 0, 0.625));
+            case EAST -> connectorCollisionBoundsEW.copy().offset(new Cuboid6(0.625, 0, 0, 0.625, 0, 0));
+            case WEST -> connectorCollisionBoundsEW;
+            default -> null;
+        };
+    }
+
+    @Nonnull
+    @Override
+    public Cuboid6 getBounds() {
+        return postBounds;
+    }
+
+    @Override
+    public Iterable<Cuboid6> getOcclusionBoxes() {
+        return Collections.singleton(postBounds);
+    }
+
+    @Override
+    public boolean drawHighlight(MovingObjectPosition hit, EntityPlayer player, float frame)
+    {
+        return true;
     }
 }
