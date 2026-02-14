@@ -188,7 +188,7 @@ public class ItemWateringCan extends Item {
                         int bz = z + dz;
                         Block plant = world.getBlock(bx, by, bz);
                         MinecraftForge.EVENT_BUS
-                            .post(new WateringCanEvent(new BlockPos(bx, by, bz), new BlockPos(x, y, z), tier));
+                            .post(new WateringCanEvent(world, new BlockPos(bx, by, bz), new BlockPos(x, y, z), tier));
                         if (plant instanceof IGrowable || plant instanceof IPlantable || plant == mycelium) {
                             world.scheduleBlockUpdateWithPriority(bx, by, bz, plant, 0, 1000);
                         }
