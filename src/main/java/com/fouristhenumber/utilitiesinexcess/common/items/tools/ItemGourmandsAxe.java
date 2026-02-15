@@ -16,24 +16,25 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
-public class ItemGluttonsAxe extends ItemAxe {
+public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
 
-    public ItemGluttonsAxe() {
+    public ItemGourmandsAxe() {
         super(ToolMaterial.EMERALD);
-        setTextureName("utilitiesinexcess:gluttons_axe");
-        setUnlocalizedName("gluttons_axe");
-        if (GluttonsAxeConfig.unbreakable) setMaxDamage(0);
-        ((AccessorItemTool) this).setDamageVsEntity(GluttonsAxeConfig.damageAgainstUndead);
+        setTextureName("utilitiesinexcess:gourmands_axe");
+        setUnlocalizedName("gourmands_axe");
+        if (GourmandsAxeConfig.unbreakable) setMaxDamage(0);
+        ((AccessorItemTool) this).setDamageVsEntity(GourmandsAxeConfig.damageAgainstUndead);
     }
 
     private static final Random particleRandom = new Random();;
 
     public static void spawnParticles(Entity e) {
-        if (!GluttonsAxeConfig.spawnParticles) return;
+        if (!GourmandsAxeConfig.spawnParticles) return;
         int ci = Potion.potionTypes[Potion.heal.getId()].getLiquidColor();
         double d0 = (double) (ci >> 16 & 255) / 255.0D;
         double d1 = (double) (ci >> 8 & 255) / 255.0D;
@@ -58,7 +59,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         if (e instanceof EntityPlayer p && selected) {
             if (w.getTotalWorldTime() % (2 * 20) == 0) {
                 FoodStats fs = p.getFoodStats();
-                fs.addStats(GluttonsAxeConfig.foodGain, GluttonsAxeConfig.saturationGain);
+                fs.addStats(GourmandsAxeConfig.foodGain, GourmandsAxeConfig.saturationGain);
             }
         }
     }
@@ -80,10 +81,10 @@ public class ItemGluttonsAxe extends ItemAxe {
         }
         if (!target.isEntityUndead()) {
 
-            float amountToHeal = Math.min(GluttonsAxeConfig.maxHeal, target.getMaxHealth() - target.getHealth());
-            if (amountToHeal == 0) if (GluttonsAxeConfig.useHungerAlways) attacker.addExhaustion(3 * 4);
+            float amountToHeal = Math.min(GourmandsAxeConfig.maxHeal, target.getMaxHealth() - target.getHealth());
+            if (amountToHeal == 0) if (GourmandsAxeConfig.useHungerAlways) attacker.addExhaustion(3 * 4);
             else {
-                if (GluttonsAxeConfig.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
+                if (GourmandsAxeConfig.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
                     attacker.setHealth(attacker.getHealth() - amountToHeal);
                 else return true;
                 target.setHealth(target.getHealth() + (amountToHeal + 1));
@@ -99,26 +100,26 @@ public class ItemGluttonsAxe extends ItemAxe {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (GluttonsAxeConfig.unbreakable)
+        if (GourmandsAxeConfig.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (GluttonsAxeConfig.unbreakable) return false;
+        if (GourmandsAxeConfig.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (GluttonsAxeConfig.unbreakable) return false;
+        if (GourmandsAxeConfig.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (GluttonsAxeConfig.unbreakable) return false;
+        if (GourmandsAxeConfig.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
