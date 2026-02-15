@@ -1,0 +1,6 @@
+{
+  "parent": "utilitiesinexcess:blocks/wood_spike",
+  "textures": {
+    "0": "utilitiesinexcess:models/diamond_spike"
+  }
+}
