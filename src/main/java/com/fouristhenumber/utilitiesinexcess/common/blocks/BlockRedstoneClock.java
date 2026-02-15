@@ -30,8 +30,7 @@ public class BlockRedstoneClock extends BlockContainer {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        boolean active = (meta) == 1;
-        return active ? iconActive : iconInactive;
+        return meta == 1 ? iconActive : iconInactive;
     }
 
     @Override
