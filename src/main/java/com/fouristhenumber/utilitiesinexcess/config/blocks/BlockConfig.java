@@ -97,6 +97,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableSmartPump;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableTradingPost;
+
     @Config.DefaultInt(10000)
     public static int smartPumpEnergyStorage;
 

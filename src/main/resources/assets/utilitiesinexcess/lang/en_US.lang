@@ -43,6 +43,9 @@ tile.compressed_gravel.6.name=Septuple Compressed Gravel
 tile.compressed_gravel.7.name=Octuple Compressed Gravel
 tile.compressed_gravel.desc=%,d Gravel
 
+nei.title.uie.plugin=UtilitiesInExcess NEI Plugin
+nei.title.uie.qed=QED Recipes
+
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
 tile.floating_block.name=Floating Block
@@ -323,7 +326,8 @@ tile.potion_generator_plusplus.name=Potion Generator
 
 nei.infopage.uie.potion_generator.1=Generates RF from potions. The more complex the potion is (the more steps involved in making it) the more RF/t it will generate.
 
-gui.energy.tooltip=RF: %s / %s
+gui.tooltip.energy-max=RF: %s / %s
+gui.tooltip.energy-tick=  RF/t
 
 item.golden_bag.name=Golden Bag of Holding
 nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth of items. Right click to open.
@@ -357,6 +361,8 @@ tile.drum.chat.empty=Drum is empty
 
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
+gui.title.trash_can.name=Trash Can
+gui.title.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_item.name=Trash Can (Item)
 tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_energy.name=Trash Can (Energy)
@@ -464,6 +470,21 @@ nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension t
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
+tile.trading_post.name=Trading Post
+tile.trading_post.villager_count=Found %,d Villagers
+tile.trading_post.search_hint=Search...
+tile.trading_post.help_tooltip.0=Trade Controls:
+tile.trading_post.help_tooltip.1=§6Left-Click§7 to Trade
+tile.trading_post.help_tooltip.2=§6Shift + Left-Click§7 to Trade Stack
+tile.trading_post.help_tooltip.3=§6Alt + Left-Click§7 to Favorite Trade
+tile.trading_post.help_tooltip.4=§6Right-Click§7 to Highlight Villager
+tile.trading_post.help_tooltip.5=You can search for:
+tile.trading_post.help_tooltip.6=§7 - Item names & tooltips
+tile.trading_post.help_tooltip.7=§7 - Villager professions
+tile.trading_post.help_tooltip.8=§7 - Villager name tags
+
+nei.infopage.uie.trading_post.1=This block allows you to trade with every villager in 32 block area all in one place! Simply click on a trade from the list to trade.
+
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
 
@@ -483,3 +504,14 @@ uie.colored_blocks.color.12=Colored %s (Brown)
 uie.colored_blocks.color.13=Colored %s (Dark Green)
 uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
+
+material.bedrockium_uie=Bedrockium
+material.bedrockium_uie.ability=Heavy
+material.magical_wood=Magical Wooden
+material.magical_wood.ability=Magically Modifiable
+material.inverted=Inverted
+material.inverted.ability=Fully Inverted
+
+nei.infopage.uie.ticon_inverted=If a Tinker's Construct tool is made using entirely inverted parts, it will be unbreakable.
+nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using entirely magical wooden parts, it will gain 8 additional modifiers.
+nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.

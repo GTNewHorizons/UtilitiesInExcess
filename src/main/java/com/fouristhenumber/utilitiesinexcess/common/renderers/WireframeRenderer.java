@@ -34,7 +34,7 @@ public class WireframeRenderer {
     }
 
     public static void clearCandidatePositions() {
-        if (!candidatePositions.isEmpty()) candidatePositions.clear();
+        candidatePositions.clear();
     }
 
     @EventBusSubscriber.Condition
