@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.MultiPartRegistry;
+import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import net.minecraft.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +58,7 @@ public class UEMultiPartItem extends Item {
         );
     }
 
+    // TODO allow placing on multiple sides.
     @Override
     public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
@@ -67,9 +70,11 @@ public class UEMultiPartItem extends Item {
         }
 
         MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
-        if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+        BlockCoord position = new BlockCoord(x, y, z).offset(side);
+        TMultiPart potentialPart = new Content().createUEMultiPart(false, materialID, ForgeDirection.OPPOSITES[side], partNames[damage]);
+        if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && TileMultipart.canPlacePart(world, position, potentialPart)) {
             if (!world.isRemote) {
-                TileMultipart.addPart(world, new BlockCoord(x, y, z).offset(side), new Content().createUEMultiPart(false, materialID, partNames[damage]));
+                TileMultipart.addPart(world, position, potentialPart);
                 if (!player.capabilities.isCreativeMode)
                     item.stackSize--;
 
@@ -101,7 +106,11 @@ public class UEMultiPartItem extends Item {
 
     public static ItemStack createStack(UEMultiPart part)
     {
-        return createStack(part.material, Content.partMap.get(part.getType()));
+        if (part instanceof MaterialBasedPart matPart)
+        {
+            return createStack(matPart.material, Content.partMap.get(part.getType()));
+        }
+        return null;
     }
 
     public static ItemStack createStack(int materialID, int damage)

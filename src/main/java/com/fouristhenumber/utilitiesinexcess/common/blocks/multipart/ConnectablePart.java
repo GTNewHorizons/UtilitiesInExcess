@@ -1,74 +1,75 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 
-import codechicken.lib.raytracer.IndexedCuboid6;
+import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.BlockMultipart;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map;
 
-public abstract class ConnectablePart extends UEMultiPart
+public abstract class ConnectablePart extends MaterialBasedPart
 {
 
-    // Connection mask for neighbors NSEW order sames as forge direction enum order
-    int neighbors = 0;
+    public static final Map<ForgeDirection, ForgeDirection[]> iteratorKey;
+    static {
+        Map<ForgeDirection, ForgeDirection[]> map = new EnumMap<>(ForgeDirection.class);
 
-    @Override
-    public Iterable<IndexedCuboid6> getSubParts()
-    {
-        List<IndexedCuboid6> collisionList = new ArrayList<>();
-        for (int side = 2; ForgeDirection.values().length > side; side++)
-        {
-            if (canConnectOnSide(ForgeDirection.getOrientation(side)))
-            {
-                Cuboid6 connectionBound = getConnectionBounds(ForgeDirection.getOrientation(side));
-                if (connectionBound != null)
-                {
-                    collisionList.add(new IndexedCuboid6(0, connectionBound));
-                }
-            }
-        }
-        collisionList.add(new IndexedCuboid6(0, getBaseBounds()));
-        return collisionList;
+        map.put(ForgeDirection.DOWN,  new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.WEST, ForgeDirection.SOUTH, ForgeDirection.EAST});
+        map.put(ForgeDirection.UP,    new ForgeDirection[]{ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST});
+        map.put(ForgeDirection.EAST,  new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.DOWN, ForgeDirection.SOUTH, ForgeDirection.UP});
+        map.put(ForgeDirection.WEST,  new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.DOWN});
+        map.put(ForgeDirection.NORTH, new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.WEST, ForgeDirection.DOWN, ForgeDirection.EAST});
+        map.put(ForgeDirection.SOUTH, new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.WEST, ForgeDirection.UP, ForgeDirection.EAST});
+
+        iteratorKey = map;
     }
 
-    public abstract Cuboid6 getBaseBounds();
 
-    public abstract Cuboid6 getConnectionBounds(ForgeDirection side);
+    // What direction is "down" for the connectable part
+    public ForgeDirection downDirection;
 
-    @Override
-    public Iterable<Cuboid6> getCollisionBoxes()
+
+    ConnectablePart(int side)
     {
-        List<Cuboid6> collisionList = new ArrayList<>();
-        for (int side = 0; ForgeDirection.values().length > side; side++)
-        {
-            if (canConnectOnSide(ForgeDirection.getOrientation(side)))
-            {
-                Cuboid6 connectionBound = getCollisionConnectionBounds(ForgeDirection.getOrientation(side));
-                if (connectionBound != null) {
-                    collisionList.add(connectionBound);
-                }
-            }
-        }
-        collisionList.add(getBaseCollisionBounds());
-        return collisionList;
+        this.downDirection = ForgeDirection.getOrientation(side);
     }
 
-    public abstract Cuboid6 getBaseCollisionBounds();
-
-    public abstract Cuboid6 getCollisionConnectionBounds(ForgeDirection side);
-
+    // Is there a better way to implement this?
     protected boolean doPartsOccludeDirection(ForgeDirection side)
     {
+        for(TMultiPart part: tile().jPartList())
+        {
+            if (part != this)
+            {
+                for (Cuboid6 cube : part.getSubParts())
+                {
+                    if (cube.intersects(getConnectionInDirection(side)))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
-    protected boolean canConnectOnSide(ForgeDirection side)
-    {
+    public abstract Cuboid6 getConnectionInDirection(ForgeDirection side);
+
+    // TODO CACHE THESE RESULTS
+    public boolean canConnectOnSide(ForgeDirection side) {
+        if (tile() == null)
+        {
+            return false;
+        }
+        if (doPartsOccludeDirection(side))
+        {
+            return false;
+        }
         int offsetX = x() + side.offsetX;
         int offsetY = y() + side.offsetY;
         int offsetZ = z() + side.offsetZ;
@@ -83,10 +84,11 @@ public abstract class ConnectablePart extends UEMultiPart
         {
             if (world().getTileEntity(offsetX, offsetY, offsetZ) instanceof TileMultipart mpTile)
             {
-                Class<? extends TMultiPart> myClass = this.getClass();
                 for (TMultiPart part : mpTile.jPartList())
                 {
-                    if (part.getClass() == myClass && !doPartsOccludeDirection(side.getOpposite()))
+                    if (part instanceof FencePart fPart &&
+                        fPart.downDirection == this.downDirection &&
+                        !fPart.doPartsOccludeDirection(side.getOpposite()))
                     {
                         return true;
                     }
@@ -95,5 +97,50 @@ public abstract class ConnectablePart extends UEMultiPart
             }
         }
         return false;
+    }
+
+    public int getConnectionMask()
+    {
+        int mask = 0b0000;
+        ForgeDirection[] iteratorList = iteratorKey.get(downDirection);
+        for (int i = 0; i < iteratorList.length; i++)
+        {
+            if (canConnectOnSide(iteratorList[i]))
+            {
+                mask = mask | 1 << i;
+            }
+        }
+        return mask;
+    }
+
+    @Override
+    public void save(NBTTagCompound tag)
+    {
+        super.save(tag);
+        tag.setInteger("side", this.downDirection.ordinal());
+    }
+
+    @Override
+    public void load(NBTTagCompound tag)
+    {
+        super.load(tag);
+        downDirection = ForgeDirection.getOrientation(tag.getInteger("side"));
+    }
+
+    @Override
+    public void writeDesc(MCDataOutput packet)
+    {
+        super.writeDesc(packet);
+        packet.writeInt(this.downDirection.ordinal());
+    }
+
+    protected int indexInFrame(ForgeDirection side) {
+        ForgeDirection[] frame = iteratorKey.get(downDirection);
+        for (int i = 0; i < frame.length; i++) {
+            if (frame[i] == side) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("Somehow multipart connectable is trying to access a direction outside of it's frame!");
     }
 }

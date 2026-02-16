@@ -6,34 +6,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class WallPart extends ConnectablePart
 {
+
+    public static final String name = "ue_wall";
+
+    public WallPart(int material, int side) {
+        super(side);
+        this.material = material;
+    }
+
     @Override
     public String getType() {
-        return "ue_wall";
+        return name;
     }
 
     @Override
     public void render(Vector3 position, int pass) {
 
-    }
-
-    @Override
-    public Cuboid6 getBaseBounds() {
-        return null;
-    }
-
-    @Override
-    public Cuboid6 getConnectionBounds(ForgeDirection side) {
-        return null;
-    }
-
-    @Override
-    public Cuboid6 getBaseCollisionBounds() {
-        return null;
-    }
-
-    @Override
-    public Cuboid6 getCollisionConnectionBounds(ForgeDirection side) {
-        return null;
     }
 
     @Override
@@ -43,6 +31,11 @@ public class WallPart extends ConnectablePart
 
     @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
+        return null;
+    }
+
+    @Override
+    public Cuboid6 getConnectionInDirection(ForgeDirection side) {
         return null;
     }
 }

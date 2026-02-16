@@ -4,7 +4,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import net.minecraft.util.IIcon;
 
-public class PipeCoverPart extends UEMultiPart
+public class PipeCoverPart extends MaterialBasedPart
 {
     @Override
     public String getType() {

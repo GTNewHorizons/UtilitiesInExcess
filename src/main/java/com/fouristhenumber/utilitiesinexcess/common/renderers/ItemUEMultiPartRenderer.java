@@ -53,7 +53,7 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
         state.startDrawingInstance();
 
         int materialId = MicroMaterialRegistry.materialID(item.getTagCompound().getString("mat"));
-        UEMultiPart part = new Content().createUEMultiPart(true, materialId, partNames[item.getItemDamage()]);
+        UEMultiPart part = new Content().createUEMultiPart(true, materialId, 0, partNames[item.getItemDamage()]);
         part.render(new Vector3(0, 0, 0), -1);
 
         state.drawInstance();

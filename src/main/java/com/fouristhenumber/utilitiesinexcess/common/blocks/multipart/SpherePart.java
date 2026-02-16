@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 
-public class SpherePart extends UEMultiPart
+public class SpherePart extends MaterialBasedPart
 {
 
     @Override
