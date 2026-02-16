@@ -16,8 +16,8 @@ public class TileEntityRedstoneClock extends TileEntity {
         boolean prevOutput = outputOn;
 
         outputOn = false;
-        // If the clock is being powered outside the window where it is active, it must have come from an external
-        // source
+        // Clock does not deactivate during the period where it emits redstone, in order to prevent the clock
+        // from disabling itself.
         timer--;
         if (timer <= 1) {
             outputOn = true;
@@ -26,9 +26,8 @@ public class TileEntityRedstoneClock extends TileEntity {
             timer = 20;
         }
 
-        if (prevOutput != outputOn) {
-            notifyNeighbors();
-        }
+        if (prevOutput != outputOn) updateBlockState();
+
     }
 
     public void onInputChanged() {
@@ -41,17 +40,11 @@ public class TileEntityRedstoneClock extends TileEntity {
 
         if (meta != newMeta) {
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
 
     public int getOutputPower() {
         return outputOn ? 15 : 0;
-    }
-
-    private void notifyNeighbors() {
-        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord));
-        updateBlockState();
     }
 
     @Override
