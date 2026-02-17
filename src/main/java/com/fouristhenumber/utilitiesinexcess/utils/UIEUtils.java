@@ -3,7 +3,9 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -11,6 +13,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import codechicken.nei.api.API;
 
 public class UIEUtils {
 
@@ -79,5 +82,15 @@ public class UIEUtils {
             playerNBT.setTag(UIE_NBT_TAG, uieTag);
         }
         return uieTag;
+    }
+
+    public static void hideInNei(Block block) {
+        hideInNei(Item.getItemFromBlock(block));
+    }
+
+    public static void hideInNei(Item item) {
+        if (!Mods.NEI.isLoaded()) return;
+
+        API.hideItem(new ItemStack(item));
     }
 }
