@@ -31,13 +31,13 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
@@ -139,7 +139,7 @@ public class ForgeEventHandler {
         Item heldItemType = heldItem.getItem();
         if ((heldItemType instanceof ItemDestructionPickaxe && DestructionPickaxeConfig.voidMinedBlock)
             || (heldItemType instanceof ItemAntiParticulateShovel && AntiParticulateShovelConfig.voidMinedBlocks)
-            || (heldItemType instanceof ItemGluttonsAxe && GluttonsAxeConfig.voidMinedBlock)) {
+            || (heldItemType instanceof ItemGourmandsAxe && GourmandsAxeConfig.voidMinedBlock)) {
             event.drops.clear();
         }
         if (heldItemType instanceof ItemPrecisionShears) {
