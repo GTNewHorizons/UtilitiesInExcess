@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.getItemStackToPlace;
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.getPatternBlock;
 
 import java.util.List;
 import java.util.Set;
@@ -85,7 +86,9 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
         }
 
         // 4. Target block to place
-        ItemStack itemStackToPlace = getItemStackToPlace(world, target, movingObjectPosition, player);
+        // TODO
+        ItemStack patternBlock = getPatternBlock(world, target, movingObjectPosition, player);
+        ItemStack itemStackToPlace = getItemStackToPlace(player, patternBlock);
         if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) {
             WireframeRenderer.clearCandidatePositions();
             return;
@@ -95,8 +98,15 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
         int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
             : Math.min(ArchitectsWandUtils.countItemInInventory(player, itemStackToPlace), this.buildLimit);
 
-        Set<BlockPos> blocksToPlace = ArchitectsWandUtils
-            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, movingObjectPosition, player);
+        Set<BlockPos> blocksToPlace = ArchitectsWandUtils.findAdjacentBlocks(
+            world,
+            itemStackToPlace,
+            placeCount,
+            forgeSide,
+            target,
+            movingObjectPosition,
+            player,
+            patternBlock);
         WireframeRenderer.clearCandidatePositions();
         for (BlockPos pos : blocksToPlace) {
             WireframeRenderer.addCandidatePosition(pos.offset(forgeSide.offsetX, forgeSide.offsetY, forgeSide.offsetZ));
@@ -116,7 +126,8 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         BlockPos target = new BlockPos(x, y, z);
         MovingObjectPosition mop = new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(hitX, hitY, hitZ));
-        ItemStack itemStackToPlace = getItemStackToPlace(world, target, mop, player);
+        ItemStack patternBlock = getPatternBlock(world, target, mop, player);
+        ItemStack itemStackToPlace = getItemStackToPlace(player, patternBlock);
         if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) return false;
 
         // This block is here because some mods want to use TEs to
@@ -132,7 +143,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             : Math.min(inventoryBlockCount, this.buildLimit);
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils
-            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player);
+            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, patternBlock);
         itemStackToPlace.stackSize = blocksToPlace.size(); // Since now, we actually create a stack we have to set the
                                                            // size. Strange kinda...
 
