@@ -20,12 +20,25 @@ public class WallPart extends ConnectablePart
     }
 
     @Override
-    public void render(Vector3 position, int pass) {
+    public boolean renderStatic(Vector3 position, int pass)
+    {
+        if (getIMaterial().canRenderInPass(pass))
+        {
+            render(position, pass);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void render(Vector3 position, int pass)
+    {
 
     }
 
     @Override
-    public Cuboid6 getBounds() {
+    public Cuboid6 getBounds()
+    {
         return null;
     }
 
