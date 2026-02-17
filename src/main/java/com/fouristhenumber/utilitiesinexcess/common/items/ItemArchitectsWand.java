@@ -5,6 +5,7 @@ import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.ge
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -28,6 +29,7 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
@@ -87,7 +89,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         // 4. Target block to place
         // TODO
-        ItemStack patternBlock = getPatternBlock(world, target, movingObjectPosition, player);
+        Set<ItemStack> patternBlock = getPatternBlock(world, target, movingObjectPosition, player);
         ItemStack itemStackToPlace = getItemStackToPlace(player, patternBlock);
         if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) {
             WireframeRenderer.clearCandidatePositions();
@@ -113,6 +115,29 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
         }
     }
 
+    private void placeBlock(World world, EntityPlayer player, @NotNull ItemStack itemStack, BlockPos pos, int side,
+                            float hitX, float hitY, float hitZ, ForgeDirection forgeSide, boolean skipCompact){
+        // This block is here because some mods want to use TEs to
+
+        Block comparisonBlock = world.getBlock(pos.x, pos.y, pos.z);
+        int comparisonMeta = world.getBlockMetadata(pos.x, pos.y, pos.z);
+        ItemStack comparisonItemStack = new ItemStack(comparisonBlock, 1, comparisonMeta);
+
+        boolean useCompatPlacement = !ItemStack.areItemStacksEqual(itemStack, comparisonItemStack);
+        if (useCompatPlacement && !skipCompact) {
+            itemStack.getItem()
+                .onItemUse(itemStack, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
+        } else {
+            world.setBlock(
+                pos.x + forgeSide.offsetX,
+                pos.y + forgeSide.offsetY,
+                pos.z + forgeSide.offsetZ,
+                Block.getBlockFromItem(itemStack.getItem()),
+                comparisonMeta,
+                3);
+    }
+    }
+
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
@@ -126,16 +151,9 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         BlockPos target = new BlockPos(x, y, z);
         MovingObjectPosition mop = new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(hitX, hitY, hitZ));
-        ItemStack patternBlock = getPatternBlock(world, target, mop, player);
-        ItemStack itemStackToPlace = getItemStackToPlace(player, patternBlock);
+        Set<ItemStack> selectedBlocks = getPatternBlock(world, target, mop, player);
+        ItemStack itemStackToPlace = getItemStackToPlace(player, selectedBlocks);
         if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) return false;
-
-        // This block is here because some mods want to use TEs to
-        Block comparisonBlock = world.getBlock(x, y, z);
-        int comparisonMeta = world.getBlockMetadata(x, y, z);
-        ItemStack comparisonItemStack = new ItemStack(comparisonBlock, 1, comparisonMeta);
-
-        boolean useCompatPlacement = !ItemStack.areItemStacksEqual(itemStackToPlace, comparisonItemStack);
 
         int inventoryBlockCount = ArchitectsWandUtils.countItemInInventory(player, itemStackToPlace);
         if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) return false;
@@ -143,27 +161,16 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             : Math.min(inventoryBlockCount, this.buildLimit);
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils
-            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, patternBlock);
+            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, selectedBlocks);
         itemStackToPlace.stackSize = blocksToPlace.size(); // Since now, we actually create a stack we have to set the
                                                            // size. Strange kinda...
 
         for (BlockPos pos : blocksToPlace) {
-            // TODO: Group these by a bigger number instead of decreasing by 1 every time.
+            ItemStack randomBlockToPlace = selectedBlocks.toArray(new ItemStack[0])[ThreadLocalRandom.current().nextInt(selectedBlocks.size())];
             if (player.capabilities.isCreativeMode
-                || ArchitectsWandUtils.decreaseFromInventory(player, itemStackToPlace)) {
-                if (useCompatPlacement) {
-                    itemStackToPlace.getItem()
-                        .onItemUse(itemStackToPlace, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
-                } else {
-                    world.setBlock(
-                        pos.x + forgeSide.offsetX,
-                        pos.y + forgeSide.offsetY,
-                        pos.z + forgeSide.offsetZ,
-                        comparisonBlock,
-                        comparisonMeta,
-                        3);
+                || ArchitectsWandUtils.decreaseFromInventory(player, randomBlockToPlace)) {
+                    placeBlock(world, player, randomBlockToPlace, pos, side, hitX, hitY, hitZ, forgeSide, selectedBlocks.size() > 1);
                 }
-            }
         }
         return true;
     }

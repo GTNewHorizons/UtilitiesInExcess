@@ -14,7 +14,8 @@ public enum Mods {
     CraftTweaker("MineTweaker3"),
     FindIt("findit"),
     Tinkers("TConstruct"),
-    Backhand("backhand")
+    Backhand("backhand"),
+    GT("gregtech")
     ;
     // spotless:on
 
