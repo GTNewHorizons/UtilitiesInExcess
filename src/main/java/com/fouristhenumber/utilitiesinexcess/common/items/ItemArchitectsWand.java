@@ -121,13 +121,22 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             itemStack.getItem()
                 .onItemUse(itemCopy, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
         } else {
+            Block block = Block.getBlockFromItem(itemCopy.getItem());
             world.setBlock(
                 pos.x + forgeSide.offsetX,
                 pos.y + forgeSide.offsetY,
                 pos.z + forgeSide.offsetZ,
-                Block.getBlockFromItem(itemCopy.getItem()),
+                block,
                 comparisonMeta,
                 3);
+
+            world.playSoundEffect(
+                pos.x + forgeSide.offsetX,
+                pos.y + forgeSide.offsetY,
+                pos.z + forgeSide.offsetZ,
+                block.stepSound.func_150496_b(),
+                (block.stepSound.getVolume() + 1.0F) / 2.0F,
+                block.stepSound.getPitch() * 0.8F);
         }
     }
 
