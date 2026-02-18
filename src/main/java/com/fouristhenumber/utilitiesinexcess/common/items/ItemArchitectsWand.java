@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -19,15 +17,17 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
+import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
 
 public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
@@ -108,7 +108,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
     }
 
     private void placeBlock(World world, EntityPlayer player, @NotNull ItemStack itemStack, BlockPos pos, int side,
-                            float hitX, float hitY, float hitZ, ForgeDirection forgeSide) {
+        float hitX, float hitY, float hitZ, ForgeDirection forgeSide) {
         // This block is here because some mods want to use TEs to
         ItemStack itemCopy = itemStack.copy();
         itemCopy.stackSize = 1;
@@ -133,7 +133,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
-                             float hitX, float hitY, float hitZ) {
+        float hitX, float hitY, float hitZ) {
         // TODO: Prevent player from placing blocks into themself / other entities?
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
@@ -157,13 +157,14 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         for (BlockPos pos : blocksToPlace) {
             List<ItemStack> candidates = selection.blockToPlace(player);
-            if (candidates.size() == 1){
+            if (candidates.size() == 1) {
                 nowPlacing = candidates.get(0);
             } else {
-                nowPlacing = candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
+                nowPlacing = candidates.get(
+                    ThreadLocalRandom.current()
+                        .nextInt(candidates.size()));
             }
-            if (player.capabilities.isCreativeMode
-                || ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)) {
+            if (player.capabilities.isCreativeMode || ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)) {
                 placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
             }
         }

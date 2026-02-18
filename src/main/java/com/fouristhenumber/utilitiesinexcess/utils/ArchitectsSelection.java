@@ -1,24 +1,27 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import gregtech.api.items.MetaGeneratedTool;
-import gregtech.common.tools.ToolTrowel;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import org.jetbrains.annotations.Nullable;
+
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.common.tools.ToolTrowel;
 import xonin.backhand.api.core.BackhandUtils;
 
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-
-
 public class ArchitectsSelection {
+
     private final Set<ItemStack> validBlocks;
     private final ItemStack backhand;
     private final ItemStack lookAtBlock;
@@ -29,7 +32,7 @@ public class ArchitectsSelection {
         lookAtBlock = getBlockByLocation(world, movingObjectPosition, player);
 
         // No logic is executed if we don't look at any block, no need to bother checking other cases
-        if (lookAtBlock == null){
+        if (lookAtBlock == null) {
             return;
         }
 
@@ -58,20 +61,20 @@ public class ArchitectsSelection {
         if (backhand == null) {
             return Collections.singletonList((lookAtBlock));
         }
-        if (isValidBlock(backhand)){
+        if (isValidBlock(backhand)) {
             return Collections.singletonList(backhand);
         }
-        if (isTrowel(backhand)){
+        if (isTrowel(backhand)) {
             return hotbarBlocks(player);
         }
         UtilitiesInExcess.LOG.warn("Could not determent a block to place.");
         return null;
     }
 
-    public int maxPlaceCount(EntityPlayer player, int wandLimit){
+    public int maxPlaceCount(EntityPlayer player, int wandLimit) {
         if (player.capabilities.isCreativeMode) return wandLimit;
         int count = 0;
-        for (ItemStack block : blockToPlace(player)){
+        for (ItemStack block : blockToPlace(player)) {
             count += ArchitectsWandUtils.countItemInInventory(player, block);
         }
         return Math.min(count, wandLimit);
@@ -79,9 +82,10 @@ public class ArchitectsSelection {
 
     public boolean matches(ItemStack other) {
         if (other == null) return false;
-        return this.validBlocks.stream().anyMatch(validBlock ->
-            validBlock.getItem() == other.getItem() &&
-                ItemStack.areItemStackTagsEqual(validBlock, other));
+        return this.validBlocks.stream()
+            .anyMatch(
+                validBlock -> validBlock.getItem() == other.getItem()
+                    && ItemStack.areItemStackTagsEqual(validBlock, other));
     }
 
     private static boolean isTrowel(@Nullable ItemStack stack) {
@@ -119,12 +123,13 @@ public class ArchitectsSelection {
         if (candidates.isEmpty()) {
             return null;
         }
-        return candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
+        return candidates.get(
+            ThreadLocalRandom.current()
+                .nextInt(candidates.size()));
     }
 
     public static ItemStack getBlockByLocation(World world, MovingObjectPosition movingObjectPosition,
-                                                EntityPlayer player) {
-
+        EntityPlayer player) {
 
         BlockPos blockPos = new BlockPos(
             movingObjectPosition.blockX,
