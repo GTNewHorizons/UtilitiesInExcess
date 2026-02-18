@@ -1,12 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.getItemStackToPlace;
-import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.getPatternBlock;
-
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -88,17 +86,11 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
         }
 
         // 4. Target block to place
-        // TODO
-        Set<ItemStack> patternBlock = getPatternBlock(world, target, movingObjectPosition, player);
-        ItemStack itemStackToPlace = getItemStackToPlace(player, patternBlock);
-        if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) {
-            WireframeRenderer.clearCandidatePositions();
-            return;
-        }
+        ArchitectsSelection selection = new ArchitectsSelection(player, world, movingObjectPosition);
+        List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
 
         // 3. Total amount to place
-        int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
-            : Math.min(ArchitectsWandUtils.countItemInInventory(player, itemStackToPlace), this.buildLimit);
+        int placeCount = selection.maxPlaceCount(player, buildLimit);
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils.findAdjacentBlocks(
             world,
@@ -108,7 +100,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             target,
             movingObjectPosition,
             player,
-            patternBlock);
+            selection);
         WireframeRenderer.clearCandidatePositions();
         for (BlockPos pos : blocksToPlace) {
             WireframeRenderer.addCandidatePosition(pos.offset(forgeSide.offsetX, forgeSide.offsetY, forgeSide.offsetZ));
@@ -116,31 +108,32 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
     }
 
     private void placeBlock(World world, EntityPlayer player, @NotNull ItemStack itemStack, BlockPos pos, int side,
-                            float hitX, float hitY, float hitZ, ForgeDirection forgeSide, boolean skipCompact){
+                            float hitX, float hitY, float hitZ, ForgeDirection forgeSide) {
         // This block is here because some mods want to use TEs to
-
+        ItemStack itemCopy = itemStack.copy();
+        itemCopy.stackSize = 1;
         Block comparisonBlock = world.getBlock(pos.x, pos.y, pos.z);
         int comparisonMeta = world.getBlockMetadata(pos.x, pos.y, pos.z);
         ItemStack comparisonItemStack = new ItemStack(comparisonBlock, 1, comparisonMeta);
 
-        boolean useCompatPlacement = !ItemStack.areItemStacksEqual(itemStack, comparisonItemStack);
-        if (useCompatPlacement && !skipCompact) {
+        boolean useCompatPlacement = !ItemStack.areItemStacksEqual(itemCopy, comparisonItemStack);
+        if (useCompatPlacement) {
             itemStack.getItem()
-                .onItemUse(itemStack, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
+                .onItemUse(itemCopy, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
         } else {
             world.setBlock(
                 pos.x + forgeSide.offsetX,
                 pos.y + forgeSide.offsetY,
                 pos.z + forgeSide.offsetZ,
-                Block.getBlockFromItem(itemStack.getItem()),
+                Block.getBlockFromItem(itemCopy.getItem()),
                 comparisonMeta,
                 3);
-    }
+        }
     }
 
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
+                             float hitX, float hitY, float hitZ) {
         // TODO: Prevent player from placing blocks into themself / other entities?
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
@@ -151,26 +144,28 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         BlockPos target = new BlockPos(x, y, z);
         MovingObjectPosition mop = new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(hitX, hitY, hitZ));
-        Set<ItemStack> selectedBlocks = getPatternBlock(world, target, mop, player);
-        ItemStack itemStackToPlace = getItemStackToPlace(player, selectedBlocks);
-        if (itemStackToPlace == null || !(itemStackToPlace.getItem() instanceof ItemBlock)) return false;
+        ArchitectsSelection selection = new ArchitectsSelection(player, world, mop);
 
-        int inventoryBlockCount = ArchitectsWandUtils.countItemInInventory(player, itemStackToPlace);
-        if (!player.capabilities.isCreativeMode && inventoryBlockCount == 0) return false;
-        int placeCount = player.capabilities.isCreativeMode ? this.buildLimit
-            : Math.min(inventoryBlockCount, this.buildLimit);
+        List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
+
+        int placeCount = selection.maxPlaceCount(player, buildLimit);
 
         Set<BlockPos> blocksToPlace = ArchitectsWandUtils
-            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, selectedBlocks);
-        itemStackToPlace.stackSize = blocksToPlace.size(); // Since now, we actually create a stack we have to set the
-                                                           // size. Strange kinda...
+            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, selection);
+
+        ItemStack nowPlacing;
 
         for (BlockPos pos : blocksToPlace) {
-            ItemStack randomBlockToPlace = selectedBlocks.toArray(new ItemStack[0])[ThreadLocalRandom.current().nextInt(selectedBlocks.size())];
+            List<ItemStack> candidates = selection.blockToPlace(player);
+            if (candidates.size() == 1){
+                nowPlacing = candidates.get(0);
+            } else {
+                nowPlacing = candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
+            }
             if (player.capabilities.isCreativeMode
-                || ArchitectsWandUtils.decreaseFromInventory(player, randomBlockToPlace)) {
-                    placeBlock(world, player, randomBlockToPlace, pos, side, hitX, hitY, hitZ, forgeSide, selectedBlocks.size() > 1);
-                }
+                || ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)) {
+                placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
+            }
         }
         return true;
     }

@@ -1,27 +1,23 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.getBlockByLocation;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.tools.ToolTrowel;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import org.jetbrains.annotations.Nullable;
-import xonin.backhand.api.core.BackhandUtils;
 
 public class ArchitectsWandUtils {
 
@@ -76,16 +72,16 @@ public class ArchitectsWandUtils {
      * Finds the blocks adjacent to the start position that are connected cardinally, or diagonally
      * and have air in front of them relative to the side clicked on.
      *
-     * @param world          The world in which to place
-     * @param findCount      The maximum amount of blocks it should search
-     * @param clickedSide    The side of the block that was clicked
-     * @param startPos       The position to start
-     * @param selectedBlocks The pattern used to search adjacent blocks
+     * @param world               The world in which to place
+     * @param findCount           The maximum amount of blocks it should search
+     * @param clickedSide         The side of the block that was clicked
+     * @param startPos            The position to start
+     * @param architectsSelection The pattern used to search adjacent blocks
      * @return The set of 1<=x<=findCount adjacent blocks with air on their face
      */
-    public static Set<BlockPos> findAdjacentBlocks(World world, ItemStack itemStackToPlace, int findCount,
+    public static Set<BlockPos> findAdjacentBlocks(World world, List<ItemStack> possiblePlacements, int findCount,
                                                    ForgeDirection clickedSide, BlockPos startPos, MovingObjectPosition mop, EntityPlayer player,
-                                                   Set<ItemStack> selectedBlocks) {
+                                                   ArchitectsSelection architectsSelection) {
         Set<BlockPos> region = new HashSet<>();
         if (findCount <= 0) {
             return region;
@@ -114,7 +110,7 @@ public class ArchitectsWandUtils {
         TranslateMovingObjectPoistionToLocation(mop, startPos);
 
         // Base case
-        if (IsValidForWireFrame(world, itemStackToPlace, startPos, mop, player, clickedSide, selectedBlocks)) {
+        if (IsValidForWireFrame(world, possiblePlacements, startPos, mop, player, clickedSide, architectsSelection)) {
             region.add(startPos);
             queue.add(startPos);
             visited.add(startPos);
@@ -139,7 +135,7 @@ public class ArchitectsWandUtils {
 
                 // translate the mop
                 TranslateMovingObjectPoistionToLocation(mop, key);
-                if (IsValidForWireFrame(world, itemStackToPlace, key, mop, player, clickedSide, selectedBlocks)) {
+                if (IsValidForWireFrame(world, possiblePlacements, key, mop, player, clickedSide, architectsSelection)) {
                     region.add(key);
                     queue.add(key);
                 }
@@ -149,14 +145,18 @@ public class ArchitectsWandUtils {
         return region;
     }
 
-    private static boolean IsValidForWireFrame(World world, ItemStack itemStackToPlace, BlockPos targetLocation,
-                                               MovingObjectPosition movingObjectPosition, EntityPlayer player, ForgeDirection clickedSide,
-                                               Set<ItemStack> patternStack) {
-        ItemStack currentBlock = getBlockByLocation(world, targetLocation, movingObjectPosition, player);
-        if (currentBlock != null) {
+    private static boolean IsValidForWireFrame(World world, List<ItemStack> possibleBlocks, BlockPos targetLocation,
+                                               MovingObjectPosition mop, EntityPlayer player, ForgeDirection clickedSide,
+                                               ArchitectsSelection selection) {
+        ItemStack currentBlock = getBlockByLocation(world, mop, player);
+
+        if (currentBlock == null) return false;
+
+        return possibleBlocks.stream().allMatch(itemStackToPlace -> {
+            if (itemStackToPlace == null) return false;
+
             Block block = Block.getBlockFromItem(itemStackToPlace.getItem());
-            UtilitiesInExcess.LOG.info("{}{}: {}", currentBlock, patternStack, patternStack.stream().filter(Objects::nonNull).anyMatch(selectedBlock -> ItemStack.areItemStacksEqual(selectedBlock, currentBlock)));
-            return (patternStack.stream().filter(Objects::nonNull).anyMatch(selectedBlock -> selectedBlock.getItem() == currentBlock.getItem()) || ItemStack.areItemStacksEqual(currentBlock, itemStackToPlace))
+            return selection.matches(currentBlock)
                 && world.isAirBlock(
                 targetLocation.x + clickedSide.offsetX,
                 targetLocation.y + clickedSide.offsetY,
@@ -176,83 +176,6 @@ public class ArchitectsWandUtils {
                 clickedSide.ordinal(),
                 null,
                 itemStackToPlace);
-        }
-        return false;
-    }
-
-    private static boolean isTrowel(@Nullable ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-        if (stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool) {
-            return metaGeneratedTool.getToolStats(stack) instanceof ToolTrowel;
-        }
-        return false;
-    }
-
-    private static List<ItemStack> HotbarBlocks(EntityPlayer player) {
-        List<ItemStack> candidates = new ArrayList<>();
-
-        for (int i = 0; i < 9; i++) {
-            if (i == player.inventory.currentItem) {
-                continue;
-            }
-            ItemStack item = player.inventory.mainInventory[i];
-            if (item == null || !(item.getItem() instanceof ItemBlock)) {
-                continue;
-            }
-            candidates.add(item);
-        }
-        return candidates;
-    }
-
-    private static ItemStack randomHotbarItem(EntityPlayer player) {
-        List<ItemStack> candidates = HotbarBlocks(player);
-        if (candidates.isEmpty()) {
-            return null;
-        }
-        return candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
-    }
-
-    public static ItemStack getItemStackToPlace(EntityPlayer player, Set<ItemStack> patternBlock) {
-        if (Mods.Backhand.isLoaded()) {
-            ItemStack offHandItem = BackhandUtils.getOffhandItem(player);
-            if (offHandItem == null) {
-                return patternBlock.stream().findFirst().orElse(null);
-            }
-            if (Mods.GT.isLoaded() && isTrowel(offHandItem)) {
-                ItemStack randomItem = randomHotbarItem(player);
-                return randomItem != null ? randomItem.copy() : null;
-            }
-
-            if (offHandItem.getItem() instanceof ItemBlock) {
-                return offHandItem.copy();
-            }
-        }
-
-        return patternBlock.stream().findFirst().orElse(null);
-    }
-
-    public static ItemStack getBlockByLocation(World world, BlockPos pos, MovingObjectPosition movingObjectPosition,
-                                               EntityPlayer player) {
-        Block block = world.getBlock(pos.x, pos.y, pos.z);
-        if (block == null) {
-            return null;
-        }
-
-        return block.getPickBlock(movingObjectPosition, world, pos.x, pos.y, pos.z, player);
-    }
-
-    /**
-     * @return The block whose structure the wand must follow.
-     */
-    public static Set<ItemStack> getPatternBlock(World world, BlockPos pos, MovingObjectPosition movingObjectPosition,
-                                                 EntityPlayer player) {
-        if (Mods.GT.isLoaded() && Mods.Backhand.isLoaded() && isTrowel(BackhandUtils.getOffhandItem(player))) {
-            HashSet<ItemStack> patternBlocks = new HashSet<>(HotbarBlocks(player));
-//            patternBlocks.add(getBlockByLocation(world, pos, movingObjectPosition, player));
-            return patternBlocks;
-        }
-        return Collections.singleton(getBlockByLocation(world, pos, movingObjectPosition, player));
+        });
     }
 }
