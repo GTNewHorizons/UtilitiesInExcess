@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
@@ -65,11 +64,9 @@ public class ArchitectsSelection {
         }
         if (isValidBlock(backhand)) {
             return Collections.singletonList(backhand);
-        }
-        else if (isTrowel(backhand)) {
+        } else if (isTrowel(backhand)) {
             return hotbarBlocks(player);
-        }
-        else {
+        } else {
             return Collections.singletonList(lookAtBlock);
         }
     }

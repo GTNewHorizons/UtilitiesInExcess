@@ -37,10 +37,19 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
         sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
+
         sendInfoPage(
             "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
             "nei.infopage.uie.architects_wand.1");
 
+        if (Mods.Backhand.isLoaded()) {
+            sendInfoPage(
+                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
+                "nei.infopage.uie.architects_wand.2");
+            if (Mods.GT.isLoaded()) sendInfoPage(
+                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
+                "nei.infopage.uie.architects_wand.3");
+        }
         sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
 
         sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.1");
