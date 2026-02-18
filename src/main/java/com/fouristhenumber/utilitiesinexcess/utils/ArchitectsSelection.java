@@ -59,7 +59,6 @@ public class ArchitectsSelection {
      * @return Always a valid block list or null
      */
     public List<ItemStack> blockToPlace(EntityPlayer player) {
-        boolean isCreative = player.capabilities.isCreativeMode;
 
         if (backhand == null) {
             return Collections.singletonList((lookAtBlock));
@@ -67,11 +66,12 @@ public class ArchitectsSelection {
         if (isValidBlock(backhand)) {
             return Collections.singletonList(backhand);
         }
-        if (isTrowel(backhand)) {
+        else if (isTrowel(backhand)) {
             return hotbarBlocks(player);
         }
-        UtilitiesInExcess.LOG.warn("Could not determent a block to place.");
-        return null;
+        else {
+            return Collections.singletonList(lookAtBlock);
+        }
     }
 
     public int maxPlaceCount(EntityPlayer player, int wandLimit) {
@@ -95,7 +95,7 @@ public class ArchitectsSelection {
         if (stack == null) {
             return false;
         }
-        if (stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool) {
+        if (Mods.GT.isLoaded() && stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool) {
             return metaGeneratedTool.getToolStats(stack) instanceof ToolTrowel;
         }
         return false;

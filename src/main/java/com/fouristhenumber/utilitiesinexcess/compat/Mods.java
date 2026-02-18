@@ -15,7 +15,7 @@ public enum Mods {
     FindIt("findit"),
     Tinkers("TConstruct"),
     Backhand("backhand"),
-    GT("gregtech")
+    GT("gregtech_nh")
     ;
     // spotless:on
 
