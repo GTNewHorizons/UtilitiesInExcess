@@ -1,7 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -116,16 +119,6 @@ public class ArchitectsSelection {
             candidates.add(item);
         }
         return candidates;
-    }
-
-    private static ItemStack randomHotbarBlock(EntityPlayer player) {
-        List<ItemStack> candidates = hotbarBlocks(player);
-        if (candidates.isEmpty()) {
-            return null;
-        }
-        return candidates.get(
-            ThreadLocalRandom.current()
-                .nextInt(candidates.size()));
     }
 
     public static ItemStack getBlockByLocation(World world, MovingObjectPosition movingObjectPosition,

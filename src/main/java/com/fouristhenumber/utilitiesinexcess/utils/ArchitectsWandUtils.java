@@ -3,7 +3,11 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.getBlockByLocation;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
