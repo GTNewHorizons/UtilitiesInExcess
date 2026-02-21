@@ -88,7 +88,7 @@ public class ArchitectsSelection {
                     && ItemStack.areItemStackTagsEqual(validBlock, other));
     }
 
-    private static boolean isTrowel(@Nullable ItemStack stack) {
+    public static boolean isTrowel(@Nullable ItemStack stack) {
         if (stack == null) {
             return false;
         }

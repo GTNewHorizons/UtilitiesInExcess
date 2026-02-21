@@ -1,5 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig.damageTrowelWithArchitectsWand;
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.damageBackhand;
+
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -166,7 +169,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, selection);
 
         ItemStack nowPlacing;
-
+        int backhandDamage = 0;
         for (BlockPos pos : blocksToPlace) {
             List<ItemStack> candidates = selection.blockToPlace(player);
             if (candidates.size() == 1) {
@@ -176,7 +179,9 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
                     ThreadLocalRandom.current()
                         .nextInt(candidates.size()));
             }
-            if (player.capabilities.isCreativeMode || ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)) {
+
+            if (player.capabilities.isCreativeMode || (ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)
+                && damageBackhand(damageTrowelWithArchitectsWand, player))) {
                 placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
             }
         }

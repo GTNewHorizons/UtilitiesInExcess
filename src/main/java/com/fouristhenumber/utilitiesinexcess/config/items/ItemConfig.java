@@ -38,6 +38,9 @@ public class ItemConfig {
     @Config.DefaultInt(49)
     public static int superArchitectsWandBuildLimit;
 
+    @Config.DefaultInt(100)
+    public static int damageTrowelWithArchitectsWand;
+
     @Config.DefaultBoolean(true)
     public static boolean enableBedrockium;
 

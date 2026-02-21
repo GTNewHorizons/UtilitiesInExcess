@@ -1,11 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
 import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.getBlockByLocation;
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.isTrowel;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
@@ -16,7 +18,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+import gregtech.api.items.MetaGeneratedTool;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class ArchitectsWandUtils {
 
@@ -182,5 +188,18 @@ public class ArchitectsWandUtils {
                         null,
                         itemStackToPlace);
             });
+    }
+
+    public static boolean damageBackhand(int damage, EntityPlayer player) {
+        if (!player.capabilities.isCreativeMode && Mods.Backhand.isLoaded()
+            && isTrowel(BackhandUtils.getOffhandItem(player))) {
+            MetaGeneratedTool trowel = (MetaGeneratedTool) Objects.requireNonNull(BackhandUtils.getOffhandItem(player))
+                .getItem();
+            if (trowel == null) {
+                return true;
+            }
+            return trowel.doDamage(BackhandUtils.getOffhandItem(player), damage);
+        }
+        return true;
     }
 }
