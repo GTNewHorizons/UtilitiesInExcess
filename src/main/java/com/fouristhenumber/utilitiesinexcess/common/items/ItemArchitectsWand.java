@@ -109,6 +109,8 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
     private void placeBlock(World world, EntityPlayer player, @NotNull ItemStack itemStack, BlockPos pos, int side,
         float hitX, float hitY, float hitZ, ForgeDirection forgeSide) {
+
+
         // This block is here because some mods want to use TEs to
         ItemStack itemCopy = itemStack.copy();
         itemCopy.stackSize = 1;
@@ -143,6 +145,8 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
+        if (world.isRemote) return true;
+
         // TODO: Prevent player from placing blocks into themself / other entities?
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
@@ -177,6 +181,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
                 placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
             }
         }
+        player.inventoryContainer.detectAndSendChanges();
         return true;
     }
 

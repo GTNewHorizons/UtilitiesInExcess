@@ -52,7 +52,7 @@ public class ArchitectsWandUtils {
      * @return True if the ItemStack has been decremented, otherwise false
      */
     public static boolean decreaseFromInventory(EntityPlayer player, ItemStack itemStack) {
-        for (int slotIndex = 0; slotIndex < player.inventory.mainInventory.length; slotIndex++) {
+        for (int slotIndex = player.inventory.mainInventory.length-1; slotIndex >= 0; slotIndex--) {
             ItemStack stack = player.inventory.mainInventory[slotIndex];
             if (stack != null && stack.getItem() == itemStack.getItem()
                 && stack.getItemDamage() == itemStack.getItemDamage()) {
