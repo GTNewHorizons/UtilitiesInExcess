@@ -110,7 +110,6 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
     private void placeBlock(World world, EntityPlayer player, @NotNull ItemStack itemStack, BlockPos pos, int side,
         float hitX, float hitY, float hitZ, ForgeDirection forgeSide) {
 
-
         // This block is here because some mods want to use TEs to
         ItemStack itemCopy = itemStack.copy();
         itemCopy.stackSize = 1;
