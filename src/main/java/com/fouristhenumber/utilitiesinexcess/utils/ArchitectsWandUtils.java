@@ -1,9 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.getBlockByLocation;
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.isTrowel;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
@@ -14,11 +18,17 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+import gregtech.api.items.MetaGeneratedTool;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class ArchitectsWandUtils {
 
-    public ArchitectsWandUtils() {};
+    public ArchitectsWandUtils() {}
+
+    ;
 
     /**
      * Counts the items of a certain type in a player's inventory
@@ -48,7 +58,7 @@ public class ArchitectsWandUtils {
      * @return True if the ItemStack has been decremented, otherwise false
      */
     public static boolean decreaseFromInventory(EntityPlayer player, ItemStack itemStack) {
-        for (int slotIndex = 0; slotIndex < player.inventory.mainInventory.length; slotIndex++) {
+        for (int slotIndex = player.inventory.mainInventory.length - 1; slotIndex >= 0; slotIndex--) {
             ItemStack stack = player.inventory.mainInventory[slotIndex];
             if (stack != null && stack.getItem() == itemStack.getItem()
                 && stack.getItemDamage() == itemStack.getItemDamage()) {
@@ -66,15 +76,16 @@ public class ArchitectsWandUtils {
      * Finds the blocks adjacent to the start position that are connected cardinally, or diagonally
      * and have air in front of them relative to the side clicked on.
      *
-     * @param world       The world in which to place
-     * @param
-     * @param findCount   The maximum amount of blocks it should search
-     * @param clickedSide The side of the block that was clicked
-     * @param startPos    The position to start
+     * @param world               The world in which to place
+     * @param findCount           The maximum amount of blocks it should search
+     * @param clickedSide         The side of the block that was clicked
+     * @param startPos            The position to start
+     * @param architectsSelection The pattern used to search adjacent blocks
      * @return The set of 1<=x<=findCount adjacent blocks with air on their face
      */
-    public static Set<BlockPos> findAdjacentBlocks(World world, ItemStack itemStackToPlace, int findCount,
-        ForgeDirection clickedSide, BlockPos startPos, MovingObjectPosition mop, EntityPlayer player) {
+    public static Set<BlockPos> findAdjacentBlocks(World world, List<ItemStack> possiblePlacements, int findCount,
+        ForgeDirection clickedSide, BlockPos startPos, MovingObjectPosition mop, EntityPlayer player,
+        ArchitectsSelection architectsSelection) {
         Set<BlockPos> region = new HashSet<>();
         if (findCount <= 0) {
             return region;
@@ -103,7 +114,7 @@ public class ArchitectsWandUtils {
         TranslateMovingObjectPoistionToLocation(mop, startPos);
 
         // Base case
-        if (IsValidForWireFrame(world, itemStackToPlace, startPos, mop, player, clickedSide)) {
+        if (IsValidForWireFrame(world, possiblePlacements, startPos, mop, player, clickedSide, architectsSelection)) {
             region.add(startPos);
             queue.add(startPos);
             visited.add(startPos);
@@ -128,7 +139,14 @@ public class ArchitectsWandUtils {
 
                 // translate the mop
                 TranslateMovingObjectPoistionToLocation(mop, key);
-                if (IsValidForWireFrame(world, itemStackToPlace, key, mop, player, clickedSide)) {
+                if (IsValidForWireFrame(
+                    world,
+                    possiblePlacements,
+                    key,
+                    mop,
+                    player,
+                    clickedSide,
+                    architectsSelection)) {
                     region.add(key);
                     queue.add(key);
                 }
@@ -138,41 +156,50 @@ public class ArchitectsWandUtils {
         return region;
     }
 
-    private static boolean IsValidForWireFrame(World world, ItemStack itemStackToPlace, BlockPos targetLocation,
-        MovingObjectPosition movingObjectPosition, EntityPlayer player, ForgeDirection clickedSide) {
-        ItemStack stack = getItemStackToPlace(world, targetLocation, movingObjectPosition, player);
-        if (stack != null) {
-            Block block = Block.getBlockFromItem(stack.getItem());
-            return ItemStack.areItemStacksEqual(stack, itemStackToPlace)
-                && world.isAirBlock(
-                    targetLocation.x + clickedSide.offsetX,
-                    targetLocation.y + clickedSide.offsetY,
-                    targetLocation.z + clickedSide.offsetZ)
-                && block.canPlaceBlockOnSide(
-                    world,
-                    targetLocation.x + clickedSide.offsetX,
-                    targetLocation.y + clickedSide.offsetY,
-                    targetLocation.z + clickedSide.offsetZ,
-                    clickedSide.ordinal())
-                && world.canPlaceEntityOnSide(
-                    block,
-                    targetLocation.x + clickedSide.offsetX,
-                    targetLocation.y + clickedSide.offsetY,
-                    targetLocation.z + clickedSide.offsetZ,
-                    false,
-                    clickedSide.ordinal(),
-                    null,
-                    stack);
-        }
-        return false;
+    private static boolean IsValidForWireFrame(World world, List<ItemStack> possibleBlocks, BlockPos targetLocation,
+        MovingObjectPosition mop, EntityPlayer player, ForgeDirection clickedSide, ArchitectsSelection selection) {
+        ItemStack currentBlock = getBlockByLocation(world, mop, player);
+
+        if (currentBlock == null) return false;
+
+        return possibleBlocks.stream()
+            .allMatch(itemStackToPlace -> {
+                if (itemStackToPlace == null) return false;
+
+                Block block = Block.getBlockFromItem(itemStackToPlace.getItem());
+                return selection.matches(currentBlock)
+                    && world.isAirBlock(
+                        targetLocation.x + clickedSide.offsetX,
+                        targetLocation.y + clickedSide.offsetY,
+                        targetLocation.z + clickedSide.offsetZ)
+                    && block.canPlaceBlockOnSide(
+                        world,
+                        targetLocation.x + clickedSide.offsetX,
+                        targetLocation.y + clickedSide.offsetY,
+                        targetLocation.z + clickedSide.offsetZ,
+                        clickedSide.ordinal())
+                    && world.canPlaceEntityOnSide(
+                        block,
+                        targetLocation.x + clickedSide.offsetX,
+                        targetLocation.y + clickedSide.offsetY,
+                        targetLocation.z + clickedSide.offsetZ,
+                        false,
+                        clickedSide.ordinal(),
+                        null,
+                        itemStackToPlace);
+            });
     }
 
-    public static ItemStack getItemStackToPlace(World world, BlockPos pos, MovingObjectPosition movingObjectPosition,
-        EntityPlayer player) {
-        Block block = world.getBlock(pos.x, pos.y, pos.z);
-        if (block != null) {
-            return block.getPickBlock(movingObjectPosition, world, pos.x, pos.y, pos.z, player);
+    public static boolean damageBackhand(int damage, EntityPlayer player) {
+        if (!player.capabilities.isCreativeMode && Mods.Backhand.isLoaded()
+            && isTrowel(BackhandUtils.getOffhandItem(player))) {
+            MetaGeneratedTool trowel = (MetaGeneratedTool) Objects.requireNonNull(BackhandUtils.getOffhandItem(player))
+                .getItem();
+            if (trowel == null) {
+                return true;
+            }
+            return trowel.doDamage(BackhandUtils.getOffhandItem(player), damage);
         }
-        return null;
+        return true;
     }
 }
