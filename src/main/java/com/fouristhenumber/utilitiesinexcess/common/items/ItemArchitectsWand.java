@@ -169,7 +169,6 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, selection);
 
         ItemStack nowPlacing;
-        int backhandDamage = 0;
         for (BlockPos pos : blocksToPlace) {
             List<ItemStack> candidates = selection.blockToPlace(player);
             if (candidates.size() == 1) {
