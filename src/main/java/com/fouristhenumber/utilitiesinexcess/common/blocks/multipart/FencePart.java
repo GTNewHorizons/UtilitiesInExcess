@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroblockRender;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,17 +46,6 @@ public class FencePart extends ConnectablePart
     }
 
     @Override
-    public boolean renderStatic(Vector3 position, int pass)
-    {
-        if (getIMaterial().canRenderInPass(pass))
-        {
-            render(position, pass);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void render(Vector3 position, int pass)
     {
         // Render post
@@ -78,10 +68,14 @@ public class FencePart extends ConnectablePart
         }
         else
         {
-            Cuboid6[][] models = PRECOMPUTED_MODEL.get(this.downDirection);
-            for (Cuboid6 cuboid : models[getConnectionMask()])
+            Pair<Integer, Cuboid6>[] models = PRECOMPUTED_MODEL.get(this.downDirection)[getConnectionMask()];
+            for (int i = 0; i < models.length; i++)
             {
-                MicroblockRender.renderCuboid(position, getIMaterial(), pass, cuboid, 0); // TODO fix faces to not render useless faces
+                if (i == 0)
+                {
+                    MicroblockRender.renderCuboid(position, getIMaterial(), pass, models[i].second(), 0);
+                }
+                MicroblockRender.renderCuboid(position, getIMaterial(), pass, models[i].second(), getCullMask(models[i].first()));
             }
         }
     }

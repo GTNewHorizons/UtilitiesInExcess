@@ -15,7 +15,7 @@ import java.util.Set;
 // This is basically the part factory.
 public class Content implements MultiPartRegistry.IPartFactory2
 {
-    public static final String[] partNames = new String[]{ FencePart.name };
+    public static final String[] partNames = new String[]{ FencePart.name, WallPart.name };
     public static final Map<String, Integer> partMap = new HashMap<>();
 
     public static final Set<String> sidedParts = new HashSet<>();

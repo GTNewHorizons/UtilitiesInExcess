@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.microblock.MicroMaterialRegistry;
-import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
@@ -42,7 +41,7 @@ public class UEMultiPartItem extends Item {
             return "Unnamed";
         }
         return StatCollector.translateToLocalFormatted(
-            partNames[0] + ".name",
+            partNames[damage] + ".name",
             material.getLocalizedName());
     }
 
@@ -58,7 +57,6 @@ public class UEMultiPartItem extends Item {
         );
     }
 
-    // TODO allow placing on multiple sides.
     @Override
     public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {

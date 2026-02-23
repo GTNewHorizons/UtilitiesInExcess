@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class CuboidUtils
@@ -192,6 +193,23 @@ public class CuboidUtils
         for (int i = 0; i < model.length; i++)
         {
             rotatedModel[i] = RotateCube(model[i], direction);
+        }
+        return rotatedModel;
+    }
+
+    // Same function as above, but is used for cuboids that have some directional information attached to them.
+    @SuppressWarnings("unchecked")
+    public static Pair<Integer, Cuboid6>[] RotateModel(Pair<Integer, Cuboid6>[] model, ForgeDirection direction)
+    {
+        if (direction == ForgeDirection.DOWN)
+        {
+            return model;
+        }
+
+        Pair<Integer, Cuboid6>[] rotatedModel = new Pair [model.length];
+        for (int i = 0; i < model.length; i++)
+        {
+            rotatedModel[i] = Pair.of(model[i].first(), RotateCube(model[i].second(), direction));
         }
         return rotatedModel;
     }

@@ -86,9 +86,10 @@ public abstract class ConnectablePart extends MaterialBasedPart
             {
                 for (TMultiPart part : mpTile.jPartList())
                 {
-                    if (part instanceof FencePart fPart &&
-                        fPart.downDirection == this.downDirection &&
-                        !fPart.doPartsOccludeDirection(side.getOpposite()))
+                    if (part instanceof ConnectablePart cPart &&
+                        part.getClass() == this.getClass() &&
+                        cPart.downDirection == this.downDirection &&
+                        !cPart.doPartsOccludeDirection(side.getOpposite()))
                     {
                         return true;
                     }
@@ -108,6 +109,46 @@ public abstract class ConnectablePart extends MaterialBasedPart
             if (canConnectOnSide(iteratorList[i]))
             {
                 mask = mask | 1 << i;
+            }
+        }
+        return mask;
+    }
+
+    public int getCullMask(int relativeDirection)
+    {
+        return switch (relativeDirection) {
+            case (1), (3) -> transformCullMask(0b110000);
+            case (0), (2) -> transformCullMask(0b001100);
+            default -> 0;
+        };
+    }
+
+    private int transformCullMask(int mask)
+    {
+        switch(downDirection)
+        {
+            case DOWN, UP -> {
+                return mask;
+            }
+            case NORTH, SOUTH ->
+            {
+                if (mask == 0b001100)
+                {
+                    return mask >> 2;
+                }
+                return mask;
+            }
+            case WEST, EAST ->
+            {
+                if (mask == 0b110000)
+                {
+                    return mask >> 4;
+                }
+                return mask;
+            }
+            case UNKNOWN ->
+            {
+                throw new IllegalArgumentException("Switch falloff in transforming the cullmask in a connectable part.");
             }
         }
         return mask;

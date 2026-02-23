@@ -1,12 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart;
 
 import codechicken.lib.vec.Cuboid6;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.fouristhenumber.utilitiesinexcess.utils.CuboidUtils.Rotate90AboutYBlockCenterPos;
@@ -18,7 +17,7 @@ public class MultiPartFenceRenderingHelper
     public static final Cuboid6 postBounds = new Cuboid6(.375, 0, .375, .625, 1, .625);
     public static final Cuboid6 connectorBounds = new Cuboid6(0.4375, .375, 0, 0.5625,0.9375, .375);
 
-    // Defaulted on the North side (-Z)
+    // Defaulted on the North side (-Z) These are for rendering
     public static final Cuboid6 connector = new Cuboid6(0.4375, 0.75, 0, 0.5625, 0.9375, 0.375);
     public static final Cuboid6 connectorNS = new Cuboid6(0.4375, 0.75, 0, 0.5625, 0.9375, 1);
 
@@ -36,8 +35,9 @@ public class MultiPartFenceRenderingHelper
     public static final Cuboid6 itemConnectorNotch = new Cuboid6(.4375, 0, 0, .5625, .125, .125);
 
 
+    // TODO convert these to arrays so we don't have to hash every call.
     // Compute model/bounds/collision all at class initialization
-    public static final Map<ForgeDirection, Cuboid6[][]> PRECOMPUTED_MODEL;
+    public static final Map<ForgeDirection, Pair<Integer, Cuboid6>[][]> PRECOMPUTED_MODEL;
     public static final Map<ForgeDirection, Cuboid6[][]> PRECOMPUTED_BOUNDS;
     public static final Map<ForgeDirection, Cuboid6[][]> PRECOMPUTED_COLLISION;
 
@@ -46,46 +46,26 @@ public class MultiPartFenceRenderingHelper
         PRECOMPUTED_MODEL = new HashMap<>();
 
         // Make our base model in the down direction
-        Cuboid6[][] baseModels = new Cuboid6[16][];
+        Pair<Integer, Cuboid6>[][] baseModels = new Pair[16][];
         for (int i = 0; i < 16; i++)
         {
-            List<Cuboid6> values = new ArrayList<>();
-            values.add(postBounds);
-
-            boolean north = (i & 1) != 0;
-            boolean east  = (i & 2) != 0;
-            boolean south = (i & 4) != 0;
-            boolean west  = (i & 8) != 0;
-
-            // Render on axis so we can do less render calls
-            if (north || south)
+            Pair<Integer, Cuboid6>[] values = new Pair[1 + 2 * Integer.bitCount(i)];
+            values[0] = Pair.of(-1, postBounds);
+            if (i > 0)
             {
-                if (north && south)
+                int count = 0;
+                for (int j = 0; j < 4; j++)
                 {
-                    values.add(connectorNS);
-                    values.add(connectorNS.copy().offset(new Cuboid6(0, -.375, 0, 0, -.375, 0)));
-                }
-                else
-                {
-                    values.add(Rotate90AboutYBlockCenterPos(connector, north ? 0 : 2));
-                    values.add(Rotate90AboutYBlockCenterPos(connector.copy().offset(new Cuboid6(0, -.375, 0, 0, -.375, 0)), north ? 0 : 2));
+                    if ((i & (1 << j)) != 0)
+                    {
+                        values[1 + 2 * count] = Pair.of(j ,Rotate90AboutYBlockCenterPos(connector, j));
+                        values[2 + 2 * count] = Pair.of(j ,Rotate90AboutYBlockCenterPos(connector.copy().offset(new Cuboid6(0, -.375, 0, 0, -.375, 0)), j));
+                        count++;
+                    }
+
                 }
             }
-
-            if (east || west)
-            {
-                if (east && west)
-                {
-                    values.add(Rotate90AboutYBlockCenterPos(connectorNS, 1));
-                    values.add(Rotate90AboutYBlockCenterPos(connectorNS.copy().offset(new Cuboid6(0, -.375, 0, 0, -.375, 0)), 1));
-                }
-                else
-                {
-                    values.add(Rotate90AboutYBlockCenterPos(connector, east ? 1 : 3));
-                    values.add(Rotate90AboutYBlockCenterPos(connector.copy().offset(new Cuboid6(0, -.375, 0, 0, -.375, 0)), east ? 1 : 3));
-                }
-            }
-            baseModels[i] = values.toArray(new Cuboid6[0]);
+            baseModels[i] = values;
         }
 
         PRECOMPUTED_MODEL.put(ForgeDirection.DOWN, baseModels);
@@ -168,7 +148,7 @@ public class MultiPartFenceRenderingHelper
         // ground the forge direction is actually down.
         for (int i = 0; i < ForgeDirection.values().length - 1; i++)
         {
-            Cuboid6[][] modelList = new Cuboid6[16][];
+            Pair<Integer, Cuboid6>[][] modelList = new Pair [16][];
             Cuboid6[][] boundsList = new Cuboid6[16][];
             Cuboid6[][] collisionList = new Cuboid6[16][];
             ForgeDirection direction = ForgeDirection.getOrientation(i);

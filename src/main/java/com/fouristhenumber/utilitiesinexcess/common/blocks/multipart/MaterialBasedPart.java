@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
 
 import codechicken.lib.data.MCDataOutput;
+import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,4 +48,16 @@ public abstract class MaterialBasedPart extends UEMultiPart
         }
         return material.getBreakingIcon(side);
     }
+
+    @Override
+    public boolean renderStatic(Vector3 position, int pass)
+    {
+        if (getIMaterial().canRenderInPass(pass))
+        {
+            render(position, pass);
+            return true;
+        }
+        return false;
+    }
+
 }
