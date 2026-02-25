@@ -171,6 +171,8 @@ item.architects_wand.name=Architect's Wand
 tooltip.architects_wand.1=Can place up to %s blocks at once
 
 nei.infopage.uie.architects_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, you will see a wireframe indicating how a set of blocks will be extended by the wand.
+nei.infopage.uie.architects_wand.2=When holding a building block in your off-hand, the wand will try to place it instead.
+nei.infopage.uie.architects_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar will be placed.
 
 item.gourmands_axe.name=Gourmand's Axe
 
