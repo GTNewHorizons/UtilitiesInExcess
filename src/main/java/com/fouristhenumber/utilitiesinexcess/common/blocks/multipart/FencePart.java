@@ -25,8 +25,6 @@ public class FencePart extends ConnectablePart
 {
     public static final String name = "ue_fence";
 
-
-
     public FencePart(int material, int side)
     {
         super(side);

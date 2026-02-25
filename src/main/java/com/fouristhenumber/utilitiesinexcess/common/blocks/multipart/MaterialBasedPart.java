@@ -4,8 +4,10 @@ import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 
 public abstract class MaterialBasedPart extends UEMultiPart
 {
@@ -60,4 +62,9 @@ public abstract class MaterialBasedPart extends UEMultiPart
         return false;
     }
 
+    @Override
+    public ItemStack pickItem(MovingObjectPosition hit)
+    {
+        return UEMultiPartItem.createStack(material, Content.partMap.get(this.getType()));
+    }
 }

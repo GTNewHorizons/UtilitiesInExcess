@@ -515,3 +515,7 @@ material.inverted.ability=Fully Inverted
 nei.infopage.uie.ticon_inverted=If a Tinker's Construct tool is made using entirely inverted parts, it will be unbreakable.
 nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using entirely magical wooden parts, it will gain 8 additional modifiers.
 nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.
+
+ue_wall.name=%s Wall
+ue_fence.name=%s Fence
+ue_sphere.name=%s Impossible Object
