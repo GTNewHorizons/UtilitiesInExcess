@@ -165,6 +165,36 @@ public class BlockConfig {
         public int rainMufflerRange;
     }
 
+    @Config.Comment("Pendant Light Configuration")
+    public static final PendantLight pendantLight = new PendantLight();
+
+    @Config.LangKey("utilitiesinexcess.config.block.pendant_light")
+    public static class PendantLight {
+
+        @Config.DefaultBoolean(true)
+        public boolean enablePendantLight;
+
+        @Config.Comment("The radius a pendant light blocks mob spawns (as a square box)")
+        @Config.DefaultInt(16)
+        @Config.RangeInt(min = 1, max = 256)
+        public int pendantLightRange;
+    }
+
+    @Config.Comment("Giga Torch Configuration")
+    public static final GigaTorch gigaTorch = new GigaTorch();
+
+    @Config.LangKey("utilitiesinexcess.config.block.giga_torch")
+    public static class GigaTorch {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableGigaTorch;
+
+        @Config.Comment("The radius a giga torch blocks mob spawns (as a square box)")
+        @Config.DefaultInt(64)
+        @Config.RangeInt(min = 1, max = 256)
+        public int gigaTorchRange;
+    }
+
     @Config.Comment("Cursed Earth Configuration")
     public static final Spikes spikes = new Spikes();
 
