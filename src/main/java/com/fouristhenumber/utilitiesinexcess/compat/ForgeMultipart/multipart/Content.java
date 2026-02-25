@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.microblock.MicroMaterialRegistry;
@@ -30,7 +30,7 @@ public class Content implements MultiPartRegistry.IPartFactory2
         MultiPartRegistry.registerParts(this, partNames);
     }
 
-    public UEMultiPart createUEMultiPart(boolean isClient, int material, int side, String name)
+    public UEMultipart createUEMultiPart(boolean isClient, int material, int side, String name)
     {
         switch(name)
         {

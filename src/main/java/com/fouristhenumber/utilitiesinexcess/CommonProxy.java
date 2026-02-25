@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
@@ -34,6 +35,10 @@ public class CommonProxy {
         EndOfTimeEvents.init();
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
+        }
+        if (Mods.ForgeMultipart.isLoaded())
+        {
+            FMPItems.init();
         }
     }
 

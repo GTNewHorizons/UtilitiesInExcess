@@ -1,11 +1,11 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
-import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,13 +20,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.Content.partNames;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content.partNames;
 
 // Most of this is just ripped from FMP ngl
-public class UEMultiPartItem extends Item {
+public class UEMultipartItem extends Item {
 
 
-    public UEMultiPartItem() {
+    public UEMultipartItem() {
         setUnlocalizedName("ue_microPartItem");
         setHasSubtypes(true);
     }
@@ -96,13 +96,13 @@ public class UEMultiPartItem extends Item {
 
     public static ItemStack createStack(String material, int damage)
     {
-        ItemStack stack = new ItemStack(ModItems.UE_MULTI_PART.get(), 1, damage);
+        ItemStack stack = new ItemStack(FMPItems.UE_MULTI_PART.get(), 1, damage);
         stack.stackTagCompound = new NBTTagCompound();
         stack.getTagCompound().setString("mat", material);
         return stack;
     }
 
-    public static ItemStack createStack(UEMultiPart part)
+    public static ItemStack createStack(UEMultipart part)
     {
         if (part instanceof MaterialBasedPart matPart)
         {

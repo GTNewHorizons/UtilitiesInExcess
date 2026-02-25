@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.IconHitEffects;
@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 
 import java.util.Collections;
 
-public abstract class UEMultiPart extends TMultiPart implements JIconHitEffects, JNormalOcclusion
+public abstract class UEMultipart extends TMultiPart implements JIconHitEffects, JNormalOcclusion
 {
 
     public abstract void render(Vector3 position, int pass);
@@ -20,7 +20,7 @@ public abstract class UEMultiPart extends TMultiPart implements JIconHitEffects,
     @Override
     public Iterable<ItemStack> getDrops()
     {
-        return Collections.singletonList(UEMultiPartItem.createStack(this));
+        return Collections.singletonList(UEMultipartItem.createStack(this));
     }
 
     @Override

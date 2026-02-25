@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Vector3;
@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 
-public abstract class MaterialBasedPart extends UEMultiPart
+public abstract class MaterialBasedPart extends UEMultipart
 {
     protected int material;
 
@@ -65,6 +65,6 @@ public abstract class MaterialBasedPart extends UEMultiPart
     @Override
     public ItemStack pickItem(MovingObjectPosition hit)
     {
-        return UEMultiPartItem.createStack(material, Content.partMap.get(this.getType()));
+        return UEMultipartItem.createStack(material, Content.partMap.get(this.getType()));
     }
 }

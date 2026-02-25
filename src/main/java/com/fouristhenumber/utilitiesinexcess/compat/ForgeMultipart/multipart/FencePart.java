@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
@@ -14,12 +14,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper.PRECOMPUTED_BOUNDS;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper.PRECOMPUTED_COLLISION;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper.PRECOMPUTED_MODEL;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper.itemConnectorMiddle;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper.itemConnectorNotch;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper.postBounds;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartFenceRenderingHelper.PRECOMPUTED_BOUNDS;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartFenceRenderingHelper.PRECOMPUTED_COLLISION;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartFenceRenderingHelper.PRECOMPUTED_MODEL;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartFenceRenderingHelper.itemConnectorMiddle;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartFenceRenderingHelper.itemConnectorNotch;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartFenceRenderingHelper.postBounds;
 
 public class FencePart extends ConnectablePart
 {
@@ -35,7 +35,7 @@ public class FencePart extends ConnectablePart
     @Override
     public Cuboid6 getConnectionInDirection(ForgeDirection side)
     {
-        return PRECOMPUTED_BOUNDS.get(downDirection)[15][indexInFrame(side) + 1];
+        return PRECOMPUTED_BOUNDS.get(downDirection)[15][indexInFrame(side) + 1].second();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class FencePart extends ConnectablePart
     public Iterable<IndexedCuboid6> getSubParts()
     {
         return Arrays.stream(PRECOMPUTED_BOUNDS.get(downDirection)[getConnectionMask()])
-            .map(t -> new IndexedCuboid6(0, t))
+            .map(t -> new IndexedCuboid6(0, t.second()))
             .collect(Collectors.toList());
     }
 
@@ -100,12 +100,12 @@ public class FencePart extends ConnectablePart
 
     @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
-        return Collections.singleton(PRECOMPUTED_BOUNDS.get(downDirection)[0][0]);
+        return Collections.singleton(PRECOMPUTED_BOUNDS.get(downDirection)[0][0].second());
     }
 
     @Override
     public boolean drawHighlight(MovingObjectPosition hit, EntityPlayer player, float frame)
     {
-        return false;
+        return drawConnecableHighLight(hit, player, frame, Arrays.asList(PRECOMPUTED_BOUNDS.get(downDirection)[getConnectionMask()]));
     }
 }

@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
@@ -6,7 +6,7 @@ import codechicken.lib.vec.Vector3;
 
 import java.util.Collections;
 
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.SphereRenderingHelper.RenderMicroMaterialSphere;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.SphereRenderingHelper.RenderMicroMaterialSphere;
 
 
 public class SpherePart extends MaterialBasedPart

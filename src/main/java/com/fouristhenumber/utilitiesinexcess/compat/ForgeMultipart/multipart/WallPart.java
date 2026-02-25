@@ -1,11 +1,10 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroblockRender;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartFenceRenderingHelper;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
@@ -16,13 +15,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper.PRECOMPUTED_BOUNDS;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper.PRECOMPUTED_COLLISION;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper.PRECOMPUTED_SIMPLE_MODEL;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper.connectorNS;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper.postBounds;
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart.MultiPartWallRenderingHelper.PRECOMPUTED_MODEL;
-import static com.fouristhenumber.utilitiesinexcess.utils.CuboidUtils.Rotate90AboutYBlockCenterPos;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper.PRECOMPUTED_BOUNDS;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper.PRECOMPUTED_COLLISION;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper.PRECOMPUTED_SIMPLE_MODEL;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper.connectorNS;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper.postBounds;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper.PRECOMPUTED_MODEL;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.CuboidUtils.Rotate90AboutYBlockCenterPos;
 
 public class WallPart extends ConnectablePart
 {
@@ -84,7 +83,7 @@ public class WallPart extends ConnectablePart
     @Override
     public Cuboid6 getConnectionInDirection(ForgeDirection side)
     {
-        return MultiPartFenceRenderingHelper.PRECOMPUTED_BOUNDS.get(downDirection)[15][indexInFrame(side) + 1];
+        return PRECOMPUTED_BOUNDS.get(downDirection)[15][indexInFrame(side) + 1].second();
     }
 
     @Override
@@ -101,7 +100,7 @@ public class WallPart extends ConnectablePart
             return Collections.singleton(new IndexedCuboid6(0, PRECOMPUTED_SIMPLE_MODEL.get(this.downDirection)[0]));
         }
         return Arrays.stream(PRECOMPUTED_BOUNDS.get(downDirection)[mask])
-            .map(t -> new IndexedCuboid6(0, t))
+            .map(t -> new IndexedCuboid6(0, t.second()))
             .collect(Collectors.toList());
     }
 
@@ -114,17 +113,32 @@ public class WallPart extends ConnectablePart
     @Nonnull
     @Override
     public Cuboid6 getBounds() {
-        return MultiPartWallRenderingHelper.postBounds;
+        return MultipartWallRenderingHelper.postBounds;
     }
 
     @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
-        return Collections.singleton(MultiPartFenceRenderingHelper.PRECOMPUTED_BOUNDS.get(downDirection)[0][0]);
+        return Collections.singleton(MultipartWallRenderingHelper.PRECOMPUTED_BOUNDS.get(downDirection)[0][0].second());
     }
 
     @Override
     public boolean drawHighlight(MovingObjectPosition hit, EntityPlayer player, float frame)
     {
-        return false;
+        int mask = getConnectionMask();
+        Iterable<Pair<Integer, Cuboid6>> highlightCuboidList;
+        if (mask == 0b1010)
+        {
+            highlightCuboidList = Collections.singleton(Pair.of(-1, PRECOMPUTED_SIMPLE_MODEL.get(downDirection)[1]));
+        }
+        else if (mask == 0b0101)
+        {
+            highlightCuboidList = Collections.singleton(Pair.of(-1, PRECOMPUTED_SIMPLE_MODEL.get(downDirection)[0]));
+        }
+        else
+        {
+            highlightCuboidList = Arrays.asList(PRECOMPUTED_BOUNDS.get(downDirection)[mask]);
+        }
+        return drawConnecableHighLight(hit, player, frame, highlightCuboidList);
     }
+
 }

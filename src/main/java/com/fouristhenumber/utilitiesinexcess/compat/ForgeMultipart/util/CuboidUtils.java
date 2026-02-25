@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.utils;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util;
 
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;

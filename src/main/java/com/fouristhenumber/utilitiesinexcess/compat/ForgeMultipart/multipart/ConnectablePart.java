@@ -1,16 +1,24 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.BlockMultipart;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.lwjgl.opengl.GL11;
 
 import java.util.EnumMap;
 import java.util.Map;
+
+import static net.minecraft.client.renderer.RenderGlobal.drawOutlinedBoundingBox;
 
 public abstract class ConnectablePart extends MaterialBasedPart
 {
@@ -184,4 +192,68 @@ public abstract class ConnectablePart extends MaterialBasedPart
         }
         throw new IllegalArgumentException("Somehow multipart connectable is trying to access a direction outside of it's frame!");
     }
+
+    public boolean drawConnecableHighLight(MovingObjectPosition hit, EntityPlayer player, float frame, Iterable<Pair<Integer, Cuboid6>> highlightCuboidList)
+    {
+        GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
+        GL11.glLineWidth(2.0F);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDepthMask(false);
+        double dx = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) frame;
+        double dy = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) frame;
+        double dz = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) frame;
+
+        ForgeDirection[] iteratorList = iteratorKey.get(downDirection);
+
+
+        for (Pair<Integer, Cuboid6> cubeWithDirInfo : highlightCuboidList)
+        {
+            AxisAlignedBB bb = cubeWithDirInfo.second().toAABB().offset(x(), y(), z());
+            if (cubeWithDirInfo.first() != -1)
+            {
+                switch(iteratorList[cubeWithDirInfo.first()])
+                {
+                    case UP:
+                    {
+                        bb.minY += 0.004F;
+                        break;
+                    }
+                    case DOWN:
+                    {
+                        bb.maxY -= 0.004F;
+                        break;
+                    }
+                    case NORTH:
+                    {
+                        bb.maxZ -= 0.004F;
+                        break;
+                    }
+                    case SOUTH:
+                    {
+                        bb.minZ += 0.004F;
+                        break;
+                    }
+                    case EAST:
+                    {
+                        bb.minX += 0.004F;
+                        break;
+                    }
+                    case WEST:
+                    {
+                        bb.maxX -= 0.004F;
+                        break;
+                    }
+                }
+            }
+            drawOutlinedBoundingBox(bb.expand(0.002F, 0.002F, 0.002F).getOffsetBoundingBox(-dx, -dy, -dz), -1);
+        }
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+
+        return true;
+    }
+
 }

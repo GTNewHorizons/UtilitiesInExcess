@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.renderers.Multipart;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block;
 
 import codechicken.lib.vec.Cuboid6;
 import it.unimi.dsi.fastutil.Pair;
@@ -7,11 +7,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.CuboidUtils.Rotate90AboutYBlockCenterPos;
-import static com.fouristhenumber.utilitiesinexcess.utils.CuboidUtils.RotateCube;
-import static com.fouristhenumber.utilitiesinexcess.utils.CuboidUtils.RotateModel;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.CuboidUtils.Rotate90AboutYBlockCenterPos;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.CuboidUtils.RotateCube;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.CuboidUtils.RotateModel;
 
-public class MultiPartWallRenderingHelper
+public class MultipartWallRenderingHelper
 {
     // Selection bounds defaulted to North side (-Z)
     public static final Cuboid6 postBounds = new Cuboid6(.25, 0, .25, .75, 1, .75);
@@ -29,7 +29,7 @@ public class MultiPartWallRenderingHelper
 
     // Compute model/bounds/collision all at class initialization
     public static final Map<ForgeDirection, Pair<Integer, Cuboid6>[][]> PRECOMPUTED_MODEL;
-    public static final Map<ForgeDirection, Cuboid6[][]> PRECOMPUTED_BOUNDS;
+    public static final Map<ForgeDirection, Pair<Integer, Cuboid6>[][]> PRECOMPUTED_BOUNDS;
     public static final Map<ForgeDirection, Cuboid6[][]> PRECOMPUTED_COLLISION;
     public static final Map<ForgeDirection, Cuboid6[]> PRECOMPUTED_SIMPLE_MODEL;
 
@@ -74,11 +74,11 @@ public class MultiPartWallRenderingHelper
         PRECOMPUTED_BOUNDS = new HashMap<>();
 
         // Make our base bounds in the down direction
-        Cuboid6[][] baseBounds = new Cuboid6[16][];
+        Pair<Integer, Cuboid6>[][] baseBounds = new Pair[16][];
         for (int i = 0; i < 16; i++)
         {
-            Cuboid6[] values = new Cuboid6[1 + Integer.bitCount(i)];
-            values[0] = postBounds;
+            Pair<Integer, Cuboid6>[] values = new Pair[1 + Integer.bitCount(i)];
+            values[0] = Pair.of(-1, postBounds);
             if (i > 0)
             {
                 int count = 0;
@@ -86,7 +86,7 @@ public class MultiPartWallRenderingHelper
                 {
                     if ((i & (1 << j)) != 0)
                     {
-                        values[1 + count] = Rotate90AboutYBlockCenterPos(connectorBounds, j);
+                        values[1 + count] = Pair.of(j, Rotate90AboutYBlockCenterPos(connectorBounds, j));
                         count++;
                     }
 
@@ -150,8 +150,8 @@ public class MultiPartWallRenderingHelper
         // ground the forge direction is actually down.
         for (int i = 0; i < ForgeDirection.values().length - 1; i++)
         {
-            Pair<Integer, Cuboid6>[][] modelList = new Pair [16][];
-            Cuboid6[][] boundsList = new Cuboid6[16][];
+            Pair<Integer, Cuboid6>[][] modelList = new Pair[16][];
+            Pair<Integer, Cuboid6>[][] boundsList = new Pair[16][];
             Cuboid6[][] collisionList = new Cuboid6[16][];
             Cuboid6[] simpleModelList = new Cuboid6[2];
             ForgeDirection direction = ForgeDirection.getOrientation(i);

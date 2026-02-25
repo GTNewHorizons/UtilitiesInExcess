@@ -1,18 +1,18 @@
-package com.fouristhenumber.utilitiesinexcess.common.renderers;
+package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.TextureUtils;
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroMaterialRegistry;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.Content;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.UEMultiPart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UEMultipart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.multipart.Content.partNames;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content.partNames;
 
 public class ItemUEMultiPartRenderer implements IItemRenderer {
 
@@ -53,15 +53,10 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
         state.startDrawingInstance();
 
         int materialId = MicroMaterialRegistry.materialID(item.getTagCompound().getString("mat"));
-        UEMultiPart part = new Content().createUEMultiPart(true, materialId, 0, partNames[item.getItemDamage()]);
+        UEMultipart part = new Content().createUEMultiPart(true, materialId, 0, partNames[item.getItemDamage()]);
         part.render(new Vector3(0, 0, 0), -1);
 
         state.drawInstance();
         GL11.glPopMatrix();
-    }
-
-    public void renderHighlight(EntityPlayer player, ItemStack currentItem, MovingObjectPosition hit)
-    {
-
     }
 }
