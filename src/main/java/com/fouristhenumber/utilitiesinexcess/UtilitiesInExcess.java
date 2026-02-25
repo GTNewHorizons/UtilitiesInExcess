@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,6 +46,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
@@ -94,8 +94,7 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
-        if (Mods.ForgeMicroBlock.isLoaded())
-        {
+        if (Mods.ForgeMicroBlock.isLoaded()) {
             new Content().init();
         }
         proxy.preInit(event);
@@ -200,8 +199,7 @@ public class UtilitiesInExcess {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
 
-        if (Mods.ForgeMicroBlock.isLoaded())
-        {
+        if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPRecipeLoader.run();
         }
 

@@ -2,8 +2,6 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
 
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -16,6 +14,8 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRendere
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
@@ -48,8 +48,7 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.INVERTED_NUGGET.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.INVERTED_INGOT.get(), new InvertedIngotRenderer());
         }
-        if (Mods.ForgeMicroBlock.isLoaded())
-        {
+        if (Mods.ForgeMicroBlock.isLoaded()) {
             MinecraftForgeClient.registerItemRenderer(FMPItems.UE_MULTI_PART.get(), new ItemUEMultiPartRenderer());
         }
         if (ModBlocks.UNDERWORLD_PORTAL.isEnabled()) {
