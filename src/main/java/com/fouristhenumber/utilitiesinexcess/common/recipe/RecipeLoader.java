@@ -1029,9 +1029,9 @@ public class RecipeLoader {
         // Inverted Ingot (stable)
         addShapedRecipe(ModItems.INVERTED_INGOT.newItemStack(1, 1), "nnn", "nnn", "nnn", 'n', ModItems.INVERTED_NUGGET);
 
-        // Glutton's Axe
+        // Gourmand's Axe
         addShapedRecipe(
-            ModItems.GLUTTONS_AXE,
+            ModItems.GOURMANDS_AXE,
             "ii",
             "is",
             " s",

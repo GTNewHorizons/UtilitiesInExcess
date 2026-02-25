@@ -1,21 +1,34 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.getBlockByLocation;
+import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.isTrowel;
+import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
+
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+import gregtech.api.items.MetaGeneratedTool;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class ArchitectsWandUtils {
 
-    public ArchitectsWandUtils() {};
+    public ArchitectsWandUtils() {}
+
+    ;
 
     /**
      * Counts the items of a certain type in a player's inventory
@@ -45,7 +58,7 @@ public class ArchitectsWandUtils {
      * @return True if the ItemStack has been decremented, otherwise false
      */
     public static boolean decreaseFromInventory(EntityPlayer player, ItemStack itemStack) {
-        for (int slotIndex = 0; slotIndex < player.inventory.mainInventory.length; slotIndex++) {
+        for (int slotIndex = player.inventory.mainInventory.length - 1; slotIndex >= 0; slotIndex--) {
             ItemStack stack = player.inventory.mainInventory[slotIndex];
             if (stack != null && stack.getItem() == itemStack.getItem()
                 && stack.getItemDamage() == itemStack.getItemDamage()) {
@@ -60,19 +73,19 @@ public class ArchitectsWandUtils {
     }
 
     /**
-     * Finds the blocks adjacent to the start position that are connected cardinally
-     * and have air infront of them relative to the side clicked on.
+     * Finds the blocks adjacent to the start position that are connected cardinally, or diagonally
+     * and have air in front of them relative to the side clicked on.
      *
-     * @param world       The world in which to place
-     * @param blockToFind The block that is being found
-     * @param metaToFind  The metadata of the block that is being found
-     * @param findCount   The maximum amount of blocks it should search
-     * @param clickedSide The side of the block that was clicked
-     * @param startPos    The position to start
+     * @param world               The world in which to place
+     * @param findCount           The maximum amount of blocks it should search
+     * @param clickedSide         The side of the block that was clicked
+     * @param startPos            The position to start
+     * @param architectsSelection The pattern used to search adjacent blocks
      * @return The set of 1<=x<=findCount adjacent blocks with air on their face
      */
-    public static Set<BlockPos> findAdjacentBlocks(World world, Block blockToFind, int metaToFind, int findCount,
-        ForgeDirection clickedSide, BlockPos startPos) {
+    public static Set<BlockPos> findAdjacentBlocks(World world, List<ItemStack> possiblePlacements, int findCount,
+        ForgeDirection clickedSide, BlockPos startPos, MovingObjectPosition mop, EntityPlayer player,
+        ArchitectsSelection architectsSelection) {
         Set<BlockPos> region = new HashSet<>();
         if (findCount <= 0) {
             return region;
@@ -84,27 +97,26 @@ public class ArchitectsWandUtils {
         int[][] allowedOffsets = switch (clickedSide) {
             case UP, DOWN ->
                 // Plane: x/z plane (y remains constant)
-                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 0, 1 }, { 0, 0, -1 } };
+                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, // Cardinal
+                    { 1, 0, 1 }, { 1, 0, -1 }, { -1, 0, 1 }, { -1, 0, -1 } }; // Diagonal
             case NORTH, SOUTH ->
                 // Plane: x/y plane (z remains constant)
-                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 } };
+                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, // Cardinal
+                    { 1, 1, 0 }, { 1, -1, 0 }, { -1, 1, 0 }, { -1, -1, 0 } }; // Diagonal
             case EAST, WEST ->
                 // Plane: y/z plane (x remains constant)
-                new int[][] { { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 } };
+                new int[][] { { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, // Cardinal
+                    { 0, 1, 1 }, { 0, 1, -1 }, { 0, -1, 1 }, { 0, -1, -1 } }; // Diagonal
             default -> throw new RuntimeException("UE's BuilderWand's findAdjacentBlocks called with invalid side");
         };
 
-        int sx = startPos.x;
-        int sy = startPos.y;
-        int sz = startPos.z;
+        // translate the mop
+        TranslateMovingObjectPoistionToLocation(mop, startPos);
 
         // Base case
-        if (world.getBlock(sx, sy, sz) == blockToFind && world.getBlockMetadata(sx, sy, sz) == metaToFind
-            && world.isAirBlock(sx + clickedSide.offsetX, sy + clickedSide.offsetY, sz + clickedSide.offsetZ)) {
-
-            BlockPos neighbor = new BlockPos(sx, sy, sz);
-            region.add(neighbor);
-            queue.add(neighbor);
+        if (IsValidForWireFrame(world, possiblePlacements, startPos, mop, player, clickedSide, architectsSelection)) {
+            region.add(startPos);
+            queue.add(startPos);
             visited.add(startPos);
         } else {
             return region;
@@ -113,33 +125,30 @@ public class ArchitectsWandUtils {
         // Flood-fill the contiguous region in the allowed plane.
         while (!queue.isEmpty() && region.size() < findCount) {
             BlockPos current = queue.poll();
-            int cx = current.x;
-            int cy = current.y;
-            int cz = current.z;
 
             for (int[] off : allowedOffsets) {
-                // Check if already visited
-                int nx = cx + off[0];
-                int ny = cy + off[1];
-                int nz = cz + off[2];
+                if (region.size() >= findCount) {
+                    break;
+                }
 
-                BlockPos key = new BlockPos(nx, ny, nz);
+                BlockPos key = current.offset(off[0], off[1], off[2]);
                 if (visited.contains(key)) {
                     continue;
                 }
                 visited.add(key);
 
-                // Check and add to region+queue
-                int airx = nx + clickedSide.offsetX;
-                int airy = ny + clickedSide.offsetY;
-                int airz = nz + clickedSide.offsetZ;
-
-                if (world.getBlock(nx, ny, nz) == blockToFind && world.getBlockMetadata(nx, ny, nz) == metaToFind
-                    && world.isAirBlock(airx, airy, airz)) {
-
-                    BlockPos neighbor = new BlockPos(nx, ny, nz);
-                    region.add(neighbor);
-                    queue.add(neighbor);
+                // translate the mop
+                TranslateMovingObjectPoistionToLocation(mop, key);
+                if (IsValidForWireFrame(
+                    world,
+                    possiblePlacements,
+                    key,
+                    mop,
+                    player,
+                    clickedSide,
+                    architectsSelection)) {
+                    region.add(key);
+                    queue.add(key);
                 }
             }
         }
@@ -147,4 +156,50 @@ public class ArchitectsWandUtils {
         return region;
     }
 
+    private static boolean IsValidForWireFrame(World world, List<ItemStack> possibleBlocks, BlockPos targetLocation,
+        MovingObjectPosition mop, EntityPlayer player, ForgeDirection clickedSide, ArchitectsSelection selection) {
+        ItemStack currentBlock = getBlockByLocation(world, mop, player);
+
+        if (currentBlock == null) return false;
+
+        return possibleBlocks.stream()
+            .allMatch(itemStackToPlace -> {
+                if (itemStackToPlace == null) return false;
+
+                Block block = Block.getBlockFromItem(itemStackToPlace.getItem());
+                return selection.matches(currentBlock)
+                    && world.isAirBlock(
+                        targetLocation.x + clickedSide.offsetX,
+                        targetLocation.y + clickedSide.offsetY,
+                        targetLocation.z + clickedSide.offsetZ)
+                    && block.canPlaceBlockOnSide(
+                        world,
+                        targetLocation.x + clickedSide.offsetX,
+                        targetLocation.y + clickedSide.offsetY,
+                        targetLocation.z + clickedSide.offsetZ,
+                        clickedSide.ordinal())
+                    && world.canPlaceEntityOnSide(
+                        block,
+                        targetLocation.x + clickedSide.offsetX,
+                        targetLocation.y + clickedSide.offsetY,
+                        targetLocation.z + clickedSide.offsetZ,
+                        false,
+                        clickedSide.ordinal(),
+                        null,
+                        itemStackToPlace);
+            });
+    }
+
+    public static boolean damageBackhand(int damage, EntityPlayer player) {
+        if (!player.capabilities.isCreativeMode && Mods.Backhand.isLoaded()
+            && isTrowel(BackhandUtils.getOffhandItem(player))) {
+            MetaGeneratedTool trowel = (MetaGeneratedTool) Objects.requireNonNull(BackhandUtils.getOffhandItem(player))
+                .getItem();
+            if (trowel == null) {
+                return true;
+            }
+            return trowel.doDamage(BackhandUtils.getOffhandItem(player), damage);
+        }
+        return true;
+    }
 }

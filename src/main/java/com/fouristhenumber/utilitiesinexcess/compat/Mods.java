@@ -15,6 +15,8 @@ public enum Mods {
     FindIt("findit"),
     Tinkers("TConstruct"),
     ForgeMicroBlock("ForgeMicroBlock")
+    Backhand("backhand"),
+    GT("gregtech_nh")
     ;
     // spotless:on
 
