@@ -3,8 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 
-public class PipeCoverPart extends MaterialBasedPart
-{
+public class PipeCoverPart extends MaterialBasedPart {
+
     @Override
     public String getType() {
         return "ue_pipecover";

@@ -48,7 +48,7 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.INVERTED_NUGGET.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.INVERTED_INGOT.get(), new InvertedIngotRenderer());
         }
-        if (Mods.ForgeMultipart.isLoaded())
+        if (Mods.ForgeMicroBlock.isLoaded())
         {
             MinecraftForgeClient.registerItemRenderer(FMPItems.UE_MULTI_PART.get(), new ItemUEMultiPartRenderer());
         }

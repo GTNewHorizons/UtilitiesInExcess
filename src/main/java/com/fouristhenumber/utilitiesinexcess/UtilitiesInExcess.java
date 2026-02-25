@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -72,7 +73,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.6.31,); after:ForgeMultipart")
+    dependencies = "required-after:gtnhlib@[0.6.31,); after:ForgeMicroblock")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -93,7 +94,7 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
-        if (Mods.ForgeMultipart.isLoaded())
+        if (Mods.ForgeMicroBlock.isLoaded())
         {
             new Content().init();
         }
@@ -198,6 +199,11 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        if (Mods.ForgeMicroBlock.isLoaded())
+        {
+            FMPRecipeLoader.run();
+        }
 
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();

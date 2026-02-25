@@ -36,7 +36,7 @@ public class CommonProxy {
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
-        if (Mods.ForgeMultipart.isLoaded())
+        if (Mods.ForgeMicroBlock.isLoaded())
         {
             FMPItems.init();
         }

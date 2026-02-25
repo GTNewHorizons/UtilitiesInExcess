@@ -1188,12 +1188,4 @@ public class RecipeLoader {
             }
         }
     }
-
-    private static void loadFMPRecipes()
-    {
-        if (Mods.ForgeMultipart.isLoaded())
-        {
-
-        }
-    }
 }

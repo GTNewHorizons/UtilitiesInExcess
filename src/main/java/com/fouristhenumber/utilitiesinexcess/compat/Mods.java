@@ -14,7 +14,7 @@ public enum Mods {
     CraftTweaker("MineTweaker3"),
     FindIt("findit"),
     Tinkers("TConstruct"),
-    ForgeMultipart("ForgeMultipart")
+    ForgeMicroBlock("ForgeMicroBlock")
     ;
     // spotless:on
 
