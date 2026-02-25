@@ -85,7 +85,8 @@ public class ArchitectsSelection {
         return this.validBlocks.stream()
             .anyMatch(
                 validBlock -> validBlock.getItem() == other.getItem()
-                    && ItemStack.areItemStackTagsEqual(validBlock, other) && validBlock.getItemDamage() == other.getItemDamage());
+                    && ItemStack.areItemStackTagsEqual(validBlock, other)
+                    && validBlock.getItemDamage() == other.getItemDamage());
     }
 
     public static boolean isTrowel(@Nullable ItemStack stack) {
