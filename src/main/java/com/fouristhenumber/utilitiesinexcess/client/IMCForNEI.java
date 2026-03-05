@@ -31,16 +31,25 @@ public class IMCForNEI {
             sendInfoPage("utilitiesinexcess:inverted_ingot", "nei.infopage.uie.ticon_inverted");
         }
 
-        sendInfoPage("<utilitiesinexcess:gluttons_axe>", "nei.infopage.uie.gluttons_axe.1");
+        sendInfoPage("<utilitiesinexcess:gourmands_axe>", "nei.infopage.uie.gourmands_axe.1");
         sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "nei.infopage.uie.destruction_pickaxe.1");
         sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "nei.infopage.uie.anti_particulate_shovel.1");
         sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
         sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
+
         sendInfoPage(
             "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
             "nei.infopage.uie.architects_wand.1");
 
+        if (Mods.Backhand.isLoaded()) {
+            sendInfoPage(
+                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
+                "nei.infopage.uie.architects_wand.2");
+            if (Mods.GT.isLoaded()) sendInfoPage(
+                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
+                "nei.infopage.uie.architects_wand.3");
+        }
         sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
 
         sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.1");
