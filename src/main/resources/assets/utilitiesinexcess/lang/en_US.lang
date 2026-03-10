@@ -53,15 +53,15 @@ tile.floating_block.name=Floating Block
 nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.1.name=Ineffable Glass
 tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.4.name=Ineffable Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
-nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block.
-nei.infopage.uie.ethereal_glass.1=Placeholder
+nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
-nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players.
-nei.infopage.uie.ethereal_glass.4=Placeholder
+nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. Ineffable Glass (Inverted) is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.5=Dark Ethereal Glass (Inverted) has the exact opposite functionality as Dark Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. It still blocks all light.
 
 tile.decorative_glass.0.name=Smooth Glass

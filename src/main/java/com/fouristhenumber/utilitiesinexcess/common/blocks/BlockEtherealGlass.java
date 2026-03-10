@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
@@ -20,13 +21,16 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+// Extending glass makes the rendering work properly
 public class BlockEtherealGlass extends BlockGlass {
 
     public enum EtherealGlassType {
 
         NORMAL(0, "ethereal_glass"),
+        INEFFABLE(1, "ineffable_glass"),
         DARK(2, "ethereal_glass_dark"),
         INVERTED(3, "ethereal_glass_inverted"),
+        INEFFABLE_INVERTED(4, "ineffable_glass_inverted"),
         DARK_INVERTED(5, "ethereal_glass_dark_inverted");
 
         public final int meta;
@@ -49,6 +53,17 @@ public class BlockEtherealGlass extends BlockGlass {
     private IIcon[] icons;
 
     @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    // Have to override glass method back to the default
+    @Override
+    public int quantityDropped(Random random) {
+        return 1;
+    }
+
+    @Override
     public int damageDropped(int meta) {
         return meta;
     }
@@ -58,13 +73,15 @@ public class BlockEtherealGlass extends BlockGlass {
         List<AxisAlignedBB> list, Entity collider) {
         int meta = worldIn.getBlockMetadata(x, y, z);
 
-        if ((meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.DARK.meta)
-            && collider instanceof EntityPlayer) {
+        if ((meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.DARK.meta
+            || meta == EtherealGlassType.INEFFABLE.meta) && collider instanceof EntityPlayer player
+            && !player.isSneaking()) {
             return;
         }
 
-        if ((meta == EtherealGlassType.INVERTED.meta || meta == EtherealGlassType.DARK_INVERTED.meta)
-            && !(collider instanceof EntityPlayer)) {
+        if ((meta == EtherealGlassType.INVERTED.meta || meta == EtherealGlassType.DARK_INVERTED.meta
+            || meta == EtherealGlassType.INEFFABLE_INVERTED.meta)
+            && !(collider instanceof EntityPlayer player && !player.isSneaking())) {
             return;
         }
 

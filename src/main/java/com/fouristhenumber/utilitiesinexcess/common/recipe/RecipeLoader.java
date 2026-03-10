@@ -786,6 +786,17 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
+        // Ineffable Glass
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            "ggg",
+            "gig",
+            "ggg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
         // Dark Ethereal Glass
         addShapedRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 2),
@@ -801,6 +812,12 @@ public class RecipeLoader {
         addShapelessRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 3),
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            Blocks.redstone_torch);
+
+        // Ineffable Glass (Inverted)
+        addShapelessRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 4),
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 1),
             Blocks.redstone_torch);
 
         // Dark Ethereal Glass (Inverted)
