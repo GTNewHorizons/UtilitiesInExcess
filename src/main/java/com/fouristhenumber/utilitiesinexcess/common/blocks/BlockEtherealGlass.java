@@ -91,7 +91,7 @@ public class BlockEtherealGlass extends BlockGlass {
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        return (meta == EtherealGlassType.NORMAL.meta || meta == EtherealGlassType.INVERTED.meta) ? 0 : 255;
+        return (meta == EtherealGlassType.DARK.meta || meta == EtherealGlassType.DARK_INVERTED.meta) ? 255 : 0;
     }
 
     @Override
