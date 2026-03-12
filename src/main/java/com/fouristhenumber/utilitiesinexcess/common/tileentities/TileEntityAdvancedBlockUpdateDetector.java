@@ -51,7 +51,7 @@ public class TileEntityAdvancedBlockUpdateDetector extends TileEntity {
                 xCoord + neighborDirection.offsetX,
                 yCoord + neighborDirection.offsetY,
                 zCoord + neighborDirection.offsetZ);
-            if (Objects.equals(blockOnPreviousTick[i], null)) {
+            if (blockOnPreviousTick[i] == null) {
                 blockOnPreviousTick[i] = blockOnCurrentTick;
             } else if (blockOnCurrentTick != blockOnPreviousTick[i] && !(blockOnCurrentTick == Blocks.redstone_wire)) {
                 sendRedstonePulse();
