@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "utilitiesinexcess:blocks/chandelier" }
+    "meta=0": { "model": "utilitiesinexcess:blocks/chandelier" },
+    "meta=1": { "model": "utilitiesinexcess:blocks/chandelier_copper" },
+    "meta=2": { "model": "utilitiesinexcess:blocks/chandelier_redstone" },
+    "meta=3": { "model": "utilitiesinexcess:blocks/chandelier_soul" }
   }
 }

@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "utilitiesinexcess:blocks/giga_torch"}
+    "meta=0": { "model": "utilitiesinexcess:blocks/giga_torch"}
   }
 }

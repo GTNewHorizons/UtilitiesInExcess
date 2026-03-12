@@ -7,13 +7,18 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -26,6 +31,7 @@ public class BlockChandelier extends BlockContainer {
         setBlockName("chandelier");
         setHardness(0.0F);
         setLightLevel(0.9375F); // 15 light level
+        setStepSound(soundTypeWood);
     }
 
     @Override
@@ -54,15 +60,33 @@ public class BlockChandelier extends BlockContainer {
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World worldIn, int x, int y, int z, int side) {
+    public boolean canPlaceBlockAt(World worldIn, int x, int y, int z) {
         return worldIn.isSideSolid(x, y + 1, z, DOWN);
+    }
+
+    @Override
+    public boolean canPlaceBlockOnSide(World worldIn, int x, int y, int z, int side) {
+        return canPlaceBlockAt(worldIn, x, y, z);
     }
 
     @Override
     public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
         if (!this.canPlaceBlockAt(worldIn, x, y, z) && worldIn.getBlock(x, y, z) == this) {
-            this.dropBlockAsItem(worldIn, x, y, z, 0, 0);
+            this.dropBlockAsItem(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z), 0);
             worldIn.setBlockToAir(x, y, z);
+        }
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        for (int i = 0; i < 4; i++) {
+            list.add(new ItemStack(itemIn, 1, i));
         }
     }
 
@@ -70,6 +94,18 @@ public class BlockChandelier extends BlockContainer {
 
         public ItemBlockChandelier(Block block) {
             super(block);
+            this.setHasSubtypes(true);
+            this.setMaxDamage(0);
+        }
+
+        @Override
+        public int getMetadata(int damage) {
+            return damage;
+        }
+
+        @Override
+        public String getUnlocalizedName(ItemStack stack) {
+            return this.getUnlocalizedName() + "." + stack.getItemDamage();
         }
 
         @Override
