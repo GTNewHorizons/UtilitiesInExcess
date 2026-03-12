@@ -230,7 +230,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
                 .tooltipDynamic(
                     tt -> tt.add(
                         StatCollector.translateToLocalFormatted(
-                            "gui.energy.tooltip",
+                            "gui.tooltip.energy-max",
                             formatNumber(energySyncer.getIntValue()),
                             formatNumber(maxEnergySyncer.getIntValue())))));
 
@@ -246,7 +246,9 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
 
         panel.childIf(
             showGenerationRate(),
-            IKey.dynamic(() -> (multSyncer.getIntValue() * rftSyncer.getIntValue() + " RF/t"))
+            IKey.dynamic(
+                () -> (multSyncer.getIntValue() * rftSyncer.getIntValue()
+                    + StatCollector.translateToLocal("gui.tooltip.energy-tick")))
                 .asWidget()
                 .pos(10, 62));
 

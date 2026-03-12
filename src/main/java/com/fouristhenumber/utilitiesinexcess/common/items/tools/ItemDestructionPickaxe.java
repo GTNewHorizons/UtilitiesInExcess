@@ -12,10 +12,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
 import akka.japi.Pair;
 
-public class ItemDestructionPickaxe extends ItemPickaxe {
+public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
 
     public ItemDestructionPickaxe() {
         super(ToolMaterial.EMERALD);

@@ -13,8 +13,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
-public class ItemAntiParticulateShovel extends ItemSpade {
+public class ItemAntiParticulateShovel extends ItemSpade implements ITranslucentItem {
 
     public ItemAntiParticulateShovel() {
         super(ToolMaterial.EMERALD);

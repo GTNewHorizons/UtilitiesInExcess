@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 public class BlockDrum extends BlockContainer {
 
@@ -137,6 +138,21 @@ public class BlockDrum extends BlockContainer {
         world.spawnEntityInWorld(entityItem);
         world.removeTileEntity(x, y, z);
         super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
     public static class ItemBlockDrum extends ItemBlock implements IFluidContainerItem {

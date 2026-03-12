@@ -38,6 +38,10 @@ public class ItemConfig {
     @Config.DefaultInt(49)
     public static int superArchitectsWandBuildLimit;
 
+    @Config.DefaultInt(100)
+    @Config.Comment("[GT5U] Durability damage dealt to Trowels per block placed by the Architect's Wand. (Set to 0 to disable)")
+    public static int damageTrowelWithArchitectsWand;
+
     @Config.DefaultBoolean(true)
     public static boolean enableBedrockium;
 
