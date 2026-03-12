@@ -18,6 +18,10 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableFloatingBlock;
 
+    @Config.DefaultBoolean(false)
+    @Config.Comment("If enabled, inverted block will have a similar X-Ray effect to Extra Utilities' Unstable Block.")
+    public static boolean invertedBlockDoesXRay;
+
     @Config.DefaultBoolean(true)
     public static boolean enableColoredBlocks;
 
