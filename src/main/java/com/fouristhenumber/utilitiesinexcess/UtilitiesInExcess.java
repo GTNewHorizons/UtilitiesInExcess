@@ -17,8 +17,10 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -125,6 +127,8 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChestUIE");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+        GameRegistry.registerTileEntity(TileEntityChandelier.class, "TileEntityPendantLightUIE");
+        GameRegistry.registerTileEntity(TileEntityGigaTorch.class, "TileEntityGigaTorchUIE");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
         GameRegistry
             .registerTileEntity(TileEntityAdvancedBlockUpdateDetector.class, "TileEntityAdvancedBlockUpdateDetector");

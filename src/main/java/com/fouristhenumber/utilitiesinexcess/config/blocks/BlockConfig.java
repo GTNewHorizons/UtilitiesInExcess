@@ -165,6 +165,36 @@ public class BlockConfig {
         public int rainMufflerRange;
     }
 
+    @Config.Comment("Chandelier Configuration")
+    public static final Chandelier chandelier = new Chandelier();
+
+    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
+    public static class Chandelier {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableChandelier;
+
+        @Config.Comment("The radius a chandelier blocks mob spawns (as a square box)")
+        @Config.DefaultInt(16)
+        @Config.RangeInt(min = 1, max = 256)
+        public int chandelierLightRange;
+    }
+
+    @Config.Comment("Giga Torch Configuration")
+    public static final GigaTorch gigaTorch = new GigaTorch();
+
+    @Config.LangKey("utilitiesinexcess.config.block.giga_torch")
+    public static class GigaTorch {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableGigaTorch;
+
+        @Config.Comment("The radius a giga torch blocks mob spawns (as a square box)")
+        @Config.DefaultInt(64)
+        @Config.RangeInt(min = 1, max = 256)
+        public int gigaTorchRange;
+    }
+
     @Config.Comment("Cursed Earth Configuration")
     public static final Spikes spikes = new Spikes();
 
