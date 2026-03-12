@@ -356,7 +356,7 @@ tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
 tile.advanced_block_update_detector.name=Advanced Block Update Detector
-nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metdata even without a block update. Shift right click any face of the ABUD to toggle scanning on that side.
+nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metadata even without a block update. Shift right click any face of the ABUD to toggle scanning on that side.
 chat.tile.advanced_block_update_detector.toggle=Side %s set to redstone output %s.
 
 tile.drum.name=Drum
