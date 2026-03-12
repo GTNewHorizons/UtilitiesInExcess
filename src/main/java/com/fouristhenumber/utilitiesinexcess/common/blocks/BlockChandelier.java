@@ -17,12 +17,12 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockChandelier extends BlockContainer {
 
