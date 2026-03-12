@@ -2,7 +2,7 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "utilitiesinexcess:blocks/models/chandelier"
+		"0": "utilitiesinexcess:models/chandelier"
 	},
 	"elements": [
 		{
