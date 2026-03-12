@@ -23,7 +23,6 @@ public class BlockPendantLight extends BlockContainer {
     public BlockPendantLight() {
         super(Material.circuits);
         setBlockName("pendant_light");
-        setBlockTextureName("utilitiesinexcess:pendant_light");
         setHardness(0.0F);
         setLightLevel(0.9375F); // 15 light level
     }

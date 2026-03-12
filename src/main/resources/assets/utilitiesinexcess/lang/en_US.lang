@@ -478,7 +478,7 @@ nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there
 
 tile.pendant_light.name=Pendant Light
 tile.pendant_light.desc=%d block radius (square)
-nei.infopage.uie.pendant_light.1=A torch that prevents natural mob spawning in range. Spawners are not affected. Must hang from block
+nei.infopage.uie.pendant_light.1=A torch that prevents natural mob spawning in range. Spawners are not affected. Must hang from a block.
 
 tile.giga_torch.name=Giga Torch
 tile.giga_torch.desc=%d block radius (square)
