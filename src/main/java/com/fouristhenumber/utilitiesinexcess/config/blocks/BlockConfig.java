@@ -165,19 +165,19 @@ public class BlockConfig {
         public int rainMufflerRange;
     }
 
-    @Config.Comment("Pendant Light Configuration")
-    public static final PendantLight pendantLight = new PendantLight();
+    @Config.Comment("Chandelier Configuration")
+    public static final Chandelier chandelier = new Chandelier();
 
-    @Config.LangKey("utilitiesinexcess.config.block.pendant_light")
-    public static class PendantLight {
+    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
+    public static class Chandelier {
 
         @Config.DefaultBoolean(true)
-        public boolean enablePendantLight;
+        public boolean enableChandelier;
 
-        @Config.Comment("The radius a pendant light blocks mob spawns (as a square box)")
+        @Config.Comment("The radius a chandelier blocks mob spawns (as a square box)")
         @Config.DefaultInt(16)
         @Config.RangeInt(min = 1, max = 256)
-        public int pendantLightRange;
+        public int chandelierLightRange;
     }
 
     @Config.Comment("Giga Torch Configuration")

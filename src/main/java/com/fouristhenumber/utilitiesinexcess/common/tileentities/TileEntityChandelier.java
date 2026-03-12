@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
-public class TileEntityPendantLight extends TileEntity {
+public class TileEntityChandelier extends TileEntity {
 
     @Override
     public boolean canUpdate() {
@@ -17,7 +17,7 @@ public class TileEntityPendantLight extends TileEntity {
     public void validate() {
         super.validate();
         UtilitiesInExcess.proxy.mobSpawnBlockChecks
-            .put(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, BlockConfig.pendantLight.pendantLightRange);
+            .put(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, BlockConfig.chandelier.chandelierLightRange);
     }
 
     // removed or unloaded

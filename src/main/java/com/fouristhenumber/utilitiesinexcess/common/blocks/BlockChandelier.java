@@ -11,25 +11,26 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPendantLight;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
-public class BlockPendantLight extends BlockContainer {
+public class BlockChandelier extends BlockContainer {
 
-    public BlockPendantLight() {
+    public BlockChandelier() {
         super(Material.circuits);
-        setBlockName("pendant_light");
+        setBlockName("chandelier");
         setHardness(0.0F);
         setLightLevel(0.9375F); // 15 light level
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityPendantLight();
+        return new TileEntityChandelier();
     }
 
     @Override
@@ -48,6 +49,11 @@ public class BlockPendantLight extends BlockContainer {
     }
 
     @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        return null;
+    }
+
+    @Override
     public boolean canPlaceBlockOnSide(World worldIn, int x, int y, int z, int side) {
         return worldIn.isSideSolid(x, y + 1, z, DOWN);
     }
@@ -60,9 +66,9 @@ public class BlockPendantLight extends BlockContainer {
         }
     }
 
-    public static class ItemBlockPendantLight extends ItemBlock {
+    public static class ItemBlockChandelier extends ItemBlock {
 
-        public ItemBlockPendantLight(Block block) {
+        public ItemBlockChandelier(Block block) {
             super(block);
         }
 
@@ -70,7 +76,7 @@ public class BlockPendantLight extends BlockContainer {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
                 StatCollector
-                    .translateToLocalFormatted("tile.pendant_light.desc", BlockConfig.pendantLight.pendantLightRange));
+                    .translateToLocalFormatted("tile.chandelier.desc", BlockConfig.chandelier.chandelierLightRange));
         }
     }
 }
