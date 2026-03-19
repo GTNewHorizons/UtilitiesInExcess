@@ -356,6 +356,10 @@ utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
+tile.advanced_block_update_detector.name=Advanced Block Update Detector
+nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metadata even without a block update. Shift right click any face of the ABUD to toggle scanning on that side.
+chat.tile.advanced_block_update_detector.toggle=Side %s set to redstone output %s.
+
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL
@@ -472,6 +476,17 @@ nei.infopage.uie.temporal_gate.2=No monsters will spawn to harass you, and there
 nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension to enter. Right-click the portal in the End of Time to return to where you came from, or shift-right-click it to return to the Overworld's spawn point.
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
+
+tile.chandelier.0.name=Chandelier
+tile.chandelier.1.name=Copper Chandelier
+tile.chandelier.2.name=Redstone Chandelier
+tile.chandelier.3.name=Soul Chandelier
+tile.chandelier.desc=%d block radius (square)
+nei.infopage.uie.chandelier.1=A torch that prevents natural mob spawning in range. Spawners are not affected. Must hang from a block.
+
+tile.giga_torch.name=Giga Torch
+tile.giga_torch.desc=%d block radius (square)
+nei.infopage.uie.giga_torch.1=A torch that prevents natural mob spawning in range. Spawners are not affected.
 
 tile.trading_post.name=Trading Post
 tile.trading_post.villager_count=Found %,d Villagers

@@ -79,6 +79,9 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
 
         sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
+        sendInfoPage(
+            "<utilitiesinexcess:advanced_block_update_detector>",
+            "nei.infopage.uie.advanced.block_update_detector.1");
 
         sendInfoPage("<utilitiesinexcess:rain_muffler>", "nei.infopage.uie.rain_muffler.1");
         sendInfoPage("<utilitiesinexcess:sound_muffler>", "nei.infopage.uie.sound_muffler.1");
@@ -196,6 +199,8 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.2");
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
 
+        sendInfoPage("<utilitiesinexcess:chandelier>", "nei.infopage.uie.chandelier.1");
+        sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
     }
 
