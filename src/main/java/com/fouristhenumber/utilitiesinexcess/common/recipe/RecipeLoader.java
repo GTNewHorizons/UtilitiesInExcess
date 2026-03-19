@@ -852,7 +852,11 @@ public class RecipeLoader {
     }
 
     private static void loadGlassRecipes() {
-        // TODO: Smooth Glass reliant on "sandy glass"
+        // Smooth Glass
+        addFurnaceRecipe(
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(8, 3),
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            0.5F);
 
         // Rimmed Glass
         addShapedRecipe(
