@@ -359,17 +359,15 @@ public class RecipeLoader {
         // Temporal Gate
         addShapedRecipe(
             ModBlocks.END_OF_TIME_PORTAL,
-            "qgq",
-            "geg",
-            "qcq",
+            "qeq",
+            "ece",
+            "qeq",
             'q',
-            Blocks.quartz_block, // TODO use burnt quartz replacement instead?
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
             'e',
-            Items.ender_pearl,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 11),
             'c',
-            Items.clock,
-            'g',
-            Blocks.glass_pane);
+            Items.clock);
 
         // Trading Post
         addShapedRecipe(
