@@ -899,7 +899,7 @@ public class RecipeLoader {
             'o',
             Blocks.obsidian);
 
-        // Latticed Glass
+        // Vortex Glass
         addShapedRecipe(
             ModBlocks.DECORATIVE_GLASS.newItemStack(5, 6),
             " g ",
@@ -956,6 +956,14 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_GLASS.newItemStack(1, 10),
             'o',
             Blocks.obsidian);
+
+        // Latticed Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(4, 12),
+            "gg",
+            "gg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 2));
     }
 
     private static void loadColoredBlockRecipes() {
