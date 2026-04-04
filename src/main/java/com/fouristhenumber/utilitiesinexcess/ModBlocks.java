@@ -6,8 +6,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockChandelier;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
@@ -18,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
@@ -139,6 +142,7 @@ public enum ModBlocks {
     NETHER_STAR_GENERATOR_PLUS(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator_plus", 8), "nether_star_generator_plus"),
     NETHER_STAR_GENERATOR_PLUSPLUS(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator_plusplus", 64), "nether_star_generator_plusplus"),
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), "block_update_detector"),
+    ADVANCED_BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockAdvancedUpdateDetector(), "advanced_block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
@@ -153,6 +157,8 @@ public enum ModBlocks {
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
+    CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
+    GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     ; // leave trailing semicolon
     // spotless:on
 

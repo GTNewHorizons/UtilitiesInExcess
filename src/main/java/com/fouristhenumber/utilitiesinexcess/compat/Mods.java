@@ -14,6 +14,7 @@ public enum Mods {
     CraftTweaker("MineTweaker3"),
     FindIt("findit"),
     Tinkers("TConstruct"),
+    ForgeMicroBlock("ForgeMicroblock"),
     Backhand("backhand"),
     GT("gregtech_nh")
     ;
