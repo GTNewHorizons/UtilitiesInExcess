@@ -1,0 +1,118 @@
+package com.fouristhenumber.utilitiesinexcess.common.items;
+
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
+import org.lwjgl.input.Keyboard;
+
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
+
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
+public class ItemGlove extends Item implements IBauble {
+
+    public ItemGlove() {
+        super();
+        this.setTextureName("utilitiesinexcess:glove");
+        this.setUnlocalizedName("glove");
+        this.setMaxStackSize(1);
+    }
+
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
+        return true;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        super.addInformation(stack, player, tooltip, p_77624_4_);
+        tooltip.add(
+            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                "item.glove.desc.1",
+                EnumChatFormatting.WHITE + "["
+                    + EnumChatFormatting.GOLD
+                    + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
+                    + EnumChatFormatting.WHITE
+                    + "]"
+                    + EnumChatFormatting.AQUA));
+
+        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.2"));
+        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.3"));
+    }
+
+    public IIcon topIcon;
+    public IIcon bottomIcon;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister aIconRegister) {
+        super.registerIcons(aIconRegister);
+        topIcon = aIconRegister.registerIcon("utilitiesinexcess:glove_top");
+        bottomIcon = aIconRegister.registerIcon("utilitiesinexcess:glove_bottom");
+    }
+
+    public static boolean isUsingGlove(EntityPlayer player) {
+        if (player == null) return false;
+
+        return (player.getHeldItem() != null && player.getHeldItem()
+            .getItem() instanceof ItemGlove)
+            || (UIEUtils.hasBauble(player, ItemGlove.class) && UtilitiesInExcess.proxy.GLOVE_KEYBIND.isKeyDown(player));
+    }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 1;
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public BaubleType getBaubleType(ItemStack itemstack) {
+        return BaubleType.UNIVERSAL;
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public void onEquipped(ItemStack itemstack, EntityLivingBase entity) {
+
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public void onUnequipped(ItemStack itemstack, EntityLivingBase entity) {
+
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+        return true;
+    }
+
+    @Optional.Method(modid = "Baubles")
+    @Override
+    public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+        return true;
+    }
+}
