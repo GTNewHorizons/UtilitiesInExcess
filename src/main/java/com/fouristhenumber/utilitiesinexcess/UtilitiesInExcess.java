@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityRetrievalNode;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -152,6 +153,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
         GameRegistry.registerTileEntity(TileEntityTransferPipe.class, "TileEntityTransferPipeUIE");
+        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
         GameRegistry.registerTileEntity(TileEntityTransferNode.class, "TileEntityTransferNodeUIE");
         GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");
 

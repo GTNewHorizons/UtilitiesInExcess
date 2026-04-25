@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityRetrievalNode;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -18,8 +19,9 @@ public class BlockRetrievalNode extends BlockTransferNodeBase {
     }
 
     // TODO: new TE
+    // yes zir!
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityTransferNode();
+        return new TileEntityRetrievalNode();
     }
 }

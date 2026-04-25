@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.StandardWalker;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
@@ -8,7 +9,6 @@ import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.BreadthWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.DepthWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ITransferWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.RoundRobinWalker;
 
 public enum TransferUpgrade {
 
@@ -22,7 +22,7 @@ public enum TransferUpgrade {
     ENDER_RECEIVER(null),
     SEARCH_DEPTH(UpgradeType.WALKER),
     SEARCH_BREADTH(UpgradeType.WALKER),
-    SEARCH_ROUND_ROBIN(UpgradeType.WALKER),
+    SEARCH_ROUND_ROBIN(null),
     ADV_FILTER(UpgradeType.FILTER),
 
     ;
@@ -55,8 +55,7 @@ public enum TransferUpgrade {
         return switch (this) {
             case SEARCH_DEPTH -> new DepthWalker();
             case SEARCH_BREADTH -> new BreadthWalker();
-            case SEARCH_ROUND_ROBIN -> new RoundRobinWalker();
-            default -> null;
+            default -> new StandardWalker();
         };
     }
 

@@ -1,9 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -23,10 +25,12 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
+import java.util.ArrayList;
+
 public class TileEntityTransferNode extends TileEntityTransferNodeBase
     implements ISidedInventory, IGuiHolder<PosGuiData> {
 
-    ItemStack buffer;
+    ItemStack[] buffer=new ItemStack[getSizeInventory()];
     IInventory connectedInventory;
 
     @Override
@@ -45,10 +49,20 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
         } else return te instanceof IInventory;
     }
 
+    public TileEntityTransferNode()
+    {
+        System.out.println("CALLED");
+        Walker.setOriginal(this);
+    }
+
+    //int tick=0;
     @Override
     public void updateEntity() {
+        //tick+=2+(2*0);
+        //if (tick<=20) {return;}
+        //tick=0;
         if (this.worldObj.isRemote || this.worldObj.getTotalWorldTime() % 20 != 0) return;
-        if (buffer != null && buffer.stackSize >= 64) return;
+        if (buffer[0] != null && buffer[0].stackSize >= 64) return;
         if (connectedInventory == null) {
             ForgeDirection facing = ForgeDirection.getOrientation(getBlockMetadata());
             TileEntity neighbor = worldObj
@@ -58,18 +72,86 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
             }
         }
         if (connectedInventory != null) importItems();
+
+
+        Walker.step();
+
+        TileEntity pipe=Walker.getCurrentTileEntity();
+
+        ArrayList<TileEntity> ents=Walker.getItemEntities();
+
+        for (TileEntity entity : ents)
+        {
+            boolean side=true;
+            if (pipe instanceof TileEntityTransferNodeBase node) {
+                side = node.canConnectFrom(Walker.getDirectionFromCurrent(entity));
+            }
+            if (side)
+            {
+                IInventory iEntity=(IInventory)entity;
+                ArrayList<Integer> validSlots=new ArrayList<>(0);
+                for (int i = 0; i < iEntity.getSizeInventory(); i++) {
+                    ItemStack slot = iEntity.getStackInSlot(i);
+                    if (buffer[0]==null || slot==null || (slot.isItemEqual(buffer[0]) && slot.getMaxStackSize()-slot.stackSize==0)) {continue;}
+                    validSlots.add(i);
+
+
+                }
+                for (int i : validSlots)
+                {
+                    ItemStack slot = iEntity.getStackInSlot(i);
+                    int remaining=slot.getMaxStackSize()-slot.stackSize;
+                    if (buffer[0].stackSize <= remaining)
+                    {
+                        slot.stackSize+=buffer[0].stackSize;
+                        buffer[0]=null;
+                        iEntity.setInventorySlotContents(i,slot);
+                        break;
+                    }
+                    slot.stackSize+=remaining;
+                    buffer[0].stackSize-=remaining;
+                    iEntity.setInventorySlotContents(i,slot);
+                }
+                for (int i = 0; i < iEntity.getSizeInventory(); i++) {
+                    ItemStack slot = iEntity.getStackInSlot(i);
+                    if (buffer[0]==null || (slot!=null && !buffer[0].isItemEqual(buffer[0]))) {continue;}
+                    if (slot==null) { slot=new ItemStack(buffer[0].getItem(),0);}
+                    slot.stackSize+=buffer[0].stackSize;
+                    buffer[0]=null;
+                    iEntity.setInventorySlotContents(i,slot);
+                }
+
+
+                if (true) //TODO: LINK WITH Round Robin
+                {
+                    Walker.reset();
+                    break;
+                }
+
+            }
+        }
+
+
+
+
+
+
+
     }
 
     public void importItems() {
         for (int slot = 0; slot < connectedInventory.getSizeInventory(); slot++) {
             ItemStack stackInSlot = connectedInventory.getStackInSlot(slot);
             if (stackInSlot != null) {
-                if (buffer == null) {
-                    buffer = stackInSlot.splitStack(1);
+                if (buffer[0] == null) {
+                    buffer[0] = stackInSlot.splitStack(1);
+                    if (stackInSlot.stackSize <= 0) {
+                        connectedInventory.setInventorySlotContents(slot, null);
+                    }
                     break;
-                } else if (buffer.isItemEqual(stackInSlot)) {
+                } else if (buffer[0].isItemEqual(stackInSlot)) {
                     stackInSlot.splitStack(1);
-                    buffer.stackSize += 1;
+                    buffer[0].stackSize += 1;
                     if (stackInSlot.stackSize <= 0) {
                         connectedInventory.setInventorySlotContents(slot, null);
                     }
@@ -78,31 +160,53 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
             }
         }
     }
+    //TODO: SWITCH ALL CODE TO BASENODE SO EVERY FILE HAS THIS SAVING AND UPGRADES
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (buffer[i]==null) {continue;}
+            nbt.setTag(String.valueOf(i),buffer[i].writeToNBT(new NBTTagCompound()));
+        }
+    }
 
     @Override
-    public int getSizeInventory() {
-        return 1;
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (!nbt.hasKey(String.valueOf(i))) {continue;}
+            buffer[i]= ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(String.valueOf(i)));
+            this.setInventorySlotContents(i,buffer[i]);
+        }
+    }
+
+    @Override
+    public int getSizeInventory() { // 1(buffer[0])+6(upgrade slots)
+        return 7;
     }
 
     @Override
     public ItemStack getStackInSlot(int slotIn) {
-        return buffer;
+        return buffer[slotIn];
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        if (buffer == null) return null;
-        return buffer.splitStack(count);
+        if (buffer[index] == null) return null;
+        return buffer[index].splitStack(count);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int index) {
-        return buffer;
+        return buffer[index];
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        buffer = stack;
+        buffer[index] = stack;
+        this.markDirty();
     }
 
     @Override
@@ -139,7 +243,8 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
 
-        SlotGroup slotGroup = new SlotGroup("transfer_node_buffer", 1);
+        SlotGroup slotGroup = new SlotGroup("transfer_node_buffer[0]", 1);
+        SlotGroup slotGroup1 = new SlotGroup("transfer_node_upgrades", 1);
 
         ModularPanel panel = new ModularPanel("panel");
         panel.bindPlayerInventory();
@@ -156,6 +261,14 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
                         .marginBottom(-15)));
 
         IItemHandler itemHandler = new InvWrapper(this);
+
+
+        Flow flow=Flow.row();
+        flow.pos(34,60).size(108,18);
+        for (int i = 0; i < 6; i++) {
+            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i+1).slotGroup(slotGroup1)));
+        }
+        panel.child(flow);
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
 
         panel.child(

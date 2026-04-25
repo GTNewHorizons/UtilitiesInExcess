@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
-
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.ITransferWalker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -71,4 +72,6 @@ public class TileEntityTransferNodeBase extends TileEntity implements ITransferN
         return side.getOpposite()
             .ordinal() != blockMetadata;
     }
+
+    public ITransferWalker Walker=TransferUpgrade.SEARCH_BREADTH.getWalker();
 }
