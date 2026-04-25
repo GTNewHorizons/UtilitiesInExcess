@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -40,8 +41,7 @@ public class StandardWalker extends ITransferWalker {
         {
             if (tile==null || ignore.contains(tile)) {continue;}
 
-            Package apple=tile.getClass().getPackage();
-            if (apple!=null&&apple.getName().equals("com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer")) //somehow gonna need to kill the chest from the node(s) itself..
+            if (tile instanceof ITransferNetworkComponent) //should.. work
             {
                 extend.add(tile); // they i think used a bias random..
                 continue;

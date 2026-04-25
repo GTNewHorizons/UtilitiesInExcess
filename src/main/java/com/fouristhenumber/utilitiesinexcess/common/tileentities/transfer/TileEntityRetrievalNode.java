@@ -65,10 +65,12 @@ public class TileEntityRetrievalNode extends TileEntityTransferNode
         for (TileEntity entity : ents)
         {
             boolean side=true;
-            if (pipe instanceof TileEntityTransferNodeBase )
-            {
-                side=((TileEntityTransferNodeBase)pipe).canConnectFrom(Walker.getDirectionFromCurrent(entity));
+
+            if (pipe instanceof TileEntityTransferNodeBase node) {
+                side = node.canConnectFrom(Walker.getDirectionFromCurrent(entity));
             }
+
+
             if (side)
             {
                 IInventory iEntity=(IInventory)entity;

@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -82,9 +83,8 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
         for (TileEntity entity : ents)
         {
             boolean side=true;
-            if (pipe instanceof TileEntityTransferNodeBase )
-            {
-                side=((TileEntityTransferNodeBase)pipe).canConnectFrom(Walker.getDirectionFromCurrent(entity));
+            if (pipe instanceof TileEntityTransferNodeBase node) {
+                side = node.canConnectFrom(Walker.getDirectionFromCurrent(entity));
             }
             if (side)
             {
@@ -162,22 +162,22 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
     }
     //TODO: SWITCH ALL CODE TO BASENODE SO EVERY FILE HAS THIS SAVING AND UPGRADES
     @Override
-    public void writeToNBT(NBTTagCompound shrug)
+    public void writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(shrug);
+        super.writeToNBT(nbt);
         for (int i = 0; i < getSizeInventory(); i++) {
             if (buffer[i]==null) {continue;}
-            shrug.setTag(String.valueOf(i),buffer[i].writeToNBT(new NBTTagCompound()));
+            nbt.setTag(String.valueOf(i),buffer[i].writeToNBT(new NBTTagCompound()));
         }
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound shrug)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(shrug);
+        super.readFromNBT(nbt);
         for (int i = 0; i < getSizeInventory(); i++) {
-            if (!shrug.hasKey(String.valueOf(i))) {continue;}
-            buffer[i]= ItemStack.loadItemStackFromNBT(shrug.getCompoundTag(String.valueOf(i)));
+            if (!nbt.hasKey(String.valueOf(i))) {continue;}
+            buffer[i]= ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(String.valueOf(i)));
             this.setInventorySlotContents(i,buffer[i]);
         }
     }
@@ -262,9 +262,13 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
 
         IItemHandler itemHandler = new InvWrapper(this);
 
+
+        Flow flow=Flow.row();
+        flow.pos(34,60).size(108,18);
         for (int i = 0; i < 6; i++) {
-            panel.child(new ItemSlot().slot(new ModularSlot(itemHandler,i+1).slotGroup(slotGroup1)).pos(34+i*18,60));
+            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i+1).slotGroup(slotGroup1)));
         }
+        panel.child(flow);
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
 
         panel.child(
