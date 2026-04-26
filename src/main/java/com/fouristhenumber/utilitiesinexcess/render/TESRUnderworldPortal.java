@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -10,21 +9,21 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.DirectTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
 
 public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
 
     public static final IModelCustom FRAME = AdvancedModelLoader
         .loadModel(new ResourceLocation(UtilitiesInExcess.MODID, "models/underworld_portal/frame.obj"));
 
-    private VertexBuffer core;
+    private IVertexArrayObject core;
 
     private void initCoreVBO() {
-        Tessellator tessellator = TessellatorManager.startCapturingAndGet();
+        final DirectTessellator tessellator = DirectTessellator.startCapturing();
 
         tessellator.startDrawingQuads();
 
@@ -60,7 +59,7 @@ public class TESRUnderworldPortal extends TileEntitySpecialRenderer {
 
         tessellator.draw();
 
-        core = TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION);
+        core = DirectTessellator.stopCapturingToVBO(VertexBufferType.IMMUTABLE);
     }
 
     @Override
