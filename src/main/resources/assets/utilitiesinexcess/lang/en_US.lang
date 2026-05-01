@@ -53,15 +53,15 @@ tile.floating_block.name=Floating Block
 nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.1.name=Ineffable Glass
 tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.4.name=Ineffable Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
-nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block.
-nei.infopage.uie.ethereal_glass.1=Placeholder
+nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
-nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players.
-nei.infopage.uie.ethereal_glass.4=Placeholder
+nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. Ineffable Glass (Inverted) is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.5=Dark Ethereal Glass (Inverted) has the exact opposite functionality as Dark Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. It still blocks all light.
 
 tile.decorative_glass.0.name=Smooth Glass
@@ -70,12 +70,13 @@ tile.decorative_glass.2.name=Bricked Glass
 tile.decorative_glass.3.name=Creepy Glass
 tile.decorative_glass.4.name=Gilded Glass
 tile.decorative_glass.5.name=Obsidian Glass
-tile.decorative_glass.6.name=Latticed Glass
+tile.decorative_glass.6.name=Vortex Glass
 tile.decorative_glass.7.name=Glowing Glass
 tile.decorative_glass.8.name=Beloved Glass
 tile.decorative_glass.9.name=Tiled Glass
 tile.decorative_glass.10.name=Dark Glass
 tile.decorative_glass.11.name=Reinforced Dark Glass
+tile.decorative_glass.12.name=Latticed Glass
 
 tile.decorative_block.0.name=Diamond-Etched Computational Matrix
 tile.decorative_block.1.name=Sand-Infused Endstone
@@ -229,11 +230,11 @@ nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on t
 item.heavenly_ring.name=Heavenly Ring
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
 nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
-item.heavenly_ring.type.0=No wings
-item.heavenly_ring.type.1=type 1
-item.heavenly_ring.type.2=type 2
-item.heavenly_ring.type.3=type 3
-item.heavenly_ring.type.4=type 4
+item.heavenly_ring.type.0=Angelic
+item.heavenly_ring.type.1=Demonic
+item.heavenly_ring.type.2=Fae
+item.heavenly_ring.type.3=Metallic
+item.heavenly_ring.type.4=Invisible
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can

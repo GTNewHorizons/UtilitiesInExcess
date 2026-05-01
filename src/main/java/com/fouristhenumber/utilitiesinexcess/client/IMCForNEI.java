@@ -167,9 +167,13 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.4");
         sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.5");
 
-        sendInfoPage("<utilitiesinexcess:ethereal_glass>", "nei.infopage.uie.ethereal_glass.0");
+        sendInfoPage(
+            "<utilitiesinexcess:ethereal_glass>,<utilitiesinexcess:ethereal_glass:1>",
+            "nei.infopage.uie.ethereal_glass.0");
         sendInfoPage("<utilitiesinexcess:ethereal_glass:2>", "nei.infopage.uie.ethereal_glass.2");
-        sendInfoPage("<utilitiesinexcess:ethereal_glass:3>", "nei.infopage.uie.ethereal_glass.3");
+        sendInfoPage(
+            "<utilitiesinexcess:ethereal_glass:3>,<utilitiesinexcess:ethereal_glass:4>",
+            "nei.infopage.uie.ethereal_glass.3");
         sendInfoPage("<utilitiesinexcess:ethereal_glass:5>", "nei.infopage.uie.ethereal_glass.5");
 
         sendInfoPage(

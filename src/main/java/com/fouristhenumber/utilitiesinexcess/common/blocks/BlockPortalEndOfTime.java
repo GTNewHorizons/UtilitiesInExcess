@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,9 @@ import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,6 +33,8 @@ import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockPortalEndOfTime extends Block {
 
@@ -39,6 +44,31 @@ public class BlockPortalEndOfTime extends Block {
         setBlockName("temporal_gate");
         setBlockTextureName("utilitiesinexcess:temporal_gate");
         setResistance(5);
+    }
+
+    IIcon[] icons;
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        icons = new IIcon[6];
+        icons[0] = reg.registerIcon(this.getTextureName() + "_bottom");
+        icons[1] = reg.registerIcon(this.getTextureName() + "_top");
+        icons[2] = reg.registerIcon(this.getTextureName() + "_north");
+        icons[3] = reg.registerIcon(this.getTextureName() + "_south");
+        icons[4] = reg.registerIcon(this.getTextureName() + "_west");
+        icons[5] = reg.registerIcon(this.getTextureName() + "_east");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return icons[side];
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
+        return icons[side];
     }
 
     @Override

@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockDecorativeGlass extends BlockGlass {
 
-    private static final int META_VALUES = 12;
+    private static final int META_VALUES = 13;
 
     public BlockDecorativeGlass() {
         super(Material.glass, false);
