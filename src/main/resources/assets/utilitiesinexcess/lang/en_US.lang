@@ -233,8 +233,8 @@ item.heavenly_ring_fairy.name=Heavenly Ring (Fairy)
 item.heavenly_ring_metal.name=Heavenly Ring (Metallic)
 item.heavenly_ring_magic.name=Heavenly Ring (Magical)
 item.heavenly_ring.desc=Use in hand to cycle through different appearances.
-nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
-nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
+nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
 
 item.heavenly_ring_feather.type.0=Angelic
 item.heavenly_ring_feather.type.1=Storm
