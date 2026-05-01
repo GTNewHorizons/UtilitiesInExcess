@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft;
 
+import java.util.Objects;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,15 +76,16 @@ public class MixinModelBiped_Baubles {
         if (ring == null) {
             ring = UIEUtils.getBauble(player, ItemHeavenlyRing.class);
         }
-        // meta 4 is the invisible ring, no rendering
-        if (ring != null && ring.getItemDamage() != 4) {
+        if (ring != null) {
             final ItemStack finalRing = ring;
             uie$heavenlyRingWing = HeavenlyRingRenderer
                 .getNextAngle(uie$heavenlyRingWing, player.capabilities.isFlying);
-            ModelPartRenderHelper.renderBipedPart(
-                p_78088_7_,
-                thisObject.bipedBody,
-                () -> { HeavenlyRingRenderer.render(finalRing.getItemDamage(), uie$heavenlyRingWing); });
+            ModelPartRenderHelper.renderBipedPart(p_78088_7_, thisObject.bipedBody, () -> {
+                HeavenlyRingRenderer.render(
+                    (ItemHeavenlyRing) Objects.requireNonNull(finalRing.getItem()),
+                    finalRing.getItemDamage(),
+                    uie$heavenlyRingWing);
+            });
         }
     }
 }
