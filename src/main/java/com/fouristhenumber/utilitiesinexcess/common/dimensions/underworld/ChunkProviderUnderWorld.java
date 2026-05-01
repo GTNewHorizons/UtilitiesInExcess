@@ -58,7 +58,7 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
     private final NoiseSampler floor, ceiling, feature, difficulty, mushrooms, boulders;
 
     private final MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
-    private final WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
+    private final WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom(-1);
     private final WorldGenBoulders boulderGen = new WorldGenBoulders(
         Arrays.asList(Blocks.air, Blocks.stone, Blocks.cobblestone),
         Blocks.cobblestone);
@@ -342,7 +342,7 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
         return feature >= -0.5 && feature <= 0.5;
     }
 
-    /// Checks what ceatures can spawn on the given block
+    /// Checks what creatures can spawn on the given block
     @Override
     public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, int x, int y, int z) {
         BiomeGenBase biome = this.world.getBiomeGenForCoords(x, z);

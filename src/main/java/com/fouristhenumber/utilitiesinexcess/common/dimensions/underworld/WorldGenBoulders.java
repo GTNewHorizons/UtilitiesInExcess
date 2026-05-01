@@ -19,6 +19,8 @@ public class WorldGenBoulders extends WorldGenerator {
     private final Block block;
 
     public WorldGenBoulders(List<Block> whitelist, Block block) {
+        super(true);
+
         this.whitelist = whitelist;
         this.block = block;
     }
