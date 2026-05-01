@@ -33,14 +33,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemHeavenlyRing extends Item implements IBauble {
 
-    private static final int RING_COUNT = 5;
+    private final int RING_COUNT;
+    private final String SUFFIX;
 
-    private static IIcon[] itemIcons = new IIcon[RING_COUNT];
-    public static IIcon[] wingIcons = new IIcon[RING_COUNT];
+    public final IIcon[] wingIcons;
 
-    public ItemHeavenlyRing() {
-        setTextureName("utilitiesinexcess:heavenly_ring");
-        setUnlocalizedName("heavenly_ring");
+    public ItemHeavenlyRing(String suffix, int variants) {
+        RING_COUNT = variants;
+        SUFFIX = suffix;
+
+        wingIcons = new IIcon[RING_COUNT];
+
+        setTextureName("utilitiesinexcess:heavenly_ring_" + suffix);
+        setUnlocalizedName("heavenly_ring_" + suffix);
         setMaxDamage(0);
         setHasSubtypes(true);
         setMaxStackSize(1);
@@ -58,23 +63,16 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
         for (int i = 0; i < RING_COUNT; ++i) {
-            itemIcons[i] = register.registerIcon(this.getIconString() + "." + i);
             wingIcons[i] = register.registerIcon(this.getIconString() + ".wing." + i);
         }
-        this.itemIcon = itemIcons[0];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int meta) {
-        return itemIcons[meta];
+        super.registerIcons(register);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
             EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("item.heavenly_ring.type." + stack.getItemDamage()));
+                + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 

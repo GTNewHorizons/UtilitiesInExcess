@@ -122,7 +122,7 @@ public class RecipeLoader {
 
         // Heavenly Ring
         addShapedRecipe(
-            ModItems.HEAVENLY_RING,
+            ModItems.HEAVENLY_RING_FEATHER,
             "#g#",
             "g*g",
             "igi",

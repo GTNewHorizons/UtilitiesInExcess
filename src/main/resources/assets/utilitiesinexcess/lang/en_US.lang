@@ -227,14 +227,58 @@ nei.infopage.uie.iron_spike.1=Iron spikes will kill enemies that walk on them, d
 nei.infopage.uie.gold_spike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
 nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
-item.heavenly_ring.name=Heavenly Ring
+item.heavenly_ring_feather.name=Heavenly Ring (Feathered)
+item.heavenly_ring_dragon.name=Heavenly Ring (Draconic)
+item.heavenly_ring_fairy.name=Heavenly Ring (Fairy)
+item.heavenly_ring_metal.name=Heavenly Ring (Metallic)
+item.heavenly_ring_magic.name=Heavenly Ring (Magical)
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
 nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
-item.heavenly_ring.type.0=Angelic
-item.heavenly_ring.type.1=Demonic
-item.heavenly_ring.type.2=Fae
-item.heavenly_ring.type.3=Metallic
-item.heavenly_ring.type.4=Invisible
+
+item.heavenly_ring_feather.type.0=Angelic
+item.heavenly_ring_feather.type.1=Storm
+item.heavenly_ring_feather.type.2=Chibi
+item.heavenly_ring_feather.type.3=Phoenix
+item.heavenly_ring_feather.type.4=Swan
+item.heavenly_ring_feather.type.5=Raven
+item.heavenly_ring_feather.type.6=Falcon
+item.heavenly_ring_feather.type.7=Macaw
+
+item.heavenly_ring_dragon.type.0=Ebony Dragon
+item.heavenly_ring_dragon.type.1=Demonic
+item.heavenly_ring_dragon.type.2=Golden Dragon
+item.heavenly_ring_dragon.type.3=Leviathan
+item.heavenly_ring_dragon.type.4=Green
+item.heavenly_ring_dragon.type.5=Flower
+item.heavenly_ring_dragon.type.6=Purple
+item.heavenly_ring_dragon.type.7=Moon
+
+item.heavenly_ring_fairy.type.0=Rainbow
+item.heavenly_ring_fairy.type.1=Pixie
+item.heavenly_ring_fairy.type.2=Monarch
+item.heavenly_ring_fairy.type.3=Lunamoth
+item.heavenly_ring_fairy.type.4=Autumn
+item.heavenly_ring_fairy.type.5=Blacklight
+item.heavenly_ring_fairy.type.6=Jeweled Wasp
+item.heavenly_ring_fairy.type.7=Leaf
+
+item.heavenly_ring_magic.type.0=Invisible
+item.heavenly_ring_magic.type.1=Ice
+item.heavenly_ring_magic.type.2=Fire
+item.heavenly_ring_magic.type.3=Lightning
+item.heavenly_ring_magic.type.4=End
+item.heavenly_ring_magic.type.5=Plasma
+item.heavenly_ring_magic.type.6=Crackling
+item.heavenly_ring_magic.type.7=Jelly
+
+item.heavenly_ring_metal.type.0=Golden
+item.heavenly_ring_metal.type.1=Silver
+item.heavenly_ring_metal.type.2=Copper
+item.heavenly_ring_metal.type.3=Glass
+item.heavenly_ring_metal.type.4=Neonblade
+item.heavenly_ring_metal.type.5=Nanotech
+item.heavenly_ring_metal.type.6=Mayfly
+item.heavenly_ring_metal.type.7=Steampunk
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
