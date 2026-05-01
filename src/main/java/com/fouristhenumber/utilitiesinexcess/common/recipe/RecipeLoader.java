@@ -4,6 +4,7 @@ import static net.minecraft.item.Item.getItemFromBlock;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -120,16 +121,74 @@ public class RecipeLoader {
             'o',
             Blocks.obsidian);
 
-        // Heavenly Ring
+        // Heavenly Rings
         addShapedRecipe(
             ModItems.HEAVENLY_RING_FEATHER,
+            "#f#",
+            "f*f",
+            "ifi",
+            '#',
+            Blocks.glass,
+            'f',
+            Items.feather,
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_DRAGON,
+            "#b#",
+            "b*b",
+            "ibi",
+            '#',
+            Blocks.glass,
+            'b',
+            Items.blaze_powder,
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_FAIRY,
+            "#d#",
+            "p*p",
+            "idi",
+            '#',
+            Blocks.glass,
+            'd',
+            Blocks.yellow_flower,
+            'p',
+            new ItemStack(ItemBlock.getItemFromBlock(Blocks.red_flower), 1, 0),
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_METAL,
             "#g#",
-            "g*g",
+            "t*t",
             "igi",
             '#',
             Blocks.glass,
             'g',
             Items.gold_ingot,
+            't',
+            Items.iron_ingot,
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_MAGIC,
+            "#g#",
+            "r*r",
+            "igi",
+            '#',
+            Blocks.glass,
+            'g',
+            Items.glowstone_dust,
+            'r',
+            Items.redstone,
             '*',
             Items.nether_star,
             'i',
