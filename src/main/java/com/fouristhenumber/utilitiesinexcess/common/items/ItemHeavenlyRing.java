@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -52,11 +53,20 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> itemList) {
-        for (int i = 0; i < RING_COUNT; ++i) {
-            itemList.add(new ItemStack(item, 1, i));
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        int meta = stack.getItemDamage();
+        if (meta == RING_COUNT - 1) {
+            stack.setItemDamage(0);
+        } else {
+            stack.setItemDamage(meta + 1);
         }
+        if (world.isRemote) {
+            player.addChatMessage(
+                new ChatComponentTranslation(
+                    "chat.heavenly_ring_modify",
+                    StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        }
+        return super.onItemRightClick(stack, world, player);
     }
 
     @Override
@@ -73,6 +83,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
         tooltip.add(
             EnumChatFormatting.GRAY
                 + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
+        tooltip.add(StatCollector.translateToLocal("item.heavenly_ring.desc"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
