@@ -74,7 +74,8 @@ public class MixinModelBiped_Baubles {
         if (ring == null) {
             ring = UIEUtils.getBauble(player, ItemHeavenlyRing.class);
         }
-        if (ring != null && ring.getItemDamage() != 0) {
+        // meta 4 is the invisible ring, no rendering
+        if (ring != null && ring.getItemDamage() != 4) {
             final ItemStack finalRing = ring;
             uie$heavenlyRingWing = HeavenlyRingRenderer
                 .getNextAngle(uie$heavenlyRingWing, player.capabilities.isFlying);
