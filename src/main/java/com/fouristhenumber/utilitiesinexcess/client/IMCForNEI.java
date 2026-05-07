@@ -31,16 +31,25 @@ public class IMCForNEI {
             sendInfoPage("utilitiesinexcess:inverted_ingot", "nei.infopage.uie.ticon_inverted");
         }
 
-        sendInfoPage("<utilitiesinexcess:gluttons_axe>", "nei.infopage.uie.gluttons_axe.1");
+        sendInfoPage("<utilitiesinexcess:gourmands_axe>", "nei.infopage.uie.gourmands_axe.1");
         sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "nei.infopage.uie.destruction_pickaxe.1");
         sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "nei.infopage.uie.anti_particulate_shovel.1");
         sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
         sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
+
         sendInfoPage(
             "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
             "nei.infopage.uie.architects_wand.1");
 
+        if (Mods.Backhand.isLoaded()) {
+            sendInfoPage(
+                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
+                "nei.infopage.uie.architects_wand.2");
+            if (Mods.GT.isLoaded()) sendInfoPage(
+                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
+                "nei.infopage.uie.architects_wand.3");
+        }
         sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
 
         sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.1");
@@ -70,6 +79,9 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
 
         sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
+        sendInfoPage(
+            "<utilitiesinexcess:advanced_block_update_detector>",
+            "nei.infopage.uie.advanced.block_update_detector.1");
 
         sendInfoPage("<utilitiesinexcess:rain_muffler>", "nei.infopage.uie.rain_muffler.1");
         sendInfoPage("<utilitiesinexcess:sound_muffler>", "nei.infopage.uie.sound_muffler.1");
@@ -155,9 +167,13 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.4");
         sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.5");
 
-        sendInfoPage("<utilitiesinexcess:ethereal_glass>", "nei.infopage.uie.ethereal_glass.0");
+        sendInfoPage(
+            "<utilitiesinexcess:ethereal_glass>,<utilitiesinexcess:ethereal_glass:1>",
+            "nei.infopage.uie.ethereal_glass.0");
         sendInfoPage("<utilitiesinexcess:ethereal_glass:2>", "nei.infopage.uie.ethereal_glass.2");
-        sendInfoPage("<utilitiesinexcess:ethereal_glass:3>", "nei.infopage.uie.ethereal_glass.3");
+        sendInfoPage(
+            "<utilitiesinexcess:ethereal_glass:3>,<utilitiesinexcess:ethereal_glass:4>",
+            "nei.infopage.uie.ethereal_glass.3");
         sendInfoPage("<utilitiesinexcess:ethereal_glass:5>", "nei.infopage.uie.ethereal_glass.5");
 
         sendInfoPage(
@@ -183,6 +199,8 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.2");
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
 
+        sendInfoPage("<utilitiesinexcess:chandelier>", "nei.infopage.uie.chandelier.1");
+        sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
     }
 

@@ -165,6 +165,19 @@ public class RecipeLoader {
             'p',
             Blocks.sticky_piston);
 
+        // Advanced Block Update Detector
+        addShapedRecipe(
+            ModBlocks.ADVANCED_BLOCK_UPDATE_DETECTOR,
+            "srs",
+            "rbr",
+            "srs",
+            's',
+            Blocks.stone,
+            'r',
+            Blocks.redstone_block,
+            'b',
+            ModBlocks.BLOCK_UPDATE_DETECTOR);
+
         // Trash Can (Items)
         addShapedRecipe(
             ModBlocks.TRASH_CAN_ITEM,
@@ -348,17 +361,15 @@ public class RecipeLoader {
         // Temporal Gate
         addShapedRecipe(
             ModBlocks.END_OF_TIME_PORTAL,
-            "qgq",
-            "geg",
-            "qcq",
+            "qeq",
+            "ece",
+            "qeq",
             'q',
-            Blocks.quartz_block, // TODO use burnt quartz replacement instead?
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
             'e',
-            Items.ender_pearl,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 11),
             'c',
-            Items.clock,
-            'g',
-            Blocks.glass_pane);
+            Items.clock);
 
         // Trading Post
         addShapedRecipe(
@@ -788,6 +799,17 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
+        // Ineffable Glass
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            "ggg",
+            "gig",
+            "ggg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
         // Dark Ethereal Glass
         addShapedRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 2),
@@ -803,6 +825,12 @@ public class RecipeLoader {
         addShapelessRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 3),
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            Blocks.redstone_torch);
+
+        // Ineffable Glass (Inverted)
+        addShapelessRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 4),
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 1),
             Blocks.redstone_torch);
 
         // Dark Ethereal Glass (Inverted)
@@ -837,7 +865,11 @@ public class RecipeLoader {
     }
 
     private static void loadGlassRecipes() {
-        // TODO: Smooth Glass reliant on "sandy glass"
+        // Smooth Glass
+        addFurnaceRecipe(
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(8, 3),
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            0.5F);
 
         // Rimmed Glass
         addShapedRecipe(
@@ -884,7 +916,7 @@ public class RecipeLoader {
             'o',
             Blocks.obsidian);
 
-        // Latticed Glass
+        // Vortex Glass
         addShapedRecipe(
             ModBlocks.DECORATIVE_GLASS.newItemStack(5, 6),
             " g ",
@@ -941,6 +973,14 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_GLASS.newItemStack(1, 10),
             'o',
             Blocks.obsidian);
+
+        // Latticed Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(4, 12),
+            "gg",
+            "gg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 2));
     }
 
     private static void loadColoredBlockRecipes() {
@@ -1031,9 +1071,9 @@ public class RecipeLoader {
         // Inverted Ingot (stable)
         addShapedRecipe(ModItems.INVERTED_INGOT.newItemStack(1, 1), "nnn", "nnn", "nnn", 'n', ModItems.INVERTED_NUGGET);
 
-        // Glutton's Axe
+        // Gourmand's Axe
         addShapedRecipe(
-            ModItems.GLUTTONS_AXE,
+            ModItems.GOURMANDS_AXE,
             "ii",
             "is",
             " s",

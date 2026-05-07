@@ -36,19 +36,30 @@ public class HeavenlyRingRenderer {
 
     public static void render(int meta, float angle) {
         Tessellator t = Tessellator.instance;
+
         int boundTexIndex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+        boolean blendWasEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
+
         Minecraft.getMinecraft()
             .getTextureManager()
             .bindTexture(TextureMap.locationItemsTexture);
+
         GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         IIcon icon = ItemHeavenlyRing.wingIcons[meta];
 
-        // 1.5 3 0.1 20 25 0.001
+        // Derive scale
+        float scaleX = icon.getIconWidth() / 16.0F;
+        float scaleY = icon.getIconHeight() / 16.0F;
+
         // Left wing
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0625F, -0.3125F, 0.125F);
         GL11.glRotatef(-(WING_MIN + angle), 0, 1, 0);
         if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+            GL11.glScalef(scaleX, scaleY, 1.0F);
             GL11.glTranslatef(0, 1, 0);
             GL11.glRotatef(180, 1, 0, 0);
             ItemRenderer.renderItemIn2D(
@@ -62,9 +73,9 @@ public class HeavenlyRingRenderer {
                 -0.03125F);
         } else {
             t.startDrawingQuads();
-            t.addVertexWithUV(0, 1, 0, icon.getMinU(), icon.getMaxV());
-            t.addVertexWithUV(1, 1, 0, icon.getMaxU(), icon.getMaxV());
-            t.addVertexWithUV(1, 0, 0, icon.getMaxU(), icon.getMinV());
+            t.addVertexWithUV(0, scaleY, 0, icon.getMinU(), icon.getMaxV());
+            t.addVertexWithUV(scaleX, scaleY, 0, icon.getMaxU(), icon.getMaxV());
+            t.addVertexWithUV(scaleX, 0, 0, icon.getMaxU(), icon.getMinV());
             t.addVertexWithUV(0, 0, 0, icon.getMinU(), icon.getMinV());
             t.draw();
         }
@@ -75,6 +86,7 @@ public class HeavenlyRingRenderer {
         GL11.glTranslatef(-0.0625F, -0.3125F, 0.125F);
         GL11.glRotatef((-180 + WING_MIN) + angle, 0, 1, 0);
         if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+            GL11.glScalef(scaleX, scaleY, 1.0F);
             GL11.glTranslatef(0, 1, 0);
             GL11.glRotatef(180, 1, 0, 0);
             ItemRenderer.renderItemIn2D(
@@ -88,15 +100,15 @@ public class HeavenlyRingRenderer {
                 0.03125F);
         } else {
             t.startDrawingQuads();
-            t.addVertexWithUV(0, 1, 0, icon.getMinU(), icon.getMaxV());
-            t.addVertexWithUV(1, 1, 0, icon.getMaxU(), icon.getMaxV());
-            t.addVertexWithUV(1, 0, 0, icon.getMaxU(), icon.getMinV());
+            t.addVertexWithUV(0, scaleY, 0, icon.getMinU(), icon.getMaxV());
+            t.addVertexWithUV(scaleX, scaleY, 0, icon.getMaxU(), icon.getMaxV());
+            t.addVertexWithUV(scaleX, 0, 0, icon.getMaxU(), icon.getMinV());
             t.addVertexWithUV(0, 0, 0, icon.getMinU(), icon.getMinV());
             t.draw();
         }
         GL11.glPopMatrix();
 
-        GL11.glDisable(GL11.GL_BLEND);
+        if (!blendWasEnabled) GL11.glDisable(GL11.GL_BLEND);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, boundTexIndex);
     }
 }
