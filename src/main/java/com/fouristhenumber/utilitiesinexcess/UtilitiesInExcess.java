@@ -18,9 +18,12 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -52,6 +55,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
@@ -77,7 +82,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.6.31,)")
+    dependencies = "required-after:gtnhlib@[0.9.9,); after:ForgeMicroblock")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -100,6 +105,9 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
+        if (Mods.ForgeMicroBlock.isLoaded()) {
+            new Content().init();
+        }
         proxy.preInit(event);
     }
 
@@ -127,7 +135,11 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChestUIE");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+        GameRegistry.registerTileEntity(TileEntityChandelier.class, "TileEntityPendantLightUIE");
+        GameRegistry.registerTileEntity(TileEntityGigaTorch.class, "TileEntityGigaTorchUIE");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
+        GameRegistry
+            .registerTileEntity(TileEntityAdvancedBlockUpdateDetector.class, "TileEntityAdvancedBlockUpdateDetector");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
         GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetectorUIE");
@@ -210,6 +222,10 @@ public class UtilitiesInExcess {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
 
+        if (Mods.ForgeMicroBlock.isLoaded()) {
+            FMPRecipeLoader.run();
+        }
+
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();
         }
@@ -228,7 +244,7 @@ public class UtilitiesInExcess {
                 .getItem();
         }
 
-        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GLUTTONS_AXE.get());
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GOURMANDS_AXE.get());
 
         @Override
         public ItemStack getIconItemStack() {

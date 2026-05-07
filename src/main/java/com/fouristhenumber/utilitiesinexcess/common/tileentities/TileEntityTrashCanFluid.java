@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class TileEntityTrashCanFluid extends TileEntity
     implements IGuiHolder<PosGuiData>, ISidedInventory, IFluidHandler {
@@ -87,7 +86,7 @@ public class TileEntityTrashCanFluid extends TileEntity
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str(StatCollector.translateToLocal("tile.trash_can_fluid.name"))
+                    IKey.str(StatCollector.translateToLocal("gui.title.trash_can_fluid.name"))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)
@@ -130,7 +129,6 @@ public class TileEntityTrashCanFluid extends TileEntity
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        UtilitiesInExcess.LOG.info(compound);
         super.readFromNBT(compound);
         if (compound.hasKey("slotIn")) {
             ItemStack slotIn = new ItemStack(Items.feather, 1);
@@ -191,14 +189,10 @@ public class TileEntityTrashCanFluid extends TileEntity
     }
 
     @Override
-    public void openInventory() {
-
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {

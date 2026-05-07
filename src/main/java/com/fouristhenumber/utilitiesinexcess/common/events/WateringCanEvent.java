@@ -1,10 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.events;
 
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent;
+
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-import cpw.mods.fml.common.eventhandler.Event;
-
-public class WateringCanEvent extends Event {
+public class WateringCanEvent extends WorldEvent {
 
     public final BlockPos wateredBlock;
     public final BlockPos originBlock;
@@ -23,7 +24,8 @@ public class WateringCanEvent extends Event {
      * <br>
      * This event is fired on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
      **/
-    public WateringCanEvent(BlockPos wateredBlock, BlockPos originBlock, int wateringCanTier) {
+    public WateringCanEvent(World world, BlockPos wateredBlock, BlockPos originBlock, int wateringCanTier) {
+        super(world);
         this.wateredBlock = wateredBlock;
         this.originBlock = originBlock;
         this.wateringCanTier = wateringCanTier;

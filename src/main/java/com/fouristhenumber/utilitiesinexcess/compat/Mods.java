@@ -13,7 +13,10 @@ public enum Mods {
     NEI("NotEnoughItems"),
     CraftTweaker("MineTweaker3"),
     FindIt("findit"),
-    Tinkers("TConstruct")
+    Tinkers("TConstruct"),
+    ForgeMicroBlock("ForgeMicroblock"),
+    Backhand("backhand"),
+    GT("gregtech_nh")
     ;
     // spotless:on
 

@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockConveyor extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
-    private IIcon belt_up, belt_down, belt_left, belt_right, blank;
+    private IIcon belt_up, belt_down, belt_left, belt_right, blank_right, blank_left;
 
     public BlockConveyor() {
         super(Material.piston);
@@ -45,17 +45,26 @@ public class BlockConveyor extends BlockContainer {
         belt_down = reg.registerIcon("utilitiesinexcess:conveyor_belt_down");
         belt_left = reg.registerIcon("utilitiesinexcess:conveyor_belt_left");
         belt_right = reg.registerIcon("utilitiesinexcess:conveyor_belt_right");
-        blank = reg.registerIcon("utilitiesinexcess:conveyor_belt_blank");
+        blank_right = reg.registerIcon("utilitiesinexcess:conveyor_belt_blank_right");
+        blank_left = reg.registerIcon("utilitiesinexcess:conveyor_belt_blank_left");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int s, int meta) {
-        if (s == getFacing(meta).getOpposite()
+        ForgeDirection facing = getFacing(meta);
+        if (s == facing.ordinal()) return belt_down;
+        if (s == facing.getOpposite()
             .ordinal()) return belt_up;
-        if (s != ForgeDirection.UP.ordinal()) return blank;
 
-        return switch (getFacing(meta)) {
+        if (s != ForgeDirection.UP.ordinal() && s != ForgeDirection.DOWN.ordinal()) {
+            if (s == facing.getRotation(ForgeDirection.DOWN)
+                .ordinal()) return blank_left;
+            else return blank_right;
+        }
+
+        if (s == ForgeDirection.DOWN.ordinal()) facing = facing.getOpposite();
+        return switch (facing) {
             case NORTH -> belt_up;
             case SOUTH -> belt_down;
             case WEST -> belt_left;
