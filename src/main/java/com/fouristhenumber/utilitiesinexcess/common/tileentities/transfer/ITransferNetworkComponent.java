@@ -1,6 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -12,10 +15,13 @@ public interface ITransferNetworkComponent
     void addNeighbor(ForgeDirection direction, ITransferNetworkComponent neighbor);
     void removeNeighbor(ForgeDirection direction);
 
-    List<ITransferNetworkComponent> getNeighbors();
+    void addExternal(ForgeDirection direction, Connection neighbor);
+    void removeExternal(ForgeDirection direction);
 
-    // We need to have the walking component because it's likely that this will be relevant to the walkability
-    MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(ITransferNetworkComponent walkingComponent, ForgeDirection fromDirection);
+    Connection[] getExternalNeighbors();
+    ITransferNetworkComponent[] getNetworkNeighbors();
+
+    MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection);
 
     int getRawConnectionMask();
 
@@ -26,4 +32,6 @@ public interface ITransferNetworkComponent
     int getZ();
 
     boolean canConnectToSide(ForgeDirection side);
+
+    void updateExternalConnections();
 }

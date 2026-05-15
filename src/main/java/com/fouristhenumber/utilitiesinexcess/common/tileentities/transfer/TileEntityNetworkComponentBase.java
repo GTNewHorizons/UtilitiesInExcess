@@ -1,13 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
 import codechicken.lib.world.IChunkLoadTile;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ITransferNetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.List;
 
 public abstract class TileEntityNetworkComponentBase extends TileEntity implements ITransferNetworkComponent, IChunkLoadTile
 {
@@ -66,19 +67,44 @@ public abstract class TileEntityNetworkComponentBase extends TileEntity implemen
     }
 
     @Override
+    public void addExternal(ForgeDirection direction, Connection neighbor)
+    {
+        getNetworkLogic().addExternal(direction, neighbor);
+    }
+
+    @Override
+    public void removeExternal(ForgeDirection direction)
+    {
+        getNetworkLogic().removeExternal(direction);
+    }
+
+    @Override
     public void removeNeighbor(ForgeDirection direction)
     {
         getNetworkLogic().removeNeighbor(direction);
     }
 
     @Override
-    public List<ITransferNetworkComponent> getNeighbors() {
-        return null;
+    public void updateExternalConnections()
+    {
+        getNetworkLogic().updateExternalConnections(this);
+    }
+
+    @Override
+    public Connection[] getExternalNeighbors()
+    {
+        return getNetworkLogic().getExternalConnections();
+    }
+
+    @Override
+    public ITransferNetworkComponent[] getNetworkNeighbors()
+    {
+        return getNetworkLogic().getNetworkConnections();
     }
 
     // TODO make better
     @Override
-    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(ITransferNetworkComponent walkingComponent, ForgeDirection fromDirection)
+    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection)
     {
         return getNetworkLogic().getNeighborsExcluding(fromDirection);
     }
@@ -86,6 +112,8 @@ public abstract class TileEntityNetworkComponentBase extends TileEntity implemen
     @Override
     public int getRawConnectionMask()
     {
-        return getNetworkLogic().getNeighborMask();
+        ITransferNetworkLogic logic = getNetworkLogic();
+        logic.updateExternalConnections(this);
+        return logic.getNetworkMask() | logic.getExternalMask();
     }
 }

@@ -14,8 +14,11 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,16 +26,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
+
 public class ItemTransferNodeLogic extends NetworkLogic
 {
 
     ItemStack[] buffer = new ItemStack[getSizeInventory()];
 
     IInventory connectedInventory;
+    public ItemWalker walker;
 
     public ItemTransferNodeLogic(INodeLogicHost host)
     {
-        super(host);
+        walker = new ItemWalker(host);
     }
 
     public void updateEntity(INodeLogicHost host) {
@@ -48,6 +54,16 @@ public class ItemTransferNodeLogic extends NetworkLogic
             }
         }
 
+        List<IInventory> target = walker.getValidTargets();
+        if (target instanceof ISidedInventory) // Sided logic
+        {
+
+        }
+        else // Basic logic
+        {
+
+        }
+
         if (connectedInventory != null) {
             importItems();
         }
@@ -58,12 +74,6 @@ public class ItemTransferNodeLogic extends NetworkLogic
             return;
         }
         walker.step();
-
-        walker.getValidTarget();
-        if ()
-        {
-
-        }
     }
 
     public void importItems() {
@@ -243,5 +253,20 @@ public class ItemTransferNodeLogic extends NetworkLogic
                 .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
 
         return panel;
+    }
+
+    @Override
+    public boolean canConnectEnergy() {
+        return true;
+    }
+
+    @Override
+    public boolean canConnectFluid() {
+        return true;
+    }
+
+    @Override
+    public boolean canConnectItem() {
+        return true;
     }
 }

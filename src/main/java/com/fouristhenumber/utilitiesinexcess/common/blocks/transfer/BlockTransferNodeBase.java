@@ -21,7 +21,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class BlockTransferNodeBase extends BlockContainer {
+public abstract class BlockTransferNodeBase extends BlockTransferBase {
 
     protected BlockTransferNodeBase() {
         super(Material.iron);

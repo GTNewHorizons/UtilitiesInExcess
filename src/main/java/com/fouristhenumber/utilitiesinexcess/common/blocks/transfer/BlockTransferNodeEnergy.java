@@ -19,7 +19,8 @@ public class BlockTransferNodeEnergy extends BlockTransferNodeBase {
 
     // TODO: new TE
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+    public TileEntity createNewTileEntity(World world, int metadata)
+    {
         return new TileEntityTransferNode();
     }
 }

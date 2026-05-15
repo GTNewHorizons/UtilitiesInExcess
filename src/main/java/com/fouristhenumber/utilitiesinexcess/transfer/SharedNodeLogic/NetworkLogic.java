@@ -1,23 +1,26 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
 
+import cofh.api.energy.IEnergyReceiver;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.RandomWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
 
-public class NetworkLogic implements ITransferNetworkLogic
+public abstract class NetworkLogic implements ITransferNetworkLogic
 {
-    private ITransferNetworkComponent[] connectedNeighbors = new ITransferNetworkComponent[6];
-    private int neighborMask = 0;
-    public WalkerBase walker;
+    private ITransferNetworkComponent[] networkNeighbors = new ITransferNetworkComponent[6];
+    private int networkMask = 0;
+
+    private Connection[] externalConnections = new Connection[6];
+    private int externalConnectionMask;
+
 
     private boolean joined = false;
-    public NetworkLogic(ITransferNetworkComponent logicHost)
-    {
-        walker = new RandomWalker(logicHost);
-    }
+    public NetworkLogic()
+    {}
 
     @Override
     public void tryJoinWorld(ITransferNetworkComponent host)
@@ -46,32 +49,105 @@ public class NetworkLogic implements ITransferNetworkLogic
                 }
             }
         }
+
+        updateExternalConnections(host);
     }
+
+    public void updateExternalConnections(ITransferNetworkComponent host)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            ForgeDirection dir = ForgeDirection.getOrientation(i);
+
+            int xOffset = host.getX() + dir.offsetX;
+            int yOffset = host.getY() + dir.offsetY;
+            int zOffset = host.getZ() + dir.offsetZ;
+
+            TileEntity neighborTE = null;
+            World world = host.getWorld();
+            if (world.blockExists(xOffset, yOffset, zOffset))
+            {
+                neighborTE = world.getChunkFromBlockCoords(xOffset, zOffset).getTileEntityUnsafe(xOffset & 15, yOffset, zOffset & 15);
+            }
+
+            if (neighborTE instanceof ITransferNetworkComponent)
+            {
+                continue;
+            }
+
+            // Just update the externals because it's way more painful to check if everything is the same.
+            // Just assume we're just now getting placed.
+            boolean setExternal = false;
+            if (neighborTE != null)
+            {
+                int flags = 0;
+                if (neighborTE instanceof IInventory)
+                {
+                    flags |= 1;
+                    setExternal = true;
+                }
+                if (neighborTE instanceof IFluidHandler)
+                {
+                    flags |= 2;
+                    setExternal = true;
+                }
+                if (neighborTE instanceof IEnergyReceiver)
+                {
+                    flags |= 4;
+                    setExternal = true;
+                }
+                if (setExternal)
+                {
+                    host.addExternal(dir, new Connection(neighborTE, flags));
+                }
+            }
+
+            if (!setExternal)
+            {
+                host.removeExternal(dir);
+            }
+        }
+    }
+
 
     @Override
     public void separateWorld(ITransferNetworkComponent host)
     {
-        for(int i = 0; i < connectedNeighbors.length; i++)
+        for(int i = 0; i < networkNeighbors.length; i++)
         {
-            if (connectedNeighbors[i] != null)
+            if (networkNeighbors[i] != null)
             {
-                connectedNeighbors[i].removeNeighbor(ForgeDirection.getOrientation(i).getOpposite());
+                networkNeighbors[i].removeNeighbor(ForgeDirection.getOrientation(i).getOpposite());
             }
         }
     }
 
     @Override
-    public void removeNeighbor(ForgeDirection direction)
+    public void addNeighbor(ForgeDirection direction, ITransferNetworkComponent neighbor)
     {
-        connectedNeighbors[direction.ordinal()] = null;
-        neighborMask &= ~(1 << direction.ordinal());
+        networkNeighbors[direction.ordinal()] = neighbor;
+        networkMask |= (1 << direction.ordinal());
     }
 
     @Override
-    public void addNeighbor(ForgeDirection direction, ITransferNetworkComponent neighbor)
+    public void removeNeighbor(ForgeDirection direction)
     {
-        connectedNeighbors[direction.ordinal()] = neighbor;
-        neighborMask |= (1 << direction.ordinal());
+        networkNeighbors[direction.ordinal()] = null;
+        networkMask &= ~(1 << direction.ordinal());
+    }
+
+    @Override
+    public void addExternal(ForgeDirection direction, Connection neighbor)
+    {
+        externalConnections[direction.ordinal()] = neighbor;
+        externalConnectionMask |= (1 << direction.ordinal());
+    }
+
+    @Override
+    public void removeExternal(ForgeDirection direction)
+    {
+        externalConnections[direction.ordinal()] = null;
+        externalConnectionMask &= ~(1 << direction.ordinal());
     }
 
     @Override
@@ -80,17 +156,46 @@ public class NetworkLogic implements ITransferNetworkLogic
         int mask;
         if (direction != null)
         {
-            mask = neighborMask & ~(1 << direction.ordinal());
+            mask = networkMask & ~(1 << direction.ordinal());
         }
         else
         {
-            mask = neighborMask;
+            mask = networkMask;
         }
-        return new MaskedArrayView<>(mask, connectedNeighbors);
+        return new MaskedArrayView<>(mask, networkNeighbors);
     }
 
     @Override
-    public int getNeighborMask() {
-        return neighborMask;
+    public int getNetworkMask() {
+        return networkMask;
+    }
+
+    @Override
+    public int getExternalMask() {
+        return externalConnectionMask;
+    }
+
+    @Override
+    public void setNetworkMask(int mask)
+    {
+        networkMask = mask;
+    }
+
+    @Override
+    public void setExternalMask(int mask)
+    {
+        externalConnectionMask = mask;
+    }
+
+    @Override
+    public Connection[] getExternalConnections()
+    {
+        return externalConnections;
+    }
+
+    @Override
+    public ITransferNetworkComponent[] getNetworkConnections()
+    {
+        return networkNeighbors;
     }
 }

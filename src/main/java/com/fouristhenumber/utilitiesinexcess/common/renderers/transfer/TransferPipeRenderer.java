@@ -94,7 +94,7 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
         TileEntityTransferPipe te = (TileEntityTransferPipe) worldAccess.getTileEntity(x, y, z);
         if (te == null) return false;
 
-        RenderPipes(te.getConnectionsMask(), x, y, z, renderer, true);
+        RenderPipes(te.getRawConnectionMask(), x, y, z, renderer, true);
 
         return true;
     }

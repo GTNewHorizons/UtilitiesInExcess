@@ -1,14 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.RandomWalker;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.BFSWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.DFSWalker;
 
 public enum TransferUpgrade {
 

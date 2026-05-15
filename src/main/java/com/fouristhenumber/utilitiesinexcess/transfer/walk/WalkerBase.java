@@ -1,27 +1,19 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import net.minecraftforge.common.util.ForgeDirection;
+import java.util.List;
 
-public abstract class WalkerBase
+public abstract class WalkerBase<T>
 {
     protected ITransferNetworkComponent walkingComponent;
     protected ITransferNetworkComponent currentComponent;
 
-    protected ForgeDirection fromDirection;
-
-    WalkerBase(ITransferNetworkComponent originComponent)
+    WalkerBase(ITransferNetworkComponent walkingComponent)
     {
-        this.walkingComponent = originComponent;
-        this.currentComponent = originComponent;
+        this.walkingComponent = walkingComponent;
+        this.currentComponent = walkingComponent;
     }
-
     public abstract void step();
-
-    public ITransferNetworkComponent getCurrentComponent()
-    {
-        return currentComponent;
-    }
 
     public String getLocationString()
     {
@@ -35,8 +27,7 @@ public abstract class WalkerBase
         return location.toString();
     }
 
-    public void reset()
-    {
-        currentComponent = walkingComponent;
-    }
+    public abstract void reset();
+
+    public abstract List<T> getValidTargets();
 }
