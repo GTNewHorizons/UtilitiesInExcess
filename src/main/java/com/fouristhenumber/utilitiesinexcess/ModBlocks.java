@@ -53,11 +53,11 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
+//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeFluid;
+//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeHyperEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -167,10 +167,10 @@ public enum ModBlocks {
     //TODO: Config
     TRANSFER_PIPE(true, new BlockTransferPipe(), "transfer_pipe"),
     TRANSFER_NODE(true, new BlockTransferNode(), "transfer_node"),
-    TRANSFER_NODE_FLUID(true, new BlockTransferNodeFluid(), "transfer_node_fluid"),
+//    TRANSFER_NODE_FLUID(true, new BlockTransferNodeFluid(), "transfer_node_fluid"),
     TRANSFER_NODE_ENERGY(true, new BlockTransferNodeEnergy(), "transfer_node_energy"),
     TRANSFER_NODE_HYPER_ENERGY(true, new BlockTransferNodeHyperEnergy(), "transfer_node_hyper_energy"),
-    RETRIEVAL_NODE(true, new BlockRetrievalNode(), "retrieval_node"),
+//    RETRIEVAL_NODE(true, new BlockRetrievalNode(), "retrieval_node"),
     RETRIEVAL_NODE_FLUID(true, new BlockRetrievalNodeFluid(), "retrieval_node_fluid"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),

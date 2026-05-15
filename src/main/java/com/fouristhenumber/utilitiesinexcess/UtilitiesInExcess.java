@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityRetrievalNode;
+//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityRetrievalNode;
+import codechicken.lib.world.TileChunkLoadHook;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,8 +54,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNode;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeFluid;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
+//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeFluid;
+//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
@@ -114,7 +116,7 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-
+        TileChunkLoadHook.init();
         RecipeLoader.run();
 
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
@@ -165,9 +167,9 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
         GameRegistry.registerTileEntity(TileEntityTransferPipe.class, "TileEntityTransferPipeUIE");
-        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
+//        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
         GameRegistry.registerTileEntity(TileEntityTransferNode.class, "TileEntityTransferNodeUIE");
-        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");
+//        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

@@ -1,14 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.StandardWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.RandomWalker;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.BreadthWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.DepthWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.ITransferWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.BFSWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.DFSWalker;
 
 public enum TransferUpgrade {
 
@@ -49,14 +49,6 @@ public enum TransferUpgrade {
 
     public boolean isWalkerUpgrade() {
         return this.type == UpgradeType.WALKER;
-    }
-
-    public ITransferWalker getWalker() {
-        return switch (this) {
-            case SEARCH_DEPTH -> new DepthWalker();
-            case SEARCH_BREADTH -> new BreadthWalker();
-            default -> new StandardWalker();
-        };
     }
 
     public boolean isFilterUpgrade() {

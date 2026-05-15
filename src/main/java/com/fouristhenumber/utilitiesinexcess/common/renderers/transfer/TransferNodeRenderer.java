@@ -126,9 +126,9 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         TileEntityTransferNodeBase te = (TileEntityTransferNodeBase) world.getTileEntity(x, y, z);
         if (te == null) return false;
 
-        int mask = te.getConnectionsMask();
+         int mask = te.getRawConnectionMask();
 
-        RenderPipes(mask, x, y, z, renderer, mask != 0);
+         RenderPipes(mask, x, y, z, renderer, mask != 0);
 
         return true;
     }

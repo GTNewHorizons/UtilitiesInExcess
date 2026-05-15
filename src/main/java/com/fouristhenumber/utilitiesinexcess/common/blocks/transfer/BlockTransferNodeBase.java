@@ -21,16 +21,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTransferNodeBase extends BlockContainer {
+public abstract class BlockTransferNodeBase extends BlockContainer {
 
     protected BlockTransferNodeBase() {
         super(Material.iron);
         setBlockTextureName(getTopIcon());
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
     }
 
     @Override
@@ -56,18 +51,6 @@ public class BlockTransferNodeBase extends BlockContainer {
         return true;
     }
 
-    protected void updateConnections(World world, int x, int y, int z) {
-        if (!world.isRemote) {
-            TileEntityTransferNodeBase te = (TileEntityTransferNodeBase) world.getTileEntity(x, y, z);
-            if (te != null) {
-                boolean changed = te.updateConnections(world, x, y, z);
-                if (changed) {
-                    world.markBlockForUpdate(x, y, z);
-                }
-            }
-        }
-    }
-
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
         return ForgeDirection.getOrientation(side)
@@ -80,12 +63,6 @@ public class BlockTransferNodeBase extends BlockContainer {
         super.onBlockPlacedBy(world, x, y, z, placer, stack);
         int meta = world.getBlockMetadata(x, y, z);
         world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-        updateConnections(world, x, y, z);
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        updateConnections(world, x, y, z);
     }
 
     @Override
