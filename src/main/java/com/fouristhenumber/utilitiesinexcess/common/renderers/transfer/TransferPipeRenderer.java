@@ -3,13 +3,13 @@ package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferPipeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -26,34 +26,39 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
             renderer.renderStandardBlock(block, x, y, z);
         }
 
-        // +X
+        // -Y (down)
         if ((mask & (1)) != 0) {
-            renderer.setRenderBounds(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
-            renderer.renderStandardBlock(block, x, y, z);
-        }
-        // -X
-        if ((mask & (1 << 1)) != 0) {
-            renderer.setRenderBounds(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
-            renderer.renderStandardBlock(block, x, y, z);
-        }
-        // +Y
-        if ((mask & (1 << 2)) != 0) {
-            renderer.setRenderBounds(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
-            renderer.renderStandardBlock(block, x, y, z);
-        }
-        // -Y
-        if ((mask & (1 << 3)) != 0) {
             renderer.setRenderBounds(0.375, 0.0, 0.375, 0.625, 0.375, 0.625);
             renderer.renderStandardBlock(block, x, y, z);
         }
-        // +Z
-        if ((mask & (1 << 4)) != 0) {
+
+        // +Y (up)
+        if ((mask & (1 << 1)) != 0) {
+            renderer.setRenderBounds(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
+            renderer.renderStandardBlock(block, x, y, z);
+        }
+
+        // -Z (north)
+        if ((mask & (1 << 2)) != 0) {
+            renderer.setRenderBounds(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
+            renderer.renderStandardBlock(block, x, y, z);
+        }
+
+        // +Z (south)
+        if ((mask & (1 << 3)) != 0) {
             renderer.setRenderBounds(0.375, 0.375, 0.625, 0.625, 0.625, 1.0);
             renderer.renderStandardBlock(block, x, y, z);
         }
-        // -Z
+
+        // -X (west)
+        if ((mask & (1 << 4)) != 0) {
+            renderer.setRenderBounds(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
+            renderer.renderStandardBlock(block, x, y, z);
+        }
+
+        // +X (east)
         if ((mask & (1 << 5)) != 0) {
-            renderer.setRenderBounds(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
+            renderer.setRenderBounds(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
             renderer.renderStandardBlock(block, x, y, z);
         }
     }
@@ -89,7 +94,7 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
         TileEntityTransferPipe te = (TileEntityTransferPipe) worldAccess.getTileEntity(x, y, z);
         if (te == null) return false;
 
-        RenderPipes(te.getConnectionsMask(), x, y, z, renderer, true);
+        RenderPipes(te.getRawConnectionMask(), x, y, z, renderer, true);
 
         return true;
     }
