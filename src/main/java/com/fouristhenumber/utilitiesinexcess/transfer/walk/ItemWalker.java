@@ -30,9 +30,14 @@ public class ItemWalker extends WalkerBase<IInventory>
     }
 
     @Override
-    public List<IInventory> getValidTargets()
+    public TargetResolver.Target<IInventory> getValidTarget()
     {
-        return targeter.getValidTargets(currentComponent);
+        List<TargetResolver.Target<IInventory>> validTargets = targeter.getValidTargets(currentComponent);
+        if (validTargets.isEmpty())
+        {
+            return null;
+        }
+        return validTargets.get(rand.nextInt(validTargets.size()));
     }
 
     @Override

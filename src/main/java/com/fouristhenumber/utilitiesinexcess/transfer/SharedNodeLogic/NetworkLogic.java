@@ -55,56 +55,47 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
 
     public void updateExternalConnections(ITransferNetworkComponent host)
     {
-        for (int i = 0; i < 6; i++)
-        {
+        for (int i = 0; i < 6; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
-
             int xOffset = host.getX() + dir.offsetX;
             int yOffset = host.getY() + dir.offsetY;
             int zOffset = host.getZ() + dir.offsetZ;
-
-            TileEntity neighborTE = null;
             World world = host.getWorld();
-            if (world.blockExists(xOffset, yOffset, zOffset))
-            {
-                neighborTE = world.getChunkFromBlockCoords(xOffset, zOffset).getTileEntityUnsafe(xOffset & 15, yOffset, zOffset & 15);
-            }
 
-            if (neighborTE instanceof ITransferNetworkComponent)
-            {
-                continue;
-            }
+            if (world.blockExists(xOffset, yOffset, zOffset) && host.canConnectToSide(dir)) {
 
-            // Just update the externals because it's way more painful to check if everything is the same.
-            // Just assume we're just now getting placed.
-            boolean setExternal = false;
-            if (neighborTE != null)
-            {
-                int flags = 0;
-                if (neighborTE instanceof IInventory)
-                {
-                    flags |= 1;
-                    setExternal = true;
-                }
-                if (neighborTE instanceof IFluidHandler)
-                {
-                    flags |= 2;
-                    setExternal = true;
-                }
-                if (neighborTE instanceof IEnergyReceiver)
-                {
-                    flags |= 4;
-                    setExternal = true;
-                }
-                if (setExternal)
-                {
-                    host.addExternal(dir, new Connection(neighborTE, flags));
-                }
-            }
 
-            if (!setExternal)
-            {
-                host.removeExternal(dir);
+                TileEntity neighborTE = world.getChunkFromBlockCoords(xOffset, zOffset).getTileEntityUnsafe(xOffset & 15, yOffset, zOffset & 15);
+
+                if (neighborTE instanceof ITransferNetworkComponent) {
+                    continue;
+                }
+
+                // Just update the externals because it's way more painful to check if everything is the same.
+                // Just assume we're just now getting placed.
+                boolean setExternal = false;
+                if (neighborTE != null) {
+                    int flags = 0;
+                    if (neighborTE instanceof IInventory) {
+                        flags |= 1;
+                        setExternal = true;
+                    }
+                    if (neighborTE instanceof IFluidHandler) {
+                        flags |= 2;
+                        setExternal = true;
+                    }
+                    if (neighborTE instanceof IEnergyReceiver) {
+                        flags |= 4;
+                        setExternal = true;
+                    }
+                    if (setExternal) {
+                        host.addExternal(dir, new Connection(neighborTE, flags, i));
+                    }
+                }
+
+                if (!setExternal) {
+                    host.removeExternal(dir);
+                }
             }
         }
     }

@@ -10,16 +10,16 @@ import java.util.List;
 public class ItemTargetResolver implements TargetResolver<IInventory> {
 
     @Override
-    public List<IInventory> getValidTargets(ITransferNetworkComponent from)
+    public List<Target<IInventory>> getValidTargets(ITransferNetworkComponent from)
     {
         Connection[] conns = from.getExternalNeighbors();
 
-        List<IInventory> validTargets = new ArrayList<>();
+        List<Target<IInventory>> validTargets = new ArrayList<>();
         for (Connection conn : conns)
         {
             if (conn != null && (conn.flags() & 1) != 0)
             {
-                validTargets.add((IInventory) conn.target());
+                validTargets.add(new Target<>((IInventory) conn.target(), conn.side()));
             }
         }
         return validTargets;

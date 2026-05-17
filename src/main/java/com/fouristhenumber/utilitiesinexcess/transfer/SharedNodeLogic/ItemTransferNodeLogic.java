@@ -16,12 +16,14 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -46,6 +48,7 @@ public class ItemTransferNodeLogic extends NetworkLogic
             return;
         }
 
+        // TODO perhaps this can be moved to NetworkLogic
         if (connectedInventory == null) {
             ForgeDirection facing = host.getFacing();
             TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
@@ -54,14 +57,17 @@ public class ItemTransferNodeLogic extends NetworkLogic
             }
         }
 
-        List<IInventory> target = walker.getValidTargets();
-        if (target instanceof ISidedInventory) // Sided logic
+        TargetResolver.Target<IInventory> target = walker.getValidTarget();
+        if (target != null)
         {
-
-        }
-        else // Basic logic
-        {
-
+            if (target.handler instanceof ISidedInventory sidedInventory) // Sided logic
+            {
+                buffer[0] = TryInsertItemSided(sidedInventory, buffer[0], target.side);
+            }
+            else // Basic logic
+            {
+                buffer[0] = TryInsertItem(target.handler, buffer[0], target.side);
+            }
         }
 
         if (connectedInventory != null) {
@@ -105,11 +111,125 @@ public class ItemTransferNodeLogic extends NetworkLogic
         }
     }
 
-    public void exportItems()
+    public ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side)
     {
+        int[] slots = inventory.getAccessibleSlotsFromSide(side);
 
+        for (int slot : slots)
+        {
+            if (stack == null || stack.stackSize <= 0)
+            {
+                return null;
+            }
+
+
+            if (!inventory.canInsertItem(slot, stack, side))
+            {
+                continue;
+            }
+            ItemStack existing = inventory.getStackInSlot(slot);
+
+            if (existing == null)
+            {
+                int max = Math.min(stack.getMaxStackSize(), inventory.getInventoryStackLimit());
+
+                ItemStack toInsert = stack.copy();
+                toInsert.stackSize = Math.min(stack.stackSize, max);
+
+                inventory.setInventorySlotContents(slot, toInsert);
+                stack.stackSize -= toInsert.stackSize;
+
+                inventory.markDirty();
+            }
+            else if (canStacksMerge(existing, stack))
+            {
+                int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
+                int space = max - existing.stackSize;
+
+                if (space > 0)
+                {
+                    int toMove = Math.min(space, stack.stackSize);
+
+                    existing.stackSize += toMove;
+                    stack.stackSize -= toMove;
+
+                    inventory.markDirty();
+                }
+            }
+        }
+
+        return stack.stackSize <= 0 ? null : stack;
     }
 
+    public ItemStack TryInsertItem(IInventory inventory, ItemStack stack, int side)
+    {
+        if (stack == null || stack.stackSize <= 0)
+        {
+            return null;
+        }
+
+        int size = inventory.getSizeInventory();
+
+        // First pass: try to merge into existing stacks
+        for (int slot = 0; slot < size; slot++)
+        {
+            if (stack.stackSize <= 0)
+            {
+                return null;
+            }
+
+            ItemStack existing = inventory.getStackInSlot(slot);
+
+            if (existing != null && canStacksMerge(existing, stack))
+            {
+                int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
+                int space = max - existing.stackSize;
+
+                if (space > 0)
+                {
+                    int toMove = Math.min(space, stack.stackSize);
+
+                    existing.stackSize += toMove;
+                    stack.stackSize -= toMove;
+
+                    inventory.markDirty();
+                }
+            }
+        }
+
+        // Second pass: fill empty slots
+        for (int slot = 0; slot < size; slot++)
+        {
+            if (stack.stackSize <= 0)
+            {
+                return null;
+            }
+
+            ItemStack existing = inventory.getStackInSlot(slot);
+
+            if (existing == null)
+            {
+                int max = Math.min(stack.getMaxStackSize(), inventory.getInventoryStackLimit());
+
+                ItemStack toInsert = stack.copy();
+                toInsert.stackSize = Math.min(stack.stackSize, max);
+
+                inventory.setInventorySlotContents(slot, toInsert);
+                stack.stackSize -= toInsert.stackSize;
+
+                inventory.markDirty();
+            }
+        }
+
+        return stack.stackSize <= 0 ? null : stack;
+    }
+
+    private static boolean canStacksMerge(ItemStack a, ItemStack b)
+    {
+        return a.getItem() == b.getItem()
+            && a.getItemDamage() == b.getItemDamage()
+            && ItemStack.areItemStackTagsEqual(a, b);
+    }
 
     public void writeToNBT(NBTTagCompound nbt)
     {

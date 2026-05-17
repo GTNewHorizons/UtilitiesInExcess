@@ -1,13 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+
 import java.util.List;
+import java.util.Random;
 
 public abstract class WalkerBase<T>
 {
     protected ITransferNetworkComponent walkingComponent;
     protected ITransferNetworkComponent currentComponent;
 
+    Random rand = new Random();
     WalkerBase(ITransferNetworkComponent walkingComponent)
     {
         this.walkingComponent = walkingComponent;
@@ -29,5 +33,5 @@ public abstract class WalkerBase<T>
 
     public abstract void reset();
 
-    public abstract List<T> getValidTargets();
+    public abstract TargetResolver.Target<T> getValidTarget();
 }
