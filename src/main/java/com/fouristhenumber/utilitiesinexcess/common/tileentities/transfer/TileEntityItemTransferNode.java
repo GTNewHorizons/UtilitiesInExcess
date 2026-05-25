@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.INodeLogicHost;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ITransferNetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ItemTransferNodeLogic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,11 +13,11 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 
-public class TileEntityTransferNode extends TileEntityTransferNodeBase<ItemTransferNodeLogic>
+public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemTransferNodeLogic>
     implements IGuiHolder<PosGuiData>
 {
 
-    public TileEntityTransferNode()
+    public TileEntityItemTransferNode()
     {
         logic = new ItemTransferNodeLogic(this);
         System.out.println("CALLED");

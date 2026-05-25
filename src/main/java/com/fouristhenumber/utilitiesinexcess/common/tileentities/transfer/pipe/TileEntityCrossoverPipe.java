@@ -2,7 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe;
 
 import cofh.api.energy.IEnergyReceiver;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.CrossOverPipeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe.CrossOverPipeLogic;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;

@@ -44,14 +44,26 @@ public class ItemTransferNodeLogic extends NetworkLogic
         walker = new ItemWalker(host);
     }
 
-    public void updateEntity(INodeLogicHost host) {
-        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0) {
+    public void updateEntity(INodeLogicHost host)
+    {
+        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        {
             return;
         }
 
         // TODO perhaps this can be moved to NetworkLogic
         if (connectedInventory == null) {
             updateSourceInventory(host);
+        }
+
+        if (connectedInventory != null) {
+            importItems();
+        }
+
+        if (buffer[0] == null)
+        {
+            walker.reset();
+            return;
         }
 
         TargetResolver.Target<IInventory> target = walker.getValidTarget();
@@ -65,16 +77,6 @@ public class ItemTransferNodeLogic extends NetworkLogic
             {
                 buffer[0] = TryInsertItem(target.handler, buffer[0], target.side);
             }
-        }
-
-        if (connectedInventory != null) {
-            importItems();
-        }
-
-        if (buffer[0] == null)
-        {
-            walker.reset();
-            return;
         }
         walker.step();
     }

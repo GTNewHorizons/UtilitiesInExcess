@@ -8,7 +8,7 @@ import java.util.List;
 public interface TargetResolver<T>
 {
     List<Target<T>> getValidTargets(
-        ITransferNetworkComponent from, ForgeDirection fromDir);
+        ITransferNetworkComponent from, ITransferNetworkComponent walking, ForgeDirection fromDir);
 
     class Target<T>
     {

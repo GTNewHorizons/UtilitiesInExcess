@@ -29,7 +29,7 @@ public interface ITransferNetworkLogic
     boolean canConnectFluid();
     boolean canConnectItem();
 
-    Connection[] getValidExternalConnections(ForgeDirection fromDirection);
+    Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker);
     ITransferNetworkComponent[] getNetworkConnections();
 
 

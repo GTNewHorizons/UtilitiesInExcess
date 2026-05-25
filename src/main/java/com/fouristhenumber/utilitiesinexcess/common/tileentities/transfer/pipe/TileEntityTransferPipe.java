@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.PipeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe.PipeLogic;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityTransferPipe extends TileEntityNetworkComponentBase<PipeLogic>

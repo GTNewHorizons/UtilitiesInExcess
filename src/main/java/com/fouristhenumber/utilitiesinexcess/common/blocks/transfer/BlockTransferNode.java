@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 
 public class BlockTransferNode extends BlockTransferNodeBase {
 
@@ -14,6 +14,6 @@ public class BlockTransferNode extends BlockTransferNodeBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityTransferNode();
+        return new TileEntityItemTransferNode();
     }
 }

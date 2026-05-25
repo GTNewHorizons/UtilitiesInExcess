@@ -18,7 +18,7 @@ public interface ITransferNetworkComponent
     void addExternal(ForgeDirection direction, Connection neighbor);
     void removeExternal(ForgeDirection direction);
 
-    Connection[] getValidExternalNeighbors(ForgeDirection fromDirection);
+    Connection[] getValidExternalNeighbors(ForgeDirection fromDirection, ITransferNetworkComponent walking);
     ITransferNetworkComponent[] getNetworkNeighbors();
 
     MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection);

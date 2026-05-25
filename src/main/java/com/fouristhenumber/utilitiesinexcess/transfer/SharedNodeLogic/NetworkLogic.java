@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 // TODO is it really safe to be doing all of this stuff on world join/separation???
 public abstract class NetworkLogic implements ITransferNetworkLogic
 {
-    ITransferNetworkComponent host;
+    protected ITransferNetworkComponent host;
 
     protected ITransferNetworkComponent[] networkNeighbors = new ITransferNetworkComponent[6];
     protected int networkMask = 0;
@@ -208,7 +208,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     }
 
     @Override
-    public Connection[] getValidExternalConnections(ForgeDirection fromDirection)
+    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker)
     {
         return externalConnections;
     }

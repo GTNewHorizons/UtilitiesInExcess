@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockCrossoverPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockSortingPipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -168,6 +169,7 @@ public enum ModBlocks {
     //TODO: Config
     TRANSFER_PIPE(true, new BlockTransferPipe(), "transfer_pipe"),
     CROSSOVER_PIPE(true, new BlockCrossoverPipe(), "crossover_pipe"),
+    SORTING_PIPE(true, new BlockSortingPipe(), "sorting_pipe"),
     TRANSFER_NODE(true, new BlockTransferNode(), "transfer_node"),
 //    TRANSFER_NODE_FLUID(true, new BlockTransferNodeFluid(), "transfer_node_fluid"),
     TRANSFER_NODE_ENERGY(true, new BlockTransferNodeEnergy(), "transfer_node_energy"),
