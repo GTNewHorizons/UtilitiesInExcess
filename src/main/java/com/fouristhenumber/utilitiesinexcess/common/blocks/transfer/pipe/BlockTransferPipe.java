@@ -1,7 +1,8 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferPipeRenderID;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -10,7 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
 
 import java.util.List;
 

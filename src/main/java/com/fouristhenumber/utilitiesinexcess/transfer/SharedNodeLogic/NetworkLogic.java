@@ -9,21 +9,26 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+// TODO is it really safe to be doing all of this stuff on world join/separation???
 public abstract class NetworkLogic implements ITransferNetworkLogic
 {
-    private ITransferNetworkComponent[] networkNeighbors = new ITransferNetworkComponent[6];
-    private int networkMask = 0;
+    ITransferNetworkComponent host;
 
-    private Connection[] externalConnections = new Connection[6];
-    private int externalConnectionMask;
+    protected ITransferNetworkComponent[] networkNeighbors = new ITransferNetworkComponent[6];
+    protected int networkMask = 0;
+
+    protected Connection[] externalConnections = new Connection[6];
+    protected int externalConnectionMask = 0;
 
 
     private boolean joined = false;
-    public NetworkLogic()
-    {}
+    public NetworkLogic(ITransferNetworkComponent host)
+    {
+        this.host = host;
+    }
 
     @Override
-    public void tryJoinWorld(ITransferNetworkComponent host)
+    public void tryJoinWorld()
     {
         World world = host.getWorld();
         int x = host.getX();
@@ -32,28 +37,12 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
         if (!joined && world != null && world.blockExists(x, y, z))
         {
             joined = true;
-            for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-            {
-                int xOffset = x + dir.offsetX;
-                int yOffset = y + dir.offsetY;
-                int zOffset = z + dir.offsetZ;
-                if (world.blockExists(xOffset, yOffset, zOffset) &&
-                    world.getChunkFromBlockCoords(xOffset, zOffset).getTileEntityUnsafe(xOffset & 15, yOffset, zOffset & 15)
-                        instanceof ITransferNetworkComponent component)
-                {
-                    if (component.canConnectToSide(dir.getOpposite()))
-                    {
-                        component.addNeighbor(dir.getOpposite(), host);
-                        addNeighbor(dir, component);
-                    }
-                }
-            }
+            updateNetworkConnections(world, x, y, z);
+            updateExternalConnections();
         }
-
-        updateExternalConnections(host);
     }
 
-    public void updateExternalConnections(ITransferNetworkComponent host)
+    public void updateExternalConnections()
     {
         for (int i = 0; i < 6; i++) {
             ForgeDirection dir = ForgeDirection.getOrientation(i);
@@ -62,47 +51,68 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
             int zOffset = host.getZ() + dir.offsetZ;
             World world = host.getWorld();
 
-            if (world.blockExists(xOffset, yOffset, zOffset) && host.canConnectToSide(dir)) {
-
-
+            if (world.blockExists(xOffset, yOffset, zOffset) && host.canConnectToSide(dir))
+            {
                 TileEntity neighborTE = world.getChunkFromBlockCoords(xOffset, zOffset).getTileEntityUnsafe(xOffset & 15, yOffset, zOffset & 15);
-
-                if (neighborTE instanceof ITransferNetworkComponent) {
+                if (neighborTE instanceof ITransferNetworkComponent)
+                {
                     continue;
                 }
 
                 // Just update the externals because it's way more painful to check if everything is the same.
                 // Just assume we're just now getting placed.
-                boolean setExternal = false;
-                if (neighborTE != null) {
-                    int flags = 0;
-                    if (neighborTE instanceof IInventory) {
-                        flags |= 1;
-                        setExternal = true;
-                    }
-                    if (neighborTE instanceof IFluidHandler) {
-                        flags |= 2;
-                        setExternal = true;
-                    }
-                    if (neighborTE instanceof IEnergyReceiver) {
-                        flags |= 4;
-                        setExternal = true;
-                    }
-                    if (setExternal) {
-                        host.addExternal(dir, new Connection(neighborTE, flags, i));
-                    }
+                int flags = resolveExternalConnection(neighborTE);
+                if (flags != 0)
+                {
+                    addExternal(dir, new Connection(neighborTE, flags, i));
                 }
-
-                if (!setExternal) {
-                    host.removeExternal(dir);
+                else
+                {
+                    removeExternal(dir);
                 }
             }
         }
     }
 
+    protected int resolveExternalConnection(TileEntity neighborTE)
+    {
+        int flags = 0;
+        if (neighborTE != null) {
+            if (neighborTE instanceof IInventory) {
+                flags |= 1;
+            }
+            if (neighborTE instanceof IFluidHandler) {
+                flags |= 2;
+            }
+            if (neighborTE instanceof IEnergyReceiver) {
+                flags |= 4;
+            }
+        }
+        return flags;
+    }
+
+    public void updateNetworkConnections(World world, int x, int y, int z)
+    {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            int xOffset = x + dir.offsetX;
+            int yOffset = y + dir.offsetY;
+            int zOffset = z + dir.offsetZ;
+            if (world.blockExists(xOffset, yOffset, zOffset) &&
+                world.getChunkFromBlockCoords(xOffset, zOffset).getTileEntityUnsafe(xOffset & 15, yOffset, zOffset & 15)
+                    instanceof ITransferNetworkComponent component)
+            {
+                if (component.canConnectToSide(dir.getOpposite()) && host.canConnectToSide(dir))
+                {
+                    component.addNeighbor(dir.getOpposite(), host);
+                    addNeighbor(dir, component);
+                }
+            }
+        }
+    }
 
     @Override
-    public void separateWorld(ITransferNetworkComponent host)
+    public void separateWorld()
     {
         for(int i = 0; i < networkNeighbors.length; i++)
         {
@@ -118,6 +128,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     {
         networkNeighbors[direction.ordinal()] = neighbor;
         networkMask |= (1 << direction.ordinal());
+        host.getWorld().markBlockForUpdate(host.getX(), host.getY(), host.getZ());
     }
 
     @Override
@@ -125,6 +136,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     {
         networkNeighbors[direction.ordinal()] = null;
         networkMask &= ~(1 << direction.ordinal());
+        host.getWorld().markBlockForUpdate(host.getX(), host.getY(), host.getZ());
     }
 
     @Override
@@ -132,6 +144,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     {
         externalConnections[direction.ordinal()] = neighbor;
         externalConnectionMask |= (1 << direction.ordinal());
+        host.getWorld().markBlockForUpdate(host.getX(), host.getY(), host.getZ());
     }
 
     @Override
@@ -139,15 +152,16 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     {
         externalConnections[direction.ordinal()] = null;
         externalConnectionMask &= ~(1 << direction.ordinal());
+        host.getWorld().markBlockForUpdate(host.getX(), host.getY(), host.getZ());
     }
 
     @Override
-    public MaskedArrayView<ITransferNetworkComponent> getNeighborsExcluding(ForgeDirection direction)
+    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(ForgeDirection incomingDirection)
     {
         int mask;
-        if (direction != null)
+        if (incomingDirection != null)
         {
-            mask = networkMask & ~(1 << direction.ordinal());
+            mask = networkMask & ~(1 << incomingDirection.ordinal());
         }
         else
         {
@@ -155,6 +169,21 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
         }
         return new MaskedArrayView<>(mask, networkNeighbors);
     }
+
+//    @Override
+//    public MaskedArrayView<ITransferNetworkComponent> getNeighborsExcluding(ForgeDirection direction)
+//    {
+//        int mask;
+//        if (direction != null)
+//        {
+//            mask = networkMask & ~(1 << direction.ordinal());
+//        }
+//        else
+//        {
+//            mask = networkMask;
+//        }
+//        return new MaskedArrayView<>(mask, networkNeighbors);
+//    }
 
     @Override
     public int getNetworkMask() {
@@ -179,7 +208,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     }
 
     @Override
-    public Connection[] getExternalConnections()
+    public Connection[] getValidExternalConnections(ForgeDirection fromDirection)
     {
         return externalConnections;
     }

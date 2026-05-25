@@ -6,8 +6,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class StepStrategy
 {
-    protected ForgeDirection fromDirection;
-    protected TransportType transporting;
+    public ForgeDirection fromDirection;
+    public TransportType transporting;
 
     public enum Strategy
     {

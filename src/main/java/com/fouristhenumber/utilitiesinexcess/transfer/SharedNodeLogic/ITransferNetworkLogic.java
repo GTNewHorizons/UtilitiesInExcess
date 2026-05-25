@@ -2,15 +2,14 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ITransferNetworkLogic
 {
-    void separateWorld(ITransferNetworkComponent host);
+    void separateWorld();
 
-    void tryJoinWorld(ITransferNetworkComponent host);
-    void updateExternalConnections(ITransferNetworkComponent host);
+    void tryJoinWorld();
+    void updateExternalConnections();
 
     void addExternal(ForgeDirection direction, Connection neighbor);
     void removeExternal(ForgeDirection direction);
@@ -18,10 +17,11 @@ public interface ITransferNetworkLogic
     void removeNeighbor(ForgeDirection direction);
     void addNeighbor(ForgeDirection direction, ITransferNetworkComponent neighbor);
 
-    MaskedArrayView<ITransferNetworkComponent> getNeighborsExcluding(ForgeDirection direction);
+    MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(ForgeDirection direction);
 
     int getNetworkMask();
     int getExternalMask();
+
     void setNetworkMask(int mask);
     void setExternalMask(int mask);
 
@@ -29,7 +29,7 @@ public interface ITransferNetworkLogic
     boolean canConnectFluid();
     boolean canConnectItem();
 
-    Connection[] getExternalConnections();
+    Connection[] getValidExternalConnections(ForgeDirection fromDirection);
     ITransferNetworkComponent[] getNetworkConnections();
 
 

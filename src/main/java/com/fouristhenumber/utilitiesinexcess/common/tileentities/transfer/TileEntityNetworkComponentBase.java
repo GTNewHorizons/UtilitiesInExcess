@@ -10,34 +10,34 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
-public abstract class TileEntityNetworkComponentBase extends TileEntity implements ITransferNetworkComponent, IChunkLoadTile
+public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkLogic> extends TileEntity implements ITransferNetworkComponent, IChunkLoadTile
 {
-    protected abstract ITransferNetworkLogic getNetworkLogic();
+    protected T logic;
 
     /// See implemented class IChunkLoadTile for why we need to implement all of these.
     @Override
     public void invalidate()
     {
         super.invalidate();
-        getNetworkLogic().separateWorld(this);
+        logic.separateWorld();
     }
 
     @Override
     public void onChunkUnload()
     {
-        getNetworkLogic().separateWorld(this);
+        logic.separateWorld();
     }
 
     @Override
     public void validate()
     {
         super.validate();
-        getNetworkLogic().tryJoinWorld(this);
+        logic.tryJoinWorld();
     }
 
     @Override
     public void onChunkLoad() {
-        getNetworkLogic().tryJoinWorld(this);
+        logic.tryJoinWorld();
     }
 
     @Override
@@ -63,57 +63,56 @@ public abstract class TileEntityNetworkComponentBase extends TileEntity implemen
     @Override
     public void addNeighbor(ForgeDirection direction, ITransferNetworkComponent neighbor)
     {
-        getNetworkLogic().addNeighbor(direction, neighbor);
+        logic.addNeighbor(direction, neighbor);
     }
 
     @Override
     public void addExternal(ForgeDirection direction, Connection neighbor)
     {
-        getNetworkLogic().addExternal(direction, neighbor);
+        logic.addExternal(direction, neighbor);
     }
 
     @Override
     public void removeExternal(ForgeDirection direction)
     {
-        getNetworkLogic().removeExternal(direction);
+        logic.removeExternal(direction);
     }
 
     @Override
     public void removeNeighbor(ForgeDirection direction)
     {
-        getNetworkLogic().removeNeighbor(direction);
+        logic.removeNeighbor(direction);
     }
 
     @Override
     public void updateExternalConnections()
     {
-        getNetworkLogic().updateExternalConnections(this);
+        logic.updateExternalConnections();
     }
 
     @Override
-    public Connection[] getExternalNeighbors()
+    public Connection[] getValidExternalNeighbors(ForgeDirection fromDirection)
     {
-        return getNetworkLogic().getExternalConnections();
+        return logic.getValidExternalConnections(fromDirection);
     }
 
     @Override
     public ITransferNetworkComponent[] getNetworkNeighbors()
     {
-        return getNetworkLogic().getNetworkConnections();
+        return logic.getNetworkConnections();
     }
 
     // TODO make better
     @Override
     public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection)
     {
-        return getNetworkLogic().getNeighborsExcluding(fromDirection);
+        return logic.getWalkableDirs(fromDirection);
     }
 
     @Override
     public int getRawConnectionMask()
     {
-        ITransferNetworkLogic logic = getNetworkLogic();
-        logic.updateExternalConnections(this);
+        logic.updateExternalConnections();
         return logic.getNetworkMask() | logic.getExternalMask();
     }
 }

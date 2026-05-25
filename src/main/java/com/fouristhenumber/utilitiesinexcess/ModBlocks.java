@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockCrossoverPipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -59,7 +60,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransfe
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
 //import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeHyperEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -166,6 +167,7 @@ public enum ModBlocks {
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     //TODO: Config
     TRANSFER_PIPE(true, new BlockTransferPipe(), "transfer_pipe"),
+    CROSSOVER_PIPE(true, new BlockCrossoverPipe(), "crossover_pipe"),
     TRANSFER_NODE(true, new BlockTransferNode(), "transfer_node"),
 //    TRANSFER_NODE_FLUID(true, new BlockTransferNodeFluid(), "transfer_node_fluid"),
     TRANSFER_NODE_ENERGY(true, new BlockTransferNodeEnergy(), "transfer_node_energy"),

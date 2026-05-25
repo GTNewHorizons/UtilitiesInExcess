@@ -40,6 +40,7 @@ public class ItemTransferNodeLogic extends NetworkLogic
 
     public ItemTransferNodeLogic(INodeLogicHost host)
     {
+        super(host);
         walker = new ItemWalker(host);
     }
 
@@ -50,11 +51,7 @@ public class ItemTransferNodeLogic extends NetworkLogic
 
         // TODO perhaps this can be moved to NetworkLogic
         if (connectedInventory == null) {
-            ForgeDirection facing = host.getFacing();
-            TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
-            if (neighbor instanceof IInventory inventory) {
-                connectedInventory = inventory;
-            }
+            updateSourceInventory(host);
         }
 
         TargetResolver.Target<IInventory> target = walker.getValidTarget();
@@ -121,7 +118,6 @@ public class ItemTransferNodeLogic extends NetworkLogic
             {
                 return null;
             }
-
 
             if (!inventory.canInsertItem(slot, stack, side))
             {
@@ -388,5 +384,14 @@ public class ItemTransferNodeLogic extends NetworkLogic
     @Override
     public boolean canConnectItem() {
         return true;
+    }
+
+    public void updateSourceInventory(INodeLogicHost host)
+    {
+        ForgeDirection facing = host.getFacing();
+        TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
+        if (neighbor instanceof IInventory inventory) {
+            connectedInventory = inventory;
+        }
     }
 }

@@ -1,13 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
 public interface TargetResolver<T>
 {
     List<Target<T>> getValidTargets(
-        ITransferNetworkComponent from);
+        ITransferNetworkComponent from, ForgeDirection fromDir);
 
     class Target<T>
     {

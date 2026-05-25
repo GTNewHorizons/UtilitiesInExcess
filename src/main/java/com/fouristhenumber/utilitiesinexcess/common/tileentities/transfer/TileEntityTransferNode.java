@@ -15,10 +15,9 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 
-public class TileEntityTransferNode extends TileEntityTransferNodeBase
+public class TileEntityTransferNode extends TileEntityTransferNodeBase<ItemTransferNodeLogic>
     implements IGuiHolder<PosGuiData>
 {
-    ItemTransferNodeLogic logic;
 
     public TileEntityTransferNode()
     {
@@ -154,7 +153,8 @@ public class TileEntityTransferNode extends TileEntityTransferNodeBase
     }
 
     @Override
-    protected ITransferNetworkLogic getNetworkLogic() {
-        return logic;
+    public void updateSourceInventory()
+    {
+        logic.updateSourceInventory(this);
     }
 }

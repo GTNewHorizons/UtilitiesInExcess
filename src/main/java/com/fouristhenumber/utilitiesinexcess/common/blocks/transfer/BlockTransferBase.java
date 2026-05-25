@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,10 +20,13 @@ public abstract class BlockTransferBase extends BlockContainer
     {
         TileEntity te = worldIn.getTileEntity(x, y, z);
 
-        if (!(te instanceof ITransferNetworkComponent component))
+        if (te instanceof ITransferNetworkComponent component)
         {
-            return;
+            component.updateExternalConnections();
+            if (component instanceof TileEntityTransferNodeBase nodeComponent)
+            {
+                nodeComponent.updateSourceInventory();
+            }
         }
-        component.updateExternalConnections();
     }
 }

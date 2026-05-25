@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferNodeRenderID;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

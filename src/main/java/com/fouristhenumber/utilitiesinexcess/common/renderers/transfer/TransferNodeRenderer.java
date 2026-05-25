@@ -4,6 +4,7 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferNo
 import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -128,7 +129,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
          int mask = te.getRawConnectionMask();
 
-         RenderPipes(mask, x, y, z, renderer, mask != 0);
+         RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
 
         return true;
     }
