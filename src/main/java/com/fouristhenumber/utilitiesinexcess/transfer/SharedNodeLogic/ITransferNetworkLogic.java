@@ -32,5 +32,5 @@ public interface ITransferNetworkLogic
     Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker);
     ITransferNetworkComponent[] getNetworkConnections();
 
-
+    int getMaxInsertable();
 }

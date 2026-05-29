@@ -115,4 +115,9 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
         logic.updateExternalConnections();
         return logic.getNetworkMask() | logic.getExternalMask();
     }
+
+    @Override
+    public int getInsertLimit() {
+        return logic.getMaxInsertable();
+    }
 }

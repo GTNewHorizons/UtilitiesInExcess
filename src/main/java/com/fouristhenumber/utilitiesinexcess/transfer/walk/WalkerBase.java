@@ -33,5 +33,7 @@ public abstract class WalkerBase<T>
 
     public abstract void reset();
 
-    public abstract TargetResolver.Target<T> getValidTarget();
+    public abstract List<TargetResolver.Target<T>> getValidTargets();
+
+    public abstract int getInsertLimit();
 }

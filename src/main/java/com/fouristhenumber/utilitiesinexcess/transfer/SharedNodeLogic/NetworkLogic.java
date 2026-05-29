@@ -170,21 +170,6 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
         return new MaskedArrayView<>(mask, networkNeighbors);
     }
 
-//    @Override
-//    public MaskedArrayView<ITransferNetworkComponent> getNeighborsExcluding(ForgeDirection direction)
-//    {
-//        int mask;
-//        if (direction != null)
-//        {
-//            mask = networkMask & ~(1 << direction.ordinal());
-//        }
-//        else
-//        {
-//            mask = networkMask;
-//        }
-//        return new MaskedArrayView<>(mask, networkNeighbors);
-//    }
-
     @Override
     public int getNetworkMask() {
         return networkMask;
@@ -217,5 +202,11 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     public ITransferNetworkComponent[] getNetworkConnections()
     {
         return networkNeighbors;
+    }
+
+    @Override
+    public int getMaxInsertable()
+    {
+        return -1;
     }
 }

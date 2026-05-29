@@ -17,4 +17,10 @@ public class TileEntityTransferPipe extends TileEntityNetworkComponentBase<PipeL
     {
         return true;
     }
+
+    @Override
+    public int getInsertLimit() {
+        return logic.getMaxInsertable();
+    }
+
 }

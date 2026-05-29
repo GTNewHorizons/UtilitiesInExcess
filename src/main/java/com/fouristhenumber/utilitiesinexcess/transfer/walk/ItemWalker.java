@@ -30,14 +30,16 @@ public class ItemWalker extends WalkerBase<IInventory>
     }
 
     @Override
-    public TargetResolver.Target<IInventory> getValidTarget()
+    public List<TargetResolver.Target<IInventory>> getValidTargets()
     {
-        List<TargetResolver.Target<IInventory>> validTargets = targeter.getValidTargets(currentComponent, walkingComponent, stepper.fromDirection);
-        if (validTargets.isEmpty())
-        {
-            return null;
-        }
-        return validTargets.get(rand.nextInt(validTargets.size()));
+        return targeter.getValidTargets(currentComponent, walkingComponent, stepper.fromDirection);
+    }
+
+    // Gets the amount of items that can be put into an inventory by a certain component. This is relevant
+    // for rationing pipes. If result is -1, the limit is ignored.
+    @Override
+    public int getInsertLimit() {
+        return currentComponent.getInsertLimit();
     }
 
     @Override

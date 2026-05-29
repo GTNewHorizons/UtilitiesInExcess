@@ -13,7 +13,13 @@ public class TileEntitySortingPipe extends TileEntityNetworkComponentBase<Sortin
     }
 
     @Override
-    public boolean canConnectToSide(ForgeDirection side) {
+    public boolean canConnectToSide(ForgeDirection side)
+    {
         return true;
+    }
+
+    @Override
+    public int getInsertLimit() {
+        return logic.getMaxInsertable();
     }
 }

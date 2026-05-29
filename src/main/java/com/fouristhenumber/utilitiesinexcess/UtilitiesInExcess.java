@@ -3,6 +3,8 @@ package com.fouristhenumber.utilitiesinexcess;
 //import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityRetrievalNode;
 import codechicken.lib.world.TileChunkLoadHook;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityRationingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntitySortingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
 import net.minecraft.creativetab.CreativeTabs;
@@ -171,6 +173,8 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityTransferPipe.class, "TileEntityTransferPipeUIE");
         GameRegistry.registerTileEntity(TileEntityCrossoverPipe.class, "TileEntityCrossoverPipeUIE");
         GameRegistry.registerTileEntity(TileEntitySortingPipe.class, "TileEntitySortingPipeUIE");
+        GameRegistry.registerTileEntity(TileEntityRationingPipe.class, "TileEntityRationingPipeUIE");
+        GameRegistry.registerTileEntity(TileEntityHyperRationingPipe.class, "TileEntityHyperRationingPipe");
 //        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
         GameRegistry.registerTileEntity(TileEntityItemTransferNode.class, "TileEntityTransferNodeUIE");
 //        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");

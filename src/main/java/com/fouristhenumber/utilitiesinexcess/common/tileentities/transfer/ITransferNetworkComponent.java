@@ -34,4 +34,6 @@ public interface ITransferNetworkComponent
     boolean canConnectToSide(ForgeDirection side);
 
     void updateExternalConnections();
+
+    int getInsertLimit();
 }
