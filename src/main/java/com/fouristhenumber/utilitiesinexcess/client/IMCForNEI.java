@@ -98,9 +98,13 @@ public class IMCForNEI {
             "nei.infopage.uie.watering_can.1");
 
         if (Mods.Baubles.isLoaded()) {
-            sendInfoPage("<utilitiesinexcess:heavenly_ring>", "nei.infopage.uie.heavenly_ring.2");
+            sendInfoPage(
+                "<utilitiesinexcess:heavenly_ring_feather>,<utilitiesinexcess:heavenly_ring_dragon>,<utilitiesinexcess:heavenly_ring_fairy>,<utilitiesinexcess:heavenly_ring_metal>,<utilitiesinexcess:heavenly_ring_magic>",
+                "nei.infopage.uie.heavenly_ring.2");
         } else {
-            sendInfoPage("<utilitiesinexcess:heavenly_ring>", "nei.infopage.uie.heavenly_ring.1");
+            sendInfoPage(
+                "<utilitiesinexcess:heavenly_ring_feather>,<utilitiesinexcess:heavenly_ring_dragon>,<utilitiesinexcess:heavenly_ring_fairy>,<utilitiesinexcess:heavenly_ring_metal>,<utilitiesinexcess:heavenly_ring_magic>",
+                "nei.infopage.uie.heavenly_ring.1");
         }
 
         sendInfoPage("<utilitiesinexcess:trash_can_item>", "nei.infopage.uie.trash_can_item.1");
