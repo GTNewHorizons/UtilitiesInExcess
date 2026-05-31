@@ -56,6 +56,10 @@ dependencies {
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.4:dev')
 
 
+    implementation('com.github.GTNewHorizons:Hodgepodge:99.99.99:dev')
+    implementation("com.cardinalstar.cubicchunks:CubicChunks1710:99.99.99:dev")
+    implementation(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
+
     // For testing NBT data (/nbtedit)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.6:dev")
     // For testing glove

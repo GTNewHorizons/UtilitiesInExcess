@@ -2,17 +2,22 @@ package com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld;
 
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.cardinalstar.cubicchunks.api.worldgen.IWorldGenerator;
+import com.cardinalstar.cubicchunks.world.ICubicWorldProvider;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.UIEWorldChunkManager;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WorldProviderUnderWorld extends WorldProvider {
+public class WorldProviderUnderWorld extends WorldProvider implements ICubicWorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
@@ -96,5 +101,20 @@ public class WorldProviderUnderWorld extends WorldProvider {
     @Override
     public String getDimensionName() {
         return "The Underworld";
+    }
+
+    @Override
+    public @Nullable IWorldGenerator createCubeGenerator() {
+        return new CubicChunkProviderUnderWorld(worldObj, worldObj.getSeed());
+    }
+
+    @Override
+    public int getOriginalActualHeight() {
+        return 256;
+    }
+
+    @Override
+    public World getWorld() {
+        return worldObj;
     }
 }
