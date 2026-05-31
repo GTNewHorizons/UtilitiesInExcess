@@ -11,7 +11,6 @@ public class ItemStackInventory implements IInventory
     private final int size;
     private final ItemStack[] filters;
 
-
     private boolean dirty = false;
 
     public ItemStackInventory(ItemStack stack)
@@ -43,7 +42,15 @@ public class ItemStackInventory implements IInventory
 
     public void writeInventoryToHeldStack(EntityPlayer player)
     {
+        if (!dirty || player.getEntityWorld().isRemote)
+        {
+            return;
+        }
         ItemStack heldStack = player.getHeldItem();
+        if (heldStack == null)
+        {
+            return; // This can happen if you don't lock the slot the inventory is from.
+        }
         if (heldStack.stackTagCompound == null)
         {
             heldStack.stackTagCompound = new NBTTagCompound();
@@ -77,7 +84,7 @@ public class ItemStackInventory implements IInventory
         {
             return new ItemStackInventory(inventoryContainer.getInventorySize());
         }
-        throw new IllegalArgumentException("Blank inventory attempted to be created on an item that is not an ItemContainer");
+        throw new IllegalArgumentException("Blank inventory attempted to be created on an item that is not an ItemStackInventoryContainer");
     }
 
     @Override

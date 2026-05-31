@@ -23,7 +23,6 @@ import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventoryContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -86,6 +85,14 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
         ModularPanel panel = new ModularPanel("panel").height(125);
         panel.bindPlayerInventory();
+
+        int usedSlot = data.getPlayer().inventory.currentItem;
+        if (data.getInventoryType() == InventoryTypes.PLAYER)
+        {
+            syncManager.bindPlayerInventory(data.getPlayer(),
+                (inv, index) ->
+                    index == usedSlot ? new ModularSlot(inv, index).accessibility(false, false) : new ModularSlot(inv, index));
+        }
 
         SlotGroup filterGroup = new SlotGroup("filter_slots", 1);
         ItemStackInventory itemInventory;
