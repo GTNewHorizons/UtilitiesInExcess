@@ -120,4 +120,10 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
     public int getInsertLimit() {
         return logic.getMaxInsertable();
     }
+
+    @Override
+    public void markHostDirty()
+    {
+        this.markDirty();
+    }
 }

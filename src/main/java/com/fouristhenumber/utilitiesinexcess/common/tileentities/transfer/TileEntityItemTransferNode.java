@@ -1,6 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ItemTransferNodeLogic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,17 +24,12 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     public TileEntityItemTransferNode()
     {
         logic = new ItemTransferNodeLogic(this);
-        System.out.println("CALLED");
     }
 
     @Override
     public void updateEntity()
     {
         this.logic.updateEntity(this);
-    }
-
-    public void importItems() {
-        this.logic.importItems();
     }
 
     @Override
@@ -74,7 +73,7 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     @Override
     public void setInventorySlotContents(int index, ItemStack stack)
     {
-        logic.setInventorySlotContents(index, stack, this);
+        logic.setInventorySlotContents(index, stack);
     }
 
     @Override
@@ -104,13 +103,11 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     @Override
     public void openInventory()
     {
-        logic.openInventory();
     }
 
     @Override
     public void closeInventory()
     {
-        logic.closeInventory();
     }
 
     @Override
@@ -123,6 +120,12 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         return logic.buildUI(data, syncManager, settings, this);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return logic.createScreen(data, mainPanel);
     }
 
     @Override

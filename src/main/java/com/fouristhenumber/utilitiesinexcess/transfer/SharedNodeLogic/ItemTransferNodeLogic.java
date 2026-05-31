@@ -1,8 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
@@ -14,8 +16,11 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -29,7 +34,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class ItemTransferNodeLogic extends NetworkLogic
+public class ItemTransferNodeLogic extends NetworkLogic implements IInventory
 {
 
     ItemStack[] buffer = new ItemStack[getSizeInventory()];
@@ -464,16 +469,19 @@ public class ItemTransferNodeLogic extends NetworkLogic
         }
     }
 
+    @Override
     public int getSizeInventory()
     {
         return 7;
     }
 
+    @Override
     public ItemStack getStackInSlot(int slotIn)
     {
         return buffer[slotIn];
     }
 
+    @Override
     public ItemStack decrStackSize(int index, int count)
     {
         if (buffer[index] == null)
@@ -483,30 +491,40 @@ public class ItemTransferNodeLogic extends NetworkLogic
         return buffer[index].splitStack(count);
     }
 
+    @Override
     public ItemStack getStackInSlotOnClosing(int index)
     {
         return buffer[index];
     }
 
-    public void setInventorySlotContents(int index, ItemStack stack, INodeLogicHost host)
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
     {
         buffer[index] = stack;
-        host.markDirty();
+        this.markDirty();
     }
 
+    @Override
     public String getInventoryName()
     {
         return "gui.title.transfer_node.name";
     }
 
+    @Override
     public boolean hasCustomInventoryName()
     {
         return false;
     }
 
+    @Override
     public int getInventoryStackLimit()
     {
         return 64;
+    }
+
+    @Override
+    public void markDirty() {
+        host.markHostDirty();
     }
 
     public boolean isUseableByPlayer(EntityPlayer player)
@@ -514,12 +532,17 @@ public class ItemTransferNodeLogic extends NetworkLogic
         return true;
     }
 
-    public void openInventory()
-    {}
+    @Override
+    public void openInventory() {
 
-    public void closeInventory()
-    {}
+    }
 
+    @Override
+    public void closeInventory() {
+
+    }
+
+    @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
         return true;
@@ -571,6 +594,11 @@ public class ItemTransferNodeLogic extends NetworkLogic
                 .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
 
         return panel;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     @Override

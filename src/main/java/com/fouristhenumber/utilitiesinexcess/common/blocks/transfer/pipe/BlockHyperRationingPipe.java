@@ -1,12 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
 
-public class BlockHyperRationingPipe extends BlockTransferBase
+public class BlockHyperRationingPipe extends BlockPipeBase
 {
     public BlockHyperRationingPipe() {
         super(Material.iron);
@@ -18,4 +17,5 @@ public class BlockHyperRationingPipe extends BlockTransferBase
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityHyperRationingPipe();
     }
+
 }

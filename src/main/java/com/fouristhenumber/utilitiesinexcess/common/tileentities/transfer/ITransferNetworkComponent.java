@@ -36,4 +36,6 @@ public interface ITransferNetworkComponent
     void updateExternalConnections();
 
     int getInsertLimit();
+
+    void markHostDirty();
 }

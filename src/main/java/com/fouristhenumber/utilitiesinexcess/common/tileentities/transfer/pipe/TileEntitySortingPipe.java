@@ -17,9 +17,4 @@ public class TileEntitySortingPipe extends TileEntityNetworkComponentBase<Sortin
     {
         return true;
     }
-
-    @Override
-    public int getInsertLimit() {
-        return logic.getMaxInsertable();
-    }
 }

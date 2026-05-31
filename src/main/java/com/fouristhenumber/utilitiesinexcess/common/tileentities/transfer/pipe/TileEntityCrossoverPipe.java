@@ -34,9 +34,4 @@ public class TileEntityCrossoverPipe extends TileEntityNetworkComponentBase<Cros
         }
         return false;
     }
-
-    @Override
-    public int getInsertLimit() {
-        return -1;
-    }
 }

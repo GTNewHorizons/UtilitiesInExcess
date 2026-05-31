@@ -1,8 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityRetrievalNode;
 import codechicken.lib.world.TileChunkLoadHook;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityRationingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntitySortingPipe;
@@ -58,8 +58,6 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
-//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeFluid;
-//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
@@ -175,6 +173,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntitySortingPipe.class, "TileEntitySortingPipeUIE");
         GameRegistry.registerTileEntity(TileEntityRationingPipe.class, "TileEntityRationingPipeUIE");
         GameRegistry.registerTileEntity(TileEntityHyperRationingPipe.class, "TileEntityHyperRationingPipe");
+        GameRegistry.registerTileEntity(TileEntityFilterPipe.class, "TileEntityFilterPipe");
 //        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
         GameRegistry.registerTileEntity(TileEntityItemTransferNode.class, "TileEntityTransferNodeUIE");
 //        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");
