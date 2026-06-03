@@ -2,9 +2,14 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
@@ -17,6 +22,10 @@ import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RecipeLoader {
 
@@ -35,6 +44,7 @@ public class RecipeLoader {
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
         loadTransferNodeRecipes();
+        loadFilterVariantRecipes();
 
         // Pacifist's Bench
         addShapedRecipe(
@@ -1306,8 +1316,51 @@ public class RecipeLoader {
             TransferUpgrade.FILTER.getStack());
     }
 
-    private static void loadTransferPipeRecipes() {
+    private static void loadTransferPipeRecipes()
+    {
 
+    }
+
+    private static void loadFilterVariantRecipes()
+    {
+        if (TransferConfig.EnableTransferSystem)
+        {
+            GameRegistry.addRecipe( new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.redstone_torch)
+                    ),
+                0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.wool)
+                    ),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Items.stick)
+                    ),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.ADV_FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.redstone_torch)
+                    ),
+                    0));
+
+        }
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
@@ -1349,5 +1402,15 @@ public class RecipeLoader {
                     new DisableableItemStack(modBlock, 1, i + 1));
             }
         }
+    }
+
+    private static DisableableItemStack setNBTForItem(DisableableItemStack in, String key, NBTBase tag)
+    {
+        if (!in.theStack.hasTagCompound())
+        {
+            in.theStack.stackTagCompound = new NBTTagCompound();
+        }
+        in.theStack.stackTagCompound.setTag(key, tag);
+        return in;
     }
 }

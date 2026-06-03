@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.config.items;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.UnstableTools;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import com.gtnewhorizon.gtnhlib.config.Config;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -18,6 +19,7 @@ public class ItemConfig {
         ConfigurationManager.registerConfig(WateringCanConfig.class);
         ConfigurationManager.registerConfig(InversionConfig.class);
         ConfigurationManager.registerConfig(FireBatteryConfig.class);
+        ConfigurationManager.registerConfig(TransferConfig.class);
     }
 
     @Config.DefaultBoolean(true)

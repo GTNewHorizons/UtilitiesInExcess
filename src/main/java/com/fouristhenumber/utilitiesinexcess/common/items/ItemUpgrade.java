@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
-import com.cleanroommc.modularui.ModularUI;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiFactories;
@@ -15,8 +14,8 @@ import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventoryContainer;
@@ -25,6 +24,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
@@ -37,6 +38,21 @@ import net.minecraft.world.World;
 
 public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiData>, ItemStackInventoryContainer
 {
+    public enum FilterMode {
+        INVERTED("Inverted"),
+        FUZZYNBT("Fuzzy - Ignores NBT"),
+        FUZZYMETA("Fuzzy - Ignores Metadata");
+
+        private final String label;
+
+        FilterMode(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+    }
 
     private static final IIcon[] ICONS = new IIcon[TransferUpgrade.VALUES.length];
 
@@ -98,14 +114,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
         ItemStackInventory itemInventory;
 
         ItemStack heldStack = data.getPlayer().getHeldItem();
-        if (heldStack.hasTagCompound())
-        {
-            itemInventory = new ItemStackInventory(heldStack);
-        }
-        else
-        {
-            itemInventory = ItemStackInventory.BlankInventory(heldStack);
-        }
+        itemInventory = new ItemStackInventory(heldStack, 9, 1);
 
         IItemHandler handler = new InvWrapper(itemInventory);
 
@@ -122,7 +131,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
 
         for (int i = 0; i < this.getInventorySize(); i++)
         {
-            flow.child(new ItemSlot().slot(new ModularSlot(handler,i).slotGroup(filterGroup)));
+            flow.child(new PhantomItemSlot().slot(new ModularSlot(handler,i).slotGroup(filterGroup)));
         }
 
         panel.child(flow);
@@ -140,5 +149,37 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     @Override
     public int getInventorySize() {
         return 9;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced)
+    {
+        if (TransferUpgrade.getUpgrade(stack) == TransferUpgrade.FILTER || TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ADV_FILTER)
+        {
+            if (stack.hasTagCompound())
+            {
+                if (stack.stackTagCompound.hasKey("Mode"))
+                {
+                    byte filterMode = stack.stackTagCompound.getByte("Mode");
+                    if (filterMode >= 0 && filterMode < FilterMode.values().length)
+                    {
+                        list.add(FilterMode.values()[filterMode].getLabel());
+                    }
+                }
+
+                if (stack.stackTagCompound.hasKey("Items"))
+                {
+                    NBTTagList tagList = stack.stackTagCompound.getTagList("Items", 10);
+                    for (int i = 0; i < tagList.tagCount(); i++)
+                    {
+                        NBTTagCompound itemTag = tagList.getCompoundTagAt(i);
+                        ItemStack filteredStack = ItemStack.loadItemStackFromNBT(itemTag);
+                        if (filteredStack != null) {
+                            list.add("  " + filteredStack.getDisplayName());
+                        }
+                    }
+                }
+            }
+        }
     }
 }

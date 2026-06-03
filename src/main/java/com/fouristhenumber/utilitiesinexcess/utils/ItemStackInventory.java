@@ -10,11 +10,12 @@ public class ItemStackInventory implements IInventory
 {
     private final int size;
     private final ItemStack[] filters;
-
+    private final int stackLimit;
     private boolean dirty = false;
 
-    public ItemStackInventory(ItemStack stack)
+    public ItemStackInventory(ItemStack stack, int size, int stackLimit)
     {
+        this.stackLimit = stackLimit;
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt == null)
         {
@@ -22,7 +23,7 @@ public class ItemStackInventory implements IInventory
             stack.setTagCompound(nbt);
         }
 
-        this.size = nbt.hasKey("size") ? nbt.getInteger("size") : 9;
+        this.size = nbt.hasKey("size") ? nbt.getInteger("size") : size;
         this.filters = new ItemStack[this.size];
 
         NBTTagList list = nbt.getTagList("Items", 10);
@@ -72,21 +73,6 @@ public class ItemStackInventory implements IInventory
         compound.setTag("Items", itemList);
     }
 
-    private ItemStackInventory(int size)
-    {
-        this.size = size;
-        this.filters = new ItemStack[size];
-    }
-
-    public static ItemStackInventory BlankInventory(ItemStack container)
-    {
-        if (container.getItem() instanceof ItemStackInventoryContainer inventoryContainer)
-        {
-            return new ItemStackInventory(inventoryContainer.getInventorySize());
-        }
-        throw new IllegalArgumentException("Blank inventory attempted to be created on an item that is not an ItemStackInventoryContainer");
-    }
-
     @Override
     public int getSizeInventory() {
         return size;
@@ -133,7 +119,7 @@ public class ItemStackInventory implements IInventory
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return stackLimit;
     }
 
     @Override
