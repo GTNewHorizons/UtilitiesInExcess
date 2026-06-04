@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventoryContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -26,6 +27,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
@@ -45,11 +47,13 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
 
         private final String label;
 
-        FilterMode(String label) {
+        FilterMode(String label)
+        {
             this.label = label;
         }
 
-        public String getLabel() {
+        public String getLabel()
+        {
             return label;
         }
     }
@@ -94,7 +98,57 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
         {
             GuiFactories.playerInventory().open(player, InventoryTypes.PLAYER, player.inventory.currentItem);
         }
+        else if (!world.isRemote && TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ADV_FILTER)
+        {
+            AdvancedFilterMode mode;
+            if (player.isSneaking())
+            {
+                mode = cycleAdvancedFilter(stack, false);
+            }
+            else
+            {
+                mode = cycleAdvancedFilter(stack, true);
+            }
+            player.addChatMessage(new ChatComponentText("Filter Mode: " + mode.getLabel()));
+        }
+
         return stack;
+    }
+
+    private AdvancedFilterMode cycleAdvancedFilter(ItemStack stack, boolean up)
+    {
+        if (stack.hasTagCompound())
+        {
+            if (stack.stackTagCompound.hasKey("AdvMode"))
+            {
+                if (up)
+                {
+                    stack.stackTagCompound.setByte("AdvMode", (byte) ((stack.stackTagCompound.getByte("AdvMode") + 1) % AdvancedFilterMode.values().length));
+                }
+                else
+                {
+                    byte mode = stack.stackTagCompound.getByte("AdvMode");
+                    if (mode == 0)
+                    {
+                        stack.stackTagCompound.setByte("AdvMode", (byte) (AdvancedFilterMode.values().length - 1));
+                    }
+                    else
+                    {
+                        stack.stackTagCompound.setByte("AdvMode", (byte) (mode - 1));
+                    }
+                }
+            }
+            else
+            {
+                stack.stackTagCompound.setByte("AdvMode", (byte) 1);
+            }
+        }
+        else
+        {
+            stack.stackTagCompound = new NBTTagCompound();
+            stack.stackTagCompound.setByte("AdvMode", (byte) 0);
+        }
+        return AdvancedFilterMode.values()[stack.stackTagCompound.getByte("AdvMode")];
     }
 
     @Override
@@ -154,7 +208,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced)
     {
-        if (TransferUpgrade.getUpgrade(stack) == TransferUpgrade.FILTER || TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ADV_FILTER)
+        if (TransferUpgrade.getUpgrade(stack) == TransferUpgrade.FILTER)
         {
             if (stack.hasTagCompound())
             {
@@ -177,6 +231,21 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
                         if (filteredStack != null) {
                             list.add("  " + filteredStack.getDisplayName());
                         }
+                    }
+                }
+            }
+        }
+        else if (TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ADV_FILTER)
+        {
+            if (stack.hasTagCompound())
+            {
+                if (stack.stackTagCompound.hasKey("AdvMode"))
+                {
+                    byte advFilterMode = stack.stackTagCompound.getByte("AdvMode");
+                    if (advFilterMode >= 0 && advFilterMode < AdvancedFilterMode.values().length)
+                    {
+                        list.add(AdvancedFilterMode.values()[advFilterMode].getLabel());
+                        list.add(AdvancedFilterMode.values()[advFilterMode].getDescription());
                     }
                 }
             }
