@@ -496,6 +496,8 @@ nei.infopage.uie.collector.1=Collects things!
 
 tile.collector.name=Collector
 
+uie.chat.collector_size=Range: %s blocks
+
 nei.infopage.uie.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
 
 tile.blackout_curtains.name=Blackout Curtains

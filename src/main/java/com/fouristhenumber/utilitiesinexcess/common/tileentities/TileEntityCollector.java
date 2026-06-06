@@ -21,7 +21,7 @@ public class TileEntityCollector extends TileEntity {
     public boolean showBorder = false;
     public int borderTimer = 0;
     public List<Vec3> itemPositions = new ArrayList<>();
-    private float size = 6f;
+    private float size = 4f;
 
     public float getSize() {
         return size;
@@ -30,11 +30,11 @@ public class TileEntityCollector extends TileEntity {
     public void incrementSize(EntityPlayer player) {
         if (player.isSneaking()) {
 
-            size--;
-            if (size == 1) size = 9;
+            size -= 0.5f;
+            if (size == 0f) size = 4f;
         } else {
-            size++;
-            if (size > 9) size = 1;
+            size += 0.5f;
+            if (size > 4f) size = 0.5f;
         }
     }
 

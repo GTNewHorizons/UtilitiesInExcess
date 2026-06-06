@@ -4,6 +4,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
@@ -30,7 +31,8 @@ public class BlockCollector extends BlockContainer {
         }
 
         collector.incrementSize(player);
-
+        if (!worldIn.isRemote)
+            player.addChatMessage(new ChatComponentTranslation("uie.chat.collector_size", collector.getSize()));
         collector.showBorderFor(40);
         worldIn.markBlockForUpdate(x, y, z);
         return true;
