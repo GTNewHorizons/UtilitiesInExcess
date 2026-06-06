@@ -17,6 +17,12 @@ public class BlockCollector extends BlockContainer {
         setBlockTextureName("utilitiesinexcess:collector");
     }
 
+    // So you can open chests under it
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityCollector();
