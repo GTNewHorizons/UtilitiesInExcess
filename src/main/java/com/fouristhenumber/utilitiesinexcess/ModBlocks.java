@@ -7,10 +7,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.*;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCollector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;

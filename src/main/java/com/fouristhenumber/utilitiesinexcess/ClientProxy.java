@@ -19,7 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
-import com.fouristhenumber.utilitiesinexcess.render.CollectorLine;
+import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
@@ -58,7 +58,7 @@ public class ClientProxy extends CommonProxy {
             RenderingRegistry.registerBlockHandler(ISBRHUnderworldPortal.INSTANCE);
         }
         if (ModBlocks.COLLECTOR.isEnabled()) {
-            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCollector.class, new CollectorLine());
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCollector.class, new CollectorRangeBox());
 
         }
         if (ModItems.GLOVE.isEnabled()) {

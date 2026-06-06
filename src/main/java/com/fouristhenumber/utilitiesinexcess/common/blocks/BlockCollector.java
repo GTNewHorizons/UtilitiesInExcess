@@ -12,7 +12,8 @@ public class BlockCollector extends BlockContainer {
 
     public BlockCollector() {
         super(Material.rock);
-        setBlockName("Collector");
+        setBlockName("collector");
+        setBlockTextureName("utilitiesinexcess:collector");
     }
 
     @Override
@@ -28,12 +29,7 @@ public class BlockCollector extends BlockContainer {
             return true;
         }
 
-
-        if(collector.getTimeSinceLastClick() < 40 && collector.getTimeSinceLastClick() > 0 ) {
-            collector.incrementSize(player);
-            collector.setTimeSinceLastClick(0);
-
-        }
+        collector.incrementSize(player);
 
         collector.showBorderFor(40);
         worldIn.markBlockForUpdate(x, y, z);

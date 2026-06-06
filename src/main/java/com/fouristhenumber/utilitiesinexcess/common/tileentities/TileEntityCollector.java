@@ -22,27 +22,17 @@ public class TileEntityCollector extends TileEntity {
     public int borderTimer = 0;
     public List<Vec3> itemPositions = new ArrayList<>();
     private float size = 6f;
-    private int timeSinceLastClick = 0;
-
-    public int getTimeSinceLastClick() {
-        return timeSinceLastClick;
-    }
-
-    public void setTimeSinceLastClick(int timeSinceLastClick) {
-        this.timeSinceLastClick = timeSinceLastClick;
-    }
 
     public float getSize() {
         return size;
     }
 
     public void incrementSize(EntityPlayer player) {
-        if(player.isSneaking()){
+        if (player.isSneaking()) {
 
-            size --;
-            if(size == 1) size = 9;
-        }
-        else {
+            size--;
+            if (size == 1) size = 9;
+        } else {
             size++;
             if (size > 9) size = 1;
         }
@@ -55,44 +45,61 @@ public class TileEntityCollector extends TileEntity {
 
     @Override
     public void updateEntity() {
+        AxisAlignedBB area = getRadiusAABB();
 
         if (worldObj.isRemote) {
-
-            if (borderTimer > 0) {
-                borderTimer--;
-                if (borderTimer <= 0) showBorder = false;
-            }
-
-            itemPositions.clear();
-            List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, getRadiusAABB());
-            for (EntityItem item : items) {
-                if (!item.isDead && item.onGround) {
-                    itemPositions.add(Vec3.createVectorHelper(item.posX, item.posY + 0.25, item.posZ));
-                }
-            }
+            updateClientEffects(area);
+            return;
         }
 
-        if (!worldObj.isRemote) {
-            timeSinceLastClick++;
-            if(timeSinceLastClick > 100){
-                timeSinceLastClick = 0;
+        updateServerItemInsertion(area);
+    }
+
+    private void updateClientEffects(AxisAlignedBB area) {
+        if (borderTimer > 0 && --borderTimer <= 0) {
+            showBorder = false;
+        }
+
+        itemPositions.clear();
+
+        for (EntityItem item : worldObj.getEntitiesWithinAABB(EntityItem.class, area)) {
+
+            if (item.isDead || !item.onGround) {
+                continue;
             }
-            List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, getRadiusAABB());
-            TileEntity chest = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
-            if (!(chest instanceof IInventory)) return;
 
-            for (EntityItem item : items) {
-                if (item.isDead || !item.onGround || item.delayBeforeCanPickup > 0) continue;
+            itemPositions.add(Vec3.createVectorHelper(item.posX, item.posY + 0.25, item.posZ));
+        }
+    }
 
-                ItemStack stackInsert = item.getEntityItem();
-                if (stackInsert == null) continue;
+    private void updateServerItemInsertion(AxisAlignedBB area) {
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        if (!(te instanceof IInventory chest)) {
+            return;
+        }
 
-                ItemSink sink = ItemUtil.getItemSink(chest, ForgeDirection.UP);
-                if (sink != null) {
-                    int leftover = sink.store(new InsertionItemStack(stackInsert));
-                    if (leftover <= 0) item.setDead();
-                    else stackInsert.stackSize = leftover;
-                }
+        ItemSink sink = ItemUtil.getItemSink(chest, ForgeDirection.UP);
+        if (sink == null) {
+            return;
+        }
+
+        for (EntityItem item : worldObj.getEntitiesWithinAABB(EntityItem.class, area)) {
+
+            if (item.isDead || !item.onGround || item.delayBeforeCanPickup > 0) {
+                continue;
+            }
+
+            ItemStack stack = item.getEntityItem();
+            if (stack == null) {
+                continue;
+            }
+
+            int leftover = sink.store(new InsertionItemStack(stack));
+
+            if (leftover <= 0) {
+                item.setDead();
+            } else {
+                stack.stackSize = leftover;
             }
         }
     }

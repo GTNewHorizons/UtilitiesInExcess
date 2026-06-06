@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,14 +13,13 @@ import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 
-public class CollectorLine extends TileEntitySpecialRenderer {
+public class CollectorRangeBox extends TileEntitySpecialRenderer {
 
     private final Map<Vec3, Integer> lines = new LinkedHashMap<>();
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
         if (!(te instanceof TileEntityCollector collector)) return;
-
 
         if (collector.itemPositions != null) {
             for (Vec3 pos : collector.itemPositions) {
