@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -80,7 +81,12 @@ public class BlockEnderMarker extends BlockContainer {
             if (player.isSneaking()) {
                 int newCuboidSize = marker.increaseCuboidSize();
                 player
-                    .addChatComponentMessage(new ChatComponentText("Increased cuboid size to " + newCuboidSize + "."));
+                    .addChatComponentMessage(new ChatComponentText(
+                        String.format(
+                            StatCollector.translateToLocal("uie.quarry.marker.mode.2.2"),
+                            newCuboidSize
+                        )
+                    ));
             } else {
                 marker.rotateMode();
                 player.addChatComponentMessage(new ChatComponentText(marker.getMode()));

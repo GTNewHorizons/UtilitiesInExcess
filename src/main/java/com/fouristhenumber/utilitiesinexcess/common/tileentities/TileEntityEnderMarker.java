@@ -408,10 +408,12 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
 
     public String getMode() {
         return switch (operationMode) {
-            case DEFAULT -> "Marker is set to establish a rectangular fence from the first 3 in chain.";
-            case SINGLE -> "Marker is set to establish a cuboid of length " + this.cuboidSize
-                + ". Sneak + R-Click to adjust size.";
-            case ARBITRARY_LOOP -> "Marker is set to establish a full loop of markers that make up a rectilinear polygon back this marker of arbitrary size and shape.";
+            case DEFAULT -> StatCollector.translateToLocal("uie.quarry.marker.mode.1");
+            case SINGLE -> String.format(
+                StatCollector.translateToLocal("uie.quarry.marker.mode.2.1"),
+                this.cuboidSize
+            );
+            case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.quarry.marker.mode.3");
         };
     }
 

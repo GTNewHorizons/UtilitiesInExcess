@@ -113,26 +113,31 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
     public String getState() {
         return switch (state) {
+            case STOPPED -> "uie.quarry.state.detail.1";
+            case STOPPED_WAITING_FOR_FLUID_SPACE -> StatCollector.translateToLocal("uie.quarry.state.detail.2");
+            case STOPPED_WAITING_FOR_ITEM_SPACE -> StatCollector.translateToLocal("uie.quarry.state.detail.3");
+            case STOPPED_WAITING_FOR_ENERGY -> StatCollector.translateToLocal("uie.quarry.state.detail.4");
+            case THROTTLED_BY_ENERGY -> StatCollector.translateToLocal("uie.quarry.state.detail.5");
+            case FINISHED -> String.format(
+                StatCollector.translateToLocal("uie.quarry.state.detail.6.1"),
+                brokenBlocksTotal,
+                String.format(
+                    storedItems > 0 ? StatCollector.translateToLocal("uie.quarry.state.detail.6.2") : ".",
+                    storedItems));
             case RUNNING -> String.format(
-                "Quarry is currently mining at %d %d %d, has already mined/scanned %d blocks.%s",
+                StatCollector.translateToLocal("uie.quarry.state.detail.7.1"),
                 dx,
                 dy,
                 dz,
                 brokenBlocksTotal,
                 estimatedSecondsLeft > 0 ? String.format(
-                    " Estimated time remaining: %02d:%02d:%02d.",
-                    estimatedSecondsLeft / 3600,
-                    (estimatedSecondsLeft % 3600) / 60,
-                    (estimatedSecondsLeft % 60)) : "");
-            case STOPPED_WAITING_FOR_FLUID_SPACE -> "Quarry is full on fluids.";
-            case STOPPED_WAITING_FOR_ITEM_SPACE -> "Quarry is full on items.";
-            case STOPPED_WAITING_FOR_ENERGY -> "Quarry is missing energy.";
-            case THROTTLED_BY_ENERGY -> "Quarry is running, but not at full speed because of missing energy.";
-            case STOPPED -> "Quarry is stopped.";
-            case FINISHED -> String.format(
-                "Quarry has finished after mining %d blocks%s.",
-                brokenBlocksTotal,
-                String.format(storedItems > 0 ? ", still holding %d items" : "", storedItems));
+                    StatCollector.translateToLocal("uie.quarry.state.detail.7.2"),
+                    String.format(
+                        "%02d:%02d:%02d",
+                        estimatedSecondsLeft / 3600,
+                        (estimatedSecondsLeft % 3600) / 60,
+                        (estimatedSecondsLeft % 60)))
+                    : "");
         };
     }
 
@@ -238,16 +243,15 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                         // to each dimension to make it inclusive)
                         estBlocks = (long) (upperYBound - lowerYBound + 1) * (workArea.height + 1)
                             * (workArea.width + 1);
-                        if (player != null)
-                            player.addChatComponentMessage(
-                                new ChatComponentText(
-                                    String.format(
-                                        StatCollector.translateToLocal("uie.quarry.scanmessage.1"),
-                                        workArea.low.x,
-                                        workArea.low.y,
-                                        workArea.high.x,
-                                        workArea.high.y,
-                                        estBlocks)));
+                        if (player != null) player.addChatComponentMessage(
+                            new ChatComponentText(
+                                String.format(
+                                    StatCollector.translateToLocal("uie.quarry.scanmessage.1"),
+                                    workArea.low.x,
+                                    workArea.low.y,
+                                    workArea.high.x,
+                                    workArea.high.y,
+                                    estBlocks)));
 
                         // Or do we have a more complex rectilinear polygon as defined by many points
                     } else {
@@ -282,13 +286,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                                 * (nextWorkArea.width + 1);
                         }
 
-                        if (player != null)
-                            player.addChatComponentMessage(
-                                new ChatComponentText(
-                                    String.format(
-                                        StatCollector.translateToLocal("uie.quarry.scanmessage.2"),
-                                        scanReturn.size(),
-                                        estBlocks)));
+                        if (player != null) player.addChatComponentMessage(
+                            new ChatComponentText(
+                                String.format(
+                                    StatCollector.translateToLocal("uie.quarry.scanmessage.2"),
+                                    scanReturn.size(),
+                                    estBlocks)));
 
                         setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
                         startQuarry();
@@ -297,14 +300,13 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     estimatedTotalBlocks = estBlocks;
                     return;
                 } else {
-                    if (player != null)
-                        player.addChatComponentMessage(
-                            new ChatComponentText(
-                                String.format(
-                                    StatCollector.translateToLocal("uie.quarry.scanmessage.3"),
-                                    marker.xCoord,
-                                    marker.yCoord,
-                                    marker.zCoord)));
+                    if (player != null) player.addChatComponentMessage(
+                        new ChatComponentText(
+                            String.format(
+                                StatCollector.translateToLocal("uie.quarry.scanmessage.3"),
+                                marker.xCoord,
+                                marker.yCoord,
+                                marker.zCoord)));
                     foundMarkers = true;
                 }
             }
@@ -1148,7 +1150,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     owner.addChatMessage(
                         new ChatComponentText(
                             String.format(
-                                "Your Ender Quarry at (%d %d %d) in DIM %d has finished.",
+                                StatCollector.translateToLocal("uie.quarry.finished"),
                                 xCoord,
                                 yCoord,
                                 zCoord,
