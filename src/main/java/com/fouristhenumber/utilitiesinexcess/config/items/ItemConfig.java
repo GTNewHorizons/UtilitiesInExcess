@@ -12,9 +12,6 @@ public class ItemConfig {
     @Config.DefaultBoolean(false)
     public static boolean registerDisabledItems;
 
-    @Config.DefaultBoolean(true)
-    public static boolean shiftForDescription;
-
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
@@ -22,9 +19,6 @@ public class ItemConfig {
         ConfigurationManager.registerConfig(InversionConfig.class);
         ConfigurationManager.registerConfig(FireBatteryConfig.class);
     }
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableDiamondStick;
 
     @Config.DefaultBoolean(true)
     public static boolean enableHeavenlyRing;
@@ -35,9 +29,31 @@ public class ItemConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableArchitectsWand;
 
+    @Config.DefaultInt(9)
+    public static int architectsWandBuildLimit;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableSuperArchitectsWand;
+
+    @Config.DefaultInt(49)
+    public static int superArchitectsWandBuildLimit;
+
+    @Config.DefaultInt(100)
+    @Config.Comment("[GT5U] Durability damage dealt to Trowels per block placed by the Architect's Wand. (Set to 0 to disable)")
+    public static int damageTrowelWithArchitectsWand;
+
     @Config.DefaultBoolean(true)
     public static boolean enableBedrockium;
 
     @Config.DefaultBoolean(true)
     public static boolean enableGoldenBagOfHolding;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableXRayGlasses;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableBlockAnalyzer;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableGlove;
 }

@@ -7,8 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockRedstoneGenerator extends BlockBaseGenerator {
 
-    public BlockRedstoneGenerator(String id) {
-        super(id);
+    public BlockRedstoneGenerator(String id, int mult) {
+        super(id, mult);
     }
 
     @Override

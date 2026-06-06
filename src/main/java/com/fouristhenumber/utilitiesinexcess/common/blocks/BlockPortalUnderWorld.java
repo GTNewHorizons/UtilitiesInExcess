@@ -20,7 +20,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.TeleporterUnderworld;
+import com.fouristhenumber.utilitiesinexcess.common.dimensions.UIETeleporter;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldSourceProperty;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.WorldProviderUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -148,7 +148,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
                 BlockPos spawn = findSpawnLocation(dest, source.entranceX, source.entranceY, source.entranceZ);
 
                 if (spawn == null) {
-                    player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.underworld_portal_blocked"));
+                    player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal_blocked"));
                 } else {
                     teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y, spawn.z);
                 }
@@ -175,11 +175,10 @@ public class BlockPortalUnderWorld extends BlockContainer {
                         }
                     }
 
-                    BlockPos spawn = findSpawnLocation(dest, tile.destX, tile.destY, tile.destZ);
+                    BlockPos spawn = findPortal(dest, tile.destX, tile.destZ);
 
                     if (spawn == null) {
-                        player.addChatComponentMessage(
-                            new ChatComponentTranslation("uie.chat.underworld_portal_blocked"));
+                        player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal_blocked"));
                     } else {
                         UnderWorldSourceProperty source = (UnderWorldSourceProperty) player
                             .getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
@@ -212,7 +211,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
     }
 
     private void teleport(EntityPlayerMP player, WorldServer world, int x, int y, int z) {
-        TeleporterUnderworld teleporter = new TeleporterUnderworld(world, x, y, z);
+        UIETeleporter teleporter = new UIETeleporter(world, x, y, z);
 
         FMLCommonHandler.instance()
             .getMinecraftServerInstance()

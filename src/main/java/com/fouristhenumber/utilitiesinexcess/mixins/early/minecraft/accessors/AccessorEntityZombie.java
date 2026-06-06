@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface AccessorEntityZombie {
 
     @Invoker(value = "convertToVillager")
-    void convertToVillager();
+    void uie$convertToVillager();
 }

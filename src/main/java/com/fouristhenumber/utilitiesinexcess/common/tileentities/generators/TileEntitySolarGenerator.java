@@ -4,6 +4,8 @@ import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfi
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorRFCapacity;
 import static com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig.solarGeneratorTopGeneration;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockBaseGenerator;
+
 public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     public TileEntitySolarGenerator() {
@@ -24,13 +26,19 @@ public class TileEntitySolarGenerator extends TileEntityBaseGenerator {
 
     @Override
     public void updateEntity() {
+        if (multiplier == -1) {
+            if (worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockBaseGenerator generator) {
+                multiplier = generator.multiplier;
+            }
+        }
+
         if (worldObj.isRemote) return;
         boolean dirty = false;
 
         if (receiversDirty) refreshEnergyReceivers();
 
         if (consumeFuel()) {
-            energyStorage.receiveEnergy(currentRFPerTick, false);
+            energyStorage.receiveEnergy(currentRFPerTick * multiplier, false);
             dirty = true;
         }
 

@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 public class BlockTrashCanFluid extends BlockContainer {
 
@@ -48,5 +49,20 @@ public class BlockTrashCanFluid extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityTrashCanFluid();
+    }
+
+    @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 }

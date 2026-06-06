@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -116,9 +115,6 @@ public class ItemMobJar extends Item {
         } else {
             tooltip.add(StatCollector.translateToLocal("item.mob_jar.desc.empty"));
         }
-
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.mob_jar.desc.1"));
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.mob_jar.desc.2"));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 }

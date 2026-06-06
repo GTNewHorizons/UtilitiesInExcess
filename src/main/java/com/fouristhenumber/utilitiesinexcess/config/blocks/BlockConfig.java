@@ -18,6 +18,13 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableFloatingBlock;
 
+    @Config.DefaultBoolean(false)
+    @Config.Comment("If enabled, inverted block will have a similar X-Ray effect to Extra Utilities' Unstable Block.")
+    public static boolean invertedBlockDoesXRay;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableColoredBlocks;
+
     @Config.DefaultBoolean(true)
     public static boolean enableCompressedCobblestone;
 
@@ -61,6 +68,18 @@ public class BlockConfig {
     public static boolean enableSignificantlyShrunkChest;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableRadicallyReducedChest;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enablePacifistsBench;
+
+    @Config.DefaultInt(600)
+    public static int pacifistsBenchCooldownInTicks;
+
+    @Config.DefaultBoolean(false)
+    public static boolean pacifistsBenchInNonPeaceful;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;
 
     @Config.DefaultBoolean(true)
@@ -79,20 +98,29 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableUnderWorldPortal;
 
-    @Config.Comment("Cursed Earth Configuration")
-    public static final CursedEarth cursedEarth = new CursedEarth();
+    @Config.DefaultBoolean(true)
+    public static boolean enableEndOfTimePortal;
 
-    @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
-    public static class CursedEarth {
+    @Config.DefaultBoolean(true)
+    public static boolean enableSmartPump;
 
-        @Config.DefaultBoolean(true)
-        public boolean enableCursedEarth;
+    @Config.DefaultBoolean(true)
+    public static boolean enableTradingPost;
 
-        @Config.Comment("Chance that a mob is spawned on a Cursed Earth block on a random tick.")
-        @Config.DefaultInt(40)
-        @Config.RangeInt(min = 0, max = 100)
-        public int cursedEarthSpawnRate;
-    }
+    @Config.DefaultInt(10000)
+    public static int smartPumpEnergyStorage;
+
+    @Config.DefaultInt(100)
+    public static int smartPumpEnergyUsePerBlock;
+
+    @Config.DefaultInt(200)
+    public static int smartPumpStallCooldownInTicks;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeGlass;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeBlocks;
 
     @Config.Comment("Pure Love Configuration")
     public static final PureLove pureLove = new PureLove();
@@ -142,6 +170,36 @@ public class BlockConfig {
         @Config.DefaultInt(64)
         @Config.RangeInt(min = 1, max = 256)
         public int rainMufflerRange;
+    }
+
+    @Config.Comment("Chandelier Configuration")
+    public static final Chandelier chandelier = new Chandelier();
+
+    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
+    public static class Chandelier {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableChandelier;
+
+        @Config.Comment("The radius a chandelier blocks mob spawns (as a square box)")
+        @Config.DefaultInt(16)
+        @Config.RangeInt(min = 1, max = 256)
+        public int chandelierLightRange;
+    }
+
+    @Config.Comment("Giga Torch Configuration")
+    public static final GigaTorch gigaTorch = new GigaTorch();
+
+    @Config.LangKey("utilitiesinexcess.config.block.giga_torch")
+    public static class GigaTorch {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableGigaTorch;
+
+        @Config.Comment("The radius a giga torch blocks mob spawns (as a square box)")
+        @Config.DefaultInt(64)
+        @Config.RangeInt(min = 1, max = 256)
+        public int gigaTorchRange;
     }
 
     @Config.Comment("Cursed Earth Configuration")

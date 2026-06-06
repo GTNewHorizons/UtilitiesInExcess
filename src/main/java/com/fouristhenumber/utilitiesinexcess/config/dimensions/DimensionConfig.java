@@ -11,6 +11,7 @@ public class DimensionConfig {
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(DimensionConfig.class);
         ConfigurationManager.registerConfig(UnderWorldConfig.class);
+        ConfigurationManager.registerConfig(EndOfTimeConfig.class);
     }
 
 }

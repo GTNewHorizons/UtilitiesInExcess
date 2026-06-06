@@ -1,8 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import org.lwjgl.input.Keyboard;
+
+import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
+import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTimeEvents;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
+import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
+import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -12,6 +21,9 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 public class CommonProxy {
 
     public SoundVolumeChecks soundVolumeChecks;
+    public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
+
+    public SyncedKeybind GLOVE_KEYBIND;
 
     public void preInit(FMLPreInitializationEvent event) {
         // Config is handled in the early mixin loader (UIEMixinLoader)
@@ -23,10 +35,18 @@ public class CommonProxy {
         ModDimensions.init();
         ModBiomes.init();
         UnderWorldEvents.init();
+        EndOfTimeEvents.init();
+        if (Mods.NEI.isLoaded()) {
+            IMCForNEI.IMCSender();
+        }
+        if (Mods.ForgeMicroBlock.isLoaded()) {
+            FMPItems.init();
+        }
     }
 
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
+        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
     }
 
     public void postInit(FMLPostInitializationEvent event) {}

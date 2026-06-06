@@ -1,16 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -18,10 +14,26 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlock
 
 public class BlockUpdateDetector extends BlockContainer {
 
+    private IIcon iconInactive;
+    private IIcon iconActive;
+
     public BlockUpdateDetector() {
         super(Material.rock);
         setBlockName("block_update_detector");
-        setBlockTextureName("utilitiesinexcess:block_update_detector");
+        setBlockTextureName("utilitiesinexcess:block_update_detector_inactive");
+        setHardness(1.0F);
+        setHarvestLevel("pickaxe", 0);
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        iconInactive = reg.registerIcon("utilitiesinexcess:block_update_detector_inactive");
+        iconActive = reg.registerIcon("utilitiesinexcess:block_update_detector_active");
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        return (meta) == 1 ? iconActive : iconInactive;
     }
 
     @Override
@@ -65,17 +77,5 @@ public class BlockUpdateDetector extends BlockContainer {
     @Override
     public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
         return true;
-    }
-
-    public static class ItemBlockUpdateDetector extends ItemBlock {
-
-        public ItemBlockUpdateDetector(Block block) {
-            super(block);
-        }
-
-        @Override
-        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.block_update_detector.desc"));
-        }
     }
 }

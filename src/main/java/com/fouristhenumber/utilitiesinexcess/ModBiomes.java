@@ -4,7 +4,9 @@ import java.util.function.Function;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.BiomeGenEndOfTime;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.BiomeGenUnderWorld;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 
 /// Adapted from [ModBlocks]
@@ -13,6 +15,7 @@ public enum ModBiomes {
 
     // make sure to leave a trailing comma
     UNDERWORLD(UnderWorldConfig.enableUnderWorldBiome, UnderWorldConfig.underWorldBiomeId, BiomeGenUnderWorld::new),
+    END_OF_TIME(EndOfTimeConfig.enableEndOfTimeBiome, EndOfTimeConfig.endOfTimeBiomeId, BiomeGenEndOfTime::new),
     ; // leave trailing semicolon
     // spotless:on
 

@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.Constants;
 
 public class TileEntityMarginallyMaximisedChest extends TileEntity implements IInventory {
 
-    private final ItemStack[] chestContents = new ItemStack[getSizeInventory()];
+    protected final ItemStack[] chestContents = new ItemStack[getSizeInventory()];
 
     @Override
     public int getSizeInventory() {
