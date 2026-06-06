@@ -110,12 +110,12 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
                             .alignY(0.99f)))
                 .child(
                     buildPlayerInventorySlotGroup().align(Alignment.TopLeft)
-                        .marginLeft(8)
-                        .marginTop(panelHeight - 82))
+                        .marginLeft(7)
+                        .marginTop(panelHeight - 83))
                 .child(
                     buildPlayerHotbarSlotGroup().align(Alignment.TopLeft)
-                        .marginLeft(8)
-                        .marginTop(panelHeight - 24)));
+                        .marginLeft(7)
+                        .marginTop(panelHeight - 25)));
 
         return panel;
     }

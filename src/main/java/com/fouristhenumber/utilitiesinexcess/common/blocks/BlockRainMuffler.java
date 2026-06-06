@@ -76,11 +76,9 @@ public class BlockRainMuffler extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            String formatted = StatCollector
-                .translateToLocalFormatted("tile.rain_muffler.desc.1", BlockConfig.rainMuffler.rainMufflerRange);
-            tooltip.add(formatted);
-            tooltip.add(StatCollector.translateToLocal("tile.rain_muffler.desc.2"));
-            tooltip.add(StatCollector.translateToLocal("tile.rain_muffler.desc.3"));
+            tooltip.add(
+                StatCollector
+                    .translateToLocalFormatted("tile.rain_muffler.desc.1", BlockConfig.rainMuffler.rainMufflerRange));
         }
     }
 }

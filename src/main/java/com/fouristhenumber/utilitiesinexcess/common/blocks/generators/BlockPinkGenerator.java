@@ -7,8 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockPinkGenerator extends BlockBaseGenerator {
 
-    public BlockPinkGenerator(String id) {
-        super(id);
+    public BlockPinkGenerator(String id, int mult) {
+        super(id, mult);
     }
 
     @Override

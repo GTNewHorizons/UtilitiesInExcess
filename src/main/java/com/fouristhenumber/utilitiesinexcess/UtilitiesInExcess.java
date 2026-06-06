@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -13,7 +15,6 @@ import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
@@ -77,6 +78,9 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
+        GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
+        GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
+
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -109,6 +113,10 @@ public class UtilitiesInExcess {
                 new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
         }
 
+        if (ModBlocks.SMART_PUMP.isEnabled()) {
+            ForgeChunkManager.setForcedChunkLoadingCallback(uieInstance, new PumpChunkLoadingCallback());
+        }
+
         if (ModBlocks.PINK_GENERATOR.isEnabled()) {
             PinkFuelHelper.scanRecipesForPinkFuel();
         }
@@ -129,4 +137,20 @@ public class UtilitiesInExcess {
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
     }
+
+    public static CreativeTabs uieTab = new CreativeTabs(MODID) {
+
+        @Override
+        public Item getTabIconItem() {
+            return this.getIconItemStack()
+                .getItem();
+        }
+
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GLUTTONS_AXE.get());
+
+        @Override
+        public ItemStack getIconItemStack() {
+            return ICON_ITEM;
+        }
+    };
 }

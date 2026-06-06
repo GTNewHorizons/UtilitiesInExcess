@@ -12,8 +12,9 @@ public enum Mods {
     Thaumcraft("Thaumcraft"),
     NEI("NotEnoughItems"),
     CraftTweaker("MineTweaker3"),
-    Waila("Waila"),
-
+    FindIt("findit"),
+    Tinkers("TConstruct"),
+    Waila("Waila")
     ;
     // spotless:on
 

@@ -7,8 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 
 public class BlockFoodGenerator extends BlockBaseGenerator {
 
-    public BlockFoodGenerator(String id) {
-        super(id);
+    public BlockFoodGenerator(String id, int mult) {
+        super(id, mult);
     }
 
     @Override

@@ -20,6 +20,9 @@ public class BlockConfig {
     public static boolean enableFloatingBlock;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableColoredBlocks;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableCompressedCobblestone;
 
     @Config.DefaultBoolean(true)
@@ -65,6 +68,15 @@ public class BlockConfig {
     public static boolean enableRadicallyReducedChest;
 
     @Config.DefaultBoolean(true)
+    public static boolean enablePacifistsBench;
+
+    @Config.DefaultInt(600)
+    public static int pacifistsBenchCooldownInTicks;
+
+    @Config.DefaultBoolean(false)
+    public static boolean pacifistsBenchInNonPeaceful;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableBlockUpdateDetector;
 
     @Config.DefaultBoolean(true)
@@ -83,20 +95,26 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableEndOfTimePortal;
 
-    @Config.Comment("Cursed Earth Configuration")
-    public static final CursedEarth cursedEarth = new CursedEarth();
+    @Config.DefaultBoolean(true)
+    public static boolean enableSmartPump;
 
-    @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
-    public static class CursedEarth {
+    @Config.DefaultBoolean(true)
+    public static boolean enableTradingPost;
 
-        @Config.DefaultBoolean(true)
-        public boolean enableCursedEarth;
+    @Config.DefaultInt(10000)
+    public static int smartPumpEnergyStorage;
 
-        @Config.Comment("Chance that a mob is spawned on a Cursed Earth block on a random tick.")
-        @Config.DefaultInt(40)
-        @Config.RangeInt(min = 0, max = 100)
-        public int cursedEarthSpawnRate;
-    }
+    @Config.DefaultInt(100)
+    public static int smartPumpEnergyUsePerBlock;
+
+    @Config.DefaultInt(200)
+    public static int smartPumpStallCooldownInTicks;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeGlass;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableDecorativeBlocks;
 
     @Config.Comment("Pure Love Configuration")
     public static final PureLove pureLove = new PureLove();

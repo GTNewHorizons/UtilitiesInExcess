@@ -12,9 +12,6 @@ public class ItemConfig {
     @Config.DefaultBoolean(false)
     public static boolean registerDisabledItems;
 
-    @Config.DefaultBoolean(true)
-    public static boolean shiftForDescription;
-
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
@@ -22,9 +19,6 @@ public class ItemConfig {
         ConfigurationManager.registerConfig(InversionConfig.class);
         ConfigurationManager.registerConfig(FireBatteryConfig.class);
     }
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableDiamondStick;
 
     @Config.DefaultBoolean(true)
     public static boolean enableHeavenlyRing;
@@ -55,4 +49,7 @@ public class ItemConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableBlockAnalyzer;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableGlove;
 }

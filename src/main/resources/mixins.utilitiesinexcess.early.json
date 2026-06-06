@@ -4,5 +4,8 @@
   "package": "com.fouristhenumber.utilitiesinexcess.mixins.early",
   "refmap": "mixins.utilitiesinexcess.refmap.json",
   "target": "@env(DEFAULT)",
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  },
   "compatibilityLevel": "JAVA_8"
 }

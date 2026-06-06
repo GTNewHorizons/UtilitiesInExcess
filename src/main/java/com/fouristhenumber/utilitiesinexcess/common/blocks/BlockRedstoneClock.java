@@ -1,15 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -59,19 +53,6 @@ public class BlockRedstoneClock extends BlockContainer {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityRedstoneClock) {
             ((TileEntityRedstoneClock) te).onInputChanged();
-        }
-    }
-
-    public static class ItemBlockRedstoneClock extends ItemBlock {
-
-        public ItemBlockRedstoneClock(Block block) {
-            super(block);
-        }
-
-        @Override
-        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip.add(StatCollector.translateToLocal("tile.redstone_clock.desc.1"));
-            tooltip.add(StatCollector.translateToLocal("tile.redstone_clock.desc.2"));
         }
     }
 }

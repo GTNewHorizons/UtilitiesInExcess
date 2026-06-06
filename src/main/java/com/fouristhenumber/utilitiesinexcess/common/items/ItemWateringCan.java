@@ -320,18 +320,9 @@ public class ItemWateringCan extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         int range = (this.range * 2 + 1);
-        tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.watering_can.desc.1"));
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("item.watering_can.desc.2", range, range));
-        if (wateringCan.allowWateringCanToggle) {
-            tooltip.add(
-                EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC.toString()
-                    + StatCollector.translateToLocal("item.watering_can.desc.3"));
-            tooltip.add(
-                EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC.toString()
-                    + StatCollector.translateToLocal("item.watering_can.desc.4"));
-        }
+                + StatCollector.translateToLocalFormatted("item.watering_can.desc.1", range, range));
     }
 
     public boolean isActive(ItemStack stack) {

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
@@ -17,7 +16,6 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
@@ -30,17 +28,6 @@ public class ItemGluttonsAxe extends ItemAxe {
         setUnlocalizedName("gluttons_axe");
         if (GluttonsAxeConfig.unbreakable) setMaxDamage(0);
         ((AccessorItemTool) this).setDamageVsEntity(GluttonsAxeConfig.damageAgainstUndead);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (!ItemConfig.shiftForDescription || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.1"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.2"));
-            tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.gluttons_axe.desc.3"));
-        } else tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("shift_for_description"));
-
-        super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     private static final Random particleRandom = new Random();;
@@ -88,7 +75,7 @@ public class ItemGluttonsAxe extends ItemAxe {
         if (target instanceof EntityZombie z && z.isVillager()) {
             attacker.addExhaustion(3 * 4);
             spawnParticles(target);
-            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).convertToVillager();
+            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).uie$convertToVillager();
             return true;
         }
         if (!target.isEntityUndead()) {
@@ -108,6 +95,12 @@ public class ItemGluttonsAxe extends ItemAxe {
         attacker.addExhaustion(3 * 4);
         spawnParticles(target);
         return false;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        if (GluttonsAxeConfig.unbreakable)
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
