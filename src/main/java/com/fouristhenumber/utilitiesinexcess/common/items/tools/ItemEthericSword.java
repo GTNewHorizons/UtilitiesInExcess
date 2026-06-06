@@ -14,8 +14,9 @@ import net.minecraft.util.StatCollector;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemSword;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
-public class ItemEthericSword extends ItemSword {
+public class ItemEthericSword extends ItemSword implements ITranslucentItem {
 
     public ItemEthericSword() {
         super(ToolMaterial.EMERALD);

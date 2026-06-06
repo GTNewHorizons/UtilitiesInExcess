@@ -14,9 +14,10 @@ import net.minecraft.world.World;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
 // TODO: Add new features to the reversing hoe
-public class ItemReversingHoe extends ItemHoe {
+public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
 
     public ItemReversingHoe() {
         super(ToolMaterial.EMERALD);
