@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 import codechicken.lib.world.IChunkLoadTile;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ITransferNetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.tileentity.TileEntity;
@@ -104,9 +105,9 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
 
     // TODO make better
     @Override
-    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection)
+    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
-        return logic.getWalkableDirs(fromDirection);
+        return logic.getWalkableDirs(targetType, fromDirection, walkingComponent);
     }
 
     @Override

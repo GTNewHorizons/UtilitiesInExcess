@@ -13,17 +13,33 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemFilter;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
+import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.List;
+
+import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.getInventoryContentsFromStack;
 
 public class FilterPipeLogic extends NetworkLogic implements IInventory
 {
     // Slot filters are organized in the same way that
-    ItemStack[] filters = new ItemStack[6];
+    private final ItemStack[] filters = new ItemStack[6];
+
+
+    private ItemFilter[] logicalFilter = new ItemFilter[6];
 
     public FilterPipeLogic(ITransferNetworkComponent host) {
         super(host);
@@ -133,7 +149,101 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
                 .pos(79, 34)
                 .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
 
+        syncManager.addCloseListener(this::parseInventoryToFilter);
+
         return panel;
+    }
+
+    public void parseInventoryToFilter(EntityPlayer player)
+    {
+        if (!player.worldObj.isRemote)
+        {
+            for (int i = 0; i < filters.length; i++)
+            {
+                if (filters[i] != null)
+                {
+                    logicalFilter[i] = new ItemFilter();
+                    if (filters[i].getItem() instanceof ItemUpgrade)
+                    {
+                        if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.FILTER) // Case where it's a filter
+                        {
+                            parseFilterItem(filters[i], i);
+                        }
+                        else if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
+                        {
+                            if (filters[i].hasTagCompound() && filters[i].stackTagCompound.getByte("Mode") == ItemUpgrade.FilterMode.INVERTED.ordinal())
+                            {
+                                logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::invMatches);
+                            }
+                            else
+                            {
+                                logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::matches);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        logicalFilter[i].addToWhiteList(filters[i]);
+                    }
+                }
+            }
+        }
+    }
+
+    public void parseFilterItem(ItemStack filter, int slot)
+    {
+        ItemUpgrade filterUpgrade = (ItemUpgrade) filter.getItem();
+        List<ItemStack> containedItems = getInventoryContentsFromStack(filter);
+
+        for (ItemStack containedItem : containedItems)
+        {
+            if (containedItem.getItem() instanceof ItemUpgrade)
+            {
+                if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.FILTER) // Case where it's a filter
+                {
+                    parseFilterItem(containedItem, slot);
+                }
+                else if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
+                {
+                    if (containedItem.hasTagCompound() && containedItem.stackTagCompound.getByte("Mode") == ItemUpgrade.FilterMode.INVERTED.ordinal())
+                    {
+                        logicalFilter[slot].addToPredicates(AdvancedFilterMode.values()[containedItem.getItemDamage()]::invMatches);
+                    }
+                    else
+                    {
+                        logicalFilter[slot].addToPredicates(AdvancedFilterMode.values()[containedItem.getItemDamage()]::matches);
+                    }
+                }
+            }
+            else
+            {
+                logicalFilter[slot].addToWhiteList(containedItem);
+            }
+        }
+
+    }
+
+    @Override
+    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent walkingComponent)
+    {
+        Object walkingObject = walkingComponent.getWalkingObject();
+        if (walkingObject instanceof ItemStack stack)
+        {
+            int mask = 0;
+            for (int i = 0; i < filters.length; i++)
+            {
+                if (filters[i] == null && (networkMask & (1 << i)) != 0) // If a direction is unfiltered and has a network connection.
+                {
+                    mask = mask | (1 << i);
+                }
+                else if (logicalFilter[i].matches(stack))// We're filtered
+                {
+                    mask = mask | (1 << i);
+                }
+            }
+            return new MaskedArrayView<>(mask, networkNeighbors);
+        }
+        return super.getWalkableDirs(transportType, incomingDirection, walkingComponent);
     }
 
     public boolean isUseableByPlayer(EntityPlayer player)

@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +22,7 @@ public interface ITransferNetworkComponent
     Connection[] getValidExternalNeighbors(ForgeDirection fromDirection, ITransferNetworkComponent walking);
     ITransferNetworkComponent[] getNetworkNeighbors();
 
-    MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection);
+    MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent);
 
     int getRawConnectionMask();
 

@@ -1325,7 +1325,8 @@ public class RecipeLoader {
     {
         if (TransferConfig.EnableTransferSystem)
         {
-            GameRegistry.addRecipe( new NBTPreservingRecipe(
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
                     setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
                     Arrays.asList(
                         TransferUpgrade.FILTER.getStack(1).theStack,
@@ -1360,6 +1361,9 @@ public class RecipeLoader {
                     ),
                     0));
 
+            // Clears NBT
+            addShapelessRecipe(TransferUpgrade.FILTER.getStack(1), TransferUpgrade.FILTER.getStack(1));
+            addShapelessRecipe(TransferUpgrade.ADV_FILTER.getStack(1), TransferUpgrade.ADV_FILTER.getStack(1));
         }
     }
 

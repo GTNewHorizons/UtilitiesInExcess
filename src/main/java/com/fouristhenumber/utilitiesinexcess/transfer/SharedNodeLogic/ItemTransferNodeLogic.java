@@ -42,7 +42,7 @@ public class ItemTransferNodeLogic extends NetworkLogic implements IInventory
     IInventory connectedInventory;
     public ItemWalker walker;
 
-    public ItemTransferNodeLogic(INodeLogicHost host)
+    public ItemTransferNodeLogic(IWalkingComponent<ItemStack> host)
     {
         super(host);
         walker = new ItemWalker(host);

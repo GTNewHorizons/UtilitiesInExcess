@@ -8,7 +8,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 // Class that is implemented by
 public interface INodeLogicHost extends ISidedInventory, ITransferNetworkComponent
 {
-
     World getWorld();
 
     ForgeDirection getFacing();

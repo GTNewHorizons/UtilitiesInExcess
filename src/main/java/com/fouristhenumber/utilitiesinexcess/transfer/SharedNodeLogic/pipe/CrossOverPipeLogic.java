@@ -2,7 +2,9 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -193,7 +195,7 @@ public class CrossOverPipeLogic extends NetworkLogic
 
     // Only valid walkable neighbor is across from the fromDirection
     @Override
-    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(ForgeDirection incomingDirection)
+    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent<?> walkingComponent)
     {
         int mask = 0;
         mask |= (1 << incomingDirection.getOpposite().ordinal());

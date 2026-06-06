@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ItemTransferNodeLogic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,7 +19,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 
 public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemTransferNodeLogic>
-    implements IGuiHolder<PosGuiData>
+    implements IGuiHolder<PosGuiData>, IWalkingComponent<ItemStack>
 {
 
     public TileEntityItemTransferNode()
@@ -157,5 +158,10 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     public void updateSourceInventory()
     {
         logic.updateSourceInventory(this);
+    }
+
+    @Override
+    public ItemStack getWalkingObject() {
+        return logic.getStackInSlot(0);
     }
 }

@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
 
 import cofh.api.energy.IEnergyReceiver;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -156,7 +157,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     }
 
     @Override
-    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(ForgeDirection incomingDirection)
+    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent<?> walkingComponent)
     {
         int mask;
         if (incomingDirection != null)

@@ -283,6 +283,11 @@ public enum AdvancedFilterMode
 
     public abstract boolean matches(ItemStack stack);
 
+    public boolean invMatches(ItemStack stack)
+    {
+        return !matches(stack);
+    }
+
     private static float getDurabilityPercent(ItemStack stack)
     {
         if (stack == null || !stack.isItemStackDamageable()) {

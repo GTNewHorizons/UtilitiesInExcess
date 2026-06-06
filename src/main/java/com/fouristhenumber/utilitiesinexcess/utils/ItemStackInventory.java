@@ -6,6 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemStackInventory implements IInventory
 {
     private final int size;
@@ -71,6 +74,46 @@ public class ItemStackInventory implements IInventory
             }
         }
         compound.setTag("Items", itemList);
+    }
+
+    public static List<ItemStack> getInventoryContentsFromStack(ItemStack itemInventory)
+    {
+        if (itemInventory == null || !itemInventory.hasTagCompound())
+        {
+            return null;
+        }
+
+        NBTTagCompound compound = itemInventory.stackTagCompound;
+
+        if (!compound.hasKey("Items"))
+        {
+            return null;
+        }
+
+        int size = compound.getInteger("size");
+        List<ItemStack> contents = new ArrayList<ItemStack>(size);
+
+        // Fill with nulls so we can set by index
+        for (int i = 0; i < size; i++)
+        {
+            contents.add(null);
+        }
+
+        NBTTagList itemList = compound.getTagList("Items", 10); // 10 = NBTTagCompound
+
+        for (int i = 0; i < itemList.tagCount(); i++)
+        {
+            NBTTagCompound itemCompound = itemList.getCompoundTagAt(i);
+
+            int slot = itemCompound.getByte("Slot") & 255; // prevent negative index
+
+            if (slot >= 0 && slot < size)
+            {
+                contents.set(slot, ItemStack.loadItemStackFromNBT(itemCompound));
+            }
+        }
+
+        return contents;
     }
 
     @Override
@@ -146,4 +189,6 @@ public class ItemStackInventory implements IInventory
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return true;
     }
+
+
 }
