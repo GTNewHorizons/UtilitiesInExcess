@@ -4,7 +4,9 @@ import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -12,6 +14,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import codechicken.nei.api.API;
 import it.unimi.dsi.fastutil.Hash;
 
 public class UIEUtils {
@@ -100,5 +103,15 @@ public class UIEUtils {
             return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage()
                 && Objects.equals(a.getTagCompound(), b.getTagCompound());
         }
+    }
+
+    public static void hideInNei(Block block) {
+        hideInNei(Item.getItemFromBlock(block));
+    }
+
+    public static void hideInNei(Item item) {
+        if (!Mods.NEI.isLoaded()) return;
+
+        API.hideItem(new ItemStack(item));
     }
 }

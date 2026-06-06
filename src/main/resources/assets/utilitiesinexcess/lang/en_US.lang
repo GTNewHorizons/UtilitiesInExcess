@@ -43,6 +43,9 @@ tile.compressed_gravel.6.name=Septuple Compressed Gravel
 tile.compressed_gravel.7.name=Octuple Compressed Gravel
 tile.compressed_gravel.desc=%,d Gravel
 
+nei.title.uie.plugin=UtilitiesInExcess NEI Plugin
+nei.title.uie.qed=QED Recipes
+
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
 tile.floating_block.name=Floating Block
@@ -50,15 +53,15 @@ tile.floating_block.name=Floating Block
 nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.1.name=Ineffable Glass
 tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.4.name=Ineffable Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
-nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block.
-nei.infopage.uie.ethereal_glass.1=Placeholder
+nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
-nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players.
-nei.infopage.uie.ethereal_glass.4=Placeholder
+nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. Ineffable Glass (Inverted) is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.5=Dark Ethereal Glass (Inverted) has the exact opposite functionality as Dark Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. It still blocks all light.
 
 tile.decorative_glass.0.name=Smooth Glass
@@ -67,12 +70,13 @@ tile.decorative_glass.2.name=Bricked Glass
 tile.decorative_glass.3.name=Creepy Glass
 tile.decorative_glass.4.name=Gilded Glass
 tile.decorative_glass.5.name=Obsidian Glass
-tile.decorative_glass.6.name=Latticed Glass
+tile.decorative_glass.6.name=Vortex Glass
 tile.decorative_glass.7.name=Glowing Glass
 tile.decorative_glass.8.name=Beloved Glass
 tile.decorative_glass.9.name=Tiled Glass
 tile.decorative_glass.10.name=Dark Glass
 tile.decorative_glass.11.name=Reinforced Dark Glass
+tile.decorative_glass.12.name=Latticed Glass
 
 tile.decorative_block.0.name=Diamond-Etched Computational Matrix
 tile.decorative_block.1.name=Sand-Infused Endstone
@@ -168,10 +172,12 @@ item.architects_wand.name=Architect's Wand
 tooltip.architects_wand.1=Can place up to %s blocks at once
 
 nei.infopage.uie.architects_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, you will see a wireframe indicating how a set of blocks will be extended by the wand.
+nei.infopage.uie.architects_wand.2=When holding a building block in your off-hand, the wand will try to place it instead.
+nei.infopage.uie.architects_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar will be placed.
 
-item.gluttons_axe.name=Glutton's Axe
+item.gourmands_axe.name=Gourmand's Axe
 
-nei.infopage.uie.gluttons_axe.1=This axe contains potent restorative magic that will restore the bearer's hunger while it is held. Attacking with the axe will heal whatever is hit at the cost of hunger - but this healing is deadly to the undead.
+nei.infopage.uie.gourmands_axe.1=This axe contains potent restorative magic that will restore the bearer's hunger while it is held. Attacking with the axe will heal whatever is hit at the cost of hunger - but this healing is deadly to the undead.
 
 item.destruction_pickaxe.name=Destruction Pickaxe
 
@@ -221,14 +227,60 @@ nei.infopage.uie.iron_spike.1=Iron spikes will kill enemies that walk on them, d
 nei.infopage.uie.gold_spike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
 nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
-item.heavenly_ring.name=Heavenly Ring
-nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
-nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
-item.heavenly_ring.type.0=No wings
-item.heavenly_ring.type.1=type 1
-item.heavenly_ring.type.2=type 2
-item.heavenly_ring.type.3=type 3
-item.heavenly_ring.type.4=type 4
+item.heavenly_ring_feather.name=Heavenly Ring (Feathered)
+item.heavenly_ring_dragon.name=Heavenly Ring (Draconic)
+item.heavenly_ring_fairy.name=Heavenly Ring (Fairy)
+item.heavenly_ring_metal.name=Heavenly Ring (Metallic)
+item.heavenly_ring_magic.name=Heavenly Ring (Magical)
+item.heavenly_ring.desc=Use in hand to cycle through different appearances.
+nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+
+item.heavenly_ring_feather.type.0=Chibi
+item.heavenly_ring_feather.type.1=Angelic
+item.heavenly_ring_feather.type.2=Storm
+item.heavenly_ring_feather.type.3=Phoenix
+item.heavenly_ring_feather.type.4=Swan
+item.heavenly_ring_feather.type.5=Raven
+item.heavenly_ring_feather.type.6=Falcon
+item.heavenly_ring_feather.type.7=Macaw
+
+item.heavenly_ring_dragon.type.0=Red
+item.heavenly_ring_dragon.type.1=Ebony
+item.heavenly_ring_dragon.type.2=Golden
+item.heavenly_ring_dragon.type.3=Leviathan
+item.heavenly_ring_dragon.type.4=Green
+item.heavenly_ring_dragon.type.5=Flower
+item.heavenly_ring_dragon.type.6=Purple
+item.heavenly_ring_dragon.type.7=Moon
+
+item.heavenly_ring_fairy.type.0=Rainbow
+item.heavenly_ring_fairy.type.1=Pixie
+item.heavenly_ring_fairy.type.2=Monarch
+item.heavenly_ring_fairy.type.3=Lunamoth
+item.heavenly_ring_fairy.type.4=Autumn
+item.heavenly_ring_fairy.type.5=Blacklight
+item.heavenly_ring_fairy.type.6=Jeweled Wasp
+item.heavenly_ring_fairy.type.7=Leaf
+
+item.heavenly_ring_magic.type.0=Invisible
+item.heavenly_ring_magic.type.1=Ice
+item.heavenly_ring_magic.type.2=Fire
+item.heavenly_ring_magic.type.3=Lightning
+item.heavenly_ring_magic.type.4=End
+item.heavenly_ring_magic.type.5=Plasma
+item.heavenly_ring_magic.type.6=Crackling
+item.heavenly_ring_magic.type.7=Jelly
+
+item.heavenly_ring_metal.type.0=Golden
+item.heavenly_ring_metal.type.1=Silver
+item.heavenly_ring_metal.type.2=Copper
+item.heavenly_ring_metal.type.3=Glass
+item.heavenly_ring_metal.type.4=Neonblade
+item.heavenly_ring_metal.type.5=Nanotech
+item.heavenly_ring_metal.type.6=Mayfly
+item.heavenly_ring_metal.type.7=Steampunk
+chat.heavenly_ring_modify=Ring appearance is now %s.
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
@@ -323,7 +375,8 @@ tile.potion_generator_plusplus.name=Potion Generator
 
 nei.infopage.uie.potion_generator.1=Generates RF from potions. The more complex the potion is (the more steps involved in making it) the more RF/t it will generate.
 
-gui.energy.tooltip=RF: %s / %s
+gui.tooltip.energy-max=RF: %s / %s
+gui.tooltip.energy-tick=  RF/t
 
 item.golden_bag.name=Golden Bag of Holding
 nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth of items. Right click to open.
@@ -349,6 +402,10 @@ utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
+tile.advanced_block_update_detector.name=Advanced Block Update Detector
+nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metadata even without a block update. Shift right click any face of the ABUD to toggle scanning on that side.
+chat.tile.advanced_block_update_detector.toggle=Side %s set to redstone output %s.
+
 tile.drum.name=Drum
 tile.drum.desc=Holds %s buckets of fluid
 tile.drum.desc.fluid=Currently holding %s %sL
@@ -357,6 +414,8 @@ tile.drum.chat.empty=Drum is empty
 
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
+gui.title.trash_can.name=Trash Can
+gui.title.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_item.name=Trash Can (Item)
 tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_energy.name=Trash Can (Energy)
@@ -464,6 +523,17 @@ nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension t
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
+tile.chandelier.0.name=Chandelier
+tile.chandelier.1.name=Copper Chandelier
+tile.chandelier.2.name=Redstone Chandelier
+tile.chandelier.3.name=Soul Chandelier
+tile.chandelier.desc=%d block radius (square)
+nei.infopage.uie.chandelier.1=A torch that prevents natural mob spawning in range. Spawners are not affected. Must hang from a block.
+
+tile.giga_torch.name=Giga Torch
+tile.giga_torch.desc=%d block radius (square)
+nei.infopage.uie.giga_torch.1=A torch that prevents natural mob spawning in range. Spawners are not affected.
+
 tile.trading_post.name=Trading Post
 tile.trading_post.villager_count=Found %,d Villagers
 tile.trading_post.search_hint=Search...
@@ -509,6 +579,10 @@ material.inverted.ability=Fully Inverted
 nei.infopage.uie.ticon_inverted=If a Tinker's Construct tool is made using entirely inverted parts, it will be unbreakable.
 nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using entirely magical wooden parts, it will gain 8 additional modifiers.
 nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.
+
+ue_wall.name=%s Wall
+ue_fence.name=%s Fence
+ue_sphere.name=%s Impossible Object
 
 tile.void_quarry.name=Void Quarry
 tile.void_marker.name=Void Marker

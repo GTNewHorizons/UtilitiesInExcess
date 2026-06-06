@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/chandelier",
+  "textures": {
+    "1": "utilitiesinexcess:models/chandelier_soul",
+    "particle": "utilitiesinexcess:models/chandelier_soul"
+  }
+}

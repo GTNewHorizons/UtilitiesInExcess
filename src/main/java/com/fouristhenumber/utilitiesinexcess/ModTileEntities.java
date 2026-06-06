@@ -2,9 +2,12 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.tileentity.TileEntity;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -69,6 +72,9 @@ public enum ModTileEntities {
     GENERATOR_NETHER_STAR(TileEntityNetherStarGenerator.class                  , "NetherStarGenerator"),
     PACIFISTS_BENCH(TileEntityPacifistsBench.class                             , "PacifistsBench"),
     TRADING_POST(TileEntityTradingPost.class                                   , "TradingPost"),
+    ADVANCED_BLOCK_UPDATE_DETECTOR(TileEntityAdvancedBlockUpdateDetector.class , "AdvancedBlockUpdateDetector"),
+    PENDANT_LIGHT(TileEntityChandelier.class                                   , "PendantLight"),
+    GIGA_TORCH(TileEntityGigaTorch.class                                       , "GigaTorch"),
     VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
     VOID_MARKER(TileEntityVoidMarker.class                                     , "VoidMarker"),
     ;

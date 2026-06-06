@@ -15,10 +15,12 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -30,6 +32,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -41,7 +44,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.6.31,);after:Waila;")
+    dependencies = "required-after:gtnhlib@[0.9.9,);after:ForgeMicroblock;after:Waila;")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -52,7 +55,6 @@ public class UtilitiesInExcess {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
-    public static int spikeRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -65,7 +67,6 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-
         proxy.preInit(event);
     }
 
@@ -80,12 +81,14 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
+            Remappings.init();
+        }
+
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
-        spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new SpikeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
@@ -145,11 +148,16 @@ public class UtilitiesInExcess {
                 .getItem();
         }
 
-        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GLUTTONS_AXE.get());
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GOURMANDS_AXE.get());
 
         @Override
         public ItemStack getIconItemStack() {
             return ICON_ITEM;
         }
     };
+
+    @Mod.EventHandler
+    public void onMissingMappings(FMLMissingMappingsEvent event) {
+        ExuCompat.onMissingMappings(event);
+    }
 }
