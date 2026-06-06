@@ -30,13 +30,13 @@ import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
+public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
     public static final ForgeDirection[] HORIZONTAL_DIRECTIONS = new ForgeDirection[] { ForgeDirection.NORTH,
         ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST };
-    public static final ConcurrentHashMap<Integer, ConcurrentHashMap<BlockPos, TileEntityEnderMarker>> registeredMarkers = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<Integer, ConcurrentHashMap<BlockPos, TileEntityVoidMarker>> registeredMarkers = new ConcurrentHashMap<>();
 
-    public final HashMap<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> alignedMarkers = new HashMap<>();
+    public final HashMap<ForgeDirection, Tuple<@Nullable TileEntityVoidMarker, BlockPos>> alignedMarkers = new HashMap<>();
     private ForgeDirection facing = ForgeDirection.UNKNOWN;
     private int activeDirections = 0;
     public MarkerOperationMode operationMode = MarkerOperationMode.DEFAULT;
@@ -52,7 +52,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     }
 
     // Helper to get the marker register for the current dimension
-    private ConcurrentHashMap<BlockPos, TileEntityEnderMarker> getRegistryForDimension() {
+    private ConcurrentHashMap<BlockPos, TileEntityVoidMarker> getRegistryForDimension() {
         int dim = worldObj.provider.dimensionId;
         return registeredMarkers.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
     }
@@ -70,9 +70,9 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             // Don't check the direction back towards the quarry
             if (dir == starterFacing.getOpposite()) continue;
 
-            Tuple<TileEntityEnderMarker, BlockPos> secondCorner = alignedMarkers.getOrDefault(dir, null);
+            Tuple<TileEntityVoidMarker, BlockPos> secondCorner = alignedMarkers.getOrDefault(dir, null);
             if (secondCorner != null && secondCorner.getKey() != null) {
-                Tuple<TileEntityEnderMarker, BlockPos> thirdCorner = Optional
+                Tuple<TileEntityVoidMarker, BlockPos> thirdCorner = Optional
                     .ofNullable(secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnRight90(dir), null))
                     .orElse(secondCorner.getKey().alignedMarkers.getOrDefault(DirectionUtil.turnLeft90(dir), null));
                 if (thirdCorner != null) {
@@ -99,7 +99,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         ArrayList<StackEntry> stack = new ArrayList<>();
         stack.add(new StackEntry(new LinkedHashMap<>(), this));
         StackEntry lastVisited;
-        Set<TileEntityEnderMarker> markerChain = null;
+        Set<TileEntityVoidMarker> markerChain = null;
 
         searchStack: do {
             StackEntry entry = stack.remove(stack.size() - 1);
@@ -121,7 +121,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
             }
 
             int realizedDirections = 0;
-            for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> otherMarker : entry.current.alignedMarkers
+            for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityVoidMarker, BlockPos>> otherMarker : entry.current.alignedMarkers
                 .entrySet()) {
                 if (otherMarker.getValue()
                     .getKey() != null) {
@@ -132,7 +132,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
                             .getKey())
                         && realizedDirections < 2) {
                         @SuppressWarnings("unchecked") // Same type
-                        LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers = (LinkedHashMap<TileEntityEnderMarker, ForgeDirection>) entry.visitedMarkers
+                        LinkedHashMap<TileEntityVoidMarker, ForgeDirection> visitedMarkers = (LinkedHashMap<TileEntityVoidMarker, ForgeDirection>) entry.visitedMarkers
                             .clone();
                         StackEntry stackEntry = new StackEntry(
                             visitedMarkers,
@@ -203,18 +203,18 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     private static class StackEntry {
 
         // A map of previously visited markers further down the stack & the direction they were visited from
-        LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers;
-        TileEntityEnderMarker current;
-        Tuple<TileEntityEnderMarker, ForgeDirection> lastVisited;
+        LinkedHashMap<TileEntityVoidMarker, ForgeDirection> visitedMarkers;
+        TileEntityVoidMarker current;
+        Tuple<TileEntityVoidMarker, ForgeDirection> lastVisited;
 
-        StackEntry(LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers, TileEntityEnderMarker current) {
+        StackEntry(LinkedHashMap<TileEntityVoidMarker, ForgeDirection> visitedMarkers, TileEntityVoidMarker current) {
             this.visitedMarkers = visitedMarkers;
             this.current = current;
             this.lastVisited = null;
         }
 
-        StackEntry(LinkedHashMap<TileEntityEnderMarker, ForgeDirection> visitedMarkers, TileEntityEnderMarker current,
-            TileEntityEnderMarker previous, ForgeDirection previousDir) {
+        StackEntry(LinkedHashMap<TileEntityVoidMarker, ForgeDirection> visitedMarkers, TileEntityVoidMarker current,
+            TileEntityVoidMarker previous, ForgeDirection previousDir) {
             this(visitedMarkers, current);
             this.visitedMarkers.put(previous, previousDir);
             lastVisited = new Tuple<>(previous, previousDir);
@@ -231,7 +231,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
      * This method performs two main operations:
      * <p>
      * Attempts to resolve any null aligned markers by loading their chunks and retrieving
-     * the actual {@link TileEntityEnderMarker} instances from saved positions.</li>
+     * the actual {@link TileEntityVoidMarker} instances from saved positions.</li>
      *
      * Scans the dimension registry for new markers that can be connected in the given directions,
      * respecting ARBITRARY_LOOP operation mode constraints.</li>
@@ -242,15 +242,15 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
      *                            indicates a connection back to this marker - meant to be used to restore stale
      *                            connections
      *
-     * @see #setAlignedMarker(ForgeDirection, TileEntityEnderMarker)
+     * @see #setAlignedMarker(ForgeDirection, TileEntityVoidMarker)
      * @see #removeAlignedMarker(ForgeDirection)
      */
     public void checkForAlignedMarkers(@NotNull ForgeDirection[] dirs, boolean onlyValidate,
         boolean forceMetaDirections) {
-        ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry = getRegistryForDimension();
+        ConcurrentHashMap<BlockPos, TileEntityVoidMarker> dimRegistry = getRegistryForDimension();
 
         // First try to resolve any null aligned markers from saved positions
-        for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> entry : new ArrayList<>(
+        for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityVoidMarker, BlockPos>> entry : new ArrayList<>(
             alignedMarkers.entrySet())) {
             if (entry.getValue()
                 .getKey() == null) {
@@ -259,7 +259,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
                 worldObj.getChunkProvider()
                     .loadChunk(alignedMarkerPos.x >> 4, alignedMarkerPos.z >> 4);
                 TileEntity te = worldObj.getTileEntity(alignedMarkerPos.x, alignedMarkerPos.y, alignedMarkerPos.z);
-                if (te instanceof TileEntityEnderMarker marker) {
+                if (te instanceof TileEntityVoidMarker marker) {
                     setAlignedMarker(entry.getKey(), marker);
                     marker.setAlignedMarker(
                         entry.getKey()
@@ -274,7 +274,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         // Now check for any aligned markers in the given directions
         for (ForgeDirection dir : dirs) {
             if (!alignedMarkers.containsKey(dir)) {
-                for (Map.Entry<BlockPos, @Nullable TileEntityEnderMarker> entry : dimRegistry.entrySet()) {
+                for (Map.Entry<BlockPos, @Nullable TileEntityVoidMarker> entry : dimRegistry.entrySet()) {
                     if (operationMode == MarkerOperationMode.ARBITRARY_LOOP && alignedMarkers.size() >= 2) {
                         // In arbitrary loop mode, only allow 2 connections
                         break;
@@ -343,7 +343,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
         }
     }
 
-    public void setAlignedMarker(ForgeDirection dir, TileEntityEnderMarker marker) {
+    public void setAlignedMarker(ForgeDirection dir, TileEntityVoidMarker marker) {
         alignedMarkers.put(dir, new Tuple<>(marker, new BlockPos(marker.xCoord, marker.yCoord, marker.zCoord)));
         int prevActiveDirs = this.activeDirections;
         this.activeDirections |= 1 << (dir.ordinal() - 2);
@@ -364,7 +364,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     public ForgeDirection[] getActiveDirsFromMeta() {
         // Make sure the loaded meta matches the blocks meta
         if (worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord)
-            .equals(ModBlocks.ENDER_MARKER.get())
+            .equals(ModBlocks.VOID_MARKER.get())
             && worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) != this.activeDirections) {
             this.activeDirections = worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
         }
@@ -382,9 +382,9 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     public void teardownConnections() {
         checkForAlignedMarkers(getActiveDirsFromMeta(), true, false);
         getRegistryForDimension().remove(new BlockPos(this.xCoord, this.yCoord, this.zCoord));
-        for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityEnderMarker, BlockPos>> alignedMarker : alignedMarkers
+        for (Map.Entry<ForgeDirection, Tuple<@Nullable TileEntityVoidMarker, BlockPos>> alignedMarker : alignedMarkers
             .entrySet()) {
-            TileEntityEnderMarker markerTE = alignedMarker.getValue()
+            TileEntityVoidMarker markerTE = alignedMarker.getValue()
                 .getKey();
             if (markerTE != null) {
                 markerTE.removeAlignedMarker(
@@ -395,7 +395,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
                 BlockPos alignedMarkerPos = alignedMarker.getValue()
                     .getValue();
                 TileEntity te = worldObj.getTileEntity(alignedMarkerPos.x, alignedMarkerPos.y, alignedMarkerPos.z);
-                if (te instanceof TileEntityEnderMarker marker) {
+                if (te instanceof TileEntityVoidMarker marker) {
                     marker.removeAlignedMarker(
                         alignedMarker.getKey()
                             .getOpposite());
@@ -409,10 +409,7 @@ public class TileEntityEnderMarker extends TileEntity implements IFacingTE {
     public String getMode() {
         return switch (operationMode) {
             case DEFAULT -> StatCollector.translateToLocal("uie.quarry.marker.mode.1");
-            case SINGLE -> String.format(
-                StatCollector.translateToLocal("uie.quarry.marker.mode.2.1"),
-                this.cuboidSize
-            );
+            case SINGLE -> String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.1"), this.cuboidSize);
             case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.quarry.marker.mode.3");
         };
     }

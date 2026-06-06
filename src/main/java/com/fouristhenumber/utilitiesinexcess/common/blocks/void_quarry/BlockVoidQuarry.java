@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
@@ -14,14 +14,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
 
-public class BlockEnderQuarry extends BlockContainer {
+public class BlockVoidQuarry extends BlockContainer {
 
-    public BlockEnderQuarry() {
+    public BlockVoidQuarry() {
         super(Material.iron);
-        setBlockName("ender_quarry");
-        setBlockTextureName("utilitiesinexcess:ender_quarry");
+        setBlockName("void_quarry");
+        setBlockTextureName("utilitiesinexcess:void_quarry");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BlockEnderQuarry extends BlockContainer {
     public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
         super.onBlockPlacedBy(worldIn, x, y, z, placer, itemIn);
 
-        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityEnderQuarry quarry) {
+        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityVoidQuarry quarry) {
             quarry.ownerUUID = placer.getUniqueID();
             quarry.updateRedstoneState();
         }
@@ -49,16 +49,16 @@ public class BlockEnderQuarry extends BlockContainer {
         float subY, float subZ) {
         if (worldIn.isRemote) return true;
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntityEnderQuarry quarry) {
+        if (te instanceof TileEntityVoidQuarry quarry) {
             if (player.isSneaking() && player.capabilities.isCreativeMode) {
                 quarry.isCreativeBoosted = !quarry.isCreativeBoosted;
                 player.addChatComponentMessage(
                     new ChatComponentText((quarry.isCreativeBoosted ? "" : "Un-") + "Creative-Boosted Quarry."));
                 return true;
             }
-            if (quarry.state == TileEntityEnderQuarry.QuarryWorkState.STOPPED) {
+            if (quarry.state == TileEntityVoidQuarry.QuarryWorkState.STOPPED) {
                 quarry.scanForWorkAreaFromMarkers(player);
-                if (quarry.state == TileEntityEnderQuarry.QuarryWorkState.RUNNING) {
+                if (quarry.state == TileEntityVoidQuarry.QuarryWorkState.RUNNING) {
                     return true;
                 }
             }
@@ -70,13 +70,13 @@ public class BlockEnderQuarry extends BlockContainer {
     @Override
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntityEnderQuarry quarry) {
+        if (te instanceof TileEntityVoidQuarry quarry) {
             dropContent(quarry, worldIn);
         }
         super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 
-    private void dropContent(TileEntityEnderQuarry quarry, World world) {
+    private void dropContent(TileEntityVoidQuarry quarry, World world) {
         for (ItemStack item : quarry.retrieveAllItems()) {
             float dx = world.rand.nextFloat() * 0.8F + 0.1F;
             float dy = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -113,7 +113,7 @@ public class BlockEnderQuarry extends BlockContainer {
     public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (!worldIn.isRemote && te instanceof TileEntityEnderQuarry quarry) {
+        if (!worldIn.isRemote && te instanceof TileEntityVoidQuarry quarry) {
             quarry.scanSidesForTEs();
             quarry.updateRedstoneState();
         }
@@ -127,7 +127,7 @@ public class BlockEnderQuarry extends BlockContainer {
     @Override
     public int getComparatorInputOverride(World worldIn, int x, int y, int z, int side) {
         if (worldIn.isRemote) return 0;
-        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityEnderQuarry quarry) {
+        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityVoidQuarry quarry) {
             return quarry.getComparatorOutput();
         }
         return 0;
@@ -135,6 +135,6 @@ public class BlockEnderQuarry extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityEnderQuarry();
+        return new TileEntityVoidQuarry();
     }
 }

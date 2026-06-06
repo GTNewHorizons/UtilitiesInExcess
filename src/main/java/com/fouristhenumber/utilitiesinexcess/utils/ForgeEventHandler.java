@@ -33,7 +33,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionP
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGluttonsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GluttonsAxeConfig;
@@ -160,12 +160,12 @@ public class ForgeEventHandler {
         if (event.world.isRemote) return;
 
         // Clear the entire dimension registry
-        ConcurrentHashMap<BlockPos, TileEntityEnderMarker> dimRegistry = TileEntityEnderMarker.registeredMarkers
+        ConcurrentHashMap<BlockPos, TileEntityVoidMarker> dimRegistry = TileEntityVoidMarker.registeredMarkers
             .get(event.world.provider.dimensionId);
 
         if (dimRegistry != null) {
             dimRegistry.clear();
-            TileEntityEnderMarker.registeredMarkers.remove(event.world.provider.dimensionId);
+            TileEntityVoidMarker.registeredMarkers.remove(event.world.provider.dimensionId);
         }
     }
 }

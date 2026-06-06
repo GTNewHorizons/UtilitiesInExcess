@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.CommonProxy;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -25,8 +25,8 @@ public class WailaHandler implements IWailaDataProvider {
 
     public static void callbackRegister(IWailaRegistrar registrar) {
         WailaHandler instance = new WailaHandler();
-        registrar.registerBodyProvider(instance, TileEntityEnderQuarry.class);
-        registrar.registerNBTProvider(instance, TileEntityEnderQuarry.class);
+        registrar.registerBodyProvider(instance, TileEntityVoidQuarry.class);
+        registrar.registerNBTProvider(instance, TileEntityVoidQuarry.class);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class WailaHandler implements IWailaDataProvider {
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        if (accessor.getTileEntity() instanceof TileEntityEnderQuarry) {
+        if (accessor.getTileEntity() instanceof TileEntityVoidQuarry) {
             NBTTagCompound nbt = accessor.getNBTData();
             int estimatedSecondsLeft = nbt.getInteger("estSecondsLeft");
             if (estimatedSecondsLeft > 0) currenttip.add(
@@ -61,7 +61,7 @@ public class WailaHandler implements IWailaDataProvider {
                             (estimatedSecondsLeft % 3600) / 60,
                             (estimatedSecondsLeft % 60)))));
 
-            TileEntityEnderQuarry.QuarryWorkState state = TileEntityEnderQuarry.QuarryWorkState.VALUES[nbt
+            TileEntityVoidQuarry.QuarryWorkState state = TileEntityVoidQuarry.QuarryWorkState.VALUES[nbt
                 .getInteger("state")];
             currenttip.add(
                 LangUtil.instance.translate("uie.quarry.waila.state", LangUtil.instance.translate(state.localKey)));

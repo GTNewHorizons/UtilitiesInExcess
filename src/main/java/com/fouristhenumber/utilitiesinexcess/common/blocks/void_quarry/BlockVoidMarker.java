@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
@@ -20,15 +20,15 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 
-public class BlockEnderMarker extends BlockContainer {
+public class BlockVoidMarker extends BlockContainer {
 
-    public BlockEnderMarker() {
+    public BlockVoidMarker() {
         super(Material.iron);
-        setBlockName("ender_marker");
-        setBlockTextureName("utilitiesinexcess:ender_marker");
+        setBlockName("void_marker");
+        setBlockTextureName("utilitiesinexcess:void_marker");
         setBlockBounds(7F / 16F, 0F / 16F, 7F / 16F, 9F / 16F, 13.5F / 16F, 9F / 16F);
         setLightOpacity(0);
     }
@@ -37,7 +37,7 @@ public class BlockEnderMarker extends BlockContainer {
     public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
         if (worldIn.isRemote) return;
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntityEnderMarker marker) {
+        if (te instanceof TileEntityVoidMarker marker) {
             marker.checkForAlignedMarkers();
         }
     }
@@ -53,7 +53,7 @@ public class BlockEnderMarker extends BlockContainer {
     public void onBlockDestroyedByPlayer(World worldIn, int x, int y, int z, int meta) {
         if (worldIn.isRemote) return;
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntityEnderMarker marker) {
+        if (te instanceof TileEntityVoidMarker marker) {
             marker.teardownConnections();
         }
     }
@@ -67,7 +67,7 @@ public class BlockEnderMarker extends BlockContainer {
     public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (!worldIn.isRemote && te instanceof TileEntityEnderMarker marker) {
+        if (!worldIn.isRemote && te instanceof TileEntityVoidMarker marker) {
             marker.checkForAlignedMarkers();
         }
     }
@@ -77,16 +77,12 @@ public class BlockEnderMarker extends BlockContainer {
         float subY, float subZ) {
         if (worldIn.isRemote) return true;
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te instanceof TileEntityEnderMarker marker) {
+        if (te instanceof TileEntityVoidMarker marker) {
             if (player.isSneaking()) {
                 int newCuboidSize = marker.increaseCuboidSize();
-                player
-                    .addChatComponentMessage(new ChatComponentText(
-                        String.format(
-                            StatCollector.translateToLocal("uie.quarry.marker.mode.2.2"),
-                            newCuboidSize
-                        )
-                    ));
+                player.addChatComponentMessage(
+                    new ChatComponentText(
+                        String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.2"), newCuboidSize)));
             } else {
                 marker.rotateMode();
                 player.addChatComponentMessage(new ChatComponentText(marker.getMode()));
@@ -117,7 +113,7 @@ public class BlockEnderMarker extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityEnderMarker();
+        return new TileEntityVoidMarker();
     }
 
     @Override

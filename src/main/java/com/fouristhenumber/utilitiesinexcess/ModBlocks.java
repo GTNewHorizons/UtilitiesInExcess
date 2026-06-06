@@ -32,9 +32,6 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderMarker;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarry;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarryUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFurnaceGenerator;
@@ -47,11 +44,14 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.BlockVoidMarker;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.BlockVoidQuarry;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.BlockVoidQuarryUpgrade;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
@@ -108,9 +108,9 @@ public enum ModBlocks {
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamondSpike"), BlockSpike.ItemSpike.class, "diamondSpike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
-    ENDER_QUARRY(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarry(), "ender_quarry"),
-    ENDER_MARKER(EnderQuarryConfig.enableEnderQuarry, new BlockEnderMarker(), "ender_marker"),
-    ENDER_QUARRY_UPGRADE(EnderQuarryConfig.enableEnderQuarry, new BlockEnderQuarryUpgrade(), BlockEnderQuarryUpgrade.ItemEnderQuarryUpgrade.class, "ender_quarry_upgrade"),
+    VOID_QUARRY(VoidQuarryConfig.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
+    VOID_MARKER(VoidQuarryConfig.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
+    VOID_QUARRY_UPGRADE(VoidQuarryConfig.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

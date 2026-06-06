@@ -49,10 +49,10 @@ import org.joml.Vector2i;
 import org.joml.Vector4i;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.BlockEnderQuarryUpgrade;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry.EnderQuarryUpgradeManager;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.BlockVoidQuarryUpgrade;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.VoidQuarryUpgradeManager;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderQuarryConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
@@ -67,9 +67,9 @@ import cofh.api.energy.IEnergyReceiver;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
-public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
+public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
-    public static final int BASE_STEPS_PER_TICK = EnderQuarryConfig.enderQuarryBaseSpeed;
+    public static final int BASE_STEPS_PER_TICK = VoidQuarryConfig.voidQuarryBaseSpeed;
     public static final int ITEM_BUFFER_CAPACITY = BASE_STEPS_PER_TICK * 5; // Emptied every 4 ticks + some margin for
                                                                             // more than one item per block
     public static Block REPLACE_BLOCK = Blocks.dirt;
@@ -94,26 +94,26 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private final ArrayDeque<Integer> brokenBlocksSlidingWindow = new ArrayDeque<>();
     private final HashMap<ForgeDirection, @Nullable IInventory> sidedItemAcceptors = new LinkedHashMap<>();
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
-    private final EnderQuarryUpgradeManager upgradeManager = new EnderQuarryUpgradeManager();
+    private final VoidQuarryUpgradeManager upgradeManager = new VoidQuarryUpgradeManager();
 
-    protected final EnergyStorage energyStorage = new EnergyStorage(EnderQuarryConfig.enderQuarryEnergyStorage);
+    protected final EnergyStorage energyStorage = new EnergyStorage(VoidQuarryConfig.voidQuarryEnergyStorage);
     protected final List<FluidTank> fluidStorage = Stream
-        .generate(() -> new FluidTank(EnderQuarryConfig.enderQuarryFluidTankStorage))
-        .limit(EnderQuarryConfig.enderQuarryFluidTankAmount)
+        .generate(() -> new FluidTank(VoidQuarryConfig.voidQuarryFluidTankStorage))
+        .limit(VoidQuarryConfig.voidQuarryFluidTankAmount)
         .collect(Collectors.toList());
     protected final Object2IntMap<@NotNull ItemStack> itemStorage = new Object2IntOpenCustomHashMap<>(
         ITEM_BUFFER_CAPACITY,
         UIEUtils.ItemStackHashStrategy.instance);
 
-    public TileEntityEnderQuarry() {
-        REPLACE_BLOCK = EnderQuarryReplaceBlock.valueOf(EnderQuarryConfig.enderQuarryReplaceBlock).block;
+    public TileEntityVoidQuarry() {
+        REPLACE_BLOCK = VoidQuarryReplaceBlock.valueOf(VoidQuarryConfig.voidQuarryReplaceBlock).block;
         resetQuarry();
         storedItems = 0;
     }
 
     public String getState() {
         return switch (state) {
-            case STOPPED -> "uie.quarry.state.detail.1";
+            case STOPPED -> StatCollector.translateToLocal("uie.quarry.state.detail.1");
             case STOPPED_WAITING_FOR_FLUID_SPACE -> StatCollector.translateToLocal("uie.quarry.state.detail.2");
             case STOPPED_WAITING_FOR_ITEM_SPACE -> StatCollector.translateToLocal("uie.quarry.state.detail.3");
             case STOPPED_WAITING_FOR_ENERGY -> StatCollector.translateToLocal("uie.quarry.state.detail.4");
@@ -201,7 +201,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      */
     private int findLowerYBound() {
         for (int i = this.yCoord - 2; i > 1; i--) {
-            if (worldObj.getTileEntity(xCoord, i, zCoord) instanceof TileEntityEnderMarker) {
+            if (worldObj.getTileEntity(xCoord, i, zCoord) instanceof TileEntityVoidMarker) {
                 return i + 1;
             }
         }
@@ -215,18 +215,18 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
      */
     private int findUpperYBound() {
         for (int i = this.yCoord + 2; i < 255; i++) {
-            if (worldObj.getTileEntity(xCoord, i, zCoord) instanceof TileEntityEnderMarker) {
+            if (worldObj.getTileEntity(xCoord, i, zCoord) instanceof TileEntityVoidMarker) {
                 return i - 1;
             }
         }
-        return Math.min(this.yCoord + EnderQuarryConfig.enderQuarryDefaultTopPadding, 255);
+        return Math.min(this.yCoord + VoidQuarryConfig.voidQuarryDefaultTopPadding, 255);
     }
 
     public void scanForWorkAreaFromMarkers(@Nullable EntityPlayer player) {
         boolean foundMarkers = false;
         for (ForgeDirection dir : DirectionUtil.HORIZONTAL_DIRECTIONS) {
             TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
-            if (te instanceof TileEntityEnderMarker marker) {
+            if (te instanceof TileEntityVoidMarker marker) {
                 @Nullable
                 List<Vector2i> scanReturn = marker.checkForBoundary(dir, player);
                 if (scanReturn != null) {
@@ -698,7 +698,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private Tuple<Boolean, Boolean> tryHarvestCurrentBlock() {
         Block block = worldObj.getBlock(dx, dy, dz);
         if (block.getMaterial() == Material.air || worldObj.isAirBlock(dx, dy, dz)
-            || block == (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.WORLD_HOLE) ? Blocks.air
+            || block == (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.WORLD_HOLE) ? Blocks.air
                 : REPLACE_BLOCK)
             || block.getBlockHardness(worldObj, dx, dy, dz) < 0
             || block.getBlockHardness(worldObj, dx, dy, dz) > 100) {
@@ -716,7 +716,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         // Get base cost multiplier from upgrades, add a multiplier based on hardness (that roughly scales 0 - 10 to 1.0
         // - 1.66)
         double costMultiplier = upgradeManager.totalCostMultiplier + (1.0 + 0.8 * (hardness / (hardness + 2)));
-        int cost = (int) (EnderQuarryConfig.enderQuarryBaseRFCost * costMultiplier);
+        int cost = (int) (VoidQuarryConfig.voidQuarryBaseRFCost * costMultiplier);
         if (energyStorage.extractEnergy(cost, true) >= cost) {
             if (!simulate) {
                 energyStorage.extractEnergy(cost, false);
@@ -735,7 +735,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     private boolean harvestAndStoreBlock(Block block) {
         try {
             int meta = worldObj.getBlockMetadata(dx, dy, dz);
-            if (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.PUMP_FLUIDS)) {
+            if (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.PUMP_FLUIDS)) {
                 FluidStack fluid = null;
                 if ((block == Blocks.water || block == Blocks.flowing_water) && meta == 0) {
                     fluid = new FluidStack(FluidRegistry.WATER, 1000);
@@ -753,7 +753,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             @Nullable
             List<ItemStack> drops = null;
             // Try to silk touch if we have the upgrade
-            if (upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.SILK_TOUCH)) {
+            if (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.SILK_TOUCH)) {
                 if (block.canSilkHarvest(worldObj, fakePlayer, dx, dy, dz, meta)) {
                     Item item = Item.getItemFromBlock(block);
                     if (item != null) {
@@ -770,7 +770,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                     dy,
                     dz,
                     meta,
-                    (int) upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.FORTUNE, 0));
+                    (int) upgradeManager.getValue(VoidQuarryUpgradeManager.TieredVoidQuarryUpgrade.FORTUNE, 0));
             }
             // We can accept that the maximum stored amount is sometimes overrun by fortune
             if (!drops.isEmpty()) {
@@ -1002,7 +1002,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
     }
 
     /**
-     * Scans all 6 sides for TileEntities that for containers that can accept items or fluids and ender quarry upgrades.
+     * Scans all 6 sides for TileEntities that for containers that can accept items or fluids and void quarry upgrades.
      */
     public void scanSidesForTEs() {
         sidedFluidAcceptors.clear();
@@ -1035,12 +1035,12 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
                 (direction.offsetX + this.xCoord) >> 4,
                 (direction.offsetZ + this.zCoord) >> 4);
 
-            if (block instanceof BlockEnderQuarryUpgrade) {
+            if (block instanceof BlockVoidQuarryUpgrade) {
                 int meta = this.worldObj.getBlockMetadata(
                     direction.offsetX + this.xCoord,
                     direction.offsetY + this.yCoord,
                     direction.offsetZ + this.zCoord);
-                upgradeManager.addUpgrade(EnderQuarryUpgradeManager.EnderQuarryUpgrade.VALUES[meta]);
+                upgradeManager.addUpgrade(VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES[meta]);
             }
 
             if (te instanceof IFluidHandler fluidHandler) {
@@ -1071,7 +1071,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             dx,
             dy,
             dz,
-            upgradeManager.has(EnderQuarryUpgradeManager.EnderQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
+            upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
     }
 
     /**
@@ -1182,7 +1182,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
         if (state == QuarryWorkState.RUNNING) {
             int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)
-                * upgradeManager.getValue(EnderQuarryUpgradeManager.TieredEnderQuarryUpgrade.SPEED, 1.0));
+                * upgradeManager.getValue(VoidQuarryUpgradeManager.TieredVoidQuarryUpgrade.SPEED, 1.0));
             while (blocksVisitedThisTick < stepsPerTick && stepPos()) {
                 // TODO: Remove after this has been tested by others
                 if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
@@ -1253,7 +1253,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
             lowerYBound = nbt.getInteger("lowerYBound");
             upperYBound = nbt.getInteger("upperYBound");
             // Fix for cases where upperYBound was not present yet
-            if (lowerYBound == upperYBound) upperYBound = this.yCoord + EnderQuarryConfig.enderQuarryDefaultTopPadding;
+            if (lowerYBound == upperYBound) upperYBound = this.yCoord + VoidQuarryConfig.voidQuarryDefaultTopPadding;
 
             // Possible next work areas for complex markers
             NBTTagList possibleNextAreas = nbt.getTagList("nextAreas", Constants.NBT.TAG_COMPOUND);
@@ -1536,7 +1536,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
         }
     }
 
-    private enum EnderQuarryReplaceBlock {
+    private enum VoidQuarryReplaceBlock {
 
         COBBLE(Blocks.cobblestone),
         DIRT(Blocks.dirt),
@@ -1546,7 +1546,7 @@ public class TileEntityEnderQuarry extends LoadableTE implements IEnergyReceiver
 
         public final Block block;
 
-        EnderQuarryReplaceBlock(Block block) {
+        VoidQuarryReplaceBlock(Block block) {
             this.block = block;
         }
     }

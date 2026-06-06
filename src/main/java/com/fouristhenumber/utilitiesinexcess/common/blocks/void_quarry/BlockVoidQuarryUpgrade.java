@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.ender_quarry;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
@@ -19,15 +19,15 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockEnderQuarryUpgrade extends Block {
+public class BlockVoidQuarryUpgrade extends Block {
 
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
 
-    public BlockEnderQuarryUpgrade() {
+    public BlockVoidQuarryUpgrade() {
         super(Material.iron);
         setHardness(1f);
-        setBlockName("utilitiesinexcess:ender_quarry_upgrade");
+        setBlockName("utilitiesinexcess:void_quarry_upgrade");
         setBlockBounds(0.5F / 16F, 1.5F / 16F, 0.5F / 16F, 15.5F / 16F, 15F / 16F, 15.5F / 16F);
         setLightOpacity(0);
     }
@@ -41,7 +41,7 @@ public class BlockEnderQuarryUpgrade extends Block {
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < EnderQuarryUpgradeManager.EnderQuarryUpgrade.VALUES.length; ++i) {
+        for (int i = 0; i < VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES.length; ++i) {
             list.add(new ItemStack(itemIn, 1, i));
         }
     }
@@ -58,9 +58,9 @@ public class BlockEnderQuarryUpgrade extends Block {
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        icons = new IIcon[EnderQuarryUpgradeManager.EnderQuarryUpgrade.VALUES.length];
-        for (int i = 0; i < EnderQuarryUpgradeManager.EnderQuarryUpgrade.VALUES.length; i++) {
-            EnderQuarryUpgradeManager.EnderQuarryUpgrade upgrade = EnderQuarryUpgradeManager.EnderQuarryUpgrade.VALUES[i];
+        icons = new IIcon[VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES.length];
+        for (int i = 0; i < VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES.length; i++) {
+            VoidQuarryUpgradeManager.VoidQuarryUpgrade upgrade = VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES[i];
             icons[i] = reg.registerIcon(upgrade.getTextureName());
         }
     }
@@ -70,9 +70,9 @@ public class BlockEnderQuarryUpgrade extends Block {
         return meta;
     }
 
-    public static class ItemEnderQuarryUpgrade extends ItemBlock {
+    public static class ItemVoidQuarryUpgrade extends ItemBlock {
 
-        public ItemEnderQuarryUpgrade(Block block) {
+        public ItemVoidQuarryUpgrade(Block block) {
             super(block);
             setMaxDamage(0);
             setHasSubtypes(true);

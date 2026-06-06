@@ -5,8 +5,6 @@ import net.minecraft.tileentity.TileEntity;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderMarker;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
@@ -18,6 +16,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySound
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
@@ -63,8 +63,8 @@ public enum ModTileEntities {
     GENERATOR_TNT(TileEntityTNTGenerator.class                                 , "TNTGenerator"),
     GENERATOR_PINK(TileEntityPinkGenerator.class                               , "PinkGenerator"),
     GENERATOR_NETHER_STAR(TileEntityNetherStarGenerator.class                  , "NetherStarGenerator"),
-    ENDER_QUARRY(TileEntityEnderQuarry.class                                   , "EnderQuarry"),
-    ENDER_MARKER(TileEntityEnderMarker.class                                   , "EnderMarker"),
+    VOID_QUARRY(TileEntityVoidQuarry.class                                   , "VoidQuarry"),
+    VOID_MARKER(TileEntityVoidMarker.class                                   , "VoidMarker"),
     ;
     // spotless:on
 
