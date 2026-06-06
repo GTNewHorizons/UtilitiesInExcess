@@ -80,7 +80,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     @Override
     public void registerIcons(IIconRegister register) {
         for (TransferUpgrade upgrade : TransferUpgrade.VALUES) {
-            ICONS[upgrade.ordinal()] = register.registerIcon(UtilitiesInExcess.MODID + ":" + upgrade.getName());
+            ICONS[upgrade.ordinal()] = register.registerIcon(UtilitiesInExcess.MODID + ":upgrade_" + upgrade.getName());
         }
     }
 
