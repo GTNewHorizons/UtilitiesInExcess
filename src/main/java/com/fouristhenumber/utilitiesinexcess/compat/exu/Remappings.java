@@ -41,7 +41,7 @@ public enum Remappings {
     PURE_LOVE("ExtraUtilities:pureLove", ModBlocks.PURE_LOVE),
     BEDROCKUIM_BLOCK("ExtraUtilities:block_bedrockium", ModBlocks.BEDROCKIUM_BLOCK),
     GREENSCREEN("ExtraUtilities:greenscreen", ModBlocks.LAPIS_AETHERIUS),
-//    PEACEFUL_TABLE("ExtraUtilities:peaceful_table_top", ModBlocks.abc), // TODO: add here once merged
+    PEACEFUL_TABLE("ExtraUtilities:peaceful_table_top", ModBlocks.PACIFISTS_BENCH),
     CURSED_EARTH("ExtraUtilities:cursedearthside", ModBlocks.CURSED_EARTH),
     SPIKE_WOOD("ExtraUtilities:spike_base_wood", ModBlocks.SPIKE_WOOD),
     SPIKE_IRON("ExtraUtilities:spike_base", ModBlocks.SPIKE_IRON),
@@ -66,13 +66,13 @@ public enum Remappings {
 
     // Direct item remappings
     GLOVE("ExtraUtilities:glove", ModItems.GLOVE),
-    HEAVENLY_RING("ExtraUtilities:angelRing", ModItems.HEAVENLY_RING),
+    HEAVENLY_RING("ExtraUtilities:angelRing", ModItems.HEAVENLY_RING_FEATHER),
     FIRE_BATTERY("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY),
     ARCHITECTS_WAND("ExtraUtilities:buildersWand", ModItems.ARCHITECTS_WAND),
     SUPER_ARCHITECTS_WAND("ExtraUtilities:creativeBuildersWand", ModItems.ARCHITECTS_WAND),
     INVERTED_SWORD("ExtraUtilities:ethericSword", ModItems.ETHERIC_SWORD),
     INVERTED_PICKAXE("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE),
-    INVERTED_AXE("ExtraUtilities:defoliageAxe", ModItems.GLUTTONS_AXE),
+    INVERTED_AXE("ExtraUtilities:defoliageAxe", ModItems.GOURMANDS_AXE),
     INVERTED_SHOVEL("ExtraUtilities:erosionShovel", ModItems.ANTI_PARTICULATE_SHOVEL),
     INVERTED_HOE("ExtraUtilities:temporalHoe", ModItems.REVERSING_HOE),
     INVERTED_SHEARS("ExtraUtilities:shears", ModItems.PRECISION_SHEARS),
