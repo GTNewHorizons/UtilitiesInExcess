@@ -1,8 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -21,6 +22,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweaker
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
+import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -63,7 +65,7 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
+
         proxy.preInit(event);
     }
 
@@ -77,9 +79,6 @@ public class UtilitiesInExcess {
         FMLCommonHandler.instance()
             .bus()
             .register(new FMLEventHandler());
-
-        GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
-        GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

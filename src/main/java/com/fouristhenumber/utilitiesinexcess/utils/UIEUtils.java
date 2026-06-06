@@ -12,7 +12,6 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
-
 import it.unimi.dsi.fastutil.Hash;
 
 public class UIEUtils {

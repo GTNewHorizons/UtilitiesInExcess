@@ -6,6 +6,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlock
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRadicallyReducedChest;
@@ -13,6 +14,8 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainM
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
@@ -37,6 +40,7 @@ public enum ModTileEntities {
     // spotless:off
 
     // make sure to leave a trailing comma
+    SPIKE(TileEntitySpike.class                                                , "Spike"),
     REDSTONE_CLOCK(TileEntityRedstoneClock .class                              , "RedstoneClock"),
     TRASH_CAN_ITEM(TileEntityTrashCanItem.class                                , "TrashCanItem"),
     TRASH_CAN_FLUID(TileEntityTrashCanFluid.class                              , "TrashCanFluid"),
@@ -63,8 +67,10 @@ public enum ModTileEntities {
     GENERATOR_TNT(TileEntityTNTGenerator.class                                 , "TNTGenerator"),
     GENERATOR_PINK(TileEntityPinkGenerator.class                               , "PinkGenerator"),
     GENERATOR_NETHER_STAR(TileEntityNetherStarGenerator.class                  , "NetherStarGenerator"),
-    VOID_QUARRY(TileEntityVoidQuarry.class                                   , "VoidQuarry"),
-    VOID_MARKER(TileEntityVoidMarker.class                                   , "VoidMarker"),
+    PACIFISTS_BENCH(TileEntityPacifistsBench.class                             , "PacifistsBench"),
+    TRADING_POST(TileEntityTradingPost.class                                   , "TradingPost"),
+    VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
+    VOID_MARKER(TileEntityVoidMarker.class                                     , "VoidMarker"),
     ;
     // spotless:on
 
