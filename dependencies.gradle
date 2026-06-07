@@ -63,6 +63,7 @@ dependencies {
     runtimeOnlyNonPublishable('curse.maven:chicken-chunks-229316:2233250')
     // Testing performance with void quarry inserts
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderCore:0.5.0:dev") { transitive = false }
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.29:dev") { transitive = false }
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritiaddons:1.9.3-GTNH:dev') { transitive = true }
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritia:1.81-pre:dev') { transitive = false }
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-789-GTNH:dev') { transitive = true }

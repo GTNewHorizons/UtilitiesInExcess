@@ -49,10 +49,12 @@ import org.joml.Vector2i;
 import org.joml.Vector4i;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.BlockVoidQuarryUpgrade;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry.VoidQuarryUpgradeManager;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarryUpgrade;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.VoidQuarryUpgradeManager;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
@@ -64,6 +66,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
@@ -1067,11 +1070,46 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
      * Does not check for anything, should be called after tryHarvestCurrentBlock() returns true.
      */
     private void removeCurrentBlock() {
+        spawnParticle(dx, dy, dz);
         worldObj.setBlock(
             dx,
             dy,
             dz,
             upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
+    }
+
+    /**
+     * Spawns particles around the broken block for nearby players.
+     */
+    public void spawnParticle(int x, int y, int z) {
+        NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(
+            worldObj.provider.dimensionId,
+            x,
+            y,
+            z,
+            64);
+        for (double dx = 0.1; dx <= 0.9; dx += 0.2) {
+            for (double dy = 0.1; dy <= 0.9; dy += 0.2) {
+                for (double dz = 0.1; dz <= 0.9; dz += 0.2) {
+                    double d0 = x + dx + worldObj.rand.nextFloat() * 0.25;
+                    double d1 = y + dy + worldObj.rand.nextFloat() * 0.25;
+                    double d2 = z + dz + worldObj.rand.nextFloat() * 0.25;
+
+                    PacketHandler.INSTANCE.sendToAllAround(
+                        new ParticlePacket(
+                            "depthsuspend",
+                            d0,
+                            d1,
+                            d2,
+                            1,
+                            0,
+                            0,
+                            0
+                        ),
+                        targetPoint);
+                }
+            }
+        }
     }
 
     /**

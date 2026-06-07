@@ -39,12 +39,12 @@ public class VoidQuarryConfig {
     @Config.Comment("Block type to replace mined blocks with if the world hole upgrade isn't present.")
     public static String voidQuarryReplaceBlock;
 
-    @Config.DefaultInt(400)
+    @Config.DefaultInt(1)
     @Config.Comment("The amount of blocks the quarry tries to mine per tick, without speed upgrades.")
     public static int voidQuarryBaseSpeed;
 
     @Config.DefaultDouble(2D)
-    @Config.Comment("The multiplier applied to the base speed mine speed.")
+    @Config.Comment("The multiplier applied to the base mine speed.")
     public static double voidQuarrySpeed1Multiplier;
 
     @Config.DefaultDouble(8D)

@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 

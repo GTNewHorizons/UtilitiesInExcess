@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.void_quarry;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry;
 
 import java.util.HashMap;
 import java.util.HashSet;

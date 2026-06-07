@@ -15,6 +15,7 @@ public class ParticlePacket implements IMessage {
 
     private String particleName;
     private double x, y, z;
+    private double velocityX, velocityY, velocityZ;
     private int frequency;
 
     public ParticlePacket() {} // Required
@@ -24,6 +25,21 @@ public class ParticlePacket implements IMessage {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.velocityX = 0;
+        this.velocityY = 0;
+        this.velocityZ = 0;
+        this.frequency = frequency;
+    }
+
+    public ParticlePacket(String particleName, double x, double y, double z, int frequency, double velocityX,
+        double velocityY, double velocityZ) {
+        this.particleName = particleName;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
+        this.velocityZ = velocityZ;
         this.frequency = frequency;
     }
 
@@ -33,6 +49,9 @@ public class ParticlePacket implements IMessage {
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
+        this.velocityX = buf.readDouble();
+        this.velocityY = buf.readDouble();
+        this.velocityZ = buf.readDouble();
         this.frequency = buf.readInt();
     }
 
@@ -42,6 +61,9 @@ public class ParticlePacket implements IMessage {
         buf.writeDouble(x);
         buf.writeDouble(y);
         buf.writeDouble(z);
+        buf.writeDouble(velocityX);
+        buf.writeDouble(velocityY);
+        buf.writeDouble(velocityZ);
         buf.writeInt(frequency);
     }
 
@@ -52,7 +74,15 @@ public class ParticlePacket implements IMessage {
         public IMessage onMessage(ParticlePacket message, MessageContext ctx) {
             World world = Minecraft.getMinecraft().theWorld;
             for (int i = 0; i < message.frequency; i++) { // Send the particle multiple times based on frequency
-                world.spawnParticle(message.particleName, message.x, message.y, message.z, 0.0D, 0.0D, 0.0D);
+                world.spawnParticle(
+                    message.particleName,
+                    message.x,
+                    message.y,
+                    message.z,
+                    message.velocityX,
+                    message.velocityY,
+                    message.velocityZ
+                );
             }
             return null;
         }
