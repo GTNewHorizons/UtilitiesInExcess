@@ -7,12 +7,9 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
@@ -21,7 +18,6 @@ import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemFilter;
-import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -31,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.FilterThemes.PINK_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.getInventoryContentsFromStack;
 
 public class FilterPipeLogic extends NetworkLogic implements IInventory
@@ -116,39 +113,52 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
 
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings, IInventory host)
     {
-        SlotGroup slotGroup = new SlotGroup("transfer_node_buffer[0]", 1);
-        SlotGroup slotGroup1 = new SlotGroup("transfer_node_upgrades", 1);
-
         ModularPanel panel = new ModularPanel("panel");
         panel.bindPlayerInventory();
+        panel.height(192);
 
         panel.child(
-            new ParentWidget<>().coverChildren()
-                .topRelAnchor(0, 1)
-                .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
-                        .asWidget()
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(-15)));
+            IKey.str(StatCollector.translateToLocal(getInventoryName()))
+                .asWidget()
+                .marginLeft(5)
+                .marginRight(5)
+                .marginTop(5)
+                .marginBottom(-15)
+        );
 
         IItemHandler itemHandler = new InvWrapper(host);
 
-        Flow flow = Flow.row();
-        flow.pos(34,60).size(108,18);
-        for (int i = 0; i < 5; i++)
-        {
-            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i + 1).slotGroup(slotGroup1)));
-        }
-        panel.child(flow);
-        ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
+        Flow parentRow = Flow.row();
+        parentRow.top(15);
+        parentRow.size(18*5);
 
-        panel.child(
-            new Grid().coverChildren()
-                .pos(79, 34)
-                .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
+        Flow leftCol = Flow.col();
+        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 2)));
+        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 4)));
+        leftCol.childPadding(18);
+        leftCol.width(18);
+        leftCol.top(18);
+        parentRow.child(leftCol);
 
+        Flow midCol = Flow.col();
+        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 1)).widgetTheme(PINK_SLOT));
+        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 0)));
+        midCol.childPadding(3*18);
+        midCol.width(18);
+        parentRow.child(midCol);
+
+        Flow rightCol = Flow.col();
+        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 3)));
+        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 5)));
+        rightCol.childPadding(18);
+        rightCol.width(18);
+        rightCol.top(18);
+        parentRow.child(rightCol);
+
+        panel.child(parentRow);
+
+        parentRow.horizontalCenter();
+        parentRow.childPadding(18);
         syncManager.addCloseListener(this::parseInventoryToFilter);
 
         return panel;
@@ -192,9 +202,11 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
 
     public void parseFilterItem(ItemStack filter, int slot)
     {
-        ItemUpgrade filterUpgrade = (ItemUpgrade) filter.getItem();
         List<ItemStack> containedItems = getInventoryContentsFromStack(filter);
-
+        if (containedItems == null)
+        {
+            return;
+        }
         for (ItemStack containedItem : containedItems)
         {
             if (containedItem.getItem() instanceof ItemUpgrade)
@@ -220,7 +232,6 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
                 logicalFilter[slot].addToWhiteList(containedItem);
             }
         }
-
     }
 
     @Override

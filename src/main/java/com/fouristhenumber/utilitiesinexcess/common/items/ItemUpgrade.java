@@ -65,6 +65,11 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
         setHasSubtypes(true);
     }
 
+    public String getInventoryName()
+    {
+        return "gui.title.filter.name";
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIconFromDamage(int meta) {
@@ -173,7 +178,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
         IItemHandler handler = new InvWrapper(itemInventory);
 
         panel.child(
-            IKey.str(StatCollector.translateToLocal("Item Filter"))
+            IKey.str(StatCollector.translateToLocal(getInventoryName()))
                 .asWidget()
                 .marginLeft(5)
                 .marginRight(5)

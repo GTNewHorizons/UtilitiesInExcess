@@ -561,3 +561,5 @@ ue_wall.name=%s Wall
 ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
 
+gui.title.filter_pipe.name=Filter Pipe
+gui.title.filter.name=Filter
