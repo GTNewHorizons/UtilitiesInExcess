@@ -137,7 +137,6 @@ public class BlockDrum extends BlockContainer {
 
         EntityItem entityItem = new EntityItem(world, x + dx, y + dy, z + dz, drop);
         world.spawnEntityInWorld(entityItem);
-        world.removeTileEntity(x, y, z);
         super.breakBlock(world, x, y, z, block, meta);
     }
 
