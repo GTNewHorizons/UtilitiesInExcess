@@ -22,6 +22,10 @@ public abstract class WalkerBase<T, E>
 
     public String getLocationString()
     {
+        if (currentComponent == null)
+        {
+            return "";
+        }
         StringBuilder location = new StringBuilder();
         location.append("x: ");
         location.append(currentComponent.getX() - walkingComponent.getX());

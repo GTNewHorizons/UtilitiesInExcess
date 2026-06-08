@@ -8,8 +8,8 @@ import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
@@ -22,6 +22,8 @@ import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,11 +39,11 @@ import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.get
 
 public class FilterPipeLogic extends NetworkLogic implements IInventory
 {
-    // Slot filters are organized in the same way that
+    // This is the actual items in the filter.
     private final ItemStack[] filters = new ItemStack[6];
 
-
-    private ItemFilter[] logicalFilter = new ItemFilter[6];
+    // This is the logic that those items represent.
+    private final ItemFilter[] logicalFilter = new ItemFilter[6];
 
     public FilterPipeLogic(ITransferNetworkComponent host) {
         super(host);
@@ -60,6 +62,41 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
     @Override
     public boolean canConnectItem() {
         return true;
+    }
+
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        NBTTagList list = compound.getTagList("Items", 10);
+
+        for (int i = 0; i < list.tagCount(); i++)
+        {
+            NBTTagCompound itemTag = list.getCompoundTagAt(i);
+
+            int slot = itemTag.getByte("Slot") & 255;
+
+            if (slot >= 0 && slot < this.getSizeInventory())
+            {
+                filters[slot] = ItemStack.loadItemStackFromNBT(itemTag);
+            }
+        }
+        parseInventoryToFilter();
+    }
+
+    public void writeToNBT(NBTTagCompound compound)
+    {
+        NBTTagList itemList = new NBTTagList();
+        for (int i = 0; i < filters.length; i++)
+        {
+            ItemStack stack = filters[i];
+            if (stack != null)
+            {
+                NBTTagCompound itemCompound = new NBTTagCompound();
+                itemCompound.setByte("Slot", (byte) i);
+                stack.writeToNBT(itemCompound);
+                itemList.appendTag(itemCompound);
+            }
+        }
+        compound.setTag("Items", itemList);
     }
 
     @Override
@@ -108,7 +145,7 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return 1;
     }
 
     @Override
@@ -138,23 +175,23 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
         parentRow.size(18*5);
 
         Flow leftCol = Flow.col();
-        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 2)).widgetTheme(PINK_SLOT.get()));
-        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 4)).widgetTheme(ORANGE_SLOT.get()));
+        leftCol.child(new PhantomItemSlot().slot(new ModularSlot(itemHandler, 2)).widgetTheme(PINK_SLOT.get()));
+        leftCol.child(new PhantomItemSlot().slot(new ModularSlot(itemHandler, 4)).widgetTheme(ORANGE_SLOT.get()));
         leftCol.childPadding(18);
         leftCol.width(18);
         leftCol.top(18);
         parentRow.child(leftCol);
 
         Flow midCol = Flow.col();
-        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 1)).widgetTheme(CYAN_SLOT.get()));
-        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 0)).widgetTheme(YELLOW_SLOT.get()));
+        midCol.child(new PhantomItemSlot().slot(new ModularSlot(itemHandler, 1)).widgetTheme(CYAN_SLOT.get()));
+        midCol.child(new PhantomItemSlot().slot(new ModularSlot(itemHandler, 0)).widgetTheme(YELLOW_SLOT.get()));
         midCol.childPadding(3*18);
         midCol.width(18);
         parentRow.child(midCol);
 
         Flow rightCol = Flow.col();
-        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 3)).widgetTheme(GREEN_SLOT.get()));
-        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 5)).widgetTheme(PURPLE_SLOT.get()));
+        rightCol.child(new PhantomItemSlot().slot(new ModularSlot(itemHandler, 3)).widgetTheme(GREEN_SLOT.get()));
+        rightCol.child(new PhantomItemSlot().slot(new ModularSlot(itemHandler, 5)).widgetTheme(PURPLE_SLOT.get()));
         rightCol.childPadding(18);
         rightCol.width(18);
         rightCol.top(18);
@@ -164,48 +201,52 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
 
         parentRow.horizontalCenter();
         parentRow.childPadding(18);
-        syncManager.addCloseListener(this::parseInventoryToFilter);
+        syncManager.addCloseListener(this::closeListener);
 
         return panel;
     }
 
-    public void parseInventoryToFilter(EntityPlayer player)
+    public void closeListener(EntityPlayer player)
     {
         if (!player.worldObj.isRemote)
         {
-            for (int i = 0; i < filters.length; i++)
+            parseInventoryToFilter();
+        }
+    }
+    public void parseInventoryToFilter()
+    {
+        for (int i = 0; i < filters.length; i++)
+        {
+            if (filters[i] != null)
             {
-                if (filters[i] != null)
+                logicalFilter[i] = new ItemFilter();
+                if (filters[i].getItem() instanceof ItemUpgrade)
                 {
-                    logicalFilter[i] = new ItemFilter();
-                    if (filters[i].getItem() instanceof ItemUpgrade)
+                    if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.FILTER) // Case where it's a filter
                     {
-                        if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.FILTER) // Case where it's a filter
+                        parseFilterItem(filters[i], i);
+                    }
+                    else if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
+                    {
+                        if (filters[i].hasTagCompound() && filters[i].stackTagCompound.getByte("Mode") == ItemUpgrade.FilterMode.INVERTED.ordinal())
                         {
-                            parseFilterItem(filters[i], i);
+                            logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::invMatches);
                         }
-                        else if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
+                        else
                         {
-                            if (filters[i].hasTagCompound() && filters[i].stackTagCompound.getByte("Mode") == ItemUpgrade.FilterMode.INVERTED.ordinal())
-                            {
-                                logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::invMatches);
-                            }
-                            else
-                            {
-                                logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::matches);
-                            }
+                            logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::matches);
                         }
                     }
-                    else
-                    {
-                        logicalFilter[i].addToWhiteList(filters[i]);
-                    }
+                }
+                else
+                {
+                    logicalFilter[i].addToWhiteList(filters[i]);
                 }
             }
         }
     }
 
-    public void parseFilterItem(ItemStack filter, int slot)
+    private void parseFilterItem(ItemStack filter, int slot)
     {
         List<ItemStack> containedItems = getInventoryContentsFromStack(filter);
         if (containedItems == null)
@@ -239,6 +280,8 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
         }
     }
 
+
+
     @Override
     public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent walkingComponent)
     {
@@ -248,13 +291,19 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
             int mask = 0;
             for (int i = 0; i < filters.length; i++)
             {
-                if (filters[i] == null && (networkMask & (1 << i)) != 0) // If a direction is unfiltered and has a network connection.
+                if (incomingDirection.ordinal() != i)
                 {
-                    mask = mask | (1 << i);
-                }
-                else if (logicalFilter[i].matches(stack))// We're filtered
-                {
-                    mask = mask | (1 << i);
+                    if ((networkMask & (1 << i)) != 0) // No reason to look in non-networked directions
+                    {
+                        if (filters[i] == null) // If a direction is unfiltered and has a network connection.
+                        {
+                            mask = mask | (1 << i);
+                        }
+                        else if (logicalFilter[i] != null && logicalFilter[i].matches(stack))// We're filtered
+                        {
+                            mask = mask | (1 << i);
+                        }
+                    }
                 }
             }
             return new MaskedArrayView<>(mask, networkNeighbors);

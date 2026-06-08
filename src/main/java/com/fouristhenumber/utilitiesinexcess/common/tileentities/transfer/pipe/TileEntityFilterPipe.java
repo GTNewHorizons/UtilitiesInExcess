@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe.Filte
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterPipeLogic>
@@ -19,6 +20,20 @@ public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterP
     public TileEntityFilterPipe()
     {
         logic = new FilterPipeLogic(this);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        logic.readFromNBT(compound);
+        super.readFromNBT(compound);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound)
+    {
+        super.writeToNBT(compound);
+        logic.writeToNBT(compound);
     }
 
     @Override
