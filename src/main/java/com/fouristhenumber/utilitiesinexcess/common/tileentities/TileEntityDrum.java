@@ -11,7 +11,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
-    public final FluidTank tank;
+    public FluidTank tank;
+
+    public TileEntityDrum() {
+        super();
+    }
 
     public TileEntityDrum(int capacity) {
         super();
@@ -19,7 +23,7 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     }
 
     public void setTank(FluidTank tank) {
-        setFluid(tank.getFluid());
+        this.tank = tank;
     }
 
     public void setFluid(FluidStack stack) {

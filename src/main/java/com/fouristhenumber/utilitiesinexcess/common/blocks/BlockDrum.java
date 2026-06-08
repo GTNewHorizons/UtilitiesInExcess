@@ -9,11 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,13 +31,12 @@ public class BlockDrum extends BlockContainer {
 
     final int capacity;
 
-    public BlockDrum(int capacity) {
+    public BlockDrum(int capacity, String blockname) {
         super(Material.iron);
         this.capacity = capacity;
-        setBlockName("drum");
+        setBlockName(blockname);
         this.setHardness(3.0F);
         this.setResistance(5.0F);
-        setBlockTextureName("utilitiesinexcess:drum");
         this.setHarvestLevel("pickaxe", 1);
     }
 
