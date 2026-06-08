@@ -27,7 +27,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.FilterThemes.PINK_SLOT;
+import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.CYAN_SLOT;
+import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.GREEN_SLOT;
+import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.ORANGE_SLOT;
+import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.PINK_SLOT;
+import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.PURPLE_SLOT;
+import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.YELLOW_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.getInventoryContentsFromStack;
 
 public class FilterPipeLogic extends NetworkLogic implements IInventory
@@ -133,23 +138,23 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
         parentRow.size(18*5);
 
         Flow leftCol = Flow.col();
-        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 2)));
-        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 4)));
+        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 2)).widgetTheme(PINK_SLOT.get()));
+        leftCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 4)).widgetTheme(ORANGE_SLOT.get()));
         leftCol.childPadding(18);
         leftCol.width(18);
         leftCol.top(18);
         parentRow.child(leftCol);
 
         Flow midCol = Flow.col();
-        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 1)).widgetTheme(PINK_SLOT));
-        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 0)));
+        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 1)).widgetTheme(CYAN_SLOT.get()));
+        midCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 0)).widgetTheme(YELLOW_SLOT.get()));
         midCol.childPadding(3*18);
         midCol.width(18);
         parentRow.child(midCol);
 
         Flow rightCol = Flow.col();
-        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 3)));
-        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 5)));
+        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 3)).widgetTheme(GREEN_SLOT.get()));
+        rightCol.child(new ItemSlot().slot(new ModularSlot(itemHandler, 5)).widgetTheme(PURPLE_SLOT.get()));
         rightCol.childPadding(18);
         rightCol.width(18);
         rightCol.top(18);

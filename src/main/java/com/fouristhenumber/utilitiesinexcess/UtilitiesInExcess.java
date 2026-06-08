@@ -7,6 +7,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.T
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityRationingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntitySortingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
+import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -188,6 +189,8 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
         transferNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
+
+        ColoredSlots.init();
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
