@@ -74,7 +74,8 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return true;
+        FluidStack current = tank.getFluid();
+        return current == null || current.getFluid() == fluid;
     }
 
     @Override
