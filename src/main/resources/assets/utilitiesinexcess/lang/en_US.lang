@@ -407,8 +407,9 @@ nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update
 chat.tile.advanced_block_update_detector.toggle=Side %s set to redstone output %s.
 
 tile.drum.name=Drum
-tile.drum.desc=Holds %s buckets of fluid
-tile.drum.desc.fluid=Currently holding %s %sL
+tile.bedrockium_drum.name=Bedrockium Drum
+tile.drum.desc.empty=Empty
+tile.drum.desc=%s: %s / %s
 tile.drum.chat.filled=In drum: %s %sL
 tile.drum.chat.empty=Drum is empty
 

@@ -261,16 +261,15 @@ public class BlockDrum extends BlockContainer {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip
-                .add(StatCollector.translateToLocalFormatted("tile.drum.desc", NumberFormat.DEFAULT.format(capacity)));
+
             FluidStack fluid = getFluid(stack);
-            if (fluid != null) {
-                String formatted = StatCollector.translateToLocalFormatted(
-                    "tile.drum.desc.fluid",
-                    fluid.getLocalizedName(),
-                    NumberFormat.DEFAULT.format(fluid.amount));
-                tooltip.add(formatted);
-            }
+            String fluidName =
+                fluid == null ? StatCollector.translateToLocalFormatted("tile.drum.desc.empty")
+                : fluid.getLocalizedName();
+
+            tooltip.add(StatCollector.translateToLocalFormatted("tile.drum.desc", fluidName,
+                fluid == null ? 0 : NumberFormat.DEFAULT.format(fluid.amount),
+                NumberFormat.DEFAULT.format(capacity)));
         }
     }
 
