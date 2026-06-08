@@ -273,6 +273,19 @@ public class RecipeLoader {
             'c',
             Items.cauldron);
 
+        // Bedrockium Drum
+        addShapedRecipe(
+            ModBlocks.BEDROCKIUM_DRUM,
+            "ipi",
+            "ici",
+            "ipi",
+            'i',
+            ModItems.BEDROCKIUM_INGOT,
+            'p',
+            Blocks.light_weighted_pressure_plate,
+            'c',
+            Items.cauldron);
+
         // Sound Muffler
         addShapedRecipe(
             ModBlocks.SOUND_MUFFLER,
