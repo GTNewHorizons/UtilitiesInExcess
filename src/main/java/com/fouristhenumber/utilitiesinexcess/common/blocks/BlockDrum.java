@@ -63,10 +63,6 @@ public class BlockDrum extends BlockContainer {
 
             if (FluidContainerRegistry.isFilledContainer(heldItem)) {
 
-                if (drum.tank.getFluid() == null) {
-                    drum.setFluid(new FluidStack(heldFluid.getFluid(), 0));
-                }
-
                 if (drum.fill(ForgeDirection.UP, heldFluid, true) == heldFluid.amount) {
                     ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
                     emptyContainer.stackSize = 1;
