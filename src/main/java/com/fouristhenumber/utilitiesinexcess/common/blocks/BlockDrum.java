@@ -162,7 +162,6 @@ public class BlockDrum extends BlockContainer {
 
         public ItemBlockDrum(Block block) {
             super(block);
-            this.setMaxStackSize(1);
             this.capacity = ((BlockDrum) block).capacity;
         }
 
