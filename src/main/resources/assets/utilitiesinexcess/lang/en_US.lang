@@ -410,8 +410,6 @@ tile.drum.name=Drum
 tile.bedrockium_drum.name=Bedrockium Drum
 tile.drum.desc.empty=Empty
 tile.drum.desc=%s: %s / %s
-tile.drum.chat.filled=In drum: %s %sL
-tile.drum.chat.empty=Drum is empty
 
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
