@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     public FluidTank tank;
+    private int capacity;
 
     public TileEntityDrum() {
         super();
@@ -19,6 +20,7 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     public TileEntityDrum(int capacity) {
         super();
+        this.capacity = capacity;
         this.tank = new FluidTank(capacity);
     }
 
@@ -33,15 +35,17 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
+        this.capacity = nbt.getInteger("capacity");
+        this.tank = new FluidTank(capacity);
         if (nbt.hasKey("tank")) {
-            NBTTagCompound tankNbt = nbt.getCompoundTag("tank");
-            tank.readFromNBT(tankNbt);
+            tank.readFromNBT(nbt.getCompoundTag("tank"));
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+        nbt.setInteger("capacity", capacity);
         NBTTagCompound tankNbt = new NBTTagCompound();
         tank.writeToNBT(tankNbt);
         nbt.setTag("tank", tankNbt);
