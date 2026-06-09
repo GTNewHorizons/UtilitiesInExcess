@@ -289,6 +289,8 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
         if (walkingObject instanceof ItemStack stack)
         {
             int mask = 0;
+            int filteredMask = 0;
+            boolean filtered = false;
             for (int i = 0; i < filters.length; i++)
             {
                 if (incomingDirection.ordinal() != i)
@@ -301,10 +303,17 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
                         }
                         else if (logicalFilter[i] != null && logicalFilter[i].matches(stack))// We're filtered
                         {
-                            mask = mask | (1 << i);
+                            filtered = true;
+                            filteredMask = filteredMask | (1 << i);
                         }
                     }
                 }
+            }
+            // This is an annoying edge case where something is filtered in two different slots they need to be both selectable given a walker.
+            // If there wasn't this edge case we could just return once we found a filter, but no it's always gotta be hard.
+            if (filtered)
+            {
+                return new MaskedArrayView<>(filteredMask, networkNeighbors);
             }
             return new MaskedArrayView<>(mask, networkNeighbors);
         }
