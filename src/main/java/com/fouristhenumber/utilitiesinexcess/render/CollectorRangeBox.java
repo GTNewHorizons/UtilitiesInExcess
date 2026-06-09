@@ -66,7 +66,7 @@ public class CollectorRangeBox extends TileEntitySpecialRenderer {
         }
         GL11.glEnd();
 
-        if (collector.showBorder) {
+        if (collector.showBorder()) {
             float r = collector.getSize();
             GL11.glLineWidth(3.0f);
             GL11.glBegin(GL11.GL_LINES);

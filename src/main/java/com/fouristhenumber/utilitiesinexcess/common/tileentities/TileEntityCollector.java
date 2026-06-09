@@ -18,7 +18,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 public class TileEntityCollector extends TileEntity {
 
-    public boolean showBorder = false;
+    private boolean showBorder = false;
     public int borderTimer = 0;
     public List<Vec3> itemPositions = new ArrayList<>();
     private float size = 4f;
@@ -112,5 +112,9 @@ public class TileEntityCollector extends TileEntity {
             xCoord + size + 1,
             yCoord + size + 1,
             zCoord + size + 1);
+    }
+
+    public boolean showBorder() {
+        return showBorder;
     }
 }
