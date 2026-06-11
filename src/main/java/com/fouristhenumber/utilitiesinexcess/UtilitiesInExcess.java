@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
@@ -54,6 +53,8 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoad
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
@@ -66,6 +67,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -88,7 +90,6 @@ public class UtilitiesInExcess {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
-    public static int spikeRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -97,7 +98,6 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
         if (Mods.ForgeMicroBlock.isLoaded()) {
             new Content().init();
         }
@@ -114,6 +114,7 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
+        GameRegistry.registerTileEntity(TileEntitySpike.class, "TileEntitySpikeUIE");
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClockUIE");
         GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItemUIE");
         GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluidUIE");
@@ -157,13 +158,14 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
+            Remappings.init();
+        }
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
-        spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new SpikeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
@@ -236,4 +238,9 @@ public class UtilitiesInExcess {
             return ICON_ITEM;
         }
     };
+
+    @Mod.EventHandler
+    public void onMissingMappings(FMLMissingMappingsEvent event) {
+        ExuCompat.onMissingMappings(event);
+    }
 }
