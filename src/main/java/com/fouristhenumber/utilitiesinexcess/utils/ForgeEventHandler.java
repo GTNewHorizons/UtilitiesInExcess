@@ -6,6 +6,7 @@ import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.Spi
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot.INVERTED_INGOT;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -25,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
@@ -35,10 +37,12 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -169,6 +173,20 @@ public class ForgeEventHandler {
             }
             player.inventoryContainer.detectAndSendChanges();
             event.drops.clear();
+        }
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (event.world.isRemote) return;
+
+        // Clear the entire dimension registry
+        ConcurrentHashMap<BlockPos, TileEntityVoidMarker> dimRegistry = TileEntityVoidMarker.registeredMarkers
+            .get(event.world.provider.dimensionId);
+
+        if (dimRegistry != null) {
+            dimRegistry.clear();
+            TileEntityVoidMarker.registeredMarkers.remove(event.world.provider.dimensionId);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 import codechicken.nei.api.API;
+import it.unimi.dsi.fastutil.Hash;
 
 public class UIEUtils {
 
@@ -82,6 +84,25 @@ public class UIEUtils {
             playerNBT.setTag(UIE_NBT_TAG, uieTag);
         }
         return uieTag;
+    }
+
+    public static class ItemStackHashStrategy implements Hash.Strategy<ItemStack> {
+
+        public static final ItemStackHashStrategy instance = new ItemStackHashStrategy();
+
+        @Override
+        public int hashCode(ItemStack itemStack) {
+            if (itemStack == null || itemStack.getItem() == null) return 0;
+            return Objects.hash(itemStack.getItem(), itemStack.getItemDamage(), itemStack.getTagCompound());
+        }
+
+        @Override
+        public boolean equals(ItemStack a, ItemStack b) {
+            if (a == null && b == null) return true;
+            if (a == null || b == null) return false;
+            return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage()
+                && Objects.equals(a.getTagCompound(), b.getTagCompound());
+        }
     }
 
     public static void hideInNei(Block block) {

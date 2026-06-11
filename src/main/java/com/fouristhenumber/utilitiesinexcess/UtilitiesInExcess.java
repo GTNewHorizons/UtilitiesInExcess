@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,39 +15,6 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPureLove;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRadicallyReducedChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySmartPump;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityHighTemperatureFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityLavaGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityLowTemperatureFurnaceGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityNetherStarGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityPinkGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityPotionGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityRedstoneGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
@@ -54,12 +22,12 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
-import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
+import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -78,7 +46,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.9.9,); after:ForgeMicroblock")
+    dependencies = "required-after:gtnhlib@[0.9.9,);after:ForgeMicroblock;after:Waila;")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -95,11 +63,12 @@ public class UtilitiesInExcess {
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
     public static CommonProxy proxy;
 
+    public static void chat(String text) {
+        Minecraft.getMinecraft().thePlayer.sendChatMessage(text);
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        if (Mods.ForgeMicroBlock.isLoaded()) {
-            new Content().init();
-        }
         proxy.preInit(event);
     }
 
@@ -114,49 +83,6 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
-        GameRegistry.registerTileEntity(TileEntitySpike.class, "TileEntitySpikeUIE");
-        GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClockUIE");
-        GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItemUIE");
-        GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluidUIE");
-        GameRegistry.registerTileEntity(TileEntityTrashCanEnergy.class, "TileEntityTrashCanEnergyUIE");
-        GameRegistry.registerTileEntity(TileEntityDrum.class, "TileEntityDrumUIE");
-        GameRegistry.registerTileEntity(TileEntityPureLove.class, "TileEntityPureLoveUIE");
-        GameRegistry
-            .registerTileEntity(TileEntityMarginallyMaximisedChest.class, "TileEntityMarginallyMaximisedChestUIE");
-        GameRegistry
-            .registerTileEntity(TileEntitySignificantlyShrunkChest.class, "TileEntitySignificantlyShrunkChestUIE");
-        GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChestUIE");
-        GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
-        GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
-        GameRegistry.registerTileEntity(TileEntityChandelier.class, "TileEntityPendantLightUIE");
-        GameRegistry.registerTileEntity(TileEntityGigaTorch.class, "TileEntityGigaTorchUIE");
-        GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
-        GameRegistry
-            .registerTileEntity(TileEntityAdvancedBlockUpdateDetector.class, "TileEntityAdvancedBlockUpdateDetector");
-        GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
-        GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
-        GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetectorUIE");
-        GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyorUIE");
-        GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorldUIE");
-        GameRegistry.registerTileEntity(TileEntitySmartPump.class, "TileEntitySmartPumpUIE");
-        GameRegistry.registerTileEntity(
-            TileEntityLowTemperatureFurnaceGenerator.class,
-            "TileEntityLowTemperatureFurnaceGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityFurnaceGenerator.class, "TileEntityFurnaceGeneratorUIE");
-        GameRegistry.registerTileEntity(
-            TileEntityHighTemperatureFurnaceGenerator.class,
-            "TileEntityHighTemperatureFurnaceGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityLavaGenerator.class, "TileEntityLavaGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityEnderGenerator.class, "TileEntityEnderGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityRedstoneGenerator.class, "TileEntityRedstoneGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityFoodGenerator.class, "TileEntityFoodGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityPotionGenerator.class, "TileEntityPotionGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntitySolarGenerator.class, "TileEntitySolarGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityTNTGenerator.class, "TileEntityTNTGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
-        GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
-        GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
         if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             Remappings.init();
         }
@@ -202,19 +128,13 @@ public class UtilitiesInExcess {
         if (Mods.CraftTweaker.isLoaded()) {
             MineTweakerAPI.registerClass(QEDCraftTweakerSupport.class);
         }
+
+        ForgeChunkManager.setForcedChunkLoadingCallback(uieInstance, new TEChunkLoadingCallback());
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-
-        if (Mods.ForgeMicroBlock.isLoaded()) {
-            FMPRecipeLoader.run();
-        }
-
-        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
-            TinkersCompat.init();
-        }
     }
 
     @Mod.EventHandler
