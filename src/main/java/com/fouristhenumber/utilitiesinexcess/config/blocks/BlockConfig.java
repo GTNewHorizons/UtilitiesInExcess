@@ -93,6 +93,9 @@ public class BlockConfig {
     public static boolean enableConveyor;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableCollector;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableUnderWorldPortal;
 
     @Config.DefaultBoolean(true)

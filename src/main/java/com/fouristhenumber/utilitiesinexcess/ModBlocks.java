@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDe
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCollector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
@@ -159,6 +160,7 @@ public enum ModBlocks {
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
+    COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
     ; // leave trailing semicolon
     // spotless:on
 

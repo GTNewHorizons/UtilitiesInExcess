@@ -35,6 +35,19 @@ public class RecipeLoader {
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
 
+        // Collector
+        addShapedRecipe(
+            ModBlocks.COLLECTOR,
+            "eie",
+            " i ",
+            "ooo",
+            'e',
+            Items.ender_pearl,
+            'i',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'o',
+            Blocks.obsidian);
+
         // Pacifist's Bench
         addShapedRecipe(
             ModBlocks.PACIFISTS_BENCH,
@@ -742,7 +755,7 @@ public class RecipeLoader {
     private static void loadDecorativeBlocksRecipes() {
         // Ender-Infused Obsidian
         addShapedRecipe(
-            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 5),
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 5),
             " o ",
             "oeo",
             " o ",
