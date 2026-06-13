@@ -64,8 +64,8 @@ public class BlockDrum extends BlockContainer {
 
         if (heldItem != null) {
             // weird modded containers like universal cells
-            if (heldItem.getItem() instanceof IFluidContainerItem) {
-                return handleIFluidContainerItem(drum, player, heldItem);
+            if (heldItem.getItem() instanceof IFluidContainerItem item) {
+                return handleIFluidContainerItem(drum, item, heldItem);
             }
             // fixed size containers
             if (FluidContainerRegistry.isFilledContainer(heldItem)) {
@@ -89,10 +89,9 @@ public class BlockDrum extends BlockContainer {
         return false;
     }
 
-    private boolean handleIFluidContainerItem(TileEntityDrum drum, EntityPlayer player, ItemStack heldItem) {
-        IFluidContainerItem container = (IFluidContainerItem) heldItem.getItem();
-        if (container == null) return false;
-        FluidStack containerFluid = container.getFluid(heldItem);
+    private boolean handleIFluidContainerItem(TileEntityDrum drum, IFluidContainerItem heldItem,
+        ItemStack heldItemStack) {
+        FluidStack containerFluid = heldItem.getFluid(heldItemStack);
 
         if (containerFluid != null && containerFluid.amount > 0) {
             int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
@@ -101,27 +100,27 @@ public class BlockDrum extends BlockContainer {
             FluidStack toTransfer = containerFluid.copy();
             toTransfer.amount = accepted;
 
-            FluidStack drained = container.drain(heldItem, accepted, false);
+            FluidStack drained = heldItem.drain(heldItemStack, accepted, false);
             if (drained == null || drained.amount != accepted) return false;
 
-            container.drain(heldItem, accepted, true);
+            heldItem.drain(heldItemStack, accepted, true);
             drum.fill(ForgeDirection.UP, toTransfer, true);
 
         } else {
             FluidStack inTank = drum.tank.getFluid();
             if (inTank == null || inTank.amount <= 0) return false;
 
-            FluidStack simDrain = drum.drain(ForgeDirection.UP, container.getCapacity(heldItem), false);
+            FluidStack simDrain = drum.drain(ForgeDirection.UP, heldItem.getCapacity(heldItemStack), false);
             if (simDrain == null || simDrain.amount <= 0) return false;
 
-            int accepted = container.fill(heldItem, simDrain, false);
+            int accepted = heldItem.fill(heldItemStack, simDrain, false);
             if (accepted <= 0) return false;
 
             FluidStack toTransfer = simDrain.copy();
             toTransfer.amount = accepted;
 
             drum.drain(ForgeDirection.UP, accepted, true);
-            container.fill(heldItem, toTransfer, true);
+            heldItem.fill(heldItemStack, toTransfer, true);
 
         }
         return true;
@@ -132,7 +131,7 @@ public class BlockDrum extends BlockContainer {
         if (containerFluid == null) return false;
 
         int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
-        if (accepted < containerFluid.amount) return false;
+        if (accepted != containerFluid.amount) return false;
 
         ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
         if (emptyContainer == null) return false;
@@ -148,8 +147,11 @@ public class BlockDrum extends BlockContainer {
         FluidStack inTank = drum.tank.getFluid();
         if (inTank == null || inTank.amount <= 0) return false;
 
-        FluidStack simDrain = drum.drain(ForgeDirection.UP, FluidContainerRegistry.BUCKET_VOLUME, false);
-        if (simDrain == null || simDrain.amount <= 0) return false;
+        int containerCapacity = FluidContainerRegistry.getContainerCapacity(inTank, heldItem);
+        if (containerCapacity <= 0) return false;
+
+        FluidStack simDrain = drum.drain(ForgeDirection.UP, containerCapacity, false);
+        if (simDrain == null || simDrain.amount < containerCapacity) return false;
 
         ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(simDrain, heldItem);
         if (filledContainer == null) return false;
