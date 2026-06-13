@@ -197,6 +197,8 @@ public class IMCForNEI {
 
         sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.1");
 
+        sendInfoPage("utilitiesinexcess:collector", "nei.infopage.uie.collector.1");
+
         sendInfoPage("<utilitiesinexcess:blackout_curtains>", "nei.infopage.uie.blackout_curtains.1");
 
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.1");
