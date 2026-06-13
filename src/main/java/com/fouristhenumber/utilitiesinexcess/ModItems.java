@@ -40,6 +40,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.Precisio
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 // Credit to Et Futurum (Requiem)
 public enum ModItems {
@@ -61,7 +62,7 @@ public enum ModItems {
     INVERSION_SIGIL_ACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
     PSEUDO_INVERSION_SIGIL(InversionConfig.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
     INVERTED_INGOT(InversionConfig.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
-    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
+    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget", "nuggetInverted"),
     ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
     SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
@@ -91,13 +92,21 @@ public enum ModItems {
     private final Item theItem;
     private final String name;
     private final ItemDisabled disabledVersion;
+    private final String[] oreDictNames;
 
-    ModItems(boolean enabled, Item item, String name) {
+    ModItems(boolean enabled, Item item, String name, String... oreDictNames) {
         this.isEnabled = enabled;
         theItem = item;
         this.name = name;
-        if (ItemConfig.registerDisabledItems) disabledVersion = new ItemDisabled(theItem);
-        else disabledVersion = null;
+        this.oreDictNames = oreDictNames;
+        if (ItemConfig.registerDisabledItems)
+        {
+            disabledVersion = new ItemDisabled(theItem);
+        }
+        else
+        {
+            disabledVersion = null;
+        }
     }
 
     public boolean isEnabled() {
@@ -119,4 +128,16 @@ public enum ModItems {
     public ItemStack newItemStack(int count, int meta) {
         return new ItemStack(this.get(), count, meta);
     }
+
+    public static void registerOreDict() {
+        for (ModItems item : VALUES) {
+            if (!item.isEnabled()) continue;
+            if (item.oreDictNames == null) continue;
+
+            for (String oreName : item.oreDictNames) {
+                OreDictionary.registerOre(oreName, item.newItemStack());
+            }
+        }
+    }
+
 }

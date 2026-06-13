@@ -281,6 +281,15 @@ public enum AdvancedFilterMode
         return description;
     }
 
+    public static int getAdvFilterMode(ItemStack stack)
+    {
+        if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("AdvMode"))
+        {
+            return stack.stackTagCompound.getInteger("AdvMode");
+        }
+        return DEFAULT.ordinal();
+    }
+
     public abstract boolean matches(ItemStack stack);
 
     public boolean invMatches(ItemStack stack)

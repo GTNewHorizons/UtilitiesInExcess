@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
@@ -1327,7 +1328,7 @@ public class RecipeLoader {
         {
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
                     Arrays.asList(
                         TransferUpgrade.FILTER.getStack(1).theStack,
                         new ItemStack(Blocks.redstone_torch)
@@ -1336,7 +1337,7 @@ public class RecipeLoader {
 
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
                     Arrays.asList(
                         TransferUpgrade.FILTER.getStack(1).theStack,
                         new ItemStack(Blocks.wool)
@@ -1345,7 +1346,7 @@ public class RecipeLoader {
 
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
                     Arrays.asList(
                         TransferUpgrade.FILTER.getStack(1).theStack,
                         new ItemStack(Items.stick)
@@ -1354,7 +1355,7 @@ public class RecipeLoader {
 
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagByte((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagInt((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
                     Arrays.asList(
                         TransferUpgrade.ADV_FILTER.getStack(1).theStack,
                         new ItemStack(Blocks.redstone_torch)

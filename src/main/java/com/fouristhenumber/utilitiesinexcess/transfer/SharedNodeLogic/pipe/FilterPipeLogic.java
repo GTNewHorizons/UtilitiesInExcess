@@ -17,8 +17,9 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLog
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
-import com.fouristhenumber.utilitiesinexcess.utils.ItemFilter;
+import com.fouristhenumber.utilitiesinexcess.utils.filter.ItemFilter;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
+import com.fouristhenumber.utilitiesinexcess.utils.filter.MatchMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -27,8 +28,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+
 import java.util.List;
 
+import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.getModesFromStack;
+import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.isInverted;
+import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
 import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.CYAN_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.GREEN_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.ORANGE_SLOT;
@@ -217,6 +222,7 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
     {
         for (int i = 0; i < filters.length; i++)
         {
+            logicalFilter[i] = null;
             if (filters[i] != null)
             {
                 logicalFilter[i] = new ItemFilter();
@@ -224,30 +230,38 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
                 {
                     if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.FILTER) // Case where it's a filter
                     {
-                        parseFilterItem(filters[i], i);
+                        parseFilterItem(filters[i], i, 0);
                     }
                     else if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
                     {
-                        if (filters[i].hasTagCompound() && filters[i].stackTagCompound.getByte("Mode") == ItemUpgrade.FilterMode.INVERTED.ordinal())
-                        {
-                            logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::invMatches);
-                        }
-                        else
-                        {
-                            logicalFilter[i].addToPredicates(AdvancedFilterMode.values()[filters[i].getItemDamage()]::matches);
-                        }
+                        logicalFilter[i].addToPredicates(
+                            AdvancedFilterMode.values()[getAdvFilterMode(filters[i])]::matches,
+                            ItemUpgrade.FilterMode.isInverted(filters[i])
+                        );
                     }
                 }
                 else
                 {
-                    logicalFilter[i].addToWhiteList(filters[i]);
+                    logicalFilter[i].addToRuleList(filters[i], false, MatchMode.DEFAULT);
                 }
             }
         }
     }
 
-    private void parseFilterItem(ItemStack filter, int slot)
+    // ParentFilterMask is the settings of the parent. This is needed because if the parent says inverted
+    // and the child says inverted then they cancel out and the items in the child are NOT inverted.
+    // On the other hand, metadata and NBT ignoring behaviors are propagated to children, but do not cancel each other out.
+    private void parseFilterItem(ItemStack filter, int slot, int parentMode)
     {
+        // This next block basically does the following: XOR bit 0, then OR bit 1 and 2.
+        int extractedMode = parentMode & 0b110;
+        int mode = getModesFromStack(filter) | extractedMode;
+        boolean inverted = isInverted(parentMode) ^ isInverted(mode);
+        if (!inverted)
+        {
+            mode = mode & 0b110;
+        }
+
         List<ItemStack> containedItems = getInventoryContentsFromStack(filter);
         if (containedItems == null)
         {
@@ -257,31 +271,45 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
         {
             if (containedItem.getItem() instanceof ItemUpgrade)
             {
-                if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.FILTER) // Case where it's a filter
+                if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.FILTER)
                 {
-                    parseFilterItem(containedItem, slot);
+                    parseFilterItem(containedItem, slot, mode);
                 }
-                else if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
+                else if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.ADV_FILTER)
                 {
-                    if (containedItem.hasTagCompound() && containedItem.stackTagCompound.getByte("Mode") == ItemUpgrade.FilterMode.INVERTED.ordinal())
-                    {
-                        logicalFilter[slot].addToPredicates(AdvancedFilterMode.values()[containedItem.getItemDamage()]::invMatches);
-                    }
-                    else
-                    {
-                        logicalFilter[slot].addToPredicates(AdvancedFilterMode.values()[containedItem.getItemDamage()]::matches);
-                    }
+                    logicalFilter[slot].addToPredicates(AdvancedFilterMode.values()[getAdvFilterMode(containedItem)]::matches, inverted);
                 }
             }
             else
             {
-                logicalFilter[slot].addToWhiteList(containedItem);
+                switch(mode & 0b110)
+                {
+                    case (0b000):
+                    {
+                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.DEFAULT);
+                        break;
+                    }
+                    case (0b010):
+                    {
+                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT);
+                        break;
+                    }
+                    case (0b100):
+                    {
+                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.IGNORE_META);
+                        break;
+                    }
+                    case (0b110):
+                    {
+                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT_MET);
+                        break;
+                    }
+                }
             }
         }
     }
 
-
-
+    // One of the big things I want to avoid here is any NBT reading
     @Override
     public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent walkingComponent)
     {

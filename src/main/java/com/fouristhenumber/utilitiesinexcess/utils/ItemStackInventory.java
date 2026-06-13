@@ -93,24 +93,12 @@ public class ItemStackInventory implements IInventory
         int size = compound.getInteger("size");
         List<ItemStack> contents = new ArrayList<ItemStack>(size);
 
-        // Fill with nulls so we can set by index
-        for (int i = 0; i < size; i++)
-        {
-            contents.add(null);
-        }
-
         NBTTagList itemList = compound.getTagList("Items", 10); // 10 = NBTTagCompound
 
         for (int i = 0; i < itemList.tagCount(); i++)
         {
             NBTTagCompound itemCompound = itemList.getCompoundTagAt(i);
-
-            int slot = itemCompound.getByte("Slot") & 255; // prevent negative index
-
-            if (slot >= 0 && slot < size)
-            {
-                contents.set(slot, ItemStack.loadItemStackFromNBT(itemCompound));
-            }
+            contents.add(ItemStack.loadItemStackFromNBT(itemCompound));
         }
 
         return contents;

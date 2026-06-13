@@ -4,8 +4,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 
 import java.util.List;
+import java.util.Objects;
 
 public class NBTPreservingRecipe extends ShapelessRecipes
 {
@@ -26,12 +28,21 @@ public class NBTPreservingRecipe extends ShapelessRecipes
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack != null && stack.isItemEqual(recipeItems.get(slot)) && stack.hasTagCompound()) {
+            if (stack != null && stack.isItemEqual(recipeItems.get(slot)) && stack.hasTagCompound())
+            {
                 NBTTagCompound incomingTag = stack.getTagCompound();
 
                 for (String key : incomingTag.func_150296_c())
                 {
-                    result.stackTagCompound.setTag(key, incomingTag.getTag(key));
+                    // Merge mode tags
+                    if (Objects.equals(key, "Mode"))
+                    {
+                        result.stackTagCompound.setTag(key, new NBTTagInt(result.getTagCompound().getInteger(key) | incomingTag.getInteger(key)));
+                    }
+                    else
+                    {
+                        result.stackTagCompound.setTag(key, incomingTag.getTag(key));
+                    }
                 }
                 break;
             }

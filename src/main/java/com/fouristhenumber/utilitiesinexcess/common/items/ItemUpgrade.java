@@ -56,6 +56,61 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
         {
             return label;
         }
+
+        public static boolean isInverted(ItemStack stack)
+        {
+            if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Mode"))
+            {
+                int mode = stack.stackTagCompound.getInteger("Mode");
+                return (mode & (1 << INVERTED.ordinal())) != 0;
+            }
+            return false;
+        }
+
+        public static boolean isInverted(int mode)
+        {
+            return (mode & (1 << INVERTED.ordinal())) != 0;
+        }
+
+        public static boolean isIgnoringMeta(ItemStack stack)
+        {
+            if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Mode"))
+            {
+                int mode = stack.stackTagCompound.getInteger("Mode");
+                return (mode & (1 << FUZZYMETA.ordinal())) != 0;
+            }
+            return false;
+        }
+
+        public static boolean isIgnoringMeta(int mode)
+        {
+            return (mode & (1 << FUZZYMETA.ordinal())) != 0;
+        }
+
+        public static boolean isIgnoringNBT(ItemStack stack)
+        {
+            if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Mode"))
+            {
+                int mode = stack.stackTagCompound.getInteger("Mode");
+                return (mode & (1 << FUZZYNBT.ordinal())) != 0;
+            }
+            return false;
+        }
+
+        public static boolean isIgnoringNBT(int mode)
+        {
+            return (mode & (1 << FUZZYNBT.ordinal())) != 0;
+        }
+
+        public static int getModesFromStack(ItemStack stack)
+        {
+            if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Mode"))
+            {
+                return stack.stackTagCompound.getInteger("Mode");
+            }
+            return 0;
+        }
+
     }
 
     private static final IIcon[] ICONS = new IIcon[TransferUpgrade.VALUES.length];
@@ -213,16 +268,36 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced)
     {
+        addInformationHelper(stack, list, "", true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addInformationHelper(ItemStack stack, List list, String indent, boolean root)
+    {
         if (TransferUpgrade.getUpgrade(stack) == TransferUpgrade.FILTER)
         {
             if (stack.hasTagCompound())
             {
-                if (stack.stackTagCompound.hasKey("Mode"))
+                int filterMode = FilterMode.getModesFromStack(stack);
+                if (filterMode != 0)
                 {
-                    byte filterMode = stack.stackTagCompound.getByte("Mode");
-                    if (filterMode >= 0 && filterMode < FilterMode.values().length)
+                    for (int i = 0; i < 3; i++)
                     {
-                        list.add(FilterMode.values()[filterMode].getLabel());
+                        if ((filterMode & (1 << i)) != 0)
+                        {
+                            if (root)
+                            {
+                                list.add(indent + FilterMode.values()[i].getLabel());
+                            }
+                            else
+                            {
+                                list.add(indent + "  " + FilterMode.values()[i].getLabel());
+                            }
+                        }
+                    }
+                    if (!root)
+                    {
+                        indent += "  ";
                     }
                 }
 
@@ -234,7 +309,22 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
                         NBTTagCompound itemTag = tagList.getCompoundTagAt(i);
                         ItemStack filteredStack = ItemStack.loadItemStackFromNBT(itemTag);
                         if (filteredStack != null) {
-                            list.add("  " + filteredStack.getDisplayName());
+                            if (filteredStack.getItem() instanceof ItemUpgrade)
+                            {
+                                if (filteredStack.getItemDamage() == TransferUpgrade.FILTER.ordinal())
+                                {
+                                    list.add(indent + "  Item Filter");
+                                    addInformationHelper(filteredStack, list, indent + "  ", false);
+                                }
+                                else if (filteredStack.getItemDamage() == TransferUpgrade.ADV_FILTER.ordinal())
+                                {
+                                    list.add(indent + "  AdvancedFilter: " + AdvancedFilterMode.values()[filteredStack.getItemDamage()].getLabel());
+                                }
+                            }
+                            else
+                            {
+                                list.add(indent + "  " + filteredStack.getDisplayName());
+                            }
                         }
                     }
                 }
@@ -256,4 +346,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
             }
         }
     }
+
 }
+
+
