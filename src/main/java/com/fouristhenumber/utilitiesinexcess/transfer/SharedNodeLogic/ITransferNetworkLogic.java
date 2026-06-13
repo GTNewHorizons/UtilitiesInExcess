@@ -31,7 +31,7 @@ public interface ITransferNetworkLogic
     boolean canConnectFluid();
     boolean canConnectItem();
 
-    Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker);
+    Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent<?> walker);
     ITransferNetworkComponent[] getNetworkConnections();
 
     int getMaxInsertable();

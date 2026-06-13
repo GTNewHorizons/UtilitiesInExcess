@@ -4,6 +4,7 @@ import codechicken.lib.world.TileChunkLoadHook;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityModSortingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityRationingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntitySortingPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
@@ -175,6 +176,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRationingPipe.class, "TileEntityRationingPipeUIE");
         GameRegistry.registerTileEntity(TileEntityHyperRationingPipe.class, "TileEntityHyperRationingPipe");
         GameRegistry.registerTileEntity(TileEntityFilterPipe.class, "TileEntityFilterPipe");
+        GameRegistry.registerTileEntity(TileEntityModSortingPipe.class, "TileEntityModSortingPipe");
 //        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
         GameRegistry.registerTileEntity(TileEntityItemTransferNode.class, "TileEntityTransferNodeUIE");
 //        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");

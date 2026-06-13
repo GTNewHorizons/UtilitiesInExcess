@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public interface TargetResolver<T>
 {
     List<Target<T>> getValidTargets(
-        ITransferNetworkComponent from, ITransferNetworkComponent walking, ForgeDirection fromDir);
+        ITransferNetworkComponent from, IWalkingComponent<?> walking, ForgeDirection fromDir);
 
     class Target<T>
     {

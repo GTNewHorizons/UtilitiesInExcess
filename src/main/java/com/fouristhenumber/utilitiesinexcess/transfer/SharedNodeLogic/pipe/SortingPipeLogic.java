@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,7 @@ public class SortingPipeLogic extends NetworkLogic
     }
 
     @Override
-    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker)
+    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent walker)
     {
         // If we have an item Node we need to just return the valid connections
         if (walker instanceof TileEntityItemTransferNode itemNodeTE)

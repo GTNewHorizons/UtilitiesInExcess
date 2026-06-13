@@ -204,7 +204,7 @@ public class CrossOverPipeLogic extends NetworkLogic
 
     // Only valid external connection is across from the fromDirection
     @Override
-    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker)
+    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent walker)
     {
         return new Connection[]{externalConnections[fromDirection.getOpposite().ordinal()]};
     }

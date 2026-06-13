@@ -194,7 +194,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
     }
 
     @Override
-    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, ITransferNetworkComponent walker)
+    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent walker)
     {
         return externalConnections;
     }

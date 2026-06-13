@@ -25,7 +25,8 @@ public class RationingPipeLogic extends NetworkLogic
     }
 
     @Override
-    public int getMaxInsertable() {
+    public int getMaxInsertable()
+    {
         return 64;
     }
 

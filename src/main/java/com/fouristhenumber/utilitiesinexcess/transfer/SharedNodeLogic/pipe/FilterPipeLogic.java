@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
@@ -27,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
 
 import java.util.List;
 
@@ -309,43 +309,67 @@ public class FilterPipeLogic extends NetworkLogic implements IInventory
         }
     }
 
-    // One of the big things I want to avoid here is any NBT reading
     @Override
     public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent walkingComponent)
     {
         Object walkingObject = walkingComponent.getWalkingObject();
         if (walkingObject instanceof ItemStack stack)
         {
-            int mask = 0;
-            int filteredMask = 0;
-            boolean filtered = false;
-            for (int i = 0; i < filters.length; i++)
+            return new MaskedArrayView<>(getValidMask(incomingDirection, stack, networkMask), networkNeighbors);
+        }
+        return super.getWalkableDirs(transportType, incomingDirection, walkingComponent);
+    }
+
+    @Override
+    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent walker)
+    {
+        Object walkingObject = walker.getWalkingObject();
+        if (walkingObject instanceof ItemStack stack)
+        {
+            int validMask = getValidMask(fromDirection, stack, externalConnectionMask);
+            Connection[] retCons = new Connection[Integer.bitCount(validMask)];
+            int conIter = 0;
+            for (int i = 0; i < 6; i++)
             {
-                if (incomingDirection.ordinal() != i)
+                if ((validMask & (1 << i)) != 0)
                 {
-                    if ((networkMask & (1 << i)) != 0) // No reason to look in non-networked directions
+                    retCons[conIter] = externalConnections[i];
+                }
+            }
+            return retCons;
+        }
+        return super.getValidExternalConnections(fromDirection, walker);
+    }
+
+    private int getValidMask(ForgeDirection incomingDirection, ItemStack stack, int inputMask)
+    {
+        int mask = 0;
+        int filteredMask = 0;
+        boolean filtered = false;
+        for (int i = 0; i < filters.length; i++)
+        {
+            if (incomingDirection.ordinal() != i)
+            {
+                if ((inputMask & (1 << i)) != 0) // No reason to look in non-networked directions
+                {
+                    if (filters[i] == null) // If a direction is unfiltered and has a network connection.
                     {
-                        if (filters[i] == null) // If a direction is unfiltered and has a network connection.
-                        {
-                            mask = mask | (1 << i);
-                        }
-                        else if (logicalFilter[i] != null && logicalFilter[i].matches(stack))// We're filtered
-                        {
-                            filtered = true;
-                            filteredMask = filteredMask | (1 << i);
-                        }
+                        mask = mask | (1 << i);
+                    }
+                    else if (logicalFilter[i] != null && logicalFilter[i].matches(stack))// We're filtered
+                    {
+                        filtered = true;
+                        filteredMask = filteredMask | (1 << i);
                     }
                 }
             }
-            // This is an annoying edge case where something is filtered in two different slots they need to be both selectable given a walker.
-            // If there wasn't this edge case we could just return once we found a filter, but no it's always gotta be hard.
-            if (filtered)
-            {
-                return new MaskedArrayView<>(filteredMask, networkNeighbors);
-            }
-            return new MaskedArrayView<>(mask, networkNeighbors);
         }
-        return super.getWalkableDirs(transportType, incomingDirection, walkingComponent);
+        // This is an annoying edge case where something is filtered in two different slots they need to be both selectable given a walker.
+        if (filtered)
+        {
+            return filteredMask;
+        }
+        return mask;
     }
 
     public boolean isUseableByPlayer(EntityPlayer player)

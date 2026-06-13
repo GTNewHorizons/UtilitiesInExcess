@@ -92,7 +92,7 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
     }
 
     @Override
-    public Connection[] getValidExternalNeighbors(ForgeDirection fromDirection, ITransferNetworkComponent walker)
+    public Connection[] getValidExternalNeighbors(ForgeDirection fromDirection, IWalkingComponent walker)
     {
         return logic.getValidExternalConnections(fromDirection, walker);
     }

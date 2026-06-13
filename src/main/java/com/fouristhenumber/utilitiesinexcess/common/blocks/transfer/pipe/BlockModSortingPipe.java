@@ -1,13 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityModSortingPipe;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
 
-public class BlockHyperRationingPipe extends BlockPipeBase
+public class BlockModSortingPipe extends BlockPipeBase
 {
-    public BlockHyperRationingPipe() {
+    public BlockModSortingPipe() {
         super(Material.iron);
         this.setBlockName("hyper_rationing_pipe");
         this.setBlockTextureName("utilitiesinexcess:hyper_rationing_pipe");
@@ -15,6 +15,6 @@ public class BlockHyperRationingPipe extends BlockPipeBase
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityHyperRationingPipe();
+        return new TileEntityModSortingPipe();
     }
 }
