@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,13 +30,12 @@ public class BlockDrum extends BlockContainer {
 
     final int capacity;
 
-    public BlockDrum(int capacity) {
+    public BlockDrum(int capacity, String blockname) {
         super(Material.iron);
         this.capacity = capacity;
-        setBlockName("drum");
+        setBlockName(blockname);
         this.setHardness(3.0F);
         this.setResistance(5.0F);
-        setBlockTextureName("utilitiesinexcess:drum");
         this.setHarvestLevel("pickaxe", 1);
     }
 
@@ -56,44 +56,130 @@ public class BlockDrum extends BlockContainer {
             return true;
         }
         TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityDrum drum) {
-            ItemStack heldItem = player.getCurrentEquippedItem();
-            FluidStack heldFluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+        if (!(tile instanceof TileEntityDrum drum)) {
+            return false;
+        }
 
+        ItemStack heldItem = player.getCurrentEquippedItem();
+
+        if (heldItem != null) {
+            // weird modded containers like universal cells
+            if (heldItem.getItem() instanceof IFluidContainerItem item) {
+                return handleIFluidContainerItem(drum, item, heldItem);
+            }
+            // fixed size containers
             if (FluidContainerRegistry.isFilledContainer(heldItem)) {
-
-                if (drum.tank.getFluid() == null) {
-                    drum.setFluid(new FluidStack(heldFluid.getFluid(), 0));
-                }
-
-                if (drum.fill(ForgeDirection.UP, heldFluid, true) == heldFluid.amount) {
-                    FluidContainerRegistry.drainFluidContainer(heldItem);
-                    ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
-                    emptyContainer.stackSize = 1;
-                    heldItem.stackSize--;
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, heldItem);
-                    player.inventory.addItemStackToInventory(emptyContainer);
-
-                    player.addChatMessage(
-                        new ChatComponentTranslation(
-                            "tile.drum.chat.filled",
-                            drum.tank.getFluid()
-                                .getLocalizedName(),
-                            NumberFormat.DEFAULT.format(drum.tank.getFluid().amount)));
-                }
-            } else if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
-                if (drum.tank.getFluid() != null) {
-                    FluidStack drainedFluid = drum.drain(ForgeDirection.UP, 1000, true);
-
-                    if (drainedFluid.amount == 1000) {
-                        ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(drainedFluid, heldItem);
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
-                    }
-                }
+                return handleFilledRegistryContainer(drum, player, heldItem);
+            }
+            // empty containers
+            if (FluidContainerRegistry.isEmptyContainer(heldItem)) {
+                return handleEmptyRegistryContainer(drum, player, heldItem);
             }
         }
 
+        FluidStack fluid = drum.tank.getFluid();
+        player.addChatMessage(
+            new ChatComponentTranslation(
+                "tile.drum.desc",
+                fluid == null ? StatCollector.translateToLocalFormatted("tile.drum.desc.empty")
+                    : fluid.getLocalizedName(),
+                fluid == null ? 0 : NumberFormat.DEFAULT.format(fluid.amount),
+                NumberFormat.DEFAULT.format(capacity)));
+
+        return false;
+    }
+
+    private boolean handleIFluidContainerItem(TileEntityDrum drum, IFluidContainerItem heldItem,
+        ItemStack heldItemStack) {
+        FluidStack containerFluid = heldItem.getFluid(heldItemStack);
+
+        if (containerFluid != null && containerFluid.amount > 0) {
+            int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
+            if (accepted <= 0) return false;
+
+            FluidStack toTransfer = containerFluid.copy();
+            toTransfer.amount = accepted;
+
+            FluidStack drained = heldItem.drain(heldItemStack, accepted, false);
+            if (drained == null || drained.amount != accepted) return false;
+
+            heldItem.drain(heldItemStack, accepted, true);
+            drum.fill(ForgeDirection.UP, toTransfer, true);
+
+        } else {
+            FluidStack inTank = drum.tank.getFluid();
+            if (inTank == null || inTank.amount <= 0) return false;
+
+            FluidStack simDrain = drum.drain(ForgeDirection.UP, heldItem.getCapacity(heldItemStack), false);
+            if (simDrain == null || simDrain.amount <= 0) return false;
+
+            int accepted = heldItem.fill(heldItemStack, simDrain, false);
+            if (accepted <= 0) return false;
+
+            FluidStack toTransfer = simDrain.copy();
+            toTransfer.amount = accepted;
+
+            drum.drain(ForgeDirection.UP, accepted, true);
+            heldItem.fill(heldItemStack, toTransfer, true);
+
+        }
         return true;
+    }
+
+    private boolean handleFilledRegistryContainer(TileEntityDrum drum, EntityPlayer player, ItemStack heldItem) {
+        FluidStack containerFluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+        if (containerFluid == null) return false;
+
+        int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
+        if (accepted != containerFluid.amount) return false;
+
+        ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
+        if (emptyContainer == null) return false;
+
+        drum.fill(ForgeDirection.UP, containerFluid, true);
+
+        giveResultStack(player, heldItem, emptyContainer);
+
+        return true;
+    }
+
+    private boolean handleEmptyRegistryContainer(TileEntityDrum drum, EntityPlayer player, ItemStack heldItem) {
+        FluidStack inTank = drum.tank.getFluid();
+        if (inTank == null || inTank.amount <= 0) return false;
+
+        int containerCapacity = FluidContainerRegistry.getContainerCapacity(inTank, heldItem);
+        if (containerCapacity <= 0) return false;
+
+        FluidStack simDrain = drum.drain(ForgeDirection.UP, containerCapacity, false);
+        if (simDrain == null || simDrain.amount < containerCapacity) return false;
+
+        ItemStack filledContainer = FluidContainerRegistry.fillFluidContainer(simDrain, heldItem);
+        if (filledContainer == null) return false;
+
+        drum.drain(ForgeDirection.UP, simDrain.amount, true);
+
+        giveResultStack(player, heldItem, filledContainer);
+
+        return true;
+    }
+
+    private void giveResultStack(EntityPlayer player, ItemStack sourceStack, ItemStack result) {
+        int heldSlot = player.inventory.currentItem;
+
+        if (sourceStack.stackSize == 1) {
+            player.inventory.setInventorySlotContents(heldSlot, result);
+        } else {
+            player.inventory.decrStackSize(heldSlot, 1);
+            if (!player.inventory.addItemStackToInventory(result)) {
+                player.worldObj
+                    .spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, result));
+            }
+        }
+        // fix desyncs
+        if (player instanceof EntityPlayerMP playerMP) {
+            playerMP.mcServer.getConfigurationManager()
+                .syncPlayerInventory(playerMP);
+        }
     }
 
     @Override
@@ -108,22 +194,18 @@ public class BlockDrum extends BlockContainer {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        // We spawn the correct stack on breakBlock(), make it not drop normally.
         return new ArrayList<>();
     }
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-
         ItemStack drop = new ItemStack(this, 1, meta);
 
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileEntityDrum drum) {
-            if (drum.tank.getFluid() != null) {
-                ItemBlockDrum.setFluid(
-                    drop,
-                    drum.tank.getFluid()
-                        .copy());
+            FluidStack fluid = drum.tank.getFluid();
+            if (fluid != null) {
+                ItemBlockDrum.setFluid(drop, fluid.copy());
             } else {
                 ItemBlockDrum.clearFluid(drop);
             }
@@ -136,7 +218,7 @@ public class BlockDrum extends BlockContainer {
 
         EntityItem entityItem = new EntityItem(world, x + dx, y + dy, z + dz, drop);
         world.spawnEntityInWorld(entityItem);
-        world.removeTileEntity(x, y, z);
+
         super.breakBlock(world, x, y, z, block, meta);
     }
 
@@ -161,7 +243,6 @@ public class BlockDrum extends BlockContainer {
 
         public ItemBlockDrum(Block block) {
             super(block);
-            this.setMaxStackSize(1);
             this.capacity = ((BlockDrum) block).capacity;
         }
 
@@ -177,9 +258,7 @@ public class BlockDrum extends BlockContainer {
 
         @Override
         public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
-            if (resource == null) {
-                return 0;
-            }
+            if (resource == null || resource.amount <= 0) return 0;
 
             FluidStack currentFluid = getFluid(stack);
 
@@ -191,40 +270,36 @@ public class BlockDrum extends BlockContainer {
                     setFluid(stack, newFluid);
                 }
                 return fillAmount;
-            } else {
-                if (!currentFluid.isFluidEqual(resource)) {
-                    return 0;
-                }
-
-                int space = capacity - currentFluid.amount;
-                if (space <= 0) {
-                    return 0;
-                }
-
-                int fillAmount = Math.min(space, resource.amount);
-                if (doFill && fillAmount > 0) {
-                    currentFluid.amount += fillAmount;
-                    setFluid(stack, currentFluid);
-                }
-                return fillAmount;
             }
+
+            if (!currentFluid.isFluidEqual(resource)) return 0;
+
+            int space = capacity - currentFluid.amount;
+            if (space <= 0) return 0;
+
+            int fillAmount = Math.min(space, resource.amount);
+            if (doFill && fillAmount > 0) {
+                currentFluid.amount += fillAmount;
+                setFluid(stack, currentFluid);
+            }
+            return fillAmount;
         }
 
         @Override
         public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
             FluidStack currentFluid = getFluid(stack);
-            if (currentFluid == null) {
-                return null;
-            }
+            if (currentFluid == null || currentFluid.amount <= 0) return null;
 
             int drained = Math.min(maxDrain, currentFluid.amount);
+            if (drained <= 0) return null;
+
             FluidStack drainedFluid = currentFluid.copy();
             drainedFluid.amount = drained;
 
             if (doDrain) {
                 currentFluid.amount -= drained;
                 if (currentFluid.amount <= 0) {
-                    stack.setTagCompound(null);
+                    clearFluid(stack);
                 } else {
                     setFluid(stack, currentFluid);
                 }
@@ -232,12 +307,9 @@ public class BlockDrum extends BlockContainer {
             return drainedFluid;
         }
 
-        // Helper functions to abstract away the NBT layer
         public static void setFluid(ItemStack stack, FluidStack fluid) {
             NBTTagCompound tag = stack.getTagCompound();
-            if (tag == null) {
-                tag = new NBTTagCompound();
-            }
+            if (tag == null) tag = new NBTTagCompound();
             NBTTagCompound fluidTag = new NBTTagCompound();
             fluid.writeToNBT(fluidTag);
             tag.setTag("Fluid", fluidTag);
@@ -251,26 +323,24 @@ public class BlockDrum extends BlockContainer {
         public static FluidStack getFluidFromStack(ItemStack stack) {
             if (stack.hasTagCompound() && stack.getTagCompound()
                 .hasKey("Fluid")) {
-                NBTTagCompound fluidTag = stack.getTagCompound()
-                    .getCompoundTag("Fluid");
-                return FluidStack.loadFluidStackFromNBT(fluidTag);
+                return FluidStack.loadFluidStackFromNBT(
+                    stack.getTagCompound()
+                        .getCompoundTag("Fluid"));
             }
             return null;
         }
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
-            tooltip
-                .add(StatCollector.translateToLocalFormatted("tile.drum.desc", NumberFormat.DEFAULT.format(capacity)));
             FluidStack fluid = getFluid(stack);
-            if (fluid != null) {
-                String formatted = StatCollector.translateToLocalFormatted(
-                    "tile.drum.desc.fluid",
-                    fluid.getLocalizedName(),
-                    NumberFormat.DEFAULT.format(fluid.amount));
-                tooltip.add(formatted);
-            }
+            String fluidName = fluid == null ? StatCollector.translateToLocalFormatted("tile.drum.desc.empty")
+                : fluid.getLocalizedName();
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "tile.drum.desc",
+                    fluidName,
+                    fluid == null ? 0 : NumberFormat.DEFAULT.format(fluid.amount),
+                    NumberFormat.DEFAULT.format(capacity)));
         }
     }
-
 }
