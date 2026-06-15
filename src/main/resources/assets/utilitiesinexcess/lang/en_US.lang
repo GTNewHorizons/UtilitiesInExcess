@@ -53,15 +53,15 @@ tile.floating_block.name=Floating Block
 nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.1.name=Ineffable Glass
 tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.4.name=Ineffable Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
-nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block.
-nei.infopage.uie.ethereal_glass.1=Placeholder
+nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
-nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players.
-nei.infopage.uie.ethereal_glass.4=Placeholder
+nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. Ineffable Glass (Inverted) is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.5=Dark Ethereal Glass (Inverted) has the exact opposite functionality as Dark Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. It still blocks all light.
 
 tile.decorative_glass.0.name=Smooth Glass
@@ -70,12 +70,13 @@ tile.decorative_glass.2.name=Bricked Glass
 tile.decorative_glass.3.name=Creepy Glass
 tile.decorative_glass.4.name=Gilded Glass
 tile.decorative_glass.5.name=Obsidian Glass
-tile.decorative_glass.6.name=Latticed Glass
+tile.decorative_glass.6.name=Vortex Glass
 tile.decorative_glass.7.name=Glowing Glass
 tile.decorative_glass.8.name=Beloved Glass
 tile.decorative_glass.9.name=Tiled Glass
 tile.decorative_glass.10.name=Dark Glass
 tile.decorative_glass.11.name=Reinforced Dark Glass
+tile.decorative_glass.12.name=Latticed Glass
 
 tile.decorative_block.0.name=Diamond-Etched Computational Matrix
 tile.decorative_block.1.name=Sand-Infused Endstone
@@ -226,14 +227,60 @@ nei.infopage.uie.iron_spike.1=Iron spikes will kill enemies that walk on them, d
 nei.infopage.uie.gold_spike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
 nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
-item.heavenly_ring.name=Heavenly Ring
-nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
-nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
-item.heavenly_ring.type.0=No wings
-item.heavenly_ring.type.1=type 1
-item.heavenly_ring.type.2=type 2
-item.heavenly_ring.type.3=type 3
-item.heavenly_ring.type.4=type 4
+item.heavenly_ring_feather.name=Heavenly Ring (Feathered)
+item.heavenly_ring_dragon.name=Heavenly Ring (Draconic)
+item.heavenly_ring_fairy.name=Heavenly Ring (Fairy)
+item.heavenly_ring_metal.name=Heavenly Ring (Metallic)
+item.heavenly_ring_magic.name=Heavenly Ring (Magical)
+item.heavenly_ring.desc=Use in hand to cycle through different appearances.
+nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+
+item.heavenly_ring_feather.type.0=Chibi
+item.heavenly_ring_feather.type.1=Angelic
+item.heavenly_ring_feather.type.2=Storm
+item.heavenly_ring_feather.type.3=Phoenix
+item.heavenly_ring_feather.type.4=Swan
+item.heavenly_ring_feather.type.5=Raven
+item.heavenly_ring_feather.type.6=Falcon
+item.heavenly_ring_feather.type.7=Macaw
+
+item.heavenly_ring_dragon.type.0=Red
+item.heavenly_ring_dragon.type.1=Ebony
+item.heavenly_ring_dragon.type.2=Golden
+item.heavenly_ring_dragon.type.3=Leviathan
+item.heavenly_ring_dragon.type.4=Green
+item.heavenly_ring_dragon.type.5=Flower
+item.heavenly_ring_dragon.type.6=Purple
+item.heavenly_ring_dragon.type.7=Moon
+
+item.heavenly_ring_fairy.type.0=Rainbow
+item.heavenly_ring_fairy.type.1=Pixie
+item.heavenly_ring_fairy.type.2=Monarch
+item.heavenly_ring_fairy.type.3=Lunamoth
+item.heavenly_ring_fairy.type.4=Autumn
+item.heavenly_ring_fairy.type.5=Blacklight
+item.heavenly_ring_fairy.type.6=Jeweled Wasp
+item.heavenly_ring_fairy.type.7=Leaf
+
+item.heavenly_ring_magic.type.0=Invisible
+item.heavenly_ring_magic.type.1=Ice
+item.heavenly_ring_magic.type.2=Fire
+item.heavenly_ring_magic.type.3=Lightning
+item.heavenly_ring_magic.type.4=End
+item.heavenly_ring_magic.type.5=Plasma
+item.heavenly_ring_magic.type.6=Crackling
+item.heavenly_ring_magic.type.7=Jelly
+
+item.heavenly_ring_metal.type.0=Golden
+item.heavenly_ring_metal.type.1=Silver
+item.heavenly_ring_metal.type.2=Copper
+item.heavenly_ring_metal.type.3=Glass
+item.heavenly_ring_metal.type.4=Neonblade
+item.heavenly_ring_metal.type.5=Nanotech
+item.heavenly_ring_metal.type.6=Mayfly
+item.heavenly_ring_metal.type.7=Steampunk
+chat.heavenly_ring_modify=Ring appearance is now %s.
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
@@ -356,14 +403,13 @@ tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
 tile.advanced_block_update_detector.name=Advanced Block Update Detector
-nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metadata even without a block update. Shift right click any face of the ABUD to toggle scanning on that side.
+nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metadata even without a block update. Sneak right click any face of the ABUD to toggle scanning on that side.
 chat.tile.advanced_block_update_detector.toggle=Side %s set to redstone output %s.
 
 tile.drum.name=Drum
-tile.drum.desc=Holds %s buckets of fluid
-tile.drum.desc.fluid=Currently holding %s %sL
-tile.drum.chat.filled=In drum: %s %sL
-tile.drum.chat.empty=Drum is empty
+tile.bedrockium_drum.name=Bedrockium Drum
+tile.drum.desc.empty=Empty
+tile.drum.desc=%s: %s / %s
 
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
@@ -444,6 +490,12 @@ tile.lapis_aetherius.12.name=Lapis Aetherius Brunneus (Brown)
 tile.lapis_aetherius.13.name=Lapis Aetherius Smaragdinus (Dark Green)
 tile.lapis_aetherius.14.name=Lapis Aetherius Sanguineus (Red)
 tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
+
+nei.infopage.uie.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
+
+tile.collector.name=Collector
+
+uie.chat.collector_size=Range: %s blocks
 
 nei.infopage.uie.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
 

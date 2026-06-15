@@ -4,6 +4,7 @@ import static net.minecraft.item.Item.getItemFromBlock;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -33,6 +34,19 @@ public class RecipeLoader {
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
+
+        // Collector
+        addShapedRecipe(
+            ModBlocks.COLLECTOR,
+            "eie",
+            " i ",
+            "ooo",
+            'e',
+            Items.ender_pearl,
+            'i',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'o',
+            Blocks.obsidian);
 
         // Pacifist's Bench
         addShapedRecipe(
@@ -120,16 +134,74 @@ public class RecipeLoader {
             'o',
             Blocks.obsidian);
 
-        // Heavenly Ring
+        // Heavenly Rings
         addShapedRecipe(
-            ModItems.HEAVENLY_RING,
+            ModItems.HEAVENLY_RING_FEATHER,
+            "#f#",
+            "f*f",
+            "ifi",
+            '#',
+            Blocks.glass,
+            'f',
+            Items.feather,
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_DRAGON,
+            "#b#",
+            "b*b",
+            "ibi",
+            '#',
+            Blocks.glass,
+            'b',
+            Items.blaze_powder,
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_FAIRY,
+            "#d#",
+            "p*p",
+            "idi",
+            '#',
+            Blocks.glass,
+            'd',
+            Blocks.yellow_flower,
+            'p',
+            new ItemStack(ItemBlock.getItemFromBlock(Blocks.red_flower), 1, 0),
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_METAL,
             "#g#",
-            "g*g",
+            "t*t",
             "igi",
             '#',
             Blocks.glass,
             'g',
             Items.gold_ingot,
+            't',
+            Items.iron_ingot,
+            '*',
+            Items.nether_star,
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        addShapedRecipe(
+            ModItems.HEAVENLY_RING_MAGIC,
+            "#g#",
+            "r*r",
+            "igi",
+            '#',
+            Blocks.glass,
+            'g',
+            Items.glowstone_dust,
+            'r',
+            Items.redstone,
             '*',
             Items.nether_star,
             'i',
@@ -211,6 +283,19 @@ public class RecipeLoader {
             Items.iron_ingot,
             'p',
             Blocks.heavy_weighted_pressure_plate,
+            'c',
+            Items.cauldron);
+
+        // Bedrockium Drum
+        addShapedRecipe(
+            ModBlocks.BEDROCKIUM_DRUM,
+            "ipi",
+            "ici",
+            "ipi",
+            'i',
+            ModItems.BEDROCKIUM_INGOT,
+            'p',
+            Blocks.light_weighted_pressure_plate,
             'c',
             Items.cauldron);
 
@@ -359,17 +444,15 @@ public class RecipeLoader {
         // Temporal Gate
         addShapedRecipe(
             ModBlocks.END_OF_TIME_PORTAL,
-            "qgq",
-            "geg",
-            "qcq",
+            "qeq",
+            "ece",
+            "qeq",
             'q',
-            Blocks.quartz_block, // TODO use burnt quartz replacement instead?
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
             'e',
-            Items.ender_pearl,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 11),
             'c',
-            Items.clock,
-            'g',
-            Blocks.glass_pane);
+            Items.clock);
 
         // Trading Post
         addShapedRecipe(
@@ -685,7 +768,7 @@ public class RecipeLoader {
     private static void loadDecorativeBlocksRecipes() {
         // Ender-Infused Obsidian
         addShapedRecipe(
-            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 5),
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 5),
             " o ",
             "oeo",
             " o ",
@@ -799,6 +882,17 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
+        // Ineffable Glass
+        addShapedRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            "ggg",
+            "gig",
+            "ggg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
         // Dark Ethereal Glass
         addShapedRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 2),
@@ -814,6 +908,12 @@ public class RecipeLoader {
         addShapelessRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 3),
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            Blocks.redstone_torch);
+
+        // Ineffable Glass (Inverted)
+        addShapelessRecipe(
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 4),
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 1),
             Blocks.redstone_torch);
 
         // Dark Ethereal Glass (Inverted)
@@ -848,7 +948,11 @@ public class RecipeLoader {
     }
 
     private static void loadGlassRecipes() {
-        // TODO: Smooth Glass reliant on "sandy glass"
+        // Smooth Glass
+        addFurnaceRecipe(
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(8, 3),
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 0),
+            0.5F);
 
         // Rimmed Glass
         addShapedRecipe(
@@ -895,7 +999,7 @@ public class RecipeLoader {
             'o',
             Blocks.obsidian);
 
-        // Latticed Glass
+        // Vortex Glass
         addShapedRecipe(
             ModBlocks.DECORATIVE_GLASS.newItemStack(5, 6),
             " g ",
@@ -952,6 +1056,14 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_GLASS.newItemStack(1, 10),
             'o',
             Blocks.obsidian);
+
+        // Latticed Glass
+        addShapedRecipe(
+            ModBlocks.DECORATIVE_GLASS.newItemStack(4, 12),
+            "gg",
+            "gg",
+            'g',
+            ModBlocks.DECORATIVE_GLASS.newItemStack(1, 2));
     }
 
     private static void loadColoredBlockRecipes() {

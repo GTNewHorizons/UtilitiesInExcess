@@ -8,14 +8,14 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.value.StringValue;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 
 public class SearchBar extends TextFieldWidget {
 
-    Row villagerParent;
+    Flow villagerParent;
 
     static protected String prevText = "";
 
@@ -36,13 +36,13 @@ public class SearchBar extends TextFieldWidget {
 
     @Override
     public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        IDrawable bg = getCurrentBackground(context.getTheme(), widgetTheme);
+        IDrawable bg = getCurrentBackground(widgetTheme);
         if (bg != null) {
             bg.draw(context, 2, -1, getArea().width - 4, getArea().height + 1, widgetTheme.getTheme());
         }
     }
 
-    public SearchBar villagerParent(Row parent) {
+    public SearchBar villagerParent(Flow parent) {
         villagerParent = parent;
         return this;
     }
