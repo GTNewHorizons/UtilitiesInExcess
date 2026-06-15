@@ -19,6 +19,10 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableFloatingBlock;
 
+    @Config.DefaultBoolean(false)
+    @Config.Comment("If enabled, inverted block will have a similar X-Ray effect to Extra Utilities' Unstable Block.")
+    public static boolean invertedBlockDoesXRay;
+
     @Config.DefaultBoolean(true)
     public static boolean enableColoredBlocks;
 
@@ -88,6 +92,9 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableConveyor;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableCollector;
 
     @Config.DefaultBoolean(true)
     public static boolean enableUnderWorldPortal;
@@ -164,6 +171,36 @@ public class BlockConfig {
         @Config.DefaultInt(64)
         @Config.RangeInt(min = 1, max = 256)
         public int rainMufflerRange;
+    }
+
+    @Config.Comment("Chandelier Configuration")
+    public static final Chandelier chandelier = new Chandelier();
+
+    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
+    public static class Chandelier {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableChandelier;
+
+        @Config.Comment("The radius a chandelier blocks mob spawns (as a square box)")
+        @Config.DefaultInt(16)
+        @Config.RangeInt(min = 1, max = 256)
+        public int chandelierLightRange;
+    }
+
+    @Config.Comment("Giga Torch Configuration")
+    public static final GigaTorch gigaTorch = new GigaTorch();
+
+    @Config.LangKey("utilitiesinexcess.config.block.giga_torch")
+    public static class GigaTorch {
+
+        @Config.DefaultBoolean(true)
+        public boolean enableGigaTorch;
+
+        @Config.Comment("The radius a giga torch blocks mob spawns (as a square box)")
+        @Config.DefaultInt(64)
+        @Config.RangeInt(min = 1, max = 256)
+        public int gigaTorchRange;
     }
 
     @Config.Comment("Cursed Earth Configuration")

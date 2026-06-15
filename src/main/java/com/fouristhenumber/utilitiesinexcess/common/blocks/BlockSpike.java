@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +19,7 @@ import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.google.common.collect.Multimap;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -126,6 +125,11 @@ public class BlockSpike extends Block {
     }
 
     @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
@@ -133,11 +137,6 @@ public class BlockSpike extends Block {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return spikeRenderID;
     }
 
     private final static IIcon[] icons = new IIcon[4];
