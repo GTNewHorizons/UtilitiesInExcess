@@ -6,6 +6,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSig
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.DrumTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
@@ -67,6 +68,9 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModItems.ENDER_LOTUS_SEED.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
@@ -86,8 +90,6 @@ public class PosteaTransforms {
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:chestMini", ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderCollector", ModBlocks.COLLECTOR.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.get(), 0);
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.get(), 0);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:decorativeBlock2", ModBlocks.DECORATIVE_GLASS.get());
         BlockReplacementManager
@@ -138,6 +140,7 @@ public class PosteaTransforms {
         TileEntityReplacementManager.tileEntityTransformer("TileFullChest", FullChestTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileMiniChest", MiniChestTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileEnderCollector", CollectorTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("drum", DrumTransformation::transform);
 
         SpikeTransformation.registerIDResolvers();
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
