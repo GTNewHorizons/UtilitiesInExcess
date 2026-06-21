@@ -1,0 +1,220 @@
+package com.fouristhenumber.utilitiesinexcess.compat.exu;
+
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.EnderLilyTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.SpikeTransformation;
+import com.gtnewhorizons.postea.api.BlockReplacementManager;
+import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
+import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
+
+public class PosteaTransforms {
+
+    public static void postInit() {
+        transformItems();
+        transformBlocks();
+        transformTileEntities();
+    }
+
+    private static void transformItems() {
+        // Simple transformers
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:glove", ModItems.GLOVE.get());
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:angelRing", 0, ModItems.HEAVENLY_RING_MAGIC.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:angelRing", 1, ModItems.HEAVENLY_RING_FEATHER.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:angelRing", 2, ModItems.HEAVENLY_RING_FAIRY.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:angelRing", 3, ModItems.HEAVENLY_RING_DRAGON.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:angelRing", 4, ModItems.HEAVENLY_RING_METAL.get(), 0);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:builderswand", ModItems.ARCHITECTS_WAND.get());
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_ARCHITECTS_WAND.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.ETHERIC_SWORD.get());
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.GOURMANDS_AXE.get());
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_PARTICULATE_SHOVEL.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.REVERSING_HOE.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:shears", ModItems.PRECISION_SHEARS.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get());
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:bedrockiumIngot", ModItems.BEDROCKIUM_INGOT.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:scanner", ModItems.BLOCK_ANALYZER.get());
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 0, ModItems.INVERTED_INGOT.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 1, ModItems.INVERTED_NUGGET.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 0, ModItems.WATERING_CAN_BASIC.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 1, ModItems.WATERING_CAN_BASIC.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 2, ModItems.WATERING_CAN_BASIC.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0);
+        // Custom transformers
+        ItemStackReplacementManager
+            .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
+        ItemStackReplacementManager
+            .addTransformationHandler("ExtraUtilities:golden_bag", new GoldenBagTransformation());
+        ItemStackReplacementManager
+            .addTransformationHandler("ExtraUtilities:golden_lasso", new GoldenLassoTransformation());
+    }
+
+    private static void transformBlocks() {
+        compressedBlocks();
+        coloredBlocks();
+        decoBlocks();
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock2", ModBlocks.DECORATIVE_GLASS.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:sound_muffler", 0, ModBlocks.SOUND_MUFFLER.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:sound_muffler", 1, ModBlocks.RAIN_MUFFLER.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trashcan", 0, ModBlocks.TRASH_CAN_ITEM.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trashcan", 1, ModBlocks.TRASH_CAN_FLUID.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trashcan", 2, ModBlocks.TRASH_CAN_ENERGY.get(), 0);
+        // Our conveyors have inverted meta for whatever reason
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:conveyor", 0, ModBlocks.CONVEYOR.get(), 2);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:conveyor", 1, ModBlocks.CONVEYOR.get(), 3);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:conveyor", 2, ModBlocks.CONVEYOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:conveyor", 3, ModBlocks.CONVEYOR.get(), 1);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:dark_portal", 0, ModBlocks.UNDERWORLD_PORTAL.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:dark_portal", 2, ModBlocks.END_OF_TIME_PORTAL.get());
+        // TODO: broken :(
+        BlockReplacementManager
+            .addTransformationHandler("ExtraUtilities:plant/ender_lilly", new EnderLilyTransformation());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:angelBlock", ModBlocks.FLOATING_BLOCK.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:budoff", 3, ModBlocks.ADVANCED_BLOCK_UPDATE_DETECTOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:budoff", ModBlocks.BLOCK_UPDATE_DETECTOR.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:curtains", ModBlocks.BLACKOUT_CURTAINS.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:pureLove", ModBlocks.PURE_LOVE.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:block_bedrockium", ModBlocks.BEDROCKIUM_BLOCK.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:greenscreen", ModBlocks.LAPIS_AETHERIUS.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:peaceful_table_top", ModBlocks.PACIFISTS_BENCH.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:cursedearthside", ModBlocks.CURSED_EARTH.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base_wood", ModBlocks.SPIKE_WOOD.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base", ModBlocks.SPIKE_IRON.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base_gold", ModBlocks.SPIKE_GOLD.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:spike_base_diamond", ModBlocks.SPIKE_DIAMOND.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:timer", ModBlocks.REDSTONE_CLOCK.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:etherealglass", ModBlocks.ETHEREAL_GLASS.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderThermicPump", ModBlocks.SMART_PUMP.get());
+        // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:", ModBlocks.SPIKE_DIAMOND.get());
+    }
+
+    private static void transformTileEntities() {
+        TileEntityReplacementManager.tileEntityTransformer("TileFullChest", FullChestTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("TileMiniChest", MiniChestTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
+    }
+
+    private static void compressedBlocks() {
+        for (int i = 0; i < 8; i++) {
+            BlockReplacementManager.addSimpleReplacement(
+                "ExtraUtilities:cobblestone_compressed",
+                i,
+                ModBlocks.COMPRESSED_COBBLESTONE.get(),
+                i);
+        }
+        for (int i = 8; i < 12; i++) {
+            BlockReplacementManager.addSimpleReplacement(
+                "ExtraUtilities:cobblestone_compressed",
+                i,
+                ModBlocks.COMPRESSED_DIRT.get(),
+                i - 8);
+        }
+        for (int i = 12; i < 14; i++) {
+            BlockReplacementManager.addSimpleReplacement(
+                "ExtraUtilities:cobblestone_compressed",
+                i,
+                ModBlocks.COMPRESSED_GRAVEL.get(),
+                i - 12);
+        }
+        for (int i = 14; i < 16; i++) {
+            BlockReplacementManager.addSimpleReplacement(
+                "ExtraUtilities:cobblestone_compressed",
+                i,
+                ModBlocks.COMPRESSED_SAND.get(),
+                i - 14);
+        }
+    }
+
+    private static void decoBlocks() {
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 0, ModBlocks.DECORATIVE_BLOCKS.get(), 7);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 1, ModBlocks.DECORATIVE_BLOCKS.get(), 5);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 2, ModBlocks.DECORATIVE_BLOCKS.get(), 2);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 3, ModBlocks.DECORATIVE_BLOCKS.get(), 4);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 4, ModBlocks.DECORATIVE_BLOCKS.get(), 8);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 5, ModBlocks.INVERTED_BLOCK.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 6, ModBlocks.DECORATIVE_BLOCKS.get(), 6);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 7, ModBlocks.DECORATIVE_BLOCKS.get(), 9);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 8, ModBlocks.MAGIC_WOOD.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 9, ModBlocks.DECORATIVE_BLOCKS.get(), 3);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 10, ModBlocks.DECORATIVE_BLOCKS.get(), 10);
+        // TODO: Ender Core - Unimplemented!
+        // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:decorativeBlock1", 11,
+        // ModBlocks.DECORATIVE_BLOCKS.get(), 7);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 12, ModBlocks.DECORATIVE_BLOCKS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 13, ModBlocks.DECORATIVE_BLOCKS.get(), 1);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 14, ModBlocks.DECORATIVE_BLOCKS.get(), 11);
+    }
+
+    private static void coloredBlocks() {
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:colorStoneBrick", ModBlocks.COLORED_STONE_BRICKS.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:colorWoodPlanks", ModBlocks.COLORED_WOOD_PLANKS.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_lightgem", ModBlocks.COLORED_GLOWSTONE.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:color_stone", ModBlocks.COLORED_STONE.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_quartzBlock", ModBlocks.COLORED_QUARTZ_BLOCK.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_hellsand", ModBlocks.COLORED_SOUL_SAND.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_redstoneLight", ModBlocks.COLORED_REDSTONE_LAMP.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:color_brick", ModBlocks.COLORED_BRICKS.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_stonebrick", ModBlocks.COLORED_COBBLESTONE.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_blockLapis", ModBlocks.COLORED_LAPIS_BLOCK.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:color_obsidian", ModBlocks.COLORED_OBSIDIAN.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_blockRedstone", ModBlocks.COLORED_REDSTONE_BLOCK.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:color_blockCoal", ModBlocks.COLORED_COAL_BLOCK.get());
+    }
+}

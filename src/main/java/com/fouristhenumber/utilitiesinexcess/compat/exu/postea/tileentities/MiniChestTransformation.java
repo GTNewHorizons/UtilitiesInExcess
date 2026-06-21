@@ -8,17 +8,9 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.gtnewhorizons.postea.utility.PosteaUtilities;
 
-public class MiniChestTransformation extends AbstractTileEntityTransformation {
+public class MiniChestTransformation {
 
-    public MiniChestTransformation() {
-        super();
-        setOldBlockName("ExtraUtilities:chestMini");
-        setOldTileEntityId("TileMiniChest");
-        setNewBlock(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST);
-    }
-
-    @Override
-    public BlockInfo doTileEntityTransformation(NBTTagCompound _oldTag, World world, Chunk chunk) {
+    public static BlockInfo transform(NBTTagCompound _oldTag, World world, Chunk chunk) {
         int meta = chunk
             .getBlockMetadata(_oldTag.getInteger("x") & 15, _oldTag.getInteger("y"), _oldTag.getInteger("z") & 15);
         // Don't ask me why our direction metas are so incomprehensible.

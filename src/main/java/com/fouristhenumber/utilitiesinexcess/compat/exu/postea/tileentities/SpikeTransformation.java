@@ -8,20 +8,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
-import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.gtnewhorizons.postea.utility.PosteaUtilities;
 
-public class SpikeTransformation implements IPosteaTransformation {
+public class SpikeTransformation {
 
-    @Override
-    public void registerTransformations() {
-        TileEntityReplacementManager
-            .tileEntityTransformer("TileEntityEnchantedSpike", this::doTileEntityTransformation);
-    }
-
-    public BlockInfo doTileEntityTransformation(NBTTagCompound _oldTag, World world, Chunk chunk) {
+    public static BlockInfo transform(NBTTagCompound _oldTag, World world, Chunk chunk) {
         Block block = chunk
             .getBlock(_oldTag.getInteger("x") & 15, _oldTag.getInteger("y"), _oldTag.getInteger("z") & 15);
 
