@@ -39,7 +39,7 @@ public class SpikeTransformation {
         else return null;
 
         return new BlockInfo(block, 0, (oldTag) -> {
-            NBTTagCompound tag = PosteaUtilities.cleanseNBT("utilitiesinexcess:TileEntitySpike", oldTag);
+            NBTTagCompound tag = PosteaUtilities.cleanseNBT("TileEntitySpikeUIE", oldTag);
 
             ItemStack fakeWeaponStack = new ItemStack(Item.getItemFromBlock(block));
             if (oldTag.hasKey("ench")) {

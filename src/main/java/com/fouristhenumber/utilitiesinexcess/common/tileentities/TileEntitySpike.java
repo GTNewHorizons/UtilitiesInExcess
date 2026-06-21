@@ -11,18 +11,18 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
 public class TileEntitySpike extends TileEntity {
 
     private ItemStack fakeWeapon = null;
-    private BlockSpike.SpikeType spikeType;
+    private SpikeType spikeType;
 
     public TileEntitySpike() {}
 
-    public TileEntitySpike(BlockSpike.SpikeType spikeType) {
+    public TileEntitySpike(SpikeType spikeType) {
         this.spikeType = spikeType;
     }
 
@@ -61,7 +61,7 @@ public class TileEntitySpike extends TileEntity {
         fakePlayer.setCurrentItemOrArmor(0, null);
     }
 
-    public BlockSpike.SpikeType getSpikeType() {
+    public SpikeType getSpikeType() {
         return spikeType;
     }
 
@@ -74,9 +74,9 @@ public class TileEntitySpike extends TileEntity {
 
         if (tag.hasKey("SpikeType")) {
             try {
-                spikeType = BlockSpike.SpikeType.valueOf(tag.getString("SpikeType"));
+                spikeType = SpikeType.valueOf(tag.getString("SpikeType"));
             } catch (IllegalArgumentException e) {
-                spikeType = BlockSpike.SpikeType.WOOD;
+                spikeType = SpikeType.WOOD;
             }
         }
     }
