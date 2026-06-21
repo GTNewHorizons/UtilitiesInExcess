@@ -64,6 +64,8 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:watering_can", 2, ModItems.WATERING_CAN_BASIC.get(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModItems.ENDER_LOTUS_SEED.get(), true);
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
@@ -118,6 +120,8 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:timer", ModBlocks.REDSTONE_CLOCK.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:etherealglass", ModBlocks.ETHEREAL_GLASS.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderThermicPump", ModBlocks.SMART_PUMP.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModBlocks.ENDER_LOTUS.get(), true);
         // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:", ModBlocks.SPIKE_DIAMOND.get());
     }
 

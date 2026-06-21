@@ -1,8 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities;
 
-import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.IPosteaTransformation;
-
-public class GeneratorTransformation implements IPosteaTransformation {
+public class GeneratorTransformation {
 
     // TODO: no idea what to do with this class, very complicated
 

@@ -6,11 +6,6 @@ import com.gtnewhorizons.postea.utility.BlockConversionInfo;
 public class EnderLilyTransformation implements IBlockTransformationHandler {
     // TODO: idk how to fix this
     /*
-     * public EnderLilyTransformation() {
-     * super();
-     * setDummyName("dummy_ender_lotus");
-     * setOldName();
-     * }
      * // This is NOT a direct mapping!!
      * // EXU's ender lily item is the block's ItemBlock, which is incompatible with our version which is a seed
      * // that plants the block,
