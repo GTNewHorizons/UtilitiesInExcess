@@ -5,6 +5,7 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
@@ -128,6 +129,7 @@ public class PosteaTransforms {
     private static void transformTileEntities() {
         TileEntityReplacementManager.tileEntityTransformer("TileFullChest", FullChestTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileMiniChest", MiniChestTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("TileEnderCollector", CollectorTransformation::transform);
 
         SpikeTransformation.registerIDResolvers();
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
