@@ -11,6 +11,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
@@ -90,5 +91,18 @@ public class TileEntitySpike extends TileEntity {
             tag.setTag("FakeWeapon", weaponTag);
         }
         tag.setString("SpikeType", spikeType.name());
+    }
+
+    // Needed for ExU migration to work properly, and will resolve any weird edge cases, I guess...
+    @Override
+    public void updateEntity() {
+        if (fakeWeapon == null) {
+            switch (spikeType) {
+                case WOOD -> fakeWeapon = ModBlocks.SPIKE_WOOD.newItemStack();
+                case IRON -> fakeWeapon = ModBlocks.SPIKE_IRON.newItemStack();
+                case GOLD -> fakeWeapon = ModBlocks.SPIKE_GOLD.newItemStack();
+                case DIAMOND -> fakeWeapon = ModBlocks.SPIKE_DIAMOND.newItemStack();
+            }
+        }
     }
 }
