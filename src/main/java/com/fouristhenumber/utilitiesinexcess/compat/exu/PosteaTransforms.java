@@ -80,6 +80,14 @@ public class PosteaTransforms {
         compressedBlocks();
         coloredBlocks();
         decoBlocks();
+        generatorBlocks();
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:chestFull", ModBlocks.MARGINALLY_MAXIMISED_CHEST.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:chestMini", ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderCollector", ModBlocks.COLLECTOR.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.get(), 0);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:decorativeBlock2", ModBlocks.DECORATIVE_GLASS.get());
         BlockReplacementManager
@@ -226,5 +234,91 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:color_blockRedstone", ModBlocks.COLORED_REDSTONE_BLOCK.get());
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:color_blockCoal", ModBlocks.COLORED_COAL_BLOCK.get());
+    }
+
+    private static void generatorBlocks() {
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator", 0, ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator", 1, ModBlocks.FURNACE_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:generator", 2, ModBlocks.LAVA_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:generator", 3, ModBlocks.ENDER_GENERATOR.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator", 4, ModBlocks.REDSTONE_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:generator", 5, ModBlocks.FOOD_GENERATOR.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator", 6, ModBlocks.POTION_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:generator", 7, ModBlocks.SOLAR_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:generator", 8, ModBlocks.TNT_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:generator", 9, ModBlocks.PINK_GENERATOR.get(), 0);
+        BlockReplacementManager.addSimpleReplacement(
+            "ExtraUtilities:generator",
+            10,
+            ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR.get(),
+            0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator", 11, ModBlocks.NETHER_STAR_GENERATOR.get(), 0);
+
+        BlockReplacementManager.addSimpleReplacement(
+            "ExtraUtilities:generator.8",
+            0,
+            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR_PLUS.get(),
+            0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 1, ModBlocks.FURNACE_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 2, ModBlocks.LAVA_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 3, ModBlocks.ENDER_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 4, ModBlocks.REDSTONE_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 5, ModBlocks.FOOD_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 6, ModBlocks.POTION_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 7, ModBlocks.SOLAR_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 8, ModBlocks.TNT_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 9, ModBlocks.PINK_GENERATOR_PLUS.get(), 0);
+        BlockReplacementManager.addSimpleReplacement(
+            "ExtraUtilities:generator.8",
+            10,
+            ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR.get(),
+            0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.8", 11, ModBlocks.NETHER_STAR_GENERATOR.get(), 0);
+
+        BlockReplacementManager.addSimpleReplacement(
+            "ExtraUtilities:generator.64",
+            0,
+            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS.get(),
+            0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 1, ModBlocks.FURNACE_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 2, ModBlocks.LAVA_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 3, ModBlocks.ENDER_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 4, ModBlocks.REDSTONE_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 5, ModBlocks.FOOD_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 6, ModBlocks.POTION_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 7, ModBlocks.SOLAR_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 8, ModBlocks.TNT_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 9, ModBlocks.PINK_GENERATOR_PLUSPLUS.get(), 0);
+        BlockReplacementManager.addSimpleReplacement(
+            "ExtraUtilities:generator.64",
+            10,
+            ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR.get(),
+            0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:generator.64", 11, ModBlocks.NETHER_STAR_GENERATOR.get(), 0);
     }
 }
