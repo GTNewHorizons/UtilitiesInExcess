@@ -2,11 +2,11 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.EnderLilyTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.SpikeTransformation;
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
@@ -97,9 +97,6 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:dark_portal", 0, ModBlocks.UNDERWORLD_PORTAL.get());
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:dark_portal", 2, ModBlocks.END_OF_TIME_PORTAL.get());
-        // TODO: broken :(
-        BlockReplacementManager
-            .addTransformationHandler("ExtraUtilities:plant/ender_lilly", new EnderLilyTransformation());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:angelBlock", ModBlocks.FLOATING_BLOCK.get());
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:budoff", 3, ModBlocks.ADVANCED_BLOCK_UPDATE_DETECTOR.get(), 0);
@@ -112,23 +109,30 @@ public class PosteaTransforms {
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:peaceful_table_top", ModBlocks.PACIFISTS_BENCH.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:cursedearthside", ModBlocks.CURSED_EARTH.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base_wood", ModBlocks.SPIKE_WOOD.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base", ModBlocks.SPIKE_IRON.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base_gold", ModBlocks.SPIKE_GOLD.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base_wood", ModBlocks.SPIKE_WOOD.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base", ModBlocks.SPIKE_IRON.get(), 0);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:spike_base_gold", ModBlocks.SPIKE_GOLD.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:spike_base_diamond", ModBlocks.SPIKE_DIAMOND.get());
+            .addSimpleReplacement("ExtraUtilities:spike_base_diamond", ModBlocks.SPIKE_DIAMOND.get(), 0);
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:timer", ModBlocks.REDSTONE_CLOCK.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:etherealglass", ModBlocks.ETHEREAL_GLASS.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderThermicPump", ModBlocks.SMART_PUMP.get());
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModBlocks.ENDER_LOTUS.get(), true);
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:magnumTorch", ModBlocks.GIGA_TORCH.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:chandelier", ModBlocks.CHANDELIER.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trading_post", ModBlocks.TRADING_POST.get());
         // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:", ModBlocks.SPIKE_DIAMOND.get());
     }
 
     private static void transformTileEntities() {
         TileEntityReplacementManager.tileEntityTransformer("TileFullChest", FullChestTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileMiniChest", MiniChestTransformation::transform);
+
+        SpikeTransformation.registerIDResolvers();
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
+
+        GeneratorTransformation.postLoad();
     }
 
     private static void compressedBlocks() {
