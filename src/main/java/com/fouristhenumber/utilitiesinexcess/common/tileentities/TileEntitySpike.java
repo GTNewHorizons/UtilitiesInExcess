@@ -97,12 +97,12 @@ public class TileEntitySpike extends TileEntity {
     @Override
     public void updateEntity() {
         if (fakeWeapon == null) {
-            switch (spikeType) {
-                case WOOD -> fakeWeapon = ModBlocks.SPIKE_WOOD.newItemStack();
-                case IRON -> fakeWeapon = ModBlocks.SPIKE_IRON.newItemStack();
-                case GOLD -> fakeWeapon = ModBlocks.SPIKE_GOLD.newItemStack();
-                case DIAMOND -> fakeWeapon = ModBlocks.SPIKE_DIAMOND.newItemStack();
-            }
+            fakeWeapon = switch (spikeType) {
+                case WOOD -> ModBlocks.SPIKE_WOOD.newItemStack();
+                case IRON -> ModBlocks.SPIKE_IRON.newItemStack();
+                case GOLD -> ModBlocks.SPIKE_GOLD.newItemStack();
+                case DIAMOND -> ModBlocks.SPIKE_DIAMOND.newItemStack();
+            };
         }
     }
 }
