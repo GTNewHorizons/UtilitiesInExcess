@@ -2,6 +2,6 @@
   "parent": "utilitiesinexcess:blocks/wood_spike",
   "textures": {
     "0": "utilitiesinexcess:models/iron_spike",
-    "particle": "utilitiesinexcess:models/iron_spike"
+    "particle": "utilitiesinexcess:models/particle/iron_spike"
   }
 }

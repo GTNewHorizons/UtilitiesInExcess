@@ -38,7 +38,7 @@ public class BlockCollector extends BlockContainer {
 
         collector.incrementSize(player);
         if (!worldIn.isRemote)
-            player.addChatMessage(new ChatComponentTranslation("uie.chat.collector_size", collector.getSize()));
+            player.addChatMessage(new ChatComponentTranslation("uie.chat.collector_size", collector.getRange()));
         collector.showBorderFor(40);
         worldIn.markBlockForUpdate(x, y, z);
         return true;

@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "utilitiesinexcess:models/trash_can_item",
-    "particle": "utilitiesinexcess:models/trash_can_item"
+    "particle": "utilitiesinexcess:models/particle/trash_can_item"
   },
 	"elements": [
 		{
