@@ -106,7 +106,7 @@ public class BlockCursedEarth extends Block {
 
             Block block = world.getBlock(i, j, k);
 
-            if (world.isAirBlock(i, j + 1, k) && (block == Blocks.grass || block == Blocks.dirt)) {
+            if ((block == Blocks.grass || block == Blocks.dirt) && world.isAirBlock(i, j + 1, k)) {
                 world.setBlock(i, j, k, this);
             } else if (CursedEarthConfig.volatileReaction) {
                 if ((blessed && block == ModBlocks.CURSED_EARTH.get())
