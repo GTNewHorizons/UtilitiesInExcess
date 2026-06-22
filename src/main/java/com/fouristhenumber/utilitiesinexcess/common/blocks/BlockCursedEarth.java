@@ -84,8 +84,7 @@ public class BlockCursedEarth extends Block {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-        // Change Items.diamond to any item you want it to drop
+        ArrayList<ItemStack> drops = new ArrayList<>();
         drops.add(new ItemStack(Item.getItemFromBlock(Blocks.dirt), 1));
         return drops;
     }
