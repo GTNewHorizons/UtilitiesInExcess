@@ -15,6 +15,8 @@ public class BlockCollector extends BlockContainer {
         super(Material.rock);
         setBlockName("collector");
         setBlockTextureName("utilitiesinexcess:collector");
+        setHardness(1.5f);
+        setResistance(1.5f);
     }
 
     // So you can open chests under it
