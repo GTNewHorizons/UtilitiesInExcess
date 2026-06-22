@@ -66,7 +66,7 @@ public class BlockEnderLotus extends BlockCrops {
 
         int chance = EnderLotusConfig.growthTicksOnDirt;
         if (ground == Blocks.end_stone) chance = EnderLotusConfig.growthTicksOnEndstone;
-        if (ground == ModBlocks.ENDSPARK.get()) chance = EnderLotusConfig.growthTicksOnEndspark;
+        else if (ground == ModBlocks.ENDSPARK.get()) chance = EnderLotusConfig.growthTicksOnEndspark;
 
         if (rand.nextInt(chance) == 0) {
             world.setBlockMetadataWithNotify(x, y, z, meta + 1, 2);
