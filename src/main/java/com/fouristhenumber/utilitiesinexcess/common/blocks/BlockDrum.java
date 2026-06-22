@@ -34,8 +34,7 @@ public class BlockDrum extends BlockContainer {
         super(Material.iron);
         this.capacity = capacity;
         setBlockName(blockname);
-        this.setHardness(3.0F);
-        this.setResistance(5.0F);
+        this.setHardness(1.5F);
         this.setHarvestLevel("pickaxe", 1);
     }
 
