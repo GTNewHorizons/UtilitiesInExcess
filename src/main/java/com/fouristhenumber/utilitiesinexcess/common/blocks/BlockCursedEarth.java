@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 
@@ -38,9 +39,6 @@ public class BlockCursedEarth extends Block {
     public final boolean blessed;
 
     public IIcon sideTexture;
-
-    // TODO: Handle spreading? Look into how we wanna do that
-    // if/when we handle the sigil etc
 
     // Most of the logic for cursed earth interactions with spawners is
     // implemented in mixins.early.minecraft.CursedEarthSpawner
@@ -98,6 +96,28 @@ public class BlockCursedEarth extends Block {
         if (world.isRemote) return;
         tryBurn(world, x, y, z, random);
         trySpawnMob(world, x, y, z, random);
+        if (CursedEarthConfig.cursedEarthSpreads) trySpread(world, x, y, z, random);
+    }
+
+    public void trySpread(World world, int x, int y, int z, Random random) {
+        // Basically just vanilla grass spreading logic
+        for (int l = 0; l < 4; ++l) {
+            int i = x + random.nextInt(3) - 1;
+            int j = y + random.nextInt(5) - 3;
+            int k = z + random.nextInt(3) - 1;
+
+            Block block = world.getBlock(i, j, k);
+
+            if (block == Blocks.grass) {
+                world.setBlock(i, j, k, this);
+            } else if (CursedEarthConfig.volatileReaction) {
+                if ((blessed && block == ModBlocks.CURSED_EARTH.get())
+                    || ((!blessed && block == ModBlocks.BLESSED_EARTH.get()))) {
+                    world.setBlockToAir(i, j, k);
+                    world.newExplosion(null, i + 0.5D, j + 2.5D, k + 0.5D, 4.0F, true, true);
+                }
+            }
+        }
     }
 
     public void trySpawnMob(World world, int x, int y, int z, Random random) {
