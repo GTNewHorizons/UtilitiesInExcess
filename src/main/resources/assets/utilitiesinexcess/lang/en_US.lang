@@ -387,7 +387,7 @@ nei.infopage.uie.xray_glasses.1=These stylish spectacles will highlight like blo
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 
 item.ender_lotus_seed.name=Ender-Lotus Seed
-nei.infopage.uie.ender_lotus_seed.1=This strange plant is native to The End and its seeds can occasionally be found in dungeons. It grows incredibly slowly (faster on endstone) but will eventually produce ender pearls.
+nei.infopage.uie.ender_lotus_seed.1=This strange plant is native to The End and its seeds can occasionally be found in dungeons. It grows incredibly slowly (faster on endstone and even faster on endspark) but will eventually produce ender pearls. 
 
 tile.ender_lotus.name=Ender Lotus
 
