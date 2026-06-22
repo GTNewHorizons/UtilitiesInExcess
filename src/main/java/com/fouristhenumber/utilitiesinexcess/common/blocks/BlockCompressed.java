@@ -5,12 +5,14 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,6 +29,19 @@ public class BlockCompressed extends Block {
         this.name = name;
         this.base = base;
         setBlockName(name);
+    }
+
+    @Override
+    public float getBlockHardness(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        return (float) (base.getBlockHardness(world, x, y, z) * Math.pow(2, meta + 1));
+    }
+
+    @Override
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double exX, double exY,
+        double exZ) {
+        int meta = world.getBlockMetadata(x, y, z);
+        return (float) (base.getExplosionResistance(entity, world, x, y, z, exX, exY, exZ) * Math.pow(2, meta + 1));
     }
 
     public Block getBase() {
