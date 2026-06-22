@@ -38,6 +38,8 @@ public class BlockColored extends Block {
         this.colorMultiplier = colorMultiplier;
 
         setHardness(base.getBlockHardness(null, 0, 0, 0));
+        // This dumb ratio is due to the random scalars present in both get and set resistance.
+        setResistance(base.getExplosionResistance(null) * (5f / 3f));
         setStepSound(base.stepSound);
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
     }
