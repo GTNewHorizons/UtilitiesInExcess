@@ -15,6 +15,8 @@ public class BlockFloating extends Block {
         super(Material.rock);
         setBlockName("floating_block");
         setBlockTextureName("utilitiesinexcess:floating_block");
+        setHardness(1f);
+        setResistance(1f);
     }
 
     @Override
