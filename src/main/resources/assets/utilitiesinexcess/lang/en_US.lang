@@ -529,7 +529,7 @@ nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal place
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
 tile.chandelier.0.name=Chandelier
-tile.chandelier.1.name=Copper Chandelier
+tile.chandelier.1.name=Rustic Chandelier
 tile.chandelier.2.name=Redstone Chandelier
 tile.chandelier.3.name=Soul Chandelier
 tile.chandelier.desc=%d block radius (square)
