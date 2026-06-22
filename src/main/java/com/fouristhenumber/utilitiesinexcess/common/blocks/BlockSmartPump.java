@@ -16,9 +16,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockSmartPump extends BlockContainer {
 
     public BlockSmartPump() {
-        super(Material.iron);
+        super(Material.rock);
         setBlockName("smart_pump");
         setBlockTextureName("utilitiesinexcess:smart_pump");
+        setHardness(10F);
     }
 
     IIcon sides;
