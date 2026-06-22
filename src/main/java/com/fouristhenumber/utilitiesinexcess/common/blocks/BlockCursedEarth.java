@@ -215,13 +215,6 @@ public class BlockCursedEarth extends Block {
         return face == ForgeDirection.UP;
     }
 
-    /*
-     * @Override
-     * public TileEntity createNewTileEntity(World worldIn, int meta) {
-     * return new TileEntityCursedEarth();
-     * }
-     */
-
     public static class ItemBlockCursedEarth extends ItemBlock {
 
         public ItemBlockCursedEarth(Block block) {
