@@ -184,9 +184,7 @@ public class BlockCursedEarth extends Block {
 
     public boolean shouldBurn(World world, int x, int y, int z) {
         boolean lit = world.getBlockLightValue(x, y + 1, z) >= 8;
-        if (blessed) {
-            return !lit || (world.canBlockSeeTheSky(x, y + 1, z) && !world.isDaytime());
-        }
+        if (blessed) return !lit;
         return lit;
     }
 
