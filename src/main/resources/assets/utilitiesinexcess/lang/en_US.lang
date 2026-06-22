@@ -427,6 +427,10 @@ tile.magic_wood.name=Magic Wood
 
 nei.infopage.uie.magic_wood.1=The enchantments woven into this block give it the enchanting power of five bookshelves!
 
+tile.endspark.name=Endspark
+
+nei.infopage.uie.endspark.1=Combining enchanted wood with the power of The End makes it even stronger, boosting enchanting tables by 20 levels! 
+
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 tile.cursed_earth.blessed.name=Blessed Earth

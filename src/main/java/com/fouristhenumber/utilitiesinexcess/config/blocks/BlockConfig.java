@@ -62,6 +62,9 @@ public class BlockConfig {
     public static boolean enableMagicWood;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableEndspark;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableMarginallyMaximisedChest;
 
     @Config.DefaultBoolean(true)
