@@ -158,8 +158,6 @@ public class BlockCursedEarth extends Block {
             MathHelper.wrapAngleTo180_float(random.nextFloat() * 360.0F),
             0.0F);
 
-        if (!mob.getCanSpawnHere()) return;
-
         world.spawnEntityInWorld(mob);
     }
 
