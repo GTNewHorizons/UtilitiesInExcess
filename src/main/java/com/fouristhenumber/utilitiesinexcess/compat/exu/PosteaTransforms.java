@@ -25,47 +25,54 @@ public class PosteaTransforms {
 
     private static void transformItems() {
         // Simple transformers
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:glove", ModItems.GLOVE.get());
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:glove", ModItems.GLOVE.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:angelRing", 0, ModItems.HEAVENLY_RING_MAGIC.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:angelRing", 0, ModItems.HEAVENLY_RING_MAGIC.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:angelRing", 1, ModItems.HEAVENLY_RING_FEATHER.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:angelRing", 1, ModItems.HEAVENLY_RING_FEATHER.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:angelRing", 2, ModItems.HEAVENLY_RING_FAIRY.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:angelRing", 2, ModItems.HEAVENLY_RING_FAIRY.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:angelRing", 3, ModItems.HEAVENLY_RING_DRAGON.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:angelRing", 3, ModItems.HEAVENLY_RING_DRAGON.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:angelRing", 4, ModItems.HEAVENLY_RING_METAL.get(), 0);
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:builderswand", ModItems.ARCHITECTS_WAND.get());
+            .addSimpleReplacement("ExtraUtilities:angelRing", 4, ModItems.HEAVENLY_RING_METAL.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_ARCHITECTS_WAND.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.ETHERIC_SWORD.get());
+            .addSimpleReplacement("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.GOURMANDS_AXE.get());
+            .addSimpleReplacement("ExtraUtilities:builderswand", ModItems.ARCHITECTS_WAND.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_PARTICULATE_SHOVEL.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.REVERSING_HOE.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:shears", ModItems.PRECISION_SHEARS.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get());
+            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_ARCHITECTS_WAND.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:bedrockiumIngot", ModItems.BEDROCKIUM_INGOT.get());
-        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:scanner", ModItems.BLOCK_ANALYZER.get());
+            .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.ETHERIC_SWORD.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:unstableingot", 0, ModItems.INVERTED_INGOT.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.GOURMANDS_AXE.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:unstableingot", 1, ModItems.INVERTED_NUGGET.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_PARTICULATE_SHOVEL.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:watering_can", 0, ModItems.WATERING_CAN_BASIC.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.REVERSING_HOE.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:watering_can", 1, ModItems.WATERING_CAN_BASIC.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:shears", ModItems.PRECISION_SHEARS.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:watering_can", 2, ModItems.WATERING_CAN_BASIC.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:bedrockiumIngot", ModItems.BEDROCKIUM_INGOT.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:scanner", ModItems.BLOCK_ANALYZER.get(), true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 0, ModItems.INVERTED_INGOT.get(), 0, true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 0, true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 1, ModItems.INVERTED_NUGGET.get(), 0, true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 0, ModItems.WATERING_CAN_BASIC.get(), 0, true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 1, ModItems.WATERING_CAN_BASIC.get(), 0, true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 2, ModItems.WATERING_CAN_BASIC.get(), 0, true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0, true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModItems.ENDER_LOTUS_SEED.get(), true);
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
