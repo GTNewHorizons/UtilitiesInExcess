@@ -12,6 +12,7 @@ public class BlockTrashCanEnergy extends BlockContainer {
 
     public BlockTrashCanEnergy() {
         super(Material.rock);
+        setHardness(3.5F);
         setBlockName("trash_can_energy");
         setBlockTextureName("utilitiesinexcess:trash_can_energy");
     }
