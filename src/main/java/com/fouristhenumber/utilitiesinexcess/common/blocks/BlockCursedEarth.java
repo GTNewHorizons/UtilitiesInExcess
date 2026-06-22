@@ -110,7 +110,7 @@ public class BlockCursedEarth extends Block {
                 world.setBlock(i, j, k, this);
             } else if (CursedEarthConfig.volatileReaction) {
                 if ((blessed && block == ModBlocks.CURSED_EARTH.get())
-                    || ((!blessed && block == ModBlocks.BLESSED_EARTH.get()))) {
+                    || (!blessed && block == ModBlocks.BLESSED_EARTH.get())) {
                     world.setBlockToAir(i, j, k);
                     world.newExplosion(null, i + 0.5D, j + 2.5D, k + 0.5D, 4.0F, true, true);
                 }
