@@ -29,7 +29,8 @@ public class BlockChandelier extends BlockContainer {
     public BlockChandelier() {
         super(Material.circuits);
         setBlockName("chandelier");
-        setHardness(0.0F);
+        setHardness(0.1F);
+        setResistance(0.1F);
         setLightLevel(0.9375F); // 15 light level
         setStepSound(soundTypeWood);
     }
