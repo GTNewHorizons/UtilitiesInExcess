@@ -23,7 +23,7 @@ public class BlockAdvancedUpdateDetector extends BlockContainer {
         super(Material.rock);
         setBlockName("advanced_block_update_detector");
         setHardness(1F);
-        setResistance(6F);
+        setResistance(10F);
         setHarvestLevel("pickaxe", 0);
     }
 
