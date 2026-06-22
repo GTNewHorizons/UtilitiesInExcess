@@ -17,8 +17,8 @@ public class BlockBedrockium extends Block {
         super(Material.iron);
         setBlockName("bedrockium_block");
         setBlockTextureName("utilitiesinexcess:bedrockium_block");
-        setHardness(1000f);
-        setResistance(3_600_000f);
+        setHardness(1000F);
+        setResistance(3_600_000F);
     }
 
     @Override

@@ -21,8 +21,8 @@ public class BlockUpdateDetector extends BlockContainer {
         super(Material.rock);
         setBlockName("block_update_detector");
         setBlockTextureName("utilitiesinexcess:block_update_detector_inactive");
-        setHardness(1f);
-        setResistance(6f);
+        setHardness(1F);
+        setResistance(6F);
         setHarvestLevel("pickaxe", 0);
     }
 

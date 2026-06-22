@@ -21,8 +21,8 @@ public class BlockBlackoutCurtains extends Block {
         setBlockName("blackout_curtains");
         setBlockTextureName("utilitiesinexcess:blackout_curtains");
         setLightOpacity(8);
-        setHardness(0);
-        setResistance(0);
+        setHardness(0F);
+        setResistance(0F);
         setStepSound(soundTypeCloth);
     }
 
