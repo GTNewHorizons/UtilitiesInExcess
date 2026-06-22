@@ -5,14 +5,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.gtnewhorizons.postea.api.BlockAccessCompat;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.gtnewhorizons.postea.utility.PosteaUtilities;
 
 public class FullChestTransformation {
 
     public static BlockInfo transform(NBTTagCompound _oldTag, World world, Chunk chunk) {
-        int meta = chunk
-            .getBlockMetadata(_oldTag.getInteger("x") & 15, _oldTag.getInteger("y"), _oldTag.getInteger("z") & 15);
+        int meta = BlockAccessCompat.getBlockMetaAtTE(_oldTag, chunk);
         // Don't ask me why our direction metas are so incomprehensible.
         meta = switch (meta) {
             case 1 -> 4;

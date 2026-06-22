@@ -17,7 +17,7 @@ public class DrumTransformation {
         return new BlockInfo(
             blockIdAndMeta[1] == 0 ? ModBlocks.DRUM.get() : ModBlocks.BEDROCKIUM_DRUM.get(),
             0,
-           DrumTransformation::transformNBT);
+            DrumTransformation::transformNBT);
     }
 
     private static NBTTagCompound transformNBT(NBTTagCompound oldTag) {
