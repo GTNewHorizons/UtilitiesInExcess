@@ -16,6 +16,7 @@ public abstract class BlockBaseGenerator extends BlockContainer {
     protected BlockBaseGenerator(String id, int mult) {
         super(Material.iron);
         multiplier = mult;
+        setHardness(5F);
         setBlockName(id);
         setBlockTextureName("utilitiesinexcess:generators/" + id);
     }

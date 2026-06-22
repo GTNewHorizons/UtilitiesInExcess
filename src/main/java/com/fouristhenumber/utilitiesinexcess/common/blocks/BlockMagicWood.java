@@ -11,8 +11,8 @@ public class BlockMagicWood extends Block {
         setBlockName("magic_wood");
         setBlockTextureName("utilitiesinexcess:magic_wood");
 
-        setResistance(5f);
-        setHardness(2f);
+        setResistance(5F);
+        setHardness(2F);
         setStepSound(soundTypeWood);
     }
 
