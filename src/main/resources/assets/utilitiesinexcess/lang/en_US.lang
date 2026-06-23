@@ -200,7 +200,7 @@ item.reversing_hoe.name=Reversing Hoe
 nei.infopage.uie.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It will also convert dirt into grass and cobblestone into stone.
 
 item.unbreakable.desc=Unbreakable
-item.magic_damage=+%s Magic Damage
+attribute.name.utilitiesinexcess.magic_damage=Magic Damage
 
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
