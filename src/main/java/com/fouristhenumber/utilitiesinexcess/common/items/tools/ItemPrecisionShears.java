@@ -53,7 +53,8 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
         float hardness = block.getPlayerRelativeBlockHardness(player, world, x, y, z);
-        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0 || hardness <= 0)
+        int miningLevel = block.getHarvestLevel(meta);
+        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0 || hardness <= 0 || miningLevel >= 1)
             return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
         if (!world.isRemote && block.removedByPlayer(world, player, x, y, z, true)) {
             block.harvestBlock(world, player, x, y, z, meta);
