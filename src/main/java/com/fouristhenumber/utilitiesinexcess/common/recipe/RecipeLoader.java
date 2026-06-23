@@ -467,7 +467,6 @@ public class RecipeLoader {
             'j',
             Blocks.jukebox);
 
-
         addShapedRecipe(
             ModBlocks.TRUE_GREENSCREEN,
             "ege",

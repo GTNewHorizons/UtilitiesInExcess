@@ -159,7 +159,6 @@ public class UtilitiesInExcess {
         GameRegistry
             .registerTileEntity(BlockTrueGreenscreen.TileEntityTrueGreenscreen.class, "TileEntityTrueGreenscreenUIE");
 
-
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
