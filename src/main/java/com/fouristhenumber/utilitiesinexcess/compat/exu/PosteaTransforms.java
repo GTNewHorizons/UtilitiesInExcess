@@ -209,9 +209,8 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 9, ModBlocks.DECORATIVE_BLOCKS.get(), 3);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 10, ModBlocks.DECORATIVE_BLOCKS.get(), 10);
-        // TODO: Ender Core - Unimplemented!
-        // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:decorativeBlock1", 11,
-        // ModBlocks.DECORATIVE_BLOCKS.get(), 7);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 11, ModBlocks.ENDSPARK.get(), 0);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 12, ModBlocks.DECORATIVE_BLOCKS.get(), 0);
         BlockReplacementManager
