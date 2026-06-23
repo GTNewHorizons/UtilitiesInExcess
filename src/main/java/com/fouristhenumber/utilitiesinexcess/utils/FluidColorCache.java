@@ -47,6 +47,12 @@ public class FluidColorCache {
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
             .values()) {
             if (colorMap.containsKey(fluid)) continue;
+            // Some fluid implementations provide a useful value for getColor(), but they often don't.
+            int fluidColor = fluid.getColor();
+            if (fluidColor != 0xFFFFFF) {
+                colorMap.put(fluid, fluidColor);
+                continue;
+            }
             IIcon icon = fluid.getStillIcon();
             if (icon == null) icon = fluid.getFlowingIcon();
             if (!(icon instanceof TextureAtlasSprite sprite)) continue;
