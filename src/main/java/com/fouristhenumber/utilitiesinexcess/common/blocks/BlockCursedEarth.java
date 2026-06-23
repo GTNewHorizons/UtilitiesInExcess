@@ -157,9 +157,12 @@ public class BlockCursedEarth extends Block {
             MathHelper.wrapAngleTo180_float(random.nextFloat() * 360.0F),
             0.0F);
 
-        if (mob.getCanSpawnHere())
-
+        // These are checks copied from EntityLiving.getCanSpawnHere(). We don't call it directly
+        // because many of the overrides check additional conditions like that the block is Blocks.grass
+        if (world.checkNoEntityCollision(mob.boundingBox) && world.getCollidingBoundingBoxes(mob, mob.boundingBox)
+            .isEmpty() && !world.isAnyLiquid(mob.boundingBox)) {
             world.spawnEntityInWorld(mob);
+        }
     }
 
     public void tryBurn(World world, int x, int y, int z, Random random) {
