@@ -206,8 +206,13 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
 
         sendInfoPage("<utilitiesinexcess:chandelier>", "nei.infopage.uie.chandelier.1");
+
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
+
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
+
+        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.0");
+        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.1");
     }
 
     private static void sendInfoPage(String filter, String page) {

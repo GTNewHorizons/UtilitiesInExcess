@@ -41,6 +41,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
@@ -162,6 +163,7 @@ public enum ModBlocks {
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
+    TRUE_GREENSCREEN(BlockConfig.enableTrueGreenscreen, new BlockTrueGreenscreen(), BlockTrueGreenscreen.ItemBlockTrueGreenscreen.class, "true_greenscreen"),
     ; // leave trailing semicolon
     // spotless:on
 

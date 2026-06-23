@@ -10,6 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
@@ -21,6 +22,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
+import com.fouristhenumber.utilitiesinexcess.render.TESRTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
@@ -61,6 +63,12 @@ public class ClientProxy extends CommonProxy {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCollector.class, new CollectorRangeBox());
 
         }
+        if (ModBlocks.TRUE_GREENSCREEN.isEnabled()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(
+                BlockTrueGreenscreen.TileEntityTrueGreenscreen.class,
+                new TESRTrueGreenscreen());
+        }
+
         if (ModItems.GLOVE.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.GLOVE.get(), new GloveRenderer());
         }
@@ -111,5 +119,10 @@ public class ClientProxy extends CommonProxy {
             GL11.glPopAttrib();
             GL11.glPopMatrix();
         }
+    }
+
+    @SubscribeEvent
+    public void onPostClientTick(TickEvent.ClientTickEvent event) {
+        TESRTrueGreenscreen.onPostClientTick(event);
     }
 }

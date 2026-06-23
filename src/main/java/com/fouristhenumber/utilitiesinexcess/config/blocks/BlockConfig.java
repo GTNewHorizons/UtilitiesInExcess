@@ -107,6 +107,9 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     public static boolean enableTradingPost;
 
+    @Config.DefaultBoolean(true)
+    public static boolean enableTrueGreenscreen;
+
     @Config.DefaultInt(10000)
     public static int smartPumpEnergyStorage;
 
