@@ -16,17 +16,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.utils.FluidColorCache;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
+import com.gtnewhorizon.gtnhlib.client.model.color.IBlockColor;
 
-public class BlockDrum extends BlockContainer {
+public class BlockDrum extends BlockContainer implements IBlockColor {
 
     final int capacity;
 
@@ -225,6 +230,25 @@ public class BlockDrum extends BlockContainer {
     @Override
     public int getRenderType() {
         return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
+    public int colorMultiplier(@Nullable IBlockAccess world, int x, int y, int z, int tintIndex) {
+        if (world != null) {
+            TileEntityDrum drum = (TileEntityDrum) world.getTileEntity(x, y, z);
+            FluidStack fluid = drum.tank.getFluid();
+            if (fluid != null) return FluidColorCache.getColor(fluid.getFluid());
+        }
+        return 0xFFFFFF;
+    }
+
+    @Override
+    public int colorMultiplier(@Nullable ItemStack stack, int tintIndex) {
+        if (stack != null) {
+            FluidStack fluid = ItemBlockDrum.getFluidFromStack(stack);
+            if (fluid != null) return FluidColorCache.getColor(fluid.getFluid());
+        }
+        return 0xFFFFFF;
     }
 
     @Override
