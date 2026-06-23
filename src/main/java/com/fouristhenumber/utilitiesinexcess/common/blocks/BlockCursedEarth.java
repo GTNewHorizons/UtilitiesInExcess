@@ -112,7 +112,7 @@ public class BlockCursedEarth extends Block {
                 if ((blessed && block == ModBlocks.CURSED_EARTH.get())
                     || (!blessed && block == ModBlocks.BLESSED_EARTH.get())) {
                     world.setBlockToAir(i, j, k);
-                    world.newExplosion(null, i + 0.5D, j + 2.5D, k + 0.5D, 4.0F, true, true);
+                    world.newExplosion(null, i + 0.5D, j + 0.5D, k + 0.5D, 4.0F, true, true);
                 }
             }
         }
@@ -157,7 +157,9 @@ public class BlockCursedEarth extends Block {
             MathHelper.wrapAngleTo180_float(random.nextFloat() * 360.0F),
             0.0F);
 
-        world.spawnEntityInWorld(mob);
+        if (mob.getCanSpawnHere())
+
+            world.spawnEntityInWorld(mob);
     }
 
     public void tryBurn(World world, int x, int y, int z, Random random) {
