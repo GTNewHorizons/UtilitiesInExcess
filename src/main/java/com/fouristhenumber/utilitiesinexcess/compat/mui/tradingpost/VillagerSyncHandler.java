@@ -35,6 +35,7 @@ public class VillagerSyncHandler extends SyncHandler {
         this.column = column;
         this.data = data;
         this.recipeList = recipeList;
+        this.allowC2S();
 
         this.recipeList.setFavorites(getFavorites());
     }
@@ -225,9 +226,9 @@ public class VillagerSyncHandler extends SyncHandler {
                 price1slots.add(i);
             } else if (ItemStack.areItemStackTagsEqual(itemStack, price2) && price2 != null
                 && itemStack.isItemEqual(price2)) {
-                    count2 += itemStack.stackSize;
-                    price2slots.add(i);
-                }
+                count2 += itemStack.stackSize;
+                price2slots.add(i);
+            }
         }
 
         // How many times can we pay the first item
