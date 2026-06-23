@@ -13,12 +13,12 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.ObjectValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
@@ -72,9 +72,14 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
         itemToBuy = new TooltipItemDisplayWidget();
         itemToBuy.paddingRight(0)
             .displayAmount(true)
-            .item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToBuy() : item, i -> {}));
+            .item(
+                new ObjectValue.Dynamic<>(
+                    ItemStack.class,
+                    () -> this.recipe != null ? this.recipe.getItemToBuy() : item,
+                    i -> {}));
 
-        Flow inputItems = new Row().childPadding(1)
+        Flow inputItems = Flow.row()
+            .childPadding(1)
             .coverChildren()
             .child(itemToBuy);
 
@@ -84,6 +89,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
                 .displayAmount(true)
                 .item(
                     new ObjectValue.Dynamic<>(
+                        ItemStack.class,
                         () -> this.recipe != null ? this.recipe.getSecondItemToBuy() : item,
                         i -> {}));
 
@@ -95,18 +101,23 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
 
         itemToSell = new TooltipItemDisplayWidget();
         itemToSell.displayAmount(true)
-            .item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToSell() : item, i -> {}));
+            .item(
+                new ObjectValue.Dynamic<>(
+                    ItemStack.class,
+                    () -> this.recipe != null ? this.recipe.getItemToSell() : item,
+                    i -> {}));
 
         ProgressWidget progress = new TradeProgressWidget().direction(ProgressWidget.Direction.RIGHT)
             .texture(GuiTextures.PROGRESS_ARROW, 20)
-            .progress(() -> {
+            .value(new DoubleValue.Dynamic(() -> {
                 AccessorMerchantRecipe trade = (AccessorMerchantRecipe) getRecipe();
                 if (trade == null) return 0.69;
                 if (trade.getMaxUses() > 7) // After the initial 7 uses every recipe gets 2 to 12 additional uses
                     return ((double) trade.getMaxUses() - trade.getCurrentUses()) / 12;
                 return 1 - (trade.getCurrentUses() / (double) (trade.getMaxUses()));
-            });
-        Flow wholeRow = new Row().coverChildren()
+            }, null));
+        Flow wholeRow = Flow.row()
+            .coverChildren()
             .padding(1)
             .childPadding(2)
             .child(inputItems)
