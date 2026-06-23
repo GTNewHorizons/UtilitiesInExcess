@@ -5,22 +5,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.gtnewhorizons.postea.api.BlockAccessCompat;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.gtnewhorizons.postea.utility.PosteaUtilities;
 
-public class FullChestTransformation extends AbstractTileEntityTransformation {
+public class FullChestTransformation {
 
-    public FullChestTransformation() {
-        super();
-        setOldBlockName("ExtraUtilities:chestFull");
-        setOldTileEntityId("TileFullChest");
-        setNewBlock(ModBlocks.MARGINALLY_MAXIMISED_CHEST);
-    }
-
-    @Override
-    public BlockInfo doTileEntityTransformation(NBTTagCompound _oldTag, World world, Chunk chunk) {
-        int meta = chunk
-            .getBlockMetadata(_oldTag.getInteger("x") & 15, _oldTag.getInteger("y"), _oldTag.getInteger("z") & 15);
+    public static BlockInfo transform(NBTTagCompound _oldTag, World world, Chunk chunk) {
+        int meta = BlockAccessCompat.getBlockMetaAtTE(_oldTag, chunk);
         // Don't ask me why our direction metas are so incomprehensible.
         meta = switch (meta) {
             case 1 -> 4;

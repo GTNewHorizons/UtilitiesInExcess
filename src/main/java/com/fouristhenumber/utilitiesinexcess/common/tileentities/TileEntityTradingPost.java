@@ -34,8 +34,7 @@ import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
@@ -57,7 +56,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         TradingPostPanel panel = new TradingPostPanel("uie:trading_post");
         panel.height(226)
             .width(259);
-        Column mainColumn = new Column();
+        Flow mainColumn = Flow.column();
         mainColumn.height(229)
             .width(265)
             .pos(0, 0)
@@ -67,7 +66,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         TradeList tradeList = new TradeList().coverChildrenWidth()
             .height(125)
             .pos(6, 15);
-        Row tradeListRow = new Row();
+        Flow tradeListRow = Flow.row();
         tradeListRow.coverChildren()
             .childPadding(3)
             .left(0);
@@ -104,7 +103,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
         tradeList.child(tradeListRow);
 
-        Row topRow = new Row();
+        Flow topRow = Flow.row();
         topRow.alignX(0)
             .coverChildrenWidth()
             .height(10);
@@ -132,7 +131,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         mainColumn.child(
             tradeList.margin(5, 5)
                 .marginRight(10));
-        Row bottomRow = new Row();
+        Flow bottomRow = Flow.row();
         bottomRow.coverChildrenHeight()
             .width(259)
             .pos(0, 229 - 85);
@@ -146,9 +145,10 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             new VillagerEntityDisplay(() -> VillagerWidget.lastVillager).left(26)
                 .bottom(20));
         bottomRow.child(
-            new Row().child(
-                new MerchantNameKey().asWidget()
-                    .center())
+            Flow.row()
+                .child(
+                    new MerchantNameKey().asWidget()
+                        .center())
                 .width(86)
                 .height(26)
                 .alignY(1));
@@ -167,7 +167,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         });
     }
 
-    public static class TradeList extends ListWidget<Row, TradeList> {
+    public static class TradeList extends ListWidget<Flow, TradeList> {
 
         @Override
         public void onInit() {
