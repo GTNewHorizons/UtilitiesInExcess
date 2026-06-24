@@ -63,9 +63,9 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         }
 
         if (crafting) {
-            craftingProgress += crystals;
+            craftingProgress += (crystals * 40);
         }
-        if (craftingProgress >= 500) {
+        if (craftingProgress >= 20_000) {
             ItemStack newStack = QEDRegistry.instance()
                 .findRecipe(craftMatrix, true);
             if (newStack != null) {
