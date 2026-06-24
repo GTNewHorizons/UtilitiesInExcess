@@ -53,6 +53,8 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     private boolean crafting = false;
     private int crystals = 0;
 
+    private static final int recipeCost = 20_000;
+
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
@@ -65,7 +67,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         if (crafting) {
             craftingProgress += (crystals * 40);
         }
-        if (craftingProgress >= 20_000) {
+        if (craftingProgress >= recipeCost) {
             ItemStack newStack = QEDRegistry.instance()
                 .findRecipe(craftMatrix, true);
             if (newStack != null) {
@@ -157,7 +159,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         // Progress bar
         panel.child(
             new ProgressWidget().texture(PROGRESS_ARROW, 20)
-                .value(new DoubleSyncValue(() -> (double) craftingSyncer.getIntValue() / 500))
+                .value(new DoubleSyncValue(() -> (double) craftingSyncer.getIntValue() / recipeCost))
                 .marginTop(33)
                 .marginLeft(97));
 
