@@ -43,6 +43,8 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     private final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerDummy(), 3, 3);
     private final InventoryCraftResult craftResult = new InventoryCraftResult();
 
+    // TODO: Creating this unregistered item is an ugly hack - MUI2 ItemDisplayWidget cannot handle null
+    // ItemStacks/Items and will crash otherwise. Need fix on MUI2 end, I think.
     private static final ItemStack fakeItem = new ItemStack(new Item());
     private ItemStack preview = fakeItem;
 
@@ -53,6 +55,11 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
+
+        // Extremely rare periodic check to catch any weirdness
+        if (worldObj.getTotalWorldTime() % 1200 == 0) {
+            scan();
+        }
 
         if (crafting) {
             craftingProgress += crystals;
@@ -75,7 +82,15 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         super.updateEntity();
     }
 
-    private void scan() {
+    public void addCrystal() {
+        crystals++;
+    }
+
+    public void removeCrystal() {
+        if (crystals > 0) crystals--;
+    }
+
+    public void scan() {
         Set<BlockPos> positions = scanForBlock(worldObj, xCoord, yCoord, zCoord, 9, ModBlocks.FLUX_CRYSTAL.get());
         crystals = positions.size();
     }
@@ -84,7 +99,6 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         ItemStack stack = QEDRegistry.instance()
             .findRecipe(craftMatrix, false);
 
-        if (stack != null) scan();
         crafting = stack != null && canInsertToOutput(stack);
         preview = stack != null ? stack : fakeItem;
     }

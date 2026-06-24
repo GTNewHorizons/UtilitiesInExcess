@@ -24,6 +24,15 @@ public class BlockQED extends BlockContainer {
     }
 
     @Override
+    public void onBlockAdded(World worldIn, int x, int y, int z) {
+        if (!worldIn.isRemote) {
+            TileEntityQED qed = (TileEntityQED) worldIn.getTileEntity(x, y, z);
+            qed.scan();
+        }
+        super.onBlockAdded(worldIn, x, y, z);
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
         if (!worldIn.isRemote) {
