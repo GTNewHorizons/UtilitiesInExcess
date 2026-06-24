@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.spikeRenderID;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +15,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.google.common.collect.Multimap;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -104,6 +105,24 @@ public class BlockSpike extends Block {
         super.breakBlock(world, x, y, z, block, meta);
     }
 
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        if (spikeType == SpikeType.WOOD) {
+            return 20;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        if (spikeType == SpikeType.WOOD) {
+            return 5;
+        } else {
+            return 0;
+        }
+    }
+
     // Drop the cached ItemStack
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
@@ -126,6 +145,11 @@ public class BlockSpike extends Block {
     }
 
     @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
@@ -133,11 +157,6 @@ public class BlockSpike extends Block {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return spikeRenderID;
     }
 
     private final static IIcon[] icons = new IIcon[4];

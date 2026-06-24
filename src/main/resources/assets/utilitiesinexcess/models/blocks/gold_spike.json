@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/wood_spike",
+  "textures": {
+    "0": "utilitiesinexcess:models/gold_spike",
+    "particle": "utilitiesinexcess:models/particle/gold_spike"
+  }
+}

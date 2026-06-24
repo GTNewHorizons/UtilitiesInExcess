@@ -12,7 +12,13 @@ public enum Mods {
     Thaumcraft("Thaumcraft"),
     NEI("NotEnoughItems"),
     CraftTweaker("MineTweaker3"),
-
+    FindIt("findit"),
+    Tinkers("TConstruct"),
+    ExtraUtilities("ExtraUtilities"),
+    Postea("postea"),
+    ForgeMicroBlock("ForgeMicroblock"),
+    Backhand("backhand"),
+    GT("gregtech_nh")
     ;
     // spotless:on
 

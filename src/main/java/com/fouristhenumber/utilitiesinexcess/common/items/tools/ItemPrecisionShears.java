@@ -16,8 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
-public class ItemPrecisionShears extends ItemShears {
+public class ItemPrecisionShears extends ItemShears implements ITranslucentItem {
 
     public static final String COOLDOWN_NBT_TAG = "uie:cooldown";
     private IIcon cooldownIcon;
@@ -52,7 +53,8 @@ public class ItemPrecisionShears extends ItemShears {
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
         float hardness = block.getPlayerRelativeBlockHardness(player, world, x, y, z);
-        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0 || hardness <= 0)
+        int miningLevel = block.getHarvestLevel(meta);
+        if (!player.isSneaking() || nbt.getInteger(COOLDOWN_NBT_TAG) != 0 || hardness <= 0 || miningLevel >= 2)
             return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
         if (!world.isRemote && block.removedByPlayer(world, player, x, y, z, true)) {
             block.harvestBlock(world, player, x, y, z, meta);

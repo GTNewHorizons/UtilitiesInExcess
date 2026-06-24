@@ -6,17 +6,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCollector;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorative;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorativeGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFluxCrystal;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
@@ -33,6 +39,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSignificantlyShr
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
@@ -70,12 +77,26 @@ public enum ModBlocks {
     COMPRESSED_DIRT(BlockConfig.enableCompressedDirt, new BlockCompressed(Blocks.dirt, "compressed_dirt"), BlockCompressed.ItemCompressedBlock.class, "compressed_dirt"),
     COMPRESSED_SAND(BlockConfig.enableCompressedSand, new BlockCompressed(Blocks.sand, "compressed_sand"), BlockCompressed.ItemCompressedBlock.class, "compressed_sand"),
     COMPRESSED_GRAVEL(BlockConfig.enableCompressedGravel, new BlockCompressed(Blocks.gravel, "compressed_gravel"), BlockCompressed.ItemCompressedBlock.class, "compressed_gravel"),
+    COLORED_WOOD_PLANKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.planks), BlockColored.ItemBlockColored.class, "colored_planks"),
+    COLORED_GLOWSTONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.glowstone).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_glowstone"),
+    COLORED_STONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stone), BlockColored.ItemBlockColored.class, "colored_stone"),
+    COLORED_COBBLESTONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.cobblestone), BlockColored.ItemBlockColored.class, "colored_cobblestone"),
+    COLORED_QUARTZ_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.quartz_block, 1f), BlockColored.ItemBlockColored.class, "colored_quartz_block"),
+    COLORED_SOUL_SAND(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.soul_sand), BlockColored.ItemBlockColored.class, "colored_soul_sand"),
+    COLORED_REDSTONE_LAMP(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.redstone_lamp).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_redstone_lamp"),
+    COLORED_BRICKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.brick_block), BlockColored.ItemBlockColored.class, "colored_bricks"),
+    COLORED_STONE_BRICKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stonebrick), BlockColored.ItemBlockColored.class, "colored_stone_bricks"),
+    COLORED_LAPIS_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.lapis_block), BlockColored.ItemBlockColored.class, "colored_lapis_block"),
+    COLORED_OBSIDIAN(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.obsidian), BlockColored.ItemBlockColored.class, "colored_obsidian"),
+    COLORED_REDSTONE_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.redstone_block, 2f), BlockColored.ItemBlockColored.class, "colored_redstone_block"),
+    COLORED_COAL_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.coal_block), BlockColored.ItemBlockColored.class, "colored_coal_block"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), "redstone_clock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "ethereal_glass"),
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),
     TRASH_CAN_FLUID(BlockConfig.enableTrashCanFluid, new BlockTrashCanFluid(), "trash_can_fluid"),
     TRASH_CAN_ENERGY(BlockConfig.enableTrashCanEnergy, new BlockTrashCanEnergy(), "trash_can_energy"),
-    DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
+    DRUM(BlockConfig.enableDrum, new BlockDrum(256_000, "drum"), BlockDrum.ItemBlockDrum.class, "drum"),
+    BEDROCKIUM_DRUM(BlockConfig.enableDrum, new BlockDrum(65_536_000, "bedrockium_drum"), BlockDrum.ItemBlockDrum.class, "bedrockium_drum"),
     SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler(), BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
     RAIN_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler(), BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), "magic_wood"),
@@ -125,6 +146,7 @@ public enum ModBlocks {
     NETHER_STAR_GENERATOR_PLUS(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator_plus", 8), "nether_star_generator_plus"),
     NETHER_STAR_GENERATOR_PLUSPLUS(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_generator_plusplus", 64), "nether_star_generator_plusplus"),
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), "block_update_detector"),
+    ADVANCED_BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockAdvancedUpdateDetector(), "advanced_block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
@@ -139,7 +161,11 @@ public enum ModBlocks {
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
     PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
-
+    TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
+    DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
+    CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
+    GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
+    COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
     ; // leave trailing semicolon
     // spotless:on
 

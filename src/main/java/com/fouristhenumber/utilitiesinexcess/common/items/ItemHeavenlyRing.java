@@ -1,11 +1,23 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
+import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -16,15 +28,63 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @EventBusSubscriber()
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemHeavenlyRing extends Item implements IBauble {
 
-    public ItemHeavenlyRing() {
-        setTextureName("utilitiesinexcess:heavenly_ring");
-        setUnlocalizedName("heavenly_ring");
+    private final int RING_COUNT;
+    private final String SUFFIX;
+
+    public final IIcon[] wingIcons;
+
+    public ItemHeavenlyRing(String suffix, int variants) {
+        RING_COUNT = variants;
+        SUFFIX = suffix;
+
+        wingIcons = new IIcon[RING_COUNT];
+
+        setTextureName("utilitiesinexcess:heavenly_ring_" + suffix);
+        setUnlocalizedName("heavenly_ring_" + suffix);
         setMaxDamage(0);
+        setHasSubtypes(true);
+        setMaxStackSize(1);
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        int meta = stack.getItemDamage();
+        if (meta == RING_COUNT - 1) {
+            stack.setItemDamage(0);
+        } else {
+            stack.setItemDamage(meta + 1);
+        }
+        if (world.isRemote) {
+            player.addChatMessage(
+                new ChatComponentTranslation(
+                    "chat.heavenly_ring_modify",
+                    StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        }
+        return super.onItemRightClick(stack, world, player);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        for (int i = 0; i < RING_COUNT; ++i) {
+            wingIcons[i] = register.registerIcon(this.getIconString() + ".wing." + i);
+        }
+        super.registerIcons(register);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        tooltip.add(
+            EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
+        tooltip.add(StatCollector.translateToLocal("item.heavenly_ring.desc"));
+        super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
     @Optional.Method(modid = "Baubles")
@@ -77,6 +137,29 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @EventBusSubscriber.Condition
     public static boolean shouldEventBusSubscribe() {
         return !Mods.Baubles.isLoaded();
+    }
+
+    public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onPlayerRender(RenderPlayerEvent.Pre event) {
+        if (ClientProxy.frameCount % 40 > 1) return;
+
+        EntityPlayer player = event.entityPlayer;
+
+        boolean hasRing = false;
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            ItemStack stack = player.inventory.getStackInSlot(i);
+            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                hasRing = true;
+                wingedPlayers.putIfAbsent(player, stack);
+                break;
+            }
+        }
+
+        if (!hasRing) {
+            wingedPlayers.remove(player);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

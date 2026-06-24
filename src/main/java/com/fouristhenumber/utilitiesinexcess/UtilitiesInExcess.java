@@ -14,10 +14,13 @@ import org.apache.logging.log4j.Logger;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.SpikeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -30,6 +33,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySigni
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
@@ -46,8 +50,12 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.Tile
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntitySolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityTNTGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -69,7 +77,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.6.31,)")
+    dependencies = "required-after:gtnhlib@[0.9.9,); after:ForgeMicroblock")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -80,7 +88,6 @@ public class UtilitiesInExcess {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
-    public static int spikeRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -89,14 +96,15 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntitySpike.class, "utilitiesinexcess:TileEntitySpike");
+        if (Mods.ForgeMicroBlock.isLoaded()) {
+            new Content().init();
+        }
         proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-
         RecipeLoader.run();
 
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
@@ -104,6 +112,7 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
+        GameRegistry.registerTileEntity(TileEntitySpike.class, "TileEntitySpikeUIE");
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClockUIE");
         GameRegistry.registerTileEntity(TileEntityTrashCanItem.class, "TileEntityTrashCanItemUIE");
         GameRegistry.registerTileEntity(TileEntityTrashCanFluid.class, "TileEntityTrashCanFluidUIE");
@@ -117,13 +126,18 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityRadicallyReducedChest.class, "TileEntityRadicallyReducedChestUIE");
         GameRegistry.registerTileEntity(TileEntitySoundMuffler.class, "TileEntitySoundMufflerUIE");
         GameRegistry.registerTileEntity(TileEntityRainMuffler.class, "TileEntityRainMufflerUIE");
+        GameRegistry.registerTileEntity(TileEntityChandelier.class, "TileEntityPendantLightUIE");
+        GameRegistry.registerTileEntity(TileEntityGigaTorch.class, "TileEntityGigaTorchUIE");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetector");
+        GameRegistry
+            .registerTileEntity(TileEntityAdvancedBlockUpdateDetector.class, "TileEntityAdvancedBlockUpdateDetector");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyor");
         GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorld");
         GameRegistry.registerTileEntity(TileEntityBlockUpdateDetector.class, "TileEntityBlockUpdateDetectorUIE");
         GameRegistry.registerTileEntity(TileEntityConveyor.class, "TileEntityConveyorUIE");
         GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorldUIE");
         GameRegistry.registerTileEntity(TileEntitySmartPump.class, "TileEntitySmartPumpUIE");
+        GameRegistry.registerTileEntity(TileEntityCollector.class, "TileEntityCollectorUIE");
         GameRegistry.registerTileEntity(TileEntityQED.class, "TileEntityQEDUIE");
         GameRegistry.registerTileEntity(
             TileEntityLowTemperatureFurnaceGenerator.class,
@@ -142,13 +156,12 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
+        GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
-        spikeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new SpikeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
@@ -191,6 +204,14 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        if (Mods.ForgeMicroBlock.isLoaded()) {
+            FMPRecipeLoader.run();
+        }
+
+        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
+            TinkersCompat.init();
+        }
     }
 
     @Mod.EventHandler
@@ -206,7 +227,7 @@ public class UtilitiesInExcess {
                 .getItem();
         }
 
-        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GLUTTONS_AXE.get());
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GOURMANDS_AXE.get());
 
         @Override
         public ItemStack getIconItemStack() {

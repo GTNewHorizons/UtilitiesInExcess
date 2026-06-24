@@ -1,8 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -14,8 +16,12 @@ import net.minecraft.util.StatCollector;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemSword;
+import com.google.common.collect.Multimap;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
-public class ItemEthericSword extends ItemSword {
+public class ItemEthericSword extends ItemSword implements ITranslucentItem {
+
+    private static final UUID MAGIC_DMG_UUID = UUID.randomUUID();
 
     public ItemEthericSword() {
         super(ToolMaterial.EMERALD);
@@ -55,8 +61,18 @@ public class ItemEthericSword extends ItemSword {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (EthericSwordConfig.unbreakable)
+        if (EthericSwordConfig.unbreakable) {
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
+        }
+    }
+
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(stack);
+        multimap.put(
+            "utilitiesinexcess.magic_damage",
+            new AttributeModifier(MAGIC_DMG_UUID, "utilitiesinexcess.magic_damage", EthericSwordConfig.magicDamage, 0));
+        return multimap;
     }
 
     // Unbreakable

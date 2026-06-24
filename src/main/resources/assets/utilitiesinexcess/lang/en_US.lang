@@ -43,6 +43,9 @@ tile.compressed_gravel.6.name=Septuple Compressed Gravel
 tile.compressed_gravel.7.name=Octuple Compressed Gravel
 tile.compressed_gravel.desc=%,d Gravel
 
+nei.title.uie.plugin=UtilitiesInExcess NEI Plugin
+nei.title.uie.qed=QED Recipes
+
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
 tile.floating_block.name=Floating Block
@@ -50,15 +53,15 @@ tile.floating_block.name=Floating Block
 nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
+tile.ethereal_glass.1.name=Ineffable Glass
 tile.ethereal_glass.2.name=Dark Ethereal Glass
 tile.ethereal_glass.3.name=Ethereal Glass (Inverted)
+tile.ethereal_glass.4.name=Ineffable Glass (Inverted)
 tile.ethereal_glass.5.name=Dark Ethereal Glass (Inverted)
 
-nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block.
-nei.infopage.uie.ethereal_glass.1=Placeholder
+nei.infopage.uie.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
-nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players.
-nei.infopage.uie.ethereal_glass.4=Placeholder
+nei.infopage.uie.ethereal_glass.3=Ethereal Glass (Inverted) has the exact opposite functionality as Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. Ineffable Glass (Inverted) is a variant block with connected textures.
 nei.infopage.uie.ethereal_glass.5=Dark Ethereal Glass (Inverted) has the exact opposite functionality as Dark Ethereal Glass. Mobs can phase through, while it is solid to non-sneaking players. It still blocks all light.
 
 tile.decorative_glass.0.name=Smooth Glass
@@ -67,12 +70,26 @@ tile.decorative_glass.2.name=Bricked Glass
 tile.decorative_glass.3.name=Creepy Glass
 tile.decorative_glass.4.name=Gilded Glass
 tile.decorative_glass.5.name=Obsidian Glass
-tile.decorative_glass.6.name=Latticed Glass
+tile.decorative_glass.6.name=Vortex Glass
 tile.decorative_glass.7.name=Glowing Glass
 tile.decorative_glass.8.name=Beloved Glass
 tile.decorative_glass.9.name=Tiled Glass
 tile.decorative_glass.10.name=Dark Glass
 tile.decorative_glass.11.name=Reinforced Dark Glass
+tile.decorative_glass.12.name=Latticed Glass
+
+tile.decorative_block.0.name=Diamond-Etched Computational Matrix
+tile.decorative_block.1.name=Sand-Infused Endstone
+tile.decorative_block.2.name=Burnt Quartz
+tile.decorative_block.3.name=Sandy Glass
+tile.decorative_block.4.name=Frosted Stone
+tile.decorative_block.5.name=Ender-Infused Obsidian
+tile.decorative_block.6.name=Gravel Bricks
+tile.decorative_block.7.name=Edged Stone Bricks
+tile.decorative_block.8.name=Border Stone
+tile.decorative_block.9.name=Border Stone (Alternate)
+tile.decorative_block.10.name=Gravel Road
+tile.decorative_block.11.name=Carved 'Eminence' Stone
 
 tile.inverted_block.name=Inverted Block
 tile.bedrockium_block.name=Block of Bedrockium
@@ -113,9 +130,9 @@ item.bedrockium_ingot.name=Bedrockium Ingot
 
 nei.infopage.uie.bedrockium.1=Bedrockium is a supremely strong material named after the virtually impervious foundation of the world. It is immensely heavy and will slow you to a crawl while holding it.
 
-item.diamond_stick.name=Diamond Stick
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
+item.pseudo_inversion_sigil.name=Pseudo-Inversion Sigil
 item.inversion_sigil_active.desc=Uses Remaining: %s
 
 chat.inversion_ritual.header=Ritual Of Inversion:
@@ -126,6 +143,26 @@ chat.inversion_ritual.darkness= - There is no light: %s
 chat.inversion_ritual.moon= - Can see the moon: %s
 chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
 
+chat.pseudo_inversion_ritual.header=Ritual Of Pseudo-Inversion:
+chat.pseudo_inversion_ritual.difficultyPeaceful= - Difficulty is incorrect: World is too peaceful
+chat.pseudo_inversion_ritual.correctDimension= - Dimension is correct: ✓ 
+chat.pseudo_inversion_ritual.incorrectDimensionOverworld= - Dimension is incorrect: Too much natural earth 
+chat.pseudo_inversion_ritual.incorrectDimensionNether= - Dimension is incorrect: Too hot 
+chat.pseudo_inversion_ritual.incorrectDimensionOther= - Dimension is incorrect: Too otherworldly
+chat.pseudo_inversion_ritual.chestNorthContents= - North chest: %s
+chat.pseudo_inversion_ritual.chestEastContents= - East chest: %s
+chat.pseudo_inversion_ritual.chestSouthContents= - South chest: %s
+chat.pseudo_inversion_ritual.chestWestContents= - West chest: %s
+chat.pseudo_inversion_ritual.spiral= - Redstone and String spiral done correctly: %s
+chat.pseudo_inversion_ritual.complete=Good luck. Survival is key...
+chat.pseudo_inversion_ritual.ready=Perform the ritual
+chat.pseudo_inversion_ritual.death=Unfortunately, your untimely demise has resulted in a fruitless ritual...
+chat.pseudo_inversion_ritual.leftEnd=Unfortunately, your sudden departure has resulted in a fruitless ritual...
+chat.pseudo_inversion_ritual.onequarter=You've held strong, but there is still a long way to go. %s mobs killed.
+chat.pseudo_inversion_ritual.twoquarters=You're halfway there. Can you do it? %s mobs killed.
+chat.pseudo_inversion_ritual.threequarters=You're almost done, don't let up now. %s mobs killed.
+chat.pseudo_inversion_ritual.victory=You've proven yourself, and your sigil has been refreshed anew as a reward. Cherish it.
+
 nei.infopage.uie.inversion_sigil.1=The Inversion Sigil is a powerful item that may be found in various structures, such as dungeons. It may also be dropped by the Wither. It is used in the creation of Inverted Ingots, but it must first be awakened by a dark ritual.
 nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantment Table while sneaking will give some hints on how to complete the ritual, or read on for precise instructions.
 nei.infopage.uie.inversion_sigil.3=Place an Enchantment Table outdoors on grass with a clear view of the sky, surround it with a ring of redstone dust, and wait until midnight. Ensure the Enchantment Table is in complete darkness, and sacrifice a living creature upon the table.
@@ -135,10 +172,12 @@ item.architects_wand.name=Architect's Wand
 tooltip.architects_wand.1=Can place up to %s blocks at once
 
 nei.infopage.uie.architects_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, you will see a wireframe indicating how a set of blocks will be extended by the wand.
+nei.infopage.uie.architects_wand.2=When holding a building block in your off-hand, the wand will try to place it instead.
+nei.infopage.uie.architects_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar will be placed.
 
-item.gluttons_axe.name=Glutton's Axe
+item.gourmands_axe.name=Gourmand's Axe
 
-nei.infopage.uie.gluttons_axe.1=This axe contains potent restorative magic that will restore the bearer's hunger while it is held. Attacking with the axe will heal whatever is hit at the cost of hunger - but this healing is deadly to the undead.
+nei.infopage.uie.gourmands_axe.1=This axe contains potent restorative magic that will restore the bearer's hunger while it is held. Attacking with the axe will heal whatever is hit at the cost of hunger - but this healing is deadly to the undead.
 
 item.destruction_pickaxe.name=Destruction Pickaxe
 
@@ -161,6 +200,7 @@ item.reversing_hoe.name=Reversing Hoe
 nei.infopage.uie.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It will also convert dirt into grass and cobblestone into stone.
 
 item.unbreakable.desc=Unbreakable
+attribute.name.utilitiesinexcess.magic_damage=Magic Damage
 
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
@@ -188,9 +228,60 @@ nei.infopage.uie.iron_spike.1=Iron spikes will kill enemies that walk on them, d
 nei.infopage.uie.gold_spike.1=Gold spikes will kill enemies that walk on them, dropping their experience and non-"player-only" loot.
 nei.infopage.uie.diamond_spike.1=Diamond spikes will kill enemies that walk on them, dropping experience and "player-only" loot.
 
-item.heavenly_ring.name=Heavenly Ring
-nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory.
-nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot.
+item.heavenly_ring_feather.name=Heavenly Ring (Feathered)
+item.heavenly_ring_dragon.name=Heavenly Ring (Draconic)
+item.heavenly_ring_fairy.name=Heavenly Ring (Fairy)
+item.heavenly_ring_metal.name=Heavenly Ring (Metallic)
+item.heavenly_ring_magic.name=Heavenly Ring (Magical)
+item.heavenly_ring.desc=Use in hand to cycle through different appearances.
+nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
+
+item.heavenly_ring_feather.type.0=Chibi
+item.heavenly_ring_feather.type.1=Angelic
+item.heavenly_ring_feather.type.2=Storm
+item.heavenly_ring_feather.type.3=Phoenix
+item.heavenly_ring_feather.type.4=Swan
+item.heavenly_ring_feather.type.5=Raven
+item.heavenly_ring_feather.type.6=Falcon
+item.heavenly_ring_feather.type.7=Macaw
+
+item.heavenly_ring_dragon.type.0=Red
+item.heavenly_ring_dragon.type.1=Ebony
+item.heavenly_ring_dragon.type.2=Golden
+item.heavenly_ring_dragon.type.3=Leviathan
+item.heavenly_ring_dragon.type.4=Green
+item.heavenly_ring_dragon.type.5=Flower
+item.heavenly_ring_dragon.type.6=Purple
+item.heavenly_ring_dragon.type.7=Moon
+
+item.heavenly_ring_fairy.type.0=Rainbow
+item.heavenly_ring_fairy.type.1=Pixie
+item.heavenly_ring_fairy.type.2=Monarch
+item.heavenly_ring_fairy.type.3=Lunamoth
+item.heavenly_ring_fairy.type.4=Autumn
+item.heavenly_ring_fairy.type.5=Blacklight
+item.heavenly_ring_fairy.type.6=Jeweled Wasp
+item.heavenly_ring_fairy.type.7=Leaf
+
+item.heavenly_ring_magic.type.0=Invisible
+item.heavenly_ring_magic.type.1=Ice
+item.heavenly_ring_magic.type.2=Fire
+item.heavenly_ring_magic.type.3=Lightning
+item.heavenly_ring_magic.type.4=End
+item.heavenly_ring_magic.type.5=Plasma
+item.heavenly_ring_magic.type.6=Crackling
+item.heavenly_ring_magic.type.7=Jelly
+
+item.heavenly_ring_metal.type.0=Golden
+item.heavenly_ring_metal.type.1=Silver
+item.heavenly_ring_metal.type.2=Copper
+item.heavenly_ring_metal.type.3=Glass
+item.heavenly_ring_metal.type.4=Neonblade
+item.heavenly_ring_metal.type.5=Nanotech
+item.heavenly_ring_metal.type.6=Mayfly
+item.heavenly_ring_metal.type.7=Steampunk
+chat.heavenly_ring_modify=Ring appearance is now %s.
 
 item.watering_can_basic.name=Basic Watering Can
 item.watering_can_advanced.name=Advanced Watering Can
@@ -210,7 +301,7 @@ item.glove.desc.1=Press %s to activate.
 item.glove.desc.2=+2,147,483,647 Breeze Projection
 item.glove.desc.3=§oP.S. Breeze Projection does nothing.
 
-nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot.
+nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot. The colors of wool used to craft it will determine the top and bottom color of the item and its model.
 nei.infopage.uie.glove.2=The glove can also be worn in a baubles slot. While equipped in this way, you can hold the "Activate Glove" keybind to be able to click with an empty hand at any time. 
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
@@ -285,7 +376,8 @@ tile.potion_generator_plusplus.name=Potion Generator
 
 nei.infopage.uie.potion_generator.1=Generates RF from potions. The more complex the potion is (the more steps involved in making it) the more RF/t it will generate.
 
-gui.energy.tooltip=RF: %s / %s
+gui.tooltip.energy-max=RF: %s / %s
+gui.tooltip.energy-tick=  RF/t
 
 item.golden_bag.name=Golden Bag of Holding
 nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth of items. Right click to open.
@@ -314,14 +406,19 @@ utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and will emit a redstone pulse if any of them receive a block update.
 
+tile.advanced_block_update_detector.name=Advanced Block Update Detector
+nei.infopage.uie.advanced.block_update_detector.1=Like the standard Block Update Detector, this block will emit a redstone pulse on neighboring block updates. However, it also reacts to changes to tile-entity data or metadata even without a block update. Sneak right click any face of the ABUD to toggle scanning on that side.
+chat.tile.advanced_block_update_detector.toggle=Side %s set to redstone output %s.
+
 tile.drum.name=Drum
-tile.drum.desc=Holds %s buckets of fluid
-tile.drum.desc.fluid=Currently holding %s %sL
-tile.drum.chat.filled=In drum: %s %sL
-tile.drum.chat.empty=Drum is empty
+tile.bedrockium_drum.name=Bedrockium Drum
+tile.drum.desc.empty=Empty
+tile.drum.desc=%s: %s / %s
 
 nei.infopage.uie.drum.1=Drums are simple fluid tanks that keep their contents when broken. 
 
+gui.title.trash_can.name=Trash Can
+gui.title.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_item.name=Trash Can (Item)
 tile.trash_can_fluid.name=Trash Can (Fluid)
 tile.trash_can_energy.name=Trash Can (Energy)
@@ -398,6 +495,12 @@ tile.lapis_aetherius.13.name=Lapis Aetherius Smaragdinus (Dark Green)
 tile.lapis_aetherius.14.name=Lapis Aetherius Sanguineus (Red)
 tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
 
+nei.infopage.uie.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
+
+tile.collector.name=Collector
+
+uie.chat.collector_size=Range: %s blocks
+
 nei.infopage.uie.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
 
 tile.blackout_curtains.name=Blackout Curtains
@@ -406,7 +509,7 @@ nei.infopage.uie.blackout_curtains.1=Blackout Curtains have no collision and blo
 
 tile.conveyor.name=Conveyor
 
-nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible.
+nei.infopage.uie.conveyor.1=A simple conveyor belt which will push anything on it, keeping it centered on the block if possible. If a conveyor pushes an item into the side of another conveyor, it will be pushed up and onto it.
 
 tile.underworld_portal.name=Portal to the Underworld
 
@@ -429,5 +532,63 @@ nei.infopage.uie.temporal_gate.3=Right-click the portal in any other dimension t
 nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal placed in the End of Time. If it no longer exists, you will appear at the bedrock below where you originally entered. If even that is gone, the platform will reappear, replacing anything in its way.
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
+tile.chandelier.0.name=Chandelier
+tile.chandelier.1.name=Copper Chandelier
+tile.chandelier.2.name=Redstone Chandelier
+tile.chandelier.3.name=Soul Chandelier
+tile.chandelier.desc=%d block radius (square)
+nei.infopage.uie.chandelier.1=A torch that prevents natural mob spawning in range. Spawners are not affected. Must hang from a block.
+
+tile.giga_torch.name=Giga Torch
+tile.giga_torch.desc=%d block radius (square)
+nei.infopage.uie.giga_torch.1=A torch that prevents natural mob spawning in range. Spawners are not affected.
+
+tile.trading_post.name=Trading Post
+tile.trading_post.villager_count=Found %,d Villagers
+tile.trading_post.search_hint=Search...
+tile.trading_post.help_tooltip.0=Trade Controls:
+tile.trading_post.help_tooltip.1=§6Left-Click§7 to Trade
+tile.trading_post.help_tooltip.2=§6Shift + Left-Click§7 to Trade Stack
+tile.trading_post.help_tooltip.3=§6Alt + Left-Click§7 to Favorite Trade
+tile.trading_post.help_tooltip.4=§6Right-Click§7 to Highlight Villager
+tile.trading_post.help_tooltip.5=You can search for:
+tile.trading_post.help_tooltip.6=§7 - Item names & tooltips
+tile.trading_post.help_tooltip.7=§7 - Villager professions
+tile.trading_post.help_tooltip.8=§7 - Villager name tags
+
+nei.infopage.uie.trading_post.1=This block allows you to trade with every villager in 32 block area all in one place! Simply click on a trade from the list to trade.
+
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
+
+uie.colored_blocks.color.0=Colored %s (White)
+uie.colored_blocks.color.1=Colored %s (Orange)
+uie.colored_blocks.color.2=Colored %s (Magenta)
+uie.colored_blocks.color.3=Colored %s (Light Blue)
+uie.colored_blocks.color.4=Colored %s (Yellow)
+uie.colored_blocks.color.5=Colored %s (Lime)
+uie.colored_blocks.color.6=Colored %s (Pink)
+uie.colored_blocks.color.7=Colored %s (Gray)
+uie.colored_blocks.color.8=Colored %s (Light Gray)
+uie.colored_blocks.color.9=Colored %s (Cyan)
+uie.colored_blocks.color.10=Colored %s (Purple)
+uie.colored_blocks.color.11=Colored %s (Blue)
+uie.colored_blocks.color.12=Colored %s (Brown)
+uie.colored_blocks.color.13=Colored %s (Dark Green)
+uie.colored_blocks.color.14=Colored %s (Red)
+uie.colored_blocks.color.15=Colored %s (Black)
+
+material.bedrockium_uie=Bedrockium
+material.bedrockium_uie.ability=Heavy
+material.magical_wood=Magical Wooden
+material.magical_wood.ability=Magically Modifiable
+material.inverted=Inverted
+material.inverted.ability=Fully Inverted
+
+nei.infopage.uie.ticon_inverted=If a Tinker's Construct tool is made using entirely inverted parts, it will be unbreakable.
+nei.infopage.uie.ticon_magic_wood=If a Tinker's Construct tool is made using entirely magical wooden parts, it will gain 8 additional modifiers.
+nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockium part are heavy and will slow the wielder down while held.
+
+ue_wall.name=%s Wall
+ue_fence.name=%s Fence
+ue_sphere.name=%s Impossible Object

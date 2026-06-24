@@ -5,17 +5,20 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 
 import akka.japi.Pair;
 
-public class ItemDestructionPickaxe extends ItemPickaxe {
+public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
 
     public ItemDestructionPickaxe() {
         super(ToolMaterial.EMERALD);
@@ -43,6 +46,16 @@ public class ItemDestructionPickaxe extends ItemPickaxe {
             resultLookup.put(new Pair<>(pattern, name), res);
         }
         return resultLookup.get(new Pair<>(pattern, name));
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, int x, int y, int z,
+        EntityLivingBase harvester) {
+        if (!worldIn.isRemote) {
+            worldIn.setBlockToAir(x, y, z);
+        }
+
+        return super.onBlockDestroyed(stack, worldIn, blockIn, x, y, z, harvester);
     }
 
     @Override

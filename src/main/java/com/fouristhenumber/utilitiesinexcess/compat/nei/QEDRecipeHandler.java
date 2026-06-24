@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.fouristhenumber.utilitiesinexcess.api.QEDRecipe;
 import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
@@ -18,7 +19,7 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return "QED Recipes";
+        return StatCollector.translateToLocal("nei.title.uie.qed");
     }
 
     @Override
