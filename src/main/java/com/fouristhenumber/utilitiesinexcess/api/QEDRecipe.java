@@ -36,8 +36,9 @@ public class QEDRecipe {
                         return false;
                     }
 
-                    if (recipeInput.getItemDamage() != providedInput.getItemDamage()) {
-                        return recipeInput.getItemDamage() == OreDictionary.WILDCARD_VALUE;
+                    if (recipeInput.getItemDamage() != providedInput.getItemDamage()
+                        && recipeInput.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+                        return false;
                     }
                 } else if (rawRecipeInput instanceof ItemStack[]ores) {
                     boolean matched = false;
