@@ -202,7 +202,7 @@ public class BlockConfig {
         public int gigaTorchRange;
     }
 
-    @Config.Comment("Cursed Earth Configuration")
+    @Config.Comment("Spike Configuration")
     public static final Spikes spikes = new Spikes();
 
     @Config.LangKey("utilitiesinexcess.config.block.spikes")

@@ -435,6 +435,8 @@ tile.cursed_earth.blessed.desc=Spawns passive mobs aggressively
 
 nei.infopage.uie.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's Awakening Ritual. It rapidly spawns monsters, spreads in darkness, and burns away in bright light. Monster Spawners are supercharged when Cursed Earth is below them, and they will continue to operate even when a player is not nearby.
 
+nei.infopage.uie.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Reversing Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
+
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
 utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
