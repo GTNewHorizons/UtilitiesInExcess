@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
