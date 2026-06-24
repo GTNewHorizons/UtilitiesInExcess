@@ -26,10 +26,6 @@ public class FluidColorCache {
     private static final HashMap<Fluid, Integer> colorMap = new HashMap<>();
 
     public static void buildCache() {
-        // Hardcode vanilla fluids because they are dumb, as always.
-        colorMap.put(FluidRegistry.WATER, 0x3F76E4);
-        colorMap.put(FluidRegistry.LAVA, 0xE85B1A);
-
         TextureMap blockAtlas = Minecraft.getMinecraft()
             .getTextureMapBlocks();
 
@@ -46,7 +42,6 @@ public class FluidColorCache {
 
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
             .values()) {
-            if (colorMap.containsKey(fluid)) continue;
             // Some fluid implementations provide a useful value for getColor(), but they often don't.
             int fluidColor = fluid.getColor();
             if (fluidColor != 0xFFFFFF) {
@@ -82,6 +77,9 @@ public class FluidColorCache {
             int color = ((r / count) << 16) | ((g / count) << 8) | (b / count);
             colorMap.put(fluid, color);
         }
+        // Hardcode vanilla fluids because they are dumb, as always.
+        colorMap.put(FluidRegistry.WATER, 0x3F76E4);
+        colorMap.put(FluidRegistry.LAVA, 0xE85B1A);
     }
 
     public static int getColor(Fluid fluid) {
