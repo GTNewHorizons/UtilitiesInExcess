@@ -15,6 +15,10 @@ public class EnderLotusConfig {
     @Config.DefaultBoolean(true)
     public static boolean spawnEnderLotusesInEnd;
 
+    @Config.Comment("Average growth ticks to increase growth stage while planted on endspark")
+    @Config.DefaultInt(4)
+    public static int growthTicksOnEndspark;
+
     @Config.Comment("Average growth ticks to increase growth stage while planted on endstone")
     @Config.DefaultInt(25)
     public static int growthTicksOnEndstone;
@@ -26,6 +30,10 @@ public class EnderLotusConfig {
     @Config.Comment("Chance to drop an extra seed when harvested from a fully grown plant on endstone")
     @Config.DefaultDouble(0.02)
     public static double extraSeedChanceOnEndstone;
+
+    @Config.Comment("Chance to drop an extra seed when harvested from a fully grown plant on endspark")
+    @Config.DefaultDouble(0.20)
+    public static double extraSeedChanceOnEndspark;
 
     @Config.Comment("Ender Lotuses hurt players and mobs when they walk on them")
     @Config.DefaultBoolean(true)

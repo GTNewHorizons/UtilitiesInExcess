@@ -116,6 +116,8 @@ public class IMCForNEI {
             sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.ticon_magic_wood");
         }
 
+        sendInfoPage("<utilitiesinexcess:endspark>", "nei.infopage.uie.endspark.1");
+
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.2");
 
