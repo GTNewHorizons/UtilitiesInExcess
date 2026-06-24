@@ -15,6 +15,7 @@ public class BlockQED extends BlockContainer {
         super(Material.iron);
         setBlockName("qed");
         setBlockTextureName("utilitiesinexcess:qed");
+        setHardness(5.0F);
     }
 
     @Override

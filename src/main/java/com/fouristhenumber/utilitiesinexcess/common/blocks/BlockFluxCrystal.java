@@ -9,5 +9,6 @@ public class BlockFluxCrystal extends Block {
         super(Material.iron);
         setBlockName("flux_crystal");
         setBlockTextureName("utilitiesinexcess:flux_crystal");
+        setHardness(5.0F);
     }
 }
