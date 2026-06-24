@@ -107,7 +107,7 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     }
 
     private void renderUpdate() {
-        if (worldObj != null && !worldObj.isRemote) {
+        if (worldObj != null) {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
@@ -129,7 +129,7 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
             : tank.getFluid()
                 .getFluid();
         if (before != after) {
-            worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
 }
