@@ -270,7 +270,7 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         return tag;
     }
 
-    // Snubs
+    // Stubs
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
     }

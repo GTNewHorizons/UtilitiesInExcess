@@ -36,7 +36,7 @@ public class RainMufflerDataProvider implements IWailaDataProvider {
         return currentTip;
     }
 
-    // Snubs
+    // Stubs
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
         int y, int z) {
         return tag;
