@@ -479,8 +479,8 @@ nei.infopage.uie.rain_muffler.1=This comforting block allows you tune out the so
 tile.rain_muffler.chat.global_enable=You dull your senses to the sound of the rain
 tile.rain_muffler.chat.global_disable=You become aware of the sound of the rain
 
-tile.rain_muffler.waila.global_enabled=Rain unmuted
-tile.rain_muffler.waila.global_disabled=Rain muted
+tile.rain_muffler.waila.global_enabled=Rain muted
+tile.rain_muffler.waila.global_disabled=Rain unmuted
 
 tile.lapis_aetherius.0.name=Lapis Aetherius Candidus (White)
 tile.lapis_aetherius.1.name=Lapis Aetherius Flammeus (Orange)

@@ -27,6 +27,6 @@ public class WailaCompat {
         registrar.registerNBTProvider(GeneratorDataProvider.INSTANCE, BlockBaseGenerator.class);
         registrar.registerBodyProvider(GeneratorDataProvider.INSTANCE, BlockBaseGenerator.class);
 
-        registrar.registerBodyProvider((IWailaDataProvider) ModBlocks.RAIN_MUFFLER.get(), BlockRainMuffler.class);
+        registrar.registerBodyProvider(RainMufflerDataProvider.INSTANCE, BlockRainMuffler.class);
     }
 }
