@@ -197,6 +197,8 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
 
+        sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
+
         sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.1");
 
         sendInfoPage("utilitiesinexcess:collector", "nei.infopage.uie.collector.1");
