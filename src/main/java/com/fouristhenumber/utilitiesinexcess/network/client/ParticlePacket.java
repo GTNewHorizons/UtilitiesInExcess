@@ -81,8 +81,7 @@ public class ParticlePacket implements IMessage {
                     message.z,
                     message.velocityX,
                     message.velocityY,
-                    message.velocityZ
-                );
+                    message.velocityZ);
             }
             return null;
         }

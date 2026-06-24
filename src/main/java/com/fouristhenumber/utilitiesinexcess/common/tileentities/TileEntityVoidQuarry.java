@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.github.bsideup.jabel.Desugar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,12 +52,12 @@ import org.joml.Vector4i;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarryUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.VoidQuarryUpgradeManager;
+import com.fouristhenumber.utilitiesinexcess.common.events.ItemDropCaptureEvents;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
-import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
@@ -75,6 +76,9 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     public static final int BASE_STEPS_PER_TICK = VoidQuarryConfig.voidQuarryBaseSpeed;
     public static final int ITEM_BUFFER_CAPACITY = BASE_STEPS_PER_TICK * 5; // Emptied every 4 ticks + some margin for
                                                                             // more than one item per block
+    // Headroom kept above each fluid tank's soft cap so a single block we already broke can always be stored without
+    // loss. One vanilla fluid block is 1000 mB and fortune does not apply to fluids, so one block of overshoot fits.
+    public static final int FLUID_OVERFLOW_BUFFER = 1000;
     public static Block REPLACE_BLOCK = Blocks.dirt;
     public boolean isCreativeBoosted = false;
     private int storedItems;
@@ -101,7 +105,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
 
     protected final EnergyStorage energyStorage = new EnergyStorage(VoidQuarryConfig.voidQuarryEnergyStorage);
     protected final List<FluidTank> fluidStorage = Stream
-        .generate(() -> new FluidTank(VoidQuarryConfig.voidQuarryFluidTankStorage))
+        .generate(() -> new FluidTank(VoidQuarryConfig.voidQuarryFluidTankStorage + FLUID_OVERFLOW_BUFFER))
         .limit(VoidQuarryConfig.voidQuarryFluidTankAmount)
         .collect(Collectors.toList());
     protected final Object2IntMap<@NotNull ItemStack> itemStorage = new Object2IntOpenCustomHashMap<>(
@@ -174,13 +178,8 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     public void startQuarry() {
         if (state == QuarryWorkState.STOPPED && workArea != null) {
             state = QuarryWorkState.RUNNING;
-            Tuple<Boolean, Boolean> harvestResult = tryHarvestCurrentBlock();
-            boolean wasAbleToHarvest = harvestResult.first;
-            boolean blockWasSkipped = harvestResult.second;
-            if (wasAbleToHarvest) {
-                if (!blockWasSkipped) {
-                    removeCurrentBlock();
-                }
+            BlockHarvestResult harvestResult = tryHarvestCurrentBlock();
+            if (harvestResult.visitedBlock) {
                 brokenBlocksTotal++;
             }
         }
@@ -693,26 +692,52 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     }
 
     /**
-     * Tries to store the resulting resources of the block at the current position,
-     * and store the items / fluid to the internal storage.
+     * Outcome of attempting to harvest the block at the current position.
      *
-     * @return A boolean tuple of: &lt;Could we work & harvest the block, Did we skip this block&gt;
+     * @param canContinue  True if the quarry may immediately move on to the next block. Resulting from:
+     *                     the position was skipped, or the block was broken and its drops were stored with headroom to
+     *                     spare.
+     *                     False means we stopped, resulting from: either we couldn't afford to break it (block left
+     *                     intact)
+     *                     or storing the drops pushed a buffer into overshoot (block already broken).
+     *                     The relevant STOPPED_WAITING_FOR_* state has been set in that case (and should then be used).
+     * @param visitedBlock True if we completed work on this position (skipped or broken) and should count towards
+     *                     progress,
+     *                     even when we have to pause afterwards because of an overshoot.
      */
-    private Tuple<Boolean, Boolean> tryHarvestCurrentBlock() {
+    @Desugar
+    private record BlockHarvestResult(boolean canContinue, boolean visitedBlock) {}
+
+    /**
+     * Tries to harvest the block at the current position by consuming power,
+     * and store its resulting items / fluids into the internal storage.
+     *
+     * @return See {@link BlockHarvestResult}
+     */
+    private BlockHarvestResult tryHarvestCurrentBlock() {
         Block block = worldObj.getBlock(dx, dy, dz);
         if (block.getMaterial() == Material.air || worldObj.isAirBlock(dx, dy, dz)
             || block == (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.WORLD_HOLE) ? Blocks.air
                 : REPLACE_BLOCK)
             || block.getBlockHardness(worldObj, dx, dy, dz) < 0
             || block.getBlockHardness(worldObj, dx, dy, dz) > 100) {
-            return new Tuple<>(tryConsumeEnergy(0f, false), true);
-        } ;
+            // Can't mine here, but we still use energy. If we are missing that, stop for now.
+            boolean haveEnergy = tryConsumeEnergy(0f, false);
+            return new BlockHarvestResult(haveEnergy, haveEnergy);
+        }
 
         float hardness = block.getBlockHardness(worldObj, dx, dy, dz);
-        if (tryConsumeEnergy(hardness, true)) {
-            return new Tuple<>((harvestAndStoreBlock(block) && tryConsumeEnergy(hardness, false)), false);
+        if (!tryConsumeEnergy(hardness, true)) {
+            return new BlockHarvestResult(false, false);
         }
-        return new Tuple<>(false, false);
+
+        BlockBreakAndStoreResult breakAndStoreResult = breakAndStoreBlock(block);
+        if (!breakAndStoreResult.couldRemoveBlock) {
+            return new BlockHarvestResult(true, true);
+        }
+        // We broke the block, so we have to consume the energy for it now
+        tryConsumeEnergy(hardness, false);
+        return new BlockHarvestResult(breakAndStoreResult.hadHeadroom, true);
     }
 
     private boolean tryConsumeEnergy(float hardness, boolean simulate) {
@@ -731,13 +756,33 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     }
 
     /**
-     * Harvests the block at the current position, and tries to store the resulting items / fluids to internal storage
-     *
-     * @return If we could store all resulting items / fluids
+     * @param hadHeadroom      True if, after committing this block's drops, both buffers still have headroom below
+     *                         their
+     *                         soft cap. False means we overshot and should pause until enough space is back.
+     * @param couldRemoveBlock Whether the block was actually removed / replaced.
      */
-    private boolean harvestAndStoreBlock(Block block) {
+    @Desugar
+    private record BlockBreakAndStoreResult(boolean hadHeadroom, boolean couldRemoveBlock) {}
+
+    /**
+     * Breaks the block at the current position and stores the resulting items / fluids into the internal storage.
+     * The drops are always committed even if that overshoots a buffer, so nothing is ever lost once a block is broken.
+     *
+     * @return Whether storing left headroom, and whether the block could be removed, see
+     *         {@link BlockBreakAndStoreResult}
+     */
+    private BlockBreakAndStoreResult breakAndStoreBlock(Block block) {
         try {
             int meta = worldObj.getBlockMetadata(dx, dy, dz);
+            ItemDropCaptureEvents.startCapturingDrops(this.worldObj.provider.dimensionId, 16, dx, dy, dz);
+            boolean couldRemoveBlock = tryRemoveCurrentBlock();
+
+            if (!couldRemoveBlock) {
+                // Could not remove block, treat as non failure on storage (but skipped)
+                return new BlockBreakAndStoreResult(true, false);
+            }
+
+            // Try to harvest as fluid
             if (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.PUMP_FLUIDS)) {
                 FluidStack fluid = null;
                 if ((block == Blocks.water || block == Blocks.flowing_water) && meta == 0) {
@@ -748,20 +793,22 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     fluid = fluidBlock.drain(worldObj, dx, dy, dz, false);
                 }
                 if (fluid != null) {
-                    return tryStoreFluid(fluid);
+                    return new BlockBreakAndStoreResult(storeFluid(fluid), true);
                 }
             }
 
+            // Still running, couldn't harvest as fluid so treat as solid
             EntityPlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) worldObj);
             @Nullable
-            List<ItemStack> drops = null;
+            ArrayList<ItemStack> drops = null;
             // Try to silk touch if we have the upgrade
             if (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.SILK_TOUCH)) {
                 if (block.canSilkHarvest(worldObj, fakePlayer, dx, dy, dz, meta)) {
                     Item item = Item.getItemFromBlock(block);
                     if (item != null) {
                         // Set item damage from meta if the BlockItem has subtypes
-                        drops = Collections.singletonList(new ItemStack(item, 1, item.getHasSubtypes() ? meta : 0));
+                        drops = new ArrayList<>(
+                            Collections.singleton(new ItemStack(item, 1, item.getHasSubtypes() ? meta : 0)));
                     }
                 }
             }
@@ -775,66 +822,104 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     meta,
                     (int) upgradeManager.getValue(VoidQuarryUpgradeManager.TieredVoidQuarryUpgrade.FORTUNE, 0));
             }
-            // We can accept that the maximum stored amount is sometimes overrun by fortune
+
+            drops.addAll(ItemDropCaptureEvents.stopCapturingAndCollectDrops());
+            // We can accept that the maximum stored amount is sometimes overrun by fortune and other unexpected TE
+            // drops
             if (!drops.isEmpty()) {
-                return tryStoreItems(drops);
+                return new BlockBreakAndStoreResult(storeItems(drops), true);
             }
 
             // Block probably just has no drops
-            return true;
+            return new BlockBreakAndStoreResult(true, true);
         } catch (Exception ignored) {
             UtilitiesInExcess.LOG
                 .error("EQ Failed while trying to harvest block {} at {} {} {}.", block.toString(), dx, dy, dz);
-            return false;
+            return new BlockBreakAndStoreResult(true, false);
+        } finally {
+            ItemDropCaptureEvents.stopCapturingFinal();
         }
     }
 
     /**
-     * Tries to store the provided fluid in the internal tanks
-     *
-     * @return If we could store all the provided fluid
+     * Remove / replace the current block.
+     * Does not check for anything, should be called after tryHarvestCurrentBlock() returns true.
      */
-    private boolean tryStoreFluid(FluidStack fluid) {
-        int toStore = fluid.amount;
+    private boolean tryRemoveCurrentBlock() {
+        spawnParticle(dx, dy, dz);
+        return worldObj.setBlock(
+            dx,
+            dy,
+            dz,
+            upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
+    }
+
+    /**
+     * Stores the provided fluid in the internal tanks, overflowing 1000mb into the buffer above each tank's
+     * soft cap if needed.
+     *
+     * @return True if the tanks still have headroom afterwards, false if we overshot and should pause (in which case
+     *         {@link QuarryWorkState#STOPPED_WAITING_FOR_FLUID_SPACE} is set)
+     */
+    private boolean storeFluid(FluidStack fluid) {
         for (FluidTank tank : fluidStorage) {
-            if (toStore > 0) {
-                toStore -= Math.min(tank.fill(fluid, false), toStore);
-            }
+            if (fluid.amount <= 0) break;
+            fluid.amount -= tank.fill(fluid, true);
         }
-        if (toStore == 0) {
-            toStore = fluid.amount;
-            for (FluidTank tank : fluidStorage) {
-                if (toStore > 0) {
-                    toStore -= tank.fill(fluid, true);
-                } else {
-                    break;
-                }
-            }
-            if (toStore == 0) {
-                return true;
-            }
+        if (fluid.amount > 0) {
+            // Couldn't store all the fluid, a .drain() probably returned more than 1000mb at once.
+            UtilitiesInExcess.LOG.warn(
+                "EQ had to discard {} mB of {} at {} {} {}, all fluid tanks were full of other fluids.",
+                fluid.amount,
+                fluid.getFluid()
+                    .getName(),
+                dx,
+                dy,
+                dz);
+        }
+        if (hasFluidHeadroom()) {
+            return true;
         }
         state = QuarryWorkState.STOPPED_WAITING_FOR_FLUID_SPACE;
         return false;
     }
 
     /**
-     * Tries to store the provided list of items in the internal item storage
+     * Stores the provided items in the internal item storage. The buffer is always allowed to overrun,
+     * mainly because we don't EVER want to void items.
      *
-     * @return If we could store all the provided items
+     * @return True if the buffer still has headroom afterwards, false if we overshot and should pause (in which case
+     *         {@link QuarryWorkState#STOPPED_WAITING_FOR_ITEM_SPACE} is set)
      */
-    private boolean tryStoreItems(List<ItemStack> items) {
-        int toStore = 0;
+    private boolean storeItems(List<ItemStack> items) {
         for (ItemStack item : items) {
-            toStore += item != null ? item.stackSize : 0;
-        }
-        if (storedItems + toStore <= ITEM_BUFFER_CAPACITY) {
-            for (ItemStack item : items) {
+            if (item != null) {
                 storeItemToStorage(item);
             }
+        }
+        if (hasItemHeadroom()) {
             return true;
         }
         state = QuarryWorkState.STOPPED_WAITING_FOR_ITEM_SPACE;
+        return false;
+    }
+
+    /**
+     * @return True if the item buffer is still below its soft cap and can take another block's drops
+     */
+    private boolean hasItemHeadroom() {
+        return storedItems < ITEM_BUFFER_CAPACITY;
+    }
+
+    /**
+     * @return True if at least one fluid tank is still below its soft cap and can take another block's worth of fluid
+     */
+    private boolean hasFluidHeadroom() {
+        for (FluidTank tank : fluidStorage) {
+            if (tank.getFluidAmount() < VoidQuarryConfig.voidQuarryFluidTankStorage) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -1066,19 +1151,6 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     }
 
     /**
-     * Remove / replace the current block.
-     * Does not check for anything, should be called after tryHarvestCurrentBlock() returns true.
-     */
-    private void removeCurrentBlock() {
-        spawnParticle(dx, dy, dz);
-        worldObj.setBlock(
-            dx,
-            dy,
-            dz,
-            upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.WORLD_HOLE) ? Blocks.air : REPLACE_BLOCK);
-    }
-
-    /**
      * Spawns particles around the broken block for nearby players.
      */
     public void spawnParticle(int x, int y, int z) {
@@ -1095,18 +1167,8 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     double d1 = y + dy + worldObj.rand.nextFloat() * 0.25;
                     double d2 = z + dz + worldObj.rand.nextFloat() * 0.25;
 
-                    PacketHandler.INSTANCE.sendToAllAround(
-                        new ParticlePacket(
-                            "depthsuspend",
-                            d0,
-                            d1,
-                            d2,
-                            1,
-                            0,
-                            0,
-                            0
-                        ),
-                        targetPoint);
+                    PacketHandler.INSTANCE
+                        .sendToAllAround(new ParticlePacket("depthsuspend", d0, d1, d2, 1, 0, 0, 0), targetPoint);
                 }
             }
         }
@@ -1204,19 +1266,26 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
 
         // This may mean any mix of: Blocks broken & Blocks skipped
         int blocksVisitedThisTick = 0;
-        // Check if we can harvest the current block if we are stopped by something, but have already started working
-        if (state != QuarryWorkState.RUNNING && state != QuarryWorkState.FINISHED && state != QuarryWorkState.STOPPED) {
-            Tuple<Boolean, Boolean> harvestResult = tryHarvestCurrentBlock();
-            boolean wasAbleToHarvest = harvestResult.first;
-            boolean blockWasSkipped = harvestResult.second;
-            if (wasAbleToHarvest) {
+        // We stopped mid-area for some reason, so we figure out whether we can resume on this tick
+        if (state == QuarryWorkState.STOPPED_WAITING_FOR_ITEM_SPACE
+            || state == QuarryWorkState.STOPPED_WAITING_FOR_FLUID_SPACE) {
+            // The block at the current position was already broken before we paused, so we must not touch it again.
+            // Wait until BOTH buffers have headroom (we can't tell ahead of time whether the next block yields items or
+            // fluid), then let the normal loop step on to the next block
+            if (hasItemHeadroom() && hasFluidHeadroom()) {
                 state = QuarryWorkState.RUNNING;
-                if (!blockWasSkipped) {
-                    removeCurrentBlock();
-                }
-                blocksVisitedThisTick++;
             }
-        }
+        } else
+            if (state == QuarryWorkState.STOPPED_WAITING_FOR_ENERGY || state == QuarryWorkState.THROTTLED_BY_ENERGY) {
+                // Energy is gated before the block break, so the current block is still intact
+                BlockHarvestResult harvestResult = tryHarvestCurrentBlock();
+                if (harvestResult.visitedBlock) {
+                    blocksVisitedThisTick++;
+                }
+                if (harvestResult.canContinue) {
+                    state = QuarryWorkState.RUNNING;
+                }
+            }
 
         if (state == QuarryWorkState.RUNNING) {
             int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)
@@ -1235,18 +1304,13 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                         String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
                 }
 
-                Tuple<Boolean, Boolean> harvestResult = tryHarvestCurrentBlock();
-                boolean wasAbleToHarvest = harvestResult.first;
-                boolean blockWasSkipped = harvestResult.second;
-                if (wasAbleToHarvest) {
-                    if (!blockWasSkipped) {
-                        removeCurrentBlock();
-                    }
+                BlockHarvestResult harvestResult = tryHarvestCurrentBlock();
+                // Count the block even if we have to pause right after
+                if (harvestResult.visitedBlock) {
                     blocksVisitedThisTick++;
-                } else {
-                    // Check if something has stopped us (out of space / energy)
-                    if (state != QuarryWorkState.RUNNING) break;
                 }
+                // Stopped because we ran out of energy (block intact) or overshot a storage buffer (block broken)
+                if (!harvestResult.canContinue) break;
             }
             if (blocksVisitedThisTick < stepsPerTick && state == QuarryWorkState.RUNNING) {
                 if (nextWorkAreas.isEmpty()) {

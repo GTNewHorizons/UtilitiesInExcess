@@ -60,7 +60,7 @@ dependencies {
     api("com.github.GTNewHorizons:waila:1.9.15:dev") { transitive = false }
 
     // For debugging chunkloading (/chunkloaders)
-    runtimeOnlyNonPublishable('curse.maven:chicken-chunks-229316:2233250')
+    //runtimeOnlyNonPublishable('curse.maven:chicken-chunks-229316:2233250')
     // Testing performance with void quarry inserts
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderCore:0.5.0:dev") { transitive = false }
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.29:dev") { transitive = false }
