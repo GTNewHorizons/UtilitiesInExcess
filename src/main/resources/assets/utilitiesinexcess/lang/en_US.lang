@@ -387,6 +387,7 @@ nei.infopage.uie.xray_glasses.1=These stylish spectacles will highlight like blo
 
 tile.qed.name=QED
 tile.flux_crystal.name=Flux Crystal
+nei.infopage.uie.qed.1=The QED is a simple machine that draws Flux Energy from nearby Flux Crystals in order to complete recipes. The QED operates faster for each Flux Crystal in a 9 block sphere around it.
 
 gui.flux_strength=Flux Strength: %s
 
