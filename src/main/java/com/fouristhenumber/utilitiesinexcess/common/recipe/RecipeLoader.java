@@ -1262,6 +1262,7 @@ public class RecipeLoader {
     }
 
     private static void loadQEDRecipes() {
+        // QED
         addShapedRecipe(
             ModBlocks.QED,
             "ece",
@@ -1276,6 +1277,7 @@ public class RecipeLoader {
             'm',
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
 
+        // Flux Crystal
         addShapedRecipe(
             ModBlocks.FLUX_CRYSTAL,
             " e ",
@@ -1286,23 +1288,38 @@ public class RecipeLoader {
             'o',
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
 
+        // Ore + Coal -> Ingot (QED)
         QEDRegistry.instance()
             .addRecipe(
-                new ItemStack(Items.gold_ingot),
-                new String[] { "NNN", "NGN", "NNN" },
-                'N',
-                new ItemStack(Items.gold_nugget),
-                'G',
-                "blockGlass");
+                new ItemStack(Items.gold_ingot, 3),
+                new String[] { "OC ", "   ", "   " },
+                'O',
+                Blocks.gold_ore,
+                'C',
+                Items.coal);
 
         QEDRegistry.instance()
             .addRecipe(
-                new ItemStack(Items.iron_boots),
-                new String[] { "NNN", "NGN", "NNN" },
-                'N',
-                new ItemStack(Items.gold_nugget),
-                'G',
-                ModBlocks.BEDROCKIUM_BLOCK);
+                new ItemStack(Items.iron_ingot, 3),
+                new String[] { "OC ", "   ", "   " },
+                'O',
+                Blocks.iron_ore,
+                'C',
+                Items.coal);
+
+        // Giga Torch (QED)
+        QEDRegistry.instance()
+            .addRecipe(
+                ModBlocks.GIGA_TORCH.newItemStack(),
+                new String[] { "RCH", "CWC", "CWC" },
+                'R',
+                new ItemStack(Items.potionitem, 1, 8225),
+                'H',
+                new ItemStack(Items.potionitem, 1, 8229),
+                'W',
+                "logWood",
+                'C',
+                ModBlocks.CHANDELIER);
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {

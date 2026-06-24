@@ -41,7 +41,7 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new RecipeTransferRect(new Rectangle(166, 74, 24, 18), getOverlayIdentifier()));
+        transferRects.add(new RecipeTransferRect(new Rectangle(84, 23, 24, 18), getOverlayIdentifier()));
     }
 
     @Override
