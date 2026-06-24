@@ -81,6 +81,7 @@ import minetweaker.MineTweakerAPI;
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
+    public static final String MODNAME = "Utilities in Excess";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     @Mod.Instance(MODID)

@@ -23,21 +23,8 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
     }
 
     @Override
-    public void loadUsageRecipes(ItemStack ingredient) {
-        for (QEDRecipe qedRecipe : QEDRegistry.instance()
-            .getAllRecipes()) {
-            if (!qedRecipe.containsInput(ingredient)) continue;
-            CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
-            if (neiRecipe == null) continue;
-            neiRecipe.computeVisuals();
-            neiRecipe.setIngredientPermutation(neiRecipe.ingredients, ingredient);
-            this.arecipes.add(neiRecipe);
-        }
-    }
-
-    @Override
-    public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals(getOverlayIdentifier())) {
+    public void loadUsageRecipes(String inputId, Object... ingredients) {
+        if (inputId.equals(this.getOverlayIdentifier())) {
             for (QEDRecipe qedRecipe : QEDRegistry.instance()
                 .getAllRecipes()) {
                 CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
@@ -45,8 +32,38 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
                 neiRecipe.computeVisuals();
                 this.arecipes.add(neiRecipe);
             }
-        } else if (outputId.equals("item")) {
-            loadCraftingRecipes((ItemStack) results[0]);
+        } else {
+            super.loadUsageRecipes(inputId, ingredients);
+        }
+    }
+
+    @Override
+    public void loadUsageRecipes(ItemStack ingredient) {
+        for (QEDRecipe qedRecipe : QEDRegistry.instance()
+            .getAllRecipes()) {
+            CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
+            if (neiRecipe == null) continue;
+
+            if (neiRecipe.contains(neiRecipe.ingredients, ingredient)) {
+                neiRecipe.computeVisuals();
+                neiRecipe.setIngredientPermutation(neiRecipe.ingredients, ingredient);
+                this.arecipes.add(neiRecipe);
+            }
+        }
+    }
+
+    @Override
+    public void loadCraftingRecipes(String outputId, Object... results) {
+        if (outputId.equals(this.getOverlayIdentifier())) {
+            for (QEDRecipe qedRecipe : QEDRegistry.instance()
+                .getAllRecipes()) {
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
+                if (neiRecipe == null) continue;
+                neiRecipe.computeVisuals();
+                this.arecipes.add(neiRecipe);
+            }
+        } else {
+            super.loadCraftingRecipes(outputId, results);
         }
     }
 
@@ -71,7 +88,6 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
                     return null;
                 }
             }
-
             return new CachedShapedRecipe(3, 3, inputs, recipe.getOutput());
         } catch (Exception e) {
             NEIClientConfig.logger.error("Error loading QED recipe: ", e);

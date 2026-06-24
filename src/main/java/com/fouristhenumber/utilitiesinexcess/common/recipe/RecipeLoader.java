@@ -1262,7 +1262,45 @@ public class RecipeLoader {
     }
 
     private static void loadQEDRecipes() {
-        // todo test recipe, remove later
+        addShapedRecipe(
+            ModBlocks.QED,
+            "ece",
+            "omo",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'c',
+            Blocks.crafting_table,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'm',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
+
+        addShapedRecipe(
+            Items.spider_eye,
+            "ece",
+            "omo",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'c',
+            ModBlocks.QED,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'm',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
+
+
+        addShapedRecipe(
+            ModBlocks.FLUX_CRYSTAL,
+            " e ",
+            " o ",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
         QEDRegistry.instance()
             .addRecipe(
                 new ItemStack(Items.gold_ingot),
@@ -1271,6 +1309,15 @@ public class RecipeLoader {
                 new ItemStack(Items.gold_nugget),
                 'G',
                 "blockGlass");
+
+        QEDRegistry.instance()
+            .addRecipe(
+                new ItemStack(Items.iron_boots),
+                new String[] { "NNN", "NGN", "NNN" },
+                'N',
+                new ItemStack(Items.gold_nugget),
+                'G',
+                ModBlocks.BEDROCKIUM_BLOCK);
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
