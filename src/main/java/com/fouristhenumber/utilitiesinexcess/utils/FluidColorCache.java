@@ -37,9 +37,6 @@ public class FluidColorCache {
         IntBuffer buf = BufferUtils.createIntBuffer(width * height);
         GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buf);
 
-        int[] pixels = new int[width * height];
-        buf.get(pixels);
-
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
             .values()) {
             // Some fluid implementations provide a useful value for getColor(), but they often don't.
@@ -63,7 +60,7 @@ public class FluidColorCache {
             for (int row = 0; row < ih; row++) {
                 int rowOff = (oy + row) * width + ox;
                 for (int col = 0; col < iw; col++) {
-                    int argb = pixels[rowOff + col];
+                    int argb = buf.get(rowOff + col);
                     int alpha = (argb >> 24) & 0xFF;
                     if (alpha == 0) continue;
                     count++;
