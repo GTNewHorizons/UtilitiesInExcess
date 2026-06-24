@@ -16,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -40,6 +41,12 @@ public class CommonProxy {
         EndOfTimeEvents.init();
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
+        }
+        if (Mods.Waila.isLoaded()) {
+            FMLInterModComms.sendMessage(
+                "Waila",
+                "register",
+                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaCompat.callbackRegister");
         }
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();

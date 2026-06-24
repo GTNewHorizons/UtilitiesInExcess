@@ -5,26 +5,37 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 
-public class BlockSpike extends Block {
+@Optional.Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")
+public class BlockSpike extends Block implements IWailaDataProvider {
 
     public BlockSpike(SpikeType spikeType, String name) {
         super(spikeType.material.getMaterial());
@@ -101,6 +112,24 @@ public class BlockSpike extends Block {
         }
 
         super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        if (spikeType == SpikeType.WOOD) {
+            return 20;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        if (spikeType == SpikeType.WOOD) {
+            return 5;
+        } else {
+            return 0;
+        }
     }
 
     // Drop the cached ItemStack
@@ -209,5 +238,50 @@ public class BlockSpike extends Block {
                 new AttributeModifier(field_111210_e, "Spike Weapon modifier", this.attackDamage, 0));
             return map;
         }
+    }
+
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        NBTTagList list = (NBTTagList) accessor.getNBTData()
+            .getTag("ench");
+        if (list == null) {
+            return currentTip;
+        }
+
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound tag = list.getCompoundTagAt(i);
+            short id = tag.getShort("id");
+            short level = tag.getShort("lvl");
+            currentTip.add(Enchantment.enchantmentsList[id].getTranslatedName(level));
+        }
+        return currentTip;
+    }
+
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
+        int y, int z) {
+        NBTTagList enchants = ((TileEntitySpike) te).getFakeWeapon()
+            .getEnchantmentTagList();
+        if (enchants == null) {
+            return tag;
+        }
+        tag.setTag("ench", enchants);
+        return tag;
+    }
+
+    // Stubs
+    public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return null;
+    }
+
+    public List<String> getWailaHead(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        return currentTip;
+    }
+
+    public List<String> getWailaTail(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        return currentTip;
     }
 }
