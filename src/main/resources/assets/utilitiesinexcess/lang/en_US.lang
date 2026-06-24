@@ -214,6 +214,8 @@ tile.redstone_clock.name=Redstone Clock
 nei.infopage.uie.redstone_clock.1=A precisely calibrated redstone mechanism which will emit a pulse once every second. Will turn off when redstone powered.
 
 tile.smart_pump.name=Smart Pump
+tile.smart_pump.waila.working=Working on: %s
+tile.smart_pump.waila.finished=Finished draining
 nei.infopage.uie.smart_pump.1=The Smart Pump is a lag-light way to gather in-world fluids. Place the pump directly above the surface of a fluid and feed it RF, and it will begin collecting fluid and replacing it with stone without triggering block updates.
 nei.infopage.uie.smart_pump.2=Before pumping, it will try to output fluid to tanks located directly above it. The pump works chunk-wise and works in a diamond with a radius of 5 chunks. During operation, the pump will keep its own chunk loaded as well as the current working chunk.
 
@@ -302,6 +304,8 @@ item.glove.desc.3=§oP.S. Breeze Projection does nothing.
 
 nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot. The colors of wool used to craft it will determine the top and bottom color of the item and its model.
 nei.infopage.uie.glove.2=The glove can also be worn in a baubles slot. While equipped in this way, you can hold the "Activate Glove" keybind to be able to click with an empty hand at any time. 
+
+uie.generators.waila.fuel=Fuel: %s
 
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
@@ -474,6 +478,9 @@ nei.infopage.uie.rain_muffler.1=This comforting block allows you tune out the so
 tile.rain_muffler.chat.global_enable=You dull your senses to the sound of the rain
 tile.rain_muffler.chat.global_disable=You become aware of the sound of the rain
 
+tile.rain_muffler.waila.global_enabled=Rain unmuted
+tile.rain_muffler.waila.global_disabled=Rain muted
+
 tile.lapis_aetherius.0.name=Lapis Aetherius Candidus (White)
 tile.lapis_aetherius.1.name=Lapis Aetherius Flammeus (Orange)
 tile.lapis_aetherius.2.name=Lapis Aetherius Fucatus (Magenta)
@@ -491,11 +498,9 @@ tile.lapis_aetherius.13.name=Lapis Aetherius Smaragdinus (Dark Green)
 tile.lapis_aetherius.14.name=Lapis Aetherius Sanguineus (Red)
 tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
 
-nei.infopage.uie.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
-
 tile.collector.name=Collector
-
 uie.chat.collector_size=Range: %s blocks
+nei.infopage.uie.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
 
 nei.infopage.uie.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
 
