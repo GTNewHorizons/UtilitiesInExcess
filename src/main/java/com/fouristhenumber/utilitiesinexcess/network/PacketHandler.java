@@ -29,6 +29,10 @@ public class PacketHandler {
             PacketUnderworldAttack.class,
             packetId++,
             Side.CLIENT);
-        INSTANCE.registerMessage(GammaRayParticlePacket.Handler.class, GammaRayParticlePacket.class, packetId++, Side.CLIENT);
+        INSTANCE.registerMessage(
+            GammaRayParticlePacket.Handler.class,
+            GammaRayParticlePacket.class,
+            packetId++,
+            Side.CLIENT);
     }
 }

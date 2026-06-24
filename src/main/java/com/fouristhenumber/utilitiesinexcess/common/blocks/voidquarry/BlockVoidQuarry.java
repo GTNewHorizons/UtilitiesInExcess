@@ -2,8 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
-import com.fouristhenumber.utilitiesinexcess.client.particle.GammaRayEmitter;
-import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,10 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.client.particle.GammaRayEmitter;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Random;
 
 public class BlockVoidQuarry extends BlockContainer {
 

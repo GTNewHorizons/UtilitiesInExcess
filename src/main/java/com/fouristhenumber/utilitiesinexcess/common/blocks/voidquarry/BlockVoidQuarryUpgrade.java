@@ -9,12 +9,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.VoidQuarryUpgradeManager.TieredVoidQuarryUpgrade;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.VoidQuarryUpgradeManager.VoidQuarryUpgrade;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,7 +32,7 @@ public class BlockVoidQuarryUpgrade extends Block {
     public BlockVoidQuarryUpgrade() {
         super(Material.iron);
         setHardness(1f);
-        setBlockName("utilitiesinexcess:void_quarry_upgrade");
+        setBlockName("void_quarry_upgrade");
         setBlockBounds(0.5F / 16F, 1.5F / 16F, 0.5F / 16F, 15.5F / 16F, 15F / 16F, 15.5F / 16F);
         setLightOpacity(0);
     }
@@ -86,6 +91,18 @@ public class BlockVoidQuarryUpgrade extends Block {
         @Override
         public String getUnlocalizedName(final ItemStack stack) {
             return this.getUnlocalizedName() + "." + stack.getItemDamage();
+        }
+
+        @Override
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
+            VoidQuarryUpgrade upgrade = VoidQuarryUpgrade.VALUES[stack.getItemDamage()];
+            tooltip.add(
+                StatCollector.translateToLocalFormatted("tile.void_quarry_upgrade.desc.energy", upgrade.getCost()));
+            if (upgrade.getTierGroup()
+                .equals(TieredVoidQuarryUpgrade.SPEED.getBaseName())) {
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted("tile.void_quarry_upgrade.desc.speed", upgrade.getValue()));
+            }
         }
     }
 }

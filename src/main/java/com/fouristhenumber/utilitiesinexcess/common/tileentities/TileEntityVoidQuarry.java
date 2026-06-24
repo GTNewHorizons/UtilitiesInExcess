@@ -16,8 +16,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
-import com.github.bsideup.jabel.Desugar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,8 +55,10 @@ import com.fouristhenumber.utilitiesinexcess.common.events.ItemDropCaptureEvents
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
+import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InsertionItemStack;
