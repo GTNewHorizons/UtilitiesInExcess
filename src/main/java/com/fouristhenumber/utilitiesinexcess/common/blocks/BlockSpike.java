@@ -19,7 +19,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.google.common.collect.Multimap;
@@ -110,6 +112,24 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         }
 
         super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        if (spikeType == SpikeType.WOOD) {
+            return 20;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        if (spikeType == SpikeType.WOOD) {
+            return 5;
+        } else {
+            return 0;
+        }
     }
 
     // Drop the cached ItemStack
