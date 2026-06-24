@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
 import com.github.bsideup.jabel.Desugar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -56,7 +57,6 @@ import com.fouristhenumber.utilitiesinexcess.common.events.ItemDropCaptureEvents
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
-import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
@@ -84,7 +84,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     private int storedItems;
     private Area2d workArea;
     private List<Area2d> nextWorkAreas = new LinkedList<>();
-    public QuarryWorkState state;
+    private QuarryWorkState state;
     private int dx;
     private int dy;
     private int dz;
@@ -116,6 +116,24 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
         REPLACE_BLOCK = VoidQuarryReplaceBlock.valueOf(VoidQuarryConfig.voidQuarryReplaceBlock).block;
         resetQuarry();
         storedItems = 0;
+    }
+
+    public QuarryWorkState getWorkState() {
+        return state;
+    }
+
+    /**
+     * Sets the current work state and mirrors it into the block's metadata.
+     * All state transitions should go through here rather than assigning the field directly.
+     */
+    private void setState(QuarryWorkState newState) {
+        state = newState;
+        if (hasWorldObj() && !worldObj.isRemote) {
+            int meta = newState.ordinal();
+            if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != meta) {
+                worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 3);
+            }
+        }
     }
 
     public String getState() {
@@ -153,7 +171,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
      * Does not clear stored items, fluids, or energy.
      */
     private void resetQuarry() {
-        state = QuarryWorkState.STOPPED;
+        setState(QuarryWorkState.STOPPED);
         brokenBlocksTotal = 0;
         estimatedTotalBlocks = 0;
         estimatedSecondsLeft = -1;
@@ -177,7 +195,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
      */
     public void startQuarry() {
         if (state == QuarryWorkState.STOPPED && workArea != null) {
-            state = QuarryWorkState.RUNNING;
+            setState(QuarryWorkState.RUNNING);
             BlockHarvestResult harvestResult = tryHarvestCurrentBlock();
             if (harvestResult.visitedBlock) {
                 brokenBlocksTotal++;
@@ -751,7 +769,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             }
             return true;
         }
-        state = QuarryWorkState.STOPPED_WAITING_FOR_ENERGY;
+        setState(QuarryWorkState.STOPPED_WAITING_FOR_ENERGY);
         return false;
     }
 
@@ -880,7 +898,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
         if (hasFluidHeadroom()) {
             return true;
         }
-        state = QuarryWorkState.STOPPED_WAITING_FOR_FLUID_SPACE;
+        setState(QuarryWorkState.STOPPED_WAITING_FOR_FLUID_SPACE);
         return false;
     }
 
@@ -900,7 +918,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
         if (hasItemHeadroom()) {
             return true;
         }
-        state = QuarryWorkState.STOPPED_WAITING_FOR_ITEM_SPACE;
+        setState(QuarryWorkState.STOPPED_WAITING_FOR_ITEM_SPACE);
         return false;
     }
 
@@ -1160,18 +1178,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             y,
             z,
             64);
-        for (double dx = 0.1; dx <= 0.9; dx += 0.2) {
-            for (double dy = 0.1; dy <= 0.9; dy += 0.2) {
-                for (double dz = 0.1; dz <= 0.9; dz += 0.2) {
-                    double d0 = x + dx + worldObj.rand.nextFloat() * 0.25;
-                    double d1 = y + dy + worldObj.rand.nextFloat() * 0.25;
-                    double d2 = z + dz + worldObj.rand.nextFloat() * 0.25;
-
-                    PacketHandler.INSTANCE
-                        .sendToAllAround(new ParticlePacket("depthsuspend", d0, d1, d2, 1, 0, 0, 0), targetPoint);
-                }
-            }
-        }
+        PacketHandler.INSTANCE.sendToAllAround(new GammaRayParticlePacket(x + 0.5D, y + 0.5D, z + 0.5D), targetPoint);
     }
 
     /**
@@ -1273,7 +1280,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             // Wait until BOTH buffers have headroom (we can't tell ahead of time whether the next block yields items or
             // fluid), then let the normal loop step on to the next block
             if (hasItemHeadroom() && hasFluidHeadroom()) {
-                state = QuarryWorkState.RUNNING;
+                setState(QuarryWorkState.RUNNING);
             }
         } else
             if (state == QuarryWorkState.STOPPED_WAITING_FOR_ENERGY || state == QuarryWorkState.THROTTLED_BY_ENERGY) {
@@ -1283,7 +1290,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     blocksVisitedThisTick++;
                 }
                 if (harvestResult.canContinue) {
-                    state = QuarryWorkState.RUNNING;
+                    setState(QuarryWorkState.RUNNING);
                 }
             }
 
@@ -1314,7 +1321,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             }
             if (blocksVisitedThisTick < stepsPerTick && state == QuarryWorkState.RUNNING) {
                 if (nextWorkAreas.isEmpty()) {
-                    state = QuarryWorkState.FINISHED;
+                    setState(QuarryWorkState.FINISHED);
                 } else {
                     setWorkArea(nextWorkAreas.remove(nextWorkAreas.size() - 1));
                 }
@@ -1325,7 +1332,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     // We were still able to mine some blocks this tick, so we don't consider this fully stopped
                     // If we fail to harvest again at the start of the next tick, it will be set to STOPPED_... either
                     // way
-                    state = QuarryWorkState.THROTTLED_BY_ENERGY;
+                    setState(QuarryWorkState.THROTTLED_BY_ENERGY);
                 }
             }
 

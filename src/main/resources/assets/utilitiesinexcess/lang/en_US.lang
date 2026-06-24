@@ -584,6 +584,7 @@ ue_wall.name=%s Wall
 ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
 
+
 tile.void_quarry.name=Void Quarry
 tile.void_marker.name=Void Marker
 tile.utilitiesinexcess:void_quarry_upgrade.0.name=Void Quarry World Hole Upgrade
@@ -624,3 +625,15 @@ uie.quarry.marker.mode.1=Marker is set to establish a rectangular fence from the
 uie.quarry.marker.mode.2.1=Marker is set to establish a cuboid of length %d. Sneak + R-Click to adjust size.
 uie.quarry.marker.mode.2.2=Increased cuboid size to %d.
 uie.quarry.marker.mode.3=Marker is set to establish a full loop of markers that make up a rectilinear polygon back this marker of arbitrary size and shape.
+
+nei.infopage.uie.void_quarry.1=The Void Quarry allows you to clear & harvest a 3-dimensional space as defined by Void Markers. It does this by consuming energy to fire gamma rays through void rifts at blocks, to flip them into its on void space.
+nei.infopage.uie.void_marker.1=The Void Marker allows you to define a 3-dimensional area in your world. You can right-click it to change its mode, switching between: 
+nei.infopage.uie.void_quarry_upgrade:0.1=
+nei.infopage.uie.void_quarry_upgrade:1.1=
+nei.infopage.uie.void_quarry_upgrade:2.1=
+nei.infopage.uie.void_quarry_upgrade:3.1=
+nei.infopage.uie.void_quarry_upgrade:4.1=
+nei.infopage.uie.void_quarry_upgrade:5.1=
+nei.infopage.uie.void_quarry_upgrade:6.1=
+nei.infopage.uie.void_quarry_upgrade:7.1=
+nei.infopage.uie.void_quarry_upgrade:8.1=

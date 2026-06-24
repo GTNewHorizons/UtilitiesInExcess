@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
+import com.fouristhenumber.utilitiesinexcess.client.particle.GammaRayEmitter;
+import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -15,6 +17,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
 
 public class BlockVoidQuarry extends BlockContainer {
 
@@ -56,9 +61,9 @@ public class BlockVoidQuarry extends BlockContainer {
                     new ChatComponentText((quarry.isCreativeBoosted ? "" : "Un-") + "Creative-Boosted Quarry."));
                 return true;
             }
-            if (quarry.state == TileEntityVoidQuarry.QuarryWorkState.STOPPED) {
+            if (quarry.getWorkState() == TileEntityVoidQuarry.QuarryWorkState.STOPPED) {
                 quarry.scanForWorkAreaFromMarkers(player);
-                if (quarry.state == TileEntityVoidQuarry.QuarryWorkState.RUNNING) {
+                if (quarry.getWorkState() == TileEntityVoidQuarry.QuarryWorkState.RUNNING) {
                     return true;
                 }
             }
@@ -131,6 +136,20 @@ public class BlockVoidQuarry extends BlockContainer {
             return quarry.getComparatorOutput();
         }
         return 0;
+    }
+
+    @Override
+    public void randomDisplayTick(World worldIn, int x, int y, int z, Random random) {
+        TileEntityVoidQuarry.QuarryWorkState state = TileEntityVoidQuarry.QuarryWorkState.VALUES[worldIn
+            .getBlockMetadata(x, y, z)];
+        int strength = switch (state) {
+            case RUNNING -> 5;
+            case THROTTLED_BY_ENERGY -> 2;
+            case STOPPED_WAITING_FOR_ENERGY, STOPPED_WAITING_FOR_FLUID_SPACE, STOPPED_WAITING_FOR_ITEM_SPACE -> 1;
+            default -> 0;
+        };
+
+        GammaRayEmitter.emit(worldIn, x + 0.5D, y + 0.5D, z + 0.5D, strength, 0.15D, random.nextBoolean(), random);
     }
 
     @Override

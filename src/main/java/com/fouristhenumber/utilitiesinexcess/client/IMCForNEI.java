@@ -206,6 +206,19 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:chandelier>", "nei.infopage.uie.chandelier.1");
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
+
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.1");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.1");
+
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:0>", "nei.infopage.uie.void_quarry_upgrade:0.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:1>", "nei.infopage.uie.void_quarry_upgrade:1.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:2>", "nei.infopage.uie.void_quarry_upgrade:2.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:3>", "nei.infopage.uie.void_quarry_upgrade:3.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:4>", "nei.infopage.uie.void_quarry_upgrade:4.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:5>", "nei.infopage.uie.void_quarry_upgrade:5.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:6>", "nei.infopage.uie.void_quarry_upgrade:6.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:7>", "nei.infopage.uie.void_quarry_upgrade:7.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:8>", "nei.infopage.uie.void_quarry_upgrade:8.1");
     }
 
     private static void sendInfoPage(String filter, String page) {
