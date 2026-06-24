@@ -33,8 +33,8 @@ public class NEIConfig implements IConfigureNEI {
         API.registerRecipeHandler(handler);
         API.registerUsageHandler(handler);
 
-        API.addRecipeCatalyst(ModBlocks.QED.newItemStack(), "qed_recipes", 1);
-        API.addRecipeCatalyst(ModBlocks.FLUX_CRYSTAL.newItemStack(), "qed_recipes", 0);
+        API.addRecipeCatalyst(ModBlocks.QED.newItemStack(), handler, 1);
+        API.addRecipeCatalyst(ModBlocks.FLUX_CRYSTAL.newItemStack(), handler, 0);
 
         FMLInterModComms.sendRuntimeMessage(
             UtilitiesInExcess.MODID,

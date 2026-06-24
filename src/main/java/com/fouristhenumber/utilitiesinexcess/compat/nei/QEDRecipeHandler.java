@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
+import java.awt.*;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -35,6 +37,11 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
         } else {
             super.loadUsageRecipes(inputId, ingredients);
         }
+    }
+
+    @Override
+    public void loadTransferRects() {
+        transferRects.add(new RecipeTransferRect(new Rectangle(166, 74, 24, 18), getOverlayIdentifier()));
     }
 
     @Override

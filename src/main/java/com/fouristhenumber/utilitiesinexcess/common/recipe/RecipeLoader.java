@@ -1277,21 +1277,6 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
 
         addShapedRecipe(
-            Items.spider_eye,
-            "ece",
-            "omo",
-            "ooo",
-            'e',
-            Items.ender_eye,
-            'c',
-            ModBlocks.QED,
-            'o',
-            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
-            'm',
-            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
-
-
-        addShapedRecipe(
             ModBlocks.FLUX_CRYSTAL,
             " e ",
             " o ",
