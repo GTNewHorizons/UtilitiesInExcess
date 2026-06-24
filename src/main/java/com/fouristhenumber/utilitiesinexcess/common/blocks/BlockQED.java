@@ -25,11 +25,6 @@ public class BlockQED extends BlockContainer {
     }
 
     @Override
-    public int getMobilityFlag() {
-        return 2;
-    }
-
-    @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityQED();
     }
