@@ -22,6 +22,11 @@ public class BlockFluxCrystal extends Block {
     }
 
     @Override
+    public int getMobilityFlag() {
+        return 2;
+    }
+
+    @Override
     public int onBlockPlaced(World worldIn, int x, int y, int z, int side, float subX, float subY, float subZ,
         int meta) {
         if (!worldIn.isRemote) {
