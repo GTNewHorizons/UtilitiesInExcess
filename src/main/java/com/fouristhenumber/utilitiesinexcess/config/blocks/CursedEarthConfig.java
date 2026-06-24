@@ -20,6 +20,14 @@ public class CursedEarthConfig {
     @Config.DefaultBoolean(false)
     public static boolean enableBlessedEarthBurn;
 
+    @Config.Comment("Should blessed and cursed earth spread to nearby grass")
+    @Config.DefaultBoolean(true)
+    public static boolean cursedEarthSpreads;
+
+    @Config.Comment("Should blessed and cursed earth explode upon contacting each other. cursedEarthSpreads must be true!")
+    @Config.DefaultBoolean(true)
+    public static boolean volatileReaction;
+
     @Config.Comment("Chance that a mob is spawned on a Cursed Earth block on a random tick.")
     @Config.DefaultInt(40)
     @Config.RangeInt(min = 0, max = 100)
