@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -29,7 +28,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -61,7 +59,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         }
         if (craftingProgress >= 500) {
             ItemStack newStack = QEDRegistry.instance()
-                .findRecipe(craftMatrix, true);
+                .findRecipe(craftMatrix, false);
             if (newStack != null) {
                 ItemStack outputStack = craftResult.getStackInSlot(0);
 
@@ -116,21 +114,16 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
         // Add title
         panel.child(
-            new ParentWidget<>().coverChildren()
-                .topRelAnchor(0, 1)
-                .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
-                        .asWidget()
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(-15)));
+            IKey.lang(getInventoryName())
+                .asWidget()
+                .marginLeft(5)
+                .marginTop(5));
 
         panel.child(
             IKey.dynamic(connected::getStringValue)
                 .asWidget()
                 .marginTop(70)
-                .marginLeft(10));
+                .marginLeft(5));
 
         IItemHandler itemHandler = new InvWrapper(this);
 
