@@ -55,7 +55,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
-        
+
         if (crafting) {
             craftingProgress += crystals;
         }
@@ -272,7 +272,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
             }
         }
         tag.setTag("Items", nbttaglist);
-        tag.setInteger("craftingProgres", craftingProgress);
+        tag.setInteger("craftingProgress", craftingProgress);
         tag.setBoolean("crafting", crafting);
         tag.setInteger("crystals", crystals);
     }
