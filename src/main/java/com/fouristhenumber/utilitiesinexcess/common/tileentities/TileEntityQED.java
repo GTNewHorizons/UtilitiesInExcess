@@ -54,6 +54,8 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
     @Override
     public void updateEntity() {
+        if (worldObj.isRemote) return;
+        
         if (crafting) {
             craftingProgress += crystals;
         }
