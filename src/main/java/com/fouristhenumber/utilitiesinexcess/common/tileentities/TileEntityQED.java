@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -66,7 +67,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
         }
         if (craftingProgress >= 500) {
             ItemStack newStack = QEDRegistry.instance()
-                .findRecipe(craftMatrix, false);
+                .findRecipe(craftMatrix, true);
             if (newStack != null) {
                 ItemStack outputStack = craftResult.getStackInSlot(0);
 
@@ -98,7 +99,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     private void updateCraftingResult() {
         ItemStack stack = QEDRegistry.instance()
             .findRecipe(craftMatrix, false);
-
+        if (stack == null || stack.getItem() != preview.getItem()) craftingProgress = 0;
         crafting = stack != null && canInsertToOutput(stack);
         preview = stack != null ? stack : fakeItem;
     }
@@ -134,10 +135,10 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                 .marginTop(5));
 
         panel.child(
-            IKey.dynamic(connected::getStringValue)
+            IKey.dynamic(() -> StatCollector.translateToLocalFormatted("gui.flux_strength", connected.getStringValue()))
                 .asWidget()
                 .marginTop(70)
-                .marginLeft(5));
+                .horizontalCenter());
 
         IItemHandler itemHandler = new InvWrapper(this);
 
@@ -150,20 +151,20 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                     index -> new ItemSlot().slot(
                         new ModularSlot(itemHandler, index).changeListener((w, x, y, z) -> updateCraftingResult())))
                 .build()
-                .marginTop(20)
+                .marginTop(15)
                 .marginLeft(37));
 
         // Progress bar
         panel.child(
             new ProgressWidget().texture(PROGRESS_ARROW, 20)
                 .value(new DoubleSyncValue(() -> (double) craftingSyncer.getIntValue() / 500))
-                .marginTop(38)
+                .marginTop(33)
                 .marginLeft(97));
 
         // Preview slot
         panel.child(
             new ItemDisplayWidget().syncHandler("preview")
-                .marginTop(15)
+                .marginTop(10)
                 .marginLeft(97));
 
         // Output slot
@@ -173,7 +174,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                     .slot(
                         new ModularSlot(itemHandler, 9).changeListener((w, x, y, z) -> updateCraftingResult())
                             .accessibility(false, true))
-                    .marginTop(38)
+                    .marginTop(33)
                     .marginLeft(121));
 
         return panel;

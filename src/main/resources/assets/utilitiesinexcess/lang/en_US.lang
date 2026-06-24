@@ -388,6 +388,8 @@ nei.infopage.uie.xray_glasses.1=These stylish spectacles will highlight like blo
 tile.qed.name=QED
 tile.flux_crystal.name=Flux Crystal
 
+gui.flux_strength=Flux Strength: %s
+
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 
 item.ender_lotus_seed.name=Ender-Lotus Seed
