@@ -28,9 +28,17 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     }
 
     public void setFluid(FluidStack stack) {
+        Fluid before = tank.getFluid() == null ? null
+            : tank.getFluid()
+                .getFluid();
+        Fluid after = tank.getFluid() == null ? null
+            : tank.getFluid()
+                .getFluid();
         this.tank.setFluid(stack);
         markDirty();
-        renderUpdate();
+        if (before != after) {
+            renderUpdate();
+        }
     }
 
     @Override
