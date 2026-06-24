@@ -16,12 +16,12 @@ public class MixinRenderGlobal_TrueGreenscreen {
 
     // There is a bug that causes the player to see through tile entities when translucent entities (like dropped
     // stained glass items) are in front of them. So this is required to draw the green screen blocks before other
-    // entities.
+    // entities. And also to work around a different bug detailed in TESRTrueGreenscreen.
     @Inject(
         method = "renderEntities(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/client/renderer/culling/ICamera;F)V",
         at = @At(value = "HEAD"))
-    private static void uie$preRenderEntitiesHook(EntityLivingBase p_147589_1_, ICamera p_147589_2_, float p_147589_3_,
+    private static void uie$preRenderEntitiesHook(EntityLivingBase p_147589_1_, ICamera p_147589_2_, float partialTicks,
         CallbackInfo ci) {
-        TESRTrueGreenscreen.onPreRenderEntities();
+        TESRTrueGreenscreen.onPreRenderEntities(partialTicks);
     }
 }

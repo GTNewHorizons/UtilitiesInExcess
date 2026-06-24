@@ -1,13 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.render;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -24,7 +24,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
 
-    public static ArrayList<Vec3> positions = new ArrayList<>();
+    public static final ArrayList<Vec3> positions = new ArrayList<>();
 
     private static final ShaderProgram shader = new ShaderProgram(
         UtilitiesInExcess.MODID,
@@ -32,8 +32,6 @@ public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
         "shaders/TrueGreenscreen.frag.glsl");
 
     public static boolean inFrame = false;
-
-    public static List<double[]> pos = new ArrayList<>();
 
     public static RenderableCube cube = new RenderableCube(
         0,
@@ -53,18 +51,63 @@ public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
     }
 
     public static void onPostClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
-            return;
+        if (event.phase == TickEvent.Phase.END) {
+            inFrame = false;
         }
-
-        inFrame = false;
     }
 
-    public static void onPreRenderEntities() {
+    // There is a bug that causes mipmaps of textures with transparency in them (like leaves) to wrongly change the
+    // alpha values of the pixels they are drawn on. To work around this, we draw something right in front of the
+    // player's face to cover the whole screen, but set the color mask to only allow writing to the alpha channel,
+    // meaning that we are just setting the alpha values for every pixel to 1.
+    public static void drawCameraLockedSquare(float distance, float size, float partialTicks) {
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityLivingBase viewer = mc.renderViewEntity;
+        if (viewer == null) viewer = mc.thePlayer;
+
+        float yaw = viewer.prevRotationYaw + (viewer.rotationYaw - viewer.prevRotationYaw) * partialTicks;
+        float pitch = viewer.prevRotationPitch + (viewer.rotationPitch - viewer.prevRotationPitch) * partialTicks;
+
+        GL11.glPushMatrix();
+
+        GL11.glRotatef(-(yaw + 180.0F), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
+
+        GL11.glTranslatef(0.0F, 0.0F, -distance);
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glColorMask(false, false, false, true);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+
+        float halfSize = size / 2.0F;
+        tessellator.addVertex(-halfSize, -halfSize, 0.0D);
+        tessellator.addVertex(halfSize, -halfSize, 0.0D);
+        tessellator.addVertex(halfSize, halfSize, 0.0D);
+        tessellator.addVertex(-halfSize, halfSize, 0.0D);
+
+        tessellator.draw();
+
+        GL11.glColorMask(true, true, true, true);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+    }
+
+    public static void onPreRenderEntities(float partialTicks) {
 
         if (MinecraftForgeClient.getRenderPass() != 0 || positions.isEmpty()) {
             return;
         }
+
+        drawCameraLockedSquare(0.1F, 100, partialTicks);
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureUtil.missingTexture.getGlTextureId());
 

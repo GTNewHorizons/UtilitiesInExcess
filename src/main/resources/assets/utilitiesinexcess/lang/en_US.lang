@@ -590,7 +590,5 @@ ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
 
 tile.true_greenscreen.name=True Greenscreen™
-tile.true_greenscreen.desc.0=Creative Only
-tile.true_greenscreen.desc.1=Completely transparent in screenshots!
 nei.infopage.uie.true_greenscreen.0=When you take a screenshot of this block (with [§bF2§0]), it will appear completely transparent in the image, allowing you to take pictures of things without needing to remove the background later.
 nei.infopage.uie.true_greenscreen.1=You may need to disable your HUD (with [§bF1§0] by default) before taking a screenshot.\nThis block is a tile entity with intrusive rendering, please remove it when you're done using it.

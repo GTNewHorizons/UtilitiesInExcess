@@ -19,7 +19,7 @@ public class MixinEntityRenderer_TrueGreenscreen {
         if (TESRTrueGreenscreen.inFrame) {
             return 1F;
         }
-        return 0F;
+        return alpha;
     }
 
 }
