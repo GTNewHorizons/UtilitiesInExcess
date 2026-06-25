@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,35 +20,44 @@ import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 // TODO: Add new features to the reversing hoe
 public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
 
+    private final HashMap<Block, Block> blockConversionCache = new HashMap<>();
+
     public ItemReversingHoe() {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:reversing_hoe");
         setUnlocalizedName("reversing_hoe");
         if (ReversingHoeConfig.unbreakable) setMaxDamage(0);
+
+        if (ReversingHoeConfig.blockTransformations != null) {
+            for (String transformation : ReversingHoeConfig.blockTransformations) {
+                if (transformation != null && transformation.contains("->")) {
+                    String[] parts = transformation.split("->");
+                    Block sourceBlock = Block.getBlockFromName(parts[0].trim());
+                    Block targetBlock = Block.getBlockFromName(parts[1].trim());
+
+                    if (sourceBlock != null && targetBlock != null) {
+                        blockConversionCache.put(sourceBlock, targetBlock);
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
+        if (world.isRemote) return false;
+
         Block block = world.getBlock(x, y, z);
-        String blockName = Block.blockRegistry.getNameForObject(block);
 
-        if (ReversingHoeConfig.blockTransformations != null) {
-            for (String transformation : ReversingHoeConfig.blockTransformations) {
-                if (transformation.contains("->")) {
-                    String[] parts = transformation.split("->");
-                    String source = parts[0].trim();
-                    String target = parts[1].trim();
+        if (blockConversionCache.containsKey(block)) {
+            Block targetBlock = blockConversionCache.get(block);
+            world.setBlock(x, y, z, targetBlock);
 
-                    if (blockName.equals(source)) {
-                        Block targetBlock = Block.getBlockFromName(target);
-                        if (targetBlock != null) {
-                            world.setBlock(x, y, z, targetBlock);
-                            return true;
-                        }
-                    }
-                }
+            if (!ReversingHoeConfig.unbreakable) {
+                itemStack.damageItem(1, player);
             }
+            return true;
         }
 
         if (block == ModBlocks.CURSED_EARTH.get() && CursedEarthConfig.enableBlessedEarth) {
