@@ -39,7 +39,7 @@ and **#magicalWoodTinkersID** so that they no longer overlap. Otherwise, the gam
 
 ## Optional Dependencies
 
-- [Angelica](https://github.com/GTNewHorizons/Angelica) (CTM)
+- [Angelica](https://github.com/GTNewHorizons/Angelica) (Connected Textures)
 - [Postea](https://github.com/GTNewHorizons/Postea) (World conversion system)
 - [Tinkers Construct](https://github.com/GTNewHorizons/TinkersConstruct) (New materials)
 - [Forge Multipart](https://github.com/GTNewHorizons/ForgeMultipart) (New microblock shapes)
