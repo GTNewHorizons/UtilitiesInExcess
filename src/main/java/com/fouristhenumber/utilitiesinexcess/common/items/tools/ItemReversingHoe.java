@@ -30,20 +30,35 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
         Block block = world.getBlock(x, y, z);
-        // TODO: config for this
-        if (block == Blocks.dirt) {
-            world.setBlock(x, y, z, Blocks.grass);
-            return true;
-        } else if (block == Blocks.cobblestone) {
-            world.setBlock(x, y, z, Blocks.stone);
-            return true;
-        } else if (block == ModBlocks.CURSED_EARTH.get() && CursedEarthConfig.enableBlessedEarth) {
+        String blockName = Block.blockRegistry.getNameForObject(block);
+
+        if (ReversingHoeConfig.blockTransformations != null) {
+            for (String transformation : ReversingHoeConfig.blockTransformations) {
+                if (transformation.contains("->")) {
+                    String[] parts = transformation.split("->");
+                    String source = parts[0].trim();
+                    String target = parts[1].trim();
+
+                    if (blockName.equals(source)) {
+                        Block targetBlock = Block.getBlockFromName(target);
+                        if (targetBlock != null) {
+                            world.setBlock(x, y, z, targetBlock);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (block == ModBlocks.CURSED_EARTH.get() && CursedEarthConfig.enableBlessedEarth) {
             world.setBlock(x, y, z, ModBlocks.BLESSED_EARTH.get());
             return true;
         } else if (block == ModBlocks.BLESSED_EARTH.get() && CursedEarthConfig.enableCursedEarth) {
             world.setBlock(x, y, z, ModBlocks.CURSED_EARTH.get());
             return true;
-        } else if (block == Blocks.wheat) {
+        }
+
+        else if (block == Blocks.wheat || block == Blocks.potatoes || block == Blocks.carrots) {
             int meta = world.getBlockMetadata(x, y, z);
             if (meta > 0) {
                 world.setBlockMetadataWithNotify(x, y, z, meta - 1, 3);

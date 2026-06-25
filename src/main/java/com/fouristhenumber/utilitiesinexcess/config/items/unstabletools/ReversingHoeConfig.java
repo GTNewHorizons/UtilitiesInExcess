@@ -13,4 +13,9 @@ public class ReversingHoeConfig {
     @Config.RequiresMcRestart
     public static boolean unbreakable;
 
+    @Config.DefaultStringList({ "minecraft:dirt->minecraft:grass", "minecraft:cobblestone->minecraft:stone" })
+
+    @Config.RequiresMcRestart
+    public static String[] blockTransformations;
+
 }
