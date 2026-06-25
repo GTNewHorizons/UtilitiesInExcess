@@ -33,6 +33,7 @@ public class BlockChandelier extends BlockContainer {
         setHardness(0.0F);
         setLightLevel(0.9375F); // 15 light level
         setStepSound(soundTypeWood);
+        setBlockBounds(0.125F, 0.125F, 0.125F, 0.875F, 1F, 0.875F);
     }
 
     @SideOnly(Side.CLIENT)
