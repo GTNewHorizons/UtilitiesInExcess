@@ -32,7 +32,7 @@ public class TileEntitySignificantlyShrunkChest extends TileEntityMarginallyMaxi
                 .marginLeft(5)
                 .marginTop(5));
 
-        IItemHandler itemHandler = new InvWrapper(this);
+        IItemHandler itemHandler = makeHandler();
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
 
         // Add item slot
@@ -42,6 +42,10 @@ public class TileEntitySignificantlyShrunkChest extends TileEntityMarginallyMaxi
                 .top(34));
 
         return panel;
+    }
+
+    protected IItemHandler makeHandler() {
+        return new InvWrapper(this);
     }
 
     @Override
