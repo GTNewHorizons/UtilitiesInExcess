@@ -19,12 +19,14 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class TileEntityTrashCanFluid extends TileEntity
     implements IGuiHolder<PosGuiData>, ISidedInventory, IFluidHandler {
@@ -101,6 +103,11 @@ public class TileEntityTrashCanFluid extends TileEntity
                         .accessibility(false, true)));
 
         return panel.child(slots);
+    }
+
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     @Override

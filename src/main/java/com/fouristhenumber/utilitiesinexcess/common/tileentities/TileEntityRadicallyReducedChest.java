@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
@@ -16,6 +17,7 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class TileEntityRadicallyReducedChest extends TileEntitySignificantlyShrunkChest
     implements IGuiHolder<PosGuiData>, ISidedInventory {
@@ -45,6 +47,11 @@ public class TileEntityRadicallyReducedChest extends TileEntitySignificantlyShru
                 .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
 
         return panel;
+    }
+
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     @Override

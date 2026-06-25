@@ -35,6 +35,7 @@ import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
@@ -200,6 +201,11 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             h = l;
             drawScrollBar(context, 243, y, w, h, widgetTheme, texture);
         }
+    }
+
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     public static class HelpWidget extends Widget<HelpWidget> {

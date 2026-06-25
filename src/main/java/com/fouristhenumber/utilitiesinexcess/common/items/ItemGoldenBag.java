@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
@@ -21,6 +22,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGuiData> {
 
@@ -107,6 +109,11 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
                         .marginTop(panelHeight - 25)));
 
         return panel;
+    }
+
+    @Override
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     private SlotGroupWidget buildPlayerInventorySlotGroup() {
