@@ -37,7 +37,7 @@ public final class GammaRayEmitter {
         double ux = r * Math.cos(theta);
         double uy = z;
         double uz = r * Math.sin(theta);
-        double len = 1.5D + rand.nextDouble() * 2.0D;
+        double len = 1.15D + rand.nextDouble() * 2.0D;
 
         Minecraft.getMinecraft().effectRenderer.addEffect(
             new EntityGammaRayFX(
@@ -50,7 +50,7 @@ public final class GammaRayEmitter {
                 -uz,
                 CONVERGING_SPEED,
                 len,
-                1.15D));
+                2.15D));
     }
 
     public static void emit(World world, double cx, double cy, double cz, int strength, double speed, boolean reverse,

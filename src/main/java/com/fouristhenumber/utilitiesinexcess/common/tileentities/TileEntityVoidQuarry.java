@@ -74,7 +74,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
     public static final int BASE_STEPS_PER_TICK = VoidQuarryConfig.voidQuarryBaseSpeed;
-    public static final int ITEM_BUFFER_CAPACITY = BASE_STEPS_PER_TICK * 5; // Emptied every 4 ticks + some margin for
+    public static final int ITEM_BUFFER_CAPACITY = BASE_STEPS_PER_TICK * 5; // Emptied every 2 ticks + some margin for
                                                                             // more than one item per block
     // Headroom kept above each fluid tank's soft cap so a single block we already broke can always be stored without
     // loss. One vanilla fluid block is 1000 mB and fortune does not apply to fluids, so one block of overshoot fits.
@@ -212,7 +212,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             return 0;
         }
         double progress = (double) brokenBlocksTotal / (double) Math.max(estimatedTotalBlocks, brokenBlocksTotal);
-        return (int) Math.floor(progress * 14.0 - 0.05) + (state == QuarryWorkState.FINISHED ? 1 : 0);
+        return Math.max(0, (int) Math.floor(progress * 14.0 - 0.05)) + (state == QuarryWorkState.FINISHED ? 1 : 0);
     }
 
     /**
@@ -805,7 +805,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                 FluidStack fluid = null;
                 if ((block == Blocks.water || block == Blocks.flowing_water) && meta == 0) {
                     fluid = new FluidStack(FluidRegistry.WATER, 1000);
-                } else if ((block == Blocks.lava || block == Blocks.flowing_water) && meta == 0) {
+                } else if ((block == Blocks.lava || block == Blocks.flowing_lava) && meta == 0) {
                     fluid = new FluidStack(FluidRegistry.LAVA, 1000);
                 } else if (block instanceof IFluidBlock fluidBlock) {
                     fluid = fluidBlock.drain(worldObj, dx, dy, dz, false);
@@ -1146,7 +1146,10 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     direction.offsetX + this.xCoord,
                     direction.offsetY + this.yCoord,
                     direction.offsetZ + this.zCoord);
-                upgradeManager.addUpgrade(VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES[meta]);
+
+                if (meta >= 0 && meta < VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES.length) {
+                    upgradeManager.addUpgrade(VoidQuarryUpgradeManager.VoidQuarryUpgrade.VALUES[meta]);
+                }
             }
 
             if (te instanceof IFluidHandler fluidHandler) {
@@ -1341,7 +1344,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
         }
 
         // Move internally stored stuff to adjacent blocks
-        if (worldObj.getTotalWorldTime() % 4 == 0 && (storedItems > 0 || !fluidStorageIsEmpty())) {
+        if (worldObj.getTotalWorldTime() % 2 == 0 && (storedItems > 0 || !fluidStorageIsEmpty())) {
             if (!ejectStoredToAdjacent()) scanSidesForTEs();
         }
     }

@@ -8,6 +8,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 
 /**
  * Base class for TileEntities that need to keep chunks loaded.
@@ -24,7 +25,7 @@ public class LoadableTE extends TileEntity {
 
     /**
      * Initializes this class after the TE is loaded.
-     * Makes sure the TE itself will stay loaded if requested.
+     * Reclaims a chunk-loading ticket parked by the reload callback, otherwise keeps the TE loaded if requested.
      * Overwrite and call super() to load your own chunks after readFromNBT() is called
      */
     @Override
@@ -33,7 +34,13 @@ public class LoadableTE extends TileEntity {
         selfChunkX = xCoord >> 4;
         selfChunkZ = zCoord >> 4;
         if (worldObj != null && !worldObj.isRemote) {
-            if (keepsItselfLoaded()) {
+            // After a reload the callback parks our ticket, therefore we reclaim it, avoiding leaking a duplicate
+            // ticket
+            ForgeChunkManager.Ticket restored = TEChunkLoadingCallback
+                .claimTicket(worldObj.provider.dimensionId, xCoord, yCoord, zCoord);
+            if (restored != null) {
+                receiveTicketOnLoad(restored);
+            } else if (keepsItselfLoaded()) {
                 loadSelf();
             }
         }

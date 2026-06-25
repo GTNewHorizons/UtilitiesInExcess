@@ -24,9 +24,9 @@ public class VoidQuarryConfig {
     @Config.DefaultInt(2)
     public static int voidQuarryFluidTankAmount;
 
-    @Config.Comment("Amount of fluid (in mB) that can be stored per tank.")
-    @Config.DefaultInt(128_000)
-    @Config.RangeInt(min = 16_000, max = 1_024_000)
+    @Config.Comment("Amount of fluid (in mB) that can be stored per tank. Will have +1000mb of buffer for overflow.")
+    @Config.DefaultInt(127_000)
+    @Config.RangeInt(min = 15_000, max = 1_023_000)
     public static int voidQuarryFluidTankStorage;
 
     @Config.Comment("Base factor of RF that is used per operation. Is influenced by upgrades & block hardness.")

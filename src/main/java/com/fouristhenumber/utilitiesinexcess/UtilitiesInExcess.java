@@ -24,7 +24,6 @@ import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
-import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -113,10 +112,6 @@ public class UtilitiesInExcess {
             ChestGenHooks.addItem(
                 ChestGenHooks.STRONGHOLD_CROSSING,
                 new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
-        }
-
-        if (ModBlocks.SMART_PUMP.isEnabled()) {
-            ForgeChunkManager.setForcedChunkLoadingCallback(uieInstance, new PumpChunkLoadingCallback());
         }
 
         if (ModBlocks.PINK_GENERATOR.isEnabled()) {
