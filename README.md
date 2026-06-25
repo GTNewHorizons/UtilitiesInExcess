@@ -64,8 +64,10 @@ but they must fit the "vibe". A good fit for Utilities in Excess is a feature wh
 - Provides a useful ability hard to find in any other mod
 
 ## Credits
-
 A special thanks to the 1.0 contributors, without which this project could have never gotten off the ground:
+
+### Project Lead
+- FourIsTheNumber
 
 ### Artists
 <img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate"> &nbsp; &nbsp;&nbsp;Embri <br>
