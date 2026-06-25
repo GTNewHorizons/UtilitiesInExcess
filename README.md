@@ -47,3 +47,33 @@ but they must fit the "vibe". A good fit for Utilities in Excess is a feature wh
 - Is a bit of a standalone gimmick
 - Works well alongside vanilla by itself
 - Provides a useful ability hard to find in any other mod
+
+## Credits
+
+A special thanks to the 1.0 contributors, without which this project could have never gotten off the ground:
+
+### Programmers
+- jurrejelle (Redstone Clock, Drums, Cursed Earth, Trash Cans, Architect's Wand)
+- Caedis (Heavenly Ring, Ethereal Glass, Chandelier)
+- KydZombie (Magic Wood, Inverted Tools)
+- 0hwx (Watering Can, Filing Cabinet)
+- dibbydoba (Pure Love, Special Chests, Sound/Rain Muffler)
+- rspforhp (Inverted Tools)
+- lynxx131 (Golden Bag of Holding, Block Update Detector)
+- DeathFuel (Blackout Curtains)
+- RecursivePineapple (Conveyors, The Underworld)
+- serenibyss (QED)
+- koolkrafter5 (End of Time)
+- SuperSoupr (Glove, Blessed Earth, Colored Blocks, Trading Post, World Converter)
+- loenaaaa (Generators, Decorative Blocks, Pseudo-Inversion Ritual)
+- sisyphussy (Underworld Portal Renderer)
+- Ranzuu (Localization Work)
+- Cardinalstars (Forge Microblocks, Transfer Nodes)
+- tomasz-brak (Architects Wand Backhand/GT5U Integration)
+- Spicierspace153 (Collector)
+- Malteez (Void Quarry)
+- Spaghetti-OberNub (Bugfixes and Polish)
+- Nikolay-Sitnikov (Code Review)
+
+### Artists
+
