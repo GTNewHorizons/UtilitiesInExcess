@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -31,15 +30,12 @@ public class TileEntityRadicallyReducedChest extends TileEntitySignificantlyShru
 
         // Add title
         panel.child(
-            new ParentWidget<>().coverChildren()
-                .topRelAnchor(0, 1)
-                .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
-                        .asWidget()
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(-15)));
+            IKey.str(StatCollector.translateToLocal(getInventoryName()))
+                .asWidget()
+                .marginLeft(5)
+                .marginRight(5)
+                .marginTop(5)
+                .marginBottom(-15));
 
         IItemHandler itemHandler = new LimitingItemStackHandler(chestContents, 1);
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);

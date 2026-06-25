@@ -22,7 +22,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -83,15 +82,12 @@ public class TileEntityTrashCanFluid extends TileEntity
 
         // Add title
         panel.child(
-            new ParentWidget<>().coverChildren()
-                .topRelAnchor(0, 1)
-                .child(
-                    IKey.str(StatCollector.translateToLocal("gui.title.trash_can_fluid.name"))
-                        .asWidget()
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(-15)));
+            IKey.str(StatCollector.translateToLocal("gui.title.trash_can_fluid.name"))
+                .asWidget()
+                .marginLeft(5)
+                .marginRight(5)
+                .marginTop(5)
+                .marginBottom(-15));
 
         IWidget slots = Flow.column()
             .childPadding(10)
