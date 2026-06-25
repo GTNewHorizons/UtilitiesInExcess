@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityQED;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 public class BlockFluxCrystal extends Block {
 
@@ -24,6 +25,21 @@ public class BlockFluxCrystal extends Block {
     @Override
     public int getMobilityFlag() {
         return 2;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
     }
 
     @Override
