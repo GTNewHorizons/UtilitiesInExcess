@@ -75,7 +75,6 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
-
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
         blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
