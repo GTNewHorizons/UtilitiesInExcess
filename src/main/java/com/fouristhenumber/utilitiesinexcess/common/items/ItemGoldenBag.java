@@ -13,22 +13,17 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGuiData> {
 
-    private final int inventorySize = 54;
     private ItemStackHandler inventoryHandler;
-    private InvWrapper playerInventory;
 
     public ItemGoldenBag() {
         setUnlocalizedName("golden_bag");
@@ -53,24 +48,13 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
         final ItemStack usedItem = data.getUsedItemStack();
         final EntityPlayer player = data.getPlayer();
 
+        int inventorySize = 54;
         this.inventoryHandler = new ItemStackHandler(inventorySize) {
 
             @Override
             protected void onContentsChanged(int slot) {
                 ItemStack usedItem = data.getUsedItemStack();
                 if (usedItem != null) usedItem.setTagCompound(this.serializeNBT());
-            }
-        };
-
-        this.playerInventory = new InvWrapper(player.inventory) {
-
-            @Override
-            public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if (slot == player.inventory.currentItem) {
-                    return null;
-                }
-
-                return super.extractItem(slot, amount, simulate);
             }
         };
 
@@ -82,54 +66,24 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
 
         syncManager.registerSlotGroup("golden_bag_items", inventorySize);
 
-        panel.child(
-            new Column().child(
-                new ParentWidget<>().widthRel(1f)
-                    .height(138)
-                    .child(
-                        IKey.str(StatCollector.translateToLocal("item.golden_bag.name"))
-                            .asWidget()
-                            .margin(6, 0, 5, 0)
-                            .align(Alignment.TopLeft))
-                    .child(
-                        buildBagSlotGroup().align(Alignment.Center)
-                            .marginTop(1))
-                    .child(
-                        IKey.str("Inventory")
-                            .asWidget()
-                            .alignX(0.05f)
-                            .alignY(0.99f)))
-                .child(
-                    buildPlayerInventorySlotGroup().align(Alignment.TopLeft)
-                        .marginLeft(7)
-                        .marginTop(panelHeight - 83))
-                .child(
-                    buildPlayerHotbarSlotGroup().align(Alignment.TopLeft)
-                        .marginLeft(7)
-                        .marginTop(panelHeight - 25)));
+        panel.bindPlayerInventory();
 
+        panel.child(
+            Flow.column()
+                .child(
+                    IKey.str(StatCollector.translateToLocal("item.golden_bag.name"))
+                        .asWidget()
+                        .margin(6, 0, 5, 0)
+                        .left(6))
+                .child(
+                    buildBagSlotGroup().horizontalCenter()
+                        .marginTop(3)));
         return panel;
     }
 
     @Override
     public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
         return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
-
-    private SlotGroupWidget buildPlayerInventorySlotGroup() {
-        return SlotGroupWidget.builder()
-            .row("PPPPPPPPP")
-            .row("PPPPPPPPP")
-            .row("PPPPPPPPP")
-            .key('P', i -> new ItemSlot().slot(new ModularSlot(playerInventory, 9 + i).slotGroup("player_inventory")))
-            .build();
-    }
-
-    private SlotGroupWidget buildPlayerHotbarSlotGroup() {
-        return SlotGroupWidget.builder()
-            .row("HHHHHHHHH")
-            .key('H', i -> new ItemSlot().slot(new ModularSlot(playerInventory, i).slotGroup("player_inventory")))
-            .build();
     }
 
     private SlotGroupWidget buildBagSlotGroup() {
