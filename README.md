@@ -68,28 +68,28 @@ but they must fit the "vibe". A good fit for Utilities in Excess is a feature wh
 A special thanks to the 1.0 contributors, without which this project could have never gotten off the ground:
 
 ### Artists
-<img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbspEmbri&nbsp <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate"> <br>
-<img src="img/drum.png" alt="Drum"> &nbspEmeraldsEmerald&nbsp <img src="img/trash_can_item.png" alt="Trash Can"> <br>
+<img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate"> &nbsp; &nbsp;&nbsp;Embri <br>
+<img src="img/drum.png" alt="Drum"> &nbsp; <img src="img/trash_can_item.png" alt="Trash Can"> &nbsp; EmeraldsEmerald <br>
 
 ### Programmers
-- @jurrejelle (Redstone Clock, Drums, Cursed Earth, Trash Cans, Architect's Wand)
-- @Caedis (Heavenly Ring, Ethereal Glass, Chandelier)
-- @KydZombie (Magic Wood, Inverted Tools)
-- @0hwx (Watering Can, Filing Cabinet)
-- @dibbydoba (Pure Love, Special Chests, Sound/Rain Muffler)
-- @rspforhp (Inverted Tools)
-- @lynxx131 (Golden Bag of Holding, Block Update Detector)
-- @DeathFuel (Blackout Curtains)
-- @RecursivePineapple (Conveyors, The Underworld)
-- @serenibyss (QED)
-- @koolkrafter5 (End of Time)
-- @SuperSoupr (Glove, Blessed Earth, Colored Blocks, Trading Post, World Converter)
-- @loenaaaa (Generators, Decorative Blocks, Pseudo-Inversion Ritual)
-- @sisyphussy (Underworld Portal Renderer)
-- @Ranzuu (Localization Work)
-- @Cardinalstars (Forge Microblocks, Transfer Nodes)
-- @tomasz-brak (Architects Wand Backhand/GT5U Integration)
-- @Spicierspace153 (Collector)
-- @Malteez (Void Quarry)
-- @Spaghetti-OberNub (Bugfixes and Polish)
-- @Nikolay-Sitnikov (Code Review)
+- jurrejelle (Redstone Clock, Drums, Cursed Earth, Trash Cans, Architect's Wand)
+- Caedis (Heavenly Ring, Ethereal Glass, Chandelier)
+- KydZombie (Magic Wood, Inverted Tools)
+- 0hwx (Watering Can, Filing Cabinet)
+- dibbydoba (Pure Love, Special Chests, Sound/Rain Muffler)
+- rspforhp (Inverted Tools)
+- lynxx131 (Golden Bag of Holding, Block Update Detector)
+- DeathFuel (Blackout Curtains)
+- RecursivePineapple (Conveyors, The Underworld)
+- serenibyss (QED)
+- koolkrafter5 (End of Time)
+- SuperSoupr (Glove, Blessed Earth, Colored Blocks, Trading Post, World Converter)
+- loenaaaa (Generators, Decorative Blocks, Pseudo-Inversion Ritual)
+- sisyphussy (Underworld Portal Renderer)
+- Ranzuu (Localization Work)
+- Cardinalstars (Forge Microblocks, Transfer Nodes)
+- tomasz-brak (Architects Wand Backhand/GT5U Integration)
+- Spicierspace153 (Collector)
+- Malteez (Void Quarry)
+- Spaghetti-OberNub (Bugfixes and Polish)
+- Nikolay-Sitnikov (Code Review)
