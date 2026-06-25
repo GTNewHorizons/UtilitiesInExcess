@@ -1,4 +1,6 @@
-# Utilities In Excess
+<p align="center">
+  <img width="384" height="180" alt="banner" src="https://github.com/user-attachments/assets/e7849e0e-ebb3-4f40-8da0-196bbd6239ae" />
+</p>
 
 An open source, cleanroom recreation of [Extra Utilities](https://www.curseforge.com/minecraft/mc-mods/extra-utilities)
 for 1.7.10. Written entirely without viewing or reproducing the Extra Utilities source.
