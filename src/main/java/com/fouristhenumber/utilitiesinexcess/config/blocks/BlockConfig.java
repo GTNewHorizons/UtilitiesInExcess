@@ -63,6 +63,9 @@ public class BlockConfig {
     public static boolean enableMagicWood;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableEndspark;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableMarginallyMaximisedChest;
 
     @Config.DefaultBoolean(true)
@@ -92,6 +95,9 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableConveyor;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableCollector;
 
     @Config.DefaultBoolean(true)
     public static boolean enableUnderWorldPortal;
@@ -200,7 +206,7 @@ public class BlockConfig {
         public int gigaTorchRange;
     }
 
-    @Config.Comment("Cursed Earth Configuration")
+    @Config.Comment("Spike Configuration")
     public static final Spikes spikes = new Spikes();
 
     @Config.LangKey("utilitiesinexcess.config.block.spikes")

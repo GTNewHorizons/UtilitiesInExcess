@@ -83,9 +83,25 @@ public class TileEntitySmartPump extends LoadableTE implements IEnergyReceiver, 
         }
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public int getWorkingX() {
+        return ((chunkX + CHUNK_OFFSETS[currentChunk][0]) * 16) + xInChunk;
+    }
+
+    public int getWorkingY() {
+        return currentY;
+    }
+
+    public int getWorkingZ() {
+        return ((chunkZ + CHUNK_OFFSETS[currentChunk][1]) * 16) + zInChunk;
+    }
+
     private void scanStep() {
-        int worldX = ((chunkX + CHUNK_OFFSETS[currentChunk][0]) * 16) + xInChunk;
-        int worldZ = ((chunkZ + CHUNK_OFFSETS[currentChunk][1]) * 16) + zInChunk;
+        int worldX = getWorkingX();
+        int worldZ = getWorkingZ();
 
         Block block = worldObj.getBlock(worldX, currentY, worldZ);
         FluidStack fluid;

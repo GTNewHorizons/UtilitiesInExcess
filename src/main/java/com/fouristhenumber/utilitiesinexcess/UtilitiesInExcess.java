@@ -18,9 +18,6 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuCompat;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
-import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
@@ -31,7 +28,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -72,7 +68,6 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-
         RecipeLoader.run();
 
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
@@ -80,9 +75,6 @@ public class UtilitiesInExcess {
             .bus()
             .register(new FMLEventHandler());
 
-        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
-            Remappings.init();
-        }
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
@@ -150,9 +142,4 @@ public class UtilitiesInExcess {
             return ICON_ITEM;
         }
     };
-
-    @Mod.EventHandler
-    public void onMissingMappings(FMLMissingMappingsEvent event) {
-        ExuCompat.onMissingMappings(event);
-    }
 }

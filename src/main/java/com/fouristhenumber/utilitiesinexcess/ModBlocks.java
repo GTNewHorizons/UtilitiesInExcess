@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDe
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCollector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
@@ -18,6 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorative;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorativeGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEndspark;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
@@ -96,10 +98,12 @@ public enum ModBlocks {
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),
     TRASH_CAN_FLUID(BlockConfig.enableTrashCanFluid, new BlockTrashCanFluid(), "trash_can_fluid"),
     TRASH_CAN_ENERGY(BlockConfig.enableTrashCanEnergy, new BlockTrashCanEnergy(), "trash_can_energy"),
-    DRUM(BlockConfig.enableDrum, new BlockDrum(16000), BlockDrum.ItemBlockDrum.class, "drum"),
+    DRUM(BlockConfig.enableDrum, new BlockDrum(256_000, "drum"), BlockDrum.ItemBlockDrum.class, "drum"),
+    BEDROCKIUM_DRUM(BlockConfig.enableDrum, new BlockDrum(65_536_000, "bedrockium_drum"), BlockDrum.ItemBlockDrum.class, "bedrockium_drum"),
     SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler(), BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
     RAIN_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler(), BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), "magic_wood"),
+    ENDSPARK(BlockConfig.enableEndspark, new BlockEndspark(), "endspark"),
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), "significantly_shrunk_chest"),
@@ -163,6 +167,7 @@ public enum ModBlocks {
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
+    COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
     VOID_QUARRY(VoidQuarryConfig.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
     VOID_MARKER(VoidQuarryConfig.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
     VOID_QUARRY_UPGRADE(VoidQuarryConfig.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),

@@ -19,7 +19,7 @@ public enum Mods {
     Postea("postea"),
     ForgeMicroBlock("ForgeMicroblock"),
     Backhand("backhand"),
-    GT("gregtech_nh"),
+    GT("gregtech_nh")
     ;
     // spotless:on
 

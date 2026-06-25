@@ -11,15 +11,17 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
-    public final FluidTank tank;
+    public FluidTank tank;
+    private int capacity;
+
+    public TileEntityDrum() {
+        super();
+    }
 
     public TileEntityDrum(int capacity) {
         super();
+        this.capacity = capacity;
         this.tank = new FluidTank(capacity);
-    }
-
-    public void setTank(FluidTank tank) {
-        setFluid(tank.getFluid());
     }
 
     public void setFluid(FluidStack stack) {
@@ -29,21 +31,23 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
+        this.capacity = nbt.getInteger("capacity");
+        this.tank = new FluidTank(capacity);
         if (nbt.hasKey("tank")) {
-            NBTTagCompound tankNbt = nbt.getCompoundTag("tank");
-            tank.readFromNBT(tankNbt);
+            tank.readFromNBT(nbt.getCompoundTag("tank"));
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+        nbt.setInteger("capacity", capacity);
         NBTTagCompound tankNbt = new NBTTagCompound();
         tank.writeToNBT(tankNbt);
         nbt.setTag("tank", tankNbt);
     }
 
-    // IFluidHandler implementation
+    // IFluidHandler
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -55,7 +59,9 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource == null || !resource.isFluidEqual(tank.getFluid())) return null;
+        if (resource == null) return null;
+        FluidStack inTank = tank.getFluid();
+        if (inTank == null || !resource.isFluidEqual(inTank)) return null;
         FluidStack drained = tank.drain(resource.amount, doDrain);
         if (doDrain && drained != null && drained.amount > 0) markDirty();
         return drained;
@@ -70,13 +76,14 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return true;
+        FluidStack current = tank.getFluid();
+        return current == null || current.getFluid() == fluid;
     }
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        FluidStack fluidInTank = tank.getFluid();
-        return fluidInTank != null && fluidInTank.getFluid() == fluid;
+        FluidStack current = tank.getFluid();
+        return current != null && current.getFluid() == fluid;
     }
 
     @Override

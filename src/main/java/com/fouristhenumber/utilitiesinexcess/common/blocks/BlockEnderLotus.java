@@ -16,6 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
 
@@ -50,7 +51,9 @@ public class BlockEnderLotus extends BlockCrops {
 
     @Override
     public boolean canPlaceBlockOn(Block ground) {
-        return ground == Blocks.end_stone || ground == Blocks.dirt || ground == Blocks.grass;
+        return ground == Blocks.end_stone || ground == Blocks.dirt
+            || ground == Blocks.grass
+            || ground == ModBlocks.ENDSPARK.get();
     }
 
     @Override
@@ -59,8 +62,11 @@ public class BlockEnderLotus extends BlockCrops {
         int meta = world.getBlockMetadata(x, y, z);
         if (meta >= MAX_STAGE) return;
 
-        boolean onEndstone = world.getBlock(x, y - 1, z) == Blocks.end_stone;
-        int chance = onEndstone ? EnderLotusConfig.growthTicksOnEndstone : EnderLotusConfig.growthTicksOnDirt;
+        Block ground = world.getBlock(x, y - 1, z);
+
+        int chance = EnderLotusConfig.growthTicksOnDirt;
+        if (ground == Blocks.end_stone) chance = EnderLotusConfig.growthTicksOnEndstone;
+        else if (ground == ModBlocks.ENDSPARK.get()) chance = EnderLotusConfig.growthTicksOnEndspark;
 
         if (rand.nextInt(chance) == 0) {
             world.setBlockMetadataWithNotify(x, y, z, meta + 1, 2);
@@ -94,9 +100,15 @@ public class BlockEnderLotus extends BlockCrops {
         if (metadata >= MAX_STAGE) {
             drops.add(new ItemStack(Items.ender_pearl, 1));
 
-            if (world.getBlock(x, y - 1, z) == Blocks.end_stone
-                && rand.nextDouble() < EnderLotusConfig.extraSeedChanceOnEndstone) {
-                drops.add(new ItemStack(enderLotusSeed, 1));
+            Block ground = world.getBlock(x, y - 1, z);
+            if (ground == Blocks.end_stone) {
+                if (rand.nextDouble() < EnderLotusConfig.extraSeedChanceOnEndstone) {
+                    drops.add(new ItemStack(enderLotusSeed, 1));
+                }
+            } else if (ground == ModBlocks.ENDSPARK.get()) {
+                if (rand.nextDouble() < EnderLotusConfig.extraSeedChanceOnEndspark) {
+                    drops.add(new ItemStack(enderLotusSeed, 1));
+                }
             }
         }
         return drops;

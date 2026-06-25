@@ -9,16 +9,17 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
-import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.wrappers.MerchantRecipeListWrapper;
 
-public class VillagerWidget extends Column {
+public class VillagerWidget extends Flow {
 
     private final PosGuiData data;
     private final PanelSyncManager manager;
@@ -32,7 +33,7 @@ public class VillagerWidget extends Column {
 
     public VillagerWidget(PosGuiData data, PanelSyncManager manager, IMerchant merchant,
         VillagerColumn villagerColumn) {
-        super();
+        super(GuiAxis.Y);
         this.data = data;
         this.manager = manager;
         background(GuiTextures.BUTTON_CLEAN);

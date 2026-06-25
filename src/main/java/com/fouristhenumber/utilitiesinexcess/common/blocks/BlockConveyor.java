@@ -24,7 +24,6 @@ public class BlockConveyor extends BlockContainer {
 
     public BlockConveyor() {
         super(Material.piston);
-
         setBlockName("conveyor");
     }
 
