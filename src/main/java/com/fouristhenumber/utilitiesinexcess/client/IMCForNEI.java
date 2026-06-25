@@ -116,6 +116,8 @@ public class IMCForNEI {
             sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.ticon_magic_wood");
         }
 
+        sendInfoPage("<utilitiesinexcess:endspark>", "nei.infopage.uie.endspark.1");
+
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.2");
 
@@ -194,6 +196,8 @@ public class IMCForNEI {
             "nei.infopage.uie.inversion_sigil.4");
 
         sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
+
+        sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
 
         sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.1");
 

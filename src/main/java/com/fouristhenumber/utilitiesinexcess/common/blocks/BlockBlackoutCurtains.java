@@ -81,4 +81,14 @@ public class BlockBlackoutCurtains extends Block {
     public boolean canConnectTo(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
         return canConnectToBlock(world.getBlock(x, y, z)) || world.isSideSolid(x, y, z, dir.getOpposite(), false);
     }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 60;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 30;
+    }
 }

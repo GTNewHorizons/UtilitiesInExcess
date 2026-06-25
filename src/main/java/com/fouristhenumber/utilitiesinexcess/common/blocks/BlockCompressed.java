@@ -11,6 +11,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -90,5 +92,15 @@ public class BlockCompressed extends Block {
                     getUnlocalizedName() + ".desc",
                     (long) Math.pow(9, stack.getItemDamage() + 1)));
         }
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return this.base.getFlammability(world, x, y, z, face) / 2;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return this.base.getFireSpreadSpeed(world, x, y, z, face) / 2;
     }
 }

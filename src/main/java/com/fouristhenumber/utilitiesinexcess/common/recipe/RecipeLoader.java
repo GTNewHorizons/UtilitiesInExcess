@@ -62,14 +62,13 @@ public class RecipeLoader {
             new ItemStack(Blocks.planks, 1, OreDictionary.WILDCARD_VALUE));
 
         // Smart Pump
-        // TODO: Replace obsidian with "ender-infused obsidian" equivalent
         addShapedRecipe(
             ModBlocks.SMART_PUMP,
             "odo",
             "lew",
             "opo",
             'o',
-            Blocks.obsidian,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
             'd',
             Items.diamond,
             'l',
@@ -87,7 +86,7 @@ public class RecipeLoader {
             "wel",
             "opo",
             'o',
-            Blocks.obsidian,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
             'd',
             Items.diamond,
             'l',
@@ -379,6 +378,19 @@ public class RecipeLoader {
             Items.enchanted_book,
             's',
             Blocks.bookshelf);
+
+        // Endspark
+        addShapedRecipe(
+            ModBlocks.ENDSPARK,
+            "wow",
+            "oeo",
+            "wow",
+            'w',
+            ModBlocks.MAGIC_WOOD,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'e',
+            Items.ender_eye);
 
         // Pure Love
         addShapedRecipe(
