@@ -646,7 +646,7 @@ uie.quarry.marker.mode.2.1=Marker is set to establish a cuboid of length %d. Sne
 uie.quarry.marker.mode.2.2=Increased cuboid size to %d.
 uie.quarry.marker.mode.3=Marker is set to establish a full loop of markers that make up a rectilinear polygon back this marker of arbitrary size and shape.
 
-nei.infopage.uie.void_quarry.1=The Void Quarry allows you to mine and harvest a large area, replacing blocks with cobblestone. It requires energy to run and will output to inventories adjacent to any face. During operation, the quarry will keep its own chunk loaded as well as the current working chunk.
+nei.infopage.uie.void_quarry.1=The Void Quarry allows you to mine and harvest a large area, replacing blocks with cobblestone. It requires energy to run and will output items to its top face. During operation, the quarry will keep its own chunk loaded as well as the current working chunk.
 nei.infopage.uie.void_quarry.2=Void markers define an area for the Void Quarry to mine. Right clicking will switch it between three different border configuration modes. Once the border is configured, right click the Void Quarry to begin operation.
 nei.infopage.uie.void_quarry.3=Once a Void Quarry is finished working, it can be restarted using the same area using a redstone signal. It will also report its progress as a signal to redstone comparators.
 nei.infopage.uie.void_marker.1=Void Markers are used to define the work area of the Void Quarry. They have 3 different modes, which can be cycled through by right-clicking the marker. The first mode (standard) lets you define a rectangular area by placing 2 additional markers at the same height, at the other corners of your area.
