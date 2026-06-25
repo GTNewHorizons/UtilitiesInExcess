@@ -77,12 +77,11 @@ public class ItemMobJar extends Item {
                     double targetZ = mop.blockZ + dir.offsetZ + 0.5;
 
                     entity.setPosition(targetX, targetY, targetZ);
-                } else {
-                    entity.setPosition(player.posX, player.posY, player.posZ);
+
+                    world.spawnEntityInWorld(entity);
+                    stack.getTagCompound()
+                        .removeTag("MobData");
                 }
-                world.spawnEntityInWorld(entity);
-                stack.getTagCompound()
-                    .removeTag("MobData");
             }
         }
         return stack;
