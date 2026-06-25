@@ -85,9 +85,7 @@ public class TileEntityTrashCanFluid extends TileEntity
             IKey.str(StatCollector.translateToLocal("gui.title.trash_can_fluid.name"))
                 .asWidget()
                 .marginLeft(5)
-                .marginRight(5)
-                .marginTop(5)
-                .marginBottom(-15));
+                .marginTop(5));
 
         IWidget slots = Flow.column()
             .childPadding(10)

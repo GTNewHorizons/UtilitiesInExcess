@@ -33,9 +33,7 @@ public class TileEntityRadicallyReducedChest extends TileEntitySignificantlyShru
             IKey.str(StatCollector.translateToLocal(getInventoryName()))
                 .asWidget()
                 .marginLeft(5)
-                .marginRight(5)
-                .marginTop(5)
-                .marginBottom(-15));
+                .marginTop(5));
 
         IItemHandler itemHandler = new LimitingItemStackHandler(chestContents, 1);
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);

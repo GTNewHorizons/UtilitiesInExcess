@@ -32,9 +32,7 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
             IKey.str(StatCollector.translateToLocal("gui.title.trash_can.name"))
                 .asWidget()
                 .marginLeft(5)
-                .marginRight(5)
-                .marginTop(5)
-                .marginBottom(-15));
+                .marginTop(5));
 
         IItemHandler itemHandler = new InvWrapper(this);
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
