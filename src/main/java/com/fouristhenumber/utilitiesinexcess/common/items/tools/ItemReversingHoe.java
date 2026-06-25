@@ -21,13 +21,16 @@ import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
 
     private final HashMap<Block, Block> blockConversionCache = new HashMap<>();
+    private boolean cacheInitialized = false;
 
     public ItemReversingHoe() {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:reversing_hoe");
         setUnlocalizedName("reversing_hoe");
         if (ReversingHoeConfig.unbreakable) setMaxDamage(0);
+    }
 
+    public void initializeCache() {
         if (ReversingHoeConfig.blockTransformations != null) {
             for (String transformation : ReversingHoeConfig.blockTransformations) {
                 if (transformation != null && transformation.contains("->")) {
@@ -41,12 +44,15 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
                 }
             }
         }
+        cacheInitialized = true;
     }
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
         if (world.isRemote) return false;
+
+        if (!cacheInitialized) initializeCache();
 
         Block block = world.getBlock(x, y, z);
 
