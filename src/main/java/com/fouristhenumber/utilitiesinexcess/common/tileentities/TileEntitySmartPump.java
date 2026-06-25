@@ -104,7 +104,7 @@ public class TileEntitySmartPump extends LoadableTE implements IEnergyReceiver, 
         int worldZ = getWorkingZ();
 
         Block block = worldObj.getBlock(worldX, currentY, worldZ);
-        FluidStack fluid;
+        FluidStack fluid = null;
 
         if (getEnergyStored(ForgeDirection.UNKNOWN) < BlockConfig.smartPumpEnergyUsePerBlock) {
             stalled = true;
@@ -118,7 +118,9 @@ public class TileEntitySmartPump extends LoadableTE implements IEnergyReceiver, 
             fluid = new FluidStack(FluidRegistry.LAVA, 1000);
         } else if (block instanceof IFluidBlock fluidBlock) {
             fluid = fluidBlock.drain(worldObj, worldX, currentY, worldZ, false);
-        } else {
+        }
+
+        if (fluid == null) {
             advanceColumn();
             return;
         }
