@@ -3,8 +3,6 @@
 An open source, cleanroom recreation of [Extra Utilities](https://www.curseforge.com/minecraft/mc-mods/extra-utilities)
 for 1.7.10. Written entirely without viewing or reproducing the Extra Utilities source.
 
-Optionally dependent on [Angelica](https://github.com/GTNewHorizons/Angelica) for connected texture mapping.
-
 ## Features
 
 - The entire featureset of Extra Utilities.
@@ -31,6 +29,15 @@ World conversion will happen automatically if Postea is installed, the config **
 Tinkers Construct conversion works by simply using the same material ids as Extra Utilities. If you want to run UiE and
 ExU at the same time, you must change the configs **#invertedTinkersID** and **#magicalWoodTinkersID** so that they no
 longer overlap. Otherwise, the game will crash!
+
+## Dependencies
+- [GTNHLib](https://github.com/GTNewHorizons/GTNHLib)
+- [ModularUI2](https://github.com/GTNewHorizons/ModularUI2)
+- [Angelica](https://github.com/GTNewHorizons/Angelica) (Optional - Allows connected texture mapping)
+- [Postea](https://github.com/GTNewHorizons/Postea) (Optional - World conversion system)
+
+## Integrations
+-
 
 ## Contribution
 
@@ -76,4 +83,4 @@ A special thanks to the 1.0 contributors, without which this project could have 
 - Nikolay-Sitnikov (Code Review)
 
 ### Artists
-
+<img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbspEmbri&nbsp <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate">
