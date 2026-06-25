@@ -381,7 +381,7 @@ tile.potion_generator_plusplus.name=Potion Generator
 nei.infopage.uie.potion_generator.1=Generates RF from potions. The more complex the potion is (the more steps involved in making it) the more RF/t it will generate.
 
 gui.tooltip.energy-max=RF: %s / %s
-gui.tooltip.energy-tick=  RF/t
+gui.tooltip.energy-tick= RF/t
 
 item.golden_bag.name=Golden Bag of Holding
 nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth of items. Right click to open.
