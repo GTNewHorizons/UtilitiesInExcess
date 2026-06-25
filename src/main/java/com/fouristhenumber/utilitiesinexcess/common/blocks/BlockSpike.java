@@ -240,6 +240,7 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         }
     }
 
+    @Optional.Method(modid = "Waila")
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
@@ -258,6 +259,7 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         return currentTip;
     }
 
+    @Optional.Method(modid = "Waila")
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
         int y, int z) {
@@ -270,16 +272,19 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         return tag;
     }
 
+    @Optional.Method(modid = "Waila")
     // Stubs
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
     }
 
+    @Optional.Method(modid = "Waila")
     public List<String> getWailaHead(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         return currentTip;
     }
 
+    @Optional.Method(modid = "Waila")
     public List<String> getWailaTail(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         return currentTip;
