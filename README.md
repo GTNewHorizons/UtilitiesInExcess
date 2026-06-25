@@ -1,4 +1,4 @@
-# Utilities In Excess
+# Utilities In Excess<img src="img/logo_4x.png" align="right" alt="The Utilities in Excess logo">
 
 An open source, cleanroom recreation of [Extra Utilities](https://www.curseforge.com/minecraft/mc-mods/extra-utilities)
 for 1.7.10. Written entirely without viewing or reproducing the Extra Utilities source.
@@ -30,14 +30,19 @@ Tinkers Construct conversion works by simply using the same material ids as Extr
 ExU at the same time, you must change the configs **#invertedTinkersID** and **#magicalWoodTinkersID** so that they no
 longer overlap. Otherwise, the game will crash!
 
-## Dependencies
+## Hard Dependencies
 - [GTNHLib](https://github.com/GTNewHorizons/GTNHLib)
 - [ModularUI2](https://github.com/GTNewHorizons/ModularUI2)
-- [Angelica](https://github.com/GTNewHorizons/Angelica) (Optional - Allows connected texture mapping)
-- [Postea](https://github.com/GTNewHorizons/Postea) (Optional - World conversion system)
+- [CoFH Lib](https://www.curseforge.com/minecraft/mc-mods/cofh-lib)
 
-## Integrations
--
+## Optional Dependencies
+
+- [Angelica](https://github.com/GTNewHorizons/Angelica) (CTM)
+- [Postea](https://github.com/GTNewHorizons/Postea) (World conversion system)
+- [Tinkers Construct](https://github.com/GTNewHorizons/TinkersConstruct) (New materials)
+- [Forge Multipart](https://github.com/GTNewHorizons/ForgeMultipart) (New microblock shapes)
+- [Backhand](https://github.com/GTNewHorizons/Backhand) (Architect's Wand integration)
+- [FindIt](https://github.com/GTNewHorizons/FindIt) (Trading Post integration)
 
 ## Contribution
 
@@ -83,4 +88,5 @@ A special thanks to the 1.0 contributors, without which this project could have 
 - Nikolay-Sitnikov (Code Review)
 
 ### Artists
-<img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbspEmbri&nbsp <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate">
+<img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbspEmbri&nbsp <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate"> <br>
+<img src="img/drum.png" alt="Drum"> &nbspEmeraldsEmerald&nbsp <img src="img/trash_can_item.png" alt="Trash Can"> <br>
