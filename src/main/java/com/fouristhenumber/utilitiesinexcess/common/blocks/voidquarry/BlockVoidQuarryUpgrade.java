@@ -98,7 +98,7 @@ public class BlockVoidQuarryUpgrade extends Block {
             VoidQuarryUpgrade upgrade = VoidQuarryUpgrade.VALUES[stack.getItemDamage()];
             tooltip.add(
                 StatCollector.translateToLocalFormatted("tile.void_quarry_upgrade.desc.energy", upgrade.getCost()));
-            if (upgrade.getTierGroup()
+            if (!upgrade.isBoolean() && upgrade.getTierGroup()
                 .equals(TieredVoidQuarryUpgrade.SPEED.getBaseName())) {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted("tile.void_quarry_upgrade.desc.speed", upgrade.getValue()));
