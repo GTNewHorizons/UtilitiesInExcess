@@ -30,7 +30,7 @@ World conversion will happen automatically if Postea is installed, the config **
 
 Tinkers Construct conversion works by simply using the same material ids as Extra Utilities. If you want to run UiE and
 ExU at the same time, you must change the configs **#bedrockiumTinkersID**, **#invertedTinkersID**,
-and **#magicalWoodTinkersID**so that they no longer overlap. Otherwise, the game will crash!
+and **#magicalWoodTinkersID** so that they no longer overlap. Otherwise, the game will crash!
 
 ## Hard Dependencies
 - [GTNHLib](https://github.com/GTNewHorizons/GTNHLib)
