@@ -213,9 +213,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
             IKey.str(StatCollector.translateToLocal(getGUIName()))
                 .asWidget()
                 .marginLeft(5)
-                .marginRight(5)
-                .marginTop(5)
-                .marginBottom(-15));
+                .marginTop(5));
         panel.child(
             new ProgressWidget()
                 .value(
