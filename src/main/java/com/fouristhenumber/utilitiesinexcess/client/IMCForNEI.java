@@ -207,15 +207,13 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
 
-        sendInfoPage(
-            "<utilitiesinexcess:void_quarry>,<utilitiesinexcess:void_marker>",
-            "nei.infopage.uie.void_quarry.1");
-        sendInfoPage(
-            "<utilitiesinexcess:void_quarry>,<utilitiesinexcess:void_marker>",
-            "nei.infopage.uie.void_quarry.2");
-        sendInfoPage(
-            "<utilitiesinexcess:void_quarry>,<utilitiesinexcess:void_marker>",
-            "nei.infopage.uie.void_quarry.3");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.2");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.3");
+
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.1");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.2");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.3");
 
         sendInfoPage(
             "<utilitiesinexcess:void_quarry>,utilitiesinexcess:void_quarry_upgrade",
