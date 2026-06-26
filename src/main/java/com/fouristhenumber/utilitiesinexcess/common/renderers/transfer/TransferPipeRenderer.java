@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferPipeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockCrossoverPipe;
+//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockCrossoverPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -19,18 +19,10 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
 
     public static void RenderPipes(int mask, int x, int y, int z, Block block, RenderBlocks renderer, boolean renderCenter) {
 
-        if (renderCenter) {
-            if (block instanceof BlockCrossoverPipe)
-            {
-                renderer.setRenderBounds(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875);
-                renderer.renderStandardBlock(block, x, y, z);
-            }
-            else
-            {
-                renderer.setRenderBounds(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
-                renderer.renderStandardBlock(block, x, y, z);
-            }
-
+        if (renderCenter)
+        {
+            renderer.setRenderBounds(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
+            renderer.renderStandardBlock(block, x, y, z);
         }
 
         // -Y (down)
@@ -77,16 +69,16 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
         tess.startDrawingQuads();
         tess.setNormal(0, 1, 0);
 
-        if (block instanceof BlockCrossoverPipe)
-        {
-            renderer.setRenderBounds(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875);
-            renderInventoryCube(renderer, block, metadata);
-        }
-        else
-        {
+//        if (block instanceof BlockCrossoverPipe)
+//        {
+//            renderer.setRenderBounds(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875);
+//            renderInventoryCube(renderer, block, metadata);
+//        }
+//        else
+//        {
             renderer.setRenderBounds(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
             renderInventoryCube(renderer, block, metadata);
-        }
+//        }
         renderer.setRenderBounds(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
         renderInventoryCube(renderer, block, metadata);
         renderer.setRenderBounds(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);

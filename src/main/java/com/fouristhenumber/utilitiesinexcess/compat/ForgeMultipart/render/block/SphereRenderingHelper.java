@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block;
 
-import java.util.Arrays;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -176,12 +175,10 @@ public class SphereRenderingHelper {
             }
             // Base
             RenderSphereBottom(tess, icons[0], ox, oy, oz, brightness, 0xFFFFFFFF);
-            RenderSphereSides(tess, Arrays.copyOfRange(icons, 2, icons.length), ox, oy, oz, brightness, 0xFFFFFFFF);
+            RenderSphereSides(tess, icons, ox, oy, oz, brightness, 0xFFFFFFFF);
 
             // Do biome overlays
-            IIcon[] overlayArr = new IIcon[4];
-            Arrays.fill(overlayArr, gMat.sideIconT().icon);
-            RenderSphereSides(tess, overlayArr, ox, oy, oz, brightness, color);
+            RenderSphereSides(tess, gMat.sideIconT().icon, ox, oy, oz, brightness, color);
             RenderSphereTop(tess, icons[1], ox, oy, oz, brightness, color);
         } else if (mat instanceof BlockMicroMaterial bMat) {
             IIcon[] icons = bMat.icont().icons;
@@ -404,6 +401,7 @@ public class SphereRenderingHelper {
                     }
                 }
 
+                side +=2;
                 double uWindow = sideIcons[side].getMaxU() - sideIcons[side].getMinU();
                 double vWindow = sideIcons[side].getMaxV() - sideIcons[side].getMinV();
 
@@ -435,11 +433,47 @@ public class SphereRenderingHelper {
         }
     }
 
+    // Sometimes we don't care about the side
+    public static void RenderSphereSides(Tessellator tess, IIcon sideIcon, double x, double y, double z,
+                                         int brightness, int color) {
+        for (int latitude = 0; latitude < 16; latitude++) {
+            for (int longitude = 2; longitude < 6; longitude++) {
+                double uWindow = sideIcon.getMaxU() - sideIcon.getMinU();
+                double vWindow = sideIcon.getMaxV() - sideIcon.getMinV();
+
+                int k = latitude & 3;
+                int min = (k + 2) & 3;
+                int max = min + 1;
+
+                double u1 = sideIcon.getMinU() + (uWindow * ((double) min / 4));
+                double u2 = sideIcon.getMinU() + (uWindow * ((double) max / 4));
+                double v1 = sideIcon.getMaxV() - (vWindow * ((double) (longitude - 1) / 4));
+                double v2 = sideIcon.getMaxV() - (vWindow * ((double) (longitude - 2) / 4));
+
+                int lon0 = longitude;
+                int lon1 = longitude + 1;
+                int lat0 = latitude;
+                int lat1 = WrapNumber(0, 15, latitude + 1);
+
+                Vector3 vert0 = SphereRenderingHelper.verts[lon0][lat0].copy()
+                    .add(x, y, z);
+                Vector3 vert1 = SphereRenderingHelper.verts[lon0][lat1].copy()
+                    .add(x, y, z);
+                Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat1].copy()
+                    .add(x, y, z);
+                Vector3 vert3 = SphereRenderingHelper.verts[lon1][lat0].copy()
+                    .add(x, y, z);
+
+                renderSphericFaceVanilla(tess, vert0, vert1, vert2, vert3, u1, v1, u2, v2, brightness, color);
+            }
+        }
+    }
+
     // Most blocks can just use this
     public static void RenderSphere(Tessellator tess, IIcon[] icons, double x, double y, double z, int brightness,
         int color) {
         RenderSphereTop(tess, icons[1], x, y, z, brightness, color);
-        RenderSphereSides(tess, Arrays.copyOfRange(icons, 2, icons.length), x, y, z, brightness, color);
+        RenderSphereSides(tess, icons, x, y, z, brightness, color);
         RenderSphereBottom(tess, icons[0], x, y, z, brightness, color);
     }
 

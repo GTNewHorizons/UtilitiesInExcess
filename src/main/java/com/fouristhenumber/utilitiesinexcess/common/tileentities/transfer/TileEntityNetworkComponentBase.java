@@ -110,10 +110,11 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
         return logic.getWalkableDirs(targetType, fromDirection, walkingComponent);
     }
 
+    // NOTE THIS DOES NOT UPDATE THE MASK.
+    // Connections are only updated when they are placed, loaded, or a neighbor changes.
     @Override
     public int getRawConnectionMask()
     {
-        logic.updateExternalConnections();
         return logic.getNetworkMask() | logic.getExternalMask();
     }
 

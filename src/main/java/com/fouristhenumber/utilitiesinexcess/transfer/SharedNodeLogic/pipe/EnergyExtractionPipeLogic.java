@@ -3,10 +3,9 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
 
-public class EnergyPipeLogic extends NetworkLogic
+public class EnergyExtractionPipeLogic extends NetworkLogic
 {
-
-    public EnergyPipeLogic(ITransferNetworkComponent host) {
+    public EnergyExtractionPipeLogic(ITransferNetworkComponent host) {
         super(host);
     }
 
