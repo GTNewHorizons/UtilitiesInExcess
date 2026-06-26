@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,12 +15,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
-import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,6 +33,28 @@ public class BlockChandelier extends BlockContainer {
         setHardness(0.0F);
         setLightLevel(0.9375F); // 15 light level
         setStepSound(soundTypeWood);
+        setBlockBounds(0.125F, 0.125F, 0.125F, 0.875F, 1F, 0.875F);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] icons;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        icons = new IIcon[4];
+        for (int i = 0; i < 4; i++) {
+            icons[i] = iconRegister.registerIcon("utilitiesinexcess:chandelier_" + i);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        if (meta < 0 || meta >= icons.length) {
+            meta = 0;
+        }
+        return icons[meta];
     }
 
     @Override
@@ -51,7 +74,7 @@ public class BlockChandelier extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return ModelISBRH.JSON_ISBRH_ID;
+        return 1;
     }
 
     @Override
@@ -113,6 +136,12 @@ public class BlockChandelier extends BlockContainer {
             tooltip.add(
                 StatCollector
                     .translateToLocalFormatted("tile.chandelier.desc", BlockConfig.chandelier.chandelierLightRange));
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public IIcon getIconFromDamage(int damage) {
+            return this.field_150939_a.getIcon(0, damage);
         }
     }
 }

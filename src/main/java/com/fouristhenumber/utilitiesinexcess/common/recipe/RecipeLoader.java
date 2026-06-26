@@ -35,6 +35,49 @@ public class RecipeLoader {
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
 
+        // Chandeliers
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            "gdg",
+            "ttt",
+            " t ",
+            'g',
+            Items.gold_ingot,
+            'd',
+            Items.diamond,
+            't',
+            Blocks.torch);
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 1),
+            " e ",
+            "ici",
+            'c',
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            'i',
+            Items.iron_ingot,
+            'e',
+            Items.ender_pearl);
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 2),
+            " t ",
+            "rcr",
+            'c',
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            'r',
+            Items.redstone,
+            't',
+            Blocks.redstone_torch);
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 3),
+            " o ",
+            "scs",
+            'c',
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            's',
+            Blocks.soul_sand,
+            'o',
+            Blocks.obsidian);
+
         // Collector
         addShapedRecipe(
             ModBlocks.COLLECTOR,
@@ -62,14 +105,13 @@ public class RecipeLoader {
             new ItemStack(Blocks.planks, 1, OreDictionary.WILDCARD_VALUE));
 
         // Smart Pump
-        // TODO: Replace obsidian with "ender-infused obsidian" equivalent
         addShapedRecipe(
             ModBlocks.SMART_PUMP,
             "odo",
             "lew",
             "opo",
             'o',
-            Blocks.obsidian,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
             'd',
             Items.diamond,
             'l',
@@ -87,7 +129,7 @@ public class RecipeLoader {
             "wel",
             "opo",
             'o',
-            Blocks.obsidian,
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
             'd',
             Items.diamond,
             'l',
@@ -379,6 +421,19 @@ public class RecipeLoader {
             Items.enchanted_book,
             's',
             Blocks.bookshelf);
+
+        // Endspark
+        addShapedRecipe(
+            ModBlocks.ENDSPARK,
+            "wow",
+            "oeo",
+            "wow",
+            'w',
+            ModBlocks.MAGIC_WOOD,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'e',
+            Items.ender_eye);
 
         // Pure Love
         addShapedRecipe(
