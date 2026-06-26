@@ -87,21 +87,18 @@ public enum ModItems {
             if (item.isEnabled()) {
                 item.theItem.setCreativeTab(UtilitiesInExcess.uieTab);
                 GameRegistry.registerItem(item.get(), item.name);
-            } else if (ItemConfig.registerDisabledItems) GameRegistry.registerItem(item.disabledVersion, item.name);
+            }
         }
     }
 
     private final boolean isEnabled;
     private final Item theItem;
     private final String name;
-    private final ItemDisabled disabledVersion;
 
     ModItems(boolean enabled, Item item, String name) {
         this.isEnabled = enabled;
         theItem = item;
         this.name = name;
-        if (ItemConfig.registerDisabledItems) disabledVersion = new ItemDisabled(theItem);
-        else disabledVersion = null;
     }
 
     public boolean isEnabled() {
