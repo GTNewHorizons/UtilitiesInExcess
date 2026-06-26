@@ -47,7 +47,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static ArrayList<VillagerColumn> villagerColumns;
 
-    // Trading post UI heirarchy:
+    // Trading post UI hierarchy:
     // panel > mainColumn > (topRow > villagercount) - (TradeList > tradeListRow >
     // 3x(VillagerColumn > VillagerWidget > TradeWidget))
     @Override
@@ -73,7 +73,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             .left(0);
         for (int i = 0; i < 3; i++) {
             VillagerColumn columnOfVillagers = new VillagerColumn();
-            columnOfVillagers.alignY(0)
+            columnOfVillagers.anchorTop(0)
                 .coverChildren()
                 .childPadding(3);
 
@@ -105,7 +105,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         tradeList.child(tradeListRow);
 
         Flow topRow = Flow.row();
-        topRow.alignX(0)
+        topRow.anchorLeft(0)
             .coverChildrenWidth()
             .height(10);
         topRow.child(
@@ -121,10 +121,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .top(4));
         panel.child(
             new SearchBar().villagerParent(tradeListRow)
-                .alignX(1)
-                .alignY(0)
                 .top(4)
-                .right(1)
+                .right(4)
                 .height(10)
                 .width(70));
 
@@ -141,7 +139,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         bottomRow.child(
             inventory.marginBottom(6)
                 .paddingRight(6)
-                .alignX(1));
+                .anchorRight(1));
         bottomRow.child(
             new VillagerEntityDisplay(() -> VillagerWidget.lastVillager).left(26)
                 .bottom(20));
@@ -152,7 +150,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                         .center())
                 .width(86)
                 .height(26)
-                .alignY(1));
+                .anchorBottom(1));
         mainColumn.child(bottomRow);
         panel.child(mainColumn);
         return panel;
