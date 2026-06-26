@@ -36,6 +36,7 @@ public class BlockDrum extends BlockContainer {
         setBlockName(blockname);
         this.setHardness(1.5F);
         this.setHarvestLevel("pickaxe", 1);
+        setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 1F, 0.875F);
     }
 
     @Override

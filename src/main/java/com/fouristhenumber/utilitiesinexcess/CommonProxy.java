@@ -7,7 +7,7 @@ import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTi
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.compat.exu.Remappings;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
@@ -16,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -41,8 +42,11 @@ public class CommonProxy {
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
-        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
-            Remappings.preInit();
+        if (Mods.Waila.isLoaded()) {
+            FMLInterModComms.sendMessage(
+                "Waila",
+                "register",
+                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaCompat.callbackRegister");
         }
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
@@ -56,7 +60,7 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent event) {
         if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
-            Remappings.postInit();
+            PosteaTransforms.postInit();
         }
     }
 
