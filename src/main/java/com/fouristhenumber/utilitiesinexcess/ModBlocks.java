@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

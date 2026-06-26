@@ -11,9 +11,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
 // TODO is it really safe to be doing all of this stuff on world join/separation???
-public abstract class NetworkLogic implements ITransferNetworkLogic
+public abstract class NetworkLogic<T extends ITransferNetworkComponent> implements ITransferNetworkLogic
 {
-    protected ITransferNetworkComponent host;
+    protected T host;
 
     protected ITransferNetworkComponent[] networkNeighbors = new ITransferNetworkComponent[6];
     protected int networkMask = 0;
@@ -23,7 +23,7 @@ public abstract class NetworkLogic implements ITransferNetworkLogic
 
 
     private boolean joined = false;
-    public NetworkLogic(ITransferNetworkComponent host)
+    public NetworkLogic(T host)
     {
         this.host = host;
     }

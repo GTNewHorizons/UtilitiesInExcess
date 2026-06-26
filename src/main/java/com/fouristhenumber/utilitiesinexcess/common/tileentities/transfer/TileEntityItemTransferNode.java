@@ -30,7 +30,7 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     @Override
     public void updateEntity()
     {
-        this.logic.updateEntity(this);
+        this.logic.updateEntity();
     }
 
     @Override
@@ -155,9 +155,9 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     }
 
     @Override
-    public void updateSourceInventory()
+    public void updateSource()
     {
-        logic.updateSourceInventory(this);
+        logic.updateSourceInventory();
     }
 
     @Override

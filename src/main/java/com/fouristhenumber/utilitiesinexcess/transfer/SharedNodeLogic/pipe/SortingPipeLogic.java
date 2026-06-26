@@ -3,13 +3,13 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.DefaultNetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class SortingPipeLogic extends NetworkLogic
+public class SortingPipeLogic extends DefaultNetworkLogic
 {
 
     public SortingPipeLogic(ITransferNetworkComponent host) {

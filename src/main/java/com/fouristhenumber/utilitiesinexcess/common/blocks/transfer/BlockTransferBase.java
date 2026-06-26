@@ -25,7 +25,7 @@ public abstract class BlockTransferBase extends BlockContainer
             component.updateExternalConnections();
             if (component instanceof TileEntityTransferNodeBase nodeComponent)
             {
-                nodeComponent.updateSourceInventory();
+                nodeComponent.updateSource();
             }
         }
     }

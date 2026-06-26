@@ -1,17 +1,8 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityEnergyExtractionPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityEnergyPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityFilterPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityModSortingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityRationingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntitySortingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

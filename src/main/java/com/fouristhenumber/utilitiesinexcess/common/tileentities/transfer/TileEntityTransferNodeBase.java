@@ -38,5 +38,5 @@ public abstract class TileEntityTransferNodeBase<T extends ITransferNetworkLogic
         return ForgeDirection.getOrientation(worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
     }
 
-    public abstract void updateSourceInventory();
+    public abstract void updateSource();
 }

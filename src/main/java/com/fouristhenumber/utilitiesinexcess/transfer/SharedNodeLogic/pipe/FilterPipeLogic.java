@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.DefaultNetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
@@ -42,7 +43,7 @@ import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.PURPLE_SL
 import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.YELLOW_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.getInventoryContentsFromStack;
 
-public class FilterPipeLogic extends NetworkLogic implements IInventory
+public class FilterPipeLogic extends DefaultNetworkLogic implements IInventory
 {
     // This is the actual items in the filter.
     private final ItemStack[] filters = new ItemStack[6];

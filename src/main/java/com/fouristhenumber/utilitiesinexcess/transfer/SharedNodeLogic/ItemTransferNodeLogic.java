@@ -1,7 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
@@ -17,6 +16,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
@@ -34,7 +34,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class ItemTransferNodeLogic extends NetworkLogic implements IInventory
+public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNode> implements IInventory
 {
 
     ItemStack[] buffer = new ItemStack[getSizeInventory()];
@@ -42,24 +42,23 @@ public class ItemTransferNodeLogic extends NetworkLogic implements IInventory
     IInventory connectedInventory;
     public ItemWalker walker;
 
-    public ItemTransferNodeLogic(IWalkingComponent<ItemStack> host)
+    public ItemTransferNodeLogic(TileEntityItemTransferNode host)
     {
         super(host);
         walker = new ItemWalker(host);
     }
 
-    // Note that I did write quite length insertion logic for this. I felt that it is more important to keep the
+    // Note that I did write quite lengthy insertion logic for this. I felt that it is more important to keep the
     // logic consise and fast for the cases where there is no rationing pipe.
-    public void updateEntity(INodeLogicHost host)
+    public void updateEntity()
     {
         if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
         {
             return;
         }
 
-        // TODO perhaps this can be moved to NetworkLogic
         if (connectedInventory == null) {
-            updateSourceInventory(host);
+            updateSourceInventory();
         }
 
         if (connectedInventory != null) {
@@ -507,7 +506,7 @@ public class ItemTransferNodeLogic extends NetworkLogic implements IInventory
     @Override
     public String getInventoryName()
     {
-        return "gui.title.transfer_node.name";
+        return "gui.title.item_transfer_node.name";
     }
 
     @Override
@@ -616,7 +615,7 @@ public class ItemTransferNodeLogic extends NetworkLogic implements IInventory
         return true;
     }
 
-    public void updateSourceInventory(INodeLogicHost host)
+    public void updateSourceInventory()
     {
         ForgeDirection facing = host.getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);

@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe;
+package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityEnergyExtractionPipe;
