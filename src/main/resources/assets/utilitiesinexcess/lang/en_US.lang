@@ -200,6 +200,7 @@ item.reversing_hoe.name=Reversing Hoe
 nei.infopage.uie.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It will also convert dirt into grass and cobblestone into stone.
 
 item.unbreakable.desc=Unbreakable
+attribute.name.utilitiesinexcess.magic_damage=Magic Damage
 
 item.mob_jar.name=Mob Jar
 item.mob_jar.desc.full=Contains: §f%s
@@ -214,6 +215,8 @@ tile.redstone_clock.name=Redstone Clock
 nei.infopage.uie.redstone_clock.1=A precisely calibrated redstone mechanism which will emit a pulse once every second. Will turn off when redstone powered.
 
 tile.smart_pump.name=Smart Pump
+tile.smart_pump.waila.working=Working on: %s
+tile.smart_pump.waila.finished=Finished draining
 nei.infopage.uie.smart_pump.1=The Smart Pump is a lag-light way to gather in-world fluids. Place the pump directly above the surface of a fluid and feed it RF, and it will begin collecting fluid and replacing it with stone without triggering block updates.
 nei.infopage.uie.smart_pump.2=Before pumping, it will try to output fluid to tanks located directly above it. The pump works chunk-wise and works in a diamond with a radius of 5 chunks. During operation, the pump will keep its own chunk loaded as well as the current working chunk.
 
@@ -303,6 +306,8 @@ item.glove.desc.3=§oP.S. Breeze Projection does nothing.
 nei.infopage.uie.glove.1=This extremely comfortable glove will simulate clicking with an empty hand while held, saving you from having to clear an inventory slot. The colors of wool used to craft it will determine the top and bottom color of the item and its model.
 nei.infopage.uie.glove.2=The glove can also be worn in a baubles slot. While equipped in this way, you can hold the "Activate Glove" keybind to be able to click with an empty hand at any time. 
 
+uie.generators.waila.fuel=Fuel: %s
+
 tile.low_temperature_furnace_generator.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plus.name=Low-Temp Furnace Generator
 tile.low_temperature_furnace_generator_plusplus.name=Low-Temp Furnace Generator
@@ -376,7 +381,7 @@ tile.potion_generator_plusplus.name=Potion Generator
 nei.infopage.uie.potion_generator.1=Generates RF from potions. The more complex the potion is (the more steps involved in making it) the more RF/t it will generate.
 
 gui.tooltip.energy-max=RF: %s / %s
-gui.tooltip.energy-tick=  RF/t
+gui.tooltip.energy-tick= RF/t
 
 item.golden_bag.name=Golden Bag of Holding
 nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth of items. Right click to open.
@@ -387,7 +392,7 @@ nei.infopage.uie.xray_glasses.1=These stylish spectacles will highlight like blo
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 
 item.ender_lotus_seed.name=Ender-Lotus Seed
-nei.infopage.uie.ender_lotus_seed.1=This strange plant is native to The End and its seeds can occasionally be found in dungeons. It grows incredibly slowly (faster on endstone) but will eventually produce ender pearls.
+nei.infopage.uie.ender_lotus_seed.1=This strange plant is native to The End and its seeds can occasionally be found in dungeons. It grows incredibly slowly (faster on endstone and even faster on endspark) but will eventually produce ender pearls. 
 
 tile.ender_lotus.name=Ender Lotus
 
@@ -427,12 +432,18 @@ tile.magic_wood.name=Magic Wood
 
 nei.infopage.uie.magic_wood.1=The enchantments woven into this block give it the enchanting power of five bookshelves!
 
+tile.endspark.name=Endspark
+
+nei.infopage.uie.endspark.1=Combining enchanted wood with the power of The End makes it even stronger, boosting enchanting tables by 20 levels! 
+
 tile.cursed_earth.name=Cursed Earth
 tile.cursed_earth.desc=Spawns mobs aggressively
 tile.cursed_earth.blessed.name=Blessed Earth
 tile.cursed_earth.blessed.desc=Spawns passive mobs aggressively
 
 nei.infopage.uie.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's Awakening Ritual. It rapidly spawns monsters, spreads in darkness, and burns away in bright light. Monster Spawners are supercharged when Cursed Earth is below them, and they will continue to operate even when a player is not nearby.
+
+nei.infopage.uie.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Reversing Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
 
 utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
 utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
@@ -474,6 +485,9 @@ nei.infopage.uie.rain_muffler.1=This comforting block allows you tune out the so
 tile.rain_muffler.chat.global_enable=You dull your senses to the sound of the rain
 tile.rain_muffler.chat.global_disable=You become aware of the sound of the rain
 
+tile.rain_muffler.waila.global_enabled=Rain muted
+tile.rain_muffler.waila.global_disabled=Rain unmuted
+
 tile.lapis_aetherius.0.name=Lapis Aetherius Candidus (White)
 tile.lapis_aetherius.1.name=Lapis Aetherius Flammeus (Orange)
 tile.lapis_aetherius.2.name=Lapis Aetherius Fucatus (Magenta)
@@ -491,11 +505,9 @@ tile.lapis_aetherius.13.name=Lapis Aetherius Smaragdinus (Dark Green)
 tile.lapis_aetherius.14.name=Lapis Aetherius Sanguineus (Red)
 tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
 
-nei.infopage.uie.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
-
 tile.collector.name=Collector
-
 uie.chat.collector_size=Range: %s blocks
+nei.infopage.uie.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
 
 nei.infopage.uie.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
 
@@ -529,7 +541,7 @@ nei.infopage.uie.temporal_gate.4=You will appear at the most recent portal place
 nei.infopage.uie.temporal_gate.5=§4§oWas that red star in the sky always there?
 
 tile.chandelier.0.name=Chandelier
-tile.chandelier.1.name=Copper Chandelier
+tile.chandelier.1.name=Rustic Chandelier
 tile.chandelier.2.name=Redstone Chandelier
 tile.chandelier.3.name=Soul Chandelier
 tile.chandelier.desc=%d block radius (square)

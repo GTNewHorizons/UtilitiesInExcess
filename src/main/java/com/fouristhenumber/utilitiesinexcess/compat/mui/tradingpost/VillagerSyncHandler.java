@@ -35,6 +35,7 @@ public class VillagerSyncHandler extends SyncHandler {
         this.column = column;
         this.data = data;
         this.recipeList = recipeList;
+        this.allowC2S();
 
         this.recipeList.setFavorites(getFavorites());
     }
