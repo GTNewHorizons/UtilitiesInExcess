@@ -41,7 +41,6 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements Recip
     }
 
     @Override
-    // For latest use
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
         ItemStack item = getItemStack();
         if (!Platform.isStackEmpty(item)) {
@@ -61,13 +60,17 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements Recip
         }
     }
 
+    @Override
+    public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
+
+    }
+
     public void buildTooltip(ItemStack stack, RichTooltip tooltip) {
         if (stack == null) return;
         tooltip.addFromItem(stack);
     }
 
     @Override
-    // For latest use
     public @Nullable ItemStack getStackForRecipeViewer() {
         return getItemStack();
     }
