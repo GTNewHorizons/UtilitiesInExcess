@@ -15,18 +15,23 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemChunchunmaru;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
@@ -35,6 +40,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.XRayRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
+import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
@@ -169,6 +175,26 @@ public class ForgeEventHandler {
             }
             player.inventoryContainer.detectAndSendChanges();
             event.drops.clear();
+        }
+    }
+
+    @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+        if (ChunchunmaruConfig.damageCreativePlayers && event.target instanceof EntityPlayerMP tp
+            && tp.theItemInWorldManager.isCreative()
+            && event.entity instanceof EntityPlayer player
+            && player.getHeldItem()
+                .getItem() instanceof ItemChunchunmaru) {
+            boolean isCrit = player.fallDistance > 0.0F && !player.onGround
+                && !player.isOnLadder()
+                && !player.isInWater()
+                && !player.isPotionActive(Potion.blindness)
+                && player.ridingEntity == null;
+            event.target.attackEntityFrom(
+                DamageSource.causePlayerDamage(player)
+                    .setDamageAllowedInCreativeMode(),
+                ChunchunmaruConfig.creativeDamage * (isCrit ? 1.5f : 1f));
+            event.setCanceled(true);
         }
     }
 }

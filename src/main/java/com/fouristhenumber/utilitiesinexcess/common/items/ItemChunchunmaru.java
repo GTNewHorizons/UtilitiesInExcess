@@ -3,23 +3,15 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemSword;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-@EventBusSubscriber
 public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
 
     public ItemChunchunmaru() {
@@ -58,23 +50,5 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
     public boolean showDurabilityBar(ItemStack stack) {
         if (ChunchunmaruConfig.unbreakable) return false;
         return super.showDurabilityBar(stack);
-    }
-
-    @SubscribeEvent
-    public static void onAttackEntity(AttackEntityEvent event) {
-        if (ChunchunmaruConfig.damageCreativePlayers && event.target instanceof EntityPlayerMP tp
-            && tp.theItemInWorldManager.isCreative()
-            && event.entity instanceof EntityPlayer player) {
-            boolean isCrit = player.fallDistance > 0.0F && !player.onGround
-                && !player.isOnLadder()
-                && !player.isInWater()
-                && !player.isPotionActive(Potion.blindness)
-                && player.ridingEntity == null;
-            event.target.attackEntityFrom(
-                DamageSource.causePlayerDamage(player)
-                    .setDamageAllowedInCreativeMode(),
-                ChunchunmaruConfig.creativeDamage * (isCrit ? 1.5f : 1f));
-            event.setCanceled(true);
-        }
     }
 }
