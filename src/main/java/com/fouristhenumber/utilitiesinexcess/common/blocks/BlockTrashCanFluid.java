@@ -20,6 +20,7 @@ public class BlockTrashCanFluid extends BlockContainer {
 
     public BlockTrashCanFluid() {
         super(Material.rock);
+        setHardness(3.5F);
         setBlockName("trash_can_fluid");
         setBlockTextureName("utilitiesinexcess:trash_can_fluid");
         setBlockBounds(0F, 0.0F, 0F, 1F, 0.875F, 1F);

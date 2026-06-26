@@ -23,8 +23,9 @@ public class BlockConveyor extends BlockContainer {
     private IIcon belt_up, belt_down, belt_left, belt_right, blank_right, blank_left;
 
     public BlockConveyor() {
-        super(Material.piston);
+        super(Material.iron);
         setBlockName("conveyor");
+        setHardness(5F);
     }
 
     public static ForgeDirection getFacing(int meta) {
