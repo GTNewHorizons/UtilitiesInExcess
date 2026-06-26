@@ -30,7 +30,7 @@ public class SearchBar extends TextFieldWidget {
     public SearchBar() {
         super();
         background(VANILLA_SEARCH_BACKGROUND);
-        hintText(StatCollector.translateToLocal("tile.trading_post.search_hint"));
+        hintText(StatCollector.translateToLocal("tile.trading_post.search.hint"));
         value(new StringValue(prevText));
     }
 

@@ -23,7 +23,6 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
-import com.fouristhenumber.utilitiesinexcess.utils.mui.TooltipItemDisplayWidget;
 
 public class TradeWidget extends ParentWidget<TradeWidget> implements Interactable {
 
@@ -39,9 +38,9 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     private VillagerSyncHandler columnSyncHandler;
     private boolean isFavorite = false;
 
-    private final TooltipItemDisplayWidget itemToBuy;
-    private final TooltipItemDisplayWidget itemToBuy2;
-    private final TooltipItemDisplayWidget itemToSell;
+    private final TradeItemDisplayWidget itemToBuy;
+    private final TradeItemDisplayWidget itemToBuy2;
+    private final TradeItemDisplayWidget itemToSell;
 
     public static class TradeProgressWidget extends ProgressWidget {
 
@@ -69,8 +68,9 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             item = new ItemStack(ModItems.INVERSION_SIGIL_INACTIVE.get());
         }
 
-        itemToBuy = new TooltipItemDisplayWidget();
-        itemToBuy.paddingRight(0)
+        itemToBuy = new TradeItemDisplayWidget();
+        itemToBuy.setTradeItemType(TradeItemDisplayWidget.TradeItemType.BUY)
+            .paddingRight(0)
             .displayAmount(true)
             .item(
                 new ObjectValue.Dynamic<>(
@@ -84,8 +84,9 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             .child(itemToBuy);
 
         if (this.recipe.getSecondItemToBuy() != null) {
-            itemToBuy2 = new TooltipItemDisplayWidget();
-            itemToBuy2.paddingLeft(0)
+            itemToBuy2 = new TradeItemDisplayWidget();
+            itemToBuy2.setTradeItemType(TradeItemDisplayWidget.TradeItemType.BUY2)
+                .paddingLeft(0)
                 .displayAmount(true)
                 .item(
                     new ObjectValue.Dynamic<>(
@@ -99,8 +100,9 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             itemToBuy2 = null;
         }
 
-        itemToSell = new TooltipItemDisplayWidget();
-        itemToSell.displayAmount(true)
+        itemToSell = new TradeItemDisplayWidget();
+        itemToSell.setTradeItemType(TradeItemDisplayWidget.TradeItemType.SELL)
+            .displayAmount(true)
             .item(
                 new ObjectValue.Dynamic<>(
                     ItemStack.class,
@@ -125,6 +127,8 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             .child(itemToSell);
         this.child(wholeRow);
 
+        // child(new FavoriteStarWidget());
+
         hoverBackground(HIGHLIGHT_BACKGROUND);
     }
 
@@ -138,11 +142,6 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
 
         // Yes. Both this *and* hoverBackground(HIGHLIGHT_BACKGROUND) *and* the drawBackground override are needed.
         if (isBelowMouse() || isHovering()) Gui.drawRect(1, 1, getArea().width - 1, getArea().height - 1, 0xFFA1A1A1);
-
-        if (isFavorite) {
-            Color.setGlColorOpaque(Color.YELLOW.main);
-            GuiTextures.FAVORITE.draw(0, 0, 6, 6);
-        }
     }
 
     @Override
