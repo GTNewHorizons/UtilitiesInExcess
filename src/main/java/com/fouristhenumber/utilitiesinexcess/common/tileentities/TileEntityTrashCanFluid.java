@@ -90,13 +90,14 @@ public class TileEntityTrashCanFluid extends TileEntity
                 .marginTop(5));
 
         IWidget slots = Flow.column()
-            .childPadding(10)
+            .childPadding(5)
+            .horizontalCenter()
+            .top(29)
             .coverChildren()
             .child(
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, INPUT_SLOT).slotGroup("item_inv")
                         .filter(TileEntityTrashCanFluid::isValidItemInput)))
-            .pos(79, 25)
             .child(
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, OUTPUT_SLOT).slotGroup("item_inv")

@@ -41,7 +41,8 @@ public class TileEntityTrashCanItem extends TileEntity implements IGuiHolder<Pos
 
         panel.child(
             new ItemSlot().slot(slot)
-                .pos(79, 34));
+                .horizontalCenter()
+                .top(34));
 
         return panel;
     }
