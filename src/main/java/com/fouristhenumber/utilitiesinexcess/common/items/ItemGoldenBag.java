@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -13,6 +12,7 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -24,6 +24,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGuiData> {
 
     private ItemStackHandler inventoryHandler;
+    private InvWrapper playerInventory;
 
     public ItemGoldenBag() {
         setUnlocalizedName("golden_bag");
@@ -58,6 +59,18 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
             }
         };
 
+        this.playerInventory = new InvWrapper(player.inventory) {
+
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot == player.inventory.currentItem) {
+                    return null;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
+
         if (!player.worldObj.isRemote) {
             if (usedItem.hasTagCompound()) {
                 inventoryHandler.deserializeNBT(usedItem.getTagCompound());
@@ -66,18 +79,18 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
 
         syncManager.registerSlotGroup("golden_bag_items", inventorySize);
 
-        panel.bindPlayerInventory();
-
         panel.child(
             Flow.column()
+                .marginLeft(7)
+                .marginTop(5)
+                .coverChildren()
                 .child(
-                    IKey.str(StatCollector.translateToLocal("item.golden_bag.name"))
+                    IKey.lang("item.golden_bag.name")
                         .asWidget()
-                        .margin(6, 0, 5, 0)
-                        .left(6))
-                .child(
-                    buildBagSlotGroup().horizontalCenter()
-                        .marginTop(3)));
+                        .left(0))
+                .child(buildBagSlotGroup().marginTop(3))
+                .child(buildPlayerInventorySlotGroup().marginTop(12))
+                .child(buildPlayerHotbarSlotGroup().marginTop(4)));
         return panel;
     }
 
@@ -103,4 +116,19 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
             .build();
     }
 
+    private SlotGroupWidget buildPlayerInventorySlotGroup() {
+        return SlotGroupWidget.builder()
+            .row("PPPPPPPPP")
+            .row("PPPPPPPPP")
+            .row("PPPPPPPPP")
+            .key('P', i -> new ItemSlot().slot(new ModularSlot(playerInventory, 9 + i).slotGroup("player_inventory")))
+            .build();
+    }
+
+    private SlotGroupWidget buildPlayerHotbarSlotGroup() {
+        return SlotGroupWidget.builder()
+            .row("HHHHHHHHH")
+            .key('H', i -> new ItemSlot().slot(new ModularSlot(playerInventory, i).slotGroup("player_inventory")))
+            .build();
+    }
 }
