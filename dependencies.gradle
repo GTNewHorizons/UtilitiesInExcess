@@ -50,11 +50,15 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Baubles-Expanded:2.2.4-GTNH:dev")
     devOnlyNonPublishable("io.github.legacymoddingmc:unimixins:0.1.23:dev")
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.40-GTNH:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.105-GTNH:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.42:dev')
 
     // Deobf Extra Utilities, allows hodgepodge mixins to not crash. For testing feature parity and postea only.
     runtimeOnlyNonPublishable("curse.maven:extrautilities-225561:2264384")
+
+    // See oredictionary entries in NEI
+    // runtimeOnlyNonPublishable("com.github.slprime:ChromaticTooltips:1.0.29-GTNH:dev")
+    // runtimeOnlyNonPublishable("com.github.slprime:ChromaticTooltipsCompat:1.0.32-GTNH:dev") {transitive = false}
 
     // Misc testing utilities
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.2.6:dev") // (/nbtedit)
