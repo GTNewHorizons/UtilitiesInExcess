@@ -40,8 +40,9 @@ public class ChunchunmaruRenderer implements IItemRenderer {
         mc.renderEngine.bindTexture(chunchunmaruTexture);
 
         if (type == ItemRenderType.INVENTORY) {
-            GL11.glTranslatef(0, -1f, 0);
-            GL11.glScalef(1.5F, 1.5F, 1.5F);
+            GL11.glTranslatef(-1.05f, -1.25f, 0);
+            GL11.glRotatef(-65, 1, 0, 0);
+            GL11.glScalef(1.3F, 1.3F, 1.3F);
         } else if (type == ItemRenderType.EQUIPPED) {
             GL11.glTranslatef(0.9f, 0, 0);
             GL11.glScalef(1.5F, 1.5F, 1.5F);

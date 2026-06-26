@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -32,11 +31,6 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
             setMaxDamage(ChunchunmaruConfig.durability);
         }
         ((AccessorItemSword) this).setDamageVsEntity(ChunchunmaruConfig.normalDamage);
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase p) {
-        return true;
     }
 
     @Override

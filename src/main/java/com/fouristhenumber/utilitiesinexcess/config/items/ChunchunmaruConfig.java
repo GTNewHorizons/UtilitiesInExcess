@@ -10,7 +10,7 @@ public class ChunchunmaruConfig {
     @Config.RequiresMcRestart
     public static boolean enable;
 
-    @Config.DefaultBoolean(false)
+    @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean unbreakable;
 
