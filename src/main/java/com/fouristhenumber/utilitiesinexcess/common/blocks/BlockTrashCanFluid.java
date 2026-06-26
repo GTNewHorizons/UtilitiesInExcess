@@ -1,8 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.dropItemsFromIInventory;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -46,6 +50,15 @@ public class BlockTrashCanFluid extends BlockContainer {
                 .open(player, x, y, z);
         }
         return true;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof IInventory inv) {
+            dropItemsFromIInventory(0, inv, worldIn, te.xCoord, te.yCoord, te.zCoord);
+        }
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 
     @Override
