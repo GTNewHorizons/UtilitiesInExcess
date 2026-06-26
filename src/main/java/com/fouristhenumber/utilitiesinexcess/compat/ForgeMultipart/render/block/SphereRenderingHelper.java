@@ -204,10 +204,6 @@ public class SphereRenderingHelper {
         int UVCounter = 0;
         int UVCounterMiddle = 1;
         for (int longitude = 6; longitude < 8; longitude++) {
-            if (longitude == 7) {
-                tess.draw(); // Empty tess buffer
-                tess.startDrawing(GL11.GL_TRIANGLES); // STart with triangles.
-            }
             for (int latitude = 0; latitude < 16; latitude++) {
                 // using non axis aligned faces so we need special uv for each vertex.
                 double u1, u2, u3, u4, v1, v2, v3, v4;
@@ -278,12 +274,10 @@ public class SphereRenderingHelper {
                     Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat0].copy()
                         .add(x, y, z);
 
-                    renderSphericFaceVanilla(tess, vert0, vert1, vert2, u1, v1, u2, v2, u3, v3, brightness, color);
+                    renderSphericFaceVanilla(tess, vert0, vert1, vert2, vert2, u1, v1, u2, v2, u3, v3, u3, v3, brightness, color);
                 }
             }
         }
-        tess.draw(); // Draw our triangles
-        tess.startDrawingQuads(); // go back to drawing quads once done.
     }
 
     public static void RenderSphereBottom(Tessellator tess, IIcon bottomIcon, double x, double y, double z,
@@ -296,10 +290,6 @@ public class SphereRenderingHelper {
         int UVCounter = 0;
         int UVCounterMiddle = 1;
         for (int longitude = 1; longitude > -1; longitude--) {
-            if (longitude == 0) {
-                tess.draw(); // Empty tess buffer
-                tess.startDrawing(GL11.GL_TRIANGLES); // STart with triangles.
-            }
             for (int latitude = 0; latitude < 16; latitude++) {
                 // using non axis aligned faces so we need special uv for each vertex.
                 double u1, u2, u3, u4, v1, v2, v3, v4;
@@ -369,12 +359,10 @@ public class SphereRenderingHelper {
                     Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat0].copy()
                         .add(x, y, z);
 
-                    renderSphericFaceVanilla(tess, vert0, vert2, vert1, u1, v1, u3, v3, u2, v2, brightness, color);
+                    renderSphericFaceVanilla(tess, vert0, vert2, vert1, vert1, u1, v1, u3, v3, u2, v2, u2, v2, brightness, color);
                 }
             }
         }
-        tess.draw(); // Draw our triangles
-        tess.startDrawingQuads(); // go back to drawing quads once done.
     }
 
     public static void RenderSphereSides(Tessellator tess, IIcon[] sideIcons, double x, double y, double z,
@@ -526,26 +514,6 @@ public class SphereRenderingHelper {
         tess.addVertexWithUV(vert1.x, vert1.y, vert1.z, u2, v2);
         tess.addVertexWithUV(vert2.x, vert2.y, vert2.z, u3, v3);
         tess.addVertexWithUV(vert3.x, vert3.y, vert3.z, u4, v4);
-    }
-
-    public static void renderSphericFaceVanilla(Tessellator tess, Vector3 vert0, Vector3 vert1, Vector3 vert2,
-        double u1, double v1, double u2, double v2, double u3, double v3, int brightness, int color) {
-        tess.setBrightness(brightness);
-
-        Vector3 n = vert0.copy()
-            .normalize();
-        float shade = (float) (0.6 + 0.4 * Math.max(0, n.y));
-
-        float cr = ((color >> 16) & 0xFF) / 255f;
-        float cg = ((color >> 8) & 0xFF) / 255f;
-        float cb = (color & 0xFF) / 255f;
-
-        tess.setColorOpaque_F(cr * shade, cg * shade, cb * shade);
-        tess.setNormal((float) n.x, (float) n.y, (float) n.z);
-
-        tess.addVertexWithUV(vert0.x, vert0.y, vert0.z, u1, v1);
-        tess.addVertexWithUV(vert1.x, vert1.y, vert1.z, u2, v2);
-        tess.addVertexWithUV(vert2.x, vert2.y, vert2.z, u3, v3);
     }
 
     public static int WrapNumber(int min, int max, int in) {
