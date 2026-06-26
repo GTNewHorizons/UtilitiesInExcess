@@ -26,8 +26,7 @@ public class ModOreDictionary {
         OreDictionary.registerOre("blockBedrockium", ModBlocks.BEDROCKIUM_BLOCK.get());
         OreDictionary.registerOre("blockUnstable", ModBlocks.INVERTED_BLOCK.get());
         OreDictionary.registerOre("blockInverted", ModBlocks.INVERTED_BLOCK.get());
-        // TODO: Endspark after merge
-        // OreDictionary.registerOre("blockEnderCore", ModItems.ENDSPARK.get());
+        OreDictionary.registerOre("blockEnderCore", ModBlocks.ENDSPARK.get());
 
         // Only registers the non-colored decorative glass, for parity with ExU.
         int[] glassMetas = { 0, 1, 2, 3, 6, 9, 12 };
