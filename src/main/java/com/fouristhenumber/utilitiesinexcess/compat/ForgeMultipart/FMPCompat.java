@@ -38,10 +38,12 @@ public class FMPCompat {
     }
 
     private static void registerMicroblock(ModBlocks block, int meta) {
-        MicroMaterialRegistry.registerMaterial(
-            new BlockMicroMaterial(block.get(), meta),
-            block.get()
-                .getUnlocalizedName());
+        if (block.isEnabled()) {
+            MicroMaterialRegistry.registerMaterial(
+                new BlockMicroMaterial(block.get(), meta),
+                block.get()
+                    .getUnlocalizedName());
+        }
     }
 
     private static void registerMicroblock(ModBlocks block) {
