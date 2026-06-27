@@ -13,10 +13,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 // TODO: Add new features to the reversing hoe
 public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
@@ -33,48 +36,40 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
     public static void initializeCache() {
         if (ReversingHoeConfig.blockTransformations != null) {
             for (String transformation : ReversingHoeConfig.blockTransformations) {
-                if (transformation != null && transformation.contains("->")) {
+                if (transformation == null) continue;
+                if (!transformation.contains("->")) {
+                    UtilitiesInExcess.LOG
+                        .warn("Reversing Hoe Config: {} does not contain '->', skipped", transformation);
+                    continue;
+                }
+                try {
                     String[] parts = transformation.split("->");
 
-                    String sourceBlockString = parts[0].trim();
-                    String targetBlockString = parts[1].trim();
+                    String[] sourceSplit = parts[0].trim()
+                        .split(":");
+                    String sourceDomain = sourceSplit[0];
+                    String sourceName = sourceSplit[1];
+                    int sourceMeta = sourceSplit.length == 3 ? Integer.parseInt(sourceSplit[2]) : -1;
 
-                    String sourceName;
-                    int sourceMeta;
+                    String[] targetSplit = parts[1].trim()
+                        .split(":");
+                    String targetDomain = targetSplit[0];
+                    String targetName = targetSplit[1];
+                    int targetMeta = targetSplit.length == 3 ? Integer.parseInt(targetSplit[2]) : 0;
 
-                    String targetName;
-                    int targetMeta;
+                    Block sourceBlock = GameRegistry.findBlock(sourceDomain, sourceName);
+                    Block targetBlock = GameRegistry.findBlock(targetDomain, targetName);
 
-                    if (sourceBlockString.contains("*")) {
-                        String[] nameAndMeta = sourceBlockString.split("\\*");
-                        sourceName = nameAndMeta[0];
-                        String sourceMetaString = nameAndMeta[1].toUpperCase();
-
-                        sourceMeta = Integer.parseInt(sourceMetaString, 16);
-                    } else {
-                        sourceName = sourceBlockString;
-                        sourceMeta = -1;
+                    if (sourceBlock == null || targetBlock == null) {
+                        UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Could not find {}, skipped", transformation);
+                        continue;
                     }
 
-                    if (targetBlockString.contains("*")) {
-                        String[] nameAndMeta = targetBlockString.split("\\*");
-                        targetName = nameAndMeta[0];
-                        String targetMetaString = nameAndMeta[1].toUpperCase();
+                    blockConversionCache
+                        .put(new BlockMeta(sourceBlock, sourceMeta), new BlockMeta(targetBlock, targetMeta));
 
-                        targetMeta = Integer.parseInt(targetMetaString, 16);
-
-                    } else {
-                        targetName = targetBlockString;
-                        targetMeta = 0;
-                    }
-
-                    Block sourceBlock = Block.getBlockFromName(sourceName);
-                    Block targetBlock = Block.getBlockFromName(targetName);
-
-                    if (sourceBlock != null && targetBlock != null) {
-                        blockConversionCache
-                            .put(new BlockMeta(sourceBlock, sourceMeta), new BlockMeta(targetBlock, targetMeta));
-                    }
+                } catch (Exception e) {
+                    UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Skipped malformed config: {}", transformation);
                 }
             }
         }

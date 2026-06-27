@@ -13,9 +13,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
 
@@ -30,25 +33,26 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
 
     public static void initializeCache() {
         if (DestructionPickaxeConfig.includeEffective != null) {
-            for (String affectedBlockString : DestructionPickaxeConfig.includeEffective) {
-                int meta;
-                String affectedBlockName;
+            for (String blockString : DestructionPickaxeConfig.includeEffective) {
+                if (blockString == null) continue;
+                try {
+                    String[] split = blockString.trim()
+                        .split(":");
+                    String domain = split[0];
+                    String name = split[1];
+                    int meta = split.length == 3 ? Integer.parseInt(split[2]) : -1;
 
-                if (affectedBlockString.contains("*")) {
-                    String[] nameAndMeta = affectedBlockString.split("\\*");
-                    affectedBlockName = nameAndMeta[0];
-                    String sourceMetaString = nameAndMeta[1].toUpperCase();
+                    Block block = GameRegistry.findBlock(domain, name);
 
-                    meta = Integer.parseInt(sourceMetaString, 16);
-                } else {
-                    affectedBlockName = affectedBlockString;
-                    meta = -1;
-                }
+                    if (block == null) {
+                        UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Could not find {}, skipped", blockString);
+                        continue;
+                    }
 
-                Block block = Block.getBlockFromName(affectedBlockName);
-
-                if (block != null) {
                     affectedBlockCache.add(new BlockMeta(block, meta));
+
+                } catch (Exception e) {
+                    UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Skipped malformed config: {}", blockString);
                 }
             }
         }
