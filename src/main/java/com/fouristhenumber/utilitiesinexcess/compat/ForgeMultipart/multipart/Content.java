@@ -8,6 +8,9 @@ import java.util.Set;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+
 import codechicken.lib.data.MCDataInput;
 import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.MultiPartRegistry;
@@ -30,9 +33,11 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
         sidedParts.add(WallPart.name);
         sidedParts.add(FencePart.name);
 
-        legacyAliases.put("extrautils:sphere", SpherePart.name);
-        legacyAliases.put("extrautils:fence", FencePart.name);
-        legacyAliases.put("extrautils:wall", WallPart.name);
+        if (!Mods.ExtraUtilities.isLoaded() && OtherConfig.enableWorldConversion) {
+            legacyAliases.put("extrautils:sphere", SpherePart.name);
+            legacyAliases.put("extrautils:fence", FencePart.name);
+            legacyAliases.put("extrautils:wall", WallPart.name);
+        }
 
         Set<String> namesToRegister = new HashSet<>();
         namesToRegister.addAll(Arrays.asList(partNames));
