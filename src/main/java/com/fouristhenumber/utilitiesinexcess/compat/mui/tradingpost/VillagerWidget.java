@@ -85,8 +85,8 @@ public class VillagerWidget extends Flow {
                     villagerColumn.moveChild(this, 0);
                 } else {
                     villagerColumn.moveChild(this, tradingPostPanel.columnCounts[columnNumber]);
-                    tradingPostPanel.columnCounts[columnNumber]++;
                 }
+                tradingPostPanel.columnCounts[columnNumber]++;
             }
 
             initializedRecipes = true;
