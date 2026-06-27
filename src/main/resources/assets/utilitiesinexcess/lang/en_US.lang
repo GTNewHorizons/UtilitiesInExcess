@@ -600,3 +600,6 @@ nei.infopage.uie.ticon_bedrockium=Tinker's Construct tools made with a bedrockiu
 ue_wall.name=%s Wall
 ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
+
+item.chunchunmaru.name=Chunchunmaru
+item.chunchunmaru.desc=It's a really cool name

@@ -39,6 +39,7 @@ public class CommonProxy {
         PacketHandler.init();
         ModBlocks.init();
         ModItems.init();
+        ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
         UnderWorldEvents.init();

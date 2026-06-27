@@ -12,6 +12,7 @@ public class ItemConfig {
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
+        ConfigurationManager.registerConfig(ChunchunmaruConfig.class);
         ConfigurationManager.registerConfig(WateringCanConfig.class);
         ConfigurationManager.registerConfig(InversionConfig.class);
         ConfigurationManager.registerConfig(FireBatteryConfig.class);
