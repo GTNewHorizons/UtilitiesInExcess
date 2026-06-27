@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
@@ -80,6 +81,12 @@ public class PosteaTransforms {
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:microblocks", 1, FMPItems.UE_MULTI_PART.get(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:microblocks", 2, FMPItems.UE_MULTI_PART.get(), 1);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:microblocks", 3, FMPItems.UE_MULTI_PART.get(), 2);
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
@@ -142,7 +149,6 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:magnumTorch", ModBlocks.GIGA_TORCH.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:chandelier", ModBlocks.CHANDELIER.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trading_post", ModBlocks.TRADING_POST.get());
-        // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:", ModBlocks.SPIKE_DIAMOND.get());
     }
 
     private static void transformTileEntities() {
