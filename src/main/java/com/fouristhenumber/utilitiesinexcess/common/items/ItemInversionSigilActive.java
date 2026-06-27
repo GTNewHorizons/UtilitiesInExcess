@@ -1,8 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -57,13 +64,25 @@ public class ItemInversionSigilActive extends Item {
     private static final int BEACON_SEARCH_RADIUS = 6;
     private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
-    private HashSet<ItemStackBaseCompare> CHEST_NORTH_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_NORTH_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStackBaseCompare> CHEST_EAST_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_EAST_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStackBaseCompare> CHEST_SOUTH_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_SOUTH_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStackBaseCompare> CHEST_WEST_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_WEST_CONTENTS = new HashSet<>();
+
+    public static List<ItemStack> getPseudoInversionChestAtDirection(ForgeDirection dir) {
+        Set<ItemStackBaseCompare> set = switch (dir) {
+            case SOUTH -> CHEST_SOUTH_CONTENTS;
+            case EAST -> CHEST_EAST_CONTENTS;
+            case WEST -> CHEST_WEST_CONTENTS;
+            default -> CHEST_NORTH_CONTENTS;
+        };
+        return set.stream()
+            .map(ItemStackBaseCompare::toItemStack)
+            .collect(Collectors.toList());
+    }
 
     public ItemInversionSigilActive() {
         super();
@@ -73,22 +92,22 @@ public class ItemInversionSigilActive extends Item {
         setContainerItem(this);
 
         CHEST_NORTH_CONTENTS = getValidChestContents(
-            ForgeDirection.NORTH,
+            NORTH,
             InversionConfig.northChestValidItems,
             InversionConfig.northChestRequiredItems);
 
         CHEST_EAST_CONTENTS = getValidChestContents(
-            ForgeDirection.EAST,
+            EAST,
             InversionConfig.eastChestValidItems,
             InversionConfig.eastChestRequiredItems);
 
         CHEST_SOUTH_CONTENTS = getValidChestContents(
-            ForgeDirection.SOUTH,
+            SOUTH,
             InversionConfig.southChestValidItems,
             InversionConfig.southChestRequiredItems);
 
         CHEST_WEST_CONTENTS = getValidChestContents(
-            ForgeDirection.WEST,
+            WEST,
             InversionConfig.westChestValidItems,
             InversionConfig.westChestRequiredItems);
 
@@ -185,8 +204,7 @@ public class ItemInversionSigilActive extends Item {
     }
 
     private boolean checkSpiral(World world, int x, int y, int z) {
-        ForgeDirection[] directions = { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
-            ForgeDirection.WEST };
+        ForgeDirection[] directions = { NORTH, EAST, SOUTH, WEST };
         boolean clockwise = true;
         boolean counterClockwise = true;
         Block previousBlock = null;
@@ -246,10 +264,10 @@ public class ItemInversionSigilActive extends Item {
 
     private ForgeDirection rotateClockwise(ForgeDirection direction) {
         return switch (direction) {
-            case NORTH -> ForgeDirection.EAST;
-            case EAST -> ForgeDirection.SOUTH;
-            case SOUTH -> ForgeDirection.WEST;
-            case WEST -> ForgeDirection.NORTH;
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            case WEST -> NORTH;
             // should not happen
             default -> direction;
         };
@@ -257,10 +275,10 @@ public class ItemInversionSigilActive extends Item {
 
     private ForgeDirection rotateCounterClockwise(ForgeDirection direction) {
         return switch (direction) {
-            case NORTH -> ForgeDirection.WEST;
-            case EAST -> ForgeDirection.NORTH;
-            case SOUTH -> ForgeDirection.EAST;
-            case WEST -> ForgeDirection.SOUTH;
+            case NORTH -> WEST;
+            case EAST -> NORTH;
+            case SOUTH -> EAST;
+            case WEST -> SOUTH;
             // should not happen
             default -> direction;
         };
@@ -329,19 +347,19 @@ public class ItemInversionSigilActive extends Item {
         HashSet<ItemStackBaseCompare> contents;
         int requiredAmount;
 
-        if (direction == ForgeDirection.NORTH) {
+        if (direction == NORTH) {
             beaconZ -= 5;
             contents = CHEST_NORTH_CONTENTS;
             requiredAmount = InversionConfig.northChestRequiredItems;
-        } else if (direction == ForgeDirection.SOUTH) {
+        } else if (direction == SOUTH) {
             beaconZ += 5;
             contents = CHEST_SOUTH_CONTENTS;
             requiredAmount = InversionConfig.southChestRequiredItems;
-        } else if (direction == ForgeDirection.EAST) {
+        } else if (direction == EAST) {
             beaconX += 5;
             contents = CHEST_EAST_CONTENTS;
             requiredAmount = InversionConfig.eastChestRequiredItems;
-        } else if (direction == ForgeDirection.WEST) {
+        } else if (direction == WEST) {
             beaconX -= 5;
             contents = CHEST_WEST_CONTENTS;
             requiredAmount = InversionConfig.westChestRequiredItems;
@@ -372,10 +390,10 @@ public class ItemInversionSigilActive extends Item {
         boolean dimensionOk = (world.provider.dimensionId == 1);
         boolean difficultyOk = world.difficultySetting != EnumDifficulty.PEACEFUL;
         boolean spiralOk = checkSpiral(world, x, y, z);
-        boolean chestNorthContentsOk = checkChestInDirection(ForgeDirection.NORTH, x, y, z, world);
-        boolean chestEastContentsOk = checkChestInDirection(ForgeDirection.EAST, x, y, z, world);
-        boolean chestSouthContentsOk = checkChestInDirection(ForgeDirection.SOUTH, x, y, z, world);
-        boolean chestWestContentsOk = checkChestInDirection(ForgeDirection.WEST, x, y, z, world);
+        boolean chestNorthContentsOk = checkChestInDirection(NORTH, x, y, z, world);
+        boolean chestEastContentsOk = checkChestInDirection(EAST, x, y, z, world);
+        boolean chestSouthContentsOk = checkChestInDirection(SOUTH, x, y, z, world);
+        boolean chestWestContentsOk = checkChestInDirection(WEST, x, y, z, world);
 
         player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.header"));
 
@@ -430,10 +448,10 @@ public class ItemInversionSigilActive extends Item {
 
         return dimensionOk && world.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon
             && checkSpiral(world, beaconX, beaconY, beaconZ)
-            && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world);
+            && checkChestInDirection(NORTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(EAST, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(SOUTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(WEST, beaconX, beaconY, beaconZ, world);
     }
 
     public class ItemInversionSigilActiveEvents {
