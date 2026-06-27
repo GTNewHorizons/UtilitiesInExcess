@@ -24,7 +24,7 @@ public class BlockGigaTorch extends BlockContainer {
     public BlockGigaTorch() {
         super(Material.circuits);
         setBlockName("giga_torch");
-        setHardness(0.0F);
+        setHardness(1.2F);
         setLightLevel(0.9375F); // 15 light level
         setStepSound(soundTypeWood);
         this.setBlockBounds(0.375F, 0.0F, 0.375F, 0.625F, 0.75F, 0.625F);

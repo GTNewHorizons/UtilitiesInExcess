@@ -39,8 +39,7 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         super(Material.iron);
         this.capacity = capacity;
         setBlockName(blockname);
-        this.setHardness(3.0F);
-        this.setResistance(5.0F);
+        this.setHardness(1.5F);
         this.setHarvestLevel("pickaxe", 1);
         setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 1F, 0.875F);
     }
