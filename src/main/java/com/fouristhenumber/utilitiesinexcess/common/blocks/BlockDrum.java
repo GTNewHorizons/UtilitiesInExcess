@@ -72,7 +72,7 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         if (heldItem != null) {
             // weird modded containers like universal cells
             if (heldItem.getItem() instanceof IFluidContainerItem item) {
-                return handleIFluidContainerItem(drum, item, heldItem);
+                return handleIFluidContainerItem(drum, player, item, heldItem);
             }
             // fixed size containers
             if (FluidContainerRegistry.isFilledContainer(heldItem)) {
@@ -96,9 +96,16 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         return false;
     }
 
-    private boolean handleIFluidContainerItem(TileEntityDrum drum, IFluidContainerItem heldItem,
+    private boolean handleIFluidContainerItem(TileEntityDrum drum, EntityPlayer player, IFluidContainerItem heldItem,
         ItemStack heldItemStack) {
-        FluidStack containerFluid = heldItem.getFluid(heldItemStack);
+        // Cells don't allow draining while stacked, so needs some jank
+        ItemStack stack = heldItemStack;
+        if (heldItemStack.stackSize > 1) {
+            stack = heldItemStack.copy();
+            stack.stackSize = 1;
+        }
+
+        FluidStack containerFluid = heldItem.getFluid(stack);
 
         if (containerFluid != null && containerFluid.amount > 0) {
             int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
@@ -107,10 +114,13 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
             FluidStack toTransfer = containerFluid.copy();
             toTransfer.amount = accepted;
 
-            FluidStack drained = heldItem.drain(heldItemStack, accepted, false);
+            FluidStack drained = heldItem.drain(stack, accepted, false);
             if (drained == null || drained.amount != accepted) return false;
 
-            heldItem.drain(heldItemStack, accepted, true);
+            heldItem.drain(stack, accepted, true);
+            if (heldItemStack.stackSize > 1) {
+                giveResultStack(player, heldItemStack, stack);
+            }
             drum.fill(ForgeDirection.UP, toTransfer, true);
 
         } else {
