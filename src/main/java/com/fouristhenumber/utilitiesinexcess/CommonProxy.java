@@ -5,6 +5,8 @@ import org.lwjgl.input.Keyboard;
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTimeEvents;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
@@ -62,6 +64,9 @@ public class CommonProxy {
         if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             PosteaTransforms.postInit();
         }
+
+        ItemReversingHoe.initializeCache();
+        ItemDestructionPickaxe.initializeCache();
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}

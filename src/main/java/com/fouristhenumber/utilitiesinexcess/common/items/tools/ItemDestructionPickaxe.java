@@ -1,8 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,8 +15,7 @@ import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
-
-import akka.japi.Pair;
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
 public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
 
@@ -27,25 +26,32 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
         if (DestructionPickaxeConfig.unbreakable) setMaxDamage(0);
     }
 
-    private final static HashMap<String, Pattern> compiledPatterns = new HashMap<>();
-    private final static HashMap<Pair<String, String>, Boolean> resultLookup = new HashMap<>();
+    public static final Set<BlockMeta> affectedBlockCache = new HashSet<>();
 
-    public static boolean blockMatches(String name, String pattern) {
-        // Prob can be made cleaner
-        if (!compiledPatterns.containsKey(name)) {
-            String replaceWildcard = pattern.replace(".", "\\.")
-                .replace("*", ".*?")
-                .replace("(", "\\(")
-                .replace(")", "\\)");
-            compiledPatterns.put(pattern, Pattern.compile(replaceWildcard));
+    public static void initializeCache() {
+        if (DestructionPickaxeConfig.includeEffective != null) {
+            for (String affectedBlockString : DestructionPickaxeConfig.includeEffective) {
+                int meta;
+                String affectedBlockName;
+
+                if (affectedBlockString.contains("*")) {
+                    String[] nameAndMeta = affectedBlockString.split("\\*");
+                    affectedBlockName = nameAndMeta[0];
+                    String sourceMetaString = nameAndMeta[1].toUpperCase();
+
+                    meta = Integer.parseInt(sourceMetaString, 16);
+                } else {
+                    affectedBlockName = affectedBlockString;
+                    meta = -1;
+                }
+
+                Block block = Block.getBlockFromName(affectedBlockName);
+
+                if (block != null) {
+                    affectedBlockCache.add(new BlockMeta(block, meta));
+                }
+            }
         }
-        Pattern p = compiledPatterns.get(pattern);
-        if (!resultLookup.containsKey(new Pair<>(pattern, name))) {
-            boolean res = p.matcher(name)
-                .matches();
-            resultLookup.put(new Pair<>(pattern, name), res);
-        }
-        return resultLookup.get(new Pair<>(pattern, name));
     }
 
     @Override
@@ -60,14 +66,14 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
 
     @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
-        var i = DestructionPickaxeConfig.includeEffective;
-        var w = DestructionPickaxeConfig.excludeEffective;
-        var name = block.delegate.name();
-        for (String s : w) if (blockMatches(name, s))
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
-        for (String s : i) if (blockMatches(name, s))
+        BlockMeta exactMatch = new BlockMeta(block, meta);
+        BlockMeta wildcardMatch = new BlockMeta(block, -1);
+
+        if (affectedBlockCache.contains(exactMatch) || affectedBlockCache.contains(wildcardMatch)) {
             return efficiencyOnProperMaterial * DestructionPickaxeConfig.effectiveSpeedModifier;
-        return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
+        } else {
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
+        }
     }
 
     @Override

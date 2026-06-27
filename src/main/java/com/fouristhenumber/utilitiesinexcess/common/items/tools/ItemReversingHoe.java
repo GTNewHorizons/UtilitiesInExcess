@@ -16,12 +16,12 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
 // TODO: Add new features to the reversing hoe
 public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
 
-    private final HashMap<Block, Block> blockConversionCache = new HashMap<>();
-    private boolean cacheInitialized = false;
+    public static final HashMap<BlockMeta, BlockMeta> blockConversionCache = new HashMap<>();
 
     public ItemReversingHoe() {
         super(ToolMaterial.EMERALD);
@@ -30,21 +30,54 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
         if (ReversingHoeConfig.unbreakable) setMaxDamage(0);
     }
 
-    public void initializeCache() {
+    public static void initializeCache() {
         if (ReversingHoeConfig.blockTransformations != null) {
             for (String transformation : ReversingHoeConfig.blockTransformations) {
                 if (transformation != null && transformation.contains("->")) {
                     String[] parts = transformation.split("->");
-                    Block sourceBlock = Block.getBlockFromName(parts[0].trim());
-                    Block targetBlock = Block.getBlockFromName(parts[1].trim());
+
+                    String sourceBlockString = parts[0].trim();
+                    String targetBlockString = parts[1].trim();
+
+                    String sourceName;
+                    int sourceMeta;
+
+                    String targetName;
+                    int targetMeta;
+
+                    if (sourceBlockString.contains("*")) {
+                        String[] nameAndMeta = sourceBlockString.split("\\*");
+                        sourceName = nameAndMeta[0];
+                        String sourceMetaString = nameAndMeta[1].toUpperCase();
+
+                        sourceMeta = Integer.parseInt(sourceMetaString, 16);
+                    } else {
+                        sourceName = sourceBlockString;
+                        sourceMeta = -1;
+                    }
+
+                    if (targetBlockString.contains("*")) {
+                        String[] nameAndMeta = targetBlockString.split("\\*");
+                        targetName = nameAndMeta[0];
+                        String targetMetaString = nameAndMeta[1].toUpperCase();
+
+                        targetMeta = Integer.parseInt(targetMetaString, 16);
+
+                    } else {
+                        targetName = targetBlockString;
+                        targetMeta = 0;
+                    }
+
+                    Block sourceBlock = Block.getBlockFromName(sourceName);
+                    Block targetBlock = Block.getBlockFromName(targetName);
 
                     if (sourceBlock != null && targetBlock != null) {
-                        blockConversionCache.put(sourceBlock, targetBlock);
+                        blockConversionCache
+                            .put(new BlockMeta(sourceBlock, sourceMeta), new BlockMeta(targetBlock, targetMeta));
                     }
                 }
             }
         }
-        cacheInitialized = true;
     }
 
     @Override
@@ -52,17 +85,30 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
         float clickX, float clickY, float clickZ) {
         if (world.isRemote) return false;
 
-        if (!cacheInitialized) initializeCache();
-
         Block block = world.getBlock(x, y, z);
+        int metaInWorld = world.getBlockMetadata(x, y, z);
 
-        if (blockConversionCache.containsKey(block)) {
-            Block targetBlock = blockConversionCache.get(block);
-            world.setBlock(x, y, z, targetBlock);
+        BlockMeta exactKey = new BlockMeta(block, metaInWorld);
+        BlockMeta wildcardKey = new BlockMeta(block, -1);
+
+        BlockMeta targetData = null;
+
+        if (blockConversionCache.containsKey(exactKey)) {
+            targetData = blockConversionCache.get(exactKey);
+        } else if (blockConversionCache.containsKey(wildcardKey)) {
+            targetData = blockConversionCache.get(wildcardKey);
+        }
+
+        if (targetData != null) {
+            Block targetBlock = targetData.getBlock();
+            int targetMeta = targetData.getBlockMeta();
+
+            world.setBlock(x, y, z, targetBlock, targetMeta, 3);
 
             if (!ReversingHoeConfig.unbreakable) {
                 itemStack.damageItem(1, player);
             }
+
             return true;
         }
 
