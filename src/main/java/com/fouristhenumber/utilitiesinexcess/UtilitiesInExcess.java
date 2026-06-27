@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.gtnewhorizon.gtnhlib.api.gui.WorldConversionWarningManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -53,6 +54,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoad
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
@@ -65,6 +67,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -95,6 +98,9 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+         if (OtherConfig.enableWorldConversion) {
+            WorldConversionWarningManager.register(MODID + "_EXU", new ExuWorldConversionWarning());
+         }
         if (Mods.ForgeMicroBlock.isLoaded()) {
             new Content().init();
         }
@@ -232,4 +238,18 @@ public class UtilitiesInExcess {
             return ICON_ITEM;
         }
     };
+
+    @Mod.EventHandler
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+        if (ExuWorldConversionWarning.SHOW) {
+            return;
+        }
+
+        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
+            if (mapping.name.startsWith("ExtraUtilities")) {
+                ExuWorldConversionWarning.SHOW = true;
+                return;
+            }
+        }
+    }
 }
