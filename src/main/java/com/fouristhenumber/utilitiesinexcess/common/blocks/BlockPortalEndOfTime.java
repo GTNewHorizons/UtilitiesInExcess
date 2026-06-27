@@ -43,7 +43,8 @@ public class BlockPortalEndOfTime extends Block {
 
         setBlockName("temporal_gate");
         setBlockTextureName("utilitiesinexcess:temporal_gate");
-        setResistance(5);
+        setHardness(5F);
+        setResistance(50F);
     }
 
     IIcon[] icons;

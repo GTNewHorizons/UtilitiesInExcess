@@ -27,6 +27,8 @@ public class BlockCollector extends BlockContainer implements IWailaDataProvider
         super(Material.rock);
         setBlockName("collector");
         setBlockTextureName("utilitiesinexcess:collector");
+        setHardness(1.5F);
+        setResistance(1.5F);
     }
 
     // So you can open chests under it

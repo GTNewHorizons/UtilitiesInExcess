@@ -6,10 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,6 +25,63 @@ public class BlockDecorative extends Block {
         super(Material.rock);
         setBlockName("decorative_block");
         setStepSound(soundTypeStone);
+        setResistance(6F);
+    }
+
+    @Override
+    public float getBlockHardness(World worldIn, int x, int y, int z) {
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        return switch (meta) {
+            // Obsidian
+            case 0, 5 -> 50F;
+            // Endstone
+            case 1 -> 3F;
+            // Quartz
+            case 2 -> 0.8F;
+            // Sand
+            case 3 -> 0.5F;
+            // Gravel
+            case 6, 10 -> 0.6F;
+            // Stone
+            default -> 1.5F;
+        };
+    }
+
+    @Override
+    public int getHarvestLevel(int metadata) {
+        return switch (metadata) {
+            case 3, 6, 10 -> 0;
+            case 0, 5 -> 3;
+            default -> 1;
+        };
+    }
+
+    @Override
+    public boolean isToolEffective(String type, int metadata) {
+        return switch (metadata) {
+            case 3, 6, 10 -> type.equals("shovel");
+            default -> type.equals("pickaxe");
+        };
+    }
+
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int meta) {
+        if (meta == 3 || meta == 5 || meta == 10) return true;
+        return super.canHarvestBlock(player, meta);
+    }
+
+    @Override
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double exX, double exY,
+        double exZ) {
+        int meta = world.getBlockMetadata(x, y, z);
+        return switch (meta) {
+            case 0, 5 -> 1200F;
+            case 1 -> 9F;
+            case 2 -> 0.8F;
+            case 3 -> 0.5F;
+            case 6, 10 -> 0.6F;
+            default -> 6F;
+        };
     }
 
     @SideOnly(Side.CLIENT)
