@@ -2,9 +2,10 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
+import codechicken.microblock.BlockMicroMaterial;
+import codechicken.microblock.MicroMaterialRegistry;
 
-public class IMCforFMP {
+public class FMPCompat {
 
     public static void init() {
         registerMicroblock(ModBlocks.SMART_PUMP);
@@ -37,7 +38,10 @@ public class IMCforFMP {
     }
 
     private static void registerMicroblock(ModBlocks block, int meta) {
-        FMLInterModComms.sendMessage("ForgeMicroblock", "microMaterial", block.newItemStack(1, meta));
+        MicroMaterialRegistry.registerMaterial(
+            new BlockMicroMaterial(block.get(), meta),
+            block.get()
+                .getUnlocalizedName());
     }
 
     private static void registerMicroblock(ModBlocks block) {
