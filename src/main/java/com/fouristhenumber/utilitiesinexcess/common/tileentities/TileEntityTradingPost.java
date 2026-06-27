@@ -221,8 +221,20 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         tooltip.addLine("§7"); // If the line is empty it gets skipped
         tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.5"));
         tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.6"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.7"));
+        tooltip.addLine(
+            StatCollector.translateToLocalFormatted(
+                "tile.trading_post.help_tooltip.7",
+                StatCollector.translateToLocal("tile.trading_post.search.buy_prefix"),
+                StatCollector.translateToLocal("tile.trading_post.search.sell_prefix")));
         tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.8"));
+        tooltip.addLine(
+            StatCollector.translateToLocalFormatted(
+                "tile.trading_post.help_tooltip.9",
+                StatCollector.translateToLocal("tile.trading_post.search.sell_prefix")));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.10"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.11"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.12"));
+        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.13"));
     }
 
     public class TradingPostPanel extends ModularPanel {

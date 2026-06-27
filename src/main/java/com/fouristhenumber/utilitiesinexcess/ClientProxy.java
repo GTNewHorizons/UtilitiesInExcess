@@ -24,6 +24,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.nei.NEIConfig;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
+import com.fouristhenumber.utilitiesinexcess.utils.FluidColorCache;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -76,6 +77,8 @@ public class ClientProxy extends CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
+
+        MinecraftForge.EVENT_BUS.register(new FluidColorCache.TextureHook());
 
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
