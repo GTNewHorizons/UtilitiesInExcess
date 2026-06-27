@@ -127,8 +127,6 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             .child(itemToSell);
         this.child(wholeRow);
 
-        // child(new FavoriteStarWidget());
-
         hoverBackground(HIGHLIGHT_BACKGROUND);
     }
 
