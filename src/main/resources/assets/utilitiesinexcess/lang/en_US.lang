@@ -170,7 +170,7 @@ nei.infopage.uie.inversion_sigil.4=If the ritual has been completed successfully
 
 nei.infopage.uie.pseudo_inversion_sigil.1=The Pseudo-Inversion Sigil is an improved version of the Awakened Inversion Sigil that crafts Stable Inverted Ingots which never implode. Unfortunately, it is not easy to create. Using the Awakened Sigil on a beacon provides some hints, or read on for precise instructions.
 nei.infopage.uie.pseudo_inversion_sigil.2=To set up the new ritual, place a beacon in The End with spirals of redstone and string leading away from it. Place four chests in the cardinal directions and fill them with specific items.
-nei.infopage.uie.pseudo_inversion_sigil.3=Finally, activate the ritual by sacrificing an Iron Golem inside of the spiral. This begins an otherworldly siege... survive while defeating enemies to complete the ritual. Dying or leaving the dimension will cancel it.
+nei.infopage.uie.pseudo_inversion_sigil.3=Finally, activate the ritual by sacrificing an Iron Golem inside of the spiral. This begins an otherworldly siege... survive while defeating enemies to complete the ritual. Dying or leaving the dimension cancels it.
 
 item.architects_wand.name=Architect's Wand
 tooltip.architects_wand.1=Can place up to %s blocks at once
