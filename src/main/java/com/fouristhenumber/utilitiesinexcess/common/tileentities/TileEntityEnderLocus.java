@@ -65,7 +65,7 @@ public class TileEntityEnderLocus extends TileEntity implements IInventory, IGui
         }
 
         if (crafting) {
-            craftingProgress += (crystals * 40);
+            craftingProgress += (crystals * 10);
         }
         if (craftingProgress >= recipeCost) {
             ItemStack newStack = EnderLocusRegistry.instance()
