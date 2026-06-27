@@ -26,7 +26,7 @@ public class BlockRainMuffler extends BlockContainer {
         setStepSound(soundTypeCloth);
         setBlockName("rain_muffler");
         setBlockTextureName("utilitiesinexcess:rain_muffler");
-        setHardness(0.5f);
+        setHardness(0.8f);
     }
 
     @Override

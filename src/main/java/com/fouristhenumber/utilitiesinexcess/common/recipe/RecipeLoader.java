@@ -35,6 +35,49 @@ public class RecipeLoader {
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
 
+        // Chandeliers
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            "gdg",
+            "ttt",
+            " t ",
+            'g',
+            Items.gold_ingot,
+            'd',
+            Items.diamond,
+            't',
+            Blocks.torch);
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 1),
+            " e ",
+            "ici",
+            'c',
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            'i',
+            Items.iron_ingot,
+            'e',
+            Items.ender_pearl);
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 2),
+            " t ",
+            "rcr",
+            'c',
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            'r',
+            Items.redstone,
+            't',
+            Blocks.redstone_torch);
+        addShapedRecipe(
+            ModBlocks.CHANDELIER.newItemStack(1, 3),
+            " o ",
+            "scs",
+            'c',
+            ModBlocks.CHANDELIER.newItemStack(1, 0),
+            's',
+            Blocks.soul_sand,
+            'o',
+            Blocks.obsidian);
+
         // Collector
         addShapedRecipe(
             ModBlocks.COLLECTOR,
