@@ -37,14 +37,22 @@ public class BlockPacifistsBench extends BlockContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return icons[side];
-    }
+    public IIcon getIcon(int s, int meta) {
+        switch (s) {
+            case 0:
+            case 1:
+                return icons[s];
+            default:
+                int r = meta + 1;
+                r = r > 3 ? r - 4 : r;
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
-        return getIcon(side, 0);
+                ForgeDirection d = ForgeDirection.getOrientation(s);
+                for (int i = 0; i < r; i++) {
+                    d = d.getRotation(ForgeDirection.DOWN);
+                }
+
+                return icons[d.ordinal()];
+        }
     }
 
     @Override
