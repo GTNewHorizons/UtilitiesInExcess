@@ -27,13 +27,6 @@ public class ExtendedConfirmationGui extends GuiConfirmationWCW {
                     .split("\\\\n")));
         warning = lines.get(0);
     }
-
-    public void initGui() {
-        this.buttonList.add(new GuiOptionButton(0, this.width / 2 - 155, this.height - 58, I18n.format("gui.yes")));
-        this.buttonList
-            .add(new GuiOptionButton(1, this.width / 2 - 155 + 160, this.height - 58, I18n.format("gui.no")));
-    }
-
     private static byte colorTick = 0;
 
     @Override
