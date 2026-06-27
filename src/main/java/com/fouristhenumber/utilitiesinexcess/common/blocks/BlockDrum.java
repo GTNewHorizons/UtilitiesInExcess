@@ -234,8 +234,7 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
 
     @Override
     public int colorMultiplier(@Nullable IBlockAccess world, int x, int y, int z, int tintIndex) {
-        if (world != null) {
-            TileEntityDrum drum = (TileEntityDrum) world.getTileEntity(x, y, z);
+        if (world != null && world.getTileEntity(x, y, z) instanceof TileEntityDrum drum) {
             FluidStack fluid = drum.tank.getFluid();
             if (fluid != null) return FluidColorCache.getColor(fluid.getFluid());
         }
