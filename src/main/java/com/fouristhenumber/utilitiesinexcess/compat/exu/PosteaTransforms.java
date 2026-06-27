@@ -76,6 +76,7 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0, true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModItems.ENDER_LOTUS_SEED.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:lawSword", ModItems.CHUNCHUNMARU.get(), true);
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
@@ -216,9 +217,8 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 9, ModBlocks.DECORATIVE_BLOCKS.get(), 3);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 10, ModBlocks.DECORATIVE_BLOCKS.get(), 10);
-        // TODO: Ender Core - Unimplemented!
-        // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:decorativeBlock1", 11,
-        // ModBlocks.DECORATIVE_BLOCKS.get(), 7);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 11, ModBlocks.ENDSPARK.get(), 0);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:decorativeBlock1", 12, ModBlocks.DECORATIVE_BLOCKS.get(), 0);
         BlockReplacementManager

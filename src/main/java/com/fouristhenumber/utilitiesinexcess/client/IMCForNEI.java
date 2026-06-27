@@ -118,6 +118,8 @@ public class IMCForNEI {
             sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.ticon_magic_wood");
         }
 
+        sendInfoPage("<utilitiesinexcess:endspark>", "nei.infopage.uie.endspark.1");
+
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");
         sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.2");
 
@@ -197,6 +199,8 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
 
+        sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
+
         sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.1");
 
         sendInfoPage("utilitiesinexcess:collector", "nei.infopage.uie.collector.1");
@@ -207,7 +211,7 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.2");
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
 
-        sendInfoPage("<utilitiesinexcess:chandelier>", "nei.infopage.uie.chandelier.1");
+        sendInfoPage("utilitiesinexcess:chandelier", "nei.infopage.uie.chandelier.1");
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
     }

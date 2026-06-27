@@ -19,6 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorative;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorativeGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEndspark;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFluxCrystal;
@@ -100,6 +101,7 @@ public enum ModBlocks {
     SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler(), BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
     RAIN_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler(), BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), "magic_wood"),
+    ENDSPARK(BlockConfig.enableEndspark, new BlockEndspark(), "endspark"),
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), "significantly_shrunk_chest"),

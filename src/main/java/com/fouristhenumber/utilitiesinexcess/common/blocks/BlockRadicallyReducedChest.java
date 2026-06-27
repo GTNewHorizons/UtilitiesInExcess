@@ -11,7 +11,8 @@ public class BlockRadicallyReducedChest extends BlockSignificantlyShrunkChest {
         super();
         setBlockName("radically_reduced_chest");
         setBlockBounds(0.4f, 0, 0.4f, 0.6f, 0.2f, 0.6f);
-        setHardness(1.5F);
+        setHardness(0.5F);
+        setResistance(0.5F);
     }
 
     @Override
