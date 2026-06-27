@@ -613,3 +613,6 @@ ue_sphere.name=%s Impossible Object
 
 item.chunchunmaru.name=Chunchunmaru
 item.chunchunmaru.desc=It's a really cool name
+
+uie.world_conversion.warning.client=WARNING!!\nThe §aExtra Utilities§f mod has been replaced with §aUtilities In Excess§f.\nAfter pressing "Yes" every item in your world from Extra Utilities\nwill be replaced with their Utilities In Excess counterpart.\nWe recommend making a backup of this world before proceeding.
+uie.world_conversion.warning.server=WARNING!! The Extra Utilities mod has been replaced with Utilities In Excess. After typing "/fml confirm" every item in your world from Extra Utilities will be replaced with their Utilities In Excess counterpart. We recommend making a backup of this world before proceeding.
