@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
@@ -27,6 +29,8 @@ public class CommonProxy {
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
     public SyncedKeybind GLOVE_KEYBIND;
+    public SyncedKeybind ARCHITECTS_KEYBIND_H;
+    public SyncedKeybind ARCHITECTS_KEYBIND_V;
 
     public void preInit(FMLPreInitializationEvent event) {
         // Config is handled in the early mixin loader (UIEMixinLoader)
@@ -57,6 +61,10 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
         GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
+        ARCHITECTS_KEYBIND_H = SyncedKeybind
+            .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
+        ARCHITECTS_KEYBIND_V = SyncedKeybind
+            .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
     }
 
     public void postInit(FMLPostInitializationEvent event) {
