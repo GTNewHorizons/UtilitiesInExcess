@@ -4,12 +4,12 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class QEDRecipe {
+public class EnderLocusRecipe {
 
     private final Object[] inputs;
     private final ItemStack output;
 
-    public QEDRecipe(Object[] inputs, ItemStack output) {
+    public EnderLocusRecipe(Object[] inputs, ItemStack output) {
         this.inputs = inputs;
         this.output = output;
     }

@@ -36,10 +36,10 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<PosGuiData> {
+public class TileEntityEnderLocus extends TileEntity implements IInventory, IGuiHolder<PosGuiData> {
 
     private final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerDummy(), 3, 3);
     private final InventoryCraftResult craftResult = new InventoryCraftResult();
@@ -68,7 +68,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
             craftingProgress += (crystals * 40);
         }
         if (craftingProgress >= recipeCost) {
-            ItemStack newStack = QEDRegistry.instance()
+            ItemStack newStack = EnderLocusRegistry.instance()
                 .findRecipe(craftMatrix, true);
             if (newStack != null) {
                 ItemStack outputStack = craftResult.getStackInSlot(0);
@@ -76,7 +76,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
                 if (outputStack == null) craftResult.setInventorySlotContents(0, newStack);
                 else if (canInsertToOutput(newStack)) outputStack.stackSize += newStack.stackSize;
                 else UtilitiesInExcess.LOG
-                    .error("Failed to complete QED recipe because output stack did not match craft result.");
+                    .error("Failed to complete Ender Locus recipe because output stack did not match craft result.");
             }
             craftingProgress = 0;
             crafting = false;
@@ -94,12 +94,18 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
     }
 
     public void scan() {
-        Set<BlockPos> positions = scanForBlock(worldObj, xCoord, yCoord, zCoord, 9, ModBlocks.FLUX_CRYSTAL.get());
+        Set<BlockPos> positions = scanForBlock(
+            worldObj,
+            xCoord,
+            yCoord,
+            zCoord,
+            9,
+            ModBlocks.CONVERGENCE_CRYSTAL.get());
         crystals = positions.size();
     }
 
     private void updateCraftingResult() {
-        ItemStack stack = QEDRegistry.instance()
+        ItemStack stack = EnderLocusRegistry.instance()
             .findRecipe(craftMatrix, false);
         if (stack == null || stack.getItem() != preview.getItem()) craftingProgress = 0;
         crafting = stack != null && canInsertToOutput(stack);
@@ -189,7 +195,7 @@ public class TileEntityQED extends TileEntity implements IInventory, IGuiHolder<
 
     @Override
     public String getInventoryName() {
-        return "tile.qed.name";
+        return "tile.ender_locus.name";
     }
 
     @Override

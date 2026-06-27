@@ -18,15 +18,15 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectLists;
 
-public final class QEDRegistry {
+public final class EnderLocusRegistry {
 
-    private static final QEDRegistry REGISTRY = new QEDRegistry();
+    private static final EnderLocusRegistry REGISTRY = new EnderLocusRegistry();
 
-    private final ObjectList<QEDRecipe> recipes = new ObjectArrayList<>();
+    private final ObjectList<EnderLocusRecipe> recipes = new ObjectArrayList<>();
 
-    private QEDRegistry() {}
+    private EnderLocusRegistry() {}
 
-    public static QEDRegistry instance() {
+    public static EnderLocusRegistry instance() {
         return REGISTRY;
     }
 
@@ -73,11 +73,11 @@ public final class QEDRegistry {
             }
         }
 
-        QEDRecipe qedRecipe = new QEDRecipe(inputArray, output);
-        this.recipes.add(qedRecipe);
+        EnderLocusRecipe enderLocusRecipe = new EnderLocusRecipe(inputArray, output);
+        this.recipes.add(enderLocusRecipe);
     }
 
-    public void addRecipe(QEDRecipe recipe) {
+    public void addRecipe(EnderLocusRecipe recipe) {
         this.recipes.add(recipe);
     }
 
@@ -86,7 +86,7 @@ public final class QEDRegistry {
             || pattern[0].length() != 3
             || pattern[1].length() != 3
             || pattern[2].length() != 3) {
-            throw new IllegalArgumentException("QED recipe pattern must be 3 strings each with 3 characters");
+            throw new IllegalArgumentException("Ender Locus recipe pattern must be 3 strings each with 3 characters");
         }
     }
 
@@ -95,7 +95,7 @@ public final class QEDRegistry {
     }
 
     public ItemStack findRecipe(InventoryCrafting inv, boolean consume) {
-        for (QEDRecipe recipe : this.recipes) {
+        for (EnderLocusRecipe recipe : this.recipes) {
             if (recipe.matches(inv)) {
                 if (consume) {
                     for (int i = 0; i < 9; i++) {
@@ -108,7 +108,7 @@ public final class QEDRegistry {
         return null;
     }
 
-    public List<QEDRecipe> getAllRecipes() {
+    public List<EnderLocusRecipe> getAllRecipes() {
         return ObjectLists.unmodifiable(this.recipes);
     }
 }

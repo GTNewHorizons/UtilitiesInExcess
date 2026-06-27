@@ -5,31 +5,31 @@ import java.awt.Rectangle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import com.fouristhenumber.utilitiesinexcess.api.QEDRecipe;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRecipe;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.recipe.ShapedRecipeHandler;
 
-public class QEDRecipeHandler extends ShapedRecipeHandler {
+public class EnderLocusRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getOverlayIdentifier() {
-        return "qed_recipes";
+        return "ender_locus_recipes";
     }
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal("nei.title.uie.qed");
+        return StatCollector.translateToLocal("nei.title.uie.ender_locus");
     }
 
     @Override
     public void loadUsageRecipes(String inputId, Object... ingredients) {
         if (inputId.equals(this.getOverlayIdentifier())) {
-            for (QEDRecipe qedRecipe : QEDRegistry.instance()
+            for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
                 .getAllRecipes()) {
-                CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
                 if (neiRecipe == null) continue;
                 neiRecipe.computeVisuals();
                 this.arecipes.add(neiRecipe);
@@ -46,9 +46,9 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        for (QEDRecipe qedRecipe : QEDRegistry.instance()
+        for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
             .getAllRecipes()) {
-            CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
+            CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
             if (neiRecipe == null) continue;
 
             if (neiRecipe.contains(neiRecipe.ingredients, ingredient)) {
@@ -62,9 +62,9 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
-            for (QEDRecipe qedRecipe : QEDRegistry.instance()
+            for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
                 .getAllRecipes()) {
-                CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
                 if (neiRecipe == null) continue;
                 neiRecipe.computeVisuals();
                 this.arecipes.add(neiRecipe);
@@ -76,10 +76,10 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        for (QEDRecipe qedRecipe : QEDRegistry.instance()
+        for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
             .getAllRecipes()) {
-            if (NEIServerUtils.areStacksSameTypeCrafting(qedRecipe.getOutput(), result)) {
-                CachedShapedRecipe neiRecipe = makeNeiRecipe(qedRecipe);
+            if (NEIServerUtils.areStacksSameTypeCrafting(enderLocusRecipe.getOutput(), result)) {
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
                 if (neiRecipe == null) continue;
                 neiRecipe.computeVisuals();
                 this.arecipes.add(neiRecipe);
@@ -87,7 +87,7 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
         }
     }
 
-    private CachedShapedRecipe makeNeiRecipe(QEDRecipe recipe) {
+    private CachedShapedRecipe makeNeiRecipe(EnderLocusRecipe recipe) {
         try {
             Object[] inputs = recipe.getInputs();
             for (Object rawInput : inputs) {
@@ -97,7 +97,7 @@ public class QEDRecipeHandler extends ShapedRecipeHandler {
             }
             return new CachedShapedRecipe(3, 3, inputs, recipe.getOutput());
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading QED recipe: ", e);
+            NEIClientConfig.logger.error("Error loading Ender Locus recipe: ", e);
             return null;
         }
     }

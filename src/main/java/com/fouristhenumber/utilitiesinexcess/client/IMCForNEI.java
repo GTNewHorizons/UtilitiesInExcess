@@ -78,7 +78,9 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
 
-        sendInfoPage("<utilitiesinexcess:qed>,<utilitiesinexcess:flux_crystal>", "nei.infopage.uie.qed.1");
+        sendInfoPage(
+            "<utilitiesinexcess:ender_locus>,<utilitiesinexcess:convergence_crystal>",
+            "nei.infopage.uie.ender_locus.1");
 
         sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
         sendInfoPage(

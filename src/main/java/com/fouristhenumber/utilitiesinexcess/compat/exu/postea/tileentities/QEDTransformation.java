@@ -13,11 +13,11 @@ import com.gtnewhorizons.postea.utility.PosteaUtilities;
 public class QEDTransformation {
 
     public static BlockInfo transform(NBTTagCompound _oldTag, World world, Chunk chunk) {
-        return new BlockInfo(ModBlocks.QED.get(), 0, QEDTransformation::transformNBT);
+        return new BlockInfo(ModBlocks.ENDER_LOCUS.get(), 0, QEDTransformation::transformNBT);
     }
 
     private static NBTTagCompound transformNBT(NBTTagCompound oldTag) {
-        NBTTagCompound tag = PosteaUtilities.cleanseNBT("TileEntityQEDUIE", oldTag);
+        NBTTagCompound tag = PosteaUtilities.cleanseNBT("TileEntityEnderLocusUIE", oldTag);
         NBTTagList itemsTag = new NBTTagList();
         for (int i = 0; i < 9; i++) {
             NBTTagCompound exuSlotTag = oldTag.getCompoundTag("items_" + i);

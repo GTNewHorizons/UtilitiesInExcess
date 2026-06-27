@@ -10,7 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
@@ -30,7 +30,7 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
         loadGeneratorRecipes();
-        loadQEDRecipes();
+        loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
@@ -1316,10 +1316,10 @@ public class RecipeLoader {
         }
     }
 
-    private static void loadQEDRecipes() {
-        // QED
+    private static void loadEnderLocusRecipes() {
+        // Ender Locus
         addShapedRecipe(
-            ModBlocks.QED,
+            ModBlocks.ENDER_LOCUS,
             "ece",
             "omo",
             "ooo",
@@ -1332,9 +1332,9 @@ public class RecipeLoader {
             'm',
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
 
-        // Flux Crystal
+        // Convergence Crystal
         addShapedRecipe(
-            ModBlocks.FLUX_CRYSTAL,
+            ModBlocks.CONVERGENCE_CRYSTAL,
             " e ",
             " o ",
             "ooo",
@@ -1343,8 +1343,8 @@ public class RecipeLoader {
             'o',
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
 
-        // Ore + Coal -> Ingot (QED)
-        QEDRegistry.instance()
+        // Ore + Coal -> Ingot (Ender Locus)
+        EnderLocusRegistry.instance()
             .addRecipe(
                 new ItemStack(Items.gold_ingot, 3),
                 new String[] { "OC ", "   ", "   " },
@@ -1353,7 +1353,7 @@ public class RecipeLoader {
                 'C',
                 Items.coal);
 
-        QEDRegistry.instance()
+        EnderLocusRegistry.instance()
             .addRecipe(
                 new ItemStack(Items.iron_ingot, 3),
                 new String[] { "OC ", "   ", "   " },
@@ -1362,8 +1362,8 @@ public class RecipeLoader {
                 'C',
                 Items.coal);
 
-        // Giga Torch (QED)
-        QEDRegistry.instance()
+        // Giga Torch (Ender Locus)
+        EnderLocusRegistry.instance()
             .addRecipe(
                 ModBlocks.GIGA_TORCH.newItemStack(),
                 new String[] { "RCH", "CWC", "CWC" },

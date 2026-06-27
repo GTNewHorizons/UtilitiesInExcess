@@ -81,11 +81,11 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:endConstructor", 0, ModBlocks.QED.getItem(), 0);
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 0, ModBlocks.ENDER_LOCUS.getItem(), 0);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:endConstructor", 2, ModBlocks.FLUX_CRYSTAL.getItem(), 0);
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 2, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.FLUX_CRYSTAL.getItem(), 0);
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());

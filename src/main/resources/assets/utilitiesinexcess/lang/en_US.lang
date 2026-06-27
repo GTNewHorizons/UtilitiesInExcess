@@ -44,7 +44,7 @@ tile.compressed_gravel.7.name=Octuple Compressed Gravel
 tile.compressed_gravel.desc=%,d Gravel
 
 nei.title.uie.plugin=UtilitiesInExcess NEI Plugin
-nei.title.uie.qed=QED Recipes
+nei.title.uie.ender_locus=Ender Locus Recipes
 
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
@@ -389,9 +389,9 @@ nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth
 item.xray_glasses.name=X-Ray Glasses
 nei.infopage.uie.xray_glasses.1=These stylish spectacles highlight like blocks adjacent to the one you are looking at through walls. Spot entire ore veins with ease!
 
-tile.qed.name=QED
-tile.flux_crystal.name=Flux Crystal
-nei.infopage.uie.qed.1=The QED is a simple machine that draws Flux Energy from nearby Flux Crystals in order to complete recipes. The QED operates faster for each Flux Crystal in a 9 block sphere around it.
+tile.ender_locus.name=Ender Locus
+tile.convergence_crystal.name=Convergence Crystal
+nei.infopage.uie.ender_locus.1=The Ender Locus is a simple machine that draws Flux Energy from nearby Convergence Crystals in order to complete recipes. The Ender Locus operates faster for each Convergence Crystal in a 9 block sphere around it.
 
 gui.flux_strength=Flux Strength: %s
 

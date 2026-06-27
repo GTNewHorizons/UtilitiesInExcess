@@ -28,27 +28,29 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
-        QEDRecipeHandler handler = new QEDRecipeHandler();
+        EnderLocusRecipeHandler handler = new EnderLocusRecipeHandler();
 
         API.registerRecipeHandler(handler);
         API.registerUsageHandler(handler);
 
-        API.addRecipeCatalyst(ModBlocks.QED.newItemStack(), handler, 1);
-        API.addRecipeCatalyst(ModBlocks.FLUX_CRYSTAL.newItemStack(), handler, 0);
+        API.addRecipeCatalyst(ModBlocks.ENDER_LOCUS.newItemStack(), handler, 1);
+        API.addRecipeCatalyst(ModBlocks.CONVERGENCE_CRYSTAL.newItemStack(), handler, 0);
 
         FMLInterModComms.sendRuntimeMessage(
             UtilitiesInExcess.MODID,
             "NEIPlugins",
             "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.qed") + "@qed_recipes");
+            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.ender_locus")
+                + "@ender_locus_recipes");
     }
 
     @SubscribeEvent
     public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
         event.registerHandlerInfo(
-            new HandlerInfo.Builder("qed_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID).setHeight(140)
+            new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
+                .setHeight(140)
                 .setWidth(166)
-                .setDisplayStack(ModBlocks.QED.newItemStack())
+                .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
                 .build());
     }
 }

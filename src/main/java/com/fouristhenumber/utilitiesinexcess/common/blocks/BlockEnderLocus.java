@@ -1,39 +1,43 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.dropItemsFromIInventory;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityQED;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderLocus;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockQED extends BlockContainer {
+public class BlockEnderLocus extends BlockContainer {
 
-    public BlockQED() {
+    public BlockEnderLocus() {
         super(Material.iron);
-        setBlockName("qed");
-        setBlockTextureName("utilitiesinexcess:qed");
+        setBlockName("ender_locus");
+        setBlockTextureName("utilitiesinexcess:ender_locus");
         setHardness(5.0F);
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityQED();
+        return new TileEntityEnderLocus();
     }
 
     @Override
     public void onBlockAdded(World worldIn, int x, int y, int z) {
         if (!worldIn.isRemote) {
-            TileEntityQED qed = (TileEntityQED) worldIn.getTileEntity(x, y, z);
-            qed.scan();
+            TileEntityEnderLocus locus = (TileEntityEnderLocus) worldIn.getTileEntity(x, y, z);
+            locus.scan();
         }
         super.onBlockAdded(worldIn, x, y, z);
     }
@@ -68,5 +72,14 @@ public class BlockQED extends BlockContainer {
     @Override
     public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
         return getIcon(side, 0);
+    }
+
+    @Override
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof IInventory inv) {
+            dropItemsFromIInventory(0, inv, worldIn, te.xCoord, te.yCoord, te.zCoord);
+        }
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 }
