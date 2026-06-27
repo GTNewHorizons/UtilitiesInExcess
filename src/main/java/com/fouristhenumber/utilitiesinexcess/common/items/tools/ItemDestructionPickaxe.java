@@ -45,7 +45,8 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
                     Block block = GameRegistry.findBlock(domain, name);
 
                     if (block == null) {
-                        UtilitiesInExcess.LOG.warn("Destruction Pickaxe Config: Could not find {}, skipped", blockString);
+                        UtilitiesInExcess.LOG
+                            .warn("Destruction Pickaxe Config: Could not find {}, skipped", blockString);
                         continue;
                     }
 

@@ -14,7 +14,8 @@ public class DestructionPickaxeConfig {
     public static boolean unbreakable;
     @Config.DefaultBoolean(false)
     public static boolean voidMinedBlock;
-    @Config.DefaultStringList({ "minecraft:stone", "minecraft:netherrack", "minecraft:hardened_clay" })
+    @Config.DefaultStringList({ "minecraft:stone", "minecraft:cobblestone", "minecraft:sandstone",
+        "minecraft:netherrack", "minecraft:hardened_clay", "minecraft:stained_hardened_clay" })
     public static String[] includeEffective;
     @Config.DefaultFloat(5)
     @Config.RangeFloat(min = 0, max = 100)
