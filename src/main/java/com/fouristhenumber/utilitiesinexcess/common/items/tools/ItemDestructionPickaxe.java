@@ -45,14 +45,14 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
                     Block block = GameRegistry.findBlock(domain, name);
 
                     if (block == null) {
-                        UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Could not find {}, skipped", blockString);
+                        UtilitiesInExcess.LOG.warn("Destruction Pickaxe Config: Could not find {}, skipped", blockString);
                         continue;
                     }
 
                     affectedBlockCache.add(new BlockMeta(block, meta));
 
                 } catch (Exception e) {
-                    UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Skipped malformed config: {}", blockString);
+                    UtilitiesInExcess.LOG.warn("Destruction Pickaxe Config: Skipped malformed config: {}", blockString);
                 }
             }
         }
