@@ -20,6 +20,7 @@ public class BlockPacifistsBench extends BlockContainer {
         super(Material.wood);
         setBlockTextureName("utilitiesinexcess:pacifists_bench");
         setBlockName("pacifists_bench");
+        setHardness(1F);
     }
 
     IIcon[] icons = new IIcon[6];

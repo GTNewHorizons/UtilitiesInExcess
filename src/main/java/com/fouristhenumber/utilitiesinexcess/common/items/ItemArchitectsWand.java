@@ -26,6 +26,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
+import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.WandAxisMode;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
@@ -88,6 +89,15 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             return;
         }
 
+        WandAxisMode axisMode;
+        if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_H.isKeyDown(player)) {
+            axisMode = WandAxisMode.HORIZONTAL;
+        } else if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_V.isKeyDown(player)) {
+            axisMode = WandAxisMode.VERTICAL;
+        } else {
+            axisMode = WandAxisMode.FREE;
+        }
+
         // 4. Target block to place
         ArchitectsSelection selection = new ArchitectsSelection(player, world, movingObjectPosition);
         List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
@@ -103,7 +113,8 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             target,
             movingObjectPosition,
             player,
-            selection);
+            selection,
+            axisMode);
         WireframeRenderer.clearCandidatePositions();
         for (BlockPos pos : blocksToPlace) {
             WireframeRenderer.addCandidatePosition(pos.offset(forgeSide.offsetX, forgeSide.offsetY, forgeSide.offsetZ));
@@ -163,10 +174,27 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
 
+        WandAxisMode axisMode;
+        if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_H.isKeyDown(player)) {
+            axisMode = WandAxisMode.HORIZONTAL;
+        } else if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_V.isKeyDown(player)) {
+            axisMode = WandAxisMode.VERTICAL;
+        } else {
+            axisMode = WandAxisMode.FREE;
+        }
+
         int placeCount = selection.maxPlaceCount(player, buildLimit);
 
-        Set<BlockPos> blocksToPlace = ArchitectsWandUtils
-            .findAdjacentBlocks(world, itemStackToPlace, placeCount, forgeSide, target, mop, player, selection);
+        Set<BlockPos> blocksToPlace = ArchitectsWandUtils.findAdjacentBlocks(
+            world,
+            itemStackToPlace,
+            placeCount,
+            forgeSide,
+            target,
+            mop,
+            player,
+            selection,
+            axisMode);
 
         ItemStack nowPlacing;
         for (BlockPos pos : blocksToPlace) {

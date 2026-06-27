@@ -21,6 +21,7 @@ public class PosteaTransforms {
         transformItems();
         transformBlocks();
         transformTileEntities();
+        ignoreMissingMappings();
     }
 
     private static void transformItems() {
@@ -75,6 +76,7 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:watering_can", 3, ModItems.WATERING_CAN_ELITE.get(), 0, true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:plant/ender_lilly", ModItems.ENDER_LOTUS_SEED.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:lawSword", ModItems.CHUNCHUNMARU.get(), true);
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
@@ -329,5 +331,76 @@ public class PosteaTransforms {
             0);
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:generator.64", 11, ModBlocks.NETHER_STAR_GENERATOR.get(), 0);
+    }
+
+    private static void ignoreMissingMappings() {
+        // Items
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:angelRing");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:bedrockiumIngot");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:builderswand");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:creativebuilderswand");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:defoliageAxe");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:destructionpickaxe");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:divisionSigil");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:erosionShovel");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:ethericsword");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:glove");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:golden_bag");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:golden_lasso");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:heatingElement");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:lawSword");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:scanner");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:shears");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:sonar_goggles");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:temporalHoe");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:unstableingot");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:watering_can");
+        // Blocks
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:angelBlock");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:block_bedrockium");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:budoff");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:chandelier");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:chestFull");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:chestMini");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:cobblestone_compressed");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:colorStoneBrick");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:colorWoodPlanks");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_blockCoal");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_blockLapis");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_blockRedstone");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_brick");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_hellsand");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_lightgem");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_obsidian");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_quartzBlock");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_redstoneLight");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_stone");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:color_stonebrick");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:conveyor");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:cursedearthside");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:curtains");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:dark_portal");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:decorativeBlock1");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:decorativeBlock2");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:drum");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderCollector");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderThermicPump");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:etherealglass");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator.8");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator.64");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:greenscreen");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:magnumTorch");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:peaceful_table_top");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:plant/ender_lilly");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:pureLove");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:sound_muffler");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:spike_base");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:spike_base_diamond");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:spike_base_gold");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:spike_base_wood");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:timer");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:trading_post");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:trashcan");
     }
 }

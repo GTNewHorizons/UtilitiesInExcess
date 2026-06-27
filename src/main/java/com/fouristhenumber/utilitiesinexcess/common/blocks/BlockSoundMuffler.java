@@ -24,7 +24,7 @@ public class BlockSoundMuffler extends BlockContainer {
         setStepSound(soundTypeCloth);
         setBlockName("sound_muffler");
         setBlockTextureName("utilitiesinexcess:sound_muffler");
-        setHardness(0.5f);
+        setHardness(0.8f);
     }
 
     @Override
