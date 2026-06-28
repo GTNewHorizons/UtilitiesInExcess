@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive.getPseudoInversionChestAtDirection;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
