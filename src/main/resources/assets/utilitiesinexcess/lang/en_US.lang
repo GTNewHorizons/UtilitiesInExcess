@@ -50,7 +50,7 @@ nei.pseudo_inversion.label_north=North (Progeny of Fire)
 nei.pseudo_inversion.label_south=South (Bounty of Earth)
 nei.pseudo_inversion.label_east=East (Effects of Water)
 nei.pseudo_inversion.label_west=West (Chimes of Air)
-nei.pseudo_inversion.requires=Requires %s of:
+nei.pseudo_inversion.requires=Requires %s unique items from:
 
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
