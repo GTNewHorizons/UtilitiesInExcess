@@ -4,12 +4,12 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class QEDRecipe {
+public class EnderLocusRecipe {
 
     private final Object[] inputs;
     private final ItemStack output;
 
-    public QEDRecipe(Object[] inputs, ItemStack output) {
+    public EnderLocusRecipe(Object[] inputs, ItemStack output) {
         this.inputs = inputs;
         this.output = output;
     }
@@ -36,8 +36,9 @@ public class QEDRecipe {
                         return false;
                     }
 
-                    if (recipeInput.getItemDamage() != providedInput.getItemDamage()) {
-                        return recipeInput.getItemDamage() == OreDictionary.WILDCARD_VALUE;
+                    if (recipeInput.getItemDamage() != providedInput.getItemDamage()
+                        && recipeInput.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+                        return false;
                     }
                 } else if (rawRecipeInput instanceof ItemStack[]ores) {
                     boolean matched = false;

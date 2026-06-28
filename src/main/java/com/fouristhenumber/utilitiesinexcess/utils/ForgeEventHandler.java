@@ -23,6 +23,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -87,6 +88,19 @@ public class ForgeEventHandler {
             if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
             event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
             event.setCanceled(true);
+        }
+    }
+
+    // Destroy non-stable inverted ingots dropped in world no matter what
+    @SubscribeEvent
+    public void entityItemSpawnEvent(EntityJoinWorldEvent event) {
+        if (!event.world.isRemote && event.entity instanceof EntityItem entityItem) {
+            ItemStack stack = entityItem.getEntityItem();
+            if (stack.getItem() instanceof ItemInvertedIngot) {
+                if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+                entityItem.setDead();
+                event.setCanceled(true);
+            }
         }
     }
 
