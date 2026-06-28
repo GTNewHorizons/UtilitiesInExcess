@@ -1,20 +1,18 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import net.minecraft.util.StatCollector;
-
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class TileEntitySignificantlyShrunkChest extends TileEntityMarginallyMaximisedChest
     implements IGuiHolder<PosGuiData> {
@@ -29,26 +27,30 @@ public class TileEntitySignificantlyShrunkChest extends TileEntityMarginallyMaxi
 
         // Add title
         panel.child(
-            new ParentWidget<>().coverChildren()
-                .topRelAnchor(0, 1)
-                .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
-                        .asWidget()
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(-15)));
+            IKey.lang(getInventoryName())
+                .asWidget()
+                .marginLeft(5)
+                .marginTop(5));
 
-        IItemHandler itemHandler = new InvWrapper(this);
+        IItemHandler itemHandler = makeHandler();
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
 
         // Add item slot
         panel.child(
-            new Grid().coverChildren()
-                .pos(79, 34)
-                .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
+            new ItemSlot().slot(slot)
+                .horizontalCenter()
+                .top(34));
 
         return panel;
+    }
+
+    protected IItemHandler makeHandler() {
+        return new InvWrapper(this);
+    }
+
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     @Override
