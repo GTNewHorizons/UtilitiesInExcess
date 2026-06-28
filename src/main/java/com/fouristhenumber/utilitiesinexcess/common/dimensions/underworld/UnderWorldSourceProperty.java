@@ -7,24 +7,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /// Stores the player's source portal location
-@EventBusSubscriber
 public class UnderWorldSourceProperty implements IExtendedEntityProperties {
 
     public static final String PROP_KEY = "underworld-source";
 
     public int entranceX, entranceY, entranceZ, entranceWorld;
-
-    @SubscribeEvent
-    public static void onEntityConstructing(EntityConstructing event) {
-        if (event.entity instanceof EntityPlayer player) {
-            player.registerExtendedProperties(PROP_KEY, new UnderWorldSourceProperty());
-        }
-    }
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
@@ -52,5 +45,22 @@ public class UnderWorldSourceProperty implements IExtendedEntityProperties {
     @Override
     public void init(Entity entity, World world) {
 
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return UnderWorldConfig.enableUnderWorld;
+        }
+
+        @SubscribeEvent
+        public static void onEntityConstructing(EntityConstructing event) {
+            if (event.entity instanceof EntityPlayer player) {
+                player.registerExtendedProperties(PROP_KEY, new UnderWorldSourceProperty());
+            }
+        }
     }
 }

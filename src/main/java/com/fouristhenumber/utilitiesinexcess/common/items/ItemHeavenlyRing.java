@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
-import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.api.BaubleType;
@@ -30,7 +30,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@EventBusSubscriber()
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemHeavenlyRing extends Item implements IBauble {
 
@@ -134,60 +133,88 @@ public class ItemHeavenlyRing extends Item implements IBauble {
         return true;
     }
 
-    @EventBusSubscriber.Condition
-    public static boolean shouldEventBusSubscribe() {
-        return !Mods.Baubles.isLoaded();
-    }
-
     public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();
 
-    @SubscribeEvent
-    public static void onPlayerRender(RenderPlayerEvent.Pre event) {
-        if (ClientProxy.frameCount % 40 > 1) return;
+    // This is just a number that ticks up every frame.
+    public static int frameCount = 0;
 
-        EntityPlayer player = event.entityPlayer;
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class EventsClient {
 
-        boolean hasRing = false;
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack stack = player.inventory.getStackInSlot(i);
-            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
-                hasRing = true;
-                wingedPlayers.putIfAbsent(player, stack);
-                break;
-            }
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return ItemConfig.enableHeavenlyRing;
         }
 
-        if (!hasRing) {
-            wingedPlayers.remove(player);
+        @SubscribeEvent
+        public static void tickRender(TickEvent.RenderTickEvent event) {
+            frameCount++;
+        }
+
+        @SubscribeEvent
+        public static void onPlayerRender(RenderPlayerEvent.Pre event) {
+            if (frameCount % 40 > 1) return;
+
+            EntityPlayer player = event.entityPlayer;
+
+            boolean hasRing = false;
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack stack = player.inventory.getStackInSlot(i);
+                if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                    hasRing = true;
+                    wingedPlayers.putIfAbsent(player, stack);
+                    break;
+                }
+            }
+
+            if (!hasRing) {
+                wingedPlayers.remove(player);
+            }
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side != Side.SERVER || event.phase != TickEvent.Phase.END) {
-            return;
-        }
-        EntityPlayer player = event.player;
+    @SuppressWarnings("unused")
+    // TODO Add (side = Side.SERVER) to the EventBusSubscriber once
+    // https://github.com/GTNewHorizons/GTNHLib/issues/410 is closed
+    @EventBusSubscriber
+    public static class EventsServer {
 
-        boolean hasRing = false;
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack stack = player.inventory.getStackInSlot(i);
-            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
-                hasRing = true;
-                break;
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return !Mods.Baubles.isLoaded();
+        }
+
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+            // TODO Remove once side is added to EventBusSubscriber
+            if (event.side != Side.SERVER) return;
+
+            if (event.phase != TickEvent.Phase.END) {
+                return;
             }
-        }
+            EntityPlayer player = event.player;
 
-        if (player.capabilities.allowFlying == hasRing) return;
-
-        if (hasRing) {
-            player.capabilities.allowFlying = true;
-        } else {
-            if (!player.capabilities.isCreativeMode) {
-                player.capabilities.allowFlying = false;
-                player.capabilities.isFlying = false;
+            boolean hasRing = false;
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack stack = player.inventory.getStackInSlot(i);
+                if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                    hasRing = true;
+                    break;
+                }
             }
+
+            if (player.capabilities.allowFlying == hasRing) return;
+
+            if (hasRing) {
+                player.capabilities.allowFlying = true;
+            } else {
+                if (!player.capabilities.isCreativeMode) {
+                    player.capabilities.allowFlying = false;
+                    player.capabilities.isFlying = false;
+                }
+            }
+            player.sendPlayerAbilities();
         }
-        player.sendPlayerAbilities();
     }
 }
