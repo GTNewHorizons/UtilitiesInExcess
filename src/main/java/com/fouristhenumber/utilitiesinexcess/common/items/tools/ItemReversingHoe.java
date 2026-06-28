@@ -95,10 +95,12 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
             Block targetBlock = targetData.getBlock();
             int targetMeta = targetData.getBlockMeta();
 
-            if (!world.isRemote) world.setBlock(x, y, z, targetBlock, targetMeta, 3);
+            if (!world.isRemote) {
+                world.setBlock(x, y, z, targetBlock, targetMeta, 3);
 
-            if (!ReversingHoeConfig.unbreakable) {
-                if (!world.isRemote) itemStack.damageItem(1, player);
+                if (!ReversingHoeConfig.unbreakable) {
+                    itemStack.damageItem(1, player);
+                }
             }
 
             return true;
