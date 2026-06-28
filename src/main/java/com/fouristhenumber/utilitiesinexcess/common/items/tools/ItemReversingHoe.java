@@ -12,9 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
@@ -78,7 +76,6 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
-        if (world.isRemote) return false;
 
         Block block = world.getBlock(x, y, z);
         int metaInWorld = world.getBlockMetadata(x, y, z);
@@ -98,27 +95,19 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
             Block targetBlock = targetData.getBlock();
             int targetMeta = targetData.getBlockMeta();
 
-            world.setBlock(x, y, z, targetBlock, targetMeta, 3);
+            if (!world.isRemote) world.setBlock(x, y, z, targetBlock, targetMeta, 3);
 
             if (!ReversingHoeConfig.unbreakable) {
-                itemStack.damageItem(1, player);
+                if (!world.isRemote) itemStack.damageItem(1, player);
             }
 
-            return true;
-        }
-
-        if (block == ModBlocks.CURSED_EARTH.get() && CursedEarthConfig.enableBlessedEarth) {
-            world.setBlock(x, y, z, ModBlocks.BLESSED_EARTH.get());
-            return true;
-        } else if (block == ModBlocks.BLESSED_EARTH.get() && CursedEarthConfig.enableCursedEarth) {
-            world.setBlock(x, y, z, ModBlocks.CURSED_EARTH.get());
             return true;
         }
 
         else if (block == Blocks.wheat || block == Blocks.potatoes || block == Blocks.carrots) {
             int meta = world.getBlockMetadata(x, y, z);
             if (meta > 0) {
-                world.setBlockMetadataWithNotify(x, y, z, meta - 1, 3);
+                if (!world.isRemote) world.setBlockMetadataWithNotify(x, y, z, meta - 1, 3);
                 return true;
             }
             return false;
