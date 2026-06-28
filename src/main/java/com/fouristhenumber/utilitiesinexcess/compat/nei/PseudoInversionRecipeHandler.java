@@ -111,12 +111,11 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void drawBackground(int recipe) {
-        GL11.glColor4f(1f, 1f, 1f, 1f);
+        GuiDraw.changeTexture(getGuiTexture());
+
         CachedRitual cached = (CachedRitual) arecipes.get(recipe);
         for (PositionedStack ps : cached.getIngredients()) {
-            GuiDraw.drawRect(ps.relx, ps.rely, 17, 17, 0xFFFFFFFF);
-            GuiDraw.drawRect(ps.relx - 1, ps.rely - 1, 17, 17, 0xFF000000);
-            GuiDraw.drawRect(ps.relx, ps.rely, 16, 16, 0xFF8B8B8B);
+            GuiDraw.drawTexturedModalRect(ps.relx - 1, ps.rely - 1, 7, 83, 18, 18);
         }
     }
 
