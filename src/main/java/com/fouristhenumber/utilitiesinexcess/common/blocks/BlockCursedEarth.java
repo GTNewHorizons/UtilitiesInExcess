@@ -54,7 +54,7 @@ public class BlockCursedEarth extends Block {
             this.setStepSound(soundTypeCloth);
         }
         this.setHardness(0.5F);
-        this.setResistance(200.0F);
+        this.setResistance(100.0F);
         this.setTickRandomly(true);
     }
 

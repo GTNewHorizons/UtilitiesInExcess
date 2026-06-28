@@ -27,9 +27,10 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 public class BlockSmartPump extends BlockContainer implements IWailaDataProvider {
 
     public BlockSmartPump() {
-        super(Material.iron);
+        super(Material.rock);
         setBlockName("smart_pump");
         setBlockTextureName("utilitiesinexcess:smart_pump");
+        setHardness(10F);
     }
 
     IIcon sides;

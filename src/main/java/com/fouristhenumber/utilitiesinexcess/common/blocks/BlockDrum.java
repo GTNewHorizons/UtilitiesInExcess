@@ -16,17 +16,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.utils.FluidColorCache;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
+import com.gtnewhorizon.gtnhlib.client.model.color.IBlockColor;
 
-public class BlockDrum extends BlockContainer {
+public class BlockDrum extends BlockContainer implements IBlockColor {
 
     final int capacity;
 
@@ -34,8 +39,7 @@ public class BlockDrum extends BlockContainer {
         super(Material.iron);
         this.capacity = capacity;
         setBlockName(blockname);
-        this.setHardness(3.0F);
-        this.setResistance(5.0F);
+        this.setHardness(1.5F);
         this.setHarvestLevel("pickaxe", 1);
         setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 1F, 0.875F);
     }
@@ -226,6 +230,24 @@ public class BlockDrum extends BlockContainer {
     @Override
     public int getRenderType() {
         return ModelISBRH.JSON_ISBRH_ID;
+    }
+
+    @Override
+    public int colorMultiplier(@Nullable IBlockAccess world, int x, int y, int z, int tintIndex) {
+        if (world != null && world.getTileEntity(x, y, z) instanceof TileEntityDrum drum) {
+            FluidStack fluid = drum.tank.getFluid();
+            if (fluid != null) return FluidColorCache.getColor(fluid.getFluid());
+        }
+        return 0xFFFFFF;
+    }
+
+    @Override
+    public int colorMultiplier(@Nullable ItemStack stack, int tintIndex) {
+        if (stack != null) {
+            FluidStack fluid = ItemBlockDrum.getFluidFromStack(stack);
+            if (fluid != null) return FluidColorCache.getColor(fluid.getFluid());
+        }
+        return 0xFFFFFF;
     }
 
     @Override
