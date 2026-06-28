@@ -118,6 +118,10 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
+    public static boolean enableGigaTorchRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
     public static boolean enableCollectorRecipe;
 
     @Config.RequiresMcRestart
@@ -255,4 +259,8 @@ public class RecipeConfig {
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableSpikeRecipes;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableEnderLocusOreRecipes;
 }

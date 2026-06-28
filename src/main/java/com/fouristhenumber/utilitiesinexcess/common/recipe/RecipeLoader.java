@@ -1385,27 +1385,29 @@ public class RecipeLoader {
             'o',
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
 
-        // Ore + Coal -> Ingot (Ender Locus)
-        EnderLocusRegistry.instance()
-            .addRecipe(
-                new ItemStack(Items.gold_ingot, 3),
-                new String[] { "OC ", "   ", "   " },
-                'O',
-                Blocks.gold_ore,
-                'C',
-                Items.coal);
+        if (RecipeConfig.enableEnderLocusOreRecipes) {
+            // Ore + Coal -> Ingot (Ender Locus)
+            EnderLocusRegistry.instance()
+                .addRecipe(
+                    new ItemStack(Items.gold_ingot, 3),
+                    new String[] { "OC ", "   ", "   " },
+                    'O',
+                    Blocks.gold_ore,
+                    'C',
+                    Items.coal);
 
-        EnderLocusRegistry.instance()
-            .addRecipe(
-                new ItemStack(Items.iron_ingot, 3),
-                new String[] { "OC ", "   ", "   " },
-                'O',
-                Blocks.iron_ore,
-                'C',
-                Items.coal);
+            EnderLocusRegistry.instance()
+                .addRecipe(
+                    new ItemStack(Items.iron_ingot, 3),
+                    new String[] { "OC ", "   ", "   " },
+                    'O',
+                    Blocks.iron_ore,
+                    'C',
+                    Items.coal);
+        }
 
         // Giga Torch (Ender Locus)
-        EnderLocusRegistry.instance()
+        if (RecipeConfig.enableGigaTorchRecipe) EnderLocusRegistry.instance()
             .addRecipe(
                 ModBlocks.GIGA_TORCH.newItemStack(),
                 new String[] { "RCH", "CWC", "CWC" },
