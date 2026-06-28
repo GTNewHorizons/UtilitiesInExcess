@@ -20,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChand
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderLocus;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
@@ -52,7 +53,7 @@ import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPRecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
@@ -80,6 +81,7 @@ import minetweaker.MineTweakerAPI;
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
+    public static final String MODNAME = "Utilities in Excess";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     @Mod.Instance(MODID)
@@ -137,6 +139,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPortalUnderWorld.class, "TileEntityPortalUnderWorldUIE");
         GameRegistry.registerTileEntity(TileEntitySmartPump.class, "TileEntitySmartPumpUIE");
         GameRegistry.registerTileEntity(TileEntityCollector.class, "TileEntityCollectorUIE");
+        GameRegistry.registerTileEntity(TileEntityEnderLocus.class, "TileEntityEnderLocusUIE");
         GameRegistry.registerTileEntity(
             TileEntityLowTemperatureFurnaceGenerator.class,
             "TileEntityLowTemperatureFurnaceGeneratorUIE");
@@ -195,7 +198,7 @@ public class UtilitiesInExcess {
         }
 
         if (Mods.CraftTweaker.isLoaded()) {
-            MineTweakerAPI.registerClass(QEDCraftTweakerSupport.class);
+            MineTweakerAPI.registerClass(EnderLocusCraftTweakerSupport.class);
         }
     }
 
