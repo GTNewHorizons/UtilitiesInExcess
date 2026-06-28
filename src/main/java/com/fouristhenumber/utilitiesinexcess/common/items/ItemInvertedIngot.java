@@ -184,7 +184,9 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     }
 
     @SuppressWarnings("unused")
-    @EventBusSubscriber(side = Side.SERVER)
+    // TODO Add (side = Side.SERVER) to the EventBusSubscriber once
+    // https://github.com/GTNewHorizons/GTNHLib/issues/410 is closed
+    @EventBusSubscriber
     public static class EventsServer {
 
         @EventBusSubscriber.Condition
@@ -195,6 +197,9 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         // Destroy non-stable inverted ingots dropped in world no matter what
         @SubscribeEvent
         public static void entityItemSpawnEvent(EntityJoinWorldEvent event) {
+            // TODO Remove once side is added to EventBusSubscriber
+            if (event.world.isRemote) return;
+
             if (event.entity instanceof EntityItem entityItem) {
                 ItemStack stack = entityItem.getEntityItem();
                 if (stack.getItem() instanceof ItemInvertedIngot) {
