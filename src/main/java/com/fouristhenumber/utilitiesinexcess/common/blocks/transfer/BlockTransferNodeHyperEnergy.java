@@ -4,7 +4,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockTransferNodeHyperEnergy extends BlockTransferNodeBase {
+public class BlockTransferNodeHyperEnergy extends BlockNodeBase {
 
     public BlockTransferNodeHyperEnergy() {
         super();

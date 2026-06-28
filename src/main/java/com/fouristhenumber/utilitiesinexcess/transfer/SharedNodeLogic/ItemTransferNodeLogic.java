@@ -41,10 +41,12 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
 
     IInventory connectedInventory;
     public ItemWalker walker;
+    private final ForgeDirection facing;
 
-    public ItemTransferNodeLogic(TileEntityItemTransferNode host)
+    public ItemTransferNodeLogic(TileEntityItemTransferNode host, ForgeDirection facing)
     {
         super(host);
+        this.facing = facing;
         walker = new ItemWalker(host);
     }
 
@@ -116,7 +118,9 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         walker.step();
     }
 
-    public void importItems() {
+    // TODO MAKE THIS SIDED
+    public void importItems()
+    {
         for (int slot = 0; slot < connectedInventory.getSizeInventory(); slot++)
         {
             ItemStack stackInSlot = connectedInventory.getStackInSlot(slot);
@@ -617,7 +621,6 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
 
     public void updateSourceInventory()
     {
-        ForgeDirection facing = host.getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IInventory inventory) {
             connectedInventory = inventory;

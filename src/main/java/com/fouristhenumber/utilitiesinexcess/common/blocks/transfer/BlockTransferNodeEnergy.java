@@ -4,16 +4,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockTransferNodeEnergy extends BlockTransferNodeBase {
+public class BlockTransferNodeEnergy extends BlockNodeBase {
 
     public BlockTransferNodeEnergy() {
         super();
         setBlockName("transfer_node_energy");
-    }
-
-    @Override
-    public String getTopIcon() {
-        return "utilitiesinexcess:transfer_node_energy_top";
     }
 
     // TODO: new TE

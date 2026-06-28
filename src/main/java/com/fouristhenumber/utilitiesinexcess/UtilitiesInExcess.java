@@ -102,7 +102,7 @@ public class UtilitiesInExcess {
     public static int blackoutCurtainsRenderID;
     public static int spikeRenderID;
     public static int transferPipeRenderID;
-    public static int transferNodeRenderID;
+    public static int flatNodeRenderId;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -191,7 +191,7 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new SpikeRenderer());
         transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
-        transferNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        flatNodeRenderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
 
         ColoredSlots.init();

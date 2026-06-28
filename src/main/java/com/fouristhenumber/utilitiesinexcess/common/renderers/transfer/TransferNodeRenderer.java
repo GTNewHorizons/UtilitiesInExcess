@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderId;
 import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
@@ -141,6 +141,6 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return transferNodeRenderID;
+        return flatNodeRenderId;
     }
 }

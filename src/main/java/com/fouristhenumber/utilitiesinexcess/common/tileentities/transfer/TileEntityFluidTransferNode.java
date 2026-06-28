@@ -9,14 +9,15 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.FluidTrans
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<FluidTransferNodeLogic>
     implements IGuiHolder<PosGuiData>, IWalkingComponent<FluidStack>
 {
-    public TileEntityFluidTransferNode()
+    public TileEntityFluidTransferNode(ForgeDirection facing)
     {
-        logic = new FluidTransferNodeLogic(this);
+        logic = new FluidTransferNodeLogic(this, facing);
     }
 
     @Override

@@ -7,12 +7,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransferNode> implements IInventory, IFluidHandler
+public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransferNode> implements IInventory
 {
     ItemStack[] upgrades = new ItemStack[getSizeInventory()];
 
@@ -20,13 +18,15 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 
     IFluidHandler connectedTank;
     public FluidWalker walker;
+    private final ForgeDirection facing;
 
-    public FluidTransferNodeLogic(TileEntityFluidTransferNode host ) {
+    public FluidTransferNodeLogic(TileEntityFluidTransferNode host, ForgeDirection facing) {
         super(host);
+        this.facing = facing;
         walker = new FluidWalker(host);
     }
 
-    public void updateEntity(INodeLogicHost host)
+    public void updateEntity()
     {
         if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
         {
@@ -46,7 +46,10 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 
     public void importFluids()
     {
-
+        if (buffer == null)
+        {
+            connectedTank.canDrain()
+        }
     }
 
     @Override
@@ -71,7 +74,6 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 
     public void updateSourceTank()
     {
-        ForgeDirection facing = host.getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IFluidHandler tank)
         {
@@ -147,37 +149,6 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
-    }
-
-    // Fluid logic
-    @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[0];
+        return true;
     }
 }

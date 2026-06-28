@@ -22,9 +22,9 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     implements IGuiHolder<PosGuiData>, IWalkingComponent<ItemStack>
 {
 
-    public TileEntityItemTransferNode()
+    public TileEntityItemTransferNode(ForgeDirection facing)
     {
-        logic = new ItemTransferNodeLogic(this);
+        logic = new ItemTransferNodeLogic(this, facing);
     }
 
     @Override

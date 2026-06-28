@@ -3,11 +3,13 @@
 //import net.minecraft.tileentity.TileEntity;
 //import net.minecraft.world.World;
 //
-//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeFluid;
+//import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
+//import net.minecraftforge.common.util.ForgeDirection;
 //
 //public class BlockTransferNodeFluid extends BlockTransferNodeBase {
 //
-//    public BlockTransferNodeFluid() {
+//    public BlockTransferNodeFluid()
+//    {
 //        super();
 //        setBlockName("transfer_node_fluid");
 //    }
@@ -19,6 +21,6 @@
 //
 //    @Override
 //    public TileEntity createNewTileEntity(World world, int metadata) {
-//        return new TileEntityTransferNodeFluid();
+//        return new TileEntityFluidTransferNode(ForgeDirection.getOrientation(metadata % 6));
 //    }
 //}
