@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.Item;
@@ -16,6 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
@@ -176,6 +178,29 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                             event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.SERVER)
+    public static class EventsServer {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInvertedIngot;
+        }
+
+        // Destroy non-stable inverted ingots dropped in world no matter what
+        @SubscribeEvent
+        public static void entityItemSpawnEvent(EntityJoinWorldEvent event) {
+            if (event.entity instanceof EntityItem entityItem) {
+                ItemStack stack = entityItem.getEntityItem();
+                if (stack.getItem() instanceof ItemInvertedIngot) {
+                    if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+                    entityItem.setDead();
+                    event.setCanceled(true);
                 }
             }
         }

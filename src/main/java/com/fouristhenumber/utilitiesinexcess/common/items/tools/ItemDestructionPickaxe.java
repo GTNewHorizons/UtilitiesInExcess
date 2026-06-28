@@ -17,11 +17,11 @@ import net.minecraftforge.event.world.BlockEvent;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
-import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
 
