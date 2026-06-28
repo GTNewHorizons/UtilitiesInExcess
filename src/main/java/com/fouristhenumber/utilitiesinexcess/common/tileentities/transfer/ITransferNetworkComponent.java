@@ -1,11 +1,42 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
+import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public interface ITransferNetworkComponent {
+import java.util.List;
 
-    boolean canConnectFrom(ForgeDirection side);
 
-    boolean canConnectTo(World world, int x, int y, int z, int side);
+public interface ITransferNetworkComponent
+{
+    void addNeighbor(ForgeDirection direction, ITransferNetworkComponent neighbor);
+    void removeNeighbor(ForgeDirection direction);
+
+    void addExternal(ForgeDirection direction, Connection neighbor);
+    void removeExternal(ForgeDirection direction);
+
+    Connection[] getValidExternalNeighbors(ForgeDirection fromDirection, IWalkingComponent<?> walking);
+    ITransferNetworkComponent[] getNetworkNeighbors();
+
+    MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType targetType, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent);
+
+    int getRawConnectionMask();
+
+    World getWorld();
+
+    int getX();
+    int getY();
+    int getZ();
+
+    boolean canConnectToSide(ForgeDirection side);
+
+    void updateExternalConnections();
+
+    int getInsertLimit();
+
+    void markHostDirty();
 }

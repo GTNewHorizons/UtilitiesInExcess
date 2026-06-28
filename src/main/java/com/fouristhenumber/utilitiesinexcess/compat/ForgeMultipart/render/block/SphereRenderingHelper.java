@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block;
 
-import java.util.Arrays;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -176,12 +175,10 @@ public class SphereRenderingHelper {
             }
             // Base
             RenderSphereBottom(tess, icons[0], ox, oy, oz, brightness, 0xFFFFFFFF);
-            RenderSphereSides(tess, Arrays.copyOfRange(icons, 2, icons.length), ox, oy, oz, brightness, 0xFFFFFFFF);
+            RenderSphereSides(tess, icons, ox, oy, oz, brightness, 0xFFFFFFFF);
 
             // Do biome overlays
-            IIcon[] overlayArr = new IIcon[4];
-            Arrays.fill(overlayArr, gMat.sideIconT().icon);
-            RenderSphereSides(tess, overlayArr, ox, oy, oz, brightness, color);
+            RenderSphereSides(tess, gMat.sideIconT().icon, ox, oy, oz, brightness, color);
             RenderSphereTop(tess, icons[1], ox, oy, oz, brightness, color);
         } else if (mat instanceof BlockMicroMaterial bMat) {
             IIcon[] icons = bMat.icont().icons;
@@ -207,10 +204,6 @@ public class SphereRenderingHelper {
         int UVCounter = 0;
         int UVCounterMiddle = 1;
         for (int longitude = 6; longitude < 8; longitude++) {
-            if (longitude == 7) {
-                tess.draw(); // Empty tess buffer
-                tess.startDrawing(GL11.GL_TRIANGLES); // STart with triangles.
-            }
             for (int latitude = 0; latitude < 16; latitude++) {
                 // using non axis aligned faces so we need special uv for each vertex.
                 double u1, u2, u3, u4, v1, v2, v3, v4;
@@ -281,12 +274,10 @@ public class SphereRenderingHelper {
                     Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat0].copy()
                         .add(x, y, z);
 
-                    renderSphericFaceVanilla(tess, vert0, vert1, vert2, u1, v1, u2, v2, u3, v3, brightness, color);
+                    renderSphericFaceVanilla(tess, vert0, vert1, vert2, vert2, u1, v1, u2, v2, u3, v3, u3, v3, brightness, color);
                 }
             }
         }
-        tess.draw(); // Draw our triangles
-        tess.startDrawingQuads(); // go back to drawing quads once done.
     }
 
     public static void RenderSphereBottom(Tessellator tess, IIcon bottomIcon, double x, double y, double z,
@@ -299,10 +290,6 @@ public class SphereRenderingHelper {
         int UVCounter = 0;
         int UVCounterMiddle = 1;
         for (int longitude = 1; longitude > -1; longitude--) {
-            if (longitude == 0) {
-                tess.draw(); // Empty tess buffer
-                tess.startDrawing(GL11.GL_TRIANGLES); // STart with triangles.
-            }
             for (int latitude = 0; latitude < 16; latitude++) {
                 // using non axis aligned faces so we need special uv for each vertex.
                 double u1, u2, u3, u4, v1, v2, v3, v4;
@@ -372,12 +359,10 @@ public class SphereRenderingHelper {
                     Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat0].copy()
                         .add(x, y, z);
 
-                    renderSphericFaceVanilla(tess, vert0, vert2, vert1, u1, v1, u3, v3, u2, v2, brightness, color);
+                    renderSphericFaceVanilla(tess, vert0, vert2, vert1, vert1, u1, v1, u3, v3, u2, v2, u2, v2, brightness, color);
                 }
             }
         }
-        tess.draw(); // Draw our triangles
-        tess.startDrawingQuads(); // go back to drawing quads once done.
     }
 
     public static void RenderSphereSides(Tessellator tess, IIcon[] sideIcons, double x, double y, double z,
@@ -404,6 +389,7 @@ public class SphereRenderingHelper {
                     }
                 }
 
+                side +=2;
                 double uWindow = sideIcons[side].getMaxU() - sideIcons[side].getMinU();
                 double vWindow = sideIcons[side].getMaxV() - sideIcons[side].getMinV();
 
@@ -435,11 +421,47 @@ public class SphereRenderingHelper {
         }
     }
 
+    // Sometimes we don't care about the side
+    public static void RenderSphereSides(Tessellator tess, IIcon sideIcon, double x, double y, double z,
+                                         int brightness, int color) {
+        for (int latitude = 0; latitude < 16; latitude++) {
+            for (int longitude = 2; longitude < 6; longitude++) {
+                double uWindow = sideIcon.getMaxU() - sideIcon.getMinU();
+                double vWindow = sideIcon.getMaxV() - sideIcon.getMinV();
+
+                int k = latitude & 3;
+                int min = (k + 2) & 3;
+                int max = min + 1;
+
+                double u1 = sideIcon.getMinU() + (uWindow * ((double) min / 4));
+                double u2 = sideIcon.getMinU() + (uWindow * ((double) max / 4));
+                double v1 = sideIcon.getMaxV() - (vWindow * ((double) (longitude - 1) / 4));
+                double v2 = sideIcon.getMaxV() - (vWindow * ((double) (longitude - 2) / 4));
+
+                int lon0 = longitude;
+                int lon1 = longitude + 1;
+                int lat0 = latitude;
+                int lat1 = WrapNumber(0, 15, latitude + 1);
+
+                Vector3 vert0 = SphereRenderingHelper.verts[lon0][lat0].copy()
+                    .add(x, y, z);
+                Vector3 vert1 = SphereRenderingHelper.verts[lon0][lat1].copy()
+                    .add(x, y, z);
+                Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat1].copy()
+                    .add(x, y, z);
+                Vector3 vert3 = SphereRenderingHelper.verts[lon1][lat0].copy()
+                    .add(x, y, z);
+
+                renderSphericFaceVanilla(tess, vert0, vert1, vert2, vert3, u1, v1, u2, v2, brightness, color);
+            }
+        }
+    }
+
     // Most blocks can just use this
     public static void RenderSphere(Tessellator tess, IIcon[] icons, double x, double y, double z, int brightness,
         int color) {
         RenderSphereTop(tess, icons[1], x, y, z, brightness, color);
-        RenderSphereSides(tess, Arrays.copyOfRange(icons, 2, icons.length), x, y, z, brightness, color);
+        RenderSphereSides(tess, icons, x, y, z, brightness, color);
         RenderSphereBottom(tess, icons[0], x, y, z, brightness, color);
     }
 
@@ -492,26 +514,6 @@ public class SphereRenderingHelper {
         tess.addVertexWithUV(vert1.x, vert1.y, vert1.z, u2, v2);
         tess.addVertexWithUV(vert2.x, vert2.y, vert2.z, u3, v3);
         tess.addVertexWithUV(vert3.x, vert3.y, vert3.z, u4, v4);
-    }
-
-    public static void renderSphericFaceVanilla(Tessellator tess, Vector3 vert0, Vector3 vert1, Vector3 vert2,
-        double u1, double v1, double u2, double v2, double u3, double v3, int brightness, int color) {
-        tess.setBrightness(brightness);
-
-        Vector3 n = vert0.copy()
-            .normalize();
-        float shade = (float) (0.6 + 0.4 * Math.max(0, n.y));
-
-        float cr = ((color >> 16) & 0xFF) / 255f;
-        float cg = ((color >> 8) & 0xFF) / 255f;
-        float cb = (color & 0xFF) / 255f;
-
-        tess.setColorOpaque_F(cr * shade, cg * shade, cb * shade);
-        tess.setNormal((float) n.x, (float) n.y, (float) n.z);
-
-        tess.addVertexWithUV(vert0.x, vert0.y, vert0.z, u1, v1);
-        tess.addVertexWithUV(vert1.x, vert1.y, vert1.z, u2, v2);
-        tess.addVertexWithUV(vert2.x, vert2.y, vert2.z, u3, v3);
     }
 
     public static int WrapNumber(int min, int max, int in) {

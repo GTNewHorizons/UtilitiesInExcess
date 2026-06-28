@@ -1,5 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -53,13 +56,12 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
+//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeFluid;
+//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeHyperEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferPipe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -165,12 +167,12 @@ public enum ModBlocks {
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     //TODO: Config
-    TRANSFER_PIPE(true, new BlockTransferPipe(), "transfer_pipe"),
+    TRANSFER_PIPE(true, new BlockPipe(), ItemPipe.class, "transfer_pipe"),
     TRANSFER_NODE(true, new BlockTransferNode(), "transfer_node"),
-    TRANSFER_NODE_FLUID(true, new BlockTransferNodeFluid(), "transfer_node_fluid"),
+//    TRANSFER_NODE_FLUID(true, new BlockTransferNodeFluid(), "transfer_node_fluid"),
     TRANSFER_NODE_ENERGY(true, new BlockTransferNodeEnergy(), "transfer_node_energy"),
     TRANSFER_NODE_HYPER_ENERGY(true, new BlockTransferNodeHyperEnergy(), "transfer_node_hyper_energy"),
-    RETRIEVAL_NODE(true, new BlockRetrievalNode(), "retrieval_node"),
+//    RETRIEVAL_NODE(true, new BlockRetrievalNode(), "retrieval_node"),
     RETRIEVAL_NODE_FLUID(true, new BlockRetrievalNodeFluid(), "retrieval_node_fluid"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
