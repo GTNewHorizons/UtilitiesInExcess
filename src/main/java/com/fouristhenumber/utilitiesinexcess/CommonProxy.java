@@ -7,16 +7,21 @@ import org.lwjgl.input.Keyboard;
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTimeEvents;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -42,8 +47,18 @@ public class CommonProxy {
         ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
-        UnderWorldEvents.init();
-        EndOfTimeEvents.init();
+        if (UnderWorldConfig.enableUnderWorld) {
+            UnderWorldEvents.init();
+        }
+        if (EndOfTimeConfig.enableEndOfTime) {
+            EndOfTimeEvents.init();
+        }
+        if (InversionConfig.enableInversionSigil) {
+            FMLCommonHandler.instance()
+                .bus()
+                .register(new ItemInversionSigilActive.FMLEvents());
+        }
+
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }

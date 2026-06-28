@@ -4,12 +4,16 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.eventbus.Phase;
 
@@ -125,5 +129,17 @@ public class XRayRenderer {
         }
         tess.draw();
         GL11.glPopAttrib();
+    }
+
+    @SubscribeEvent
+    public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
+        int slot = event.getSlot();
+        if (slot != 4 || !(event.entity instanceof EntityPlayer)) return;
+
+        ItemStack from = event.getFrom();
+
+        if (from != null && from.getItem() instanceof ItemXRayGlasses) {
+            XRayRenderer.clearCandidatePositions();
+        }
     }
 }

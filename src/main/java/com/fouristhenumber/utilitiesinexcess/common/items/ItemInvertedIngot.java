@@ -16,10 +16,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -130,6 +134,54 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         public InvertedNugget() {
             setUnlocalizedName("inverted_nugget");
             setTextureName("utilitiesinexcess:inverted_nugget");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInvertedIngot;
+        }
+
+        @SubscribeEvent
+        public static void onItemToss(ItemTossEvent event) {
+            ItemStack stack = event.entityItem.getEntityItem();
+            if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
+                if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+                event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static class FMLEvents {
+
+        @SubscribeEvent
+        public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+            if (event.player.openContainer instanceof ContainerWorkbench bench) {
+                ItemStack cursorItem = event.player.inventory.getItemStack();
+                if (cursorItem != null && cursorItem.getItem() instanceof ItemInvertedIngot) {
+                    if (checkImplosion(cursorItem, event.player.worldObj)) {
+                        event.player.inventory.setItemStack(null);
+                        event.player.closeScreen();
+                        event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+                    }
+                }
+                for (int i = 0; i < bench.craftMatrix.getSizeInventory(); i++) {
+                    ItemStack stack = bench.craftMatrix.getStackInSlot(i);
+                    if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
+                        if (checkImplosion(stack, event.player.worldObj)) {
+                            bench.craftMatrix.setInventorySlotContents(i, null);
+                            event.player.closeScreen();
+                            event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+                        }
+                    }
+                }
+            }
         }
     }
 }
