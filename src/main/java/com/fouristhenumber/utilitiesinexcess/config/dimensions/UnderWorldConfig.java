@@ -10,7 +10,7 @@ public class UnderWorldConfig {
     @Config.RequiresMcRestart
     public static boolean enableUnderWorld;
 
-    @Config.DefaultInt(10)
+    @Config.DefaultInt(-100)
     @Config.RequiresMcRestart
     public static int underWorldDimensionId;
 

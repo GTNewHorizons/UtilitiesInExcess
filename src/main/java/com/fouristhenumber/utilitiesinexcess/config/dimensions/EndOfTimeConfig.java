@@ -10,7 +10,7 @@ public class EndOfTimeConfig {
     @Config.RequiresMcRestart
     public static boolean enableEndOfTime;
 
-    @Config.DefaultInt(11)
+    @Config.DefaultInt(-112)
     @Config.RequiresMcRestart
     public static int endOfTimeDimensionId;
 
