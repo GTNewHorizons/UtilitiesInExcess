@@ -431,10 +431,16 @@ public class ItemInversionSigilActive extends Item {
     }
 
     @SuppressWarnings("unused")
-    public static class FMLEvents {
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInversionSigil;
+        }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenServerTick(TickEvent.ServerTickEvent event) {
+        public static void whenServerTick(TickEvent.ServerTickEvent event) {
 
             List<EntityPlayer> playerList = getSiegePlayers();
             for (EntityPlayer player : playerList) {
@@ -498,7 +504,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
+        public static void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
@@ -506,21 +512,11 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
+        public static void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
             }
-        }
-    }
-
-    @SuppressWarnings("unused")
-    @EventBusSubscriber
-    public static class Events {
-
-        @EventBusSubscriber.Condition
-        public static boolean shouldSubscribe() {
-            return InversionConfig.enableInversionSigil;
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)

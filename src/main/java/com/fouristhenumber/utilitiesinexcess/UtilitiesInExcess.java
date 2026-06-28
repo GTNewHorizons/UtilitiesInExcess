@@ -10,7 +10,6 @@ import net.minecraftforge.common.ForgeChunkManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
@@ -56,12 +55,10 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -106,12 +103,6 @@ public class UtilitiesInExcess {
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
         RecipeLoader.run();
-
-        if (InversionConfig.enableInvertedIngot) {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(new ItemInvertedIngot.FMLEvents());
-        }
 
         GameRegistry.registerTileEntity(TileEntitySpike.class, "TileEntitySpikeUIE");
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClockUIE");

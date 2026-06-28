@@ -16,7 +16,9 @@ import org.lwjgl.opengl.GL12;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.RenderableCube;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -174,10 +176,16 @@ public class GloveRenderer implements IItemRenderer {
     }
 
     @SuppressWarnings("unused")
-    public static class FMLEvents {
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return ItemConfig.enableGlove;
+        }
 
         @SubscribeEvent
-        public void tickRender(TickEvent.RenderTickEvent event) {
+        public static void tickRender(TickEvent.RenderTickEvent event) {
             if (!ItemGlove.isUsingGlove(Minecraft.getMinecraft().thePlayer)) return;
 
             // Setup hud rendering

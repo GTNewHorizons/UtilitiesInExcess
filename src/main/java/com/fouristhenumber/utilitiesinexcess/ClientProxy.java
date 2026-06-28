@@ -4,7 +4,6 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
 
 import net.minecraftforge.client.MinecraftForgeClient;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
@@ -15,7 +14,6 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
@@ -23,7 +21,6 @@ import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
@@ -61,17 +58,6 @@ public class ClientProxy extends CommonProxy {
         }
         if (ModItems.CHUNCHUNMARU.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.CHUNCHUNMARU.get(), new ChunchunmaruRenderer());
-        }
-
-        if (ItemConfig.enableHeavenlyRing) {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(new ItemHeavenlyRing.FMLEventsClient());
-        }
-        if (ItemConfig.enableGlove) {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(new GloveRenderer.FMLEvents());
         }
 
         if (Mods.FindIt.isLoaded()) {

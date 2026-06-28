@@ -155,13 +155,9 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                 event.setCanceled(true);
             }
         }
-    }
-
-    @SuppressWarnings("unused")
-    public static class FMLEvents {
 
         @SubscribeEvent
-        public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.player.openContainer instanceof ContainerWorkbench bench) {
                 ItemStack cursorItem = event.player.inventory.getItemStack();
                 if (cursorItem != null && cursorItem.getItem() instanceof ItemInvertedIngot) {

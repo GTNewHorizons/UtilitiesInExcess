@@ -175,15 +175,6 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     }
 
     @SuppressWarnings("unused")
-    public static class FMLEventsClient {
-
-        @SubscribeEvent
-        public void tickRender(TickEvent.RenderTickEvent event) {
-            frameCount++;
-        }
-    }
-
-    @SuppressWarnings("unused")
     @EventBusSubscriber(side = Side.SERVER)
     public static class EventsServer {
 
