@@ -188,7 +188,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
                         source.entranceY = y;
                         source.entranceZ = z;
 
-                        teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y, spawn.z);
+                        teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y + 1, spawn.z);
                     }
                 }
             }

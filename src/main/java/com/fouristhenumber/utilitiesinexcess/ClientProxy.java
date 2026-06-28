@@ -20,9 +20,11 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
+import com.fouristhenumber.utilitiesinexcess.compat.nei.NEIConfig;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
+import com.fouristhenumber.utilitiesinexcess.utils.FluidColorCache;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -76,10 +78,15 @@ public class ClientProxy extends CommonProxy {
             .bus()
             .register(this);
 
+        MinecraftForge.EVENT_BUS.register(new FluidColorCache.TextureHook());
+
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
             FindItHelper.INSTANCE = new FindItHelper();
             MinecraftForge.EVENT_BUS.register(FindItHelper.INSTANCE);
+        }
+        if (Mods.NEI.isLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new NEIConfig());
         }
     }
 

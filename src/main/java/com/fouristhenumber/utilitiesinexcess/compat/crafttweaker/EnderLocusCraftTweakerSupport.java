@@ -5,8 +5,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRecipe;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRecipe;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
@@ -18,9 +18,9 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.utilitiesinexcess.QED")
+@ZenClass("mods.utilitiesinexcess.EnderLocus")
 @ModOnly(UtilitiesInExcess.MODID)
-public class QEDCraftTweakerSupport {
+public class EnderLocusCraftTweakerSupport {
 
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient[][] inputs) {
@@ -50,8 +50,8 @@ public class QEDCraftTweakerSupport {
                     }
                 }
 
-                QEDRegistry.instance()
-                    .addRecipe(new QEDRecipe(inputArray, MineTweakerMC.getItemStack(output)));
+                EnderLocusRegistry.instance()
+                    .addRecipe(new EnderLocusRecipe(inputArray, MineTweakerMC.getItemStack(output)));
                 successful = true;
             }
 
@@ -62,18 +62,18 @@ public class QEDCraftTweakerSupport {
 
             @Override
             public void undo() {
-                QEDRegistry.instance()
+                EnderLocusRegistry.instance()
                     .removeRecipe(MineTweakerMC.getItemStack(output));
             }
 
             @Override
             public String describe() {
-                return "Adding QED recipe for " + StatCollector.translateToLocal(output.getName());
+                return "Adding Ender Locus recipe for " + StatCollector.translateToLocal(output.getName());
             }
 
             @Override
             public String describeUndo() {
-                return "Undoing QED recipe addition for " + StatCollector.translateToLocal(output.getName());
+                return "Undoing Ender Locus recipe addition for " + StatCollector.translateToLocal(output.getName());
             }
 
             @Override
@@ -89,13 +89,13 @@ public class QEDCraftTweakerSupport {
 
             @Override
             public void apply() {
-                QEDRegistry.instance()
+                EnderLocusRegistry.instance()
                     .removeRecipe(MineTweakerMC.getItemStack(output));
             }
 
             @Override
             public String describe() {
-                return "Removing QED recipe for " + StatCollector.translateToLocal(output.getName());
+                return "Removing Ender Locus recipe for " + StatCollector.translateToLocal(output.getName());
             }
 
             @Override

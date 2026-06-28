@@ -4,10 +4,8 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
-import com.cleanroommc.modularui.drawable.text.RichText;
 import com.cleanroommc.modularui.integration.recipeviewer.RecipeViewerIngredientProvider;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
@@ -15,6 +13,9 @@ import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Platform;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 
+/**
+ * Generic widget for displaying items with a hover tooltip and no background
+ */
 public class TooltipItemDisplayWidget extends ItemDisplayWidget implements RecipeViewerIngredientProvider {
 
     public TooltipItemDisplayWidget() {
@@ -73,30 +74,5 @@ public class TooltipItemDisplayWidget extends ItemDisplayWidget implements Recip
     @Override
     public @Nullable ItemStack getStackForRecipeViewer() {
         return getItemStack();
-    }
-
-    public boolean matches(String search) {
-        ItemStack itemStack = getItemStack();
-        if (itemStack == null) return false;
-
-        return itemStack.getDisplayName()
-            .toLowerCase()
-            .contains(search)
-            || itemStack.getItem()
-                .getItemStackDisplayName(itemStack)
-                .toLowerCase()
-                .contains(search)
-            || tooltipMatches(search);
-    }
-
-    private boolean tooltipMatches(String search) {
-        if (!(tooltip().getRichText() instanceof RichText)) return false;
-
-        for (String s : MCHelper.getItemToolTip(getItemStack())) {
-            if (s.toLowerCase()
-                .contains(search)) return true;
-        }
-
-        return false;
     }
 }

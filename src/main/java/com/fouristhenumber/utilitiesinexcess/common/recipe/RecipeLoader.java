@@ -10,7 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
@@ -30,7 +30,7 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
         loadGeneratorRecipes();
-        loadQEDRecipes();
+        loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
@@ -1316,16 +1316,65 @@ public class RecipeLoader {
         }
     }
 
-    private static void loadQEDRecipes() {
-        // todo test recipe, remove later
-        QEDRegistry.instance()
+    private static void loadEnderLocusRecipes() {
+        // Ender Locus
+        addShapedRecipe(
+            ModBlocks.ENDER_LOCUS,
+            "ece",
+            "omo",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'c',
+            Blocks.crafting_table,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'm',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
+
+        // Convergence Crystal
+        addShapedRecipe(
+            ModBlocks.CONVERGENCE_CRYSTAL,
+            " e ",
+            " o ",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Ore + Coal -> Ingot (Ender Locus)
+        EnderLocusRegistry.instance()
             .addRecipe(
-                new ItemStack(Items.gold_ingot),
-                new String[] { "NNN", "NGN", "NNN" },
-                'N',
-                new ItemStack(Items.gold_nugget),
-                'G',
-                "blockGlass");
+                new ItemStack(Items.gold_ingot, 3),
+                new String[] { "OC ", "   ", "   " },
+                'O',
+                Blocks.gold_ore,
+                'C',
+                Items.coal);
+
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                new ItemStack(Items.iron_ingot, 3),
+                new String[] { "OC ", "   ", "   " },
+                'O',
+                Blocks.iron_ore,
+                'C',
+                Items.coal);
+
+        // Giga Torch (Ender Locus)
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.GIGA_TORCH.newItemStack(),
+                new String[] { "RCH", "CWC", "CWC" },
+                'R',
+                new ItemStack(Items.potionitem, 1, 8225),
+                'H',
+                new ItemStack(Items.potionitem, 1, 8229),
+                'W',
+                "logWood",
+                'C',
+                ModBlocks.CHANDELIER);
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
