@@ -35,6 +35,8 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
 
     final int capacity;
 
+    private static final ThreadLocal<ItemStack> cachedDrop = new ThreadLocal<>();
+
     public BlockDrum(int capacity, String blockname) {
         super(Material.iron);
         this.capacity = capacity;
@@ -70,7 +72,7 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         if (heldItem != null) {
             // weird modded containers like universal cells
             if (heldItem.getItem() instanceof IFluidContainerItem item) {
-                return handleIFluidContainerItem(drum, item, heldItem);
+                return handleIFluidContainerItem(drum, player, item, heldItem);
             }
             // fixed size containers
             if (FluidContainerRegistry.isFilledContainer(heldItem)) {
@@ -94,9 +96,16 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         return false;
     }
 
-    private boolean handleIFluidContainerItem(TileEntityDrum drum, IFluidContainerItem heldItem,
+    private boolean handleIFluidContainerItem(TileEntityDrum drum, EntityPlayer player, IFluidContainerItem heldItem,
         ItemStack heldItemStack) {
-        FluidStack containerFluid = heldItem.getFluid(heldItemStack);
+        // Cells don't allow draining while stacked, so needs some jank
+        ItemStack stack = heldItemStack;
+        if (heldItemStack.stackSize > 1) {
+            stack = heldItemStack.copy();
+            stack.stackSize = 1;
+        }
+
+        FluidStack containerFluid = heldItem.getFluid(stack);
 
         if (containerFluid != null && containerFluid.amount > 0) {
             int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
@@ -105,10 +114,13 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
             FluidStack toTransfer = containerFluid.copy();
             toTransfer.amount = accepted;
 
-            FluidStack drained = heldItem.drain(heldItemStack, accepted, false);
+            FluidStack drained = heldItem.drain(stack, accepted, false);
             if (drained == null || drained.amount != accepted) return false;
 
-            heldItem.drain(heldItemStack, accepted, true);
+            heldItem.drain(stack, accepted, true);
+            if (heldItemStack.stackSize > 1) {
+                giveResultStack(player, heldItemStack, stack);
+            }
             drum.fill(ForgeDirection.UP, toTransfer, true);
 
         } else {
@@ -199,7 +211,13 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return new ArrayList<>();
+        ArrayList<ItemStack> drops = new ArrayList<>();
+        ItemStack drop = cachedDrop.get();
+
+        drops.add(drop != null ? drop : new ItemStack(this));
+
+        cachedDrop.remove();
+        return drops;
     }
 
     @Override
@@ -214,15 +232,8 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
             } else {
                 ItemBlockDrum.clearFluid(drop);
             }
+            cachedDrop.set(drop);
         }
-
-        float f = 0.7F;
-        double dx = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double dy = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double dz = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-
-        EntityItem entityItem = new EntityItem(world, x + dx, y + dy, z + dz, drop);
-        world.spawnEntityInWorld(entityItem);
 
         super.breakBlock(world, x, y, z, block, meta);
     }
