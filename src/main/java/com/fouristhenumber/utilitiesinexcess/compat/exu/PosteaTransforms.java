@@ -90,8 +90,6 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:microblocks", new ForgeMicroblockItemTransformer());
-        // ItemStackReplacementManager.addTransformationHandler("utilitiesinexcess:multi_part_item", new
-        // ForgeMicroblockItemTransformer());
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
