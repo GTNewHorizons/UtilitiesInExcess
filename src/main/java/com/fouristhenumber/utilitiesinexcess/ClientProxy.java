@@ -2,13 +2,7 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
@@ -20,26 +14,18 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
-import com.fouristhenumber.utilitiesinexcess.compat.nei.NEIConfig;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
-import com.fouristhenumber.utilitiesinexcess.utils.FluidColorCache;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
-
-    // This is just a number that ticks up every frame.
-    public static int frameCount = 0;
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -74,53 +60,8 @@ public class ClientProxy extends CommonProxy {
             MinecraftForgeClient.registerItemRenderer(ModItems.CHUNCHUNMARU.get(), new ChunchunmaruRenderer());
         }
 
-        FMLCommonHandler.instance()
-            .bus()
-            .register(this);
-
-        MinecraftForge.EVENT_BUS.register(new FluidColorCache.TextureHook());
-
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
-            FindItHelper.INSTANCE = new FindItHelper();
-            MinecraftForge.EVENT_BUS.register(FindItHelper.INSTANCE);
-        }
-        if (Mods.NEI.isLoaded()) {
-            MinecraftForge.EVENT_BUS.register(new NEIConfig());
-        }
-    }
-
-    @SubscribeEvent
-    public void tickRender(TickEvent.RenderTickEvent event) {
-        frameCount++;
-        if (event.phase == TickEvent.Phase.END) {
-            Minecraft mc = Minecraft.getMinecraft();
-            if (!(mc.currentScreen == null && mc.theWorld != null
-                && Minecraft.isGuiEnabled()
-                && !mc.gameSettings.keyBindPlayerList.getIsKeyPressed())) return;
-
-            GL11.glPushMatrix();
-
-            boolean hasBlending = GL11.glGetBoolean(GL11.GL_BLEND);
-            boolean hasDepthTest = GL11.glGetBoolean(GL11.GL_DEPTH_TEST);
-            int boundTexIndex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-            GL11.glPushAttrib(GL11.GL_CURRENT_BIT);
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            RenderHelper.disableStandardItemLighting();
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-            GloveRenderer.renderGloveHudIcon();
-
-            if (hasBlending) GL11.glEnable(GL11.GL_BLEND);
-            else GL11.glDisable(GL11.GL_BLEND);
-            if (hasDepthTest) GL11.glEnable(GL11.GL_DEPTH_TEST);
-            else GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, boundTexIndex);
-
-            GL11.glPopAttrib();
-            GL11.glPopMatrix();
         }
     }
 }

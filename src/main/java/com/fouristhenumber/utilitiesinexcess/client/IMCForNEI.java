@@ -199,6 +199,10 @@ public class IMCForNEI {
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
             "nei.infopage.uie.inversion_sigil.4");
 
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.1");
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.2");
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.3");
+
         sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
 
         sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");

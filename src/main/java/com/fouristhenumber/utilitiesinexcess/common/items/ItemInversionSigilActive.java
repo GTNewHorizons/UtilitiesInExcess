@@ -36,7 +36,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -48,8 +47,8 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.entities.EntitySiegeProperty;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackBaseCompare;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -62,7 +61,7 @@ public class ItemInversionSigilActive extends Item {
 
     public static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
-    private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
+    private static final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
     private static HashSet<ItemStackBaseCompare> CHEST_NORTH_CONTENTS = new HashSet<>();
 
@@ -110,12 +109,6 @@ public class ItemInversionSigilActive extends Item {
             WEST,
             InversionConfig.westChestValidItems,
             InversionConfig.westChestRequiredItems);
-
-        ItemInversionSigilActiveEvents eventHandler = new ItemInversionSigilActiveEvents();
-        MinecraftForge.EVENT_BUS.register(eventHandler);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(eventHandler);
     }
 
     private int parseItemMetaFromString(String string) {
@@ -185,11 +178,11 @@ public class ItemInversionSigilActive extends Item {
         return validChestContents;
     }
 
-    private EntitySiegeProperty getProperties(EntityPlayer player) {
+    private static EntitySiegeProperty getProperties(EntityPlayer player) {
         return (EntitySiegeProperty) player.getExtendedProperties(EntitySiegeProperty.PROP_KEY);
     }
 
-    private List<EntityPlayer> getSiegePlayers() {
+    private static List<EntityPlayer> getSiegePlayers() {
         List<EntityPlayer> siegePlayers = new ArrayList<>();
         if (DimensionManager.getWorld(1) == null) {
             return siegePlayers;
@@ -203,7 +196,7 @@ public class ItemInversionSigilActive extends Item {
         return siegePlayers;
     }
 
-    private boolean checkSpiral(World world, int x, int y, int z) {
+    private static boolean checkSpiral(World world, int x, int y, int z) {
         ForgeDirection[] directions = { NORTH, EAST, SOUTH, WEST };
         boolean clockwise = true;
         boolean counterClockwise = true;
@@ -241,7 +234,7 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private boolean checkSpiralPart(World world, int x, int y, int z, ForgeDirection direction, Block block) {
+    private static boolean checkSpiralPart(World world, int x, int y, int z, ForgeDirection direction, Block block) {
         int[] SPIRAL_SEGMENT_LENGTHS = { 3, 5, 7, 8 };
 
         for (int segmentLength : SPIRAL_SEGMENT_LENGTHS) {
@@ -262,7 +255,7 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private ForgeDirection rotateClockwise(ForgeDirection direction) {
+    private static ForgeDirection rotateClockwise(ForgeDirection direction) {
         return switch (direction) {
             case NORTH -> EAST;
             case EAST -> SOUTH;
@@ -273,7 +266,7 @@ public class ItemInversionSigilActive extends Item {
         };
     }
 
-    private ForgeDirection rotateCounterClockwise(ForgeDirection direction) {
+    private static ForgeDirection rotateCounterClockwise(ForgeDirection direction) {
         return switch (direction) {
             case NORTH -> WEST;
             case EAST -> NORTH;
@@ -284,7 +277,7 @@ public class ItemInversionSigilActive extends Item {
         };
     }
 
-    private void startSiege(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
+    private static void startSiege(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
         EntitySiegeProperty source = getProperties(player);
         source.beaconSpawnX = beaconX;
         source.beaconSpawnY = beaconY;
@@ -308,7 +301,7 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private void endSiege(boolean won, EntityPlayer player) {
+    private static void endSiege(boolean won, EntityPlayer player) {
         EntitySiegeProperty source = getProperties(player);
         source.siege = false;
         source.siegeMobsKilled = 0;
@@ -321,7 +314,7 @@ public class ItemInversionSigilActive extends Item {
         if (won) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stack = player.inventory.getStackInSlot(i);
-                if (stack != null && stack.getItem() == this) {
+                if (stack != null && stack.getItem() == ModItems.INVERSION_SIGIL_ACTIVE.get()) {
                     player.inventory.setInventorySlotContents(i, ModItems.PSEUDO_INVERSION_SIGIL.newItemStack());
                     break;
                 }
@@ -329,7 +322,8 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private boolean checkChest(TileEntityChest chest, HashSet<ItemStackBaseCompare> itemsToCheck, int requiredAmount) {
+    private static boolean checkChest(TileEntityChest chest, HashSet<ItemStackBaseCompare> itemsToCheck,
+        int requiredAmount) {
         HashSet<ItemStackBaseCompare> confirmedItems = new HashSet<>();
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
@@ -342,7 +336,7 @@ public class ItemInversionSigilActive extends Item {
         return confirmedItems.size() >= requiredAmount;
     }
 
-    private boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
+    private static boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
         World world) {
         HashSet<ItemStackBaseCompare> contents;
         int requiredAmount;
@@ -443,7 +437,7 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private boolean isValidRitualBeacon(World world, int beaconX, int beaconY, int beaconZ) {
+    private static boolean isValidRitualBeacon(World world, int beaconX, int beaconY, int beaconZ) {
         boolean dimensionOk = (world.provider.dimensionId == 1);
 
         return dimensionOk && world.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon
@@ -454,10 +448,17 @@ public class ItemInversionSigilActive extends Item {
             && checkChestInDirection(WEST, beaconX, beaconY, beaconZ, world);
     }
 
-    public class ItemInversionSigilActiveEvents {
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInversionSigil;
+        }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenServerTick(TickEvent.ServerTickEvent event) {
+        public static void whenServerTick(TickEvent.ServerTickEvent event) {
 
             List<EntityPlayer> playerList = getSiegePlayers();
             for (EntityPlayer player : playerList) {
@@ -521,7 +522,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
+        public static void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
@@ -529,7 +530,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
+        public static void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
@@ -537,7 +538,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
+        public static void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
             if (event.world.provider.dimensionId == 1 && event.entity instanceof EntityEnderman
                 && !getSiegePlayers().isEmpty()) {
                 event.setResult(Event.Result.DENY);
@@ -545,7 +546,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void onLivingDeath(LivingDeathEvent event) {
+        public static void onLivingDeath(LivingDeathEvent event) {
 
             World world = event.entityLiving.worldObj;
 
@@ -591,7 +592,7 @@ public class ItemInversionSigilActive extends Item {
 
             if (source.siege) return; // Cannot start a second siege while in a siege.
             if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
-            if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
+            if (!player.inventory.hasItem(ModItems.INVERSION_SIGIL_ACTIVE.get())) return;
 
             int radius = BEACON_SEARCH_RADIUS;
             int mobX = (int) Math.floor(event.entityLiving.posX);

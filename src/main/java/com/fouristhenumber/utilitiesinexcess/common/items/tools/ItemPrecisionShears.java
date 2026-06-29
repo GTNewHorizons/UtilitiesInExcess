@@ -1,22 +1,29 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemPrecisionShears extends ItemShears implements ITranslucentItem {
 
@@ -118,4 +125,52 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
         return super.showDurabilityBar(stack);
     }
     //
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return PrecisionShearsConfig.enable;
+        }
+
+        @SubscribeEvent
+        public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+            if (event.harvester == null) return;
+            if (event.harvester.getHeldItem() == null) return;
+
+            if (event.harvester.getHeldItem()
+                .getItem() instanceof ItemPrecisionShears) {
+                EntityPlayer player = event.harvester;
+
+                AxisAlignedBB dropSearchArea = AxisAlignedBB
+                    .getBoundingBox(event.x - 1, event.y - 1, event.z - 1, event.x + 1, event.y + 1, event.z + 1);
+                List<EntityItem> foundItems = event.world.getEntitiesWithinAABBExcludingEntity(player, dropSearchArea)
+                    .stream()
+                    .filter(EntityItem.class::isInstance)
+                    .map(EntityItem.class::cast)
+                    .filter(entityItem -> entityItem.age == 0)
+                    .collect(Collectors.toList());
+                for (EntityItem item : foundItems) {
+                    if (!event.world.isRemote) item.setPosition(player.posX, player.posY, player.posZ);
+                }
+
+                for (ItemStack drop : event.drops) {
+                    if (!player.inventory.addItemStackToInventory(drop)) {
+                        // Not player.entityDropItem(drop, 0.0f); cause i don't want the pickup delay:P
+                        EntityItem entityitem = new EntityItem(
+                            player.worldObj,
+                            player.posX,
+                            player.posY,
+                            player.posZ,
+                            drop);
+                        player.worldObj.spawnEntityInWorld(entityitem);
+                    }
+                }
+                player.inventoryContainer.detectAndSendChanges();
+                event.drops.clear();
+            }
+        }
+    }
 }

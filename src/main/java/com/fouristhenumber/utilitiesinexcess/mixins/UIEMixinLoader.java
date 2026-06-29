@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.DimensionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
@@ -24,6 +25,7 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
             BlockConfig.registerConfig();
             DimensionConfig.registerConfig();
             OtherConfig.registerConfig();
+            RecipeConfig.registerConfig();
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
