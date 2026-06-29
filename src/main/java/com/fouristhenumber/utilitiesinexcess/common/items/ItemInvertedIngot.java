@@ -41,8 +41,14 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
-        if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+        if (stack.getItemDamage() != 0) return;
         if (!(entityIn instanceof EntityPlayer player)) return;
+
+        if (!stack.hasTagCompound()) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setLong("CraftedAt", worldIn.getTotalWorldTime());
+            stack.setTagCompound(nbt);
+        }
 
         if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
             player.inventory.setInventorySlotContents(slot, null);
@@ -56,10 +62,8 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public static boolean checkImplosion(ItemStack item, World world) {
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
-            int remaining = tag.getInteger("ImplosionTimer");
-            if (remaining > 0) {
-                tag.setInteger("ImplosionTimer", remaining - 1);
-            } else {
+            long passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
+            if (passed > InversionConfig.invertedIngotImplosionTimer) {
                 return (world.isRemote);
             }
         }
@@ -82,12 +86,15 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                 } else {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
                     if (stack.hasTagCompound()) {
-                        double time = (double) stack.getTagCompound()
-                            .getInteger("ImplosionTimer") / 20;
+                        long time = player.worldObj.getTotalWorldTime();
+
+                        double passed = time - tag.getLong("CraftedAt");
+
+                        double timeLeft = (InversionConfig.invertedIngotImplosionTimer - passed) / 20D;
                         tooltip.add(
                             StatCollector.translateToLocalFormatted(
                                 "item.inverted_ingot.desc.2",
-                                formatNumber(Math.max(0, time))));
+                                formatNumber(Math.max(0, timeLeft))));
                     } else {
                         tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
                     }
