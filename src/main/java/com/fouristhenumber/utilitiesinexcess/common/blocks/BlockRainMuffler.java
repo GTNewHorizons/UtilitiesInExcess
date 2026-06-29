@@ -26,7 +26,7 @@ public class BlockRainMuffler extends BlockContainer {
         setStepSound(soundTypeCloth);
         setBlockName("rain_muffler");
         setBlockTextureName("utilitiesinexcess:rain_muffler");
-        setHardness(0.5f);
+        setHardness(0.8f);
     }
 
     @Override
@@ -53,17 +53,19 @@ public class BlockRainMuffler extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
+        if (!worldIn.isRemote) {
+            return true;
+        }
+
         NBTTagCompound playerNBT = player.getEntityData();
         NBTTagCompound persistentNBT = playerNBT.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
         boolean nowActive = !persistentNBT.getBoolean(NBT_RAIN_MUFFLED);
         persistentNBT.setBoolean(NBT_RAIN_MUFFLED, nowActive);
         playerNBT.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistentNBT);
-        if (worldIn.isRemote) {
-            if (nowActive) {
-                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_enable"));
-            } else {
-                player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_disable"));
-            }
+        if (nowActive) {
+            player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_enable"));
+        } else {
+            player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_disable"));
         }
         return true;
     }

@@ -1,0 +1,304 @@
+package com.fouristhenumber.utilitiesinexcess.common.tileentities;
+
+import static com.cleanroommc.modularui.drawable.GuiTextures.PROGRESS_ARROW;
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.scanForBlock;
+
+import java.util.Set;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants;
+
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+public class TileEntityEnderLocus extends TileEntity implements IInventory, IGuiHolder<PosGuiData> {
+
+    private final InventoryCrafting craftMatrix = new InventoryCrafting(new ContainerDummy(), 3, 3);
+    private final InventoryCraftResult craftResult = new InventoryCraftResult();
+
+    // TODO: Creating this unregistered item is an ugly hack - MUI2 ItemDisplayWidget cannot handle null
+    // ItemStacks/Items and will crash otherwise. Need fix on MUI2 end, I think.
+    private static final ItemStack fakeItem = new ItemStack(new Item());
+    private ItemStack preview = fakeItem;
+
+    private int craftingProgress = 0;
+    private boolean crafting = false;
+    private int crystals = 0;
+
+    private static final int recipeCost = 20_000;
+
+    @Override
+    public void updateEntity() {
+        if (worldObj.isRemote) return;
+
+        // Extremely rare periodic check to catch any weirdness
+        if (worldObj.getTotalWorldTime() % 1200 == 0) {
+            scan();
+        }
+
+        if (crafting) {
+            craftingProgress += (crystals * 10);
+        }
+        if (craftingProgress >= recipeCost) {
+            ItemStack newStack = EnderLocusRegistry.instance()
+                .findRecipe(craftMatrix, true);
+            if (newStack != null) {
+                ItemStack outputStack = craftResult.getStackInSlot(0);
+
+                if (outputStack == null) craftResult.setInventorySlotContents(0, newStack);
+                else if (canInsertToOutput(newStack)) outputStack.stackSize += newStack.stackSize;
+                else UtilitiesInExcess.LOG
+                    .error("Failed to complete Ender Locus recipe because output stack did not match craft result.");
+            }
+            craftingProgress = 0;
+            crafting = false;
+            updateCraftingResult();
+        }
+        super.updateEntity();
+    }
+
+    public void addCrystal() {
+        crystals++;
+    }
+
+    public void removeCrystal() {
+        if (crystals > 0) crystals--;
+    }
+
+    public void scan() {
+        Set<BlockPos> positions = scanForBlock(
+            worldObj,
+            xCoord,
+            yCoord,
+            zCoord,
+            9,
+            ModBlocks.CONVERGENCE_CRYSTAL.get());
+        crystals = positions.size();
+    }
+
+    private void updateCraftingResult() {
+        ItemStack stack = EnderLocusRegistry.instance()
+            .findRecipe(craftMatrix, false);
+        if (stack == null || stack.getItem() != preview.getItem()) craftingProgress = 0;
+        crafting = stack != null && canInsertToOutput(stack);
+        preview = stack != null ? stack : fakeItem;
+    }
+
+    public boolean canInsertToOutput(ItemStack toInsert) {
+        ItemStack outputStack = craftResult.getStackInSlot(0);
+        if (outputStack == null) return true;
+
+        if (!outputStack.isItemEqual(toInsert) || !ItemStack.areItemStackTagsEqual(outputStack, toInsert)) {
+            return false;
+        }
+
+        return (outputStack.stackSize + toInsert.stackSize) <= outputStack.getMaxStackSize();
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
+
+        ModularPanel panel = new ModularPanel("panel");
+        panel.bindPlayerInventory();
+
+        syncManager.syncValue("preview", GenericSyncValue.forItem(() -> preview, null));
+        IntSyncValue craftingSyncer = new IntSyncValue(() -> craftingProgress);
+        IntSyncValue connected = new IntSyncValue(() -> crystals);
+        syncManager.syncValue("craftingProgress", craftingSyncer);
+        syncManager.syncValue("connected", connected);
+
+        // Add title
+        panel.child(
+            IKey.lang(getInventoryName())
+                .asWidget()
+                .marginLeft(5)
+                .marginTop(5));
+
+        panel.child(
+            IKey.dynamic(() -> StatCollector.translateToLocalFormatted("gui.flux_strength", connected.getStringValue()))
+                .asWidget()
+                .marginTop(70)
+                .horizontalCenter());
+
+        IItemHandler itemHandler = new InvWrapper(this);
+
+        // Input slots
+        panel.child(
+            SlotGroupWidget.builder()
+                .matrix("III", "III", "III")
+                .key(
+                    'I',
+                    index -> new ItemSlot().slot(
+                        new ModularSlot(itemHandler, index).changeListener((w, x, y, z) -> updateCraftingResult())))
+                .build()
+                .marginTop(15)
+                .marginLeft(37));
+
+        // Progress bar
+        panel.child(
+            new ProgressWidget().texture(PROGRESS_ARROW, 20)
+                .value(new DoubleSyncValue(() -> (double) craftingSyncer.getIntValue() / recipeCost))
+                .marginTop(33)
+                .marginLeft(97));
+
+        // Preview slot
+        panel.child(
+            new ItemDisplayWidget().syncHandler("preview")
+                .marginTop(10)
+                .marginLeft(97));
+
+        // Output slot
+        panel
+            .child(
+                new ItemSlot()
+                    .slot(
+                        new ModularSlot(itemHandler, 9).changeListener((w, x, y, z) -> updateCraftingResult())
+                            .accessibility(false, true))
+                    .marginTop(33)
+                    .marginLeft(121));
+
+        return panel;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 10;
+    }
+
+    @Override
+    public String getInventoryName() {
+        return "tile.ender_locus.name";
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return index < 9 ? craftMatrix.getStackInSlot(index) : craftResult.getStackInSlot(0);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        ItemStack stack;
+        if (index < 9) {
+            stack = craftMatrix.decrStackSize(index, count);
+        } else {
+            stack = craftResult.decrStackSize(0, count);
+        }
+        markDirty();
+        return stack;
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int index) {
+        return index < 9 ? craftMatrix.getStackInSlotOnClosing(index) : craftResult.getStackInSlotOnClosing(0);
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        if (index < 9) {
+            craftMatrix.setInventorySlotContents(index, stack);
+        } else {
+            craftResult.setInventorySlotContents(0, stack);
+        }
+        markDirty();
+    }
+
+    @Override
+    public boolean hasCustomInventoryName() {
+        return false;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player
+            .getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D)
+            <= 64.0D;
+    }
+
+    @Override
+    public void openInventory() {}
+
+    @Override
+    public void closeInventory() {}
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        NBTTagList nbttaglist = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
+        for (int index = 0; index < nbttaglist.tagCount(); index++) {
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(index);
+            int slot = nbttagcompound1.getByte("Slot") & 255;
+            if (slot < getSizeInventory()) {
+                setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(nbttagcompound1));
+            }
+        }
+        craftingProgress = tag.getInteger("craftingProgress");
+        crafting = tag.getBoolean("crafting");
+        crystals = tag.getInteger("crystals");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        NBTTagList nbttaglist = new NBTTagList();
+        for (int index = 0; index < getSizeInventory(); index++) {
+            ItemStack curStack = getStackInSlot(index);
+            if (curStack != null) {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte) index);
+                curStack.writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
+            }
+        }
+        tag.setTag("Items", nbttaglist);
+        tag.setInteger("craftingProgress", craftingProgress);
+        tag.setBoolean("crafting", crafting);
+        tag.setInteger("crystals", crystals);
+    }
+
+    public static class ContainerDummy extends Container {
+
+        public ContainerDummy() {}
+
+        public boolean canInteractWith(EntityPlayer var1) {
+            return false;
+        }
+    }
+}

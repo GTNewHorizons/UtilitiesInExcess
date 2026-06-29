@@ -13,7 +13,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
@@ -27,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 
@@ -38,9 +38,6 @@ public class BlockCursedEarth extends Block {
     public final boolean blessed;
 
     public IIcon sideTexture;
-
-    // TODO: Handle spreading? Look into how we wanna do that
-    // if/when we handle the sigil etc
 
     // Most of the logic for cursed earth interactions with spawners is
     // implemented in mixins.early.minecraft.CursedEarthSpawner
@@ -57,7 +54,7 @@ public class BlockCursedEarth extends Block {
             this.setStepSound(soundTypeCloth);
         }
         this.setHardness(0.5F);
-        this.setResistance(200.0F);
+        this.setResistance(100.0F);
         this.setTickRandomly(true);
     }
 
@@ -86,9 +83,8 @@ public class BlockCursedEarth extends Block {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-        // Change Items.diamond to any item you want it to drop
-        drops.add(new ItemStack(Item.getItemFromBlock(Blocks.dirt), 1));
+        ArrayList<ItemStack> drops = new ArrayList<>();
+        drops.add(new ItemStack(Blocks.dirt, 1));
         return drops;
     }
 
@@ -98,6 +94,28 @@ public class BlockCursedEarth extends Block {
         if (world.isRemote) return;
         tryBurn(world, x, y, z, random);
         trySpawnMob(world, x, y, z, random);
+        if (CursedEarthConfig.cursedEarthSpreads) trySpread(world, x, y, z, random);
+    }
+
+    public void trySpread(World world, int x, int y, int z, Random random) {
+        // Basically just vanilla grass spreading logic
+        for (int l = 0; l < 4; ++l) {
+            int i = x + random.nextInt(3) - 1;
+            int j = y + random.nextInt(5) - 3;
+            int k = z + random.nextInt(3) - 1;
+
+            Block block = world.getBlock(i, j, k);
+
+            if ((block == Blocks.grass || block == Blocks.dirt) && world.isAirBlock(i, j + 1, k)) {
+                world.setBlock(i, j, k, this);
+            } else if (CursedEarthConfig.volatileReaction) {
+                if ((blessed && block == ModBlocks.CURSED_EARTH.get())
+                    || (!blessed && block == ModBlocks.BLESSED_EARTH.get())) {
+                    world.setBlockToAir(i, j, k);
+                    world.newExplosion(null, i + 0.5D, j + 0.5D, k + 0.5D, 4.0F, true, true);
+                }
+            }
+        }
     }
 
     public void trySpawnMob(World world, int x, int y, int z, Random random) {
@@ -139,9 +157,12 @@ public class BlockCursedEarth extends Block {
             MathHelper.wrapAngleTo180_float(random.nextFloat() * 360.0F),
             0.0F);
 
-        if (!mob.getCanSpawnHere()) return;
-
-        world.spawnEntityInWorld(mob);
+        // These are checks copied from EntityLiving.getCanSpawnHere(). We don't call it directly
+        // because many of the overrides check additional conditions like that the block is Blocks.grass
+        if (world.checkNoEntityCollision(mob.boundingBox) && world.getCollidingBoundingBoxes(mob, mob.boundingBox)
+            .isEmpty() && !world.isAnyLiquid(mob.boundingBox)) {
+            world.spawnEntityInWorld(mob);
+        }
     }
 
     public void tryBurn(World world, int x, int y, int z, Random random) {
@@ -167,9 +188,7 @@ public class BlockCursedEarth extends Block {
 
     public boolean shouldBurn(World world, int x, int y, int z) {
         boolean lit = world.getBlockLightValue(x, y + 1, z) >= 8;
-        if (blessed) {
-            return !lit || (world.canBlockSeeTheSky(x, y + 1, z) && !world.isDaytime());
-        }
+        if (blessed) return !lit;
         return lit;
     }
 
@@ -195,13 +214,6 @@ public class BlockCursedEarth extends Block {
     public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
         return face == ForgeDirection.UP;
     }
-
-    /*
-     * @Override
-     * public TileEntity createNewTileEntity(World worldIn, int meta) {
-     * return new TileEntityCursedEarth();
-     * }
-     */
 
     public static class ItemBlockCursedEarth extends ItemBlock {
 

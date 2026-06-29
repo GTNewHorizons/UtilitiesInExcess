@@ -1,0 +1,104 @@
+package com.fouristhenumber.utilitiesinexcess.compat.nei;
+
+import java.awt.Rectangle;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRecipe;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
+
+import codechicken.nei.NEIClientConfig;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.recipe.ShapedRecipeHandler;
+
+public class EnderLocusRecipeHandler extends ShapedRecipeHandler {
+
+    @Override
+    public String getOverlayIdentifier() {
+        return "ender_locus_recipes";
+    }
+
+    @Override
+    public String getRecipeName() {
+        return StatCollector.translateToLocal("nei.title.uie.ender_locus");
+    }
+
+    @Override
+    public void loadUsageRecipes(String inputId, Object... ingredients) {
+        if (inputId.equals(this.getOverlayIdentifier())) {
+            for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
+                .getAllRecipes()) {
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
+                if (neiRecipe == null) continue;
+                neiRecipe.computeVisuals();
+                this.arecipes.add(neiRecipe);
+            }
+        } else {
+            super.loadUsageRecipes(inputId, ingredients);
+        }
+    }
+
+    @Override
+    public void loadTransferRects() {
+        transferRects.add(new RecipeTransferRect(new Rectangle(84, 23, 24, 18), getOverlayIdentifier()));
+    }
+
+    @Override
+    public void loadUsageRecipes(ItemStack ingredient) {
+        for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
+            .getAllRecipes()) {
+            CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
+            if (neiRecipe == null) continue;
+
+            if (neiRecipe.contains(neiRecipe.ingredients, ingredient)) {
+                neiRecipe.computeVisuals();
+                neiRecipe.setIngredientPermutation(neiRecipe.ingredients, ingredient);
+                this.arecipes.add(neiRecipe);
+            }
+        }
+    }
+
+    @Override
+    public void loadCraftingRecipes(String outputId, Object... results) {
+        if (outputId.equals(this.getOverlayIdentifier())) {
+            for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
+                .getAllRecipes()) {
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
+                if (neiRecipe == null) continue;
+                neiRecipe.computeVisuals();
+                this.arecipes.add(neiRecipe);
+            }
+        } else {
+            super.loadCraftingRecipes(outputId, results);
+        }
+    }
+
+    @Override
+    public void loadCraftingRecipes(ItemStack result) {
+        for (EnderLocusRecipe enderLocusRecipe : EnderLocusRegistry.instance()
+            .getAllRecipes()) {
+            if (NEIServerUtils.areStacksSameTypeCrafting(enderLocusRecipe.getOutput(), result)) {
+                CachedShapedRecipe neiRecipe = makeNeiRecipe(enderLocusRecipe);
+                if (neiRecipe == null) continue;
+                neiRecipe.computeVisuals();
+                this.arecipes.add(neiRecipe);
+            }
+        }
+    }
+
+    private CachedShapedRecipe makeNeiRecipe(EnderLocusRecipe recipe) {
+        try {
+            Object[] inputs = recipe.getInputs();
+            for (Object rawInput : inputs) {
+                if (rawInput instanceof ItemStack[]inputOptions && inputOptions.length == 0) {
+                    return null;
+                }
+            }
+            return new CachedShapedRecipe(3, 3, inputs, recipe.getOutput());
+        } catch (Exception e) {
+            NEIClientConfig.logger.error("Error loading Ender Locus recipe: ", e);
+            return null;
+        }
+    }
+}

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
@@ -38,6 +39,8 @@ public class BlockColored extends Block {
         this.colorMultiplier = colorMultiplier;
 
         setHardness(base.getBlockHardness(null, 0, 0, 0));
+        // This dumb ratio is due to the random scalars present in both get and set resistance.
+        setResistance(base.getExplosionResistance(null) * (5f / 3f));
         setStepSound(base.stepSound);
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
     }
@@ -69,6 +72,16 @@ public class BlockColored extends Block {
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
         int meta = worldIn.getBlockMetadata(x, y, z);
         return ColorUtils.getHexColorFromWoolMeta(meta);
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return base.getFlammability(world, x, y, z, face);
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return base.getFireSpreadSpeed(world, x, y, z, face);
     }
 
     @SideOnly(Side.CLIENT)

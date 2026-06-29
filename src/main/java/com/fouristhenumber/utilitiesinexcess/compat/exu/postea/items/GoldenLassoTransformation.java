@@ -5,26 +5,21 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
+import com.gtnewhorizons.postea.api.IItemStackTransformationHandler;
 
-public class GoldenLassoTransformation extends AbstractItemTransformation {
+public class GoldenLassoTransformation implements IItemStackTransformationHandler {
 
-    public GoldenLassoTransformation() {
-        super();
-        setDummyName("dummy_mob_jar");
-        setOldName("ExtraUtilities:golden_lasso");
-    }
+    @Override
+    public boolean apply(String originalId, NBTTagCompound stack) {
+        IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.MOB_JAR.get()));
 
-    public NBTTagCompound doTransformation(NBTTagCompound tag) {
-        IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModItems.MOB_JAR.get()));
-
-        if (tag.hasKey("tag")) {
-            NBTTagCompound tagtag = tag.getCompoundTag("tag");
+        if (stack.hasKey("tag")) {
+            NBTTagCompound tagtag = stack.getCompoundTag("tag");
             NBTTagCompound newTagtag = new NBTTagCompound();
             newTagtag.setTag("MobData", tagtag);
 
-            tag.setTag("tag", newTagtag);
+            stack.setTag("tag", newTagtag);
         }
-
-        return tag;
+        return true;
     }
 }

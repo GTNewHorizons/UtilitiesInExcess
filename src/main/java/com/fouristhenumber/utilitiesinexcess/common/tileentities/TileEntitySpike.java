@@ -11,18 +11,19 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
 public class TileEntitySpike extends TileEntity {
 
     private ItemStack fakeWeapon = null;
-    private BlockSpike.SpikeType spikeType;
+    private SpikeType spikeType;
 
     public TileEntitySpike() {}
 
-    public TileEntitySpike(BlockSpike.SpikeType spikeType) {
+    public TileEntitySpike(SpikeType spikeType) {
         this.spikeType = spikeType;
     }
 
@@ -61,7 +62,7 @@ public class TileEntitySpike extends TileEntity {
         fakePlayer.setCurrentItemOrArmor(0, null);
     }
 
-    public BlockSpike.SpikeType getSpikeType() {
+    public SpikeType getSpikeType() {
         return spikeType;
     }
 
@@ -74,9 +75,9 @@ public class TileEntitySpike extends TileEntity {
 
         if (tag.hasKey("SpikeType")) {
             try {
-                spikeType = BlockSpike.SpikeType.valueOf(tag.getString("SpikeType"));
+                spikeType = SpikeType.valueOf(tag.getString("SpikeType"));
             } catch (IllegalArgumentException e) {
-                spikeType = BlockSpike.SpikeType.WOOD;
+                spikeType = SpikeType.WOOD;
             }
         }
     }
@@ -90,5 +91,18 @@ public class TileEntitySpike extends TileEntity {
             tag.setTag("FakeWeapon", weaponTag);
         }
         tag.setString("SpikeType", spikeType.name());
+    }
+
+    // Needed for ExU migration to work properly, and will resolve any weird edge cases, I guess...
+    @Override
+    public void updateEntity() {
+        if (fakeWeapon == null) {
+            fakeWeapon = switch (spikeType) {
+                case WOOD -> ModBlocks.SPIKE_WOOD.newItemStack();
+                case IRON -> ModBlocks.SPIKE_IRON.newItemStack();
+                case GOLD -> ModBlocks.SPIKE_GOLD.newItemStack();
+                case DIAMOND -> ModBlocks.SPIKE_DIAMOND.newItemStack();
+            };
+        }
     }
 }
