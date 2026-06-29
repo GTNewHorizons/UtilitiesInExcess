@@ -3,12 +3,12 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemPseudoInversionSigil extends Item {
+public class ItemPseudoDivisionSigil extends Item {
 
-    public ItemPseudoInversionSigil() {
+    public ItemPseudoDivisionSigil() {
         super();
-        setUnlocalizedName("pseudo_inversion_sigil");
-        setTextureName("utilitiesinexcess:pseudo_inversion_sigil");
+        setUnlocalizedName("pseudo_division_sigil");
+        setTextureName("utilitiesinexcess:pseudo_division_sigil");
         setMaxStackSize(1);
         setContainerItem(this);
     }
