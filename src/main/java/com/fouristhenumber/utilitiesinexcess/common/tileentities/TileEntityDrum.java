@@ -1,6 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -25,7 +28,17 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     }
 
     public void setFluid(FluidStack stack) {
+        Fluid before = tank.getFluid() == null ? null
+            : tank.getFluid()
+                .getFluid();
+        Fluid after = tank.getFluid() == null ? null
+            : tank.getFluid()
+                .getFluid();
         this.tank.setFluid(stack);
+        markDirty();
+        if (before != after) {
+            renderUpdate();
+        }
     }
 
     @Override
@@ -52,8 +65,12 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (resource == null) return 0;
+        boolean wasEmpty = tank.getFluid() == null;
         int filled = tank.fill(resource, doFill);
-        if (doFill && filled > 0) markDirty();
+        if (doFill && filled > 0) {
+            markDirty();
+            if (wasEmpty) renderUpdate();
+        }
         return filled;
     }
 
@@ -63,14 +80,20 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
         FluidStack inTank = tank.getFluid();
         if (inTank == null || !resource.isFluidEqual(inTank)) return null;
         FluidStack drained = tank.drain(resource.amount, doDrain);
-        if (doDrain && drained != null && drained.amount > 0) markDirty();
+        if (doDrain && drained != null && drained.amount > 0) {
+            markDirty();
+            if (tank.getFluid() == null) renderUpdate();
+        }
         return drained;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         FluidStack drained = tank.drain(maxDrain, doDrain);
-        if (doDrain && drained != null && drained.amount > 0) markDirty();
+        if (doDrain && drained != null && drained.amount > 0) {
+            markDirty();
+            if (tank.getFluid() == null) renderUpdate();
+        }
         return drained;
     }
 
@@ -89,5 +112,32 @@ public class TileEntityDrum extends TileEntity implements IFluidHandler {
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[] { tank.getInfo() };
+    }
+
+    private void renderUpdate() {
+        if (worldObj != null) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 2, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        Fluid before = tank.getFluid() == null ? null
+            : tank.getFluid()
+                .getFluid();
+        readFromNBT(pkt.func_148857_g());
+        Fluid after = tank.getFluid() == null ? null
+            : tank.getFluid()
+                .getFluid();
+        if (before != after) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
     }
 }

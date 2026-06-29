@@ -1,8 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,7 +36,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -41,8 +47,8 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.entities.EntitySiegeProperty;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackBaseCompare;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -55,15 +61,27 @@ public class ItemInversionSigilActive extends Item {
 
     public static final String DURABILITY_NBT_KEY = "RemainingUses";
     private static final int BEACON_SEARCH_RADIUS = 6;
-    private final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
+    private static final int[][] LIGHTNING_POSITIONS = { { 0, 0 }, { -5, 0 }, { 5, 0 }, { 0, -5 }, { 0, 5 } };
 
-    private HashSet<ItemStackBaseCompare> CHEST_NORTH_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_NORTH_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStackBaseCompare> CHEST_EAST_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_EAST_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStackBaseCompare> CHEST_SOUTH_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_SOUTH_CONTENTS = new HashSet<>();
 
-    private HashSet<ItemStackBaseCompare> CHEST_WEST_CONTENTS = new HashSet<>();
+    private static HashSet<ItemStackBaseCompare> CHEST_WEST_CONTENTS = new HashSet<>();
+
+    public static List<ItemStack> getPseudoInversionChestAtDirection(ForgeDirection dir) {
+        Set<ItemStackBaseCompare> set = switch (dir) {
+            case SOUTH -> CHEST_SOUTH_CONTENTS;
+            case EAST -> CHEST_EAST_CONTENTS;
+            case WEST -> CHEST_WEST_CONTENTS;
+            default -> CHEST_NORTH_CONTENTS;
+        };
+        return set.stream()
+            .map(ItemStackBaseCompare::toItemStack)
+            .collect(Collectors.toList());
+    }
 
     public ItemInversionSigilActive() {
         super();
@@ -73,30 +91,24 @@ public class ItemInversionSigilActive extends Item {
         setContainerItem(this);
 
         CHEST_NORTH_CONTENTS = getValidChestContents(
-            ForgeDirection.NORTH,
+            NORTH,
             InversionConfig.northChestValidItems,
             InversionConfig.northChestRequiredItems);
 
         CHEST_EAST_CONTENTS = getValidChestContents(
-            ForgeDirection.EAST,
+            EAST,
             InversionConfig.eastChestValidItems,
             InversionConfig.eastChestRequiredItems);
 
         CHEST_SOUTH_CONTENTS = getValidChestContents(
-            ForgeDirection.SOUTH,
+            SOUTH,
             InversionConfig.southChestValidItems,
             InversionConfig.southChestRequiredItems);
 
         CHEST_WEST_CONTENTS = getValidChestContents(
-            ForgeDirection.WEST,
+            WEST,
             InversionConfig.westChestValidItems,
             InversionConfig.westChestRequiredItems);
-
-        ItemInversionSigilActiveEvents eventHandler = new ItemInversionSigilActiveEvents();
-        MinecraftForge.EVENT_BUS.register(eventHandler);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(eventHandler);
     }
 
     private int parseItemMetaFromString(String string) {
@@ -166,11 +178,11 @@ public class ItemInversionSigilActive extends Item {
         return validChestContents;
     }
 
-    private EntitySiegeProperty getProperties(EntityPlayer player) {
+    private static EntitySiegeProperty getProperties(EntityPlayer player) {
         return (EntitySiegeProperty) player.getExtendedProperties(EntitySiegeProperty.PROP_KEY);
     }
 
-    private List<EntityPlayer> getSiegePlayers() {
+    private static List<EntityPlayer> getSiegePlayers() {
         List<EntityPlayer> siegePlayers = new ArrayList<>();
         if (DimensionManager.getWorld(1) == null) {
             return siegePlayers;
@@ -184,9 +196,8 @@ public class ItemInversionSigilActive extends Item {
         return siegePlayers;
     }
 
-    private boolean checkSpiral(World world, int x, int y, int z) {
-        ForgeDirection[] directions = { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
-            ForgeDirection.WEST };
+    private static boolean checkSpiral(World world, int x, int y, int z) {
+        ForgeDirection[] directions = { NORTH, EAST, SOUTH, WEST };
         boolean clockwise = true;
         boolean counterClockwise = true;
         Block previousBlock = null;
@@ -223,7 +234,7 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private boolean checkSpiralPart(World world, int x, int y, int z, ForgeDirection direction, Block block) {
+    private static boolean checkSpiralPart(World world, int x, int y, int z, ForgeDirection direction, Block block) {
         int[] SPIRAL_SEGMENT_LENGTHS = { 3, 5, 7, 8 };
 
         for (int segmentLength : SPIRAL_SEGMENT_LENGTHS) {
@@ -244,29 +255,29 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private ForgeDirection rotateClockwise(ForgeDirection direction) {
+    private static ForgeDirection rotateClockwise(ForgeDirection direction) {
         return switch (direction) {
-            case NORTH -> ForgeDirection.EAST;
-            case EAST -> ForgeDirection.SOUTH;
-            case SOUTH -> ForgeDirection.WEST;
-            case WEST -> ForgeDirection.NORTH;
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            case WEST -> NORTH;
             // should not happen
             default -> direction;
         };
     }
 
-    private ForgeDirection rotateCounterClockwise(ForgeDirection direction) {
+    private static ForgeDirection rotateCounterClockwise(ForgeDirection direction) {
         return switch (direction) {
-            case NORTH -> ForgeDirection.WEST;
-            case EAST -> ForgeDirection.NORTH;
-            case SOUTH -> ForgeDirection.EAST;
-            case WEST -> ForgeDirection.SOUTH;
+            case NORTH -> WEST;
+            case EAST -> NORTH;
+            case SOUTH -> EAST;
+            case WEST -> SOUTH;
             // should not happen
             default -> direction;
         };
     }
 
-    private void startSiege(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
+    private static void startSiege(World world, int beaconX, int beaconY, int beaconZ, EntityPlayer player) {
         EntitySiegeProperty source = getProperties(player);
         source.beaconSpawnX = beaconX;
         source.beaconSpawnY = beaconY;
@@ -290,7 +301,7 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private void endSiege(boolean won, EntityPlayer player) {
+    private static void endSiege(boolean won, EntityPlayer player) {
         EntitySiegeProperty source = getProperties(player);
         source.siege = false;
         source.siegeMobsKilled = 0;
@@ -303,7 +314,7 @@ public class ItemInversionSigilActive extends Item {
         if (won) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stack = player.inventory.getStackInSlot(i);
-                if (stack != null && stack.getItem() == this) {
+                if (stack != null && stack.getItem() == ModItems.INVERSION_SIGIL_ACTIVE.get()) {
                     player.inventory.setInventorySlotContents(i, ModItems.PSEUDO_INVERSION_SIGIL.newItemStack());
                     break;
                 }
@@ -311,7 +322,8 @@ public class ItemInversionSigilActive extends Item {
         }
     }
 
-    private boolean checkChest(TileEntityChest chest, HashSet<ItemStackBaseCompare> itemsToCheck, int requiredAmount) {
+    private static boolean checkChest(TileEntityChest chest, HashSet<ItemStackBaseCompare> itemsToCheck,
+        int requiredAmount) {
         HashSet<ItemStackBaseCompare> confirmedItems = new HashSet<>();
         for (int i = 0; i < chest.getSizeInventory(); i++) {
             ItemStack stack = chest.getStackInSlot(i);
@@ -324,24 +336,24 @@ public class ItemInversionSigilActive extends Item {
         return confirmedItems.size() >= requiredAmount;
     }
 
-    private boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
+    private static boolean checkChestInDirection(ForgeDirection direction, int beaconX, int beaconY, int beaconZ,
         World world) {
         HashSet<ItemStackBaseCompare> contents;
         int requiredAmount;
 
-        if (direction == ForgeDirection.NORTH) {
+        if (direction == NORTH) {
             beaconZ -= 5;
             contents = CHEST_NORTH_CONTENTS;
             requiredAmount = InversionConfig.northChestRequiredItems;
-        } else if (direction == ForgeDirection.SOUTH) {
+        } else if (direction == SOUTH) {
             beaconZ += 5;
             contents = CHEST_SOUTH_CONTENTS;
             requiredAmount = InversionConfig.southChestRequiredItems;
-        } else if (direction == ForgeDirection.EAST) {
+        } else if (direction == EAST) {
             beaconX += 5;
             contents = CHEST_EAST_CONTENTS;
             requiredAmount = InversionConfig.eastChestRequiredItems;
-        } else if (direction == ForgeDirection.WEST) {
+        } else if (direction == WEST) {
             beaconX -= 5;
             contents = CHEST_WEST_CONTENTS;
             requiredAmount = InversionConfig.westChestRequiredItems;
@@ -372,10 +384,10 @@ public class ItemInversionSigilActive extends Item {
         boolean dimensionOk = (world.provider.dimensionId == 1);
         boolean difficultyOk = world.difficultySetting != EnumDifficulty.PEACEFUL;
         boolean spiralOk = checkSpiral(world, x, y, z);
-        boolean chestNorthContentsOk = checkChestInDirection(ForgeDirection.NORTH, x, y, z, world);
-        boolean chestEastContentsOk = checkChestInDirection(ForgeDirection.EAST, x, y, z, world);
-        boolean chestSouthContentsOk = checkChestInDirection(ForgeDirection.SOUTH, x, y, z, world);
-        boolean chestWestContentsOk = checkChestInDirection(ForgeDirection.WEST, x, y, z, world);
+        boolean chestNorthContentsOk = checkChestInDirection(NORTH, x, y, z, world);
+        boolean chestEastContentsOk = checkChestInDirection(EAST, x, y, z, world);
+        boolean chestSouthContentsOk = checkChestInDirection(SOUTH, x, y, z, world);
+        boolean chestWestContentsOk = checkChestInDirection(WEST, x, y, z, world);
 
         player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.header"));
 
@@ -425,21 +437,28 @@ public class ItemInversionSigilActive extends Item {
         return true;
     }
 
-    private boolean isValidRitualBeacon(World world, int beaconX, int beaconY, int beaconZ) {
+    private static boolean isValidRitualBeacon(World world, int beaconX, int beaconY, int beaconZ) {
         boolean dimensionOk = (world.provider.dimensionId == 1);
 
         return dimensionOk && world.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon
             && checkSpiral(world, beaconX, beaconY, beaconZ)
-            && checkChestInDirection(ForgeDirection.NORTH, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.EAST, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.SOUTH, beaconX, beaconY, beaconZ, world)
-            && checkChestInDirection(ForgeDirection.WEST, beaconX, beaconY, beaconZ, world);
+            && checkChestInDirection(NORTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(EAST, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(SOUTH, beaconX, beaconY, beaconZ, world)
+            && checkChestInDirection(WEST, beaconX, beaconY, beaconZ, world);
     }
 
-    public class ItemInversionSigilActiveEvents {
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInversionSigil;
+        }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenServerTick(TickEvent.ServerTickEvent event) {
+        public static void whenServerTick(TickEvent.ServerTickEvent event) {
 
             List<EntityPlayer> playerList = getSiegePlayers();
             for (EntityPlayer player : playerList) {
@@ -503,7 +522,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
+        public static void whenPlayerLeavesEnd(PlayerEvent.PlayerChangedDimensionEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
@@ -511,7 +530,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
+        public static void whenPlayerLeavesEndAlternate(PlayerEvent.PlayerRespawnEvent event) {
             if (getProperties(event.player).siege) {
                 event.player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.leftEnd"));
                 endSiege(false, event.player);
@@ -519,7 +538,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
+        public static void whenEndermanSpawn(LivingSpawnEvent.CheckSpawn event) {
             if (event.world.provider.dimensionId == 1 && event.entity instanceof EntityEnderman
                 && !getSiegePlayers().isEmpty()) {
                 event.setResult(Event.Result.DENY);
@@ -527,7 +546,7 @@ public class ItemInversionSigilActive extends Item {
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
-        public void onLivingDeath(LivingDeathEvent event) {
+        public static void onLivingDeath(LivingDeathEvent event) {
 
             World world = event.entityLiving.worldObj;
 
@@ -573,7 +592,7 @@ public class ItemInversionSigilActive extends Item {
 
             if (source.siege) return; // Cannot start a second siege while in a siege.
             if (world.difficultySetting == EnumDifficulty.PEACEFUL) return;
-            if (!player.inventory.hasItem(ItemInversionSigilActive.this)) return;
+            if (!player.inventory.hasItem(ModItems.INVERSION_SIGIL_ACTIVE.get())) return;
 
             int radius = BEACON_SEARCH_RADIUS;
             int mobX = (int) Math.floor(event.entityLiving.posX);

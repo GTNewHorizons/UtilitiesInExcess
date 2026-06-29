@@ -11,6 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.Drum
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.QEDTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.SpikeTransformation;
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
@@ -81,6 +82,12 @@ public class PosteaTransforms {
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 0, ModBlocks.ENDER_LOCUS.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 2, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:microblocks", 1, FMPItems.UE_MULTI_PART.get(), 0);
         ItemStackReplacementManager
@@ -156,6 +163,7 @@ public class PosteaTransforms {
         TileEntityReplacementManager.tileEntityTransformer("TileMiniChest", MiniChestTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileEnderCollector", CollectorTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("drum", DrumTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("TileEnderConstructor", QEDTransformation::transform);
 
         SpikeTransformation.registerIDResolvers();
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);

@@ -11,9 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemAntiParticulateShovel extends ItemSpade implements ITranslucentItem {
 
@@ -65,4 +69,26 @@ public class ItemAntiParticulateShovel extends ItemSpade implements ITranslucent
         return super.showDurabilityBar(stack);
     }
     //
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return AntiParticulateShovelConfig.enable;
+        }
+
+        @SubscribeEvent
+        public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+            if (!AntiParticulateShovelConfig.voidMinedBlocks) return;
+            if (event.harvester == null) return;
+            if (event.harvester.getHeldItem() == null) return;
+
+            if (event.harvester.getHeldItem()
+                .getItem() instanceof ItemAntiParticulateShovel) {
+                event.drops.clear();
+            }
+        }
+    }
 }

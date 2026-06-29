@@ -44,7 +44,13 @@ tile.compressed_gravel.7.name=Octuple Compressed Gravel
 tile.compressed_gravel.desc=%,d Gravel
 
 nei.title.uie.plugin=UtilitiesInExcess NEI Plugin
-nei.title.uie.qed=QED Recipes
+nei.title.uie.ender_locus=Ender Locus Recipes
+nei.title.uie.pseudo_inversion=Pseudo-Inversion Ritual
+nei.pseudo_inversion.label_north=North (Progeny of Fire)
+nei.pseudo_inversion.label_south=South (Bounty of Earth)
+nei.pseudo_inversion.label_east=East (Effects of Water)
+nei.pseudo_inversion.label_west=West (Chimes of Air)
+nei.pseudo_inversion.requires=Requires %s unique items from:
 
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
@@ -167,6 +173,10 @@ nei.infopage.uie.inversion_sigil.1=The Inversion Sigil is a powerful item that i
 nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantment Table while sneaking gives some hints on how to complete the ritual, or read on for precise instructions.
 nei.infopage.uie.inversion_sigil.3=Place an Enchantment Table outdoors on grass with a clear view of the sky, surround it with a ring of redstone dust, and wait until midnight. Ensure the Enchantment Table is in complete darkness, and sacrifice a living creature upon the table.
 nei.infopage.uie.inversion_sigil.4=If the ritual has been completed successfully, lightning strikes the Enchantment Table, and the surrounding grass transforms into Cursed Earth, which rapidly summons hostile creatures. Be prepared for battle!
+
+nei.infopage.uie.pseudo_inversion_sigil.1=The Pseudo-Inversion Sigil is an improved version of the Awakened Inversion Sigil that crafts Stable Inverted Ingots which never implode. Unfortunately, it is not easy to create. Using the Awakened Sigil on a beacon provides some hints, or read on for precise instructions.
+nei.infopage.uie.pseudo_inversion_sigil.2=To set up the new ritual, place a beacon in The End with spirals of redstone and string leading away from it. Place four chests in the cardinal directions and fill them with specific items.
+nei.infopage.uie.pseudo_inversion_sigil.3=Finally, activate the ritual by sacrificing an Iron Golem inside of the spiral. This begins an otherworldly siege... survive while defeating enemies to complete the ritual. Dying or leaving the dimension cancels it.
 
 item.architects_wand.name=Architect's Wand
 tooltip.architects_wand.1=Can place up to %s blocks at once
@@ -389,6 +399,12 @@ nei.infopage.uie.golden_bag.1=A fancy bag which can carry a double chest's worth
 item.xray_glasses.name=X-Ray Glasses
 nei.infopage.uie.xray_glasses.1=These stylish spectacles highlight like blocks adjacent to the one you are looking at through walls. Spot entire ore veins with ease!
 
+tile.ender_locus.name=Ender Locus
+tile.convergence_crystal.name=Convergence Crystal
+nei.infopage.uie.ender_locus.1=The Ender Locus is a simple machine that draws Flux Energy from nearby Convergence Crystals in order to complete recipes. The Ender Locus operates faster for each Convergence Crystal in a 9 block sphere around it.
+
+gui.flux_strength=Flux Strength: %s
+
 utilitiesinexcess.config.block.ender_lotus=Ender Lotus
 
 item.ender_lotus_seed.name=Ender-Lotus Seed
@@ -553,16 +569,26 @@ nei.infopage.uie.giga_torch.1=A torch that prevents natural mob spawning in rang
 
 tile.trading_post.name=Trading Post
 tile.trading_post.villager_count=Found %,d Villagers
-tile.trading_post.search_hint=Search...
 tile.trading_post.help_tooltip.0=Trade Controls:
 tile.trading_post.help_tooltip.1=§6Left-Click§7 to Trade
 tile.trading_post.help_tooltip.2=§6Shift + Left-Click§7 to Trade Stack
 tile.trading_post.help_tooltip.3=§6Alt + Left-Click§7 to Favorite Trade
 tile.trading_post.help_tooltip.4=§6Right-Click§7 to Highlight Villager
 tile.trading_post.help_tooltip.5=You can search for:
-tile.trading_post.help_tooltip.6=§7 - Item names & tooltips
-tile.trading_post.help_tooltip.7=§7 - Villager professions
-tile.trading_post.help_tooltip.8=§7 - Villager name tags
+tile.trading_post.help_tooltip.6=§7 - Item names
+tile.trading_post.help_tooltip.7=§7    - Start with '%s' or '%s' to
+tile.trading_post.help_tooltip.8=§7       filter for only buying/selling trades
+tile.trading_post.help_tooltip.9=§7       For example: '%sflint' will find
+tile.trading_post.help_tooltip.10=§7       all trades selling flint
+tile.trading_post.help_tooltip.11=§7 - Item tooltips
+tile.trading_post.help_tooltip.12=§7 - Villager professions
+tile.trading_post.help_tooltip.13=§7 - Villager name tags
+tile.trading_post.search.hint=Search...
+# These are the prefixes used in the search bar of the trading post
+# For example: searching "sell:emerald" will find all trades that sell emeralds
+# If you are translating this, please make sure it's something short
+tile.trading_post.search.buy_prefix=buy:
+tile.trading_post.search.sell_prefix=sell:
 
 nei.infopage.uie.trading_post.1=This block allows you to trade with every villager in 32 block area all in one place! Simply click on a trade from the list to trade.
 
