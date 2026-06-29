@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.potion.Potion;
@@ -70,9 +69,8 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
 
         @SubscribeEvent
         public static void onAttackEntity(AttackEntityEvent event) {
-            if (ChunchunmaruConfig.damageCreativePlayers && event.target instanceof EntityPlayerMP tp
-                && tp.theItemInWorldManager.isCreative()
-                && event.entity instanceof EntityPlayer player
+            if (ChunchunmaruConfig.damageCreativePlayers && event.entity instanceof EntityPlayer player
+                && player.capabilities.isCreativeMode
                 && player.getHeldItem()
                     .getItem() instanceof ItemChunchunmaru) {
                 boolean isCrit = player.fallDistance > 0.0F && !player.onGround
