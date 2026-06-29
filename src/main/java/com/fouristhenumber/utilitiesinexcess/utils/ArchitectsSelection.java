@@ -73,10 +73,8 @@ public class ArchitectsSelection {
     }
 
     public int maxPlaceCount(EntityPlayer player, int wandLimit) {
-        if (player.capabilities.isCreativeMode) {
-            if (player.isSneaking()) return wandLimit;
-            return ItemConfig.architectsWandCreativeBuildLimit;
-        }
+        if (player.capabilities.isCreativeMode) return ItemConfig.architectsWandCreativeBuildLimit;
+
         int count = 0;
         for (ItemStack block : blockToPlace(player)) {
             count += ArchitectsWandUtils.countItemInInventory(player, block);
