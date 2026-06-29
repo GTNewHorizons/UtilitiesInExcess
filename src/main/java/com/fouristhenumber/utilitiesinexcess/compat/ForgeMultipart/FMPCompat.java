@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 
 import codechicken.microblock.BlockMicroMaterial;
@@ -38,7 +39,7 @@ public class FMPCompat {
         registerMicroblock(ModBlocks.ETHEREAL_GLASS, 0, 5);
         registerMicroblock(ModBlocks.LAPIS_AETHERIUS, 0, 15);
 
-        if (!OtherConfig.enableWorldConversion) return;
+        if (Mods.ExtraUtilities.isLoaded() || !OtherConfig.enableWorldConversion) return;
 
         registerRemap("ExtraUtilities:enderThermicPump", ModBlocks.SMART_PUMP);
         registerRemap("ExtraUtilities:trading_post", ModBlocks.TRADING_POST);
