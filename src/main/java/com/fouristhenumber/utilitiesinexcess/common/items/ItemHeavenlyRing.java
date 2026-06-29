@@ -163,7 +163,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
                 ItemStack stack = player.inventory.getStackInSlot(i);
                 if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
                     hasRing = true;
-                    wingedPlayers.putIfAbsent(player, stack);
+                    wingedPlayers.put( player, stack);
                     break;
                 }
             }
