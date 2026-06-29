@@ -1,12 +1,12 @@
-# NEI item aliases
 item.heavenly_ring_feather.aliases=Anielski pierścień
 item.heavenly_ring_dragon.aliases=Anielski pierścień
 item.heavenly_ring_fairy.aliases=Anielski pierścień
 item.heavenly_ring_metal.aliases=Anielski pierścień
 item.heavenly_ring_magic.aliases=Anielski pierścień
 item.architects_wand.aliases=Różczka budowniczego
-item.inversion_sigil_active.aliases=Pieczęć dielenia
 item.inversion_sigil_inactive.aliases=Pieczęć dielenia
+item.inversion_sigil_active.aliases=Pieczęć dielenia
+item.pseudo_inversion_sigil.aliases=Pieczęć dielenia
 item.anti_particulate_shovel.aliases=Erozyjna łopata
 item.mob_jar.aliases=Złote lasso
 item.fire_battery.aliases=Grzejący zwój
@@ -25,9 +25,9 @@ tile.decorative_glass.6.aliases=Wirujące szkło
 tile.decorative_glass.7.aliases=Świecące szkło
 tile.decorative_glass.8.aliases=Sercowe szkło
 tile.decorative_glass.9.aliases=Kwadratowe szkło
-tile.low_temperature_furnace_generator.aliases=Generator survivalisty
-tile.low_temperature_furnace_generator_plus.aliases=Generator survivalisty
 tile.low_temperature_furnace_generator_plusplus.aliases=Generator survivalisty
+tile.low_temperature_furnace_generator_plus.aliases=Generator survivalisty
+tile.low_temperature_furnace_generator.aliases=Generator survivalisty
 tile.lapis_aetherius.0.aliases=Lapis Caelestis Albus (biały)
 tile.lapis_aetherius.1.aliases=Lapis Caelestis Aurantiacus (pomarańczowy)
 tile.lapis_aetherius.2.aliases=Lapis Caelestis Purpura Amethystinus (magentowy)

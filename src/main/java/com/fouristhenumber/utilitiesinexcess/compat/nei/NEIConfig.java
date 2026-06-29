@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.Tags;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -115,7 +116,8 @@ public class NEIConfig implements IConfigureNEI {
             new ItemStack(ModItems.ANTI_PARTICULATE_SHOVEL.get()),
             new ItemStack(ModItems.MOB_JAR.get()),
             new ItemStack(ModItems.INVERSION_SIGIL_INACTIVE.get()),
-            new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get()),
+            ItemInversionSigilActive.getStack(),
+            new ItemStack(ModItems.PSEUDO_INVERSION_SIGIL.get()),
             new ItemStack(ModItems.INVERTED_INGOT.get()),
             new ItemStack(ModItems.INVERTED_INGOT.get(), 1, 1),
             new ItemStack(ModItems.ARCHITECTS_WAND.get()),

@@ -1,12 +1,12 @@
-# NEI item aliases
 item.heavenly_ring_feather.aliases=Andělský prsten
 item.heavenly_ring_dragon.aliases=Andělský prsten
 item.heavenly_ring_fairy.aliases=Andělský prsten
 item.heavenly_ring_metal.aliases=Andělský prsten
 item.heavenly_ring_magic.aliases=Andělský prsten
 item.architects_wand.aliases=Stavitelova hůlka
-item.inversion_sigil_active.aliases=Divizní pečeť
 item.inversion_sigil_inactive.aliases=Divizní pečeť
+item.inversion_sigil_active.aliases=Divizní pečeť
+item.pseudo_inversion_sigil.aliases=Divizní pečeť
 item.anti_particulate_shovel.aliases=Erozní lopata
 item.mob_jar.aliases=Zlaté laso
 item.fire_battery.aliases=Žhavící cívka
@@ -27,9 +27,9 @@ tile.decorative_glass.6.aliases=Točící se sklo
 tile.decorative_glass.7.aliases=Světlitové sklo
 tile.decorative_glass.8.aliases=Srdcové sklo
 tile.decorative_glass.9.aliases=Čtverečné sklo
-tile.low_temperature_furnace_generator.aliases=Generátor přeživšího
-tile.low_temperature_furnace_generator_plus.aliases=Generátor přeživšího
 tile.low_temperature_furnace_generator_plusplus.aliases=Generátor přeživšího
+tile.low_temperature_furnace_generator_plus.aliases=Generátor přeživšího
+tile.low_temperature_furnace_generator.aliases=Generátor přeživšího
 tile.lapis_aetherius.0.aliases=Lapisová nebeskost Albus (Bílá)
 tile.lapis_aetherius.1.aliases=Lapisová nebeskost Aurantiacus (Oranžová)
 tile.lapis_aetherius.2.aliases=Lapisová nebeskost Purpura Amethystinus (Purpurová)

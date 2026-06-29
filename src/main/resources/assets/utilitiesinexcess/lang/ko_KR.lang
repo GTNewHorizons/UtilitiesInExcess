@@ -1,12 +1,12 @@
-# NEI item aliases
 item.heavenly_ring_feather.aliases=천사의 고리
 item.heavenly_ring_dragon.aliases=천사의 고리
 item.heavenly_ring_fairy.aliases=천사의 고리
 item.heavenly_ring_metal.aliases=천사의 고리
 item.heavenly_ring_magic.aliases=천사의 고리
 item.architects_wand.aliases=건축가의 완드
-item.inversion_sigil_active.aliases=분할의 인장
 item.inversion_sigil_inactive.aliases=분할의 인장
+item.inversion_sigil_active.aliases=분할의 인장
+item.pseudo_inversion_sigil.aliases=분할의 인장
 item.anti_particulate_shovel.aliases=침식의 삽
 item.mob_jar.aliases=황금 올가미
 item.fire_battery.aliases=열 코일
@@ -29,9 +29,9 @@ tile.decorative_glass.6.aliases=소용돌이 유리
 tile.decorative_glass.7.aliases=발광석 유리
 tile.decorative_glass.8.aliases=하트 유리
 tile.decorative_glass.9.aliases=사각 유리
-tile.low_temperature_furnace_generator.aliases=생존가의 발전기
-tile.low_temperature_furnace_generator_plus.aliases=생존가의 발전기
 tile.low_temperature_furnace_generator_plusplus.aliases=생존가의 발전기
+tile.low_temperature_furnace_generator_plus.aliases=생존가의 발전기
+tile.low_temperature_furnace_generator.aliases=생존가의 발전기
 tile.lapis_aetherius.0.aliases=흰색 천상의 돌
 tile.lapis_aetherius.1.aliases=주황색 천상의 돌
 tile.lapis_aetherius.2.aliases=자홍색 천상의 돌

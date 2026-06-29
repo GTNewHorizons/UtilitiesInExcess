@@ -1,12 +1,12 @@
-# NEI item aliases
 item.heavenly_ring_feather.aliases=Ангельское кольцо
 item.heavenly_ring_dragon.aliases=Ангельское кольцо
 item.heavenly_ring_fairy.aliases=Ангельское кольцо
 item.heavenly_ring_metal.aliases=Ангельское кольцо
 item.heavenly_ring_magic.aliases=Ангельское кольцо
 item.architects_wand.aliases=Жезл строителя
-item.inversion_sigil_active.aliases=Сигил деления
 item.inversion_sigil_inactive.aliases=Сигил деления
+item.inversion_sigil_active.aliases=Сигил деления
+item.pseudo_inversion_sigil.aliases=Сигил деления
 item.anti_particulate_shovel.aliases=Эрозийная лопата
 item.mob_jar.aliases=Золотое лассо
 item.fire_battery.aliases=Нагревательная катушка
@@ -31,9 +31,9 @@ tile.decorative_glass.7.aliases=Светящиеся стекло
 tile.decorative_glass.8.aliases=Любовное стекло
 tile.decorative_glass.9.aliases=Квадратное стекло
 tile.collector.aliases=Коллектор Края
-tile.low_temperature_furnace_generator.aliases=Генератор выжившего
-tile.low_temperature_furnace_generator_plus.aliases=Генератор выжившего
 tile.low_temperature_furnace_generator_plusplus.aliases=Генератор выжившего
+tile.low_temperature_furnace_generator_plus.aliases=Генератор выжившего
+tile.low_temperature_furnace_generator.aliases=Генератор выжившего
 tile.lapis_aetherius.0.aliases=Небесный камень (Белый)
 tile.lapis_aetherius.1.aliases=Небесный камень (Оранжевый)
 tile.lapis_aetherius.2.aliases=Небесный камень (Сиреневый)

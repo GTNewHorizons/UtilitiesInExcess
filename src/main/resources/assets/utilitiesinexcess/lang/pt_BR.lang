@@ -1,12 +1,12 @@
-# NEI item aliases
 item.heavenly_ring_feather.aliases=Anel de Anjo
 item.heavenly_ring_dragon.aliases=Anel de Anjo
 item.heavenly_ring_fairy.aliases=Anel de Anjo
 item.heavenly_ring_metal.aliases=Anel de Anjo
 item.heavenly_ring_magic.aliases=Anel de Anjo
 item.architects_wand.aliases=Varinha do Construtor
-item.inversion_sigil_active.aliases=Runa de Divisão
 item.inversion_sigil_inactive.aliases=Runa de Divisão
+item.inversion_sigil_active.aliases=Runa de Divisão
+item.pseudo_inversion_sigil.aliases=Runa de Divisão
 item.anti_particulate_shovel.aliases=Pá da Erosão
 item.mob_jar.aliases=Laço Dourado
 item.fire_battery.aliases=Bobina de Indução
@@ -29,9 +29,9 @@ tile.decorative_glass.6.aliases=Vidro Torcido
 tile.decorative_glass.7.aliases=Vidro de Glowstone
 tile.decorative_glass.8.aliases=Vidro de Coração
 tile.decorative_glass.9.aliases=Vidro Quadrado
-tile.low_temperature_furnace_generator.aliases=Gerador do Sobrevivente
-tile.low_temperature_furnace_generator_plus.aliases=Gerador do Sobrevivente
 tile.low_temperature_furnace_generator_plusplus.aliases=Gerador do Sobrevivente
+tile.low_temperature_furnace_generator_plus.aliases=Gerador do Sobrevivente
+tile.low_temperature_furnace_generator.aliases=Gerador do Sobrevivente
 tile.lapis_aetherius.0.aliases=Lapis Caelestis Albus (Branco)
 tile.lapis_aetherius.1.aliases=Lapis Caelestis Aurantiacus (Laranja)
 tile.lapis_aetherius.2.aliases=Lapis Caelestis Purpura Amethystinus (Magenta)

@@ -1,12 +1,12 @@
-# NEI item aliases
 item.heavenly_ring_feather.aliases=Anneau angélique
 item.heavenly_ring_dragon.aliases=Anneau angélique
 item.heavenly_ring_fairy.aliases=Anneau angélique
 item.heavenly_ring_metal.aliases=Anneau angélique
 item.heavenly_ring_magic.aliases=Anneau angélique
 item.architects_wand.aliases=Baguette de constructeur
-item.inversion_sigil_active.aliases=Symbole de division
 item.inversion_sigil_inactive.aliases=Symbole de division
+item.inversion_sigil_active.aliases=Symbole de division
+item.pseudo_inversion_sigil.aliases=Symbole de division
 item.anti_particulate_shovel.aliases=Pelle d'érosion
 item.mob_jar.aliases=Lasso doré
 item.fire_battery.aliases=Élément chauffant
@@ -28,9 +28,9 @@ tile.decorative_glass.6.aliases=Verre tourbillonnant
 tile.decorative_glass.7.aliases=Verre de pierre lumineuse
 tile.decorative_glass.8.aliases=Verre de coeur
 tile.decorative_glass.9.aliases=Verre carré
-tile.low_temperature_furnace_generator.aliases=Générateur de survivaliste
-tile.low_temperature_furnace_generator_plus.aliases=Générateur de survivaliste
 tile.low_temperature_furnace_generator_plusplus.aliases=Générateur de survivaliste
+tile.low_temperature_furnace_generator_plus.aliases=Générateur de survivaliste
+tile.low_temperature_furnace_generator.aliases=Générateur de survivaliste
 tile.lapis_aetherius.0.aliases=Lapis caelestis albus (blanc)
 tile.lapis_aetherius.1.aliases=Lapis caelestis aurantiacus (orange)
 tile.lapis_aetherius.2.aliases=Lapis caelestis purpura amethystinus (magenta)
