@@ -15,6 +15,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -83,10 +86,17 @@ public class FluidColorCache {
         return colorMap.getOrDefault(fluid, 0xFFFFFF);
     }
 
-    public static class TextureHook {
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return BlockConfig.enableDrum;
+        }
 
         @SubscribeEvent
-        public void postTextureStitch(TextureStitchEvent.Post event) {
+        public static void postTextureStitch(TextureStitchEvent.Post event) {
             if (event.map != Minecraft.getMinecraft()
                 .getTextureMapBlocks()) return;
             FluidColorCache.buildCache();

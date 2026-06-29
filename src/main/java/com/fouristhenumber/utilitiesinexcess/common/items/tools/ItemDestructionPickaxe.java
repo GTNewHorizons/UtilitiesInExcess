@@ -12,12 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
@@ -106,4 +109,26 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
         return super.showDurabilityBar(stack);
     }
     //
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return DestructionPickaxeConfig.enable;
+        }
+
+        @SubscribeEvent
+        public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+            if (!DestructionPickaxeConfig.voidMinedBlock) return;
+            if (event.harvester == null) return;
+            if (event.harvester.getHeldItem() == null) return;
+
+            if (event.harvester.getHeldItem()
+                .getItem() instanceof ItemDestructionPickaxe) {
+                event.drops.clear();
+            }
+        }
+    }
 }

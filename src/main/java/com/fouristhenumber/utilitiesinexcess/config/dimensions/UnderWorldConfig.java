@@ -40,7 +40,6 @@ public class UnderWorldConfig {
     public static boolean spawnCustomOre;
 
     @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
     @Config.Comment("Enables increased ore rates and aggressive mob spawning in certain regions")
     public static boolean enableDifficulty;
 

@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,13 +56,10 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
-import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
-import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -108,11 +104,6 @@ public class UtilitiesInExcess {
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
         RecipeLoader.run();
-
-        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
-        FMLCommonHandler.instance()
-            .bus()
-            .register(new FMLEventHandler());
 
         GameRegistry.registerTileEntity(TileEntitySpike.class, "TileEntitySpikeUIE");
         GameRegistry.registerTileEntity(TileEntityRedstoneClock.class, "TileEntityRedstoneClockUIE");
