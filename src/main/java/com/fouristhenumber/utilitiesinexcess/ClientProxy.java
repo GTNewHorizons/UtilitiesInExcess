@@ -73,8 +73,4 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    @SubscribeEvent
-    public void onPostClientTick(TickEvent.ClientTickEvent event) {
-        TESRTrueGreenscreen.onPostClientTick(event);
-    }
 }

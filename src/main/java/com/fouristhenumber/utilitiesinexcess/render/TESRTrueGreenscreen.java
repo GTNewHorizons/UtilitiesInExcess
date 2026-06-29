@@ -17,10 +17,14 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.RenderableCube;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
 
@@ -138,6 +142,21 @@ public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
             .bindTexture(TextureMap.locationBlocksTexture);
 
         positions.clear();
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return BlockConfig.enableTrueGreenscreen;
+        }
+
+        @SubscribeEvent
+        public static void onPostClientTick(TickEvent.ClientTickEvent event) {
+            TESRTrueGreenscreen.onPostClientTick(event);
+        }
     }
 
 }
