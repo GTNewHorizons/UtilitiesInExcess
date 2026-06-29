@@ -1,0 +1,42 @@
+{
+  "variants": {
+    "meta=0,orientation=north_north": { "model": "utilitiesinexcess:blocks/filing_cabinet_basic" },
+    "meta=0,orientation=south_south": { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "y": 180 },
+    "meta=0,orientation=east_east":   { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "y": 270 },
+    "meta=0,orientation=west_west":   { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "y": 90 },
+    "meta=0,orientation=up_north":    { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 90 },
+    "meta=0,orientation=up_east":     { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 90, "y": 270 },
+    "meta=0,orientation=up_south":    { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 90, "y": 180 },
+    "meta=0,orientation=up_west":     { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 90, "y": 90 },
+    "meta=0,orientation=down_north":  { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 270 },
+    "meta=0,orientation=down_east":   { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 270, "y": 270 },
+    "meta=0,orientation=down_south":  { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 270, "y": 180 },
+    "meta=0,orientation=down_west":   { "model": "utilitiesinexcess:blocks/filing_cabinet_basic", "x": 270, "y": 90 },
+
+    "meta=1,orientation=north_north": { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced" },
+    "meta=1,orientation=south_south": { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "y": 180 },
+    "meta=1,orientation=east_east":   { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "y": 270 },
+    "meta=1,orientation=west_west":   { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "y": 90 },
+    "meta=1,orientation=up_north":    { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 90 },
+    "meta=1,orientation=up_east":     { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 90, "y": 270 },
+    "meta=1,orientation=up_south":    { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 90, "y": 180 },
+    "meta=1,orientation=up_west":     { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 90, "y": 90 },
+    "meta=1,orientation=down_north":  { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 270 },
+    "meta=1,orientation=down_east":   { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 270, "y": 270 },
+    "meta=1,orientation=down_south":  { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 270, "y": 180 },
+    "meta=1,orientation=down_west":   { "model": "utilitiesinexcess:blocks/filing_cabinet_advanced", "x": 270, "y": 90 },
+
+    "meta=2,orientation=north_north": { "model": "utilitiesinexcess:blocks/filing_cabinet_elite" },
+    "meta=2,orientation=south_south": { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "y": 180 },
+    "meta=2,orientation=east_east":   { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "y": 270 },
+    "meta=2,orientation=west_west":   { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "y": 90 },
+    "meta=2,orientation=up_north":    { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 90 },
+    "meta=2,orientation=up_east":     { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 90, "y": 270 },
+    "meta=2,orientation=up_south":    { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 90, "y": 180 },
+    "meta=2,orientation=up_west":     { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 90, "y": 90 },
+    "meta=2,orientation=down_north":  { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 270 },
+    "meta=2,orientation=down_east":   { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 270, "y": 270 },
+    "meta=2,orientation=down_south":  { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 270, "y": 180 },
+    "meta=2,orientation=down_west":   { "model": "utilitiesinexcess:blocks/filing_cabinet_elite", "x": 270, "y": 90 }
+  }
+}

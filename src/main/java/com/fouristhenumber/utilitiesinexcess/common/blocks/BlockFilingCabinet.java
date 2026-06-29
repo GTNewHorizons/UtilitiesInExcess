@@ -1,11 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import static com.fouristhenumber.utilitiesinexcess.render.FacingRotation.calculateFacingRotation;
-
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -20,16 +16,19 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetAdvanced;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetBasic;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetElite;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.base.TileFilingCabinetBase;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
-import com.fouristhenumber.utilitiesinexcess.render.FacingRotation;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.CabinetTier;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileEntityFilingCabinet;
+import com.gtnewhorizon.gtnhlib.blockstate.core.BlockPropertyTrait;
+import com.gtnewhorizon.gtnhlib.blockstate.properties.OrientationBlockProperty;
+import com.gtnewhorizon.gtnhlib.geometry.Orientation;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import cpw.mods.fml.relauncher.Side;
@@ -37,42 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 // Adapted from Filing Cabinets by phantamanta44 (MIT License)
 // Source: https://github.com/phantamanta44/filing-cabinets
-
 public class BlockFilingCabinet extends BlockContainer {
-
-    public enum Type {
-
-        BASIC(TileFilingCabinetBasic::new, FilingCabinetsConfig.cabinetBasic.enable),
-        ADVANCED(TileFilingCabinetAdvanced::new, FilingCabinetsConfig.cabinetAdvanced.enable),
-        ELITE(TileFilingCabinetElite::new, FilingCabinetsConfig.cabinetElite.enable);
-
-        private static final Type[] VALUES = values();
-
-        public static Type getForItemMeta(int meta) {
-            return VALUES[meta];
-        }
-
-        private final Supplier<TileEntity> tileFactory;
-        private final boolean isEnabled;
-
-        Type(Supplier<TileEntity> tileFactory, boolean isEnabled) {
-            this.tileFactory = tileFactory;
-            this.isEnabled = isEnabled;
-        }
-
-        TileEntity createTileEntity() {
-            return tileFactory.get();
-        }
-
-        public String getName() {
-            return name().toLowerCase();
-        }
-
-        public int getItemMeta() {
-            return ordinal();
-        }
-
-    }
 
     public BlockFilingCabinet() {
         super(Material.iron);
@@ -80,11 +44,19 @@ public class BlockFilingCabinet extends BlockContainer {
         this.setBlockName("filing_cabinet");
     }
 
+    public CabinetTier[] getTiers() {
+        return CabinetTier.values();
+    }
+
+    protected String getTextureBasePath() {
+        return "filing_cabinet";
+    }
+
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> items) {
-        for (Type type : Type.VALUES) {
-            if (type.isEnabled) {
-                items.add(new ItemStack(this, 1, type.getItemMeta()));
+        for (CabinetTier tier : getTiers()) {
+            if (tier.isEnabled()) {
+                items.add(new ItemStack(this, 1, tier.meta()));
             }
         }
     }
@@ -95,20 +67,33 @@ public class BlockFilingCabinet extends BlockContainer {
     }
 
     @Override
-    public int getRenderType() {
-        return UtilitiesInExcess.rotatableblockRenderID;
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
-        FacingRotation fr = calculateFacingRotation(placer);
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileFilingCabinetBase cabinet) {
-            cabinet.setFacing(fr.facing);
-            cabinet.setYaw(fr.yaw);
+        if (te instanceof TileEntityFilingCabinet cab) {
+            cab.setOrientation(getOrientationFromPlacer(placer));
+            cab.readFromItemStack(stack);
+            cab.inventory.updateCounts();
+            cab.markDirty();
         }
         super.onBlockPlacedBy(world, x, y, z, placer, stack);
 
+    }
+
+    private static Orientation getOrientationFromPlacer(EntityLivingBase placer) {
+        int yawByte = MathHelper.floor_double((placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        ForgeDirection yaw = switch (yawByte) {
+            case 1 -> ForgeDirection.EAST;
+            case 2 -> ForgeDirection.SOUTH;
+            case 3 -> ForgeDirection.WEST;
+            default -> ForgeDirection.NORTH;
+        };
+
+        float pitch = placer.rotationPitch;
+        ForgeDirection facing = pitch > 55f ? ForgeDirection.UP : pitch < -45f ? ForgeDirection.DOWN : yaw;
+
+        Orientation o = Orientation.getOrientation(facing, yaw);
+        return o != null && o != Orientation.UNKNOWN ? o : Orientation.NORTH_NORTH;
     }
 
     @Override
@@ -118,7 +103,7 @@ public class BlockFilingCabinet extends BlockContainer {
         if (worldIn.isRemote) return true;
 
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (!(te instanceof TileFilingCabinetBase cabinet)) {
+        if (!(te instanceof TileEntityFilingCabinet cabinet)) {
             return false;
         }
 
@@ -133,67 +118,74 @@ public class BlockFilingCabinet extends BlockContainer {
         return true;
     }
 
+    // Keep the cabinet's contents inside the dropped item instead of spilling them onto the ground.
+    // The block removal is delayed until harvestBlock so the tile entity is still alive in getDrops.
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        dropInventory(world, x, y, z);
-        super.breakBlock(world, x, y, z, block, meta);
+    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+        if (willHarvest) {
+            return true;
+        }
+        return super.removedByPlayer(world, player, x, y, z, willHarvest);
     }
 
-    public static void dropInventory(World world, int x, int y, int z) {
-        if (world.isRemote) return;
+    @Override
+    public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+        super.harvestBlock(world, player, x, y, z, meta);
+        world.setBlockToAir(x, y, z);
+    }
 
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        ArrayList<ItemStack> drops = new ArrayList<>();
+        ItemStack stack = new ItemStack(this, 1, damageDropped(metadata));
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te == null) return;
-
-        if (te instanceof TileFilingCabinetBase inv) {
-            inv.dropInventory(world, x, y, z);
+        if (te instanceof TileEntityFilingCabinet cab && cab.hasStoredData()) {
+            cab.writeToItemStack(stack);
         }
+        drops.add(stack);
+        return drops;
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return Type.getForItemMeta(meta)
-            .createTileEntity();
+        CabinetTier[] tiers = getTiers();
+        int m = (meta >= 0 && meta < tiers.length) ? meta : 0;
+        return tiers[m].createTile();
     }
 
     @SideOnly(Side.CLIENT)
-    private Map<Type, IIcon[]> icons;
+    private IIcon[][] icons;
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
-        icons = new HashMap<>();
-        for (Type type : Type.VALUES) {
-            String basePath = String.format("%s:filing_cabinet/%s/", UtilitiesInExcess.MODID, type.getName());
+        CabinetTier[] tiers = getTiers();
+        icons = new IIcon[tiers.length][];
+        for (CabinetTier tier : tiers) {
+            String basePath = String.format("%s:%s/%s/", UtilitiesInExcess.MODID, getTextureBasePath(), tier.getName());
             IIcon side = reg.registerIcon(basePath + "side");
             IIcon front = reg.registerIcon(basePath + "front");
-            icons.put(type, new IIcon[] { side, front });
+            icons[tier.meta()] = new IIcon[] { side, front };
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return side == 3 ? getFrontIcon(meta) : getSideIcon(meta);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getSideIcon(int meta) {
-        Type type = Type.getForItemMeta(meta);
-        return icons.get(type)[0]; // side
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getFrontIcon(int meta) {
-        Type type = Type.getForItemMeta(meta);
-        return icons.get(type)[1];
+        if (icons == null || meta < 0 || meta >= icons.length || icons[meta] == null) {
+            return super.getIcon(side, meta);
+        }
+        return side == 3 ? icons[meta][1] : icons[meta][0];
     }
 
     public static class ItemBlockFilingCabinet extends ItemBlock {
 
+        private final BlockFilingCabinet cabinet;
+
         public ItemBlockFilingCabinet(Block block) {
             super(block);
             setHasSubtypes(true);
+            this.cabinet = (BlockFilingCabinet) block;
         }
 
         @Override
@@ -203,21 +195,58 @@ public class BlockFilingCabinet extends BlockContainer {
 
         @Override
         public String getUnlocalizedName(final ItemStack stack) {
-            return this.getUnlocalizedName() + "."
-                + Type.getForItemMeta(stack.getItemDamage())
-                    .getName();
+            CabinetTier[] tiers = cabinet.getTiers();
+            int meta = stack.getItemDamage();
+            String name = (meta >= 0 && meta < tiers.length) ? tiers[meta].getName() : tiers[0].getName();
+            return this.getUnlocalizedName() + "." + name;
         }
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean flags) {
-            switch (Type.getForItemMeta(stack.getItemDamage())) {
-                case BASIC:
-                    tooltip.add(ChatFormatting.GRAY + I18n.format("tile.filing_cabinet.basic.desc"));
-                    break;
-                case ADVANCED:
-                    tooltip.add(ChatFormatting.GRAY + I18n.format("tile.filing_cabinet.advanced.desc"));
-                    break;
+            CabinetTier[] tiers = cabinet.getTiers();
+            int meta = stack.getItemDamage();
+            if (meta < 0 || meta >= tiers.length) return;
+            String key = "tile.filing_cabinet." + tiers[meta].getName() + ".desc";
+            if (StatCollector.canTranslate(key)) {
+                tooltip.add(ChatFormatting.GRAY + I18n.format(key));
             }
+        }
+    }
+
+    public static class CabinetOrientationProperty implements OrientationBlockProperty {
+
+        public static final CabinetOrientationProperty instance = new CabinetOrientationProperty();
+
+        private CabinetOrientationProperty() {}
+
+        @Override
+        public String getName() {
+            return "orientation";
+        }
+
+        @Override
+        public boolean hasTrait(BlockPropertyTrait trait) {
+            return switch (trait) {
+                case SupportsWorld, SupportsStacks -> true;
+                default -> false;
+            };
+        }
+
+        @Override
+        public Orientation getValue(IBlockAccess world, int x, int y, int z) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (!(te instanceof TileEntityFilingCabinet cab)) return Orientation.NORTH_NORTH;
+            return cab.getOrientation();
+        }
+
+        @Override
+        public Orientation getValue(ItemStack stack) {
+            return Orientation.NORTH_NORTH;
+        }
+
+        @Override
+        public boolean isValidOrientation(Orientation value) {
+            return value != null && value != Orientation.UNKNOWN;
         }
     }
 }

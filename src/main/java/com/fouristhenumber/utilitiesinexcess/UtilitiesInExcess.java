@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetOrientationProperty;
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,9 +38,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradi
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTrashCanItem;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetAdvanced;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetBasic;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileFilingCabinetElite;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileEntityFilingCabinet;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFoodGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityFurnaceGenerator;
@@ -160,9 +160,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
-        GameRegistry.registerTileEntity(TileFilingCabinetBasic.class, "TileFilingCabinetBasicUIE");
-        GameRegistry.registerTileEntity(TileFilingCabinetAdvanced.class, "TileFilingCabinetAdvancedUIE");
-        GameRegistry.registerTileEntity(TileFilingCabinetElite.class, "TileFilingCabinetEliteUIE");
+        GameRegistry.registerTileEntity(TileEntityFilingCabinet.class, "TileEntityFilingCabinetUIE");
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
         if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             Remappings.init();
@@ -196,6 +194,10 @@ public class UtilitiesInExcess {
             ChestGenHooks.addItem(
                 ChestGenHooks.STRONGHOLD_CROSSING,
                 new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+        }
+
+        if (ModBlocks.FILING_CABINET.isEnabled()) {
+            BlockPropertyRegistry.registerBlockItemProperty(ModBlocks.FILING_CABINET.get(), CabinetOrientationProperty.instance);
         }
 
         if (ModBlocks.SMART_PUMP.isEnabled()) {
