@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
-import com.github.bsideup.jabel.Desugar;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -20,7 +19,6 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
 
-    @Desugar
     public record ChestGroup(String label, int required, List<ItemStack> validItems) {}
 
     private ChestGroup[] groups;
