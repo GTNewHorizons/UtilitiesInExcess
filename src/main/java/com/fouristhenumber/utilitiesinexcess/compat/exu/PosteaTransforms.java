@@ -2,8 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.ForgeMicroblockItemTransformer;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
@@ -89,11 +89,9 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:microblocks", 1, FMPItems.UE_MULTI_PART.get(), 0);
-        ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:microblocks", 2, FMPItems.UE_MULTI_PART.get(), 1);
-        ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:microblocks", 3, FMPItems.UE_MULTI_PART.get(), 2);
+            .addTransformationHandler("ExtraUtilities:microblocks", new ForgeMicroblockItemTransformer());
+        // ItemStackReplacementManager.addTransformationHandler("utilitiesinexcess:multi_part_item", new
+        // ForgeMicroblockItemTransformer());
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
