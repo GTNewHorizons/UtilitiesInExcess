@@ -82,8 +82,10 @@ public class ItemMobJar extends Item {
                     entity.setPosition(targetX, targetY, targetZ);
 
                     world.spawnEntityInWorld(entity);
-                    stack.getTagCompound()
-                        .removeTag("MobData");
+                    if (!player.capabilities.isCreativeMode || player.isSneaking()) {
+                        stack.getTagCompound()
+                            .removeTag("MobData");
+                    }
                 }
             }
             return true;
