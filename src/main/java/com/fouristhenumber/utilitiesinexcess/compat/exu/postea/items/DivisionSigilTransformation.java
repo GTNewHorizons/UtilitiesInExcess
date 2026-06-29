@@ -6,32 +6,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
+import com.gtnewhorizons.postea.api.IItemStackTransformationHandler;
 
-public class DivisionSigilTransformation extends AbstractItemTransformation {
+public class DivisionSigilTransformation implements IItemStackTransformationHandler {
 
-    public DivisionSigilTransformation() {
-        super();
-        setDummyName("dummy_inversion_sigil");
-        setOldName("ExtraUtilities:divisionSigil");
-    }
-
-    public NBTTagCompound doTransformation(NBTTagCompound tag) {
-        NBTTagCompound tagtag = tag.getCompoundTag("tag");
-        int stable = tagtag.getByte("stable");
+    @Override
+    public boolean apply(String originalId, NBTTagCompound stack) {
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        int stable = tag.getByte("stable");
         if (stable == 1) {
-            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModItems.PSEUDO_INVERSION_SIGIL.get()));
-            tag.removeTag("tag");
+            IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.PSEUDO_INVERSION_SIGIL.get()));
+            stack.removeTag("tag");
         } else {
-            int dmg = tagtag.getInteger("damage");
-            tagtag.removeTag("damage");
+            int dmg = tag.getInteger("damage");
+            tag.removeTag("damage");
             if (dmg > 1) {
-                tagtag.setInteger(ItemInversionSigilActive.DURABILITY_NBT_KEY, dmg);
-                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModItems.INVERSION_SIGIL_ACTIVE.get()));
+                tag.setInteger(ItemInversionSigilActive.DURABILITY_NBT_KEY, dmg);
+                IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.INVERSION_SIGIL_ACTIVE.get()));
             } else {
-                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModItems.INVERSION_SIGIL_INACTIVE.get()));
+                IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.INVERSION_SIGIL_INACTIVE.get()));
             }
         }
-
-        return tag;
+        stack.setTag("tag", tag);
+        return true;
     }
 }

@@ -7,6 +7,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
@@ -21,20 +25,20 @@ public class TileEntityCollector extends TileEntity {
     private boolean showBorder = false;
     public int borderTimer = 0;
     public List<Vec3> itemPositions = new ArrayList<>();
-    private float size = 4f;
+    private float range = 4f;
 
-    public float getSize() {
-        return size;
+    public float getRange() {
+        return range;
     }
 
     public void incrementSize(EntityPlayer player) {
         if (player.isSneaking()) {
 
-            size -= 0.5f;
-            if (size == 0f) size = 4f;
+            range -= 0.5f;
+            if (range == 0f) range = 4f;
         } else {
-            size += 0.5f;
-            if (size > 4f) size = 0.5f;
+            range += 0.5f;
+            if (range > 4f) range = 0.5f;
         }
     }
 
@@ -106,15 +110,40 @@ public class TileEntityCollector extends TileEntity {
 
     private AxisAlignedBB getRadiusAABB() {
         return AxisAlignedBB.getBoundingBox(
-            xCoord - size,
-            yCoord - size,
-            zCoord - size,
-            xCoord + size + 1,
-            yCoord + size + 1,
-            zCoord + size + 1);
+            xCoord - range,
+            yCoord - range,
+            zCoord - range,
+            xCoord + range + 1,
+            yCoord + range + 1,
+            zCoord + range + 1);
     }
 
     public boolean showBorder() {
         return showBorder;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        range = compound.getFloat("range");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setFloat("range", range);
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setFloat("range", range);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        range = pkt.func_148857_g()
+            .getFloat("range");
     }
 }

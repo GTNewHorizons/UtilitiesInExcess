@@ -13,12 +13,15 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockChandelier;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCollector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConvergenceCrystal;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCursedEarth;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorative;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDecorativeGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockDrum;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLocus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEndspark;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
@@ -55,6 +58,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBlockRotatable;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -100,6 +104,7 @@ public enum ModBlocks {
     SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler(), BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
     RAIN_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler(), BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), "magic_wood"),
+    ENDSPARK(BlockConfig.enableEndspark, new BlockEndspark(), "endspark"),
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), "significantly_shrunk_chest"),
@@ -149,15 +154,17 @@ public enum ModBlocks {
     ADVANCED_BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockAdvancedUpdateDetector(), "advanced_block_update_detector"),
     ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
-    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), BlockConveyor.ItemBlockConveyor.class, "conveyor"),
+    CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), ItemBlockRotatable.class, "conveyor"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "wood_spike"), BlockSpike.ItemSpike.class, "wood_spike"),
     SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "iron_spike"), BlockSpike.ItemSpike.class, "iron_spike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "gold_spike"), BlockSpike.ItemSpike.class, "gold_spike"),
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamond_spike"), BlockSpike.ItemSpike.class, "diamond_spike"),
     UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
+    ENDER_LOCUS(BlockConfig.enableEnderLocus, new BlockEnderLocus(), "ender_locus"),
+    CONVERGENCE_CRYSTAL(BlockConfig.enableEnderLocus, new BlockConvergenceCrystal(), "convergence_crystal"),
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
-    PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), "pacifists_bench"),
+    PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), ItemBlockRotatable.class, "pacifists_bench"),
     SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
     FILING_CABINET(FilingCabinetsConfig.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet"),
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),

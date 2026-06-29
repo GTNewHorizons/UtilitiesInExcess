@@ -4,6 +4,7 @@ import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -12,11 +13,12 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockBaseGenerator;
@@ -209,15 +211,10 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
         panel.bindPlayerInventory();
 
         panel.child(
-            new ParentWidget<>().coverChildren()
-                .topRelAnchor(0, 1)
-                .child(
-                    IKey.str(StatCollector.translateToLocal(getGUIName()))
-                        .asWidget()
-                        .marginLeft(5)
-                        .marginRight(5)
-                        .marginTop(5)
-                        .marginBottom(-15)));
+            IKey.str(StatCollector.translateToLocal(getGUIName()))
+                .asWidget()
+                .marginLeft(5)
+                .marginTop(5));
         panel.child(
             new ProgressWidget()
                 .value(
@@ -226,7 +223,9 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
                 .texture(ENERGY_PROGRESS, 16)
                 .direction(ProgressWidget.Direction.UP)
                 .size(16, 64)
-                .pos(100, 14)
+                .posRel(Alignment.TopRight)
+                .marginTop(14)
+                .marginRight(4)
                 .tooltipDynamic(
                     tt -> tt.add(
                         StatCollector.translateToLocalFormatted(
@@ -234,8 +233,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
                             formatNumber(energySyncer.getIntValue()),
                             formatNumber(maxEnergySyncer.getIntValue())))));
 
-        panel.childIf(
-            showBurnTime(),
+        if (showBurnTime()) panel.child(
             IKey.dynamic(
                 () -> (burnSyncer.getIntValue() / 1200) + StatCollector.translateToLocal("time.minutes_abbreviation")
                     + " "
@@ -244,14 +242,20 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
                 .asWidget()
                 .pos(10, 50));
 
-        panel.childIf(
-            showGenerationRate(),
-            IKey.dynamic(
-                () -> (multSyncer.getIntValue() * rftSyncer.getIntValue()
-                    + StatCollector.translateToLocal("gui.tooltip.energy-tick")))
-                .asWidget()
-                .pos(10, 62));
+        if (showGenerationRate()) panel.child(IKey.dynamic(() -> {
+            int curValue = multSyncer.getIntValue() * rftSyncer.getIntValue();
+
+            return (curValue > 0 ? EnumChatFormatting.DARK_GREEN + "+" : "") + curValue
+                + StatCollector.translateToLocal("gui.tooltip.energy-tick");
+        })
+            .asWidget()
+            .pos(10, 62));
 
         return panel;
+    }
+
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 }

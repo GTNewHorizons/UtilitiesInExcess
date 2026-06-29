@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
@@ -24,8 +25,8 @@ public class BlockTradingPost extends BlockContainer {
         super(Material.wood);
         setBlockName("trading_post");
         setBlockTextureName("utilitiesinexcess:trading_post");
-        setHardness(3.0F);
-        setResistance(7.0F);
+        setHardness(1F);
+        setResistance(10F);
     }
 
     @Override
@@ -60,5 +61,15 @@ public class BlockTradingPost extends BlockContainer {
     @Override
     public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
         return getIcon(side, 0);
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 5;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 5;
     }
 }

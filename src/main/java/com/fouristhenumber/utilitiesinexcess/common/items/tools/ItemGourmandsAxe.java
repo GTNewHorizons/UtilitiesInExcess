@@ -15,11 +15,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
 
@@ -123,4 +127,26 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
         return super.showDurabilityBar(stack);
     }
     //
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return GourmandsAxeConfig.enable;
+        }
+
+        @SubscribeEvent
+        public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+            if (!GourmandsAxeConfig.voidMinedBlock) return;
+            if (event.harvester == null) return;
+            if (event.harvester.getHeldItem() == null) return;
+
+            if (event.harvester.getHeldItem()
+                .getItem() instanceof ItemGourmandsAxe) {
+                event.drops.clear();
+            }
+        }
+    }
 }

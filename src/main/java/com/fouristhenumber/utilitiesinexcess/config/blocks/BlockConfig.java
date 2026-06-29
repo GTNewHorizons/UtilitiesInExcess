@@ -63,6 +63,9 @@ public class BlockConfig {
     public static boolean enableMagicWood;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableEndspark;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableMarginallyMaximisedChest;
 
     @Config.DefaultBoolean(true)
@@ -101,6 +104,9 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableEndOfTimePortal;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableEnderLocus;
 
     @Config.DefaultBoolean(true)
     public static boolean enableSmartPump;
@@ -203,7 +209,7 @@ public class BlockConfig {
         public int gigaTorchRange;
     }
 
-    @Config.Comment("Cursed Earth Configuration")
+    @Config.Comment("Spike Configuration")
     public static final Spikes spikes = new Spikes();
 
     @Config.LangKey("utilitiesinexcess.config.block.spikes")

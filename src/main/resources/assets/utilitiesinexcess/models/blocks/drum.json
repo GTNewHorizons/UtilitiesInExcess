@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "utilitiesinexcess:models/drum",
-    "particle": "utilitiesinexcess:models/drum"
+		"0": "utilitiesinexcess:blocks/models/drum",
+		"particle": "utilitiesinexcess:blocks/models/drum"
 	},
 	"elements": [
 		{
@@ -78,17 +78,39 @@
 			}
 		},
 		{
-			"name": "middle",
+			"name": "middle_bottom",
 			"from": [3, 2, 3],
-			"to": [13, 14, 13],
+			"to": [13, 6, 13],
 			"rotation": {"angle": 0, "axis": "y", "origin": [4, 2, 3]},
 			"faces": {
-				"north": {"uv": [0, 0, 2.5, 3], "texture": "#0"},
-				"east": {"uv": [2.5, 0, 5, 3], "texture": "#0"},
-				"south": {"uv": [0, 3, 2.5, 6], "texture": "#0"},
-				"west": {"uv": [2.5, 3, 5, 6], "texture": "#0"},
-				"up": {"uv": [7.5, 7.5, 5, 5], "texture": "#0"},
-				"down": {"uv": [2.5, 6, 0, 8.5], "texture": "#0"}
+				"north": {"uv": [0, 2, 2.5, 3], "texture": "#0", "tintindex": 0},
+				"east": {"uv": [2.5, 2, 5, 3], "texture": "#0", "tintindex": 0},
+				"south": {"uv": [0, 5, 2.5, 6], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [2.5, 5, 5, 6], "texture": "#0", "tintindex": 0}
+			}
+		},
+		{
+			"name": "middle",
+			"from": [3, 6, 3],
+			"to": [13, 10, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 6, 3]},
+			"faces": {
+				"north": {"uv": [0, 1, 2.5, 2], "texture": "#0"},
+				"east": {"uv": [2.5, 1, 5, 2], "texture": "#0"},
+				"south": {"uv": [0, 4, 2.5, 5], "texture": "#0"},
+				"west": {"uv": [2.5, 4, 5, 5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "middle_top",
+			"from": [3, 10, 3],
+			"to": [13, 14, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 10, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 2.5, 1], "texture": "#0", "tintindex": 0},
+				"east": {"uv": [2.5, 0, 5, 1], "texture": "#0", "tintindex": 0},
+				"south": {"uv": [0, 3, 2.5, 4], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [2.5, 3, 5, 4], "texture": "#0", "tintindex": 0}
 			}
 		},
 		{
@@ -166,20 +188,25 @@
 		{
 			"name": "group",
 			"origin": [8, 8, 8],
+			"scope": 0,
 			"color": 0,
 			"children": [
 				{
 					"name": "top",
 					"origin": [8, 8, 8],
+					"scope": 0,
 					"color": 0,
 					"children": [0, 1, 2, 3, 4]
 				},
 				5,
+				6,
+				7,
 				{
 					"name": "bottom",
 					"origin": [8, 8, 8],
+					"scope": 0,
 					"color": 0,
-					"children": [6, 7, 8, 9, 10]
+					"children": [8, 9, 10, 11, 12]
 				}
 			]
 		}

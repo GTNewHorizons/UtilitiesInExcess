@@ -9,19 +9,15 @@ import net.minecraft.nbt.NBTTagList;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
+import com.gtnewhorizons.postea.api.IItemStackTransformationHandler;
 
-public class GoldenBagTransformation extends AbstractItemTransformation {
+public class GoldenBagTransformation implements IItemStackTransformationHandler {
 
-    public GoldenBagTransformation() {
-        super();
-        setDummyName("dummy_golden_bag");
-        setOldName("ExtraUtilities:golden_bag");
-    }
+    @Override
+    public boolean apply(String originalId, NBTTagCompound stack) {
+        IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.GOLDEN_BAG.get()));
 
-    public NBTTagCompound doTransformation(NBTTagCompound tag) {
-        IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(ModItems.GOLDEN_BAG.get()));
-
-        NBTTagCompound tagtag = tag.getCompoundTag("tag");
+        NBTTagCompound tagtag = stack.getCompoundTag("tag");
         NBTTagList tagList = new NBTTagList();
 
         List<String> toBeRemoved = new ArrayList<>();
@@ -40,7 +36,7 @@ public class GoldenBagTransformation extends AbstractItemTransformation {
         }
 
         tagtag.setTag("Items", tagList);
-        tag.setTag("tag", tagtag);
-        return tag;
+        stack.setTag("tag", tagtag);
+        return true;
     }
 }
