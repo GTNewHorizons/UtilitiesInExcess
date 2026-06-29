@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
-import static com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive.getPseudoInversionChestAtDirection;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActive;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+import com.github.bsideup.jabel.Desugar;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -20,32 +20,33 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
 
+    @Desugar
     public record ChestGroup(String label, int required, List<ItemStack> validItems) {}
 
-    private List<ChestGroup> groups;
+    private ChestGroup[] groups;
 
     public PseudoInversionRecipeHandler() {
         buildGroups();
     }
 
     private void buildGroups() {
-        groups = List.of(
+        groups = new ChestGroup[] {
             new ChestGroup(
                 "nei.pseudo_inversion.label_north",
                 InversionConfig.northChestRequiredItems,
-                getPseudoInversionChestAtDirection(ForgeDirection.NORTH)),
+                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.NORTH)),
             new ChestGroup(
                 "nei.pseudo_inversion.label_south",
                 InversionConfig.southChestRequiredItems,
-                getPseudoInversionChestAtDirection(ForgeDirection.SOUTH)),
+                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.SOUTH)),
             new ChestGroup(
                 "nei.pseudo_inversion.label_east",
                 InversionConfig.eastChestRequiredItems,
-                getPseudoInversionChestAtDirection(ForgeDirection.EAST)),
+                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.EAST)),
             new ChestGroup(
                 "nei.pseudo_inversion.label_west",
                 InversionConfig.westChestRequiredItems,
-                getPseudoInversionChestAtDirection(ForgeDirection.WEST)));
+                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.WEST)) };
     }
 
     @Override
@@ -143,9 +144,9 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
 
     public class CachedRitual extends CachedRecipe {
 
-        private final List<ChestGroup> groups;
+        private final ChestGroup[] groups;
 
-        public CachedRitual(List<ChestGroup> groups) {
+        public CachedRitual(ChestGroup[] groups) {
             this.groups = groups;
         }
 
@@ -173,7 +174,7 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
             return null;
         }
 
-        public List<ChestGroup> getGroups() {
+        public ChestGroup[] getGroups() {
             return groups;
         }
     }
