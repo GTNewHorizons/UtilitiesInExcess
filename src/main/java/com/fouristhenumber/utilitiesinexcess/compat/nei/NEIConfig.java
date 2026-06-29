@@ -19,8 +19,6 @@ import cpw.mods.fml.relauncher.Side;
 @SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
 
-    record Chud(String yep, int nope) {}
-
     @Override
     public String getName() {
         return StatCollector.translateToLocal("nei.title.uie.plugin");
@@ -34,8 +32,6 @@ public class NEIConfig implements IConfigureNEI {
     @Override
     public void loadConfig() {
         EnderLocusRecipeHandler handler = new EnderLocusRecipeHandler();
-
-        Chud chud = new Chud("ye", 1);
 
         API.registerRecipeHandler(handler);
         API.registerUsageHandler(handler);
