@@ -112,7 +112,10 @@ public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, TextureUtil.missingTexture.getGlTextureId());
 
         GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
-        GL11.glDisable(GL11.GL_BLEND);
+        boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
+        if (blend) {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         shader.use();
 
@@ -125,7 +128,9 @@ public class TESRTrueGreenscreen extends TileEntitySpecialRenderer {
 
         ShaderProgram.clear();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
+        if (blend) {
+            GL11.glEnable(GL11.GL_BLEND);
+        }
         GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_MAX);
 
         Minecraft.getMinecraft()
