@@ -1,10 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTimeEvents;
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
@@ -27,6 +31,8 @@ public class CommonProxy {
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
     public SyncedKeybind GLOVE_KEYBIND;
+    public SyncedKeybind ARCHITECTS_KEYBIND_H;
+    public SyncedKeybind ARCHITECTS_KEYBIND_V;
 
     public void preInit(FMLPreInitializationEvent event) {
         // Config is handled in the early mixin loader (UIEMixinLoader)
@@ -35,6 +41,7 @@ public class CommonProxy {
         PacketHandler.init();
         ModBlocks.init();
         ModItems.init();
+        ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
         UnderWorldEvents.init();
@@ -56,12 +63,19 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
         GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
+        ARCHITECTS_KEYBIND_H = SyncedKeybind
+            .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
+        ARCHITECTS_KEYBIND_V = SyncedKeybind
+            .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
     }
 
     public void postInit(FMLPostInitializationEvent event) {
         if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
             PosteaTransforms.postInit();
         }
+
+        ItemReversingHoe.initializeCache();
+        ItemDestructionPickaxe.initializeCache();
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}

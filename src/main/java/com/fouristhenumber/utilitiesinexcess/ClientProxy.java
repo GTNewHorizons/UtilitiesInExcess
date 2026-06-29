@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
@@ -20,10 +21,12 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
+import com.fouristhenumber.utilitiesinexcess.compat.nei.NEIConfig;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
+import com.fouristhenumber.utilitiesinexcess.utils.FluidColorCache;
 import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -75,15 +78,23 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.FIRE_BATTERY.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.FIRE_BATTERY.get(), new FireBatteryRenderer());
         }
+        if (ModItems.CHUNCHUNMARU.isEnabled()) {
+            MinecraftForgeClient.registerItemRenderer(ModItems.CHUNCHUNMARU.get(), new ChunchunmaruRenderer());
+        }
 
         FMLCommonHandler.instance()
             .bus()
             .register(this);
 
+        MinecraftForge.EVENT_BUS.register(new FluidColorCache.TextureHook());
+
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
             FindItHelper.INSTANCE = new FindItHelper();
             MinecraftForge.EVENT_BUS.register(FindItHelper.INSTANCE);
+        }
+        if (Mods.NEI.isLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new NEIConfig());
         }
     }
 

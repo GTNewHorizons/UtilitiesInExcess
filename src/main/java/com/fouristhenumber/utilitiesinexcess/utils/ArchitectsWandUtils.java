@@ -85,7 +85,7 @@ public class ArchitectsWandUtils {
      */
     public static Set<BlockPos> findAdjacentBlocks(World world, List<ItemStack> possiblePlacements, int findCount,
         ForgeDirection clickedSide, BlockPos startPos, MovingObjectPosition mop, EntityPlayer player,
-        ArchitectsSelection architectsSelection) {
+        ArchitectsSelection architectsSelection, WandAxisMode axisMode) {
         Set<BlockPos> region = new HashSet<>();
         if (findCount <= 0) {
             return region;
@@ -95,18 +95,24 @@ public class ArchitectsWandUtils {
 
         // Determine allowed offsets depending on the face that was clicked.
         int[][] allowedOffsets = switch (clickedSide) {
-            case UP, DOWN ->
-                // Plane: x/z plane (y remains constant)
-                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, // Cardinal
-                    { 1, 0, 1 }, { 1, 0, -1 }, { -1, 0, 1 }, { -1, 0, -1 } }; // Diagonal
-            case NORTH, SOUTH ->
-                // Plane: x/y plane (z remains constant)
-                new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, // Cardinal
-                    { 1, 1, 0 }, { 1, -1, 0 }, { -1, 1, 0 }, { -1, -1, 0 } }; // Diagonal
-            case EAST, WEST ->
-                // Plane: y/z plane (x remains constant)
-                new int[][] { { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, // Cardinal
-                    { 0, 1, 1 }, { 0, 1, -1 }, { 0, -1, 1 }, { 0, -1, -1 } }; // Diagonal
+            case UP, DOWN -> switch (axisMode) {
+                    case FREE -> new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, { 1, 0, 1 },
+                        { 1, 0, -1 }, { -1, 0, 1 }, { -1, 0, -1 } };
+                    case HORIZONTAL -> new int[][] { { 1, 0, 0 }, { -1, 0, 0 } };
+                    case VERTICAL -> new int[][] { { 0, 0, 1 }, { 0, 0, -1 } };
+                };
+            case NORTH, SOUTH -> switch (axisMode) {
+                    case FREE -> new int[][] { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, { 1, 1, 0 },
+                        { 1, -1, 0 }, { -1, 1, 0 }, { -1, -1, 0 } };
+                    case HORIZONTAL -> new int[][] { { 1, 0, 0 }, { -1, 0, 0 } };
+                    case VERTICAL -> new int[][] { { 0, 1, 0 }, { 0, -1, 0 } };
+                };
+            case EAST, WEST -> switch (axisMode) {
+                    case FREE -> new int[][] { { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, { 0, 0, -1 }, { 0, 1, 1 },
+                        { 0, 1, -1 }, { 0, -1, 1 }, { 0, -1, -1 } };
+                    case HORIZONTAL -> new int[][] { { 0, 0, 1 }, { 0, 0, -1 } };
+                    case VERTICAL -> new int[][] { { 0, 1, 0 }, { 0, -1, 0 } };
+                };
             default -> throw new RuntimeException("UE's BuilderWand's findAdjacentBlocks called with invalid side");
         };
 
@@ -201,5 +207,11 @@ public class ArchitectsWandUtils {
             return trowel.doDamage(BackhandUtils.getOffhandItem(player), damage);
         }
         return true;
+    }
+
+    public enum WandAxisMode {
+        FREE,
+        HORIZONTAL,
+        VERTICAL
     }
 }

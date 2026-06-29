@@ -2,12 +2,17 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockPacifistsBench extends BlockContainer {
 
@@ -15,6 +20,40 @@ public class BlockPacifistsBench extends BlockContainer {
         super(Material.wood);
         setBlockTextureName("utilitiesinexcess:pacifists_bench");
         setBlockName("pacifists_bench");
+        setHardness(1F);
+    }
+
+    IIcon[] icons = new IIcon[6];
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(this.getTextureName() + "_west");
+        icons[0] = reg.registerIcon(this.getTextureName() + "_bottom");
+        icons[1] = reg.registerIcon(this.getTextureName() + "_top");
+        icons[2] = reg.registerIcon(this.getTextureName() + "_north");
+        icons[3] = reg.registerIcon(this.getTextureName() + "_south");
+        icons[4] = blockIcon;
+        icons[5] = reg.registerIcon(this.getTextureName() + "_east");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int s, int meta) {
+        switch (s) {
+            case 0:
+            case 1:
+                return icons[s];
+            default:
+                int r = meta + 1;
+                r = r > 3 ? r - 4 : r;
+
+                ForgeDirection d = ForgeDirection.getOrientation(s);
+                for (int i = 0; i < r; i++) {
+                    d = d.getRotation(ForgeDirection.DOWN);
+                }
+
+                return icons[d.ordinal()];
+        }
     }
 
     @Override

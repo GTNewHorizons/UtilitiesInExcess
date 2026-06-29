@@ -78,6 +78,10 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
 
+        sendInfoPage(
+            "<utilitiesinexcess:ender_locus>,<utilitiesinexcess:convergence_crystal>",
+            "nei.infopage.uie.ender_locus.1");
+
         sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
         sendInfoPage(
             "<utilitiesinexcess:advanced_block_update_detector>",
@@ -195,6 +199,10 @@ public class IMCForNEI {
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
             "nei.infopage.uie.inversion_sigil.4");
 
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.1");
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.2");
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.3");
+
         sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
 
         sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
@@ -209,7 +217,7 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.2");
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
 
-        sendInfoPage("<utilitiesinexcess:chandelier>", "nei.infopage.uie.chandelier.1");
+        sendInfoPage("utilitiesinexcess:chandelier", "nei.infopage.uie.chandelier.1");
 
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
 

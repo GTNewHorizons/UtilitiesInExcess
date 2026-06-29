@@ -20,6 +20,7 @@ public class BlockRedstoneClock extends BlockContainer {
         super(Material.rock);
         setBlockName("redstone_clock");
         setBlockTextureName("utilitiesinexcess:redstone_clock");
+        setHardness(1F);
     }
 
     @Override
