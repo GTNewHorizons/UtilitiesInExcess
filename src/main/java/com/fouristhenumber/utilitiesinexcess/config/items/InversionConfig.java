@@ -88,8 +88,8 @@ public class InversionConfig {
     @Config.Comment("""
         What happens when you run out of time while handling Inverted Ingots
          IMPLODE: Die, ingots are destroyed
-         DISAPPEAR: Ingots are destroyed
          DECAY: Ingots become Stable Inverted Nuggets
+         DISAPPEAR: Ingots are destroyed
          OFF: No timer""")
     @Config.DefaultEnum("IMPLODE")
     public static InversionMode invertedIngotMode;
