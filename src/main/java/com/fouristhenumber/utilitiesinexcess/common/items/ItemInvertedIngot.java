@@ -93,7 +93,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                                 "item.inverted_ingot.desc.2",
                                 formatNumber(Math.max(0, timeLeft))));
                     } else {
-                        tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 15));
+                        tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", InversionConfig.invertedIngotImplosionTimer / 20));
                     }
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
