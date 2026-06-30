@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -88,18 +89,36 @@ public class TileEntityPacifistsBench extends TileEntity {
         }
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (worldObj.getTileEntity(
-                xCoord + dir.offsetX,
-                yCoord + dir.offsetY,
-                zCoord + dir.offsetZ) instanceof IInventory inv) {
-                for (int i = 0; i < inv.getSizeInventory(); i++) {
-                    ItemStack stack = inv.getStackInSlot(i);
-                    if (stack != null && stack.getItem() instanceof ItemSword) {
-                        weaponLocation = i;
-                        currentInventory = inv;
-                        return stack;
+            TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+            if (te instanceof IInventory inv) {
+                ItemStack sword = findWeapon(inv);
+                if (sword == null && te instanceof TileEntityChest chest) {
+                    if (!chest.adjacentChestChecked) chest.checkForAdjacentChests();
+
+                    if (chest.adjacentChestZNeg != null) {
+                        return findWeapon(chest.adjacentChestZNeg);
+                    } else if (chest.adjacentChestXPos != null) {
+                        return findWeapon(chest.adjacentChestXPos);
+                    } else if (chest.adjacentChestXNeg != null) {
+                        return findWeapon(chest.adjacentChestXNeg);
+                    } else if (chest.adjacentChestZPos != null) {
+                        return findWeapon(chest.adjacentChestZPos);
                     }
+
                 }
+                return sword;
+            }
+        }
+        return null;
+    }
+
+    private ItemStack findWeapon(IInventory inv) {
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof ItemSword) {
+                weaponLocation = i;
+                currentInventory = inv;
+                return stack;
             }
         }
         return null;
