@@ -95,7 +95,8 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
     @Override
     protected boolean consumeFuel() {
         if (fuelStack != null && fuelStack.getItem() != null
-            && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
+            && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()
+            && isItemValidForSlot(0, fuelStack)) {
             currentFuelBurnTime = getFuelBurnTime(fuelStack);
             currentRFPerTick = getRFPerTick(fuelStack);
             fuelStack.stackSize--;
