@@ -96,6 +96,7 @@ public class InversionConfig {
 
     @Config.DefaultInt(300)
     @Config.RequiresMcRestart
+    @Config.RangeInt(min = 0)
     public static int invertedIngotImplosionTimer;
 
     public enum InversionMode {
