@@ -66,9 +66,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
             }
 
             long passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
-            if (passed > InversionConfig.invertedIngotImplosionTimer) {
-                return (!world.isRemote);
-            }
+            return passed > InversionConfig.invertedIngotImplosionTimer;
         }
         return false;
     }
@@ -86,7 +84,11 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                 player.closeScreen();
                 player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
             }
-        }
+        } /*
+           * if (player instanceof EntityPlayerMP mp) {
+           * mp.mcServer.getConfigurationManager().syncPlayerInventory(mp);
+           * }
+           */
     }
 
     @Override
