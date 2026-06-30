@@ -74,7 +74,6 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     private static void resolveImplosion(ItemStack stack, EntityPlayer player, Consumer<ItemStack> setStack) {
         if (stack == null || !(stack.getItem() instanceof ItemInvertedIngot)
             || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF) return;
-        if (!checkImplosion(stack, player.worldObj)) return;
 
         if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
             setStack.accept(ModItems.INVERTED_NUGGET.newItemStack());
@@ -84,11 +83,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                 player.closeScreen();
                 player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
             }
-        } /*
-           * if (player instanceof EntityPlayerMP mp) {
-           * mp.mcServer.getConfigurationManager().syncPlayerInventory(mp);
-           * }
-           */
+        }
     }
 
     @Override
@@ -191,12 +186,14 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.player.openContainer instanceof ContainerWorkbench bench) {
                 ItemStack cursorItem = event.player.inventory.getItemStack();
-                resolveImplosion(cursorItem, event.player, event.player.inventory::setItemStack);
+                if (checkImplosion(cursorItem, event.player.worldObj))
+                    resolveImplosion(cursorItem, event.player, event.player.inventory::setItemStack);
 
                 for (int i = 0; i < bench.craftMatrix.getSizeInventory(); i++) {
                     final int slot = i;
                     ItemStack stack = bench.craftMatrix.getStackInSlot(i);
-                    resolveImplosion(stack, event.player, s -> bench.craftMatrix.setInventorySlotContents(slot, s));
+                    if (checkImplosion(stack, event.player.worldObj))
+                        resolveImplosion(stack, event.player, s -> bench.craftMatrix.setInventorySlotContents(slot, s));
                 }
             }
         }
