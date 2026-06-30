@@ -44,12 +44,6 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
         if (!(entityIn instanceof EntityPlayer player)) return;
 
-        NBTTagCompound tag = stack.getTagCompound();
-        if (tag.getBoolean("Crafted") && !tag.hasKey("CraftedAt")) {
-            tag.setLong("CraftedAt", worldIn.getTotalWorldTime());
-            stack.setTagCompound(tag);
-        }
-
         if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
             player.inventory.setInventorySlotContents(slot, null);
             player.closeScreen();
@@ -62,6 +56,11 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public static boolean checkImplosion(ItemStack item, World world) {
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
+            if (tag.getBoolean("Crafted") && !tag.hasKey("CraftedAt")) {
+                tag.setLong("CraftedAt", world.getTotalWorldTime());
+                item.setTagCompound(tag);
+            }
+
             long passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
             if (passed > InversionConfig.invertedIngotImplosionTimer) {
                 return (world.isRemote);
@@ -93,7 +92,10 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                                 "item.inverted_ingot.desc.2",
                                 formatNumber(Math.max(0, timeLeft))));
                     } else {
-                        tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", InversionConfig.invertedIngotImplosionTimer / 20));
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "item.inverted_ingot.desc.2",
+                                InversionConfig.invertedIngotImplosionTimer / 20));
                     }
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
