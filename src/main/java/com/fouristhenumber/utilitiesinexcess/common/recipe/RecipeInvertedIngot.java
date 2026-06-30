@@ -3,7 +3,10 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 
 public class RecipeInvertedIngot extends ShapedRecipes {
 
@@ -20,5 +23,16 @@ public class RecipeInvertedIngot extends ShapedRecipes {
         }
 
         return super.matches(inv, world);
+    }
+
+    @Override
+    public ItemStack getRecipeOutput() {
+        ItemStack output = super.getRecipeOutput().copy();
+        if (InversionConfig.invertedIngotsImplode) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setBoolean("Crafted", true);
+            output.setTagCompound(nbt);
+        }
+        return output;
     }
 }

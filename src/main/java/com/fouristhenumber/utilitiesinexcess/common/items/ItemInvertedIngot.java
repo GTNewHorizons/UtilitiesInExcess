@@ -41,14 +41,13 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
-        if (stack.getItemDamage() != 0) return;
+        if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
         if (!(entityIn instanceof EntityPlayer player)) return;
-        if (player.capabilities.isCreativeMode) return;
 
-        if (!stack.hasTagCompound()) {
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setLong("CraftedAt", worldIn.getTotalWorldTime());
-            stack.setTagCompound(nbt);
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag.getBoolean("Crafted") && !tag.hasKey("CraftedAt")) {
+            tag.setLong("CraftedAt", worldIn.getTotalWorldTime());
+            stack.setTagCompound(tag);
         }
 
         if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
@@ -81,15 +80,13 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
             if (InversionConfig.invertedIngotsImplode) {
-                boolean hasTag = stack.hasTagCompound();
-                if (player.capabilities.isCreativeMode && !hasTag) {
+                if (!stack.hasTagCompound()) {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
-                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c2"));
                 } else {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
-                    if (hasTag) {
-                        double passed = player.worldObj.getTotalWorldTime() - stack.getTagCompound()
-                            .getLong("CraftedAt");
+                    NBTTagCompound tag = stack.getTagCompound();
+                    if (tag.hasKey("CraftedAt")) {
+                        double passed = player.worldObj.getTotalWorldTime() - tag.getLong("CraftedAt");
                         double timeLeft = (InversionConfig.invertedIngotImplosionTimer - passed) / 20D;
                         tooltip.add(
                             StatCollector.translateToLocalFormatted(
