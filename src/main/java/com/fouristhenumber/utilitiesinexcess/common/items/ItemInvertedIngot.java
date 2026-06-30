@@ -42,12 +42,13 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public static final DamageSource INVERTED_INGOT = (new DamageSource("inverted_ingot")).setDamageBypassesArmor();
 
     private static boolean isUnstable(ItemStack stack) {
-        return stack != null && stack.getItemDamage() == 0 && stack.hasTagCompound();
+        return stack != null && stack.getItem() instanceof ItemInvertedIngot
+            && stack.getItemDamage() == 0
+            && stack.hasTagCompound();
     }
 
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
-        if (!isUnstable(stack)) return;
         if (!(entityIn instanceof EntityPlayer player)) return;
 
         if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
@@ -58,6 +59,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     }
 
     public static boolean checkImplosion(ItemStack item, World world) {
+        if (!isUnstable(item)) return false;
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
             if (tag.getBoolean("Crafted") && !tag.hasKey("CraftedAt")) {
@@ -72,8 +74,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     }
 
     private static void resolveImplosion(ItemStack stack, EntityPlayer player, Consumer<ItemStack> setStack) {
-        if (stack == null || !(stack.getItem() instanceof ItemInvertedIngot)
-            || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF) return;
+        if (!isUnstable(stack) || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF) return;
 
         if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
             setStack.accept(ModItems.INVERTED_NUGGET.newItemStack());
@@ -175,11 +176,11 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         @SubscribeEvent
         public static void onItemToss(ItemTossEvent event) {
             ItemStack stack = event.entityItem.getEntityItem();
-            if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
-                if (isUnstable(stack) && InversionConfig.invertedIngotMode == InversionConfig.InversionMode.IMPLODE) {
-                    event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
-                }
+
+            if (isUnstable(stack) && InversionConfig.invertedIngotMode == InversionConfig.InversionMode.IMPLODE) {
+                event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
             }
+
         }
 
         @SubscribeEvent
@@ -218,15 +219,14 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
             if (event.entity instanceof EntityItem entityItem) {
                 ItemStack stack = entityItem.getEntityItem();
-                if (stack.getItem() instanceof ItemInvertedIngot) {
-                    if (!isUnstable(stack) || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF)
-                        return;
-                    if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
-                        entityItem.setEntityItemStack(ModItems.INVERTED_NUGGET.newItemStack(stack.stackSize));
-                    } else {
-                        entityItem.setDead();
-                        event.setCanceled(true);
-                    }
+
+                if (!isUnstable(stack) || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF)
+                    return;
+                if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
+                    entityItem.setEntityItemStack(ModItems.INVERTED_NUGGET.newItemStack(stack.stackSize));
+                } else {
+                    entityItem.setDead();
+                    event.setCanceled(true);
                 }
             }
         }
