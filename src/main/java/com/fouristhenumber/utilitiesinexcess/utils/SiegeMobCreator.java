@@ -12,7 +12,6 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -50,38 +49,10 @@ public class SiegeMobCreator {
     }
 
     private static void addArmor(EntityLiving mob, Random rand) {
-        ItemStack helmet = pickArmor(
-            rand,
-            Items.leather_helmet,
-            Items.golden_helmet,
-            Items.chainmail_helmet,
-            Items.iron_helmet,
-            Items.diamond_helmet);
-        mob.setCurrentItemOrArmor(4, helmet);
-        ItemStack chestplate = pickArmor(
-            rand,
-            Items.leather_chestplate,
-            Items.golden_chestplate,
-            Items.chainmail_chestplate,
-            Items.iron_chestplate,
-            Items.diamond_chestplate);
-        mob.setCurrentItemOrArmor(3, chestplate);
-        ItemStack leggings = pickArmor(
-            rand,
-            Items.leather_leggings,
-            Items.golden_leggings,
-            Items.chainmail_leggings,
-            Items.iron_leggings,
-            Items.diamond_leggings);
-        mob.setCurrentItemOrArmor(2, leggings);
-        ItemStack boots = pickArmor(
-            rand,
-            Items.leather_boots,
-            Items.golden_boots,
-            Items.chainmail_boots,
-            Items.iron_boots,
-            Items.diamond_boots);
-        mob.setCurrentItemOrArmor(1, boots);
+        for (int armorSlot = 1; armorSlot <= 4; armorSlot++) {
+            ItemStack armorStack = pickArmor(rand, armorSlot);
+            mob.setCurrentItemOrArmor(armorSlot, armorStack);
+        }
     }
 
     private static void applyPotions(EntityLiving mob, Random rand) {
@@ -95,15 +66,18 @@ public class SiegeMobCreator {
         }
     }
 
-    private static ItemStack pickArmor(Random rand, Item leather, Item gold, Item chain, Item iron, Item diamond) {
+    private static ItemStack pickArmor(Random rand, int armorSlot) {
         ItemStack armor;
         int rng = rand.nextInt(100);
+        int armorTier;
         if (rng < 20) return null;
-        else if (rng < 30) armor = new ItemStack(leather);
-        else if (rng < 40) armor = new ItemStack(gold);
-        else if (rng < 65) armor = new ItemStack(chain);
-        else if (rng < 90) armor = new ItemStack(iron);
-        else armor = new ItemStack(diamond);
+        else if (rng < 30) armorTier = 0;
+        else if (rng < 40) armorTier = 1;
+        else if (rng < 65) armorTier = 2;
+        else if (rng < 90) armorTier = 3;
+        else armorTier = 4;
+
+        armor = new ItemStack(EntityLiving.getArmorItemForSlot(armorSlot, armorTier));
 
         applyArmorEnchants(armor, rand);
         return armor;
