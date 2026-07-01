@@ -5,13 +5,9 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+@Config.LangKey("utilitiesinexcess.config.blocks")
 @Config(modid = UtilitiesInExcess.MODID, category = "blocks")
 public class BlockConfig {
-
-    public static void registerConfig() throws ConfigException {
-        ConfigurationManager.registerConfig(BlockConfig.class);
-        ConfigurationManager.registerConfig(GeneratorConfig.class);
-    }
 
     @Config.LangKey("tile.pure_love.name")
     public static final PureLove pureLove = new PureLove();

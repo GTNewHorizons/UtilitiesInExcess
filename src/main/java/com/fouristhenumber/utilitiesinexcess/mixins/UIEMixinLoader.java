@@ -7,6 +7,7 @@ import java.util.Set;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.DimensionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -23,7 +24,9 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
         // Register config here because then it's available during mixins.
         try {
             ConfigurationManager.registerConfig(ItemConfig.class);
-            BlockConfig.registerConfig();
+            ConfigurationManager.registerConfig(ItemConfig.class);
+            ConfigurationManager.registerConfig(BlockConfig.class);
+            ConfigurationManager.registerConfig(GeneratorConfig.class);
             DimensionConfig.registerConfig();
             OtherConfig.registerConfig();
             RecipeConfig.registerConfig();

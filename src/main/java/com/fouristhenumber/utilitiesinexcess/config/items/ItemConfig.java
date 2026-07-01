@@ -4,7 +4,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.InvertedTools;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config.LangKey("utilitiesinexcess.config.item")
+@Config.LangKey("utilitiesinexcess.config.items")
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
 public class ItemConfig {
 

@@ -615,13 +615,15 @@ ue_sphere.name=%s Impossible Object
 item.chunchunmaru.name=Chunchunmaru
 item.chunchunmaru.desc=It's a really cool name
 
-utilitiesinexcess.config.item=Items
+utilitiesinexcess.config.items=Items
 utilitiesinexcess.config.item.inverted_tools=Inverted Tools
 utilitiesinexcess.config.item.inversion=Inversion Ritual
 utilitiesinexcess.config.item.watering_can=Watering Can
 utilitiesinexcess.config.item.watering_can_tier=Watering Can Tiers
 utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
+utilitiesinexcess.config.blocks=Blocks
 utilitiesinexcess.config.block.chandelier=Chandeliers
 utilitiesinexcess.config.block.spikes=Spikes
 utilitiesinexcess.config.block.cursed_earth=Cursed / Blessed Earth
 utilitiesinexcess.config.block.muffler=Mufflers
+utilitiesinexcess.config.generators=Generators
