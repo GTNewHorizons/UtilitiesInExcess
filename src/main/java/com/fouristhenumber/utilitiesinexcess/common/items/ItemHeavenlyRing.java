@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -81,9 +83,22 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
-            EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
-        tooltip.add(StatCollector.translateToLocal("item.heavenly_ring.desc"));
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "item.heavenly_ring.desc.1",
+                EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
+        String keyName = switch (key) {
+            case -99 -> StatCollector.translateToLocal("uie.util.key.rclick");
+            case -98 -> StatCollector.translateToLocal("uie.util.key.lclick");
+            default -> GameSettings.getKeyDisplayString(key);
+        };
+        tooltip.add(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "item.heavenly_ring.desc.2",
+                EnumChatFormatting.GREEN + keyName + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + RING_COUNT + EnumChatFormatting.GRAY));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
