@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.tileentity.TileEntity;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
@@ -79,6 +80,7 @@ public enum ModTileEntities {
     ENDER_LOCUS(TileEntityEnderLocus.class                                     , "EnderLocus"),
     VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
     VOID_MARKER(TileEntityVoidMarker.class                                     , "VoidMarker"),
+    TRUE_GREENSCREEN(BlockTrueGreenscreen.TileEntityTrueGreenscreen.class      , "TrueGreenscreen"),
     ;
     // spotless:on
 
