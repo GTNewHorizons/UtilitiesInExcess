@@ -25,6 +25,7 @@ public class BlockVoidQuarry extends BlockContainer {
         super(Material.iron);
         setBlockName("void_quarry");
         setBlockTextureName("utilitiesinexcess:void_quarry");
+        setHardness(2f);
     }
 
     @Override

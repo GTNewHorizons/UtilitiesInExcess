@@ -31,6 +31,7 @@ public class BlockVoidMarker extends BlockContainer {
         setBlockTextureName("utilitiesinexcess:void_marker");
         setBlockBounds(7F / 16F, 0F / 16F, 7F / 16F, 9F / 16F, 13.5F / 16F, 9F / 16F);
         setLightOpacity(0);
+        setHardness(2f);
     }
 
     @Override
