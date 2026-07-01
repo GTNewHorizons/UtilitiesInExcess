@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
@@ -144,7 +145,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return ItemConfig.enableHeavenlyRing;
+            return ItemConfig.enableHeavenlyRing && !Mods.Baubles.isLoaded();
         }
 
         @SubscribeEvent
@@ -204,17 +205,24 @@ public class ItemHeavenlyRing extends Item implements IBauble {
                 }
             }
 
-            if (player.capabilities.allowFlying == hasRing) return;
-
+            NBTTagCompound tag = player.getEntityData()
+                .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
             if (hasRing) {
                 player.capabilities.allowFlying = true;
-            } else {
-                if (!player.capabilities.isCreativeMode) {
-                    player.capabilities.allowFlying = false;
-                    player.capabilities.isFlying = false;
-                }
+                tag.setBoolean("HasRingUIE", true);
+                player.getEntityData()
+                    .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                player.sendPlayerAbilities();
+            } else if (!player.capabilities.isCreativeMode && tag.hasKey("HasRingUIE")) {
+                player.capabilities.allowFlying = false;
+                player.capabilities.isFlying = false;
+                tag.removeTag("HasRingUIE");
+                player.getEntityData()
+                    .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                player.sendPlayerAbilities();
             }
-            player.sendPlayerAbilities();
         }
     }
 }
