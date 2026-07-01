@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.api.BaubleType;
@@ -32,7 +33,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
-public class ItemHeavenlyRing extends Item implements IBauble {
+public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem {
 
     private final int RING_COUNT;
     private final String SUFFIX;
