@@ -85,11 +85,24 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public static boolean enableInvertedIngot;
 
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean invertedIngotsImplode;
+    @Config.Comment("""
+        What happens when you run out of time while handling Inverted Ingots
+         IMPLODE: Die, ingots are destroyed
+         DISAPPEAR: Ingots are destroyed
+         DECAY: Ingots become Stable Inverted Nuggets
+         OFF: No timer""")
+    @Config.DefaultEnum("IMPLODE")
+    public static InversionMode invertedIngotMode;
 
     @Config.DefaultInt(300)
     @Config.RequiresMcRestart
+    @Config.RangeInt(min = 0)
     public static int invertedIngotImplosionTimer;
+
+    public enum InversionMode {
+        OFF,
+        IMPLODE,
+        DISAPPEAR,
+        DECAY
+    }
 }
