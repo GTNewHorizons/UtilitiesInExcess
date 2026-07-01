@@ -31,19 +31,19 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
         groups = new ChestGroup[] {
             new ChestGroup(
                 "nei.pseudo_inversion.label_north",
-                InversionConfig.northChestRequiredItems,
+                InversionConfig.INSTANCE.northChestRequiredItems,
                 ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.NORTH)),
             new ChestGroup(
                 "nei.pseudo_inversion.label_south",
-                InversionConfig.southChestRequiredItems,
+                InversionConfig.INSTANCE.southChestRequiredItems,
                 ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.SOUTH)),
             new ChestGroup(
                 "nei.pseudo_inversion.label_east",
-                InversionConfig.eastChestRequiredItems,
+                InversionConfig.INSTANCE.eastChestRequiredItems,
                 ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.EAST)),
             new ChestGroup(
                 "nei.pseudo_inversion.label_west",
-                InversionConfig.westChestRequiredItems,
+                InversionConfig.INSTANCE.westChestRequiredItems,
                 ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.WEST)) };
     }
 

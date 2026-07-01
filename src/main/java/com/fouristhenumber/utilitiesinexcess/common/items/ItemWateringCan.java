@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig.wateringCan;
+import static com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig.INSTANCE;
 import static net.minecraft.init.Blocks.mycelium;
 
 import java.util.List;
@@ -112,7 +112,7 @@ public class ItemWateringCan extends Item {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         // Check if the watering can is enabled and if the player is sneaking to toggle it
-        if (wateringCan.allowWateringCanToggle && player.isSneaking() && !world.isRemote) {
+        if (INSTANCE.allowWateringCanToggle && player.isSneaking() && !world.isRemote) {
             setActive(stack, !isActive(stack));
             player.addChatMessage(
                 new ChatComponentTranslation("item.watering_can." + (isActive(stack) ? "activated" : "deactivated")));
@@ -163,7 +163,7 @@ public class ItemWateringCan extends Item {
 
         if (!player.canPlayerEdit(x2, y2, z2, side, stack)) return false;
 
-        if (!wateringCan.allowAutomatedWatering && isFakePlayer(player)) return false;
+        if (!INSTANCE.allowAutomatedWatering && isFakePlayer(player)) return false;
 
         this.hydrateFarmland(world, x, y, z);
 
@@ -238,11 +238,11 @@ public class ItemWateringCan extends Item {
             Block targetBlockAt = world.getBlock(bx, by, bz);
 
             // Multiply flower if used on an existing flower block
-            if (wateringCan.Flowering.allowFlowerDuplication && targetBlock instanceof BlockFlower) {
+            if (INSTANCE.Flowering.allowFlowerDuplication && targetBlock instanceof BlockFlower) {
                 multiplyFlower(world, bx, by, bz, (BlockFlower) targetBlock, targetMeta);
                 return;
             }
-            if (!wateringCan.Flowering.allowFlowerSpawning) return;
+            if (!INSTANCE.Flowering.allowFlowerSpawning) return;
 
             // Ensure flowers only spawn on grass blocks:
             // If the target block isn't grass, check the block below its top surface (accounting for block height).
@@ -254,8 +254,7 @@ public class ItemWateringCan extends Item {
             }
 
             // If the target block height is less than 0.85F try and place a new flower next to it
-            if (wateringCan.Flowering.adjustFlowerSpawnHeightForShortBlocks
-                && targetBlock.getBlockBoundsMaxY() < 0.85F) {
+            if (INSTANCE.Flowering.adjustFlowerSpawnHeightForShortBlocks && targetBlock.getBlockBoundsMaxY() < 0.85F) {
                 by -= targetBlock.getBlockBoundsMaxY(); // Adjust the height to place the flower correctly
             }
 
@@ -354,10 +353,10 @@ public class ItemWateringCan extends Item {
     public void walkingSpeed(EntityPlayer player, boolean slowness) {
         if (player.worldObj.isRemote && player instanceof EntityPlayerSP playerSP) {
             // this is a workaround to prevent the player from slowing when using the watering can (right click)
-            if (!slowness && !wateringCan.walkingSpeedPenalty) {
+            if (!slowness && !INSTANCE.walkingSpeedPenalty) {
                 playerSP.movementInput.moveStrafe /= 0.2F;
                 playerSP.movementInput.moveForward /= 0.2F;
-            } else if (slowness && wateringCan.walkingSpeedPenalty) {
+            } else if (slowness && INSTANCE.walkingSpeedPenalty) {
                 playerSP.movementInput.moveStrafe *= 0.2F;
                 playerSP.movementInput.moveForward *= 0.2F;
             }

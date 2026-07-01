@@ -89,7 +89,7 @@ public class BlockPacifistsBench extends BlockContainer {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return BlockConfig.enablePacifistsBench;
+            return BlockConfig.pacifistsBench.enablePacifistsBench;
         }
 
         @SubscribeEvent

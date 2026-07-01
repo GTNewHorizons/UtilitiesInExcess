@@ -38,7 +38,7 @@ public class TileEntityRainMuffler extends TileEntitySoundMuffler {
 
         @EventBusSubscriber.Condition
         public static boolean shouldEventBusSubscribe() {
-            return BlockConfig.rainMuffler.enableRainMuffler;
+            return BlockConfig.mufflers.enableRainMuffler;
         }
 
         @SubscribeEvent

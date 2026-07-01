@@ -28,7 +28,7 @@ public class RecipeInvertedIngot extends ShapedRecipes {
     @Override
     public ItemStack getRecipeOutput() {
         ItemStack output = super.getRecipeOutput().copy();
-        if (InversionConfig.invertedIngotMode != InversionConfig.InversionMode.OFF) {
+        if (InversionConfig.INSTANCE.invertedIngotMode != InversionConfig.InversionMode.OFF) {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setBoolean("Crafted", true);
             output.setTagCompound(nbt);

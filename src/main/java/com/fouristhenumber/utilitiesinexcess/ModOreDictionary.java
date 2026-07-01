@@ -2,7 +2,7 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 public class ModOreDictionary {
 
@@ -42,7 +42,7 @@ public class ModOreDictionary {
             OreDictionary
                 .registerOre("compressedGravel" + (i + 1) + "x", ModBlocks.COMPRESSED_GRAVEL.newItemStack(1, i));
         }
-        if (OtherConfig.coloredBlockOredict) {
+        if (BlockConfig.coloredBlocks.coloredBlockOredict) {
             OreDictionary.registerOre(
                 "bricksStone",
                 ModBlocks.COLORED_STONE_BRICKS.newItemStack(1, OreDictionary.WILDCARD_VALUE));

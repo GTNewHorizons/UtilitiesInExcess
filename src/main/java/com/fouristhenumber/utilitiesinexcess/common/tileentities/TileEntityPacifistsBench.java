@@ -34,9 +34,10 @@ public class TileEntityPacifistsBench extends TileEntity {
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote || worldObj.getTotalWorldTime() % BlockConfig.pacifistsBenchCooldownInTicks != 0) return;
-        if (!(worldObj.difficultySetting == EnumDifficulty.PEACEFUL) && !BlockConfig.pacifistsBenchInNonPeaceful)
+        if (worldObj.isRemote || worldObj.getTotalWorldTime() % BlockConfig.pacifistsBench.pacifistsBenchCooldown != 0)
             return;
+        if (!(worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+            && !BlockConfig.pacifistsBench.pacifistsBenchInNonPeaceful) return;
 
         ItemStack weapon = findWeapon();
         if (weapon == null) return;

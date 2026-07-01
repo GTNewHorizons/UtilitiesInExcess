@@ -9,14 +9,14 @@ public class BiomeGenEndOfTime extends BiomeGenBase {
     public BiomeGenEndOfTime(int id) {
         super(id);
 
-        if (!EndOfTimeConfig.endOfTimeSpawning) {
+        if (!EndOfTimeConfig.INSTANCE.endOfTimeSpawning) {
             this.spawnableMonsterList.clear();
             this.spawnableCreatureList.clear();
             this.spawnableWaterCreatureList.clear();
             this.spawnableCaveCreatureList.clear();
         }
 
-        this.enableRain = EndOfTimeConfig.endOfTimeRain;
+        this.enableRain = EndOfTimeConfig.INSTANCE.endOfTimeRain;
 
         this.setBiomeName("End of Time");
     }

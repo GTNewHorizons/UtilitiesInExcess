@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
@@ -29,14 +29,14 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:destruction_pickaxe");
         setUnlocalizedName("destruction_pickaxe");
-        if (DestructionPickaxeConfig.unbreakable) setMaxDamage(0);
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
     }
 
     public static final Set<BlockMeta> affectedBlockCache = new HashSet<>();
 
     public static void initializeCache() {
-        if (DestructionPickaxeConfig.includeEffective != null) {
-            for (String blockString : DestructionPickaxeConfig.includeEffective) {
+        if (DestructionPickaxeConfig.INSTANCE.includeEffective != null) {
+            for (String blockString : DestructionPickaxeConfig.INSTANCE.includeEffective) {
                 if (blockString == null) continue;
                 try {
                     String[] split = blockString.trim()
@@ -78,34 +78,34 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
         BlockMeta wildcardMatch = new BlockMeta(block, -1);
 
         if (affectedBlockCache.contains(exactMatch) || affectedBlockCache.contains(wildcardMatch)) {
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.effectiveSpeedModifier;
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.INSTANCE.effectiveSpeedModifier;
         } else {
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.INSTANCE.ineffectiveSpeedModifier;
         }
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (DestructionPickaxeConfig.unbreakable)
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (DestructionPickaxeConfig.unbreakable) return false;
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (DestructionPickaxeConfig.unbreakable) return false;
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (DestructionPickaxeConfig.unbreakable) return false;
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
@@ -116,12 +116,12 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return DestructionPickaxeConfig.enable;
+            return DestructionPickaxeConfig.INSTANCE.enable;
         }
 
         @SubscribeEvent
         public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
-            if (!DestructionPickaxeConfig.voidMinedBlock) return;
+            if (!DestructionPickaxeConfig.INSTANCE.voidMinedBlock) return;
             if (event.harvester == null) return;
             if (event.harvester.getHeldItem() == null) return;
 
