@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.network;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketRainMuffledSync;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
@@ -26,6 +27,11 @@ public class PacketHandler {
         INSTANCE.registerMessage(
             PacketUnderworldAttack.Handler.class,
             PacketUnderworldAttack.class,
+            packetId++,
+            Side.CLIENT);
+        INSTANCE.registerMessage(
+            GammaRayParticlePacket.Handler.class,
+            GammaRayParticlePacket.class,
             packetId++,
             Side.CLIENT);
     }
