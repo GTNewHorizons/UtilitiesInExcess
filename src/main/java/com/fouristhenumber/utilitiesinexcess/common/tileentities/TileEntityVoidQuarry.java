@@ -792,17 +792,11 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     private BlockBreakAndStoreResult breakAndStoreBlock(Block block) {
         try {
             int meta = worldObj.getBlockMetadata(dx, dy, dz);
-            ItemDropCaptureEvents.startCapturingDrops(this.worldObj.provider.dimensionId, 16, dx, dy, dz);
-            boolean couldRemoveBlock = tryRemoveCurrentBlock();
 
-            if (!couldRemoveBlock) {
-                // Could not remove block, treat as non failure on storage (but skipped)
-                return new BlockBreakAndStoreResult(true, false);
-            }
-
-            // Try to harvest as fluid
+            // Try to harvest as fluid (before breaking because .drain() does .getBlock())
+            @Nullable
+            FluidStack fluid = null;
             if (upgradeManager.has(VoidQuarryUpgradeManager.VoidQuarryUpgrade.PUMP_FLUIDS)) {
-                FluidStack fluid = null;
                 if ((block == Blocks.water || block == Blocks.flowing_water) && meta == 0) {
                     fluid = new FluidStack(FluidRegistry.WATER, 1000);
                 } else if ((block == Blocks.lava || block == Blocks.flowing_lava) && meta == 0) {
@@ -810,9 +804,27 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                 } else if (block instanceof IFluidBlock fluidBlock) {
                     fluid = fluidBlock.drain(worldObj, dx, dy, dz, false);
                 }
-                if (fluid != null) {
-                    return new BlockBreakAndStoreResult(storeFluid(fluid), true);
+            }
+
+            ItemDropCaptureEvents.startCapturingDrops(this.worldObj.provider.dimensionId, 16, dx, dy, dz);
+            // .drain() usually removes the block, but it might also contain other behaviour that leads to item drops
+            if (fluid != null && block instanceof IFluidBlock fluidBlock) {
+                FluidStack drainedFluid = fluidBlock.drain(worldObj, dx, dy, dz, true);
+                if (!fluid.isFluidEqual(drainedFluid)) {
+                    fluid = drainedFluid;
                 }
+            }
+            boolean couldRemoveBlock = tryRemoveCurrentBlock();
+
+            if (!couldRemoveBlock) {
+                // Could not remove block, treat as non failure on storage (but skipped)
+                return new BlockBreakAndStoreResult(true, false);
+            }
+
+            if (fluid != null) {
+                return new BlockBreakAndStoreResult(
+                    storeFluid(fluid) && storeItems(ItemDropCaptureEvents.stopCapturingAndCollectDrops()),
+                    true);
             }
 
             // Still running, couldn't harvest as fluid so treat as solid
@@ -1301,19 +1313,6 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             int stepsPerTick = (int) (BASE_STEPS_PER_TICK * (isCreativeBoosted ? 8 : 1)
                 * upgradeManager.getValue(VoidQuarryUpgradeManager.TieredVoidQuarryUpgrade.SPEED, 1.0));
             while (blocksVisitedThisTick < stepsPerTick && stepPos()) {
-                // TODO: Remove after this has been tested by others
-                if (!isInBounds() || this.chunkX > 1000 || this.chunkZ > 1000) {
-                    UtilitiesInExcess.LOG.warn(
-                        "Tried to quarry outside of work area at {} {} {} for work area {}",
-                        dx,
-                        dy,
-                        dz,
-                        this.workArea.toString());
-                    worldObj.setBlock(dx, dy + 8, dz, Blocks.glass);
-                    throw new RuntimeException(
-                        String.format("Tried to quarry outside of work area at %d %d %d", dx, dy, dz));
-                }
-
                 BlockHarvestResult harvestResult = tryHarvestCurrentBlock();
                 // Count the block even if we have to pause right after
                 if (harvestResult.visitedBlock) {
@@ -1352,7 +1351,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        state = QuarryWorkState.values()[nbt.getInteger("state")];
+        state = QuarryWorkState.valueOf(nbt.getString("state"));
         if (state != QuarryWorkState.FINISHED) {
             // Current work area
             workArea = Area2d.fromNBTTag(nbt);
@@ -1412,7 +1411,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setInteger("state", state.ordinal());
+        nbt.setString("state", state.name());
         if (state != QuarryWorkState.FINISHED && workArea != null) {
             // Work area
             workArea.writeNBTTag(nbt);
@@ -1621,7 +1620,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             tag.setInteger("lowX", low.x);
             tag.setInteger("lowZ", low.y);
             tag.setInteger("highX", high.x);
-            tag.setInteger("highY", high.y);
+            tag.setInteger("highZ", high.y);
 
             nbt.setTag("area", tag);
         }
@@ -1631,7 +1630,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             int lowX = tag.getInteger("lowX");
             int lowZ = tag.getInteger("lowZ");
             int highX = tag.getInteger("highX");
-            int highZ = tag.getInteger("highY");
+            int highZ = tag.getInteger("highZ");
             return new Area2d(lowX, lowZ, highX, highZ);
         }
 

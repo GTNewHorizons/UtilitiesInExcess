@@ -408,9 +408,9 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
     public String getMode() {
         return switch (operationMode) {
-            case DEFAULT -> StatCollector.translateToLocal("uie.quarry.marker.mode.1");
-            case SINGLE -> String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.1"), this.cuboidSize);
-            case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.quarry.marker.mode.3");
+            case DEFAULT -> StatCollector.translateToLocal("uie.quarry.marker.mode.1.2");
+            case SINGLE -> String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.2"), this.cuboidSize);
+            case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.quarry.marker.mode.3.2");
         };
     }
 
@@ -470,7 +470,7 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
         // Can't use getRegistryForDimension yet since worldobj is null
         registeredMarkers.computeIfAbsent(dim, k -> new ConcurrentHashMap<>())
             .put(new BlockPos(xCoord, yCoord, zCoord), this);
-        this.operationMode = MarkerOperationMode.values()[compound.getInteger("mode")];
+        this.operationMode = MarkerOperationMode.valueOf(compound.getString("mode"));
         this.cuboidSize = compound.getInteger("cuboidSize");
     }
 
@@ -480,13 +480,21 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
         writeFacingToNBT(compound);
         compound.setInteger("meta", this.activeDirections);
         compound.setInteger("dim", this.worldObj.provider.dimensionId);
-        compound.setInteger("mode", this.operationMode.ordinal());
+        compound.setString("mode", this.operationMode.name());
         compound.setInteger("cuboidSize", this.cuboidSize);
     }
 
     public enum MarkerOperationMode {
-        DEFAULT,
-        SINGLE,
-        ARBITRARY_LOOP
+        DEFAULT("uie.quarry.marker.mode.1.1"),
+        SINGLE("uie.quarry.marker.mode.2.1"),
+        ARBITRARY_LOOP("uie.quarry.marker.mode.3.1");
+
+        public static final TileEntityVoidMarker.MarkerOperationMode[] VALUES = values();
+
+        public final String localKey;
+
+        MarkerOperationMode(String localKey) {
+            this.localKey = localKey;
+        }
     }
 }
