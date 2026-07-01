@@ -247,8 +247,8 @@ item.heavenly_ring_dragon.name=Heavenly Ring (Draconic)
 item.heavenly_ring_fairy.name=Heavenly Ring (Fairy)
 item.heavenly_ring_metal.name=Heavenly Ring (Metallic)
 item.heavenly_ring_magic.name=Heavenly Ring (Magical)
-item.heavenly_ring.desc.0=Current: %s
-item.heavenly_ring.desc.1=[§aRight-Click§7] to cycle wings (%s/%s)
+item.heavenly_ring.desc.1=Current: %s
+item.heavenly_ring.desc.2=[%s] to cycle wings (%s/%s)
 nei.infopage.uie.heavenly_ring.1=Grants the bearer the power of creative flight while in the inventory. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
 nei.infopage.uie.heavenly_ring.2=Grants the bearer the power of creative flight while equipped in a baubles slot. There are many different wing appearances for each type. Use the item in your hand to cycle between different appearances!
 
@@ -693,3 +693,6 @@ nei.infopage.uie.void_quarry_upgrade.silk_touch=The Silk Touch upgrade allows th
 nei.infopage.uie.void_quarry_upgrade.fluid_pump=The Fluid Pump upgrade allows the Void Quarry to collect fluids as well as blocks. Fluids are output to any tank adjacent to any face.
 nei.infopage.uie.void_quarry_upgrade.speed=The Speed upgrades increase the operation speed and energy cost of the Void Quarry.
 nei.infopage.uie.void_quarry_upgrade.fortune=The Fortune upgrades allow the Void Quarry to collect additional drops as if it is enchanted with Fortune at the cost of additional energy.
+
+uie.util.key.rclick=Right-Click
+uie.util.key.lclick=Left-Click

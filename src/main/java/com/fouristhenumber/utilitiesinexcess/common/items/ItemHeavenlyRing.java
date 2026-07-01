@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -82,13 +83,26 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
-            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+            ChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "item.heavenly_ring.desc.1",
-                EnumChatFormatting.WHITE + StatCollector
+                ChatFormatting.WHITE + StatCollector
                     .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
+        String keyName;
+        switch (key) {
+            case -99:
+                keyName = StatCollector.translateToLocal("uie.util.key.rclick");
+                break;
+            case -98:
+                keyName = StatCollector.translateToLocal("uie.util.key.lclick");
+                break;
+            default:
+                keyName = GameSettings.getKeyDisplayString(key);
+        }
         tooltip.add(
             ChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                "item.heavenly_ring.desc.0",
+                "item.heavenly_ring.desc.2",
+                ChatFormatting.GREEN + keyName + ChatFormatting.GRAY,
                 ChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + ChatFormatting.GRAY,
                 ChatFormatting.AQUA.toString() + RING_COUNT + ChatFormatting.GRAY));
         super.addInformation(stack, player, tooltip, p_77624_4_);
