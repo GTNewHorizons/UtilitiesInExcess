@@ -137,7 +137,7 @@ public class SiegeMobCreator {
             : new ItemStack(Items.diamond_sword);
 
         if (rand.nextInt(100) < 40) weapon.addEnchantment(Enchantment.sharpness, rand.nextInt(5) + 1);
-        if (rand.nextInt(100) < 10) weapon.addEnchantment(Enchantment.fireAspect, rand.nextInt(5) + 1);
+        if (rand.nextInt(100) < 10) weapon.addEnchantment(Enchantment.fireAspect, 2);
 
         mob.setCurrentItemOrArmor(0, weapon);
     }
