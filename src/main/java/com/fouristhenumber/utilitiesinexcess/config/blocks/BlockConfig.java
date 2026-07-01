@@ -8,8 +8,46 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 @Config.Order(0)
 public class BlockConfig {
 
+
+    @Config.Order(0)
+    @Config.LangKey("utilitiesinexcess.config.block.spikes")
+    public static final Spikes spikes = new Spikes();
+
+    @Config.Order(100)
+    @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
+    public static final CursedEarthConfig cursedEarth = CursedEarthConfig.INSTANCE;
+
+    @Config.Order(200)
+    @Config.LangKey("utilitiesinexcess.config.block.muffler")
+    public static final Mufflers mufflers = new Mufflers();
+
+    @Config.Order(300)
+    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
+    public static final Chandelier chandelier = new Chandelier();
+
+    @Config.Order(400)
+    @Config.LangKey("tile.giga_torch.name")
+    public static final GigaTorch gigaTorch = new GigaTorch();
+
+    @Config.Order(500)
+    @Config.LangKey("tile.smart_pump.name")
+    public static final SmartPump smartPump = new SmartPump();
+
+    @Config.Order(600)
     @Config.LangKey("tile.pure_love.name")
     public static final PureLove pureLove = new PureLove();
+
+    @Config.Order(700)
+    @Config.LangKey("tile.pacifists_bench.name")
+    public static final PacifistsBench pacifistsBench = new PacifistsBench();
+
+    @Config.Order(800)
+    @Config.LangKey("tile.ender_lotus.name")
+    public static final EnderLotusConfig enderLotus = EnderLotusConfig.INSTANCE;
+
+    @Config.Order(900)
+    @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
+    public static final ColoredBlocks coloredBlocks = new ColoredBlocks();
 
     public static class PureLove {
 
@@ -25,40 +63,40 @@ public class BlockConfig {
         public int rangePureLove;
     }
 
-    @Config.LangKey("utilitiesinexcess.config.block.muffler")
-    public static final Mufflers mufflers = new Mufflers();
-
     public static class Mufflers {
 
+        @Config.Order(0)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean enableSoundMuffler;
 
+        @Config.Order(100)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean enableRainMuffler;
 
+        @Config.Order(200)
         @Config.Comment("The volume reduction of sounds by the sound muffler. 0 = silent, 100 = normal level")
         @Config.DefaultInt(5)
         @Config.RangeInt(min = 0, max = 100)
         public int soundMufflerReduction;
 
+        @Config.Order(300)
         @Config.Comment("The radius a sound muffler operates in (as a square box)")
         @Config.DefaultInt(8)
         @Config.RangeInt(min = 1, max = 64)
         public int soundMufflerRange;
 
+        @Config.Order(400)
         @Config.Comment("The radius a rain muffler operates in (as a square box)")
         @Config.DefaultInt(64)
         @Config.RangeInt(min = 1, max = 256)
         public int rainMufflerRange;
     }
 
-    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
-    public static final Chandelier chandelier = new Chandelier();
-
     public static class Chandelier {
 
+        @Config.Order(0)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         @Config.Name("Enable")
@@ -71,11 +109,9 @@ public class BlockConfig {
         public int chandelierLightRange;
     }
 
-    @Config.LangKey("tile.giga_torch.name")
-    public static final GigaTorch gigaTorch = new GigaTorch();
-
     public static class GigaTorch {
 
+        @Config.Order(0)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         @Config.Name("Enable")
@@ -87,9 +123,6 @@ public class BlockConfig {
         @Config.Name("Range")
         public int gigaTorchRange;
     }
-
-    @Config.LangKey("utilitiesinexcess.config.block.spikes")
-    public static final Spikes spikes = new Spikes();
 
     public static class Spikes {
 
@@ -114,11 +147,9 @@ public class BlockConfig {
         public boolean enableDiamondSpike;
     }
 
-    @Config.LangKey("tile.smart_pump.name")
-    public static final SmartPump smartPump = new SmartPump();
-
     public static class SmartPump {
 
+        @Config.Order(0)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         @Config.Name("Enable")
@@ -139,50 +170,41 @@ public class BlockConfig {
         public int smartPumpStallCooldown;
     }
 
-    @Config.LangKey("tile.pacifists_bench.name")
-    public static final PacifistsBench pacifistsBench = new PacifistsBench();
-
     public static class PacifistsBench {
 
+        @Config.Order(0)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         @Config.Name("Enable")
         public boolean enablePacifistsBench;
 
+        @Config.Order(100)
         @Config.DefaultInt(600)
         @Config.Name("Cooldown")
         @Config.Comment("The Pacifist's Bench cooldown (in ticks).")
         public int pacifistsBenchCooldown;
 
+        @Config.Order(200)
         @Config.DefaultBoolean(false)
         @Config.Comment("Enable the Pacifist's Bench to work outside of peaceful mode.")
         public boolean pacifistsBenchInNonPeaceful;
     }
 
-    @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
-    public static final ColoredBlocks coloredBlocks = new ColoredBlocks();
-
     public static class ColoredBlocks {
 
+        @Config.Order(0)
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         @Config.Name("Enable")
-        @Config.Order(0)
         public boolean enableColoredBlocks;
 
+        @Config.Order(100)
         @Config.DefaultBoolean(false)
         @Config.Comment({ "Register oredictionary entries for colored blocks.",
             "Will allow colored blocks to work in recipes, but will also bloat NEI for recipes that people will likely never use..." })
         @Config.RequiresMcRestart
-        @Config.Order(100)
         public boolean coloredBlockOredict;
     }
-
-    @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
-    public static final CursedEarthConfig cursedEarth = CursedEarthConfig.INSTANCE;
-
-    @Config.LangKey("tile.ender_lotus.name")
-    public static final EnderLotusConfig enderLotus = EnderLotusConfig.INSTANCE;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart

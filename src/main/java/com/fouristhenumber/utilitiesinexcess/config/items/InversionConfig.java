@@ -9,34 +9,41 @@ public class InversionConfig {
     @Config.Ignore
     public static final InversionConfig INSTANCE = new InversionConfig();
 
+    @Config.Order(0)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public boolean enableInvertedIngot;
 
+    @Config.Order(100)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public boolean invertedIngotsImplode;
 
+    @Config.Order(200)
     @Config.DefaultInt(300)
     @Config.Sync
     public int invertedIngotImplosionTimer;
 
+    @Config.Order(300)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public boolean enableInversionSigil;
 
+    @Config.Order(400)
     @Config.Comment("Set to 0 for unlimited uses")
     @Config.DefaultInt(256)
     @Config.RangeInt(min = 0)
     @Config.RequiresMcRestart
     public int awakenedInversionDurability;
 
+    @Config.Order(500)
     @Config.Comment("Amount of unique items in the list the north chest has to contain for the pseudo-inversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.RequiresMcRestart
     public int northChestRequiredItems;
 
+    @Config.Order(600)
     @Config.Comment("List of valid items the north chest can contain. Must be item ids in the form 'modid:itemname:meta'")
     @Config.DefaultStringList(
         value = { "minecraft:stone", "minecraft:brick", "minecraft:glass", "minecraft:cooked_fished",
@@ -46,12 +53,14 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public String[] northChestValidItems;
 
+    @Config.Order(700)
     @Config.Comment("Amount of unique items in the list the east chest has to contain for the pseudo-inversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.Sync
     public int eastChestRequiredItems;
 
+    @Config.Order(800)
     @Config.Comment("List of valid items the east chest can contain. Must be item ids in the form 'modid:itemname:meta'. Enable splash potions with chestSplashPotionsValid (applies for other chests too).")
     @Config.DefaultStringList(
         value = { "minecraft:potion:8193", "minecraft:potion:8194", "minecraft:potion:8195", "minecraft:potion:8196",
@@ -65,12 +74,14 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public String[] eastChestValidItems;
 
+    @Config.Order(900)
     @Config.Comment("Amount of unique items in the list the south chest has to contain for the pseudo-inversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.Sync
     public int southChestRequiredItems;
 
+    @Config.Order(1000)
     @Config.Comment("List of valid items the south chest can contain. Must be item ids in the form 'modid:itemname:meta'")
     @Config.DefaultStringList(
         value = { "minecraft:grass", "minecraft:lapis_ore", "minecraft:dirt", "minecraft:obsidian", "minecraft:sand",
@@ -79,12 +90,14 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public String[] southChestValidItems;
 
+    @Config.Order(1100)
     @Config.Comment("Amount of unique items in the list the west chest has to contain for the pseudo-inversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.Sync
     public int westChestRequiredItems;
 
+    @Config.Order(1200)
     @Config.Comment("List of valid items the west chest can contain. Must be item ids in the form 'modid:itemname:meta'")
     @Config.DefaultStringList(
         value = { "minecraft:record_13", "minecraft:record_mellohi", "minecraft:record_cat", "minecraft:record_stal",
@@ -93,11 +106,13 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public String[] westChestValidItems;
 
+    @Config.Order(1300)
     @Config.Comment("Whether or not vanilla splash potions should also be valid if a regular potion of the same type is found.")
     @Config.DefaultBoolean(true)
     @Config.Sync
     public boolean chestSplashPotionsValid;
 
+    @Config.Order(1400)
     @Config.Comment("Amount of mobs needed to kill to pass the siege of the ritual")
     @Config.DefaultInt(100)
     @Config.RangeInt(min = 4)
