@@ -10,7 +10,6 @@ public class BlockConfig {
 
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(BlockConfig.class);
-        ConfigurationManager.registerConfig(EnderLotusConfig.class);
         ConfigurationManager.registerConfig(GeneratorConfig.class);
     }
 
@@ -167,6 +166,10 @@ public class BlockConfig {
 
     @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
     public static final CursedEarthConfig cursedEarth = CursedEarthConfig.INSTANCE;
+
+
+    @Config.LangKey("tile.ender_lotus.name")
+    public static final EnderLotusConfig enderLotus = EnderLotusConfig.INSTANCE;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
