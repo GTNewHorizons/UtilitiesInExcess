@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.SiegeMobCreator.getSiegeMob;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
@@ -14,16 +15,11 @@ import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -470,21 +466,7 @@ public class ItemInversionSigilActive extends Item {
                 }
                 properties.siegeTimer = 30 + world.rand.nextInt(21);
 
-                int mobType = world.rand.nextInt(4);
-                EntityMob entityMob = switch (mobType) {
-                    case 0 -> {
-                        int zombieType = world.rand.nextInt(25);
-                        if (zombieType == 0) {
-                            yield new EntityGiantZombie(world);
-                        } else {
-                            yield new EntityZombie(world);
-                        }
-                    }
-                    case 1 -> new EntitySkeleton(world);
-                    case 2 -> new EntitySpider(world);
-                    case 3 -> new EntityCreeper(world);
-                    default -> throw new IllegalStateException("Unexpected value: " + mobType);
-                };
+                EntityLiving mob = getSiegeMob(world);
 
                 int offsetX = world.rand.nextInt(101) - 50;
                 int offsetZ = world.rand.nextInt(101) - 50;
@@ -498,13 +480,13 @@ public class ItemInversionSigilActive extends Item {
                         continue;
                     }
 
-                    entityMob.setPosition(mobX, y + 1, mobZ);
+                    mob.setPosition(mobX, y + 1, mobZ);
 
-                    if (!world.getCollidingBoundingBoxes(entityMob, entityMob.boundingBox)
+                    if (!world.getCollidingBoundingBoxes(mob, mob.boundingBox)
                         .isEmpty()) {
                         continue;
                     }
-                    if (!world.checkNoEntityCollision(entityMob.boundingBox)) {
+                    if (!world.checkNoEntityCollision(mob.boundingBox)) {
                         break;
                     }
 
@@ -513,10 +495,7 @@ public class ItemInversionSigilActive extends Item {
                 }
 
                 if (mobY != 0) {
-                    double damage = entityMob instanceof EntityGiantZombie ? 16D : 8D;
-                    entityMob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                        .setBaseValue(damage);
-                    world.spawnEntityInWorld(entityMob);
+                    world.spawnEntityInWorld(mob);
                 }
             }
         }
