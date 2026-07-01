@@ -88,17 +88,11 @@ public class ItemHeavenlyRing extends Item implements IBauble {
                 EnumChatFormatting.WHITE + StatCollector
                     .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
         int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
-        String keyName;
-        switch (key) {
-            case -99:
-                keyName = StatCollector.translateToLocal("uie.util.key.rclick");
-                break;
-            case -98:
-                keyName = StatCollector.translateToLocal("uie.util.key.lclick");
-                break;
-            default:
-                keyName = GameSettings.getKeyDisplayString(key);
-        }
+        String keyName = switch (key) {
+            case -99 -> StatCollector.translateToLocal("uie.util.key.rclick");
+            case -98 -> StatCollector.translateToLocal("uie.util.key.lclick");
+            default -> GameSettings.getKeyDisplayString(key);
+        };
         tooltip.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "item.heavenly_ring.desc.2",
