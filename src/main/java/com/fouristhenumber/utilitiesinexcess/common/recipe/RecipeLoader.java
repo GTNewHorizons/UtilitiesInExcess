@@ -1157,7 +1157,7 @@ public class RecipeLoader {
     }
 
     private static void loadColoredBlockRecipes() {
-        if (!BlockConfig.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
+        if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
         ItemStack[] dyes = new ItemStack[16];
         for (int i = 0; i < 16; ++i) {

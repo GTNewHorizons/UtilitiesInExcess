@@ -160,6 +160,24 @@ public class BlockConfig {
         public boolean pacifistsBenchInNonPeaceful;
     }
 
+    @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
+    public static final ColoredBlocks coloredBlocks = new ColoredBlocks();
+
+    public static class ColoredBlocks {
+
+        @Config.DefaultBoolean(true)
+        @Config.RequiresMcRestart
+        @Config.Name("Enable")
+        @Config.Order(0)
+        public boolean enableColoredBlocks;
+
+        @Config.DefaultBoolean(false)
+        @Config.Comment({"Register oredictionary entries for colored blocks.", "Will allow colored blocks to work in recipes, but will also bloat NEI for recipes that people will likely never use..."})
+        @Config.RequiresMcRestart
+        @Config.Order(100)
+        public boolean coloredBlockOredict;
+    }
+
     @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
     public static final CursedEarthConfig cursedEarth = CursedEarthConfig.INSTANCE;
 
@@ -175,10 +193,6 @@ public class BlockConfig {
     @Config.Comment("If enabled, inverted block will have a similar X-Ray effect to Extra Utilities' Unstable Block.")
     @Config.RequiresMcRestart
     public static boolean invertedBlockDoesXRay;
-
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean enableColoredBlocks;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart

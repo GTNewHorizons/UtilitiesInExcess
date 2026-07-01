@@ -37,8 +37,4 @@ public class OtherConfig {
     @Config.DefaultInt(316)
     @Config.Comment("316 is the tinkers material ID Extra Utilities uses for magical wood and will therefore migrate tools automatically. Must change if both mods are installed!")
     public static int magicalWoodTinkersID;
-
-    @Config.DefaultBoolean(false)
-    @Config.Comment("Register oredictionary entries for colored blocks. Will allow colored blocks to work in recipes, but will also bloat NEI for recipes that people will likely never use...")
-    public static boolean coloredBlockOredict;
 }
