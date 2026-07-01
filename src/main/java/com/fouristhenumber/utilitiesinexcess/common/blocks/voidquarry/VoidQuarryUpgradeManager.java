@@ -98,23 +98,23 @@ public class VoidQuarryUpgradeManager {
     public enum VoidQuarryUpgrade {
 
         // Boolean upgrades (presence only)
-        WORLD_HOLE(VoidQuarryConfig.voidQuarryWorldHoleEnergyMultiplier, "upgrade_world_hole"),
-        SILK_TOUCH(VoidQuarryConfig.voidQuarrySilkTouchEnergyMultiplier, "upgrade_silk_touch"),
-        PUMP_FLUIDS(VoidQuarryConfig.voidQuarryFluidPumpEnergyMultiplier, "upgrade_pump_fluids"),
+        WORLD_HOLE(VoidQuarryConfig.INSTANCE.voidQuarryWorldHoleEnergyMultiplier, "upgrade_world_hole"),
+        SILK_TOUCH(VoidQuarryConfig.INSTANCE.voidQuarrySilkTouchEnergyMultiplier, "upgrade_silk_touch"),
+        PUMP_FLUIDS(VoidQuarryConfig.INSTANCE.voidQuarryFluidPumpEnergyMultiplier, "upgrade_pump_fluids"),
 
         // Tiered upgrades with hardcoded values
-        SPEED_1(TieredVoidQuarryUpgrade.SPEED, 1, VoidQuarryConfig.voidQuarrySpeed1EnergyMultiplier,
-            VoidQuarryConfig.voidQuarrySpeed1Multiplier, "upgrade_speed_1"),
-        SPEED_2(TieredVoidQuarryUpgrade.SPEED, 2, VoidQuarryConfig.voidQuarrySpeed2EnergyMultiplier,
-            VoidQuarryConfig.voidQuarrySpeed2Multiplier, "upgrade_speed_2"),
-        SPEED_3(TieredVoidQuarryUpgrade.SPEED, 3, VoidQuarryConfig.voidQuarrySpeed3EnergyMultiplier,
-            VoidQuarryConfig.voidQuarrySpeed3Multiplier, "upgrade_speed_3"),
+        SPEED_1(TieredVoidQuarryUpgrade.SPEED, 1, VoidQuarryConfig.INSTANCE.voidQuarrySpeed1EnergyMultiplier,
+            VoidQuarryConfig.INSTANCE.voidQuarrySpeed1Multiplier, "upgrade_speed_1"),
+        SPEED_2(TieredVoidQuarryUpgrade.SPEED, 2, VoidQuarryConfig.INSTANCE.voidQuarrySpeed2EnergyMultiplier,
+            VoidQuarryConfig.INSTANCE.voidQuarrySpeed2Multiplier, "upgrade_speed_2"),
+        SPEED_3(TieredVoidQuarryUpgrade.SPEED, 3, VoidQuarryConfig.INSTANCE.voidQuarrySpeed3EnergyMultiplier,
+            VoidQuarryConfig.INSTANCE.voidQuarrySpeed3Multiplier, "upgrade_speed_3"),
 
-        FORTUNE_1(TieredVoidQuarryUpgrade.FORTUNE, 1, VoidQuarryConfig.voidQuarryFortune1EnergyMultiplier, 1,
+        FORTUNE_1(TieredVoidQuarryUpgrade.FORTUNE, 1, VoidQuarryConfig.INSTANCE.voidQuarryFortune1EnergyMultiplier, 1,
             "upgrade_fortune_1"),
-        FORTUNE_2(TieredVoidQuarryUpgrade.FORTUNE, 2, VoidQuarryConfig.voidQuarryFortune2EnergyMultiplier, 2,
+        FORTUNE_2(TieredVoidQuarryUpgrade.FORTUNE, 2, VoidQuarryConfig.INSTANCE.voidQuarryFortune2EnergyMultiplier, 2,
             "upgrade_fortune_2"),
-        FORTUNE_3(TieredVoidQuarryUpgrade.FORTUNE, 3, VoidQuarryConfig.voidQuarryFortune3EnergyMultiplier, 3,
+        FORTUNE_3(TieredVoidQuarryUpgrade.FORTUNE, 3, VoidQuarryConfig.INSTANCE.voidQuarryFortune3EnergyMultiplier, 3,
             "upgrade_fortune_3");
 
         public static final VoidQuarryUpgrade[] VALUES = values();

@@ -511,7 +511,7 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
         @EventBusSubscriber.Condition
         public static boolean shouldEventBusSubscribe() {
-            return VoidQuarryConfig.enableVoidQuarry;
+            return VoidQuarryConfig.INSTANCE.enableVoidQuarry;
         }
 
         @SubscribeEvent

@@ -173,9 +173,9 @@ public enum ModBlocks {
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
-    VOID_QUARRY(VoidQuarryConfig.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
-    VOID_MARKER(VoidQuarryConfig.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
-    VOID_QUARRY_UPGRADE(VoidQuarryConfig.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
+    VOID_QUARRY(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
+    VOID_MARKER(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
+    VOID_QUARRY_UPGRADE(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

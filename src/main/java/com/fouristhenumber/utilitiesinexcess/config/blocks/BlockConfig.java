@@ -33,18 +33,22 @@ public class BlockConfig {
     public static final SmartPump smartPump = new SmartPump();
 
     @Config.Order(600)
+    @Config.LangKey("tile.void_quarry.name")
+    public static final VoidQuarryConfig voidQuarry = VoidQuarryConfig.INSTANCE;
+
+    @Config.Order(700)
     @Config.LangKey("tile.pure_love.name")
     public static final PureLove pureLove = new PureLove();
 
-    @Config.Order(700)
+    @Config.Order(800)
     @Config.LangKey("tile.pacifists_bench.name")
     public static final PacifistsBench pacifistsBench = new PacifistsBench();
 
-    @Config.Order(800)
+    @Config.Order(900)
     @Config.LangKey("tile.ender_lotus.name")
     public static final EnderLotusConfig enderLotus = EnderLotusConfig.INSTANCE;
 
-    @Config.Order(900)
+    @Config.Order(1000)
     @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
     public static final ColoredBlocks coloredBlocks = new ColoredBlocks();
 
