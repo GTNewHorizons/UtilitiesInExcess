@@ -99,6 +99,6 @@ A special thanks to the 1.0 contributors, without which this project could have 
 - Cardinalstars (Forge Microblocks, Transfer Nodes)
 - tomasz-brak (Architects Wand Backhand/GT5U Integration)
 - Spicierspace153 (Collector)
-- Malteez (Void Quarry)
+- MalTeeez (Void Quarry)
 - Spaghetti-OberNub (Bugfixes and Polish)
 - Nikolay-Sitnikov (Code Review)

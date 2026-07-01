@@ -120,7 +120,9 @@ item.inverted_ingot.desc.c=Creatively spawned. Will not implode.
 
 nei.infopage.uie.inverted_ingot.1=Channeling a diamond into an Awakened Inversion Sigil allows you to invert iron into this strange and highly unstable substance. Many powerful tools and items can be made through inversion...
 nei.infopage.uie.inverted_ingot.2=The process of creating inverted ingots is quite dangerous. Firstly, they can only be created in vanilla crafting tables. Once crafted, you have a limited time to use them.
-nei.infopage.uie.inverted_ingot.3=Run out of time, leave the crafting table, or throw the ingots and your body is rapidly inverted, killing you. They do not stack.
+nei.infopage.uie.inverted_ingot.3.implode=Run out of time, leave the crafting table, or throw the ingots and your body is rapidly inverted, killing you. They do not stack.
+nei.infopage.uie.inverted_ingot.3.decay=Run out of time, leave the crafting table, or throw the ingots and they will implode into stable nuggets. They do not stack.
+nei.infopage.uie.inverted_ingot.3.disappear=Run out of time, leave the crafting table, or throw the ingots and they implode into nothingness. They do not stack.
 
 item.inverted_ingot.stable.name=Stabilized Inverted Ingot
 item.inverted_ingot.stable.desc=This ingot has been stabilized and will not implode.
@@ -629,3 +631,64 @@ ue_sphere.name=%s Impossible Object
 
 item.chunchunmaru.name=Chunchunmaru
 item.chunchunmaru.desc=It's a really cool name
+
+tile.void_quarry.name=Void Quarry
+tile.void_marker.name=Void Marker
+tile.void_quarry_upgrade.0.name=Void Quarry World Hole Upgrade
+tile.void_quarry_upgrade.1.name=Void Quarry Silk Touch Upgrade
+tile.void_quarry_upgrade.2.name=Void Quarry Fluid Pump Upgrade
+tile.void_quarry_upgrade.3.name=Void Quarry Speed I Upgrade
+tile.void_quarry_upgrade.4.name=Void Quarry Speed II Upgrade
+tile.void_quarry_upgrade.5.name=Void Quarry Speed III Upgrade
+tile.void_quarry_upgrade.6.name=Void Quarry Fortune I Upgrade
+tile.void_quarry_upgrade.7.name=Void Quarry Fortune II Upgrade
+tile.void_quarry_upgrade.8.name=Void Quarry Fortune III Upgrade
+
+tile.void_quarry_upgrade.desc.energy=Energy Consumption: %sx
+tile.void_quarry_upgrade.desc.speed=Speed Increase: %sx
+
+uie.quarry.state.1=Stopped
+uie.quarry.state.2=Waiting for Fluid Space
+uie.quarry.state.3=Waiting for Item Space
+uie.quarry.state.4=Waiting for Energy
+uie.quarry.state.5=Throttled by Energy
+uie.quarry.state.6=Finished
+uie.quarry.state.7=Running
+uie.quarry.state.detail.1=Quarry is stopped.
+uie.quarry.state.detail.2=Quarry is full on fluids.
+uie.quarry.state.detail.3=Quarry is full on items.
+uie.quarry.state.detail.4=Quarry is missing energy.
+uie.quarry.state.detail.5=Quarry is running, but not at full speed because of missing energy.
+uie.quarry.state.detail.6.1=Quarry has finished after mining %d blocks%s
+uie.quarry.state.detail.6.2=, still holding %d items.
+uie.quarry.state.detail.7.1=Quarry is currently operating at (%d %d %d), has already mined/scanned %d blocks.%s
+uie.quarry.state.detail.7.2= Estimated time remaining: %s.
+uie.quarry.waila.state=Status: %s
+uie.quarry.marker.waila.state=Mode: %s
+uie.quarry.waila.timeleft=Est. Time Left: %s
+uie.quarry.scanmessage.1=Found ender marker fence boundary, setting up work area from (%d %d) to (%d %d). Should require %d steps.
+uie.quarry.scanmessage.2=Found ender marker fence boundary from %d markers, setting up complex work area. Should require %d steps.
+uie.quarry.scanmessage.3=Ender marker at (%d %d %d) failed to set up a fence boundary.
+uie.quarry.scanmessage.4=Found no void markers around quarry.
+uie.quarry.scanmessage.5=Failed to complete marker chain, with last marker at (%d %d %d).
+uie.quarry.finished=Your Void Quarry at (%d %d %d) in DIM %d has finished.
+uie.quarry.marker.mode.1.1=Rectangular Area
+uie.quarry.marker.mode.1.2=Marker is set to establish a rectangular fence from the first 3 in chain.
+uie.quarry.marker.mode.2.1=Cuboidal Area
+uie.quarry.marker.mode.2.2=Marker is set to establish a cuboid of length %d. Sneak + R-Click to adjust size.
+uie.quarry.marker.mode.2.3=Increased cuboid size to %d.
+uie.quarry.marker.mode.3.1=Rectilinear Polygonal Area
+uie.quarry.marker.mode.3.2=Marker is set to establish a full loop of markers that make up a rectilinear polygon back this marker of arbitrary size and shape.
+
+nei.infopage.uie.void_quarry.1=The Void Quarry allows you to mine and harvest a large area, replacing blocks with cobblestone. It requires energy to run and outputs items to its top face. During operation, the quarry keeps its own chunk loaded as well as the current working chunk.
+nei.infopage.uie.void_quarry.2=Void markers define an area for the Void Quarry to mine. Right clicking switches between three different border configuration modes. Once the border is configured, right click the Void Quarry to begin operation.
+nei.infopage.uie.void_quarry.3=Once a Void Quarry is finished working, it can be restarted using the same area with a redstone signal. It also reports its progress as a signal to redstone comparators.
+nei.infopage.uie.void_marker.1=Void Markers are used to define the work area of the Void Quarry. They have 3 different modes, which can be cycled through by right-clicking the marker. The first mode (standard) lets you define a rectangular area by placing 2 additional markers at the same height, at the other corners of your area.
+nei.infopage.uie.void_marker.2=The second mode lets you define a simple square from just a single marker, whose edge length you can change by shift right-clicking it. The third mode lets you define a rectilinear polygon by chaining multiple markers together into a full loop.
+nei.infopage.uie.void_marker.3=You can also limit the upper and lower Y bounds of the work area by placing a marker at your target height below and above the Void Quarry.
+nei.infopage.uie.void_quarry_upgrade=Void Quarry upgrades can be placed next to any face of the Void Quarry to add additional abilities or improvements.
+nei.infopage.uie.void_quarry_upgrade.world_hole=The World Hole upgrade cause the Void Quarry to stop replacing blocks with cobblestone.
+nei.infopage.uie.void_quarry_upgrade.silk_touch=The Silk Touch upgrade allows the Void Quarry to collect drops as if it is enchanted with Silk Touch (For instance, gathers stone instead of cobblestone). 
+nei.infopage.uie.void_quarry_upgrade.fluid_pump=The Fluid Pump upgrade allows the Void Quarry to collect fluids as well as blocks. Fluids are output to any tank adjacent to any face.
+nei.infopage.uie.void_quarry_upgrade.speed=The Speed upgrades increase the operation speed and energy cost of the Void Quarry.
+nei.infopage.uie.void_quarry_upgrade.fortune=The Fortune upgrades allow the Void Quarry to collect additional drops as if it is enchanted with Fortune at the cost of additional energy.
