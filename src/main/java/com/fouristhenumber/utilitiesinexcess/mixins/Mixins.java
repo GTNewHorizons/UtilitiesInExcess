@@ -16,7 +16,7 @@ public enum Mixins implements IMixins {
     CURSED_EARTH_SPAWNER(new MixinBuilder("Boost spawners when placed on Cursed / Blessed Earth")
         .addCommonMixins("minecraft.MixinMobSpawnerBaseLogic_CursedEarthSpawner")
         .setPhase(Phase.EARLY)
-        .setApplyIf(() -> CursedEarthConfig.enableCursedEarth || CursedEarthConfig.enableBlessedEarth)
+        .setApplyIf(() -> CursedEarthConfig.INSTANCE.enableCursedEarth || CursedEarthConfig.INSTANCE.enableBlessedEarth)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
     GLOVE(new MixinBuilder("Implements the Glove's special right click")
         .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove", "minecraft.MixinItemRenderer_Glove", "minecraft.MixinPlayerControllerMP_Glove")

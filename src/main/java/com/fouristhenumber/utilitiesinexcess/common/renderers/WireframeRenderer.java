@@ -11,7 +11,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.lwjgl.opengl.GL11;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.eventbus.Phase;
@@ -39,7 +39,7 @@ public class WireframeRenderer {
 
     @EventBusSubscriber.Condition
     public static boolean shouldSubscribe() {
-        return ItemConfig.enableArchitectsWand;
+        return ArchitectsWandsConfig.INSTANCE.enableArchitectsWand;
     }
 
     @SubscribeEvent

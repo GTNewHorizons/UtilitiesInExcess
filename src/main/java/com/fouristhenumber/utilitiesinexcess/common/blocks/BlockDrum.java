@@ -117,7 +117,9 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
             FluidStack drained = heldItem.drain(stack, accepted, false);
             if (drained == null || drained.amount != accepted) return false;
 
-            heldItem.drain(stack, accepted, true);
+            if (!player.capabilities.isCreativeMode) {
+                heldItem.drain(stack, accepted, true);
+            }
             if (heldItemStack.stackSize > 1) {
                 giveResultStack(player, heldItemStack, stack);
             }
@@ -137,7 +139,9 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
             toTransfer.amount = accepted;
 
             drum.drain(ForgeDirection.UP, accepted, true);
-            heldItem.fill(heldItemStack, toTransfer, true);
+            if (!player.capabilities.isCreativeMode) {
+                heldItem.fill(heldItemStack, toTransfer, true);
+            }
 
         }
         return true;
@@ -150,12 +154,14 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         int accepted = drum.fill(ForgeDirection.UP, containerFluid, false);
         if (accepted != containerFluid.amount) return false;
 
-        ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
-        if (emptyContainer == null) return false;
+        if (!player.capabilities.isCreativeMode) {
+            ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(heldItem);
+            if (emptyContainer == null) return false;
+
+            giveResultStack(player, heldItem, emptyContainer);
+        }
 
         drum.fill(ForgeDirection.UP, containerFluid, true);
-
-        giveResultStack(player, heldItem, emptyContainer);
 
         return true;
     }
@@ -175,7 +181,9 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
 
         drum.drain(ForgeDirection.UP, simDrain.amount, true);
 
-        giveResultStack(player, heldItem, filledContainer);
+        if (!player.capabilities.isCreativeMode) {
+            giveResultStack(player, heldItem, filledContainer);
+        }
 
         return true;
     }

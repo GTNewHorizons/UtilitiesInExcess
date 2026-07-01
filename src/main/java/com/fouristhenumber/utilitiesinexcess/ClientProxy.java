@@ -15,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
+import com.fouristhenumber.utilitiesinexcess.compat.waila.TTRenderUIETimeLeftBar;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRTrueGreenscreen;
@@ -24,6 +25,7 @@ import com.gtnewhorizon.gtnhlib.client.model.loading.ModelRegistry;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @SuppressWarnings("unused")
@@ -73,4 +75,11 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
+        if (Mods.Waila.isLoaded()) {
+            TTRenderUIETimeLeftBar.register();
+        }
+    }
 }

@@ -6,27 +6,32 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 @Config(modid = UtilitiesInExcess.MODID, category = "items.Chunchunmaru")
 public class ChunchunmaruConfig {
 
+    @Config.Ignore
+    public static final ChunchunmaruConfig INSTANCE = new ChunchunmaruConfig();
+
     @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
     @Config.RequiresMcRestart
-    public static boolean enable;
+    public boolean enable;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean unbreakable;
+    public boolean unbreakable;
 
     @Config.DefaultInt(4096)
     @Config.RequiresMcRestart
-    public static int durability;
+    public int durability;
 
     @Config.DefaultFloat(8)
     @Config.RangeFloat(min = 0, max = 200)
-    public static float normalDamage;
+    @Config.Sync
+    public float normalDamage;
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean damageCreativePlayers;
+    public boolean damageCreativePlayers;
 
     @Config.DefaultFloat(8)
     @Config.RangeFloat(min = 0, max = 200)
-    public static float creativeDamage;
+    public float creativeDamage;
 }

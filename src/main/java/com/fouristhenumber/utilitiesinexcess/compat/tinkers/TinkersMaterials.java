@@ -43,7 +43,7 @@ public class TinkersMaterials {
         int bedrockiumID = OtherConfig.bedrockiumTinkersID;
         int magicalWoodID = OtherConfig.magicalWoodTinkersID;
 
-        if (InversionConfig.enableInvertedIngot) {
+        if (InversionConfig.INSTANCE.enableInvertedIngot) {
             TConstructRegistry
                 .addToolMaterial(invertedID, "inverted", 4, 100, 700, 2, 0.6F, 4, 0, DARK_GREEN.toString(), 0x53763B);
 

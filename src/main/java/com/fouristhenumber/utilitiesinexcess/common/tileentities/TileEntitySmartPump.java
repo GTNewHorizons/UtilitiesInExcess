@@ -1,12 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.uieInstance;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -17,16 +13,15 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.LoadableTE;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 
-public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, IFluidHandler {
+public class TileEntitySmartPump extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
-    private ForgeChunkManager.Ticket ticket;
-
-    protected EnergyStorage energyStorage = new EnergyStorage(BlockConfig.smartPumpEnergyStorage);
+    protected EnergyStorage energyStorage = new EnergyStorage(BlockConfig.smartPump.smartPumpEnergyStorage);
 
     boolean stalled = false;
     boolean finished = false;
@@ -52,20 +47,20 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         { -5, 0 }, { -4, 1 }, { -3, 2 }, { -2, 3 }, { -1, 4 } };
 
     @Override
+    public boolean keepsItselfLoaded() {
+        return !finished;
+    }
+
+    @Override
     public void updateEntity() {
         if (worldObj.isRemote || finished) return;
-
-        if (ticket == null) {
-            requestTicket();
-            ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
-        }
 
         if (currentY == Integer.MIN_VALUE) {
             currentY = yCoord - 1;
             chunkX = xCoord >> 4;
             chunkZ = zCoord >> 4;
         }
-        if (!stalled || worldObj.getTotalWorldTime() % BlockConfig.smartPumpStallCooldownInTicks == 0) {
+        if (!stalled || worldObj.getTotalWorldTime() % BlockConfig.smartPump.smartPumpStallCooldown == 0) {
             stalled = false;
 
             if (tank.getFluidAmount() > 0) {
@@ -109,9 +104,9 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         int worldZ = getWorkingZ();
 
         Block block = worldObj.getBlock(worldX, currentY, worldZ);
-        FluidStack fluid;
+        FluidStack fluid = null;
 
-        if (getEnergyStored(ForgeDirection.UNKNOWN) < BlockConfig.smartPumpEnergyUsePerBlock) {
+        if (getEnergyStored(ForgeDirection.UNKNOWN) < BlockConfig.smartPump.smartPumpEnergyUsePerBlock) {
             stalled = true;
             return;
         }
@@ -123,12 +118,14 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
             fluid = new FluidStack(FluidRegistry.LAVA, 1000);
         } else if (block instanceof IFluidBlock fluidBlock) {
             fluid = fluidBlock.drain(worldObj, worldX, currentY, worldZ, false);
-        } else {
+        }
+
+        if (fluid == null) {
             advanceColumn();
             return;
         }
 
-        energyStorage.extractEnergy(BlockConfig.smartPumpEnergyUsePerBlock, true);
+        energyStorage.extractEnergy(BlockConfig.smartPump.smartPumpEnergyUsePerBlock, true);
 
         if (tank.fill(fluid, false) >= fluid.amount) {
             tank.fill(fluid, true);
@@ -155,29 +152,20 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
 
             if (zInChunk >= 16) {
 
-                // Release old chunk
-                ForgeChunkManager.unforceChunk(
-                    ticket,
-                    new ChunkCoordIntPair(
-                        chunkX + CHUNK_OFFSETS[currentChunk][0],
-                        chunkZ + CHUNK_OFFSETS[currentChunk][1]));
+                // Release the finished chunk
+                unloadChunkShifted(chunkX + CHUNK_OFFSETS[currentChunk][0], chunkZ + CHUNK_OFFSETS[currentChunk][1]);
 
                 if (currentChunk < CHUNK_OFFSETS.length - 1) {
                     zInChunk = 0;
                     currentChunk++;
 
-                    // Load new chunk
-                    ForgeChunkManager.forceChunk(
-                        ticket,
-                        new ChunkCoordIntPair(
-                            chunkX + CHUNK_OFFSETS[currentChunk][0],
-                            chunkZ + CHUNK_OFFSETS[currentChunk][1]));
+                    // Load the next chunk
+                    loadChunkShifted(chunkX + CHUNK_OFFSETS[currentChunk][0], chunkZ + CHUNK_OFFSETS[currentChunk][1]);
 
                 } else {
                     finished = true;
-
                     // Release own chunk
-                    ForgeChunkManager.unforceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
+                    invalidateTicket();
                 }
             }
         }
@@ -215,47 +203,12 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         tank.readFromNBT(tag);
     }
 
-    // Chunkloading stuff
-    private void requestTicket() {
-        ticket = ForgeChunkManager.requestTicket(uieInstance, worldObj, ForgeChunkManager.Type.NORMAL);
-
-        if (ticket != null) {
-            NBTTagCompound tag = ticket.getModData();
-            tag.setInteger("teX", xCoord);
-            tag.setInteger("teY", yCoord);
-            tag.setInteger("teZ", zCoord);
-        }
-    }
-
-    // Called when world reloads
-    public void receiveTicketOnLoad(ForgeChunkManager.Ticket t) {
-        this.ticket = t;
+    // Chunkload existing progress on initial world load
+    @Override
+    public void receiveTicketOnLoad(ForgeChunkManager.Ticket ticket) {
+        super.receiveTicketOnLoad(ticket);
         if (!finished) {
-            ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
-            ForgeChunkManager.forceChunk(
-                ticket,
-                new ChunkCoordIntPair(
-                    chunkX + CHUNK_OFFSETS[currentChunk][0],
-                    chunkZ + CHUNK_OFFSETS[currentChunk][1]));
-        }
-    }
-
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        unload();
-    }
-
-    @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
-        unload();
-    }
-
-    private void unload() {
-        if (ticket != null) {
-            ForgeChunkManager.releaseTicket(ticket);
-            ticket = null;
+            loadChunkShifted(chunkX + CHUNK_OFFSETS[currentChunk][0], chunkZ + CHUNK_OFFSETS[currentChunk][1]);
         }
     }
 
