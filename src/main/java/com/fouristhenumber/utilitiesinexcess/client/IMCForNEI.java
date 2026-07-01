@@ -18,7 +18,7 @@ public class IMCForNEI {
         if (InversionConfig.INSTANCE.invertedIngotMode != InversionConfig.InversionMode.OFF) {
             sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.2");
 
-            switch (InversionConfig.invertedIngotMode) {
+            switch (InversionConfig.INSTANCE.invertedIngotMode) {
                 case IMPLODE -> sendInfoPage(
                     "<utilitiesinexcess:inverted_ingot:0>",
                     "nei.infopage.uie.inverted_ingot.3.implode");

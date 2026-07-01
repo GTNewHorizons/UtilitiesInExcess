@@ -74,7 +74,8 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     }
 
     private static void resolveImplosion(ItemStack stack, EntityPlayer player, Consumer<ItemStack> setStack) {
-        if (!isUnstable(stack) || InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.OFF) return;
+        if (!isUnstable(stack) || InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.OFF)
+            return;
 
         if (InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
             setStack.accept(ModItems.INVERTED_NUGGET.newItemStack());
@@ -177,7 +178,8 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         public static void onItemToss(ItemTossEvent event) {
             ItemStack stack = event.entityItem.getEntityItem();
 
-            if (isUnstable(stack) && InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.IMPLODE) {
+            if (isUnstable(stack)
+                && InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.IMPLODE) {
                 event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
             }
 
@@ -220,9 +222,9 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
             if (event.entity instanceof EntityItem entityItem) {
                 ItemStack stack = entityItem.getEntityItem();
 
-                if (!isUnstable(stack) || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF)
-                    return;
-                if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
+                if (!isUnstable(stack)
+                    || InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.OFF) return;
+                if (InversionConfig.INSTANCE.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
                     entityItem.setEntityItemStack(ModItems.INVERTED_NUGGET.newItemStack(stack.stackSize));
                 } else {
                     entityItem.setDead();

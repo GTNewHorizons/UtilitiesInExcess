@@ -6,6 +6,13 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 @Config(modid = UtilitiesInExcess.MODID, category = "items.inversion")
 public class InversionConfig {
 
+    public enum InversionMode {
+        OFF,
+        IMPLODE,
+        DISAPPEAR,
+        DECAY
+    }
+
     @Config.Ignore
     public static final InversionConfig INSTANCE = new InversionConfig();
 
@@ -15,9 +22,15 @@ public class InversionConfig {
     public boolean enableInvertedIngot;
 
     @Config.Order(100)
-    @Config.DefaultBoolean(true)
+    @Config.Comment("""
+        What happens when you run out of time while handling Inverted Ingots
+         IMPLODE: Die, ingots are destroyed
+         DISAPPEAR: Ingots are destroyed
+         DECAY: Ingots become Stable Inverted Nuggets
+         OFF: No timer""")
+    @Config.DefaultEnum("IMPLODE")
     @Config.RequiresMcRestart
-    public boolean invertedIngotsImplode;
+    public InversionMode invertedIngotMode;
 
     @Config.Order(200)
     @Config.DefaultInt(300)
