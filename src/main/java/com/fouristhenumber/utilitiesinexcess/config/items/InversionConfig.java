@@ -18,7 +18,7 @@ public class InversionConfig {
     @Config.RequiresMcRestart
     public static int awakenedInversionDurability;
 
-    @Config.Comment("Amount of unique items in the list the north chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the north chest has to contain for the pseudo-division ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     public static int northChestRequiredItems;
@@ -31,7 +31,7 @@ public class InversionConfig {
             "minecraft:cooked_porkchop", "minecraft:netherbrick" })
     public static String[] northChestValidItems;
 
-    @Config.Comment("Amount of unique items in the list the east chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the east chest has to contain for the pseudo-division ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     public static int eastChestRequiredItems;
@@ -48,7 +48,7 @@ public class InversionConfig {
             "minecraft:potion:8268", "minecraft:potion:8269", "minecraft:potion:8270" })
     public static String[] eastChestValidItems;
 
-    @Config.Comment("Amount of unique items in the list the south chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the south chest has to contain for the pseudo-division ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     public static int southChestRequiredItems;
@@ -60,7 +60,7 @@ public class InversionConfig {
             "minecraft:clay", "minecraft:iron_ore", "minecraft:emerald_ore", "minecraft:coal_ore" })
     public static String[] southChestValidItems;
 
-    @Config.Comment("Amount of unique items in the list the west chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the west chest has to contain for the pseudo-division ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     public static int westChestRequiredItems;

@@ -15,7 +15,7 @@ public class DivisionSigilTransformation implements IItemStackTransformationHand
         NBTTagCompound tag = stack.getCompoundTag("tag");
         int stable = tag.getByte("stable");
         if (stable == 1) {
-            IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.PSEUDO_INVERSION_SIGIL.get()));
+            IDExtenderCompat.setItemStackID(stack, Item.getIdFromItem(ModItems.PSEUDO_DIVISION_SIGIL.get()));
             stack.removeTag("tag");
         } else {
             int dmg = tag.getInteger("damage");

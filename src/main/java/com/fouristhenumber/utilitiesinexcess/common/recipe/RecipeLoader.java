@@ -1225,7 +1225,7 @@ public class RecipeLoader {
             'i',
             Items.iron_ingot,
             's',
-            ModItems.PSEUDO_INVERSION_SIGIL,
+            ModItems.PSEUDO_DIVISION_SIGIL,
             'd',
             Items.diamond);
 

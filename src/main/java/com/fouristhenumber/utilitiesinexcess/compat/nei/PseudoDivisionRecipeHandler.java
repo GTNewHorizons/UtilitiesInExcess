@@ -17,49 +17,49 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
-public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
+public class PseudoDivisionRecipeHandler extends TemplateRecipeHandler {
 
     public record ChestGroup(String label, int required, List<ItemStack> validItems) {}
 
     private ChestGroup[] groups;
 
-    public PseudoInversionRecipeHandler() {
+    public PseudoDivisionRecipeHandler() {
         buildGroups();
     }
 
     private void buildGroups() {
         groups = new ChestGroup[] {
             new ChestGroup(
-                "nei.pseudo_inversion.label_north",
+                "nei.pseudo_division.label_north",
                 InversionConfig.northChestRequiredItems,
-                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.NORTH)),
+                ItemInversionSigilActive.getPseudoDivisionChestAtDirection(ForgeDirection.NORTH)),
             new ChestGroup(
-                "nei.pseudo_inversion.label_south",
+                "nei.pseudo_division.label_south",
                 InversionConfig.southChestRequiredItems,
-                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.SOUTH)),
+                ItemInversionSigilActive.getPseudoDivisionChestAtDirection(ForgeDirection.SOUTH)),
             new ChestGroup(
-                "nei.pseudo_inversion.label_east",
+                "nei.pseudo_division.label_east",
                 InversionConfig.eastChestRequiredItems,
-                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.EAST)),
+                ItemInversionSigilActive.getPseudoDivisionChestAtDirection(ForgeDirection.EAST)),
             new ChestGroup(
-                "nei.pseudo_inversion.label_west",
+                "nei.pseudo_division.label_west",
                 InversionConfig.westChestRequiredItems,
-                ItemInversionSigilActive.getPseudoInversionChestAtDirection(ForgeDirection.WEST)) };
+                ItemInversionSigilActive.getPseudoDivisionChestAtDirection(ForgeDirection.WEST)) };
     }
 
     @Override
     public String getOverlayIdentifier() {
-        return "pseudo_inversion_recipes";
+        return "pseudo_division_recipes";
     }
 
     @Override
     public String getHandlerId() {
-        return "pseudo_inversion_recipes";
+        return "pseudo_division_recipes";
     }
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal("nei.title.uie.pseudo_inversion");
+        return StatCollector.translateToLocal("nei.title.uie.pseudo_division");
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
         if (outputId.equals(getOverlayIdentifier())) {
             arecipes.add(new CachedRitual(groups));
         } else if (outputId.equals("item") && results.length > 0 && results[0] instanceof ItemStack result) {
-            if (result.getItem() == ModItems.PSEUDO_INVERSION_SIGIL.get()) {
+            if (result.getItem() == ModItems.PSEUDO_DIVISION_SIGIL.get()) {
                 arecipes.add(new CachedRitual(groups));
             }
         }
@@ -83,7 +83,7 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
         if (inputId.equals(getOverlayIdentifier())) {
             arecipes.add(new CachedRitual(groups));
         } else if (inputId.equals("item") && ingredients.length > 0 && ingredients[0] instanceof ItemStack ingredient) {
-            if (ingredient.getItem() == ModItems.PSEUDO_INVERSION_SIGIL.get()
+            if (ingredient.getItem() == ModItems.PSEUDO_DIVISION_SIGIL.get()
                 || ingredient.getItem() == ModItems.INVERSION_SIGIL_ACTIVE.get()) {
                 arecipes.add(new CachedRitual(groups));
             }
@@ -126,7 +126,7 @@ public class PseudoInversionRecipeHandler extends TemplateRecipeHandler {
             GuiDraw.drawString(StatCollector.translateToLocalFormatted(group.label), 5, y, 0x404040, false);
             y += 10;
             GuiDraw.drawString(
-                StatCollector.translateToLocalFormatted("nei.pseudo_inversion.requires", group.required()),
+                StatCollector.translateToLocalFormatted("nei.pseudo_division.requires", group.required()),
                 5,
                 y,
                 0x404040,
