@@ -1,16 +1,22 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
 import java.text.DecimalFormat;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
@@ -86,6 +92,42 @@ public class UIEUtils {
         return uieTag;
     }
 
+    public static void dropItemsFromIInventory(int newSize, IInventory chest, World world, int x, int y, int z) {
+        for (int l = newSize; l < chest.getSizeInventory(); l++) {
+            ItemStack itemstack = chest.getStackInSlot(l);
+            if (itemstack == null) {
+                continue;
+            }
+            float f = uieRandom.nextFloat() * 0.8F + 0.1F;
+            float f1 = uieRandom.nextFloat() * 0.8F + 0.1F;
+            float f2 = uieRandom.nextFloat() * 0.8F + 0.1F;
+            while (itemstack.stackSize > 0) {
+                int i1 = uieRandom.nextInt(21) + 10;
+                if (i1 > itemstack.stackSize) {
+                    i1 = itemstack.stackSize;
+                }
+                itemstack.stackSize -= i1;
+                EntityItem entityitem = new EntityItem(
+                    world,
+                    (float) x + f,
+                    (float) y + (newSize > 0 ? 1 : 0) + f1,
+                    (float) z + f2,
+                    new ItemStack(itemstack.getItem(), i1, itemstack.getItemDamage()));
+                float f3 = 0.05F;
+                entityitem.motionX = (float) uieRandom.nextGaussian() * f3;
+                entityitem.motionY = (float) uieRandom.nextGaussian() * f3 + 0.2F;
+                entityitem.motionZ = (float) uieRandom.nextGaussian() * f3;
+                if (itemstack.hasTagCompound()) {
+                    entityitem.getEntityItem()
+                        .setTagCompound(
+                            (NBTTagCompound) itemstack.getTagCompound()
+                                .copy());
+                }
+                world.spawnEntityInWorld(entityitem);
+            }
+        }
+    }
+
     public static class ItemStackHashStrategy implements Hash.Strategy<ItemStack> {
 
         public static final ItemStackHashStrategy instance = new ItemStackHashStrategy();
@@ -113,5 +155,33 @@ public class UIEUtils {
         if (!Mods.NEI.isLoaded()) return;
 
         API.hideItem(new ItemStack(item));
+    }
+
+    public static Set<BlockPos> scanForBlock(World world, int x, int y, int z, int radius, Block findBlock) {
+        return scanForBlock(world, x, y, z, radius, findBlock, 0);
+    }
+
+    public static Set<BlockPos> scanForBlock(World world, int x, int y, int z, int radius, Block findBlock, int meta) {
+        Set<BlockPos> positions = new HashSet<>();
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = -radius; dy <= radius; dy++) {
+                int rem = radius - (Math.abs(dx) + Math.abs(dy));
+                if (rem < 0) continue;
+
+                for (int dz = -rem; dz <= rem; dz++) {
+                    if (Math.abs(dx) + Math.abs(dy) + Math.abs(dz) > radius) continue;
+
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    int nz = z + dz;
+
+                    if (!world.blockExists(nx, ny, nz)) continue;
+
+                    if (world.getBlock(nx, ny, nz) == findBlock && world.getBlockMetadata(nx, ny, nz) == meta)
+                        positions.add(new BlockPos(nx, ny, nz));
+                }
+            }
+        }
+        return positions;
     }
 }

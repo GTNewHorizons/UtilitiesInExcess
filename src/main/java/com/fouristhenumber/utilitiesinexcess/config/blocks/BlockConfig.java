@@ -106,6 +106,9 @@ public class BlockConfig {
     public static boolean enableEndOfTimePortal;
 
     @Config.DefaultBoolean(true)
+    public static boolean enableEnderLocus;
+
+    @Config.DefaultBoolean(true)
     public static boolean enableSmartPump;
 
     @Config.DefaultBoolean(true)

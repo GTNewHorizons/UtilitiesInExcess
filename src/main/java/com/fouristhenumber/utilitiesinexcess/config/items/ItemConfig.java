@@ -9,12 +9,10 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
 public class ItemConfig {
 
-    @Config.DefaultBoolean(false)
-    public static boolean registerDisabledItems;
-
     public static void registerConfig() throws ConfigException {
         ConfigurationManager.registerConfig(ItemConfig.class);
         UnstableTools.registerConfig();
+        ConfigurationManager.registerConfig(ChunchunmaruConfig.class);
         ConfigurationManager.registerConfig(WateringCanConfig.class);
         ConfigurationManager.registerConfig(InversionConfig.class);
         ConfigurationManager.registerConfig(FireBatteryConfig.class);
@@ -37,6 +35,9 @@ public class ItemConfig {
 
     @Config.DefaultInt(49)
     public static int superArchitectsWandBuildLimit;
+
+    @Config.DefaultInt(200)
+    public static int architectsWandCreativeBuildLimit;
 
     @Config.DefaultInt(100)
     @Config.Comment("[GT5U] Durability damage dealt to Trowels per block placed by the Architect's Wand. (Set to 0 to disable)")

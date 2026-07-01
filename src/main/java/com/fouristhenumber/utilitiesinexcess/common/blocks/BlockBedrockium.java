@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -17,8 +18,8 @@ public class BlockBedrockium extends Block {
         super(Material.iron);
         setBlockName("bedrockium_block");
         setBlockTextureName("utilitiesinexcess:bedrockium_block");
-        setHardness(500F);
-        setResistance(10000F);
+        setHardness(1000F);
+        setResistance(3_600_000F);
     }
 
     @Override
@@ -34,7 +35,8 @@ public class BlockBedrockium extends Block {
 
         @Override
         public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int p_77663_4_, boolean p_77663_5_) {
-            if (entityIn instanceof EntityLivingBase entity) {
+            if (entityIn instanceof EntityLivingBase entity
+                && !(entity instanceof EntityPlayer player && player.capabilities.isCreativeMode)) {
                 entity.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 0, 3, true));
             }
         }

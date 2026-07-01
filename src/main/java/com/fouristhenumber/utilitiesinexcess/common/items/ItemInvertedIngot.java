@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.Item;
@@ -16,10 +17,15 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -50,10 +56,13 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public static boolean checkImplosion(ItemStack item, World world) {
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
-            int remaining = tag.getInteger("ImplosionTimer");
-            if (remaining > 0) {
-                tag.setInteger("ImplosionTimer", remaining - 1);
-            } else {
+            if (tag.getBoolean("Crafted") && !tag.hasKey("CraftedAt")) {
+                tag.setLong("CraftedAt", world.getTotalWorldTime());
+                item.setTagCompound(tag);
+            }
+
+            long passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
+            if (passed > InversionConfig.invertedIngotImplosionTimer) {
                 return (world.isRemote);
             }
         }
@@ -70,20 +79,23 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
             if (InversionConfig.invertedIngotsImplode) {
-                NBTTagCompound tag = stack.getTagCompound();
-                if (tag == null) {
+                if (!stack.hasTagCompound()) {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
                 } else {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
-                    if (stack.hasTagCompound()) {
-                        double time = (double) stack.getTagCompound()
-                            .getInteger("ImplosionTimer") / 20;
+                    NBTTagCompound tag = stack.getTagCompound();
+                    if (tag.hasKey("CraftedAt")) {
+                        double passed = player.worldObj.getTotalWorldTime() - tag.getLong("CraftedAt");
+                        double timeLeft = (InversionConfig.invertedIngotImplosionTimer - passed) / 20D;
                         tooltip.add(
                             StatCollector.translateToLocalFormatted(
                                 "item.inverted_ingot.desc.2",
-                                formatNumber(Math.max(0, time))));
+                                formatNumber(Math.max(0, timeLeft))));
                     } else {
-                        tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.desc.2", 10));
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "item.inverted_ingot.desc.2",
+                                InversionConfig.invertedIngotImplosionTimer / 20));
                     }
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
@@ -130,6 +142,78 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         public InvertedNugget() {
             setUnlocalizedName("inverted_nugget");
             setTextureName("utilitiesinexcess:inverted_nugget");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInvertedIngot;
+        }
+
+        @SubscribeEvent
+        public static void onItemToss(ItemTossEvent event) {
+            ItemStack stack = event.entityItem.getEntityItem();
+            if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
+                if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+                event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+                event.setCanceled(true);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+            if (event.player.openContainer instanceof ContainerWorkbench bench) {
+                ItemStack cursorItem = event.player.inventory.getItemStack();
+                if (cursorItem != null && cursorItem.getItem() instanceof ItemInvertedIngot) {
+                    if (checkImplosion(cursorItem, event.player.worldObj)) {
+                        event.player.inventory.setItemStack(null);
+                        event.player.closeScreen();
+                        event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+                    }
+                }
+                for (int i = 0; i < bench.craftMatrix.getSizeInventory(); i++) {
+                    ItemStack stack = bench.craftMatrix.getStackInSlot(i);
+                    if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
+                        if (checkImplosion(stack, event.player.worldObj)) {
+                            bench.craftMatrix.setInventorySlotContents(i, null);
+                            event.player.closeScreen();
+                            event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    // TODO Add (side = Side.SERVER) to the EventBusSubscriber once
+    // https://github.com/GTNewHorizons/GTNHLib/issues/410 is closed
+    @EventBusSubscriber
+    public static class EventsServer {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInvertedIngot;
+        }
+
+        // Destroy non-stable inverted ingots dropped in world no matter what
+        @SubscribeEvent
+        public static void entityItemSpawnEvent(EntityJoinWorldEvent event) {
+            // TODO Remove once side is added to EventBusSubscriber
+            if (event.world.isRemote) return;
+
+            if (event.entity instanceof EntityItem entityItem) {
+                ItemStack stack = entityItem.getEntityItem();
+                if (stack.getItem() instanceof ItemInvertedIngot) {
+                    if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+                    entityItem.setDead();
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 }

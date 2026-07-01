@@ -59,10 +59,13 @@ public class ItemMobJar extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && stack.hasTagCompound()
-            && stack.getTagCompound()
-                .hasKey("MobData")) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float clickX, float clickY, float clickZ) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey("MobData")) {
+            if (world.isRemote) {
+                return true;
+            }
 
             NBTTagCompound mobData = stack.getTagCompound()
                 .getCompoundTag("MobData");
@@ -79,12 +82,15 @@ public class ItemMobJar extends Item {
                     entity.setPosition(targetX, targetY, targetZ);
 
                     world.spawnEntityInWorld(entity);
-                    stack.getTagCompound()
-                        .removeTag("MobData");
+                    if (!player.capabilities.isCreativeMode || player.isSneaking()) {
+                        stack.getTagCompound()
+                            .removeTag("MobData");
+                    }
                 }
             }
+            return true;
         }
-        return stack;
+        return false;
     }
 
     @Override

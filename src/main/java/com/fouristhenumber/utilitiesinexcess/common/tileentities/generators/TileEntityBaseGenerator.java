@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -251,5 +252,10 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
             .pos(10, 62));
 
         return panel;
+    }
+
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 }

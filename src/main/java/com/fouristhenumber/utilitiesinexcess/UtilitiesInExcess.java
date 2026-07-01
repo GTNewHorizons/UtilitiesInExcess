@@ -1,13 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,14 +15,11 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRe
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
-import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
-import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
+import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -43,6 +38,7 @@ import minetweaker.MineTweakerAPI;
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
+    public static final String MODNAME = "Utilities in Excess";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     @Mod.Instance(MODID)
@@ -56,10 +52,6 @@ public class UtilitiesInExcess {
         serverSide = "com.fouristhenumber.utilitiesinexcess.CommonProxy")
     public static CommonProxy proxy;
 
-    public static void chat(String text) {
-        Minecraft.getMinecraft().thePlayer.sendChatMessage(text);
-    }
-
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
@@ -69,11 +61,6 @@ public class UtilitiesInExcess {
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
         RecipeLoader.run();
-
-        MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
-        FMLCommonHandler.instance()
-            .bus()
-            .register(new FMLEventHandler());
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
@@ -110,7 +97,7 @@ public class UtilitiesInExcess {
         }
 
         if (Mods.CraftTweaker.isLoaded()) {
-            MineTweakerAPI.registerClass(QEDCraftTweakerSupport.class);
+            MineTweakerAPI.registerClass(EnderLocusCraftTweakerSupport.class);
         }
 
         ForgeChunkManager.setForcedChunkLoadingCallback(uieInstance, new TEChunkLoadingCallback());

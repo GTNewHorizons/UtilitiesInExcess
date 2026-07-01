@@ -2,15 +2,22 @@ package com.fouristhenumber.utilitiesinexcess.compat.nei;
 
 import net.minecraft.util.StatCollector;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.Tags;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import codechicken.nei.recipe.GuiCraftingRecipe;
-import codechicken.nei.recipe.GuiUsageRecipe;
-import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
+import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 
-@SuppressWarnings("unused") // automatically found by NEI
+@SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
 
     @Override
@@ -20,21 +27,62 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public String getVersion() {
-        return "1.0"; // ??
+        return Tags.VERSION;
     }
 
     @Override
     public void loadConfig() {
-        addHandler(new QEDRecipeHandler());
-    }
+        EnderLocusRecipeHandler enderLocusRecipeHandler = new EnderLocusRecipeHandler();
 
-    private void addHandler(TemplateRecipeHandler handler) {
+        API.registerRecipeHandler(enderLocusRecipeHandler);
+        API.registerUsageHandler(enderLocusRecipeHandler);
+
+        API.addRecipeCatalyst(ModBlocks.ENDER_LOCUS.newItemStack(), enderLocusRecipeHandler, 1);
+        API.addRecipeCatalyst(ModBlocks.CONVERGENCE_CRYSTAL.newItemStack(), enderLocusRecipeHandler, 0);
+
         FMLInterModComms.sendRuntimeMessage(
             UtilitiesInExcess.MODID,
             "NEIPlugins",
             "register-crafting-handler",
-            "utilitiesinexcess@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
-        GuiCraftingRecipe.craftinghandlers.add(handler);
-        GuiUsageRecipe.usagehandlers.add(handler);
+            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.ender_locus")
+                + "@ender_locus_recipes");
+
+        PseudoInversionRecipeHandler pseudoInversionHandler = new PseudoInversionRecipeHandler();
+
+        API.registerRecipeHandler(pseudoInversionHandler);
+        API.registerUsageHandler(pseudoInversionHandler);
+
+        FMLInterModComms.sendRuntimeMessage(
+            UtilitiesInExcess.MODID,
+            "NEIPlugins",
+            "register-crafting-handler",
+            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.pseudo_inversion")
+                + "@pseudo_inversion_recipes");
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return Mods.NEI.isLoaded();
+        }
+
+        @SubscribeEvent
+        public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+            event.registerHandlerInfo(
+                new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
+                    .setHeight(140)
+                    .setWidth(166)
+                    .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
+                    .build());
+            event.registerHandlerInfo(
+                new HandlerInfo.Builder("pseudo_inversion_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
+                    .setHeight(140)
+                    .setWidth(166)
+                    .setDisplayStack(ModItems.PSEUDO_INVERSION_SIGIL.newItemStack())
+                    .build());
+        }
     }
 }

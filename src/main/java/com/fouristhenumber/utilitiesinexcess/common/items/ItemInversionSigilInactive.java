@@ -13,11 +13,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -41,11 +43,9 @@ public class ItemInversionSigilInactive extends Item {
         setTextureName("utilitiesinexcess:inversion_sigil_inactive");
         setUnlocalizedName("inversion_sigil_inactive");
         setMaxStackSize(1);
-
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private boolean isWithinMidnightWindow(long time) {
+    private static boolean isWithinMidnightWindow(long time) {
         long low = (MIDNIGHT - WINDOW_TICKS);
         long high = (MIDNIGHT + WINDOW_TICKS);
         return time >= low && time <= high;
@@ -92,7 +92,7 @@ public class ItemInversionSigilInactive extends Item {
         return true;
     }
 
-    private boolean hasRedstoneRing(World world, int tx, int ty, int tz) {
+    private static boolean hasRedstoneRing(World world, int tx, int ty, int tz) {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
                 if (dx == 0 && dz == 0) continue;
@@ -107,7 +107,7 @@ public class ItemInversionSigilInactive extends Item {
         return true;
     }
 
-    private boolean countNearbyGrass(World world, int cx, int cy, int cz) {
+    private static boolean countNearbyGrass(World world, int cx, int cy, int cz) {
         int count = 0;
         for (int dx = -ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx
             <= ItemInversionSigilInactive.GRASS_SEARCH_RADIUS; dx++) {
@@ -128,99 +128,109 @@ public class ItemInversionSigilInactive extends Item {
         return false;
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onLivingDrops(LivingDropsEvent event) {
-        if (event.entityLiving instanceof EntityWither) {
-            event.drops.add(
-                new EntityItem(
-                    event.entityLiving.worldObj,
-                    event.entityLiving.posX,
-                    event.entityLiving.posY,
-                    event.entityLiving.posZ,
-                    new ItemStack(this, 1)));
-        }
-    }
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onLivingDeath(LivingDeathEvent event) {
-        World world = event.entityLiving.worldObj;
-
-        if (world.isRemote) return;
-
-        if (!isWithinMidnightWindow(world.getWorldTime())) return;
-
-        if (!(event.entityLiving instanceof EntityAnimal)) return;
-
-        if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
-            return;
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.enableInversionSigil;
         }
 
-        if (!player.inventory.hasItem(this)) return;
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public static void onLivingDrops(LivingDropsEvent event) {
+            if (event.entityLiving instanceof EntityWither) {
+                event.drops.add(
+                    new EntityItem(
+                        event.entityLiving.worldObj,
+                        event.entityLiving.posX,
+                        event.entityLiving.posY,
+                        event.entityLiving.posZ,
+                        new ItemStack(ModItems.INVERSION_SIGIL_INACTIVE.get(), 1)));
+            }
+        }
 
-        int radius = ENCHANT_TABLE_SEARCH_RADIUS;
-        int mobX = (int) Math.floor(event.entityLiving.posX);
-        int mobY = (int) Math.floor(event.entityLiving.posY);
-        int mobZ = (int) Math.floor(event.entityLiving.posZ);
+        @SubscribeEvent(priority = EventPriority.NORMAL)
+        public static void onLivingDeath(LivingDeathEvent event) {
+            World world = event.entityLiving.worldObj;
 
-        int tableX = 0, tableY = 0, tableZ = 0;
-        boolean found = false;
+            if (world.isRemote) return;
 
-        for (int dx = -radius; dx <= radius && !found; dx++) {
-            for (int dy = -2; dy <= 2 && !found; dy++) {
-                for (int dz = -radius; dz <= radius && !found; dz++) {
-                    int bx = mobX + dx;
-                    int by = mobY + dy;
-                    int bz = mobZ + dz;
-                    if (world.getBlock(bx, by, bz) == Blocks.enchanting_table) {
-                        tableX = bx;
-                        tableY = by;
-                        tableZ = bz;
-                        found = true;
+            if (!isWithinMidnightWindow(world.getWorldTime())) return;
+
+            if (!(event.entityLiving instanceof EntityAnimal)) return;
+
+            if (!(event.source != null && event.source.getSourceOfDamage() instanceof EntityPlayer player)) {
+                return;
+            }
+
+            if (!player.inventory.hasItem(ModItems.INVERSION_SIGIL_INACTIVE.get())) return;
+
+            int radius = ENCHANT_TABLE_SEARCH_RADIUS;
+            int mobX = (int) Math.floor(event.entityLiving.posX);
+            int mobY = (int) Math.floor(event.entityLiving.posY);
+            int mobZ = (int) Math.floor(event.entityLiving.posZ);
+
+            int tableX = 0, tableY = 0, tableZ = 0;
+            boolean found = false;
+
+            for (int dx = -radius; dx <= radius && !found; dx++) {
+                for (int dy = -2; dy <= 2 && !found; dy++) {
+                    for (int dz = -radius; dz <= radius && !found; dz++) {
+                        int bx = mobX + dx;
+                        int by = mobY + dy;
+                        int bz = mobZ + dz;
+                        if (world.getBlock(bx, by, bz) == Blocks.enchanting_table) {
+                            tableX = bx;
+                            tableY = by;
+                            tableZ = bz;
+                            found = true;
+                        }
                     }
                 }
             }
-        }
 
-        if (!found) return;
+            if (!found) return;
 
-        boolean darkOk = world.getBlockLightValue(tableX, tableY, tableZ) <= LIGHT_LEVEL_REQUIRED;
-        boolean redstoneRingOk = hasRedstoneRing(world, tableX, tableY, tableZ);
-        boolean grassOk = countNearbyGrass(world, tableX, tableY, tableZ);
-        boolean moonOk = world.canBlockSeeTheSky(tableX, tableY, tableZ);
+            boolean darkOk = world.getBlockLightValue(tableX, tableY, tableZ) <= LIGHT_LEVEL_REQUIRED;
+            boolean redstoneRingOk = hasRedstoneRing(world, tableX, tableY, tableZ);
+            boolean grassOk = countNearbyGrass(world, tableX, tableY, tableZ);
+            boolean moonOk = world.canBlockSeeTheSky(tableX, tableY, tableZ);
 
-        if (!(darkOk && redstoneRingOk && grassOk && moonOk)) {
-            return;
-        }
-
-        // Ritual has now succeeded
-
-        EntityLightningBolt bolt = new EntityLightningBolt(world, tableX + 0.5, tableY + 1, tableZ + 0.5);
-        world.addWeatherEffect(bolt);
-
-        // Transform all sigils in player's inventory to activated
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack is = player.inventory.getStackInSlot(i);
-            if (is != null && is.getItem() == this) {
-                player.inventory.setInventorySlotContents(i, ItemInversionSigilActive.getStack());
+            if (!(darkOk && redstoneRingOk && grassOk && moonOk)) {
+                return;
             }
-        }
 
-        // Convert grass to cursed earth
-        for (int dx = -GRASS_SEARCH_RADIUS; dx <= GRASS_SEARCH_RADIUS; dx++) {
-            for (int dz = -GRASS_SEARCH_RADIUS; dz <= GRASS_SEARCH_RADIUS; dz++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    int bx = tableX + dx;
-                    int by = tableY + dy;
-                    int bz = tableZ + dz;
-                    if (world.getBlock(bx, by, bz) == Blocks.grass) {
-                        world.setBlock(bx, by, bz, cursedEarthBlock);
+            // Ritual has now succeeded
+
+            EntityLightningBolt bolt = new EntityLightningBolt(world, tableX + 0.5, tableY + 1, tableZ + 0.5);
+            world.addWeatherEffect(bolt);
+
+            // Transform all sigils in player's inventory to activated
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack is = player.inventory.getStackInSlot(i);
+                if (is != null && is.getItem() == ModItems.INVERSION_SIGIL_INACTIVE.get()) {
+                    player.inventory.setInventorySlotContents(i, ItemInversionSigilActive.getStack());
+                }
+            }
+
+            // Convert grass to cursed earth
+            for (int dx = -GRASS_SEARCH_RADIUS; dx <= GRASS_SEARCH_RADIUS; dx++) {
+                for (int dz = -GRASS_SEARCH_RADIUS; dz <= GRASS_SEARCH_RADIUS; dz++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        int bx = tableX + dx;
+                        int by = tableY + dy;
+                        int bz = tableZ + dz;
+                        if (world.getBlock(bx, by, bz) == Blocks.grass) {
+                            world.setBlock(bx, by, bz, cursedEarthBlock);
+                        }
                     }
                 }
             }
-        }
 
-        if (!world.isRemote) {
-            player.addChatMessage(new ChatComponentTranslation("chat.inversion_ritual.complete"));
+            if (!world.isRemote) {
+                player.addChatMessage(new ChatComponentTranslation("chat.inversion_ritual.complete"));
+            }
         }
     }
 }
