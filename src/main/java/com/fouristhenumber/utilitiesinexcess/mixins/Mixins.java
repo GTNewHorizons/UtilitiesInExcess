@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.mixins;
 import javax.annotation.Nonnull;
 
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
@@ -27,6 +28,14 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> OtherConfig.enableBaubleRenders)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
+    TRUE_TOUCHSCREEN_ARGB_SCREENSHOTS(new MixinBuilder("Rendering tweaks for true greenscreen (does nothing without true greenscreen in frame).")
+        .addCommonMixins(
+            "minecraft.MixinScreenShotHelper_TrueGreenscreen",
+            "minecraft.MixinRenderGlobal_TrueGreenscreen",
+            "minecraft.MixinGuiIngame_TrueGreenscreen",
+            "minecraft.MixinEntityRenderer_TrueGreenscreen")
+        .setPhase(Phase.EARLY)
+        .setApplyIf(() -> BlockConfig.enableTrueGreenscreen)),
     ACCESSORS(new MixinBuilder("Accessors for the mod to use")
         .setPhase(Phase.EARLY)
         .addCommonMixins(

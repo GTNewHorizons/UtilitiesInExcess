@@ -8,6 +8,8 @@ public class RenderableCube {
     public double minX, minY, minZ, maxX, maxY, maxZ;
     public float[][] uv;
 
+    // UV is formatted as:
+    // float[ForgeDirection] [uX, uY, vX, vY]
     public RenderableCube(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float[][] uv) {
         this.minX = minX;
         this.minY = minY;
@@ -56,8 +58,8 @@ public class RenderableCube {
             uv[f] = new float[] { u0, v0, u1, v1 };
         }
 
-        float[] topUV = uv[0];
-        float[] bottomUV = uv[1];
+        float[] bottomUV = uv[0];
+        float[] topUV = uv[1];
         float[] northUV = uv[2];
         float[] southUV = uv[3];
         float[] westUV = uv[4];
