@@ -53,7 +53,7 @@ public class InvertedIngotRenderer implements IItemRenderer {
             int remaining = tag.getInteger("ImplosionTimer");
 
             float progress = MathHelper
-                .clamp_float((float) remaining / InversionConfig.invertedIngotImplosionTimer, 0f, 1f);
+                .clamp_float((float) remaining / InversionConfig.INSTANCE.invertedIngotImplosionTimer, 0f, 1f);
 
             float r = 1F;
             float g = MathHelper.clamp_float(progress, 0f, 1f);

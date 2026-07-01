@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.DimensionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 
@@ -21,7 +22,7 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
     static {
         // Register config here because then it's available during mixins.
         try {
-            ItemConfig.registerConfig();
+            ConfigurationManager.registerConfig(ItemConfig.class);
             BlockConfig.registerConfig();
             DimensionConfig.registerConfig();
             OtherConfig.registerConfig();

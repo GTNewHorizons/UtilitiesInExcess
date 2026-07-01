@@ -26,7 +26,7 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
 
     private ForgeChunkManager.Ticket ticket;
 
-    protected EnergyStorage energyStorage = new EnergyStorage(BlockConfig.smartPumpEnergyStorage);
+    protected EnergyStorage energyStorage = new EnergyStorage(BlockConfig.smartPump.smartPumpEnergyStorage);
 
     boolean stalled = false;
     boolean finished = false;
@@ -65,7 +65,7 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
             chunkX = xCoord >> 4;
             chunkZ = zCoord >> 4;
         }
-        if (!stalled || worldObj.getTotalWorldTime() % BlockConfig.smartPumpStallCooldownInTicks == 0) {
+        if (!stalled || worldObj.getTotalWorldTime() % BlockConfig.smartPump.smartPumpStallCooldown == 0) {
             stalled = false;
 
             if (tank.getFluidAmount() > 0) {
@@ -111,7 +111,7 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
         Block block = worldObj.getBlock(worldX, currentY, worldZ);
         FluidStack fluid;
 
-        if (getEnergyStored(ForgeDirection.UNKNOWN) < BlockConfig.smartPumpEnergyUsePerBlock) {
+        if (getEnergyStored(ForgeDirection.UNKNOWN) < BlockConfig.smartPump.smartPumpEnergyUsePerBlock) {
             stalled = true;
             return;
         }
@@ -128,7 +128,7 @@ public class TileEntitySmartPump extends TileEntity implements IEnergyReceiver, 
             return;
         }
 
-        energyStorage.extractEnergy(BlockConfig.smartPumpEnergyUsePerBlock, true);
+        energyStorage.extractEnergy(BlockConfig.smartPump.smartPumpEnergyUsePerBlock, true);
 
         if (tank.fill(fluid, false) >= fluid.amount) {
             tank.fill(fluid, true);

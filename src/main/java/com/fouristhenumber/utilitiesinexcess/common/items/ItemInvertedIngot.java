@@ -75,7 +75,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
-            if (InversionConfig.invertedIngotsImplode) {
+            if (InversionConfig.INSTANCE.invertedIngotsImplode) {
                 NBTTagCompound tag = stack.getTagCompound();
                 if (tag == null) {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
@@ -145,7 +145,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return InversionConfig.enableInvertedIngot;
+            return InversionConfig.INSTANCE.enableInvertedIngot;
         }
 
         @SubscribeEvent
@@ -191,7 +191,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return InversionConfig.enableInvertedIngot;
+            return InversionConfig.INSTANCE.enableInvertedIngot;
         }
 
         // Destroy non-stable inverted ingots dropped in world no matter what

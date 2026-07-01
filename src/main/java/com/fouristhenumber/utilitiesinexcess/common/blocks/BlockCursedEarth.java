@@ -94,7 +94,7 @@ public class BlockCursedEarth extends Block {
         if (world.isRemote) return;
         tryBurn(world, x, y, z, random);
         trySpawnMob(world, x, y, z, random);
-        if (CursedEarthConfig.cursedEarthSpreads) trySpread(world, x, y, z, random);
+        if (CursedEarthConfig.INSTANCE.cursedEarthSpreads) trySpread(world, x, y, z, random);
     }
 
     public void trySpread(World world, int x, int y, int z, Random random) {
@@ -108,7 +108,7 @@ public class BlockCursedEarth extends Block {
 
             if ((block == Blocks.grass || block == Blocks.dirt) && world.isAirBlock(i, j + 1, k)) {
                 world.setBlock(i, j, k, this);
-            } else if (CursedEarthConfig.volatileReaction) {
+            } else if (CursedEarthConfig.INSTANCE.volatileReaction) {
                 if ((blessed && block == ModBlocks.CURSED_EARTH.get())
                     || (!blessed && block == ModBlocks.BLESSED_EARTH.get())) {
                     world.setBlockToAir(i, j, k);
@@ -125,8 +125,8 @@ public class BlockCursedEarth extends Block {
         if (!world.getGameRules()
             .getGameRuleBooleanValue("doMobSpawning")) return;
         if (world.difficultySetting == EnumDifficulty.PEACEFUL && !blessed) return;
-        if (random.nextInt(100)
-            >= (blessed ? CursedEarthConfig.blessedEarthSpawnRate : CursedEarthConfig.cursedEarthSpawnRate)) return;
+        if (random.nextInt(100) >= (blessed ? CursedEarthConfig.INSTANCE.blessedEarthSpawnRate
+            : CursedEarthConfig.INSTANCE.cursedEarthSpawnRate)) return;
 
         AxisAlignedBB spawnArea = AxisAlignedBB.getBoundingBox(x, y + 1, z, x + 1, y + 2, z + 1);
         List<EntityLiving> entitiesAbove = world.getEntitiesWithinAABB(EntityLiving.class, spawnArea);
@@ -174,7 +174,7 @@ public class BlockCursedEarth extends Block {
             return;
         }
 
-        if (blessed && !CursedEarthConfig.enableBlessedEarthBurn) return;
+        if (blessed && !CursedEarthConfig.INSTANCE.enableBlessedEarthBurn) return;
 
         if (world.isAirBlock(x, y + 1, z) && shouldBurn(world, x, y, z)) {
             world.setBlock(x, y + 1, z, Blocks.fire);

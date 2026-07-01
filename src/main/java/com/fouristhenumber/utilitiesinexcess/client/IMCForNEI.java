@@ -15,7 +15,7 @@ public class IMCForNEI {
             "nei.infopage.uie.compressed.1");
 
         sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.1");
-        if (InversionConfig.invertedIngotsImplode) {
+        if (InversionConfig.INSTANCE.invertedIngotsImplode) {
             sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.2");
             sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.3");
         }

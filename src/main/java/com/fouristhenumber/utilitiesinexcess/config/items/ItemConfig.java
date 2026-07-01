@@ -1,22 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.config.items;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.UnstableTools;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.InvertedTools;
 import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+@Config.LangKey("utilitiesinexcess.config.item")
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
 public class ItemConfig {
-
-    public static void registerConfig() throws ConfigException {
-        ConfigurationManager.registerConfig(ItemConfig.class);
-        UnstableTools.registerConfig();
-        ConfigurationManager.registerConfig(ChunchunmaruConfig.class);
-        ConfigurationManager.registerConfig(WateringCanConfig.class);
-        ConfigurationManager.registerConfig(InversionConfig.class);
-        ConfigurationManager.registerConfig(FireBatteryConfig.class);
-    }
 
     @Config.DefaultBoolean(true)
     public static boolean enableHeavenlyRing;
@@ -57,4 +47,19 @@ public class ItemConfig {
 
     @Config.DefaultBoolean(true)
     public static boolean enableGlove;
+
+    @Config.LangKey("utilitiesinexcess.config.item.inverted_tools")
+    public static final InvertedTools INVERTED_TOOLS = InvertedTools.INSTANCE;
+
+    @Config.LangKey("utilitiesinexcess.config.item.inversion")
+    public static final InversionConfig inversion = InversionConfig.INSTANCE;
+
+    @Config.LangKey("utilitiesinexcess.config.item.watering_can")
+    public static final WateringCanConfig wateringCan = WateringCanConfig.INSTANCE;
+
+    @Config.LangKey("item.chunchunmaru.name")
+    public static final ChunchunmaruConfig chunchunmaru = ChunchunmaruConfig.INSTANCE;
+
+    @Config.LangKey("item.fire_battery.name")
+    public static final FireBatteryConfig fireBattery = FireBatteryConfig.INSTANCE;
 }
