@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.compat.waila;
 
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.CommonProxy;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -64,14 +64,17 @@ public class WailaHandler implements IWailaDataProvider {
                             (estimatedSecondsLeft % 3600) / 60,
                             (estimatedSecondsLeft % 60)))));
 
-            TileEntityVoidQuarry.QuarryWorkState state = TileEntityVoidQuarry.QuarryWorkState.valueOf(nbt.getString("state"));
+            TileEntityVoidQuarry.QuarryWorkState state = TileEntityVoidQuarry.QuarryWorkState
+                .valueOf(nbt.getString("state"));
             currenttip.add(
                 LangUtil.instance.translate("uie.quarry.waila.state", LangUtil.instance.translate(state.localKey)));
         } else if (accessor.getTileEntity() instanceof TileEntityVoidMarker) {
             NBTTagCompound nbt = accessor.getNBTData();
-            TileEntityVoidMarker.MarkerOperationMode mode = TileEntityVoidMarker.MarkerOperationMode.valueOf(nbt.getString("mode"));
+            TileEntityVoidMarker.MarkerOperationMode mode = TileEntityVoidMarker.MarkerOperationMode
+                .valueOf(nbt.getString("mode"));
             currenttip.add(
-                LangUtil.instance.translate("uie.quarry.marker.waila.state", LangUtil.instance.translate(mode.localKey)));
+                LangUtil.instance
+                    .translate("uie.quarry.marker.waila.state", LangUtil.instance.translate(mode.localKey)));
         }
         return currenttip;
     }

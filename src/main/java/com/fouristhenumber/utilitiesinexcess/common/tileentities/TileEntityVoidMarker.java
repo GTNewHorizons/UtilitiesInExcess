@@ -485,6 +485,7 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
     }
 
     public enum MarkerOperationMode {
+
         DEFAULT("uie.quarry.marker.mode.1.1"),
         SINGLE("uie.quarry.marker.mode.2.1"),
         ARBITRARY_LOOP("uie.quarry.marker.mode.3.1");
