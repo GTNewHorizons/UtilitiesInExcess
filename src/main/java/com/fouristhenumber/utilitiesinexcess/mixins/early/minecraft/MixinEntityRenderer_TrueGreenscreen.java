@@ -14,7 +14,8 @@ public class MixinEntityRenderer_TrueGreenscreen {
     @ModifyArg(
         method = "updateFogColor(F)V",
         at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glClearColor(FFFF)V"),
-        index = 3)
+        index = 3,
+        remap = false)
     private static float uie$clearColorAlpha(float alpha) {
         if (TESRTrueGreenscreen.inFrame) {
             return 1F;
