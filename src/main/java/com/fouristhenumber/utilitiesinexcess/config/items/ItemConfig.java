@@ -16,25 +16,6 @@ public class ItemConfig {
     public static boolean enableMobJar;
 
     @Config.DefaultBoolean(true)
-    public static boolean enableArchitectsWand;
-
-    @Config.DefaultInt(9)
-    public static int architectsWandBuildLimit;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableSuperArchitectsWand;
-
-    @Config.DefaultInt(49)
-    public static int superArchitectsWandBuildLimit;
-
-    @Config.DefaultInt(200)
-    public static int architectsWandCreativeBuildLimit;
-
-    @Config.DefaultInt(100)
-    @Config.Comment("[GT5U] Durability damage dealt to Trowels per block placed by the Architect's Wand. (Set to 0 to disable)")
-    public static int damageTrowelWithArchitectsWand;
-
-    @Config.DefaultBoolean(true)
     public static boolean enableBedrockium;
 
     @Config.DefaultBoolean(true)
@@ -63,4 +44,7 @@ public class ItemConfig {
 
     @Config.LangKey("item.fire_battery.name")
     public static final FireBatteryConfig fireBattery = FireBatteryConfig.INSTANCE;
+
+    @Config.LangKey("utilitiesinexcess.config.item.architects_wands")
+    public static final ArchitectsWandsConfig architectsWands = ArchitectsWandsConfig.INSTANCE;
 }

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import gregtech.api.items.MetaGeneratedTool;
@@ -73,7 +73,7 @@ public class ArchitectsSelection {
     }
 
     public int maxPlaceCount(EntityPlayer player, int wandLimit) {
-        if (player.capabilities.isCreativeMode) return ItemConfig.architectsWandCreativeBuildLimit;
+        if (player.capabilities.isCreativeMode) return ArchitectsWandsConfig.INSTANCE.architectsWandCreativeBuildLimit;
 
         int count = 0;
         for (ItemStack block : blockToPlace(player)) {

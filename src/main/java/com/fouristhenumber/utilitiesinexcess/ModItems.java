@@ -27,6 +27,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
@@ -66,8 +67,8 @@ public enum ModItems {
     PSEUDO_INVERSION_SIGIL(InversionConfig.INSTANCE.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
     INVERTED_INGOT(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
     INVERTED_NUGGET(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
-    ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
-    SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
+    ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
+    SUPER_ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableSuperArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
     FIRE_BATTERY(FireBatteryConfig.INSTANCE.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
