@@ -30,7 +30,7 @@ public class RecipeInvertedIngot extends ShapedRecipes {
         ItemStack output = super.getRecipeOutput().copy();
         if (InversionConfig.INSTANCE.invertedIngotsImplode) {
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setInteger("ImplosionTimer", InversionConfig.INSTANCE.invertedIngotImplosionTimer);
+            nbt.setBoolean("Crafted", true);
             output.setTagCompound(nbt);
         }
         return output;
