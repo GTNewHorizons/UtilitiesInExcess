@@ -12,6 +12,9 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 public class DimensionConfig {
 
     @Config.LangKey("utilitiesinexcess.config.dimension.underworld")
-    public static final UnderWorldConfig INVERTED_TOOLS = UnderWorldConfig.INSTANCE;
+    public static final UnderWorldConfig underWorld = UnderWorldConfig.INSTANCE;
+
+    @Config.LangKey("utilitiesinexcess.config.dimension.end_of_time")
+    public static final EndOfTimeConfig endOfTime = EndOfTimeConfig.INSTANCE;
 
 }

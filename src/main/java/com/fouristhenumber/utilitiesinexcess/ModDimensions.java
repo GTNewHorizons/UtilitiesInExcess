@@ -14,7 +14,7 @@ public enum ModDimensions {
 
     // make sure to leave a trailing comma
     UNDERWORLD(UnderWorldConfig.INSTANCE.enableUnderWorld, UnderWorldConfig.INSTANCE.underWorldDimensionId, WorldProviderUnderWorld.class),
-    END_OF_TIME(EndOfTimeConfig.enableEndOfTime, EndOfTimeConfig.endOfTimeDimensionId, WorldProviderEndOfTime.class),
+    END_OF_TIME(EndOfTimeConfig.INSTANCE.enableEndOfTime, EndOfTimeConfig.INSTANCE.endOfTimeDimensionId, WorldProviderEndOfTime.class),
     ; // leave trailing semicolon
     // spotless:on
 

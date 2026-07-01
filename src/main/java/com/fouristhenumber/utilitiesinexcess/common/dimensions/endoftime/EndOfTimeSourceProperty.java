@@ -53,7 +53,7 @@ public class EndOfTimeSourceProperty implements IExtendedEntityProperties {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return EndOfTimeConfig.enableEndOfTime;
+            return EndOfTimeConfig.INSTANCE.enableEndOfTime;
         }
 
         @SubscribeEvent
