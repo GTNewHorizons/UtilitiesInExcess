@@ -16,8 +16,8 @@ public class WorldProviderUnderWorld extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(UnderWorldConfig.defaultBiomeId));
-        this.dimensionId = UnderWorldConfig.underWorldDimensionId;
+        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(UnderWorldConfig.INSTANCE.defaultBiomeId));
+        this.dimensionId = UnderWorldConfig.INSTANCE.underWorldDimensionId;
         this.hasNoSky = true;
     }
 

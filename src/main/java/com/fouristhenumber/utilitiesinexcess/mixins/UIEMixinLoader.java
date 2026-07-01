@@ -27,7 +27,7 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
             ConfigurationManager.registerConfig(ItemConfig.class);
             ConfigurationManager.registerConfig(BlockConfig.class);
             ConfigurationManager.registerConfig(GeneratorConfig.class);
-            DimensionConfig.registerConfig();
+            ConfigurationManager.registerConfig(DimensionConfig.class);
             OtherConfig.registerConfig();
             RecipeConfig.registerConfig();
         } catch (ConfigException e) {

@@ -157,7 +157,7 @@ public enum ModBlocks {
     SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "iron_spike"), BlockSpike.ItemSpike.class, "iron_spike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "gold_spike"), BlockSpike.ItemSpike.class, "gold_spike"),
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamond_spike"), BlockSpike.ItemSpike.class, "diamond_spike"),
-    UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
+    UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.INSTANCE.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
     END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     ENDER_LOCUS(BlockConfig.enableEnderLocus, new BlockEnderLocus(), "ender_locus"),
     CONVERGENCE_CRYSTAL(BlockConfig.enableEnderLocus, new BlockConvergenceCrystal(), "convergence_crystal"),

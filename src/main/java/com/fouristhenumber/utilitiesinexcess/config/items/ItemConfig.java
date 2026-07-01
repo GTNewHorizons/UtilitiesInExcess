@@ -49,7 +49,7 @@ public class ItemConfig {
     public static boolean enableGlove;
 
     @Config.LangKey("utilitiesinexcess.config.item.inverted_tools")
-    public static final InvertedTools INVERTED_TOOLS = InvertedTools.INSTANCE;
+    public static final InvertedTools invertedTools = InvertedTools.INSTANCE;
 
     @Config.LangKey("utilitiesinexcess.config.item.inversion")
     public static final InversionConfig inversion = InversionConfig.INSTANCE;
