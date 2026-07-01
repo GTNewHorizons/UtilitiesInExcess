@@ -8,8 +8,10 @@ import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
@@ -64,6 +66,13 @@ public class CommonProxy {
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
         ARCHITECTS_KEYBIND_V = SyncedKeybind
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
+        ModTileEntities.init();
+        if (Mods.Waila.isLoaded()) {
+            FMLInterModComms.sendMessage(
+                "Waila",
+                "register",
+                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaHandler.callbackRegister");
+        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {
@@ -73,6 +82,12 @@ public class CommonProxy {
 
         ItemReversingHoe.initializeCache();
         ItemDestructionPickaxe.initializeCache();
+        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
+            TinkersCompat.init();
+        }
+        if (Mods.ForgeMicroBlock.isLoaded()) {
+            new Content().init();
+        }
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
