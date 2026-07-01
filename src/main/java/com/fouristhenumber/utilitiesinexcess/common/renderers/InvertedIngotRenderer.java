@@ -51,7 +51,7 @@ public class InvertedIngotRenderer implements IItemRenderer {
             if (world == null) return;
 
             double passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
-            int remaining = (int) (InversionConfig.invertedIngotImplosionTimer - passed);
+            int remaining = (int) (InversionConfig.INSTANCE.invertedIngotImplosionTimer - passed);
 
             float progress = MathHelper
                 .clamp_float((float) remaining / InversionConfig.INSTANCE.invertedIngotImplosionTimer, 0f, 1f);

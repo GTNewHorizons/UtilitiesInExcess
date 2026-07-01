@@ -8,7 +8,6 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 @Config.Order(0)
 public class BlockConfig {
 
-
     @Config.Order(0)
     @Config.LangKey("utilitiesinexcess.config.block.spikes")
     public static final Spikes spikes = new Spikes();
