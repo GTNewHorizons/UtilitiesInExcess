@@ -53,7 +53,7 @@ public class UnderWorldSourceProperty implements IExtendedEntityProperties {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return UnderWorldConfig.enableUnderWorld;
+            return UnderWorldConfig.INSTANCE.enableUnderWorld;
         }
 
         @SubscribeEvent

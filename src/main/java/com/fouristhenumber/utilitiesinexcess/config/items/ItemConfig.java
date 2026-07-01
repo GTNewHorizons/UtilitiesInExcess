@@ -1,60 +1,63 @@
 package com.fouristhenumber.utilitiesinexcess.config.items;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.UnstableTools;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.InvertedTools;
 import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+@Config.LangKey("utilitiesinexcess.config.items")
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
+@Config.Order(100)
 public class ItemConfig {
 
-    public static void registerConfig() throws ConfigException {
-        ConfigurationManager.registerConfig(ItemConfig.class);
-        UnstableTools.registerConfig();
-        ConfigurationManager.registerConfig(ChunchunmaruConfig.class);
-        ConfigurationManager.registerConfig(WateringCanConfig.class);
-        ConfigurationManager.registerConfig(InversionConfig.class);
-        ConfigurationManager.registerConfig(FireBatteryConfig.class);
-    }
+    @Config.Order(0)
+    @Config.LangKey("utilitiesinexcess.config.item.inverted_tools")
+    public static final InvertedTools invertedTools = InvertedTools.INSTANCE;
+
+    @Config.Order(100)
+    @Config.LangKey("utilitiesinexcess.config.item.inversion")
+    public static final InversionConfig inversion = InversionConfig.INSTANCE;
+
+    @Config.Order(200)
+    @Config.LangKey("utilitiesinexcess.config.item.architects_wands")
+    public static final ArchitectsWandsConfig architectsWands = ArchitectsWandsConfig.INSTANCE;
+
+    @Config.Order(300)
+    @Config.LangKey("utilitiesinexcess.config.item.watering_can")
+    public static final WateringCanConfig wateringCan = WateringCanConfig.INSTANCE;
+
+    @Config.Order(400)
+    @Config.LangKey("item.chunchunmaru.name")
+    public static final ChunchunmaruConfig chunchunmaru = ChunchunmaruConfig.INSTANCE;
+
+    @Config.Order(500)
+    @Config.LangKey("item.fire_battery.name")
+    public static final FireBatteryConfig fireBattery = FireBatteryConfig.INSTANCE;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableHeavenlyRing;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableMobJar;
 
     @Config.DefaultBoolean(true)
-    public static boolean enableArchitectsWand;
-
-    @Config.DefaultInt(9)
-    public static int architectsWandBuildLimit;
-
-    @Config.DefaultBoolean(true)
-    public static boolean enableSuperArchitectsWand;
-
-    @Config.DefaultInt(49)
-    public static int superArchitectsWandBuildLimit;
-
-    @Config.DefaultInt(200)
-    public static int architectsWandCreativeBuildLimit;
-
-    @Config.DefaultInt(100)
-    @Config.Comment("[GT5U] Durability damage dealt to Trowels per block placed by the Architect's Wand. (Set to 0 to disable)")
-    public static int damageTrowelWithArchitectsWand;
-
-    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableBedrockium;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableGoldenBagOfHolding;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableXRayGlasses;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableBlockAnalyzer;
 
     @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
     public static boolean enableGlove;
 }

@@ -107,7 +107,7 @@ public class BlockPortalEndOfTime extends Block {
             }
         } else {
             WorldServer dest = MinecraftServer.getServer()
-                .worldServerForDimension(EndOfTimeConfig.endOfTimeDimensionId);
+                .worldServerForDimension(EndOfTimeConfig.INSTANCE.endOfTimeDimensionId);
             if (dest.getBlock(0, 64, 0) != Blocks.bedrock) {
                 generateSpawnArea(dest, 0, 65, 0);
             }

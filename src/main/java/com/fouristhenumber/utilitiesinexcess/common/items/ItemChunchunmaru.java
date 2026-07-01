@@ -23,18 +23,18 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
     public ItemChunchunmaru() {
         super(ToolMaterial.EMERALD);
         setUnlocalizedName("chunchunmaru");
-        if (ChunchunmaruConfig.unbreakable) {
+        if (ChunchunmaruConfig.INSTANCE.unbreakable) {
             setMaxDamage(0);
         } else {
-            setMaxDamage(ChunchunmaruConfig.durability);
+            setMaxDamage(ChunchunmaruConfig.INSTANCE.durability);
         }
-        ((AccessorItemSword) this).setDamageVsEntity(ChunchunmaruConfig.normalDamage);
+        ((AccessorItemSword) this).setDamageVsEntity(ChunchunmaruConfig.INSTANCE.normalDamage);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.chunchunmaru.desc"));
-        if (ChunchunmaruConfig.unbreakable) {
+        if (ChunchunmaruConfig.INSTANCE.unbreakable) {
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.unbreakable.desc"));
         }
     }
@@ -42,19 +42,19 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (ChunchunmaruConfig.unbreakable) return false;
+        if (ChunchunmaruConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (ChunchunmaruConfig.unbreakable) return false;
+        if (ChunchunmaruConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (ChunchunmaruConfig.unbreakable) return false;
+        if (ChunchunmaruConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
 
@@ -64,13 +64,12 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return ChunchunmaruConfig.enable;
+            return ChunchunmaruConfig.INSTANCE.enable && ChunchunmaruConfig.INSTANCE.damageCreativePlayers;
         }
 
         @SubscribeEvent
         public static void onAttackEntity(AttackEntityEvent event) {
-            if (ChunchunmaruConfig.damageCreativePlayers && event.entity instanceof EntityPlayer player
-                && player.capabilities.isCreativeMode
+            if (event.entity instanceof EntityPlayer player && player.capabilities.isCreativeMode
                 && player.getHeldItem()
                     .getItem() instanceof ItemChunchunmaru) {
                 boolean isCrit = player.fallDistance > 0.0F && !player.onGround
@@ -81,7 +80,7 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
                 event.target.attackEntityFrom(
                     DamageSource.causePlayerDamage(player)
                         .setDamageAllowedInCreativeMode(),
-                    ChunchunmaruConfig.creativeDamage * (isCrit ? 1.5f : 1f));
+                    ChunchunmaruConfig.INSTANCE.creativeDamage * (isCrit ? 1.5f : 1f));
                 event.setCanceled(true);
             }
         }

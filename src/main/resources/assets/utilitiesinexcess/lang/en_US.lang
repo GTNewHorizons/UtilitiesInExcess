@@ -407,8 +407,6 @@ nei.infopage.uie.ender_locus.1=The Ender Locus is a simple machine that draws Fl
 
 gui.flux_strength=Flux Strength: %s
 
-utilitiesinexcess.config.block.ender_lotus=Ender Lotus
-
 item.ender_lotus_seed.name=Ender-Lotus Seed
 nei.infopage.uie.ender_lotus_seed.1=This strange plant is native to The End and its seeds can occasionally be found in dungeons. It grows incredibly slowly (faster on endstone and even faster on endspark) but eventually produces ender pearls. 
 
@@ -417,10 +415,6 @@ tile.ender_lotus.name=Ender Lotus
 tile.pacifists_bench.name=Pacifist's Bench
 nei.infopage.uie.pacifists_bench.1=The Pacifist's Bench provides a solution for generating mob drops in peaceful mode. Simply place the bench next to a chest containing a sword and it slowly gathers mob drops. Enchantments are applied and the sword takes durability damage respective to the number of hits it takes to kill each mob.
 nei.infopage.uie.pacifists_bench.2=The bench gathers mob drops dependent on where it is placed (for instance, you must place it in a Nether Fortress to gather Wither Skeleton drops).
-
-utilitiesinexcess.config.item.watering_can=Watering Can
-utilitiesinexcess.config.item.watering_can_tier=Watering Can Tier
-utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
 
 tile.block_update_detector.name=Block Update Detector
 nei.infopage.uie.block_update_detector.1=This mechanism keeps tabs on neighboring blocks and emits a redstone pulse if any of them receive a block update.
@@ -463,16 +457,10 @@ nei.infopage.uie.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's
 
 nei.infopage.uie.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Reversing Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
 
-utilitiesinexcess.config.block.cursed_earth=Cursed Earth Configuration
-utilitiesinexcess.config.item.unstable_tools=Unstable Tools Configuration
-utilitiesinexcess.config.item.inversion=Inversion Ritual Configuration
-
 tile.pure_love.name=Pure Love
 tile.pure_love.desc=Range: %d
 
 nei.infopage.uie.pure_love.1=This infectiously positive block inspires nearby animals to fall in love. Cute!
-
-utilitiesinexcess.config.block.pure_love=Pure Love Configuration
 
 tile.marginally_maximised_chest.name=Marginally Maximised Chest
 
@@ -485,9 +473,6 @@ nei.infopage.uie.significantly_shrunk_chest.1=This tiny chest holds only a singl
 tile.radically_reduced_chest.name=Radically Reduced Chest
 
 nei.infopage.uie.radically_reduced_chest.1=This chest is so small that it can only hold a single item. Maybe you can find some use for it?
-
-utilitiesinexcess.config.block.sound_muffler=Sound Muffler Configuration
-utilitiesinexcess.config.block.rain_muffler=Rain Muffler Configuration
 
 tile.sound_muffler.name=Sound Muffler
 tile.sound_muffler.desc.1=Range: %s blocks
@@ -692,3 +677,23 @@ nei.infopage.uie.void_quarry_upgrade.silk_touch=The Silk Touch upgrade allows th
 nei.infopage.uie.void_quarry_upgrade.fluid_pump=The Fluid Pump upgrade allows the Void Quarry to collect fluids as well as blocks. Fluids are output to any tank adjacent to any face.
 nei.infopage.uie.void_quarry_upgrade.speed=The Speed upgrades increase the operation speed and energy cost of the Void Quarry.
 nei.infopage.uie.void_quarry_upgrade.fortune=The Fortune upgrades allow the Void Quarry to collect additional drops as if it is enchanted with Fortune at the cost of additional energy.
+
+utilitiesinexcess.config.items=Items
+utilitiesinexcess.config.item.inverted_tools=Inverted Tools
+utilitiesinexcess.config.item.inversion=Inversion Ritual
+utilitiesinexcess.config.item.watering_can=Watering Can
+utilitiesinexcess.config.item.watering_can_tier=Watering Can Tiers
+utilitiesinexcess.config.item.watering_can_flowering=Watering Can Flowering
+utilitiesinexcess.config.item.architects_wands=Architect's Wands
+utilitiesinexcess.config.blocks=Blocks
+utilitiesinexcess.config.block.chandelier=Chandeliers
+utilitiesinexcess.config.block.spikes=Spikes
+utilitiesinexcess.config.block.cursed_earth=Cursed / Blessed Earth
+utilitiesinexcess.config.block.muffler=Mufflers
+utilitiesinexcess.config.block.colored_blocks=Colored Blocks
+utilitiesinexcess.config.generators=Generators
+utilitiesinexcess.config.dimensions=Dimensions
+utilitiesinexcess.config.dimension.underworld=The Underworld
+utilitiesinexcess.config.dimension.end_of_time=The End of Time
+utilitiesinexcess.config.other=Other
+utilitiesinexcess.config.recipes=Recipes

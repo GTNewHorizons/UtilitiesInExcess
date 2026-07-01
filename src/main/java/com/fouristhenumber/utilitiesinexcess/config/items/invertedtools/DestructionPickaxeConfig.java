@@ -1,32 +1,46 @@
-package com.fouristhenumber.utilitiesinexcess.config.items.unstabletools;
+package com.fouristhenumber.utilitiesinexcess.config.items.invertedtools;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.unstable_tools.destruction_pickaxe")
+@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.destruction_pickaxe")
 public class DestructionPickaxeConfig {
 
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean enable;
+    @Config.Ignore
+    public static final DestructionPickaxeConfig INSTANCE = new DestructionPickaxeConfig();
 
     @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
     @Config.RequiresMcRestart
-    public static boolean unbreakable;
+    @Config.Order(0)
+    public boolean enable;
+
+    @Config.DefaultBoolean(true)
+    @Config.Name("Unbreakable")
+    @Config.RequiresMcRestart
+    @Config.Order(100)
+    public boolean unbreakable;
 
     @Config.DefaultBoolean(false)
-    public static boolean voidMinedBlock;
+    @Config.Order(200)
+    public boolean voidMinedBlock;
 
     @Config.Comment("Which blocks the pickaxe is effective against. Format as modid:blockid:meta - if meta is not specified, will use any meta.")
     @Config.DefaultStringList({ "minecraft:stone", "minecraft:cobblestone", "minecraft:sandstone",
         "minecraft:netherrack", "minecraft:hardened_clay", "minecraft:stained_hardened_clay" })
-    public static String[] includeEffective;
+    @Config.RequiresMcRestart
+    @Config.Order(300)
+    public String[] includeEffective;
 
     @Config.DefaultFloat(5)
     @Config.RangeFloat(min = 0, max = 100)
-    public static float effectiveSpeedModifier;
+    @Config.Sync
+    @Config.Order(400)
+    public float effectiveSpeedModifier;
 
     @Config.DefaultFloat(0.0625f)
     @Config.RangeFloat(min = 0, max = 100)
-    public static float ineffectiveSpeedModifier;
+    @Config.Sync
+    @Config.Order(500)
+    public float ineffectiveSpeedModifier;
 }

@@ -20,8 +20,8 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.defaultBiomeId));
-        this.dimensionId = EndOfTimeConfig.endOfTimeDimensionId;
+        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.INSTANCE.defaultBiomeId));
+        this.dimensionId = EndOfTimeConfig.INSTANCE.endOfTimeDimensionId;
         this.hasNoSky = true;
     }
 
@@ -108,12 +108,12 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return !EndOfTimeConfig.endOfTimeSpawning;
+            return !EndOfTimeConfig.INSTANCE.endOfTimeSpawning;
         }
 
         @SubscribeEvent
         public static void disableSpawning(WorldEvent.PotentialSpawns event) {
-            if (event.world.provider.dimensionId == EndOfTimeConfig.endOfTimeDimensionId) {
+            if (event.world.provider.dimensionId == EndOfTimeConfig.INSTANCE.endOfTimeDimensionId) {
                 event.setCanceled(true);
             }
         }

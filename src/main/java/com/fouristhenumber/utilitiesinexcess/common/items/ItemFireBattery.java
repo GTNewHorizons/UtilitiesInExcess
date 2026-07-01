@@ -23,9 +23,9 @@ public class ItemFireBattery extends ItemEnergyContainer implements IFuelHandler
 
     public ItemFireBattery() {
         super(
-            FireBatteryConfig.fireBatteryRFStorage,
-            FireBatteryConfig.fireBatteryRFCharge,
-            FireBatteryConfig.fireBatteryRFUsage);
+            FireBatteryConfig.INSTANCE.fireBatteryRFStorage,
+            FireBatteryConfig.INSTANCE.fireBatteryRFCharge,
+            FireBatteryConfig.INSTANCE.fireBatteryRFUsage);
         setUnlocalizedName("fire_battery");
         setTextureName("utilitiesinexcess:fire_battery");
         setMaxStackSize(1);
@@ -46,7 +46,7 @@ public class ItemFireBattery extends ItemEnergyContainer implements IFuelHandler
     public ItemStack getContainerItem(ItemStack itemStack) {
         ItemStack drained = itemStack.copy();
         drained.stackSize = 1;
-        extractEnergy(drained, FireBatteryConfig.fireBatteryRFUsage, false);
+        extractEnergy(drained, FireBatteryConfig.INSTANCE.fireBatteryRFUsage, false);
         return drained;
     }
 
@@ -58,7 +58,8 @@ public class ItemFireBattery extends ItemEnergyContainer implements IFuelHandler
     @Override
     public int getBurnTime(ItemStack fuel) {
         if (fuel == null) return 0;
-        return extractEnergy(fuel, FireBatteryConfig.fireBatteryRFUsage, true) / FireBatteryConfig.fireBatteryBurnTime;
+        return extractEnergy(fuel, FireBatteryConfig.INSTANCE.fireBatteryRFUsage, true)
+            / FireBatteryConfig.INSTANCE.fireBatteryBurnTime;
     }
 
     @Override

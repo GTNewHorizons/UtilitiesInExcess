@@ -42,7 +42,7 @@ public class FireBatteryRenderer implements IItemRenderer {
         if (tag != null) {
             energy = tag.getInteger("Energy");
         }
-        float progress = energy / (float) FireBatteryConfig.fireBatteryRFStorage;
+        float progress = energy / (float) FireBatteryConfig.INSTANCE.fireBatteryRFStorage;
 
         ItemRenderUtil.applyStandardItemTransform(type);
 

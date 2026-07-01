@@ -73,7 +73,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
 public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver, IFluidHandler {
 
-    public static final int BASE_STEPS_PER_TICK = VoidQuarryConfig.voidQuarryBaseSpeed;
+    public static final int BASE_STEPS_PER_TICK = VoidQuarryConfig.INSTANCE.voidQuarryBaseSpeed;
     public static final int ITEM_BUFFER_CAPACITY = BASE_STEPS_PER_TICK * 5; // Emptied every 2 ticks + some margin for
                                                                             // more than one item per block
     // Headroom kept above each fluid tank's soft cap so a single block we already broke can always be stored without
@@ -103,17 +103,17 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
     private final HashMap<ForgeDirection, IFluidHandler> sidedFluidAcceptors = new HashMap<>();
     private final VoidQuarryUpgradeManager upgradeManager = new VoidQuarryUpgradeManager();
 
-    protected final EnergyStorage energyStorage = new EnergyStorage(VoidQuarryConfig.voidQuarryEnergyStorage);
+    protected final EnergyStorage energyStorage = new EnergyStorage(VoidQuarryConfig.INSTANCE.voidQuarryEnergyStorage);
     protected final List<FluidTank> fluidStorage = Stream
-        .generate(() -> new FluidTank(VoidQuarryConfig.voidQuarryFluidTankStorage + FLUID_OVERFLOW_BUFFER))
-        .limit(VoidQuarryConfig.voidQuarryFluidTankAmount)
+        .generate(() -> new FluidTank(VoidQuarryConfig.INSTANCE.voidQuarryFluidTankStorage + FLUID_OVERFLOW_BUFFER))
+        .limit(VoidQuarryConfig.INSTANCE.voidQuarryFluidTankAmount)
         .collect(Collectors.toList());
     protected final Object2IntMap<@NotNull ItemStack> itemStorage = new Object2IntOpenCustomHashMap<>(
         ITEM_BUFFER_CAPACITY,
         UIEUtils.ItemStackHashStrategy.instance);
 
     public TileEntityVoidQuarry() {
-        REPLACE_BLOCK = VoidQuarryReplaceBlock.valueOf(VoidQuarryConfig.voidQuarryReplaceBlock).block;
+        REPLACE_BLOCK = VoidQuarryReplaceBlock.valueOf(VoidQuarryConfig.INSTANCE.voidQuarryReplaceBlock).block;
         resetQuarry();
         storedItems = 0;
     }
@@ -239,7 +239,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                 return i - 1;
             }
         }
-        return Math.min(this.yCoord + VoidQuarryConfig.voidQuarryDefaultTopPadding, 255);
+        return Math.min(this.yCoord + VoidQuarryConfig.INSTANCE.voidQuarryDefaultTopPadding, 255);
     }
 
     public void scanForWorkAreaFromMarkers(@Nullable EntityPlayer player) {
@@ -762,7 +762,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
         // Get base cost multiplier from upgrades, add a multiplier based on hardness (that roughly scales 0 - 10 to 1.0
         // - 1.66)
         double costMultiplier = upgradeManager.totalCostMultiplier + (1.0 + 0.8 * (hardness / (hardness + 2)));
-        int cost = (int) (VoidQuarryConfig.voidQuarryBaseRFCost * costMultiplier);
+        int cost = (int) (VoidQuarryConfig.INSTANCE.voidQuarryBaseRFCost * costMultiplier);
         if (energyStorage.extractEnergy(cost, true) >= cost) {
             if (!simulate) {
                 energyStorage.extractEnergy(cost, false);
@@ -946,7 +946,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
      */
     private boolean hasFluidHeadroom() {
         for (FluidTank tank : fluidStorage) {
-            if (tank.getFluidAmount() < VoidQuarryConfig.voidQuarryFluidTankStorage) {
+            if (tank.getFluidAmount() < VoidQuarryConfig.INSTANCE.voidQuarryFluidTankStorage) {
                 return true;
             }
         }
@@ -1364,7 +1364,8 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
             lowerYBound = nbt.getInteger("lowerYBound");
             upperYBound = nbt.getInteger("upperYBound");
             // Fix for cases where upperYBound was not present yet
-            if (lowerYBound == upperYBound) upperYBound = this.yCoord + VoidQuarryConfig.voidQuarryDefaultTopPadding;
+            if (lowerYBound == upperYBound)
+                upperYBound = this.yCoord + VoidQuarryConfig.INSTANCE.voidQuarryDefaultTopPadding;
 
             // Possible next work areas for complex markers
             NBTTagList possibleNextAreas = nbt.getTagList("nextAreas", Constants.NBT.TAG_COMPOUND);

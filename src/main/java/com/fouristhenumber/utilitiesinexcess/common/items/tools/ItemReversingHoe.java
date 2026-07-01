@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
@@ -28,12 +28,12 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:reversing_hoe");
         setUnlocalizedName("reversing_hoe");
-        if (ReversingHoeConfig.unbreakable) setMaxDamage(0);
+        if (ReversingHoeConfig.INSTANCE.unbreakable) setMaxDamage(0);
     }
 
     public static void initializeCache() {
-        if (ReversingHoeConfig.blockTransformations != null) {
-            for (String transformation : ReversingHoeConfig.blockTransformations) {
+        if (ReversingHoeConfig.INSTANCE.blockTransformations != null) {
+            for (String transformation : ReversingHoeConfig.INSTANCE.blockTransformations) {
                 if (transformation == null) continue;
                 if (!transformation.contains("->")) {
                     UtilitiesInExcess.LOG
@@ -98,7 +98,7 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
             if (!world.isRemote) {
                 world.setBlock(x, y, z, targetBlock, targetMeta, 3);
 
-                if (!ReversingHoeConfig.unbreakable) {
+                if (!ReversingHoeConfig.INSTANCE.unbreakable) {
                     itemStack.damageItem(1, player);
                 }
             }
@@ -120,26 +120,26 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (ReversingHoeConfig.unbreakable)
+        if (ReversingHoeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (ReversingHoeConfig.unbreakable) return false;
+        if (ReversingHoeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (ReversingHoeConfig.unbreakable) return false;
+        if (ReversingHoeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (ReversingHoeConfig.unbreakable) return false;
+        if (ReversingHoeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
