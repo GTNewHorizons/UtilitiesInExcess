@@ -9,14 +9,19 @@ public class ReversingHoeConfig {
     @Config.Ignore
     public static final ReversingHoeConfig INSTANCE = new ReversingHoeConfig();
 
+    @Config.Order(0)
     @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
     @Config.RequiresMcRestart
     public boolean enable;
 
+    @Config.Order(100)
     @Config.DefaultBoolean(true)
+    @Config.Name("Unbreakable")
     @Config.RequiresMcRestart
     public boolean unbreakable;
 
+    @Config.Order(200)
     @Config.Comment("Which block transformations the reversing hoe will work on. Format as modid:blockid:meta->modid:blockid:meta - if meta of source block is not specified, will work on any meta. If meta of target block is not specified, will transform into meta 0.")
     @Config.DefaultStringList({ "minecraft:dirt->minecraft:grass", "minecraft:cobblestone->minecraft:stone",
         "utilitiesinexcess:cursed_earth->utilitiesinexcess:blessed_earth",

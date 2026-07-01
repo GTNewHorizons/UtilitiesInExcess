@@ -10,11 +10,13 @@ public class DestructionPickaxeConfig {
     public static final DestructionPickaxeConfig INSTANCE = new DestructionPickaxeConfig();
 
     @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
     @Config.RequiresMcRestart
     @Config.Order(0)
     public boolean enable;
 
     @Config.DefaultBoolean(true)
+    @Config.Name("Unbreakable")
     @Config.RequiresMcRestart
     @Config.Order(100)
     public boolean unbreakable;
