@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +31,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemHeavenlyRing extends Item implements IBauble {
@@ -80,9 +84,14 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
-            EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
-        tooltip.add(StatCollector.translateToLocal("item.heavenly_ring.desc"));
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("item.heavenly_ring.desc.1",
+                EnumChatFormatting.WHITE + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        tooltip.add(
+            ChatFormatting.GRAY +
+            StatCollector.translateToLocalFormatted("item.heavenly_ring.desc.0",
+                ChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + ChatFormatting.GRAY,
+                ChatFormatting.AQUA.toString() + RING_COUNT + ChatFormatting.GRAY
+                ));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
