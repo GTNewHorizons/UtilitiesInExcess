@@ -24,12 +24,11 @@ public class UIEMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
         // Register config here because then it's available during mixins.
         try {
             ConfigurationManager.registerConfig(ItemConfig.class);
-            ConfigurationManager.registerConfig(ItemConfig.class);
             ConfigurationManager.registerConfig(BlockConfig.class);
             ConfigurationManager.registerConfig(GeneratorConfig.class);
             ConfigurationManager.registerConfig(DimensionConfig.class);
             ConfigurationManager.registerConfig(OtherConfig.class);
-            RecipeConfig.registerConfig();
+            ConfigurationManager.registerConfig(RecipeConfig.class);
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }

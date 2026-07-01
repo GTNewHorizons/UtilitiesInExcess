@@ -1,9 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 public class ModOreDictionary {
 

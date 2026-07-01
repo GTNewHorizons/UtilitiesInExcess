@@ -2,11 +2,10 @@ package com.fouristhenumber.utilitiesinexcess.config.blocks;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 @Config.LangKey("utilitiesinexcess.config.blocks")
 @Config(modid = UtilitiesInExcess.MODID, category = "blocks")
+@Config.Order(0)
 public class BlockConfig {
 
     @Config.LangKey("tile.pure_love.name")
@@ -172,7 +171,8 @@ public class BlockConfig {
         public boolean enableColoredBlocks;
 
         @Config.DefaultBoolean(false)
-        @Config.Comment({"Register oredictionary entries for colored blocks.", "Will allow colored blocks to work in recipes, but will also bloat NEI for recipes that people will likely never use..."})
+        @Config.Comment({ "Register oredictionary entries for colored blocks.",
+            "Will allow colored blocks to work in recipes, but will also bloat NEI for recipes that people will likely never use..." })
         @Config.RequiresMcRestart
         @Config.Order(100)
         public boolean coloredBlockOredict;
@@ -180,7 +180,6 @@ public class BlockConfig {
 
     @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
     public static final CursedEarthConfig cursedEarth = CursedEarthConfig.INSTANCE;
-
 
     @Config.LangKey("tile.ender_lotus.name")
     public static final EnderLotusConfig enderLotus = EnderLotusConfig.INSTANCE;

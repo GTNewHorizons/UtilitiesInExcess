@@ -10,6 +10,7 @@ public class FireBatteryConfig {
     public static final FireBatteryConfig INSTANCE = new FireBatteryConfig();
 
     @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
     @Config.RequiresMcRestart
     public boolean enableFireBattery;
 

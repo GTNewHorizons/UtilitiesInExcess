@@ -5,6 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 @Config.LangKey("utilitiesinexcess.config.generators")
 @Config(modid = UtilitiesInExcess.MODID, category = "generators")
+@Config.Order(200)
 public class GeneratorConfig {
 
     @Config.DefaultBoolean(true)

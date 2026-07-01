@@ -10,6 +10,7 @@ public class ChunchunmaruConfig {
     public static final ChunchunmaruConfig INSTANCE = new ChunchunmaruConfig();
 
     @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
     @Config.RequiresMcRestart
     public boolean enable;
 

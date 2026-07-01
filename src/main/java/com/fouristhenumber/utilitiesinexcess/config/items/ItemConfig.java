@@ -6,6 +6,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 @Config.LangKey("utilitiesinexcess.config.items")
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
+@Config.Order(100)
 public class ItemConfig {
 
     @Config.DefaultBoolean(true)

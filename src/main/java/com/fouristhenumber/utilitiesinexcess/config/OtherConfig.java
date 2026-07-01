@@ -2,11 +2,10 @@ package com.fouristhenumber.utilitiesinexcess.config;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 @Config.LangKey("utilitiesinexcess.config.other")
 @Config(modid = UtilitiesInExcess.MODID, category = "other")
+@Config.Order(500)
 public class OtherConfig {
 
     @Config.Order(0)
