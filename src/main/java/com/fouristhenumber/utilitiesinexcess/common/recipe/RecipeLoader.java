@@ -960,7 +960,7 @@ public class RecipeLoader {
 
         // Ineffable Glass
         addShapedRecipe(
-            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 1),
             "ggg",
             "gig",
             "ggg",
