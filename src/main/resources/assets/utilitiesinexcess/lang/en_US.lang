@@ -120,7 +120,9 @@ item.inverted_ingot.desc.c=Creatively spawned. Will not implode.
 
 nei.infopage.uie.inverted_ingot.1=Channeling a diamond into an Awakened Inversion Sigil allows you to invert iron into this strange and highly unstable substance. Many powerful tools and items can be made through inversion...
 nei.infopage.uie.inverted_ingot.2=The process of creating inverted ingots is quite dangerous. Firstly, they can only be created in vanilla crafting tables. Once crafted, you have a limited time to use them.
-nei.infopage.uie.inverted_ingot.3=Run out of time, leave the crafting table, or throw the ingots and your body is rapidly inverted, killing you. They do not stack.
+nei.infopage.uie.inverted_ingot.3.implode=Run out of time, leave the crafting table, or throw the ingots and your body is rapidly inverted, killing you. They do not stack.
+nei.infopage.uie.inverted_ingot.3.decay=Run out of time, leave the crafting table, or throw the ingots and they will implode into stable nuggets. They do not stack.
+nei.infopage.uie.inverted_ingot.3.disappear=Run out of time, leave the crafting table, or throw the ingots and they implode into nothingness. They do not stack.
 
 item.inverted_ingot.stable.name=Stabilized Inverted Ingot
 item.inverted_ingot.stable.desc=This ingot has been stabilized and will not implode.

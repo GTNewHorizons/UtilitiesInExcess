@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.formatNumber;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 
+import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
@@ -39,21 +41,25 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
     public static final DamageSource INVERTED_INGOT = (new DamageSource("inverted_ingot")).setDamageBypassesArmor();
 
+    private static boolean isUnstable(ItemStack stack) {
+        return stack != null && stack.getItem() instanceof ItemInvertedIngot
+            && stack.getItemDamage() == 0
+            && stack.hasTagCompound();
+    }
+
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean p_77663_5_) {
-        if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
         if (!(entityIn instanceof EntityPlayer player)) return;
 
         if (!(player.openContainer instanceof ContainerWorkbench) || checkImplosion(stack, worldIn)) {
-            player.inventory.setInventorySlotContents(slot, null);
-            player.closeScreen();
-            player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+            resolveImplosion(stack, player, s -> player.inventory.setInventorySlotContents(slot, s));
         }
 
         super.onUpdate(stack, worldIn, entityIn, slot, p_77663_5_);
     }
 
     public static boolean checkImplosion(ItemStack item, World world) {
+        if (!isUnstable(item)) return false;
         if (item.getItemDamage() == 0 && item.hasTagCompound()) {
             NBTTagCompound tag = item.getTagCompound();
             if (tag.getBoolean("Crafted") && !tag.hasKey("CraftedAt")) {
@@ -62,11 +68,23 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
             }
 
             long passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
-            if (passed > InversionConfig.invertedIngotImplosionTimer) {
-                return (world.isRemote);
-            }
+            return passed > InversionConfig.invertedIngotImplosionTimer;
         }
         return false;
+    }
+
+    private static void resolveImplosion(ItemStack stack, EntityPlayer player, Consumer<ItemStack> setStack) {
+        if (!isUnstable(stack) || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF) return;
+
+        if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
+            setStack.accept(ModItems.INVERTED_NUGGET.newItemStack());
+        } else {
+            setStack.accept(null);
+            if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.IMPLODE) {
+                player.closeScreen();
+                player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
+            }
+        }
     }
 
     @Override
@@ -78,7 +96,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (stack.getItemDamage() == 0) {
-            if (InversionConfig.invertedIngotsImplode) {
+            if (InversionConfig.invertedIngotMode != InversionConfig.InversionMode.OFF) {
                 if (!stack.hasTagCompound()) {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
                 } else {
@@ -154,36 +172,29 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
             return InversionConfig.enableInvertedIngot;
         }
 
+        // Stack itself will be handled by EntitySpawnEvent
         @SubscribeEvent
         public static void onItemToss(ItemTossEvent event) {
             ItemStack stack = event.entityItem.getEntityItem();
-            if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
-                if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+
+            if (isUnstable(stack) && InversionConfig.invertedIngotMode == InversionConfig.InversionMode.IMPLODE) {
                 event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
-                event.setCanceled(true);
             }
+
         }
 
         @SubscribeEvent
         public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.player.openContainer instanceof ContainerWorkbench bench) {
                 ItemStack cursorItem = event.player.inventory.getItemStack();
-                if (cursorItem != null && cursorItem.getItem() instanceof ItemInvertedIngot) {
-                    if (checkImplosion(cursorItem, event.player.worldObj)) {
-                        event.player.inventory.setItemStack(null);
-                        event.player.closeScreen();
-                        event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
-                    }
-                }
+                if (checkImplosion(cursorItem, event.player.worldObj))
+                    resolveImplosion(cursorItem, event.player, event.player.inventory::setItemStack);
+
                 for (int i = 0; i < bench.craftMatrix.getSizeInventory(); i++) {
+                    final int slot = i;
                     ItemStack stack = bench.craftMatrix.getStackInSlot(i);
-                    if (stack != null && stack.getItem() instanceof ItemInvertedIngot) {
-                        if (checkImplosion(stack, event.player.worldObj)) {
-                            bench.craftMatrix.setInventorySlotContents(i, null);
-                            event.player.closeScreen();
-                            event.player.attackEntityFrom(INVERTED_INGOT, Float.MAX_VALUE);
-                        }
-                    }
+                    if (checkImplosion(stack, event.player.worldObj))
+                        resolveImplosion(stack, event.player, s -> bench.craftMatrix.setInventorySlotContents(slot, s));
                 }
             }
         }
@@ -208,8 +219,12 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
             if (event.entity instanceof EntityItem entityItem) {
                 ItemStack stack = entityItem.getEntityItem();
-                if (stack.getItem() instanceof ItemInvertedIngot) {
-                    if (stack.getItemDamage() != 0 || !stack.hasTagCompound()) return;
+
+                if (!isUnstable(stack) || InversionConfig.invertedIngotMode == InversionConfig.InversionMode.OFF)
+                    return;
+                if (InversionConfig.invertedIngotMode == InversionConfig.InversionMode.DECAY) {
+                    entityItem.setEntityItemStack(ModItems.INVERTED_NUGGET.newItemStack(stack.stackSize));
+                } else {
                     entityItem.setDead();
                     event.setCanceled(true);
                 }
