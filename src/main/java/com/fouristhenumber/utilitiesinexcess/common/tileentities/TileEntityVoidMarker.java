@@ -515,7 +515,7 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
         }
 
         @SubscribeEvent
-        public void onWorldUnload(WorldEvent.Unload event) {
+        public static void onWorldUnload(WorldEvent.Unload event) {
             if (event.world.isRemote) return;
 
             // Clear the entire dimension registry
