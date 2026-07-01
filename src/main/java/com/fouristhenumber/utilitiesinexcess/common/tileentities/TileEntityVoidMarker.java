@@ -11,10 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,17 +19,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.event.world.WorldEvent;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.utils.IFacingTE;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 import com.fouristhenumber.utilitiesinexcess.utils.Tuple;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
@@ -490,6 +491,7 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
     }
 
     public enum MarkerOperationMode {
+
         DEFAULT("uie.quarry.marker.mode.1.1"),
         SINGLE("uie.quarry.marker.mode.2.1"),
         ARBITRARY_LOOP("uie.quarry.marker.mode.3.1");
@@ -502,7 +504,6 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
             this.localKey = localKey;
         }
     }
-
 
     @SuppressWarnings("unused")
     @EventBusSubscriber(side = Side.SERVER)
