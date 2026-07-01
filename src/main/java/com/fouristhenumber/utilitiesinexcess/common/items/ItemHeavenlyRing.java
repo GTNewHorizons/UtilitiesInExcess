@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -22,7 +23,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-import com.mojang.realmsclient.gui.ChatFormatting;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -83,9 +83,9 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
-            ChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "item.heavenly_ring.desc.1",
-                ChatFormatting.WHITE + StatCollector
+                EnumChatFormatting.WHITE + StatCollector
                     .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
         int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
         String keyName;
@@ -100,11 +100,11 @@ public class ItemHeavenlyRing extends Item implements IBauble {
                 keyName = GameSettings.getKeyDisplayString(key);
         }
         tooltip.add(
-            ChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "item.heavenly_ring.desc.2",
-                ChatFormatting.GREEN + keyName + ChatFormatting.GRAY,
-                ChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + ChatFormatting.GRAY,
-                ChatFormatting.AQUA.toString() + RING_COUNT + ChatFormatting.GRAY));
+                EnumChatFormatting.GREEN + keyName + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + RING_COUNT + EnumChatFormatting.GRAY));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
