@@ -19,7 +19,6 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 
-@EventBusSubscriber(side = Side.CLIENT)
 public class TileEntitySoundMuffler extends TileEntity {
 
     boolean active;
@@ -87,30 +86,6 @@ public class TileEntitySoundMuffler extends TileEntity {
         }
     }
 
-    @EventBusSubscriber.Condition
-    public static boolean shouldEventBusSubscribe() {
-        return BlockConfig.soundMuffler.enableSoundMuffler;
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void muffleSound(PlaySoundEvent17 event) {
-
-        ISound sound = event.sound;
-
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return;
-
-        double x = Math.floor(sound.getXPosF());
-        double y = Math.floor(sound.getYPosF());
-        double z = Math.floor(sound.getZPosF());
-
-        if (UtilitiesInExcess.proxy.soundVolumeChecks.isInSoundMufflerRange(player.dimension, x, y, z)) {
-            float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
-            event.result = new MuffledSound(event.sound, reduction);
-            player.worldObj.spawnParticle("smoke", sound.getXPosF(), sound.getYPosF(), sound.getZPosF(), 0, 0.03, 0);
-        }
-    }
-
     private static class MuffledSound implements ISound {
 
         ISound base;
@@ -164,6 +139,36 @@ public class TileEntitySoundMuffler extends TileEntity {
         @Override
         public AttenuationType getAttenuationType() {
             return base.getAttenuationType();
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldEventBusSubscribe() {
+            return BlockConfig.mufflers.enableSoundMuffler;
+        }
+
+        @SubscribeEvent(priority = EventPriority.HIGH)
+        public static void muffleSound(PlaySoundEvent17 event) {
+
+            ISound sound = event.sound;
+
+            EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+            if (player == null) return;
+
+            double x = Math.floor(sound.getXPosF());
+            double y = Math.floor(sound.getYPosF());
+            double z = Math.floor(sound.getZPosF());
+
+            if (UtilitiesInExcess.proxy.soundVolumeChecks.isInSoundMufflerRange(player.dimension, x, y, z)) {
+                float reduction = BlockConfig.mufflers.soundMufflerReduction / 100f;
+                event.result = new MuffledSound(event.sound, reduction);
+                player.worldObj
+                    .spawnParticle("smoke", sound.getXPosF(), sound.getYPosF(), sound.getZPosF(), 0, 0.03, 0);
+            }
         }
     }
 }

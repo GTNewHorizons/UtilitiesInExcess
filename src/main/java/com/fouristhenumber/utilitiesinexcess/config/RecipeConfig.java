@@ -2,15 +2,11 @@ package com.fouristhenumber.utilitiesinexcess.config;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+@Config.LangKey("utilitiesinexcess.config.recipes")
 @Config(modid = UtilitiesInExcess.MODID, category = "recipes")
+@Config.Order(400)
 public class RecipeConfig {
-
-    public static void registerConfig() throws ConfigException {
-        ConfigurationManager.registerConfig(RecipeConfig.class);
-    }
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

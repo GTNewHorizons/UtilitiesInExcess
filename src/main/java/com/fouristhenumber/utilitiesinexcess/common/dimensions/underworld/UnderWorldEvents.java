@@ -18,7 +18,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable;
 import net.minecraftforge.event.world.WorldEvent;
@@ -29,8 +28,8 @@ import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
 import com.google.common.collect.MapMaker;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -39,21 +38,18 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 
 /// Various event hooks for the under world
+@SuppressWarnings("unused")
+@EventBusSubscriber
 public class UnderWorldEvents {
 
-    public static final UnderWorldEvents INSTANCE = new UnderWorldEvents();
-
-    public static void init() {
-        MinecraftForge.TERRAIN_GEN_BUS.register(INSTANCE);
-        MinecraftForge.ORE_GEN_BUS.register(INSTANCE);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(INSTANCE);
+    @EventBusSubscriber.Condition
+    public static boolean shouldSubscribe() {
+        return UnderWorldConfig.INSTANCE.enableUnderWorld;
     }
 
     /// Disable all plant life decoration
     @SubscribeEvent
-    public void preventUnderworldDecoration(Decorate event) {
+    public static void preventUnderworldDecoration(Decorate event) {
         if (event.world.provider instanceof WorldProviderUnderWorld) {
             event.setResult(Result.DENY);
         }
@@ -61,19 +57,19 @@ public class UnderWorldEvents {
 
     /// Disable dirt & gravel spawns, along with ore spawns if the config is disabled
     @SubscribeEvent
-    public void preventDirtBlobs(GenerateMinable event) {
+    public static void preventDirtBlobs(GenerateMinable event) {
         if (event.world.provider instanceof WorldProviderUnderWorld) {
             switch (event.type) {
                 case DIRT, GRAVEL -> {
                     event.setResult(Result.DENY);
                 }
                 case CUSTOM -> {
-                    if (!UnderWorldConfig.spawnCustomOre) {
+                    if (!UnderWorldConfig.INSTANCE.spawnCustomOre) {
                         event.setResult(Result.DENY);
                     }
                 }
                 default -> {
-                    if (!UnderWorldConfig.spawnVanillaOre) {
+                    if (!UnderWorldConfig.INSTANCE.spawnVanillaOre) {
                         event.setResult(Result.DENY);
                     }
                 }
@@ -83,7 +79,7 @@ public class UnderWorldEvents {
 
     /// Significantly reduce the duration of night vision for survival players
     @SubscribeEvent
-    public void reduceNightVision(PlayerTickEvent event) {
+    public static void reduceNightVision(PlayerTickEvent event) {
         if (event.phase != Phase.END) return;
         if (event.player.capabilities.disableDamage) return;
 
@@ -98,14 +94,14 @@ public class UnderWorldEvents {
         }
     }
 
-    private final Map<EntityPlayer, Integer> timeInDarkness = new MapMaker().weakKeys()
+    private static final Map<EntityPlayer, Integer> timeInDarkness = new MapMaker().weakKeys()
         .makeMap();
 
     private static final DamageSource GHOST = new DamageSource("underworld-ghost");
 
     /// Damages survival players that sit in darkness (<3 light) for too long
     @SubscribeEvent
-    public void damagePlayersInDark(PlayerTickEvent event) {
+    public static void damagePlayersInDark(PlayerTickEvent event) {
         if (event.phase != Phase.END) return;
         if (event.side != Side.SERVER) return;
 
@@ -137,8 +133,9 @@ public class UnderWorldEvents {
 
     /// When difficulty is enabled, reduce mob spawn rates outside of dangerous zones
     @SubscribeEvent
-    public void reduceSpawnRates(WorldEvent.PotentialSpawns event) {
-        if (!UnderWorldConfig.enableDifficulty) return;
+    public static void reduceSpawnRates(WorldEvent.PotentialSpawns event) {
+        if (!UnderWorldConfig.INSTANCE.enableDifficulty) return;
+        if (event.world.provider.dimensionId != UnderWorldConfig.INSTANCE.underWorldDimensionId) return;
 
         int chunkX = event.x >> 4;
         int chunkZ = event.z >> 4;
@@ -156,13 +153,13 @@ public class UnderWorldEvents {
         Aggressive
     }
 
-    private final Map<EntityPlayer, Zone> playerZone = new MapMaker().weakKeys()
+    private static final Map<EntityPlayer, Zone> playerZone = new MapMaker().weakKeys()
         .makeMap();
 
     /// Spawn extra mobs on top of the player when the player is in a difficult zone.
     /// Notifies the player when this is about to happen via a spooky chat message.
     @SubscribeEvent
-    public void doAggressiveMobSpawning(PlayerTickEvent event) {
+    public static void doAggressiveMobSpawning(PlayerTickEvent event) {
         if (event.phase != Phase.END) return;
         if (event.side != Side.SERVER) return;
 

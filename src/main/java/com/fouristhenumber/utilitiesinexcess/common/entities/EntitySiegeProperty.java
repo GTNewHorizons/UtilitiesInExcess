@@ -7,24 +7,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.event.entity.EntityEvent;
 
+import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber
 public class EntitySiegeProperty implements IExtendedEntityProperties {
 
     public static final String PROP_KEY = "entity-siege";
 
     public boolean siege;
     public int siegeMobsKilled, beaconSpawnX, beaconSpawnY, beaconSpawnZ, siegeTimer;
-
-    @SubscribeEvent
-    public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
-        if (event.entity instanceof EntityPlayer player) {
-            player.registerExtendedProperties(PROP_KEY, new EntitySiegeProperty());
-        }
-    }
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
@@ -56,5 +49,22 @@ public class EntitySiegeProperty implements IExtendedEntityProperties {
     @Override
     public void init(Entity entity, World world) {
 
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return InversionConfig.INSTANCE.enableInversionSigil;
+        }
+
+        @SubscribeEvent
+        public static void onEntityConstructing(EntityEvent.EntityConstructing event) {
+            if (event.entity instanceof EntityPlayer player) {
+                player.registerExtendedProperties(PROP_KEY, new EntitySiegeProperty());
+            }
+        }
     }
 }

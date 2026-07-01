@@ -57,11 +57,15 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidMarker;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarry;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarryUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBlockRotatable;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
@@ -79,19 +83,19 @@ public enum ModBlocks {
     COMPRESSED_DIRT(BlockConfig.enableCompressedDirt, new BlockCompressed(Blocks.dirt, "compressed_dirt"), BlockCompressed.ItemCompressedBlock.class, "compressed_dirt"),
     COMPRESSED_SAND(BlockConfig.enableCompressedSand, new BlockCompressed(Blocks.sand, "compressed_sand"), BlockCompressed.ItemCompressedBlock.class, "compressed_sand"),
     COMPRESSED_GRAVEL(BlockConfig.enableCompressedGravel, new BlockCompressed(Blocks.gravel, "compressed_gravel"), BlockCompressed.ItemCompressedBlock.class, "compressed_gravel"),
-    COLORED_WOOD_PLANKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.planks), BlockColored.ItemBlockColored.class, "colored_planks"),
-    COLORED_GLOWSTONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.glowstone).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_glowstone"),
-    COLORED_STONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stone), BlockColored.ItemBlockColored.class, "colored_stone"),
-    COLORED_COBBLESTONE(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.cobblestone), BlockColored.ItemBlockColored.class, "colored_cobblestone"),
-    COLORED_QUARTZ_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.quartz_block, 1f), BlockColored.ItemBlockColored.class, "colored_quartz_block"),
-    COLORED_SOUL_SAND(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.soul_sand), BlockColored.ItemBlockColored.class, "colored_soul_sand"),
-    COLORED_REDSTONE_LAMP(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.redstone_lamp).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_redstone_lamp"),
-    COLORED_BRICKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.brick_block), BlockColored.ItemBlockColored.class, "colored_bricks"),
-    COLORED_STONE_BRICKS(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.stonebrick), BlockColored.ItemBlockColored.class, "colored_stone_bricks"),
-    COLORED_LAPIS_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.lapis_block), BlockColored.ItemBlockColored.class, "colored_lapis_block"),
-    COLORED_OBSIDIAN(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.obsidian), BlockColored.ItemBlockColored.class, "colored_obsidian"),
-    COLORED_REDSTONE_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.redstone_block, 2f), BlockColored.ItemBlockColored.class, "colored_redstone_block"),
-    COLORED_COAL_BLOCK(BlockConfig.enableColoredBlocks, new BlockColored(Blocks.coal_block), BlockColored.ItemBlockColored.class, "colored_coal_block"),
+    COLORED_WOOD_PLANKS(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.planks), BlockColored.ItemBlockColored.class, "colored_planks"),
+    COLORED_GLOWSTONE(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.glowstone).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_glowstone"),
+    COLORED_STONE(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.stone), BlockColored.ItemBlockColored.class, "colored_stone"),
+    COLORED_COBBLESTONE(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.cobblestone), BlockColored.ItemBlockColored.class, "colored_cobblestone"),
+    COLORED_QUARTZ_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.quartz_block, 1f), BlockColored.ItemBlockColored.class, "colored_quartz_block"),
+    COLORED_SOUL_SAND(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.soul_sand), BlockColored.ItemBlockColored.class, "colored_soul_sand"),
+    COLORED_REDSTONE_LAMP(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.redstone_lamp).setLightLevel(1f), BlockColored.ItemBlockColored.class, "colored_redstone_lamp"),
+    COLORED_BRICKS(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.brick_block), BlockColored.ItemBlockColored.class, "colored_bricks"),
+    COLORED_STONE_BRICKS(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.stonebrick), BlockColored.ItemBlockColored.class, "colored_stone_bricks"),
+    COLORED_LAPIS_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.lapis_block), BlockColored.ItemBlockColored.class, "colored_lapis_block"),
+    COLORED_OBSIDIAN(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.obsidian), BlockColored.ItemBlockColored.class, "colored_obsidian"),
+    COLORED_REDSTONE_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.redstone_block, 2f), BlockColored.ItemBlockColored.class, "colored_redstone_block"),
+    COLORED_COAL_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.coal_block), BlockColored.ItemBlockColored.class, "colored_coal_block"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), "redstone_clock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "ethereal_glass"),
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),
@@ -99,19 +103,19 @@ public enum ModBlocks {
     TRASH_CAN_ENERGY(BlockConfig.enableTrashCanEnergy, new BlockTrashCanEnergy(), "trash_can_energy"),
     DRUM(BlockConfig.enableDrum, new BlockDrum(256_000, "drum"), BlockDrum.ItemBlockDrum.class, "drum"),
     BEDROCKIUM_DRUM(BlockConfig.enableDrum, new BlockDrum(65_536_000, "bedrockium_drum"), BlockDrum.ItemBlockDrum.class, "bedrockium_drum"),
-    SOUND_MUFFLER(BlockConfig.soundMuffler.enableSoundMuffler, new BlockSoundMuffler(), BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
-    RAIN_MUFFLER(BlockConfig.rainMuffler.enableRainMuffler, new BlockRainMuffler(), BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
+    SOUND_MUFFLER(BlockConfig.mufflers.enableSoundMuffler, new BlockSoundMuffler(), BlockSoundMuffler.ItemBlockSoundMuffler.class, "sound_muffler"),
+    RAIN_MUFFLER(BlockConfig.mufflers.enableRainMuffler, new BlockRainMuffler(), BlockRainMuffler.ItemBlockRainMuffler.class, "rain_muffler"),
     MAGIC_WOOD(BlockConfig.enableMagicWood, new BlockMagicWood(), "magic_wood"),
     ENDSPARK(BlockConfig.enableEndspark, new BlockEndspark(), "endspark"),
     PURE_LOVE(BlockConfig.pureLove.enablePureLove, new BlockPureLove(), BlockPureLove.ItemBlockPureLove.class, "pure_love"),
     MARGINALLY_MAXIMISED_CHEST(BlockConfig.enableMarginallyMaximisedChest, new BlockMarginallyMaximisedChest(), "marginally_maximised_chest"),
     SIGNIFICANTLY_SHRUNK_CHEST(BlockConfig.enableSignificantlyShrunkChest, new BlockSignificantlyShrunkChest(), "significantly_shrunk_chest"),
     RADICALLY_REDUCED_CHEST(BlockConfig.enableRadicallyReducedChest, new BlockRadicallyReducedChest(), "radically_reduced_chest"),
-    CURSED_EARTH(CursedEarthConfig.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
-    BLESSED_EARTH(CursedEarthConfig.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
+    CURSED_EARTH(CursedEarthConfig.INSTANCE.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
+    BLESSED_EARTH(CursedEarthConfig.INSTANCE.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
-    INVERTED_BLOCK(InversionConfig.enableInvertedIngot, new BlockInverted(), "inverted_block"),
+    INVERTED_BLOCK(InversionConfig.INSTANCE.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator", 1), "low_temperature_furnace_generator"),
     LOW_TEMPERATURE_FURNACE_SUBSTATION(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_substation", 8), "low_temperature_furnace_substation"),
     LOW_TEMPERATURE_FURNACE_POWERPLANT(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_powerplant", 64), "low_temperature_furnace_powerplant"),
@@ -150,25 +154,28 @@ public enum ModBlocks {
     NETHER_STAR_POWERPLANT(GeneratorConfig.enableNetherStarGenerator, new BlockNetherStarGenerator("nether_star_powerplant", 64), "nether_star_powerplant"),
     BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockUpdateDetector(), "block_update_detector"),
     ADVANCED_BLOCK_UPDATE_DETECTOR(BlockConfig.enableBlockUpdateDetector, new BlockAdvancedUpdateDetector(), "advanced_block_update_detector"),
-    ENDER_LOTUS(EnderLotusConfig.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
+    ENDER_LOTUS(EnderLotusConfig.INSTANCE.enableEnderLotus, new BlockEnderLotus(), null, "ender_lotus"),
     BLACKOUT_CURTAINS(BlockConfig.enableBlackoutCurtains, new BlockBlackoutCurtains(), "blackout_curtains"),
     CONVEYOR(BlockConfig.enableConveyor, new BlockConveyor(), ItemBlockRotatable.class, "conveyor"),
     SPIKE_WOOD(BlockConfig.spikes.enableWoodenSpike, new BlockSpike(BlockSpike.SpikeType.WOOD, "wood_spike"), BlockSpike.ItemSpike.class, "wood_spike"),
     SPIKE_IRON(BlockConfig.spikes.enableIronSpike, new BlockSpike(BlockSpike.SpikeType.IRON, "iron_spike"), BlockSpike.ItemSpike.class, "iron_spike"),
     SPIKE_GOLD(BlockConfig.spikes.enableGoldSpike, new BlockSpike(BlockSpike.SpikeType.GOLD, "gold_spike"), BlockSpike.ItemSpike.class, "gold_spike"),
     SPIKE_DIAMOND(BlockConfig.spikes.enableDiamondSpike, new BlockSpike(BlockSpike.SpikeType.DIAMOND, "diamond_spike"), BlockSpike.ItemSpike.class, "diamond_spike"),
-    UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
-    END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
+    UNDERWORLD_PORTAL(BlockConfig.enableUnderWorldPortal && UnderWorldConfig.INSTANCE.enableUnderWorld, new BlockPortalUnderWorld(), "underworld_portal"),
+    END_OF_TIME_PORTAL(BlockConfig.enableEndOfTimePortal && EndOfTimeConfig.INSTANCE.enableEndOfTime, new BlockPortalEndOfTime(), BlockPortalEndOfTime.ItemBlockPortalEndOfTime.class, "temporal_gate"),
     ENDER_LOCUS(BlockConfig.enableEnderLocus, new BlockEnderLocus(), "ender_locus"),
     CONVERGENCE_CRYSTAL(BlockConfig.enableEnderLocus, new BlockConvergenceCrystal(), "convergence_crystal"),
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
-    PACIFISTS_BENCH(BlockConfig.enablePacifistsBench, new BlockPacifistsBench(), ItemBlockRotatable.class, "pacifists_bench"),
-    SMART_PUMP(BlockConfig.enableSmartPump, new BlockSmartPump(), "smart_pump"),
+    PACIFISTS_BENCH(BlockConfig.pacifistsBench.enablePacifistsBench, new BlockPacifistsBench(), ItemBlockRotatable.class, "pacifists_bench"),
+    SMART_PUMP(BlockConfig.smartPump.enableSmartPump, new BlockSmartPump(), "smart_pump"),
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),
+    VOID_QUARRY(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
+    VOID_MARKER(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
+    VOID_QUARRY_UPGRADE(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

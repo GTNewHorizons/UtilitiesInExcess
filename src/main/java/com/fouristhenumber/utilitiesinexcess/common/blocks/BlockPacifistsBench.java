@@ -3,14 +3,21 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -74,5 +81,32 @@ public class BlockPacifistsBench extends BlockContainer {
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
         return 10;
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return BlockConfig.pacifistsBench.enablePacifistsBench;
+        }
+
+        @SubscribeEvent
+        public static void onLivingDrops(LivingDropsEvent event) {
+            if (event.source.getEntity() == null) return;
+            NBTTagCompound tag = event.source.getEntity()
+                .getEntityData();
+            if (!tag.getBoolean("isPacifistsBench")) return;
+            TileEntity te = event.entityLiving.worldObj
+                .getTileEntity(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+            if (te instanceof TileEntityPacifistsBench table) {
+                if (event.entityLiving instanceof EntityLiving living) living.experienceValue = 0;
+                for (EntityItem drop : event.drops) {
+                    table.receiveItemStack(drop.getEntityItem());
+                }
+                event.setCanceled(true);
+            }
+        }
     }
 }

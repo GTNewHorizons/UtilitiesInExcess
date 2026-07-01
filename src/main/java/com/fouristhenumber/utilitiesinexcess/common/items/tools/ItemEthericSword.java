@@ -13,7 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemSword;
 import com.google.common.collect.Multimap;
@@ -27,8 +27,8 @@ public class ItemEthericSword extends ItemSword implements ITranslucentItem {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:etheric_sword");
         setUnlocalizedName("etheric_sword");
-        if (EthericSwordConfig.unbreakable) setMaxDamage(0);
-        ((AccessorItemSword) this).setDamageVsEntity(EthericSwordConfig.normalDamage);
+        if (EthericSwordConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        ((AccessorItemSword) this).setDamageVsEntity(EthericSwordConfig.INSTANCE.normalDamage);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ItemEthericSword extends ItemSword implements ITranslucentItem {
             && !player.isPotionActive(Potion.blindness)
             && player.ridingEntity == null
             && target instanceof EntityLivingBase;
-        float magicDamage = EthericSwordConfig.magicDamage;
+        float magicDamage = EthericSwordConfig.INSTANCE.magicDamage;
         if (isCrit) magicDamage *= 1.5f;
         AccessorEntityLivingBase acTarget = (AccessorEntityLivingBase) target;
         float cd = acTarget.getLastDamage();
@@ -61,7 +61,7 @@ public class ItemEthericSword extends ItemSword implements ITranslucentItem {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (EthericSwordConfig.unbreakable) {
+        if (EthericSwordConfig.INSTANCE.unbreakable) {
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
         }
     }
@@ -71,26 +71,30 @@ public class ItemEthericSword extends ItemSword implements ITranslucentItem {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(stack);
         multimap.put(
             "utilitiesinexcess.magic_damage",
-            new AttributeModifier(MAGIC_DMG_UUID, "utilitiesinexcess.magic_damage", EthericSwordConfig.magicDamage, 0));
+            new AttributeModifier(
+                MAGIC_DMG_UUID,
+                "utilitiesinexcess.magic_damage",
+                EthericSwordConfig.INSTANCE.magicDamage,
+                0));
         return multimap;
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (EthericSwordConfig.unbreakable) return false;
+        if (EthericSwordConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (EthericSwordConfig.unbreakable) return false;
+        if (EthericSwordConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (EthericSwordConfig.unbreakable) return false;
+        if (EthericSwordConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
