@@ -11,6 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +24,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.event.world.WorldEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
@@ -495,6 +500,31 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
         MarkerOperationMode(String localKey) {
             this.localKey = localKey;
+        }
+    }
+
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.SERVER)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldEventBusSubscribe() {
+            return VoidQuarryConfig.enableVoidQuarry;
+        }
+
+        @SubscribeEvent
+        public void onWorldUnload(WorldEvent.Unload event) {
+            if (event.world.isRemote) return;
+
+            // Clear the entire dimension registry
+            ConcurrentHashMap<BlockPos, TileEntityVoidMarker> dimRegistry = TileEntityVoidMarker.registeredMarkers
+                .get(event.world.provider.dimensionId);
+
+            if (dimRegistry != null) {
+                dimRegistry.clear();
+                TileEntityVoidMarker.registeredMarkers.remove(event.world.provider.dimensionId);
+            }
         }
     }
 }

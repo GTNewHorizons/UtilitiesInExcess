@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderLocus;
 import net.minecraft.tileentity.TileEntity;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
@@ -75,6 +76,7 @@ public enum ModTileEntities {
     ADVANCED_BLOCK_UPDATE_DETECTOR(TileEntityAdvancedBlockUpdateDetector.class , "AdvancedBlockUpdateDetector"),
     PENDANT_LIGHT(TileEntityChandelier.class                                   , "PendantLight"),
     GIGA_TORCH(TileEntityGigaTorch.class                                       , "GigaTorch"),
+    ENDER_LOCUS(TileEntityEnderLocus.class                                     , "EnderLocus"),
     VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
     VOID_MARKER(TileEntityVoidMarker.class                                     , "VoidMarker"),
     ;
