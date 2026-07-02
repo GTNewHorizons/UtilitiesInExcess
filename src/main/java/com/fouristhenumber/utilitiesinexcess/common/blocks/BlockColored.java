@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.cleanroommc.modularui.utils.Color;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
@@ -46,6 +48,8 @@ public class BlockColored extends Block {
 
     public static final float DEFAULT_BRIGHTNESS = 1.5f;
 
+    public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
+
     public BlockColored(Block base) {
         this(base, DEFAULT_BRIGHTNESS);
     }
@@ -60,6 +64,8 @@ public class BlockColored extends Block {
         setResistance(base.getExplosionResistance(null) * (5f / 3f));
         setStepSound(base.stepSound);
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
+
+        COLORED_BLOCKS.add(this);
     }
 
     private String baseModID;
@@ -234,7 +240,7 @@ public class BlockColored extends Block {
         }
     }
 
-    public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
+    public static final ArrayList<BlockColored> CONFIG_COLORED_BLOCKS = new ArrayList<>();
 
     public static void registerConfigBlocks() {
         for (int i = 0; i < ColoredBlocksConfig.INSTANCE.extraColoredBlocks.length; i++) {
@@ -259,6 +265,7 @@ public class BlockColored extends Block {
 
             BlockColored newBlock = new BlockColored(blockDomain, blockName, brightness, textureDomain, textureName);
             newBlock.setCreativeTab(UtilitiesInExcess.uieTab);
+            CONFIG_COLORED_BLOCKS.add(newBlock);
             COLORED_BLOCKS.add(newBlock);
             GameRegistry.registerBlock(
                 newBlock,
@@ -269,8 +276,29 @@ public class BlockColored extends Block {
     }
 
     public static void initConfigBlocks() {
-        for (BlockColored blockColored : COLORED_BLOCKS) {
+        for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
             blockColored.initFromString();
+        }
+        for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+            GameRegistry.addShapedRecipe(
+                new ItemStack(block, 8, 0b0_11111_11111_11111),
+                "bbb",
+                "bdb",
+                "bbb",
+                'b',
+                block.getBase(),
+                'd',
+                new ItemStack(Items.dye, 1, 15));
+
+            GameRegistry.addShapedRecipe(
+                new ItemStack(block.getBase(), 8),
+                "bbb",
+                "bdb",
+                "bbb",
+                'b',
+                new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE),
+                'd',
+                new ItemStack(Items.water_bucket));
         }
     }
 

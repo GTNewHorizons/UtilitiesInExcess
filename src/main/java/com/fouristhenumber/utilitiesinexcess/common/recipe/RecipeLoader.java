@@ -1154,6 +1154,8 @@ public class RecipeLoader {
     private static void loadColoredBlockRecipes() {
         if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
+        if (BlockColored.shouldUsePaintBrush()) return;
+
         ItemStack[] dyes = new ItemStack[16];
         for (int i = 0; i < 16; ++i) {
             dyes[i] = new ItemStack(Items.dye, 1, i);
