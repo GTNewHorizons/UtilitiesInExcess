@@ -100,7 +100,7 @@ public class CommonProxy {
     public void loadComplete(FMLLoadCompleteEvent event) {
 
         if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
-            BlockColored.initConfigBlocks();
+            BlockColored.initColoredBlocks();
         }
 
     }

@@ -600,7 +600,7 @@ uie.colored_blocks.color.13=Colored %s (Dark Green)
 uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
 
-uie.colored_blocks.color.dyeable=Dye-able %s
+uie.colored_blocks.color.dyeable=Dyed %s
 uie.colored_blocks.color.dyeable.desc=Tile entity-free dye-able block!
 
 item.paintbrush.name=Paintbrush

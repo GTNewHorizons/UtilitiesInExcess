@@ -247,21 +247,24 @@ public class BlockColored extends Block {
             String configString = ColoredBlocksConfig.INSTANCE.extraColoredBlocks[i];
             String[] args = configString.split(";");
 
+            if (args.length < 5) {
+                throw new IllegalArgumentException(
+                    "Utilities in Excess - Colored Blocks: Extra colored blocks entry \"" + configString
+                        + "\" doesn't have enough values. Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
+            }
+
             String blockDomain = args[0];
             String blockName = args[1];
-            float brightness = DEFAULT_BRIGHTNESS;
-            String textureDomain = null;
-            String textureName = null;
-
-            if (args.length > 2) {
+            float brightness;
+            try {
                 brightness = Float.parseFloat(args[2]);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(
+                    "Utilities in Excess - Colored Blocks: Couldn't parse brightness value \"" + args[2] + "\" for extra colored blocks entry \"" + configString
+                        + "\". Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
             }
-            if (args.length > 3) {
-                textureDomain = args[3];
-            }
-            if (args.length > 4) {
-                textureName = args[4];
-            }
+            String textureDomain = args[3];
+            String textureName = args[4];
 
             BlockColored newBlock = new BlockColored(blockDomain, blockName, brightness, textureDomain, textureName);
             newBlock.setCreativeTab(UtilitiesInExcess.uieTab);
@@ -275,7 +278,7 @@ public class BlockColored extends Block {
         }
     }
 
-    public static void initConfigBlocks() {
+    public static void initColoredBlocks() {
         for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
             blockColored.initFromString();
         }

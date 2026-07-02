@@ -72,7 +72,7 @@ public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGu
         int color = BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
 
         if (player.isSneaking()) {
-            paintLine(stack, player, world, x, y, z, color);
+            paintLine(player, world, x, y, z, color);
         } else {
             paintBlock(world, x, y, z, color);
         }
@@ -88,12 +88,12 @@ public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGu
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void paintLine(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int color) {
+    private void paintLine(EntityPlayer player, World world, int x, int y, int z, int color) {
         ForgeDirection direction = BlockConveyor
             .getFacing((int) ((((player.rotationYaw % 360) + 45f) / 90f + 4f) % 4f));
         Block blockFirst = world.getBlock(x, y, z);
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 100; i++) {
             Block block = world
                 .getBlock(x + (direction.offsetX * i), y + (direction.offsetY * i), z + (direction.offsetZ * i));
 
