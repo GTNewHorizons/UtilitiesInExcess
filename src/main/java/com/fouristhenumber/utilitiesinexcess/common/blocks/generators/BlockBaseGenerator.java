@@ -23,7 +23,6 @@ public abstract class BlockBaseGenerator extends BlockContainer {
         multiplier = mult;
         setHardness(5F);
         setBlockName(id);
-        setBlockTextureName("utilitiesinexcess:generators/" + id);
     }
 
     @Override
