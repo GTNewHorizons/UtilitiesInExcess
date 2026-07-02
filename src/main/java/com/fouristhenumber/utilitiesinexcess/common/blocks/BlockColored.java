@@ -7,15 +7,24 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.utils.Color;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintbrush;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.PaintbrushColorSelect;
 import com.fouristhenumber.utilitiesinexcess.render.BlockColoredTexture;
 import com.fouristhenumber.utilitiesinexcess.utils.ColorUtils;
 
@@ -61,17 +70,64 @@ public class BlockColored extends Block {
         tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
     }
 
+    public static boolean shouldUsePaintBrush() {
+        return Mods.EndlessIDs.isLoaded() && ColoredBlocksConfig.INSTANCE.enableDying;
+    }
+
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 16; ++i) {
-            list.add(new ItemStack(itemIn, 1, i));
+        if (shouldUsePaintBrush()) {
+            list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
+        } else {
+            for (int i = 0; i < 16; ++i) {
+                list.add(new ItemStack(itemIn, 1, i));
+            }
         }
     }
 
+    public static int getRGBFromEIDMeta(int meta) {
+        int red = (meta >> 7) & 0b11111000;
+        int green = (meta >> 2) & 0b11111000;
+        int blue = (meta << 3) & 0b11111000;
+
+        return (red << 16) | (green << 8) | blue;
+    }
+
+    public static int getEIDMetaFromRGB(int rgb) {
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = rgb & 0xFF;
+
+        return ((red << 7) & 0b0_11111_00000_00000) | ((green << 2) & 0b0_00000_11111_00000) | (blue >> 3);
+    }
+
     @Override
+    @SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
+        if (shouldUsePaintBrush()) {
+            return getRGBFromEIDMeta(worldIn.getBlockMetadata(x, y, z));
+        }
+
         int meta = worldIn.getBlockMetadata(x, y, z);
         return ColorUtils.getHexColorFromWoolMeta(meta);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderColor(int meta) {
+        return shouldUsePaintBrush() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
+    }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItem() instanceof ItemPaintbrush) {
+            PacketHandler.INSTANCE
+                .sendToServer(new PaintbrushColorSelect(getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
+            return null;
+        }
+
+        return super.getPickBlock(target, world, x, y, z, player);
     }
 
     @Override
@@ -82,11 +138,6 @@ public class BlockColored extends Block {
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
         return base.getFireSpreadSpeed(world, x, y, z, face);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int meta) {
-        return ColorUtils.getHexColorFromWoolMeta(meta);
     }
 
     public Block getBase() {
@@ -114,8 +165,19 @@ public class BlockColored extends Block {
                 .getItemStackDisplayName(stack);
             stack.setItemDamage(dmg);
 
-            name = StatCollector.translateToLocalFormatted("uie.colored_blocks.color." + stack.getItemDamage(), name);
+            if (shouldUsePaintBrush()) {
+                name = StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable", name);
+            } else {
+                name = StatCollector
+                    .translateToLocalFormatted("uie.colored_blocks.color." + stack.getItemDamage(), name);
+            }
             return name;
+        }
+
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+            super.addInformation(stack, player, tooltip, p_77624_4_);
+            tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
+            tooltip.add(StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable.desc"));
         }
     }
 }

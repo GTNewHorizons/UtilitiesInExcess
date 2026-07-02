@@ -50,7 +50,7 @@ public class BlockConfig {
 
     @Config.Order(1000)
     @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
-    public static final ColoredBlocks coloredBlocks = new ColoredBlocks();
+    public static final ColoredBlocksConfig coloredBlocks = ColoredBlocksConfig.INSTANCE;
 
     public static class PureLove {
 
@@ -191,22 +191,6 @@ public class BlockConfig {
         @Config.DefaultBoolean(false)
         @Config.Comment("Enable the Pacifist's Bench to work outside of peaceful mode.")
         public boolean pacifistsBenchInNonPeaceful;
-    }
-
-    public static class ColoredBlocks {
-
-        @Config.Order(0)
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        @Config.Name("Enable")
-        public boolean enableColoredBlocks;
-
-        @Config.Order(100)
-        @Config.DefaultBoolean(false)
-        @Config.Comment({ "Register oredictionary entries for colored blocks.",
-            "Will allow colored blocks to work in recipes, but will also bloat NEI for recipes that people will likely never use..." })
-        @Config.RequiresMcRestart
-        public boolean coloredBlockOredict;
     }
 
     @Config.DefaultBoolean(true)

@@ -600,6 +600,19 @@ uie.colored_blocks.color.13=Colored %s (Dark Green)
 uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
 
+uie.colored_blocks.color.dyeable=Dye-able %s
+uie.colored_blocks.color.dyeable.desc=Tile entity-free dye-able block!
+
+item.paintbrush.name=Paintbrush
+item.paintbrush.desc.0=[§a%s§7] Colorable blocks to dye them
+item.paintbrush.desc.1=[§a%s§7] The air to select hex color
+item.paintbrush.desc.2=[§aCrouch §7+ §a%s§7] Activate line-mode
+item.paintbrush.desc.3=[§a%s§7] Colorable blocks to copy color
+item.paintbrush.help_tooltip.0=Block colors are limited to 16-bit
+item.paintbrush.help_tooltip.1=meaning that hex value will have
+item.paintbrush.help_tooltip.2=each of their RGB values rounded down
+item.paintbrush.help_tooltip.3=to the nearest number divisible by 8
+
 material.bedrockium_uie=Bedrockium
 material.bedrockium_uie.ability=Heavy
 material.magical_wood=Magical Wooden
@@ -701,3 +714,4 @@ utilitiesinexcess.config.recipes=Recipes
 
 uie.util.key.rclick=Right-Click
 uie.util.key.lclick=Left-Click
+uie.util.key.mclick=Middle-Click
