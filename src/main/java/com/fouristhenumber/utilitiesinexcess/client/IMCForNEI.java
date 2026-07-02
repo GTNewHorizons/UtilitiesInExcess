@@ -146,40 +146,40 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:golden_bag>", "nei.infopage.uie.golden_bag.1");
 
         sendInfoPage(
-            "<utilitiesinexcess:low_temperature_furnace_generator>,<utilitiesinexcess:low_temperature_furnace_generator_plus>,<utilitiesinexcess:low_temperature_furnace_generator_plusplus>",
+            "<utilitiesinexcess:low_temperature_furnace_generator>,<utilitiesinexcess:low_temperature_furnace_substation>,<utilitiesinexcess:low_temperature_furnace_powerplant>",
             "nei.infopage.uie.low_temperature_furnace_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:furnace_generator>,<utilitiesinexcess:furnace_generator_plus>,<utilitiesinexcess:furnace_generator_plusplus>",
+            "<utilitiesinexcess:furnace_generator>,<utilitiesinexcess:furnace_substation>,<utilitiesinexcess:furnace_powerplant>",
             "nei.infopage.uie.furnace_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:high_temperature_furnace_generator>,<utilitiesinexcess:high_temperature_furnace_generator_plus>,<utilitiesinexcess:high_temperature_furnace_generator_plusplus>",
+            "<utilitiesinexcess:high_temperature_furnace_generator>,<utilitiesinexcess:high_temperature_furnace_substation>,<utilitiesinexcess:high_temperature_furnace_powerplant>",
             "nei.infopage.uie.high_temperature_furnace_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:ender_generator>,<utilitiesinexcess:ender_generator_plus>,<utilitiesinexcess:ender_generator_plusplus>",
+            "<utilitiesinexcess:ender_generator>,<utilitiesinexcess:ender_substation>,<utilitiesinexcess:ender_powerplant>",
             "nei.infopage.uie.ender_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:food_generator>,<utilitiesinexcess:food_generator_plus>,<utilitiesinexcess:food_generator_plusplus>",
+            "<utilitiesinexcess:food_generator>,<utilitiesinexcess:food_substation>,<utilitiesinexcess:food_powerplant>",
             "nei.infopage.uie.food_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:tnt_generator>,<utilitiesinexcess:tnt_generator_plus>,<utilitiesinexcess:tnt_generator_plusplus>",
+            "<utilitiesinexcess:tnt_generator>,<utilitiesinexcess:tnt_substation>,<utilitiesinexcess:tnt_powerplant>",
             "nei.infopage.uie.tnt_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:nether_star_generator>,<utilitiesinexcess:nether_star_generator_plus>,<utilitiesinexcess:nether_star_generator_plusplus>",
+            "<utilitiesinexcess:nether_star_generator>,<utilitiesinexcess:nether_star_substation>,<utilitiesinexcess:nether_star_powerplant>",
             "nei.infopage.uie.nether_star_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:pink_generator>,<utilitiesinexcess:pink_generator_plus>,<utilitiesinexcess:pink_generator_plusplus>",
+            "<utilitiesinexcess:pink_generator>,<utilitiesinexcess:pink_substation>,<utilitiesinexcess:pink_powerplant>",
             "nei.infopage.uie.pink_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:lava_generator>,<utilitiesinexcess:lava_generator_plus>,<utilitiesinexcess:lava_generator_plusplus>",
+            "<utilitiesinexcess:lava_generator>,<utilitiesinexcess:lava_substation>,<utilitiesinexcess:lava_powerplant>",
             "nei.infopage.uie.lava_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:solar_generator>,<utilitiesinexcess:solar_generator_plus>,<utilitiesinexcess:solar_generator_plusplus>",
+            "<utilitiesinexcess:solar_generator>,<utilitiesinexcess:solar_substation>,<utilitiesinexcess:solar_powerplant>",
             "nei.infopage.uie.solar_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:redstone_generator>,<utilitiesinexcess:redstone_generator_plus>,<utilitiesinexcess:redstone_generator_plusplus>",
+            "<utilitiesinexcess:redstone_generator>,<utilitiesinexcess:redstone_substation>,<utilitiesinexcess:redstone_powerplant>",
             "nei.infopage.uie.redstone_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:potion_generator>,<utilitiesinexcess:potion_generator_plus>,<utilitiesinexcess:potion_generator_plusplus>",
+            "<utilitiesinexcess:potion_generator>,<utilitiesinexcess:potion_substation>,<utilitiesinexcess:potion_powerplant>",
             "nei.infopage.uie.potion_generator.1");
 
         sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.1");
