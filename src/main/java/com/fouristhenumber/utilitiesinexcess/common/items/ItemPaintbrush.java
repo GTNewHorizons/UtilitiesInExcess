@@ -143,7 +143,7 @@ public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGu
         ItemStack stack = data.getUsedItemStack();
 
         PaintbrushColorPickerDialog colorPickerDialog = new PaintbrushColorPickerDialog(
-            newColor -> { PacketHandler.INSTANCE.sendToServer(new PaintbrushColorSelect(newColor)); },
+            newColor -> PacketHandler.INSTANCE.sendToServer(new PaintbrushColorSelect(newColor)),
             getColorFromStack(stack));
 
         return colorPickerDialog;

@@ -95,7 +95,7 @@ public enum ModBlocks {
     COLORED_LAPIS_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.lapis_block), BlockColored.ItemBlockColored.class, "colored_lapis_block"),
     COLORED_OBSIDIAN(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.obsidian), BlockColored.ItemBlockColored.class, "colored_obsidian"),
     COLORED_REDSTONE_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.redstone_block, 2f), BlockColored.ItemBlockColored.class, "colored_redstone_block"),
-    COLORED_COAL_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.coal_block), BlockColored.ItemBlockColored.class, "colored_coal_block"),
+    COLORED_COAL_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.coal_block, 2), BlockColored.ItemBlockColored.class, "colored_coal_block"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), "redstone_clock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "ethereal_glass"),
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),

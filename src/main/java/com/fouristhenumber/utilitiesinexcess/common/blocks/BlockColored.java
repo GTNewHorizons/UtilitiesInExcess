@@ -1,8 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -18,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.Color;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintbrush;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
@@ -28,6 +33,7 @@ import com.fouristhenumber.utilitiesinexcess.network.client.PaintbrushColorSelec
 import com.fouristhenumber.utilitiesinexcess.render.BlockColoredTexture;
 import com.fouristhenumber.utilitiesinexcess.utils.ColorUtils;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,11 +41,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 // to avoid flooding nei crafting recipes with them.
 public class BlockColored extends Block {
 
-    private final Block base;
+    private Block base;
     private final float colorMultiplier;
 
+    public static final float DEFAULT_BRIGHTNESS = 1.5f;
+
     public BlockColored(Block base) {
-        this(base, 1.5F);
+        this(base, DEFAULT_BRIGHTNESS);
     }
 
     public BlockColored(Block base, float colorMultiplier) {
@@ -54,6 +62,56 @@ public class BlockColored extends Block {
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
     }
 
+    private String baseModID;
+
+    private String baseName;
+
+    private boolean initialized = true;
+
+    public String textureOverrideDomain;
+
+    public String textureOverrideName;
+
+    public BlockColored(String baseModID, String baseName, float colorMultiplier, @Nullable String textureDomain,
+        @Nullable String textureName) {
+        super(Material.rock);
+        this.colorMultiplier = colorMultiplier;
+        this.baseModID = baseModID;
+        this.baseName = baseName;
+        this.initialized = false;
+        this.textureOverrideDomain = textureDomain;
+        this.textureOverrideName = textureName;
+
+        setBlockName(baseModID + "_" + baseName + "_colored");
+    }
+
+    public void initFromString() {
+        if (base == null) {
+            base = GameRegistry.findBlock(baseModID, baseName);
+        }
+
+        if (base == null) {
+            throw new IllegalArgumentException(
+                "Utilities in Excess - Colored Blocks: Block \"" + baseName
+                    + "\" from mod ID \""
+                    + baseModID
+                    + "\" not found. Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
+        }
+
+        ((AccessorBlock) this).uie$setBlockMaterial(base.getMaterial());
+        this.canBlockGrass = !base.getMaterial()
+            .getCanBlockGrass();
+
+        setHardness(base.getBlockHardness(null, 0, 0, 0));
+        // This dumb ratio is due to the random scalars present in both get and set resistance.
+        setResistance(base.getExplosionResistance(null) * (5f / 3f));
+        setStepSound(base.stepSound);
+
+        opaque = isOpaqueCube();
+
+        initialized = true;
+    }
+
     @Override
     public int damageDropped(int meta) {
         return meta;
@@ -62,8 +120,13 @@ public class BlockColored extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        String textureName = ((AccessorBlock_Client) base).uie$getTextureName() + "_colored_grayscale";
-        blockIcon = new BlockColoredTexture(textureName, base, colorMultiplier);
+        String textureName;
+        if (base != null) {
+            textureName = ((AccessorBlock_Client) base).uie$getTextureName() + "_colored_grayscale";
+        } else {
+            textureName = baseModID + "_" + baseName + "_colored_grayscale";
+        }
+        blockIcon = new BlockColoredTexture(textureName, this, colorMultiplier);
 
         if (!(reg instanceof TextureMap tm)) return;
 
@@ -130,16 +193,6 @@ public class BlockColored extends Block {
         return super.getPickBlock(target, world, x, y, z, player);
     }
 
-    @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return base.getFlammability(world, x, y, z, face);
-    }
-
-    @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return base.getFireSpreadSpeed(world, x, y, z, face);
-    }
-
     public Block getBase() {
         return base;
     }
@@ -180,4 +233,88 @@ public class BlockColored extends Block {
             tooltip.add(StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable.desc"));
         }
     }
+
+    public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
+
+    public static void registerConfigBlocks() {
+        for (int i = 0; i < ColoredBlocksConfig.INSTANCE.extraColoredBlocks.length; i++) {
+            String configString = ColoredBlocksConfig.INSTANCE.extraColoredBlocks[i];
+            String[] args = configString.split(";");
+
+            String blockDomain = args[0];
+            String blockName = args[1];
+            float brightness = DEFAULT_BRIGHTNESS;
+            String textureDomain = null;
+            String textureName = null;
+
+            if (args.length > 2) {
+                brightness = Float.parseFloat(args[2]);
+            }
+            if (args.length > 3) {
+                textureDomain = args[3];
+            }
+            if (args.length > 4) {
+                textureName = args[4];
+            }
+
+            BlockColored newBlock = new BlockColored(blockDomain, blockName, brightness, textureDomain, textureName);
+            newBlock.setCreativeTab(UtilitiesInExcess.uieTab);
+            COLORED_BLOCKS.add(newBlock);
+            GameRegistry.registerBlock(
+                newBlock,
+                ItemBlockColored.class,
+                ((AccessorBlock) newBlock).uie$getUnlocalizedNameRaw());
+
+        }
+    }
+
+    public static void initConfigBlocks() {
+        for (BlockColored blockColored : COLORED_BLOCKS) {
+            blockColored.initFromString();
+        }
+    }
+
+    // Redirects of Block methods
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return base.getFlammability(world, x, y, z, face);
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return base.getFireSpreadSpeed(world, x, y, z, face);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public int getRenderBlockPass() {
+        return base.getRenderBlockPass();
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return base.renderAsNormalBlock();
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return base == null ? super.isOpaqueCube() : base.isOpaqueCube();
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        Block block = worldIn.getBlock(x, y, z);
+        return base.shouldSideBeRendered(worldIn, x, y, z, side) && block != this;
+    }
+
+    @Override
+    public int getLightOpacity() {
+        return base.getLightOpacity();
+    }
+
+    @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        return base.getLightOpacity(world, x, y, z);
+    }
+    //
 }
