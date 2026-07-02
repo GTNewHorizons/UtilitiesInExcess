@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetOrientationProperty;
-import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +10,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetOrientationProperty;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
@@ -60,6 +59,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
@@ -151,7 +151,9 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityPinkGenerator.class, "TileEntityPinkGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityNetherStarGenerator.class, "TileEntityNetherStarGeneratorUIE");
         GameRegistry.registerTileEntity(TileEntityPacifistsBench.class, "TileEntityPacifistsBenchUIE");
-        GameRegistry.registerTileEntity(TileEntityFilingCabinet.class, "TileEntityFilingCabinetUIE");
+        GameRegistry.registerTileEntity(TileEntityFilingCabinet.Basic.class, "TileEntityFilingCabinetBasicUIE");
+        GameRegistry.registerTileEntity(TileEntityFilingCabinet.Advanced.class, "TileEntityFilingCabinetAdvancedUIE");
+        GameRegistry.registerTileEntity(TileEntityFilingCabinet.Elite.class, "TileEntityFilingCabinetEliteUIE");
         GameRegistry.registerTileEntity(TileEntityTradingPost.class, "TileEntityTradingPostUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -185,7 +187,8 @@ public class UtilitiesInExcess {
         }
 
         if (ModBlocks.FILING_CABINET.isEnabled()) {
-            BlockPropertyRegistry.registerBlockItemProperty(ModBlocks.FILING_CABINET.get(), CabinetOrientationProperty.instance);
+            BlockPropertyRegistry
+                .registerBlockItemProperty(ModBlocks.FILING_CABINET.get(), CabinetOrientationProperty.instance);
         }
 
         if (ModBlocks.SMART_PUMP.isEnabled()) {

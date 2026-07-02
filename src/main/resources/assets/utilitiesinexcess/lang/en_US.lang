@@ -589,16 +589,16 @@ nei.infopage.uie.trading_post.1=This block allows you to trade with every villag
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
 
+utilitiesinexcess.config.block.filing_cabinets=Filing Cabinet
+
 tile.filing_cabinet.basic.name=Filing Cabinet
 tile.filing_cabinet.basic.desc=Stores variants of one type of item.
 tile.filing_cabinet.advanced.name=Adv. Filing Cabinet
 tile.filing_cabinet.advanced.desc=Stores unstackable items.
-
-tile.filing_cabinet.capacity_upgrade.success=Installed capacity upgrade.
-tile.filing_cabinet.capacity_upgrade.maxed=Cabinet already upgraded to max!
+tile.filing_cabinet.elite.name=Elite Filing Cabinet
+tile.filing_cabinet.elite.desc=Stores any items.
 
 tile.filing_cabinet.tooltip.contents=Contents:
-tile.filing_cabinet.tooltip.more=...and %d more
 tile.filing_cabinet.tooltip.total=Total: %d items
 tile.filing_cabinet.tooltip.upgrades=+%d capacity upgrades
 
@@ -606,6 +606,21 @@ item.capacity_upgrade.name=Capacity Upgrade
 
 gui.cabinet.storage=Storage: %s / %s
 gui.cabinet.slot=Slot: %s / %s
+gui.cabinet.upgrades=Upgrades: %d / %d
+
+gui.cabinet.sort.title=Sort mode
+gui.cabinet.sort.name=By name
+gui.cabinet.sort.mod_id=By mod
+gui.cabinet.sort.count=By count
+gui.cabinet.sort.ore_dict=By ore dictionary
+
+gui.cabinet.scroll.title=Scroll direction
+gui.cabinet.scroll.horizontal=Horizontal
+gui.cabinet.scroll.vertical=Vertical
+
+gui.cabinet.slot_dir.title=Slot fill direction
+gui.cabinet.slot_dir.horizontal=Horizontal
+gui.cabinet.slot_dir.vertical=Vertical
 
 uie.colored_blocks.color.0=Colored %s (White)
 uie.colored_blocks.color.1=Colored %s (Orange)

@@ -14,8 +14,6 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
-import com.fouristhenumber.utilitiesinexcess.render.CabinetTooltipHandler;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
 import com.fouristhenumber.utilitiesinexcess.render.TESRUnderworldPortal;
@@ -25,7 +23,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.common.MinecraftForge;
 
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
@@ -65,10 +62,6 @@ public class ClientProxy extends CommonProxy {
 
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
-        }
-
-        if (FilingCabinetsConfig.enableFilingCabinets) {
-            MinecraftForge.EVENT_BUS.register(CabinetTooltipHandler.INSTANCE);
         }
     }
 }
