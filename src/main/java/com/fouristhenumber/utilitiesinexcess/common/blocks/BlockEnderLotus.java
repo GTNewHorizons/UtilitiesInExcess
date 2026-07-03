@@ -64,9 +64,9 @@ public class BlockEnderLotus extends BlockCrops {
 
         Block ground = world.getBlock(x, y - 1, z);
 
-        int chance = EnderLotusConfig.growthTicksOnDirt;
-        if (ground == Blocks.end_stone) chance = EnderLotusConfig.growthTicksOnEndstone;
-        else if (ground == ModBlocks.ENDSPARK.get()) chance = EnderLotusConfig.growthTicksOnEndspark;
+        int chance = EnderLotusConfig.INSTANCE.growthTicksOnDirt;
+        if (ground == Blocks.end_stone) chance = EnderLotusConfig.INSTANCE.growthTicksOnEndstone;
+        else if (ground == ModBlocks.ENDSPARK.get()) chance = EnderLotusConfig.INSTANCE.growthTicksOnEndspark;
 
         if (rand.nextInt(chance) == 0) {
             world.setBlockMetadataWithNotify(x, y, z, meta + 1, 2);
@@ -84,7 +84,7 @@ public class BlockEnderLotus extends BlockCrops {
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if (!EnderLotusConfig.thornyLotuses || world.isRemote || !(entity instanceof EntityLivingBase)) return;
+        if (!EnderLotusConfig.INSTANCE.thornyLotuses || world.isRemote || !(entity instanceof EntityLivingBase)) return;
         if (world.getBlockMetadata(x, y, z) > 3) {
             entity.attackEntityFrom(DamageSource.cactus, 0.1F);
         }
@@ -102,11 +102,11 @@ public class BlockEnderLotus extends BlockCrops {
 
             Block ground = world.getBlock(x, y - 1, z);
             if (ground == Blocks.end_stone) {
-                if (rand.nextDouble() < EnderLotusConfig.extraSeedChanceOnEndstone) {
+                if (rand.nextDouble() < EnderLotusConfig.INSTANCE.extraSeedChanceOnEndstone) {
                     drops.add(new ItemStack(enderLotusSeed, 1));
                 }
             } else if (ground == ModBlocks.ENDSPARK.get()) {
-                if (rand.nextDouble() < EnderLotusConfig.extraSeedChanceOnEndspark) {
+                if (rand.nextDouble() < EnderLotusConfig.INSTANCE.extraSeedChanceOnEndspark) {
                     drops.add(new ItemStack(enderLotusSeed, 1));
                 }
             }

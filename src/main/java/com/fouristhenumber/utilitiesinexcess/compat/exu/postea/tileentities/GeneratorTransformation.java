@@ -87,63 +87,63 @@ public class GeneratorTransformation {
     private static Block getGeneratorFromMetaAndMult(int meta, int mult) {
         return switch (meta) {
             case 0 -> switch (mult) {
-                    case 64 -> ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.LOW_TEMPERATURE_FURNACE_POWERPLANT.get();
+                    case 8 -> ModBlocks.LOW_TEMPERATURE_FURNACE_SUBSTATION.get();
                     default -> ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR.get();
                 };
             case 1 -> switch (mult) {
-                    case 64 -> ModBlocks.FURNACE_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.FURNACE_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.FURNACE_POWERPLANT.get();
+                    case 8 -> ModBlocks.FURNACE_SUBSTATION.get();
                     default -> ModBlocks.FURNACE_GENERATOR.get();
                 };
             case 2 -> switch (mult) {
-                    case 64 -> ModBlocks.LAVA_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.LAVA_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.LAVA_POWERPLANT.get();
+                    case 8 -> ModBlocks.LAVA_SUBSTATION.get();
                     default -> ModBlocks.LAVA_GENERATOR.get();
                 };
             case 3 -> switch (mult) {
-                    case 64 -> ModBlocks.ENDER_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.ENDER_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.ENDER_POWERPLANT.get();
+                    case 8 -> ModBlocks.ENDER_SUBSTATION.get();
                     default -> ModBlocks.ENDER_GENERATOR.get();
                 };
             case 4 -> switch (mult) {
-                    case 64 -> ModBlocks.REDSTONE_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.REDSTONE_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.REDSTONE_POWERPLANT.get();
+                    case 8 -> ModBlocks.REDSTONE_SUBSTATION.get();
                     default -> ModBlocks.REDSTONE_GENERATOR.get();
                 };
             case 5 -> switch (mult) {
-                    case 64 -> ModBlocks.FOOD_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.FOOD_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.FOOD_POWERPLANT.get();
+                    case 8 -> ModBlocks.FOOD_SUBSTATION.get();
                     default -> ModBlocks.FOOD_GENERATOR.get();
                 };
             case 6 -> switch (mult) {
-                    case 64 -> ModBlocks.POTION_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.POTION_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.POTION_POWERPLANT.get();
+                    case 8 -> ModBlocks.POTION_SUBSTATION.get();
                     default -> ModBlocks.POTION_GENERATOR.get();
                 };
             case 7 -> switch (mult) {
-                    case 64 -> ModBlocks.SOLAR_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.SOLAR_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.SOLAR_POWERPLANT.get();
+                    case 8 -> ModBlocks.SOLAR_SUBSTATION.get();
                     default -> ModBlocks.SOLAR_GENERATOR.get();
                 };
             case 8 -> switch (mult) {
-                    case 64 -> ModBlocks.TNT_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.TNT_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.TNT_POWERPLANT.get();
+                    case 8 -> ModBlocks.TNT_SUBSTATION.get();
                     default -> ModBlocks.TNT_GENERATOR.get();
                 };
             case 9 -> switch (mult) {
-                    case 64 -> ModBlocks.PINK_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.PINK_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.PINK_POWERPLANT.get();
+                    case 8 -> ModBlocks.PINK_SUBSTATION.get();
                     default -> ModBlocks.PINK_GENERATOR.get();
                 };
             case 10 -> switch (mult) {
-                    case 64 -> ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.HIGH_TEMPERATURE_FURNACE_POWERPLANT.get();
+                    case 8 -> ModBlocks.HIGH_TEMPERATURE_FURNACE_SUBSTATION.get();
                     default -> ModBlocks.HIGH_TEMPERATURE_FURNACE_GENERATOR.get();
                 };
             case 11 -> switch (mult) {
-                    case 64 -> ModBlocks.NETHER_STAR_GENERATOR_PLUSPLUS.get();
-                    case 8 -> ModBlocks.NETHER_STAR_GENERATOR_PLUS.get();
+                    case 64 -> ModBlocks.NETHER_STAR_POWERPLANT.get();
+                    case 8 -> ModBlocks.NETHER_STAR_SUBSTATION.get();
                     default -> ModBlocks.NETHER_STAR_GENERATOR.get();
                 };
             default -> throw new IllegalStateException("No defined generator with EXU meta: " + meta);

@@ -134,7 +134,7 @@ public class ItemInversionSigilInactive extends Item {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return InversionConfig.enableInversionSigil;
+            return InversionConfig.INSTANCE.enableInversionSigil;
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)

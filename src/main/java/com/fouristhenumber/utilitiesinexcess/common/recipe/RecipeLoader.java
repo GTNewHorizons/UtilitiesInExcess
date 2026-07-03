@@ -4,7 +4,6 @@ import static net.minecraft.item.Item.getItemFromBlock;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -183,72 +182,68 @@ public class RecipeLoader {
         if (RecipeConfig.enableHeavenlyRingRecipes) {
             addShapedRecipe(
                 ModItems.HEAVENLY_RING_FEATHER,
-                "#f#",
-                "f*f",
-                "ifi",
-                '#',
-                Blocks.glass,
-                'f',
+                "bgb",
+                "gsg",
+                "igi",
+                'b',
                 Items.feather,
-                '*',
+                'g',
+                Items.gold_ingot,
+                's',
                 Items.nether_star,
                 'i',
                 ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
             addShapedRecipe(
                 ModItems.HEAVENLY_RING_DRAGON,
-                "#b#",
-                "b*b",
-                "ibi",
-                '#',
-                Blocks.glass,
+                "bgb",
+                "gsg",
+                "igi",
                 'b',
-                Items.blaze_powder,
-                '*',
+                Items.leather,
+                'g',
+                Items.gold_ingot,
+                's',
                 Items.nether_star,
                 'i',
                 ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
             addShapedRecipe(
                 ModItems.HEAVENLY_RING_FAIRY,
-                "#d#",
-                "p*p",
-                "idi",
-                '#',
-                Blocks.glass,
-                'd',
-                Blocks.yellow_flower,
+                "pgd",
+                "gsg",
+                "igi",
                 'p',
-                new ItemStack(ItemBlock.getItemFromBlock(Blocks.red_flower), 1, 0),
-                '*',
+                new ItemStack(Items.dye, 1, 5),
+                'd',
+                new ItemStack(Items.dye, 1, 9),
+                'g',
+                Items.gold_ingot,
+                's',
                 Items.nether_star,
                 'i',
                 ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
             addShapedRecipe(
                 ModItems.HEAVENLY_RING_METAL,
-                "#g#",
-                "t*t",
+                "bgb",
+                "gsg",
                 "igi",
-                '#',
-                Blocks.glass,
+                'b',
+                Items.gold_nugget,
                 'g',
                 Items.gold_ingot,
-                't',
-                Items.iron_ingot,
-                '*',
+                's',
                 Items.nether_star,
                 'i',
                 ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
             addShapedRecipe(
                 ModItems.HEAVENLY_RING_MAGIC,
-                "#g#",
-                "r*r",
+                "bgb",
+                "gsg",
                 "igi",
-                '#',
+                'b',
                 Blocks.glass,
                 'g',
-                Items.glowstone_dust,
-                'r',
-                Items.redstone,
-                '*',
+                Items.gold_ingot,
+                's',
                 Items.nether_star,
                 'i',
                 ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
@@ -734,7 +729,7 @@ public class RecipeLoader {
     private static void loadSpikeRecipes() {
         if (RecipeConfig.enableSpikeRecipes) {
             addShapedRecipe(
-                ModBlocks.SPIKE_WOOD,
+                ModBlocks.SPIKE_WOOD.newItemStack(4),
                 " a ",
                 "aba",
                 "bcb",
@@ -746,7 +741,7 @@ public class RecipeLoader {
                 Blocks.log);
 
             addShapedRecipe(
-                ModBlocks.SPIKE_IRON,
+                ModBlocks.SPIKE_IRON.newItemStack(4),
                 " a ",
                 "aba",
                 "bcb",
@@ -758,7 +753,7 @@ public class RecipeLoader {
                 Blocks.iron_block);
 
             addShapedRecipe(
-                ModBlocks.SPIKE_GOLD,
+                ModBlocks.SPIKE_GOLD.newItemStack(4),
                 " a ",
                 "aba",
                 "bcb",
@@ -770,7 +765,7 @@ public class RecipeLoader {
                 Blocks.gold_block);
 
             addShapedRecipe(
-                ModBlocks.SPIKE_DIAMOND,
+                ModBlocks.SPIKE_DIAMOND.newItemStack(4),
                 " a ",
                 "aba",
                 "bcb",
@@ -965,7 +960,7 @@ public class RecipeLoader {
 
         // Ineffable Glass
         addShapedRecipe(
-            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 1),
             "ggg",
             "gig",
             "ggg",
@@ -1157,7 +1152,7 @@ public class RecipeLoader {
     }
 
     private static void loadColoredBlockRecipes() {
-        if (!BlockConfig.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
+        if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
         ItemStack[] dyes = new ItemStack[16];
         for (int i = 0; i < 16; ++i) {

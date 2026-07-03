@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.SiegeMobCreator.getSiegeMob;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
@@ -14,16 +15,11 @@ import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -92,23 +88,23 @@ public class ItemInversionSigilActive extends Item {
 
         CHEST_NORTH_CONTENTS = getValidChestContents(
             NORTH,
-            InversionConfig.northChestValidItems,
-            InversionConfig.northChestRequiredItems);
+            InversionConfig.INSTANCE.northChestValidItems,
+            InversionConfig.INSTANCE.northChestRequiredItems);
 
         CHEST_EAST_CONTENTS = getValidChestContents(
             EAST,
-            InversionConfig.eastChestValidItems,
-            InversionConfig.eastChestRequiredItems);
+            InversionConfig.INSTANCE.eastChestValidItems,
+            InversionConfig.INSTANCE.eastChestRequiredItems);
 
         CHEST_SOUTH_CONTENTS = getValidChestContents(
             SOUTH,
-            InversionConfig.southChestValidItems,
-            InversionConfig.southChestRequiredItems);
+            InversionConfig.INSTANCE.southChestValidItems,
+            InversionConfig.INSTANCE.southChestRequiredItems);
 
         CHEST_WEST_CONTENTS = getValidChestContents(
             WEST,
-            InversionConfig.westChestValidItems,
-            InversionConfig.westChestRequiredItems);
+            InversionConfig.INSTANCE.westChestValidItems,
+            InversionConfig.INSTANCE.westChestRequiredItems);
     }
 
     private int parseItemMetaFromString(String string) {
@@ -131,7 +127,7 @@ public class ItemInversionSigilActive extends Item {
                 Item validChestItem = GameRegistry.findItem(itemIdSplit[0], itemIdSplit[1]);
                 int validChestItemMeta = parseItemMetaFromString(itemIdSplit[2]);
                 validChestItemStack = new ItemStack(validChestItem, 1, validChestItemMeta);
-                if (validChestItem == Items.potionitem && InversionConfig.chestSplashPotionsValid) {
+                if (validChestItem == Items.potionitem && InversionConfig.INSTANCE.chestSplashPotionsValid) {
                     ItemStack splashPotion = new ItemStack(validChestItem, 1, validChestItemMeta + 8192);
                     boolean successfulAdd = validChestContents.add(new ItemStackBaseCompare(splashPotion));
                     if (successfulAdd) {
@@ -344,19 +340,19 @@ public class ItemInversionSigilActive extends Item {
         if (direction == NORTH) {
             beaconZ -= 5;
             contents = CHEST_NORTH_CONTENTS;
-            requiredAmount = InversionConfig.northChestRequiredItems;
+            requiredAmount = InversionConfig.INSTANCE.northChestRequiredItems;
         } else if (direction == SOUTH) {
             beaconZ += 5;
             contents = CHEST_SOUTH_CONTENTS;
-            requiredAmount = InversionConfig.southChestRequiredItems;
+            requiredAmount = InversionConfig.INSTANCE.southChestRequiredItems;
         } else if (direction == EAST) {
             beaconX += 5;
             contents = CHEST_EAST_CONTENTS;
-            requiredAmount = InversionConfig.eastChestRequiredItems;
+            requiredAmount = InversionConfig.INSTANCE.eastChestRequiredItems;
         } else if (direction == WEST) {
             beaconX -= 5;
             contents = CHEST_WEST_CONTENTS;
-            requiredAmount = InversionConfig.westChestRequiredItems;
+            requiredAmount = InversionConfig.INSTANCE.westChestRequiredItems;
         } else {
             throw new IllegalArgumentException("Invalid direction passed: " + direction);
         }
@@ -454,7 +450,7 @@ public class ItemInversionSigilActive extends Item {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return InversionConfig.enableInversionSigil;
+            return InversionConfig.INSTANCE.enableInversionSigil;
         }
 
         @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -470,21 +466,7 @@ public class ItemInversionSigilActive extends Item {
                 }
                 properties.siegeTimer = 30 + world.rand.nextInt(21);
 
-                int mobType = world.rand.nextInt(4);
-                EntityMob entityMob = switch (mobType) {
-                    case 0 -> {
-                        int zombieType = world.rand.nextInt(25);
-                        if (zombieType == 0) {
-                            yield new EntityGiantZombie(world);
-                        } else {
-                            yield new EntityZombie(world);
-                        }
-                    }
-                    case 1 -> new EntitySkeleton(world);
-                    case 2 -> new EntitySpider(world);
-                    case 3 -> new EntityCreeper(world);
-                    default -> throw new IllegalStateException("Unexpected value: " + mobType);
-                };
+                EntityLiving mob = getSiegeMob(world);
 
                 int offsetX = world.rand.nextInt(101) - 50;
                 int offsetZ = world.rand.nextInt(101) - 50;
@@ -498,13 +480,13 @@ public class ItemInversionSigilActive extends Item {
                         continue;
                     }
 
-                    entityMob.setPosition(mobX, y + 1, mobZ);
+                    mob.setPosition(mobX, y + 1, mobZ);
 
-                    if (!world.getCollidingBoundingBoxes(entityMob, entityMob.boundingBox)
+                    if (!world.getCollidingBoundingBoxes(mob, mob.boundingBox)
                         .isEmpty()) {
                         continue;
                     }
-                    if (!world.checkNoEntityCollision(entityMob.boundingBox)) {
+                    if (!world.checkNoEntityCollision(mob.boundingBox)) {
                         break;
                     }
 
@@ -513,10 +495,7 @@ public class ItemInversionSigilActive extends Item {
                 }
 
                 if (mobY != 0) {
-                    double damage = entityMob instanceof EntityGiantZombie ? 16D : 8D;
-                    entityMob.getEntityAttribute(SharedMonsterAttributes.attackDamage)
-                        .setBaseValue(damage);
-                    world.spawnEntityInWorld(entityMob);
+                    world.spawnEntityInWorld(mob);
                 }
             }
         }
@@ -564,20 +543,20 @@ public class ItemInversionSigilActive extends Item {
 
             if (event.entityLiving instanceof EntityMob && source.siege) {
                 source.siegeMobsKilled++;
-                if (source.siegeMobsKilled >= InversionConfig.siegeRequiredMobsKill) {
+                if (source.siegeMobsKilled >= InversionConfig.INSTANCE.siegeRequiredMobsKill) {
                     player.addChatMessage(new ChatComponentTranslation("chat.pseudo_inversion_ritual.victory"));
                     endSiege(true, player);
-                } else if (source.siegeMobsKilled == (3 * InversionConfig.siegeRequiredMobsKill) / 4) {
+                } else if (source.siegeMobsKilled == (3 * InversionConfig.INSTANCE.siegeRequiredMobsKill) / 4) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
                             "chat.pseudo_inversion_ritual.threequarters",
                             source.siegeMobsKilled));
-                } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 2) {
+                } else if (source.siegeMobsKilled == (InversionConfig.INSTANCE.siegeRequiredMobsKill) / 2) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
                             "chat.pseudo_inversion_ritual.twoquarters",
                             source.siegeMobsKilled));
-                } else if (source.siegeMobsKilled == (InversionConfig.siegeRequiredMobsKill) / 4) {
+                } else if (source.siegeMobsKilled == (InversionConfig.INSTANCE.siegeRequiredMobsKill) / 4) {
                     player.addChatMessage(
                         new ChatComponentTranslation(
                             "chat.pseudo_inversion_ritual.onequarter",
@@ -628,7 +607,7 @@ public class ItemInversionSigilActive extends Item {
         ItemStack stack = new ItemStack(ModItems.INVERSION_SIGIL_ACTIVE.get(), 1);
 
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger(DURABILITY_NBT_KEY, InversionConfig.awakenedInversionDurability);
+        tag.setInteger(DURABILITY_NBT_KEY, InversionConfig.INSTANCE.awakenedInversionDurability);
         stack.setTagCompound(tag);
         return stack;
     }
@@ -640,7 +619,7 @@ public class ItemInversionSigilActive extends Item {
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        if (InversionConfig.awakenedInversionDurability == 0) return itemStack;
+        if (InversionConfig.INSTANCE.awakenedInversionDurability == 0) return itemStack;
 
         NBTTagCompound tag = itemStack.getTagCompound();
         if (tag == null) return null;
@@ -656,7 +635,7 @@ public class ItemInversionSigilActive extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tt, boolean p_77624_4_) {
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && InversionConfig.awakenedInversionDurability != 0) {
+        if (tag != null && InversionConfig.INSTANCE.awakenedInversionDurability != 0) {
             tt.add(
                 StatCollector
                     .translateToLocalFormatted("item.inversion_sigil_active.desc", tag.getInteger(DURABILITY_NBT_KEY)));

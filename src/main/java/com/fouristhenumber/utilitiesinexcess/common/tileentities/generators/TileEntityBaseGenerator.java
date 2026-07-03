@@ -211,7 +211,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
         panel.bindPlayerInventory();
 
         panel.child(
-            IKey.str(StatCollector.translateToLocal(getGUIName()))
+            IKey.lang(getGUIName())
                 .asWidget()
                 .marginLeft(5)
                 .marginTop(5));
