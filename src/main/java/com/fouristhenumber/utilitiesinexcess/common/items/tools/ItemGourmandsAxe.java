@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
@@ -31,14 +31,14 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:gourmands_axe");
         setUnlocalizedName("gourmands_axe");
-        if (GourmandsAxeConfig.unbreakable) setMaxDamage(0);
-        ((AccessorItemTool) this).setDamageVsEntity(GourmandsAxeConfig.damageAgainstUndead);
+        if (GourmandsAxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        ((AccessorItemTool) this).setDamageVsEntity(GourmandsAxeConfig.INSTANCE.damageAgainstUndead);
     }
 
     private static final Random particleRandom = new Random();;
 
     public static void spawnParticles(Entity e) {
-        if (!GourmandsAxeConfig.spawnParticles) return;
+        if (!GourmandsAxeConfig.INSTANCE.spawnParticles) return;
         int ci = Potion.potionTypes[Potion.heal.getId()].getLiquidColor();
         double d0 = (double) (ci >> 16 & 255) / 255.0D;
         double d1 = (double) (ci >> 8 & 255) / 255.0D;
@@ -63,7 +63,7 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
         if (e instanceof EntityPlayer p && selected) {
             if (w.getTotalWorldTime() % (2 * 20) == 0) {
                 FoodStats fs = p.getFoodStats();
-                fs.addStats(GourmandsAxeConfig.foodGain, GourmandsAxeConfig.saturationGain);
+                fs.addStats(GourmandsAxeConfig.INSTANCE.foodGain, GourmandsAxeConfig.INSTANCE.saturationGain);
             }
         }
     }
@@ -85,10 +85,11 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
         }
         if (!target.isEntityUndead()) {
 
-            float amountToHeal = Math.min(GourmandsAxeConfig.maxHeal, target.getMaxHealth() - target.getHealth());
-            if (amountToHeal == 0) if (GourmandsAxeConfig.useHungerAlways) attacker.addExhaustion(3 * 4);
+            float amountToHeal = Math
+                .min(GourmandsAxeConfig.INSTANCE.maxHeal, target.getMaxHealth() - target.getHealth());
+            if (amountToHeal == 0) if (GourmandsAxeConfig.INSTANCE.useHungerAlways) attacker.addExhaustion(3 * 4);
             else {
-                if (GourmandsAxeConfig.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
+                if (GourmandsAxeConfig.INSTANCE.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
                     attacker.setHealth(attacker.getHealth() - amountToHeal);
                 else return true;
                 target.setHealth(target.getHealth() + (amountToHeal + 1));
@@ -104,26 +105,26 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (GourmandsAxeConfig.unbreakable)
+        if (GourmandsAxeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (GourmandsAxeConfig.unbreakable) return false;
+        if (GourmandsAxeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (GourmandsAxeConfig.unbreakable) return false;
+        if (GourmandsAxeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (GourmandsAxeConfig.unbreakable) return false;
+        if (GourmandsAxeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
@@ -134,12 +135,12 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return GourmandsAxeConfig.enable;
+            return GourmandsAxeConfig.INSTANCE.enable;
         }
 
         @SubscribeEvent
         public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
-            if (!GourmandsAxeConfig.voidMinedBlock) return;
+            if (!GourmandsAxeConfig.INSTANCE.voidMinedBlock) return;
             if (event.harvester == null) return;
             if (event.harvester.getHeldItem() == null) return;
 

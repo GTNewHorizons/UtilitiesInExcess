@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig.damageTrowelWithArchitectsWand;
 import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.damageBackhand;
 
 import java.util.List;
@@ -24,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
+import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
 import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.WandAxisMode;
@@ -208,7 +208,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
             }
 
             if (player.capabilities.isCreativeMode || (ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)
-                && damageBackhand(damageTrowelWithArchitectsWand, player))) {
+                && damageBackhand(ArchitectsWandsConfig.INSTANCE.damageTrowelWithArchitectsWand, player))) {
                 placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
             }
         }

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.generators.TileEntityBaseGenerator;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
 public abstract class BlockBaseGenerator extends BlockContainer {
 
@@ -22,7 +23,6 @@ public abstract class BlockBaseGenerator extends BlockContainer {
         multiplier = mult;
         setHardness(5F);
         setBlockName(id);
-        setBlockTextureName("utilitiesinexcess:generators/" + id);
     }
 
     @Override
@@ -50,5 +50,20 @@ public abstract class BlockBaseGenerator extends BlockContainer {
             generator.onNeighborBlockChange();
         }
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return ModelISBRH.JSON_ISBRH_ID;
     }
 }

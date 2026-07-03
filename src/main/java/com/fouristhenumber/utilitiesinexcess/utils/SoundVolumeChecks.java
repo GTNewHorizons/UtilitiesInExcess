@@ -10,7 +10,7 @@ public class SoundVolumeChecks {
     ArrayProximityCheck4D volumeCheckSound = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
     public void putSoundMuffler(int dim, int x, int y, int z) {
-        volumeCheckSound.put(dim, x, y, z, BlockConfig.soundMuffler.soundMufflerRange);
+        volumeCheckSound.put(dim, x, y, z, BlockConfig.mufflers.soundMufflerRange);
     }
 
     public void removeSoundMuffler(int dim, int x, int y, int z) {
@@ -18,7 +18,7 @@ public class SoundVolumeChecks {
     }
 
     public void putRainMuffler(int dim, int x, int y, int z) {
-        volumeCheckRain.put(dim, x, y, z, BlockConfig.rainMuffler.rainMufflerRange);
+        volumeCheckRain.put(dim, x, y, z, BlockConfig.mufflers.rainMufflerRange);
     }
 
     public void removeRainMuffler(int dim, int x, int y, int z) {

@@ -44,7 +44,7 @@ public class UnderWorldEvents {
 
     @EventBusSubscriber.Condition
     public static boolean shouldSubscribe() {
-        return UnderWorldConfig.enableUnderWorld;
+        return UnderWorldConfig.INSTANCE.enableUnderWorld;
     }
 
     /// Disable all plant life decoration
@@ -64,12 +64,12 @@ public class UnderWorldEvents {
                     event.setResult(Result.DENY);
                 }
                 case CUSTOM -> {
-                    if (!UnderWorldConfig.spawnCustomOre) {
+                    if (!UnderWorldConfig.INSTANCE.spawnCustomOre) {
                         event.setResult(Result.DENY);
                     }
                 }
                 default -> {
-                    if (!UnderWorldConfig.spawnVanillaOre) {
+                    if (!UnderWorldConfig.INSTANCE.spawnVanillaOre) {
                         event.setResult(Result.DENY);
                     }
                 }
@@ -134,8 +134,8 @@ public class UnderWorldEvents {
     /// When difficulty is enabled, reduce mob spawn rates outside of dangerous zones
     @SubscribeEvent
     public static void reduceSpawnRates(WorldEvent.PotentialSpawns event) {
-        if (!UnderWorldConfig.enableDifficulty) return;
-        if (event.world.provider.dimensionId != UnderWorldConfig.underWorldDimensionId) return;
+        if (!UnderWorldConfig.INSTANCE.enableDifficulty) return;
+        if (event.world.provider.dimensionId != UnderWorldConfig.INSTANCE.underWorldDimensionId) return;
 
         int chunkX = event.x >> 4;
         int chunkZ = event.z >> 4;

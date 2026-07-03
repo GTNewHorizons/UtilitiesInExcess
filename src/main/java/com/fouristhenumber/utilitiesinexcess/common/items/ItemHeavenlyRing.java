@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
@@ -19,6 +22,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.api.BaubleType;
@@ -31,7 +35,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
-public class ItemHeavenlyRing extends Item implements IBauble {
+public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem {
 
     private final int RING_COUNT;
     private final String SUFFIX;
@@ -80,9 +84,22 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
-            EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
-        tooltip.add(StatCollector.translateToLocal("item.heavenly_ring.desc"));
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "item.heavenly_ring.desc.1",
+                EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
+        String keyName = switch (key) {
+            case -99 -> StatCollector.translateToLocal("uie.util.key.rclick");
+            case -98 -> StatCollector.translateToLocal("uie.util.key.lclick");
+            default -> GameSettings.getKeyDisplayString(key);
+        };
+        tooltip.add(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "item.heavenly_ring.desc.2",
+                EnumChatFormatting.GREEN + keyName + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + RING_COUNT + EnumChatFormatting.GRAY));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -144,7 +161,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return ItemConfig.enableHeavenlyRing;
+            return ItemConfig.enableHeavenlyRing && !Mods.Baubles.isLoaded();
         }
 
         @SubscribeEvent
@@ -163,7 +180,7 @@ public class ItemHeavenlyRing extends Item implements IBauble {
                 ItemStack stack = player.inventory.getStackInSlot(i);
                 if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
                     hasRing = true;
-                    wingedPlayers.putIfAbsent(player, stack);
+                    wingedPlayers.put(player, stack);
                     break;
                 }
             }
@@ -204,17 +221,24 @@ public class ItemHeavenlyRing extends Item implements IBauble {
                 }
             }
 
-            if (player.capabilities.allowFlying == hasRing) return;
-
+            NBTTagCompound tag = player.getEntityData()
+                .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
             if (hasRing) {
                 player.capabilities.allowFlying = true;
-            } else {
-                if (!player.capabilities.isCreativeMode) {
-                    player.capabilities.allowFlying = false;
-                    player.capabilities.isFlying = false;
-                }
+                tag.setBoolean("HasRingUIE", true);
+                player.getEntityData()
+                    .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                player.sendPlayerAbilities();
+            } else if (!player.capabilities.isCreativeMode && tag.hasKey("HasRingUIE")) {
+                player.capabilities.allowFlying = false;
+                player.capabilities.isFlying = false;
+                tag.removeTag("HasRingUIE");
+                player.getEntityData()
+                    .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                player.sendPlayerAbilities();
             }
-            player.sendPlayerAbilities();
         }
     }
 }

@@ -148,7 +148,7 @@ public class TileEntitySoundMuffler extends TileEntity {
 
         @EventBusSubscriber.Condition
         public static boolean shouldEventBusSubscribe() {
-            return BlockConfig.soundMuffler.enableSoundMuffler;
+            return BlockConfig.mufflers.enableSoundMuffler;
         }
 
         @SubscribeEvent(priority = EventPriority.HIGH)
@@ -164,7 +164,7 @@ public class TileEntitySoundMuffler extends TileEntity {
             double z = Math.floor(sound.getZPosF());
 
             if (UtilitiesInExcess.proxy.soundVolumeChecks.isInSoundMufflerRange(player.dimension, x, y, z)) {
-                float reduction = BlockConfig.soundMuffler.soundMufflerReduction / 100f;
+                float reduction = BlockConfig.mufflers.soundMufflerReduction / 100f;
                 event.result = new MuffledSound(event.sound, reduction);
                 player.worldObj
                     .spawnParticle("smoke", sound.getXPosF(), sound.getYPosF(), sound.getZPosF(), 0, 0.03, 0);

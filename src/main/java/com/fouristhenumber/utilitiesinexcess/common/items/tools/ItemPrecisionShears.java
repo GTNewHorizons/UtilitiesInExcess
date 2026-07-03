@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -33,8 +33,8 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
     public ItemPrecisionShears() {
         setTextureName("utilitiesinexcess:precision_shears");
         setUnlocalizedName("precision_shears");
-        if (PrecisionShearsConfig.unbreakable) setMaxDamage(0);
-        int harvestLevel = PrecisionShearsConfig.toolLevel;
+        if (PrecisionShearsConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        int harvestLevel = PrecisionShearsConfig.INSTANCE.toolLevel;
         setHarvestLevel("pickaxe", harvestLevel);
         setHarvestLevel("axe", harvestLevel);
         setHarvestLevel("shovel", harvestLevel);
@@ -65,10 +65,10 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
             return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
         if (!world.isRemote && block.removedByPlayer(world, player, x, y, z, true)) {
             block.harvestBlock(world, player, x, y, z, meta);
-            nbt.setInteger(COOLDOWN_NBT_TAG, PrecisionShearsConfig.cooldown);
+            nbt.setInteger(COOLDOWN_NBT_TAG, PrecisionShearsConfig.INSTANCE.cooldown);
             itemStack.setTagCompound(nbt);
-            if (!PrecisionShearsConfig.unbreakable) itemStack.damageItem(1, player);
-        } else if (PrecisionShearsConfig.spawnParticles) {
+            if (!PrecisionShearsConfig.INSTANCE.unbreakable) itemStack.damageItem(1, player);
+        } else if (PrecisionShearsConfig.INSTANCE.spawnParticles) {
             world.spawnParticle("smoke", x + 0.5d, y + 0.5d, z + 0.5d, 0.0D, 0.0D, 0.0D);
         }
         return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
@@ -77,7 +77,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
     @Override
     public float getDigSpeed(ItemStack itemstack, Block block, int metadata) {
         if (ForgeHooks.isToolEffective(itemstack, block, metadata)) {
-            return PrecisionShearsConfig.efficiency;
+            return PrecisionShearsConfig.INSTANCE.efficiency;
         } else {
             return super.getDigSpeed(itemstack, block, metadata);
         }
@@ -102,26 +102,26 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (PrecisionShearsConfig.unbreakable)
+        if (PrecisionShearsConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (PrecisionShearsConfig.unbreakable) return false;
+        if (PrecisionShearsConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (PrecisionShearsConfig.unbreakable) return false;
+        if (PrecisionShearsConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (PrecisionShearsConfig.unbreakable) return false;
+        if (PrecisionShearsConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
@@ -132,7 +132,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return PrecisionShearsConfig.enable;
+            return PrecisionShearsConfig.INSTANCE.enable;
         }
 
         @SubscribeEvent

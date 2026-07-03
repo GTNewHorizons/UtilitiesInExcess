@@ -14,8 +14,8 @@ public enum ModBiomes {
     // spotless:off
 
     // make sure to leave a trailing comma
-    UNDERWORLD(UnderWorldConfig.enableUnderWorldBiome, UnderWorldConfig.underWorldBiomeId, BiomeGenUnderWorld::new),
-    END_OF_TIME(EndOfTimeConfig.enableEndOfTimeBiome, EndOfTimeConfig.endOfTimeBiomeId, BiomeGenEndOfTime::new),
+    UNDERWORLD(UnderWorldConfig.INSTANCE.enableUnderWorldBiome, UnderWorldConfig.INSTANCE.underWorldBiomeId, BiomeGenUnderWorld::new),
+    END_OF_TIME(EndOfTimeConfig.INSTANCE.enableEndOfTimeBiome, EndOfTimeConfig.INSTANCE.endOfTimeBiomeId, BiomeGenEndOfTime::new),
     ; // leave trailing semicolon
     // spotless:on
 

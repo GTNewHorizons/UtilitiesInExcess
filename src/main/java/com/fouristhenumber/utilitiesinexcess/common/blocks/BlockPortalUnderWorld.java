@@ -155,7 +155,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
             } else {
                 if (world.getTileEntity(x, y, z) instanceof TileEntityPortalUnderWorld tile) {
                     WorldServer dest = MinecraftServer.getServer()
-                        .worldServerForDimension(UnderWorldConfig.underWorldDimensionId);
+                        .worldServerForDimension(UnderWorldConfig.INSTANCE.underWorldDimensionId);
 
                     if (!tile.hasDest || dest.getBlock(tile.destX, tile.destY, tile.destZ) != this) {
                         BlockPos existing = findPortal(dest, x, z);
