@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +18,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
@@ -31,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityFilingCabinet;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig.CabinetConfig;
@@ -40,9 +37,6 @@ import com.gtnewhorizon.gtnhlib.blockstate.core.BlockPropertyTrait;
 import com.gtnewhorizon.gtnhlib.blockstate.properties.OrientationBlockProperty;
 import com.gtnewhorizon.gtnhlib.geometry.Orientation;
 import com.mojang.realmsclient.gui.ChatFormatting;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 // Adapted from Filing Cabinets by phantamanta44 (MIT License)
 // Source: https://github.com/phantamanta44/filing-cabinets

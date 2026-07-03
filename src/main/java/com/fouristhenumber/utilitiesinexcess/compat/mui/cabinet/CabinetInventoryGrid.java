@@ -3,12 +3,16 @@ package com.fouristhenumber.utilitiesinexcess.compat.mui.cabinet;
 import java.util.List;
 
 import com.cleanroommc.modularui.api.layout.ILayoutWidget;
+import com.cleanroommc.modularui.api.layout.IViewport;
+import com.cleanroommc.modularui.api.layout.IViewportStack;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.HoveredWidgetList;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.AbstractScrollWidget;
 import com.cleanroommc.modularui.widget.scroll.HorizontalScrollData;
+import com.cleanroommc.modularui.widget.scroll.ScrollArea;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -59,6 +63,27 @@ public class CabinetInventoryGrid extends AbstractScrollWidget<IWidget, CabinetI
             }.slot(slot), getChildren().size());
         }
         applyScrollDirection();
+    }
+
+    // for some reason the scrollbar area was testing using absolute mouse coords so to fix it
+    // we change it to use local coords.
+    @Override
+    public void getWidgetsAt(IViewportStack stack, HoveredWidgetList widgets, int x, int y) {
+        if (widgets.peek() == this && !isMouseOverScrollbar(stack, x, y)) {
+            if (hasChildren()) {
+                IViewport.getChildrenAt(this, stack, widgets, x, y);
+            }
+        }
+    }
+
+    private boolean isMouseOverScrollbar(IViewportStack stack, int x, int y) {
+        int localX = stack.unTransformX(x, y) - getScrollX();
+        int localY = stack.unTransformY(x, y) - getScrollY();
+        ScrollArea scroll = getScrollArea();
+        return (scroll.getScrollX() != null && scroll.getScrollX()
+            .isInsideScrollbarArea(scroll, localX, localY)) || (scroll.getScrollY() != null
+                && scroll.getScrollY()
+                    .isInsideScrollbarArea(scroll, localX, localY));
     }
 
     public void onSettingsChanged() {
