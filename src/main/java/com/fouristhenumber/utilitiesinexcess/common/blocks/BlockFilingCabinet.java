@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -25,6 +26,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
@@ -81,8 +84,7 @@ public class BlockFilingCabinet extends BlockContainer {
         }
 
         public Predicate<ItemStack> extractMatcher(ItemStack first) {
-            return lockToFirstItem ? is -> first.getItem()
-                .equals(is.getItem()) : is -> true;
+            return lockToFirstItem ? is -> Objects.equals(first.getItem(), is.getItem()) : is -> true;
         }
 
         public int meta() {
@@ -242,7 +244,7 @@ public class BlockFilingCabinet extends BlockContainer {
         }
 
         @Override
-        public List<ItemStack> getGridContents(ItemStack stack) {
+        public @NotNull List<ItemStack> getGridContents(ItemStack stack) {
             return readStoredContents(stack).stacks();
         }
 
@@ -258,7 +260,7 @@ public class BlockFilingCabinet extends BlockContainer {
         }
 
         @Override
-        public List<String> getGridFooter(ItemStack stack) {
+        public @NotNull List<String> getGridFooter(ItemStack stack) {
             StoredContents contents = readStoredContents(stack);
             List<String> footer = new ArrayList<>();
             if (!contents.stacks()
@@ -337,11 +339,6 @@ public class BlockFilingCabinet extends BlockContainer {
         public static final CabinetOrientationProperty instance = new CabinetOrientationProperty();
 
         private CabinetOrientationProperty() {}
-
-        @Override
-        public String getName() {
-            return "orientation";
-        }
 
         @Override
         public boolean hasTrait(BlockPropertyTrait trait) {

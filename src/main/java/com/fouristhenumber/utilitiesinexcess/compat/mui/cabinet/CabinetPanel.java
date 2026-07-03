@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -25,20 +24,13 @@ public class CabinetPanel extends ModularPanel {
     private static final int INVENTORY_LABEL_LEFT = 7;
     private static final int INVENTORY_LABEL_TOP = HEIGHT - 95;
 
-    private TileEntityFilingCabinet tile;
-    private PosGuiData data;
-    private PanelSyncManager syncManager;
-    private CabinetStatusInfo status;
-    private CabinetSettingsTab settingsTab;
-    private CabinetUpgradeTab upgradeTab;
-    private CabinetInventoryGrid grid;
+    private final CabinetStatusInfo status;
+    private final CabinetSettingsTab settingsTab;
+    private final CabinetUpgradeTab upgradeTab;
+    private final CabinetInventoryGrid grid;
 
-    public CabinetPanel(TileEntityFilingCabinet tile, PosGuiData data, PanelSyncManager syncManager,
-        UISettings settings) {
+    public CabinetPanel(TileEntityFilingCabinet tile, PanelSyncManager syncManager, UISettings settings) {
         super("filing_cabinet");
-        this.tile = tile;
-        this.data = data;
-        this.syncManager = syncManager;
         settings.customContainer(() -> new CabinetContainer(tile));
         this.settingsTab = tile.settingsTab;
         this.upgradeTab = new CabinetUpgradeTab(tile, syncManager);

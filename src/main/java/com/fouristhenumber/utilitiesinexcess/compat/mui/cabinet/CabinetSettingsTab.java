@@ -105,8 +105,8 @@ public class CabinetSettingsTab {
         panel.child(widget);
     }
 
-    private <E extends Enum<E> & Setting<E>> CycleButtonWidget button(Class<E> enumClass, E[] values,
-        Supplier<E> getter, Consumer<E> setter) {
+    private <E extends Enum<E> & Setting> CycleButtonWidget button(Class<E> enumClass, E[] values, Supplier<E> getter,
+        Consumer<E> setter) {
         EnumSyncValue<E, ?> value = new EnumSyncValue<>(enumClass, getter, v -> {
             setter.accept(v);
             if (tile.getWorldObj() == null || !tile.getWorldObj().isRemote) {
@@ -139,11 +139,11 @@ public class CabinetSettingsTab {
         settings.slotDirection = readNBT(tag, SlotDirection.values(), settings.slotDirection);
     }
 
-    private static <E extends Enum<E> & Setting<E>> void writeNBT(NBTTagCompound tag, E value) {
+    private static <E extends Enum<E> & Setting> void writeNBT(NBTTagCompound tag, E value) {
         tag.setByte(value.nbtKey(), (byte) value.ordinal());
     }
 
-    private static <E extends Enum<E> & Setting<E>> E readNBT(NBTTagCompound tag, E[] values, E fallback) {
+    private static <E extends Enum<E> & Setting> E readNBT(NBTTagCompound tag, E[] values, E fallback) {
         String key = fallback.nbtKey();
         if (!tag.hasKey(key)) return fallback;
         int index = tag.getByte(key);
@@ -156,7 +156,7 @@ public class CabinetSettingsTab {
             .size(12);
     }
 
-    public interface Setting<S extends Enum<S> & Setting<S>> {
+    public interface Setting {
 
         String nbtKey();
 
@@ -171,7 +171,7 @@ public class CabinetSettingsTab {
         }
     }
 
-    public enum SortType implements Setting<SortType> {
+    public enum SortType implements Setting {
 
         BY_NAME("name", byText(SortType::displayName)),
         BY_MOD_ID("mod_id", byText(SortType::modId)),
@@ -247,7 +247,7 @@ public class CabinetSettingsTab {
         }
     }
 
-    public enum ScrollDirection implements Setting<ScrollDirection> {
+    public enum ScrollDirection implements Setting {
 
         HORIZONTAL("horizontal"),
         VERTICAL("vertical");
@@ -285,7 +285,7 @@ public class CabinetSettingsTab {
         }
     }
 
-    public enum SlotDirection implements Setting<SlotDirection> {
+    public enum SlotDirection implements Setting {
 
         HORIZONTAL("horizontal"),
         VERTICAL("vertical");

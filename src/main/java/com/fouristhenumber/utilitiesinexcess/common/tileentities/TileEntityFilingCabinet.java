@@ -181,7 +181,7 @@ public abstract class TileEntityFilingCabinet extends TileEntity implements IGui
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        return new CabinetPanel(this, data, syncManager, settings);
+        return new CabinetPanel(this, syncManager, settings);
     }
 
     private void writeContents(NBTTagCompound compound) {
