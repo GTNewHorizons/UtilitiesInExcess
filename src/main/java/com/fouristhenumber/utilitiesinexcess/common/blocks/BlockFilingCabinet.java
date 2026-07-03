@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -14,18 +16,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.CabinetTier;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.TileEntityFilingCabinet;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityFilingCabinet;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig.CabinetConfig;
+import com.fouristhenumber.utilitiesinexcess.render.ItemGridTooltip;
 import com.gtnewhorizon.gtnhlib.blockstate.core.BlockPropertyTrait;
 import com.gtnewhorizon.gtnhlib.blockstate.properties.OrientationBlockProperty;
 import com.gtnewhorizon.gtnhlib.geometry.Orientation;
@@ -38,6 +45,63 @@ import cpw.mods.fml.relauncher.SideOnly;
 // Source: https://github.com/phantamanta44/filing-cabinets
 public class BlockFilingCabinet extends BlockContainer {
 
+    public enum CabinetTier {
+
+        BASIC(FilingCabinetsConfig.cabinetBasic, stack -> stack.getMaxStackSize() != 1, true,
+            TileEntityFilingCabinet.Basic::new),
+        ADVANCED(FilingCabinetsConfig.cabinetAdvanced, stack -> stack.getMaxStackSize() == 1, false,
+            TileEntityFilingCabinet.Advanced::new),
+        ELITE(FilingCabinetsConfig.cabinetElite, stack -> true, false, TileEntityFilingCabinet.Elite::new);
+
+        public static final CabinetTier[] VALUES = values();
+
+        private final CabinetConfig config;
+        private final Predicate<ItemStack> accepts;
+        private final boolean lockToFirstItem;
+        private final Supplier<TileEntityFilingCabinet> factory;
+
+        CabinetTier(CabinetConfig config, Predicate<ItemStack> accepts, boolean lockToFirstItem,
+            Supplier<TileEntityFilingCabinet> factory) {
+            this.config = config;
+            this.accepts = accepts;
+            this.lockToFirstItem = lockToFirstItem;
+            this.factory = factory;
+        }
+
+        public static CabinetTier from(int meta) {
+            return (meta >= 0 && meta < VALUES.length) ? VALUES[meta] : BASIC;
+        }
+
+        public CabinetConfig config() {
+            return config;
+        }
+
+        public boolean isItemAllowed(ItemStack stack) {
+            return accepts.test(stack);
+        }
+
+        public Predicate<ItemStack> extractMatcher(ItemStack first) {
+            return lockToFirstItem ? is -> first.getItem()
+                .equals(is.getItem()) : is -> true;
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public String getName() {
+            return name().toLowerCase();
+        }
+
+        public boolean isEnabled() {
+            return config.enable;
+        }
+
+        public TileEntity createTile() {
+            return factory.get();
+        }
+    }
+
     public BlockFilingCabinet() {
         super(Material.iron);
         this.setHardness(2F);
@@ -45,11 +109,7 @@ public class BlockFilingCabinet extends BlockContainer {
     }
 
     public CabinetTier[] getTiers() {
-        return CabinetTier.values();
-    }
-
-    protected String getTextureBasePath() {
-        return "filing_cabinet";
+        return CabinetTier.VALUES;
     }
 
     @Override
@@ -103,14 +163,8 @@ public class BlockFilingCabinet extends BlockContainer {
         if (worldIn.isRemote) return true;
 
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (!(te instanceof TileEntityFilingCabinet cabinet)) {
+        if (!(te instanceof TileEntityFilingCabinet)) {
             return false;
-        }
-
-        ItemStack held = player.getCurrentEquippedItem();
-
-        if (held != null && cabinet.installCapacityUpgrade(worldIn, player, held)) {
-            return true;
         }
 
         GuiFactories.tileEntity()
@@ -118,8 +172,7 @@ public class BlockFilingCabinet extends BlockContainer {
         return true;
     }
 
-    // Keep the cabinet's contents inside the dropped item instead of spilling them onto the ground.
-    // The block removal is delayed until harvestBlock so the tile entity is still alive in getDrops.
+    // delay the tile removal so we can read the content and drop it using getDrops
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
         if (willHarvest) {
@@ -162,7 +215,7 @@ public class BlockFilingCabinet extends BlockContainer {
         CabinetTier[] tiers = getTiers();
         icons = new IIcon[tiers.length][];
         for (CabinetTier tier : tiers) {
-            String basePath = String.format("%s:%s/%s/", UtilitiesInExcess.MODID, getTextureBasePath(), tier.getName());
+            String basePath = String.format("%s:%s/%s/", UtilitiesInExcess.MODID, "filing_cabinet", tier.getName());
             IIcon side = reg.registerIcon(basePath + "side");
             IIcon front = reg.registerIcon(basePath + "front");
             icons[tier.meta()] = new IIcon[] { side, front };
@@ -178,7 +231,7 @@ public class BlockFilingCabinet extends BlockContainer {
         return side == 3 ? icons[meta][1] : icons[meta][0];
     }
 
-    public static class ItemBlockFilingCabinet extends ItemBlock {
+    public static class ItemBlockFilingCabinet extends ItemBlock implements ItemGridTooltip.Provider {
 
         private final BlockFilingCabinet cabinet;
 
@@ -187,6 +240,72 @@ public class BlockFilingCabinet extends BlockContainer {
             setHasSubtypes(true);
             this.cabinet = (BlockFilingCabinet) block;
         }
+
+        @Override
+        public List<ItemStack> getGridContents(ItemStack stack) {
+            return readStoredContents(stack).stacks();
+        }
+
+        @Override
+        public List<String> getGridHeader(ItemStack stack, List<String> vanillaLines) {
+            if (readStoredContents(stack).stacks()
+                .isEmpty()) {
+                return vanillaLines;
+            }
+            List<String> header = new ArrayList<>(vanillaLines);
+            header.add(ChatFormatting.GRAY + StatCollector.translateToLocal("tile.filing_cabinet.tooltip.contents"));
+            return header;
+        }
+
+        @Override
+        public List<String> getGridFooter(ItemStack stack) {
+            StoredContents contents = readStoredContents(stack);
+            List<String> footer = new ArrayList<>();
+            if (!contents.stacks()
+                .isEmpty()) {
+                footer.add(
+                    ChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted("tile.filing_cabinet.tooltip.total", contents.totalItems()));
+            }
+            if (contents.upgrades() > 0) {
+                footer.add(
+                    ChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted("tile.filing_cabinet.tooltip.upgrades", contents.upgrades()));
+            }
+            return footer;
+        }
+
+        private static StoredContents readStoredContents(ItemStack stack) {
+            List<ItemStack> stored = new ArrayList<>();
+            int total = 0;
+            int upgrades = 0;
+            if (stack != null && stack.hasTagCompound()
+                && stack.getTagCompound()
+                    .hasKey("CabinetData", Constants.NBT.TAG_COMPOUND)) {
+                NBTTagCompound data = stack.getTagCompound()
+                    .getCompoundTag("CabinetData");
+                if (data.hasKey("Inventory", Constants.NBT.TAG_COMPOUND)) {
+                    ItemStackHandler handler = new ItemStackHandler();
+                    handler.deserializeNBT(data.getCompoundTag("Inventory"));
+                    for (int i = 0; i < handler.getSlots(); i++) {
+                        ItemStack slot = handler.getStackInSlot(i);
+                        if (slot != null && slot.stackSize > 0) {
+                            stored.add(slot);
+                            total += slot.stackSize;
+                        }
+                    }
+                }
+                if (data.hasKey("Upgrades", Constants.NBT.TAG_COMPOUND)) {
+                    ItemStackHandler handler = new ItemStackHandler();
+                    handler.deserializeNBT(data.getCompoundTag("Upgrades"));
+                    ItemStack up = handler.getStackInSlot(0);
+                    upgrades = (up == null) ? 0 : up.stackSize;
+                }
+            }
+            return new StoredContents(stored, total, upgrades);
+        }
+
+        private record StoredContents(List<ItemStack> stacks, int totalItems, int upgrades) {}
 
         @Override
         public int getMetadata(int damage) {

@@ -1,11 +1,7 @@
-package com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet;
+package com.fouristhenumber.utilitiesinexcess.common.tileentities;
 
-import static com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.CabinetSetting.ScrollDirection;
-import static com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.CabinetSetting.SlotDirection;
-import static com.fouristhenumber.utilitiesinexcess.common.tileentities.cabinet.CabinetSetting.SortType;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
@@ -18,30 +14,49 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemHandlerHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.cabinet.CabinetGui;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetTier;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.cabinet.CabinetPanel;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.cabinet.CabinetSettingsTab;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
-import com.fouristhenumber.utilitiesinexcess.utils.NbtHelper;
 import com.gtnewhorizon.gtnhlib.geometry.Orientation;
 
-public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<PosGuiData>, ISidedInventory {
+import it.unimi.dsi.fastutil.Hash;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 
-    private static final Predicate<ItemStack> UPGRADE_MATCHER = is -> ModItems.CAPACITY_UPGRADE.newItemStack()
-        .isItemEqual(is);
+public abstract class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<PosGuiData>, ISidedInventory {
+
+    public static final class Basic extends TileEntityFilingCabinet {
+
+        public Basic() {
+            super(CabinetTier.BASIC);
+        }
+    }
+
+    public static final class Advanced extends TileEntityFilingCabinet {
+
+        public Advanced() {
+            super(CabinetTier.ADVANCED);
+        }
+    }
+
+    public static final class Elite extends TileEntityFilingCabinet {
+
+        public Elite() {
+            super(CabinetTier.ELITE);
+        }
+    }
 
     public final ItemStackHandler upgradeInventory = new ItemStackHandler(1) {
 
@@ -57,7 +72,8 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return stack != null && UPGRADE_MATCHER.test(stack);
+            return stack != null && ModItems.CAPACITY_UPGRADE.newItemStack()
+                .isItemEqual(stack);
         }
 
         @Override
@@ -80,22 +96,15 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
 
     public CabinetInventory inventory;
 
-    public SortType sortType = SortType.BY_NAME;
-    public ScrollDirection scrollDirection = ScrollDirection.VERTICAL;
-    public SlotDirection slotDirection = SlotDirection.HORIZONTAL;
+    public final CabinetSettingsTab settingsTab = new CabinetSettingsTab(this);
 
-    private static final String NBT_SORT_TYPE = "SortType";
-    private static final String NBT_SCROLL_DIR = "ScrollDir";
-    private static final String NBT_SLOT_DIR = "SlotDir";
     private static final String NBT_CABINET_DATA = "CabinetData";
 
-    public TileEntityFilingCabinet() {}
-
-    public CabinetTier getTier() {
-        return tier;
+    protected TileEntityFilingCabinet(CabinetTier tier) {
+        setTier(tier);
     }
 
-    protected void setTier(CabinetTier tier) {
+    private void setTier(CabinetTier tier) {
         this.tier = tier;
         this.inventory = new CabinetInventory(
             this,
@@ -127,10 +136,6 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         return (int) Math.ceil((double) (stored - base) / FilingCabinetsConfig.upgradeCapacity);
     }
 
-    public ItemStack getUpgradeStack(int count) {
-        return ModItems.CAPACITY_UPGRADE.newItemStack(count);
-    }
-
     public boolean isItemAllowed(ItemStack stack) {
         return tier.isItemAllowed(stack);
     }
@@ -139,34 +144,14 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         return tier.extractMatcher(stack);
     }
 
-    public boolean installCapacityUpgrade(World world, EntityPlayer player, ItemStack stack) {
-        if (stack != null && UPGRADE_MATCHER.test(stack)) {
-            IChatComponent msg;
-            if (getNumberOfUpgrades() < FilingCabinetsConfig.upgradeCountMax) {
-                ItemStack one = ItemHandlerHelper.copyStackWithSize(stack, 1);
-                ItemStack leftover = upgradeInventory.insertItem(0, one, false);
-                if (leftover != null && leftover.stackSize > 0) {
-                    return false; // slot rejected it (should not happen below the cap)
-                }
-                if (!player.capabilities.isCreativeMode) {
-                    stack.stackSize -= 1;
-                }
-                world.playSoundAtEntity(player, "random.levelup", 1F, 1F);
-                msg = new ChatComponentTranslation("tile.filing_cabinet.capacity_upgrade.success");
-                msg.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN));
-            } else {
-                world.playSoundAtEntity(player, "random.levelup", 1F, 1F);
-                msg = new ChatComponentTranslation("tile.filing_cabinet.capacity_upgrade.maxed");
-                msg.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED));
-            }
-            player.addChatComponentMessage(msg);
-            return true;
-        }
-        return false;
-    }
-
     public boolean hasStoredData() {
         return (inventory != null && inventory.getStoredQuantity() > 0) || getNumberOfUpgrades() > 0;
+    }
+
+    public void sortInventory() {
+        inventory.sortContents(
+            settingsTab.getSortType()
+                .stackComparator());
     }
 
     public void writeToItemStack(ItemStack stack) {
@@ -189,64 +174,20 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         }
     }
 
-    public static final class StoredContents {
-
-        public final List<ItemStack> stacks;
-        public final int totalItems;
-        public final int upgrades;
-
-        private StoredContents(List<ItemStack> stacks, int totalItems, int upgrades) {
-            this.stacks = stacks;
-            this.totalItems = totalItems;
-            this.upgrades = upgrades;
-        }
-
-        public boolean isEmpty() {
-            return stacks.isEmpty() && upgrades == 0;
-        }
-    }
-
-    public static StoredContents readStoredContents(ItemStack stack) {
-        List<ItemStack> stored = new ArrayList<>();
-        int total = 0;
-        int upgrades = 0;
-        if (stack != null && stack.hasTagCompound()
-            && stack.getTagCompound()
-                .hasKey(NBT_CABINET_DATA, Constants.NBT.TAG_COMPOUND)) {
-            NBTTagCompound data = stack.getTagCompound()
-                .getCompoundTag(NBT_CABINET_DATA);
-            if (data.hasKey("Inventory", Constants.NBT.TAG_COMPOUND)) {
-                ItemStackHandler handler = new ItemStackHandler();
-                handler.deserializeNBT(data.getCompoundTag("Inventory"));
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    ItemStack slot = handler.getStackInSlot(i);
-                    if (slot != null && slot.stackSize > 0) {
-                        stored.add(slot);
-                        total += slot.stackSize;
-                    }
-                }
-            }
-            if (data.hasKey("Upgrades", Constants.NBT.TAG_COMPOUND)) {
-                ItemStackHandler handler = new ItemStackHandler();
-                handler.deserializeNBT(data.getCompoundTag("Upgrades"));
-                ItemStack up = handler.getStackInSlot(0);
-                upgrades = (up == null) ? 0 : up.stackSize;
-            }
-        }
-        return new StoredContents(stored, total, upgrades);
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
-        return new CabinetGui(this).build(data, syncManager, settings);
+        return new CabinetPanel(this, data, syncManager, settings);
     }
 
     private void writeContents(NBTTagCompound compound) {
         compound.setTag("Upgrades", upgradeInventory.serializeNBT());
         compound.setTag("Inventory", this.inventory.serializeNBT());
-        NbtHelper.writeEnumToNBT(compound, NBT_SORT_TYPE, sortType);
-        NbtHelper.writeEnumToNBT(compound, NBT_SCROLL_DIR, scrollDirection);
-        NbtHelper.writeEnumToNBT(compound, NBT_SLOT_DIR, slotDirection);
+        CabinetSettingsTab.writeToNBT(compound, settingsTab);
     }
 
     private void readContents(NBTTagCompound compound) {
@@ -256,20 +197,13 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         if (compound.hasKey("Inventory", Constants.NBT.TAG_COMPOUND)) {
             this.inventory.deserializeNBT(compound.getCompoundTag("Inventory"));
         }
-        sortType = NbtHelper.readEnumFromNBT(compound, NBT_SORT_TYPE, SortType.values(), SortType.BY_NAME);
-        scrollDirection = NbtHelper
-            .readEnumFromNBT(compound, NBT_SCROLL_DIR, ScrollDirection.values(), ScrollDirection.VERTICAL);
-        slotDirection = NbtHelper
-            .readEnumFromNBT(compound, NBT_SLOT_DIR, SlotDirection.values(), SlotDirection.HORIZONTAL);
+        CabinetSettingsTab.readFromNBT(compound, settingsTab);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("orientation", orientation.ordinal());
-        if (tier != null) {
-            compound.setInteger("Tier", tier.meta());
-        }
         writeContents(compound);
     }
 
@@ -279,7 +213,6 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         int ord = compound.getInteger("orientation");
         Orientation[] values = Orientation.values();
         orientation = (ord >= 0 && ord < values.length) ? values[ord] : Orientation.NORTH_NORTH;
-        setTier(CabinetTier.from(compound.getInteger("Tier")));
         readContents(compound);
     }
 
@@ -303,24 +236,33 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         }
     }
 
+    // this is a phantom slot that we use to insert past 64
+    private boolean isInsertSlot(int slot) {
+        return slot == inventory.getSlots();
+    }
+
     @Override
     public int getSizeInventory() {
-        return inventory.getSlots();
+        return inventory.getSlots() + 1;
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return this.inventory.getStackInSlot(slot);
+        return isInsertSlot(slot) ? null : this.inventory.getStackInSlot(slot);
     }
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        this.inventory.setStackInSlot(slot, stack);
+        if (isInsertSlot(slot)) {
+            this.inventory.insertBulk(stack);
+        } else {
+            this.inventory.setStackInSlot(slot, stack);
+        }
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int count) {
-        return inventory.extractItem(slot, count, false);
+        return isInsertSlot(slot) ? null : inventory.extractItem(slot, count, false);
     }
 
     @Override
@@ -356,6 +298,9 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        if (isInsertSlot(slot)) {
+            return this.inventory.canInsert(stack);
+        }
         return this.inventory.isItemValid(slot, stack);
     }
 
@@ -375,19 +320,45 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return this.inventory.getStackInSlot(slot) != null;
+        return !isInsertSlot(slot) && this.inventory.getStackInSlot(slot) != null;
     }
 
     public static class CabinetInventory extends ItemStackHandler {
 
+        private final int NO_SLOT = -1;
+
         private final TileEntityFilingCabinet cabinet;
         private final int baseCapacity;
         private final int capacityPerUpgrade;
-        private int usedSlotCount = 0;
-        private int itemCount = 0;
+
+        private static final Hash.Strategy<ItemStack> ITEM_IDENTITY = new Hash.Strategy<>() {
+
+            @Override
+            public int hashCode(ItemStack stack) {
+                if (stack == null) return 0;
+                int h = System.identityHashCode(stack.getItem());
+                h = 31 * h + stack.getItemDamage();
+                NBTTagCompound tag = stack.getTagCompound();
+                return 31 * h + (tag == null ? 0 : tag.hashCode());
+            }
+
+            @Override
+            public boolean equals(ItemStack a, ItemStack b) {
+                if (a == b) return true;
+                if (a == null || b == null) return false;
+                return ItemHandlerHelper.canItemStacksStack(a, b);
+            }
+        };
+
+        private final Object2IntOpenCustomHashMap<ItemStack> slotByItem = new Object2IntOpenCustomHashMap<>(
+            ITEM_IDENTITY);
+        private final ItemStack[] slotKey;
+        private final QuantityTracker quantities;
 
         @Nullable
         private Predicate<ItemStack> itemMatcher = null;
+
+        private boolean contentsChanged;
 
         public CabinetInventory(TileEntityFilingCabinet cabinet, int numSlots, int baseCapacity,
             int capacityPerUpgrade) {
@@ -395,6 +366,9 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
             this.cabinet = cabinet;
             this.baseCapacity = baseCapacity;
             this.capacityPerUpgrade = capacityPerUpgrade;
+            this.slotByItem.defaultReturnValue(NO_SLOT);
+            this.slotKey = new ItemStack[numSlots];
+            this.quantities = new QuantityTracker(numSlots);
         }
 
         @Override
@@ -414,35 +388,43 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
 
             if (isEmpty(stack)) {
                 super.setStackInSlot(slot, null);
-                onContentsChanged(slot);
                 return;
             }
 
-            // Merge with any compatible slot first
-            for (int i = 0; i < getSlots(); i++) {
-                if (i == slot) continue;
-                ItemStack existing = getStackInSlot(i);
-                if (existing != null && ItemHandlerHelper.canItemStacksStack(existing, stack)) {
-                    long transferable = Math.min(stack.stackSize, getSlotLimit(i));
-                    transferable = Math.min(transferable, getRemainingCapacity());
+            int canonical = slotByItem.getInt(stack);
+            if (canonical != NO_SLOT && canonical != slot) {
+                ItemStack existing = getStackInSlot(canonical);
+                if (existing != null) {
+                    int transferable = Math.min(stack.stackSize, getRemainingCapacity());
                     if (transferable > 0) {
                         existing.stackSize += transferable;
                         stack.stackSize -= transferable;
-                        onContentsChanged(i);
+                        onContentsChanged(canonical);
                     }
                     if (stack.stackSize <= 0) return;
                 }
             }
 
-            // Place leftover in target slot
             super.setStackInSlot(slot, stack.stackSize > 0 ? stack : null);
-            onContentsChanged(slot);
         }
 
         @Override
         public void onContentsChanged(int slot) {
-            updateCounts();
+            ItemStack stack = getStackInSlot(slot);
+            quantities.set(slot, isEmpty(stack) ? 0 : stack.stackSize);
+            reconcileSlot(slot);
             cabinet.markDirty();
+            contentsChanged = true;
+        }
+
+        public void setStackSynced(int slot, ItemStack stack) {
+            super.setStackInSlot(slot, isEmpty(stack) ? null : stack);
+        }
+
+        public boolean consumeContentsChanged() {
+            boolean changed = contentsChanged;
+            contentsChanged = false;
+            return changed;
         }
 
         @Override
@@ -451,23 +433,55 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         }
 
         public void updateCounts() {
-            this.itemCount = 0;
-            this.usedSlotCount = 0;
-            ItemStack firstStack = null;
+            slotByItem.clear();
+            quantities.reset();
 
-            for (ItemStack stack : stacks) {
-                if (isEmpty(stack)) {
-                    continue;
-                }
-                usedSlotCount++;
-                itemCount += stack.stackSize;
-                if (firstStack == null) firstStack = stack;
+            int n = Math.min(getSlots(), slotKey.length);
+            for (int i = 0; i < n; i++) {
+                ItemStack stack = getStackInSlot(i);
+                ItemStack key = isEmpty(stack) ? null : stack;
+                slotKey[i] = key;
+                quantities.set(i, isEmpty(stack) ? 0 : stack.stackSize);
+                if (key != null) slotByItem.putIfAbsent(key, i);
             }
-            itemMatcher = (firstStack != null) ? cabinet.extractMatcher(firstStack) : null;
+            refreshMatcher();
+        }
+
+        public void sortContents(Comparator<ItemStack> comparator) {
+            stacks.sort(comparator);
+            updateCounts();
+            cabinet.markDirty();
+            contentsChanged = false;
+        }
+
+        private void reconcileSlot(int slot) {
+            if (slot < 0 || slot >= slotKey.length) return;
+
+            ItemStack stack = getStackInSlot(slot);
+            ItemStack newKey = isEmpty(stack) ? null : stack;
+            ItemStack oldKey = slotKey[slot];
+            if (ITEM_IDENTITY.equals(oldKey, newKey)) return;
+
+            if (oldKey != null) slotByItem.remove(oldKey, slot);
+            if (newKey != null) slotByItem.putIfAbsent(newKey, slot);
+            slotKey[slot] = newKey;
+            refreshMatcher();
+        }
+
+        private void refreshMatcher() {
+            if (slotByItem.isEmpty()) {
+                itemMatcher = null;
+                return;
+            }
+            int repSlot = slotByItem.values()
+                .iterator()
+                .nextInt();
+            ItemStack rep = getStackInSlot(repSlot);
+            itemMatcher = rep != null ? cabinet.extractMatcher(rep) : null;
         }
 
         public int getStoredQuantity() {
-            return itemCount;
+            return quantities.total();
         }
 
         public int getCapacity() {
@@ -479,7 +493,7 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
         }
 
         public int getSlotsUsed() {
-            return usedSlotCount;
+            return slotByItem.size();
         }
 
         public int getRemainingCapacity() {
@@ -488,17 +502,72 @@ public class TileEntityFilingCabinet extends TileEntity implements IGuiHolder<Po
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            if (isEmpty(stack)) return false;
-            boolean itemMatches = itemMatcher == null || itemMatcher.test(stack);
-            if (!itemMatches) return false;
-            int remainingCapacity = getRemainingCapacity();
-            if (remainingCapacity <= 0) return false;
+            if (!canAccept(stack)) return false;
+            ItemStack current = getStackInSlot(slot);
+            return current == null || ItemHandlerHelper.canItemStacksStack(current, stack);
+        }
 
+        private boolean canAccept(ItemStack stack) {
+            if (isEmpty(stack)) return false;
+            if (itemMatcher != null && !itemMatcher.test(stack)) return false;
+            if (getRemainingCapacity() <= 0) return false;
             return cabinet.isItemAllowed(stack);
+        }
+
+        public boolean canInsert(ItemStack stack) {
+            return canAccept(stack) && (slotByItem.getInt(stack) != NO_SLOT || getSlotsUsed() < getSlots());
+        }
+
+        public ItemStack insertBulk(ItemStack stack) {
+            if (!canAccept(stack)) return stack;
+            int add = Math.min(stack.stackSize, getRemainingCapacity());
+            if (add <= 0) return stack;
+
+            int canonical = slotByItem.getInt(stack);
+            ItemStack existing = canonical == NO_SLOT ? null : getStackInSlot(canonical);
+            if (existing != null) {
+                existing.stackSize += add;
+                stack.stackSize -= add;
+                onContentsChanged(canonical);
+                return isEmpty(stack) ? null : stack;
+            }
+            for (int i = 0; i < getSlots(); i++) {
+                if (isEmpty(getStackInSlot(i))) {
+                    setStackInSlot(i, ItemHandlerHelper.copyStackWithSize(stack, add));
+                    stack.stackSize -= add;
+                    return isEmpty(stack) ? null : stack;
+                }
+            }
+            return stack;
         }
 
         private static boolean isEmpty(ItemStack stack) {
             return stack == null || stack.stackSize <= 0;
+        }
+
+        private static final class QuantityTracker {
+
+            private final int[] slotCount;
+            private int total = 0;
+
+            QuantityTracker(int numSlots) {
+                this.slotCount = new int[numSlots];
+            }
+
+            void set(int slot, int count) {
+                if (slot < 0 || slot >= slotCount.length) return;
+                total += count - slotCount[slot];
+                slotCount[slot] = count;
+            }
+
+            void reset() {
+                total = 0;
+                Arrays.fill(slotCount, 0);
+            }
+
+            int total() {
+                return total;
+            }
         }
     }
 }

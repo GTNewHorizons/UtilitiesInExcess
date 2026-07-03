@@ -607,6 +607,7 @@ item.capacity_upgrade.name=Capacity Upgrade
 gui.cabinet.storage=Storage: %s / %s
 gui.cabinet.slot=Slot: %s / %s
 gui.cabinet.upgrades=Upgrades: %d / %d
+gui.cabinet.search=Search
 
 gui.cabinet.sort.title=Sort mode
 gui.cabinet.sort.name=By name

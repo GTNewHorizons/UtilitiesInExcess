@@ -58,7 +58,7 @@ public final class ItemGridTooltip {
     private static final RenderItem ITEM_RENDER = new RenderItem();
 
     private static final int ICON_SIZE = 16;
-    private static final int CELL = ICON_SIZE + 2;
+    private static final int CELL = ICON_SIZE + 5;
     private static final int TEXT_PITCH = 10;
     private static final int BLOCK_GAP = 2;
     private static final float ZLEVEL = 300.0F;
