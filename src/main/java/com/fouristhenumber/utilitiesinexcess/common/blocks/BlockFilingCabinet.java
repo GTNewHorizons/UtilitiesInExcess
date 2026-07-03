@@ -208,31 +208,6 @@ public class BlockFilingCabinet extends BlockContainer {
         return tiers[m].createTile();
     }
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[][] icons;
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg) {
-        CabinetTier[] tiers = getTiers();
-        icons = new IIcon[tiers.length][];
-        for (CabinetTier tier : tiers) {
-            String basePath = String.format("%s:%s/%s/", UtilitiesInExcess.MODID, "filing_cabinet", tier.getName());
-            IIcon side = reg.registerIcon(basePath + "side");
-            IIcon front = reg.registerIcon(basePath + "front");
-            icons[tier.meta()] = new IIcon[] { side, front };
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (icons == null || meta < 0 || meta >= icons.length || icons[meta] == null) {
-            return super.getIcon(side, meta);
-        }
-        return side == 3 ? icons[meta][1] : icons[meta][0];
-    }
-
     public static class ItemBlockFilingCabinet extends ItemBlock implements ItemGridTooltip.Provider {
 
         private final BlockFilingCabinet cabinet;
