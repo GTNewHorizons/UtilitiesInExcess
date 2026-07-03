@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityFilingCabinet;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig.CabinetConfig;
 import com.fouristhenumber.utilitiesinexcess.render.ItemGridTooltip;
 import com.gtnewhorizon.gtnhlib.blockstate.core.BlockPropertyTrait;
@@ -44,11 +44,11 @@ public class BlockFilingCabinet extends BlockContainer {
 
     public enum CabinetTier {
 
-        BASIC(FilingCabinetsConfig.cabinetBasic, stack -> stack.getMaxStackSize() != 1, true,
+        BASIC(BlockConfig.filingCabinets.cabinetBasic, stack -> stack.getMaxStackSize() != 1, true,
             TileEntityFilingCabinet.Basic::new),
-        ADVANCED(FilingCabinetsConfig.cabinetAdvanced, stack -> stack.getMaxStackSize() == 1, false,
+        ADVANCED(BlockConfig.filingCabinets.cabinetAdvanced, stack -> stack.getMaxStackSize() == 1, false,
             TileEntityFilingCabinet.Advanced::new),
-        ELITE(FilingCabinetsConfig.cabinetElite, stack -> true, false, TileEntityFilingCabinet.Elite::new);
+        ELITE(BlockConfig.filingCabinets.cabinetElite, stack -> true, false, TileEntityFilingCabinet.Elite::new);
 
         public static final CabinetTier[] VALUES = values();
 

@@ -27,8 +27,8 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
@@ -79,7 +79,7 @@ public enum ModItems {
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
-    CAPACITY_UPGRADE(FilingCabinetsConfig.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
+    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

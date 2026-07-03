@@ -1,8 +1,0 @@
-{
-  "parent": "utilitiesinexcess:blocks/filing_cabinet_basic",
-  "textures": {
-    "0": "utilitiesinexcess:filing_cabinet/advanced/front",
-    "1": "utilitiesinexcess:filing_cabinet/advanced/side",
-    "particle": "utilitiesinexcess:filing_cabinet/advanced/front"
-  }
-}

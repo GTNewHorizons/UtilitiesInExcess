@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityFilingCabinet;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 
 public class CabinetUpgradeTab {
 
@@ -41,7 +41,7 @@ public class CabinetUpgradeTab {
                     StatCollector.translateToLocalFormatted(
                         "gui.cabinet.upgrades",
                         tile.getNumberOfUpgrades(),
-                        FilingCabinetsConfig.upgradeCountMax)));
+                        BlockConfig.filingCabinets.upgradeCountMax)));
 
         int expandedWidth = TAB_SIZE + GAP + SLOT_SIZE + 5;
 

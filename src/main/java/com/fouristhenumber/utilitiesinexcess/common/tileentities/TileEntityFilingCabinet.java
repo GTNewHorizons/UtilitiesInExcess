@@ -29,7 +29,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetTier;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.cabinet.CabinetPanel;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.cabinet.CabinetSettingsTab;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.gtnewhorizon.gtnhlib.geometry.Orientation;
 
 import it.unimi.dsi.fastutil.Hash;
@@ -62,12 +62,12 @@ public abstract class TileEntityFilingCabinet extends TileEntity implements IGui
 
         @Override
         public int getSlotLimit(int slot) {
-            return FilingCabinetsConfig.upgradeCountMax;
+            return BlockConfig.filingCabinets.upgradeCountMax;
         }
 
         @Override
         public int getStackLimit(int slot, ItemStack stack) {
-            return FilingCabinetsConfig.upgradeCountMax;
+            return BlockConfig.filingCabinets.upgradeCountMax;
         }
 
         @Override
@@ -110,7 +110,7 @@ public abstract class TileEntityFilingCabinet extends TileEntity implements IGui
             this,
             tier.config().numSlots,
             tier.config().numItems,
-            FilingCabinetsConfig.upgradeCapacity);
+            BlockConfig.filingCabinets.upgradeCapacity);
     }
 
     public Orientation getOrientation() {
@@ -133,7 +133,7 @@ public abstract class TileEntityFilingCabinet extends TileEntity implements IGui
         int stored = inventory.getStoredQuantity();
         int base = inventory.getBaseCapacity();
         if (stored <= base) return 0;
-        return (int) Math.ceil((double) (stored - base) / FilingCabinetsConfig.upgradeCapacity);
+        return (int) Math.ceil((double) (stored - base) / BlockConfig.filingCabinets.upgradeCapacity);
     }
 
     public boolean isItemAllowed(ItemStack stack) {

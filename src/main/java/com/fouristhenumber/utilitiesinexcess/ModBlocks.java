@@ -65,7 +65,6 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemBlockRotatable;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.FilingCabinetsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.GeneratorConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.VoidQuarryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
@@ -170,7 +169,6 @@ public enum ModBlocks {
     DECORATIVE_GLASS(BlockConfig.enableDecorativeGlass, new BlockDecorativeGlass(), BlockDecorativeGlass.ItemBlockDecorativeGlass.class, "decorative_glass"),
     PACIFISTS_BENCH(BlockConfig.pacifistsBench.enablePacifistsBench, new BlockPacifistsBench(), ItemBlockRotatable.class, "pacifists_bench"),
     SMART_PUMP(BlockConfig.smartPump.enableSmartPump, new BlockSmartPump(), "smart_pump"),
-    FILING_CABINET(FilingCabinetsConfig.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet"),
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
@@ -179,6 +177,7 @@ public enum ModBlocks {
     VOID_QUARRY(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
     VOID_MARKER(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
     VOID_QUARRY_UPGRADE(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
+    FILING_CABINET(BlockConfig.filingCabinets.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet"),
     ; // leave trailing semicolon
     // spotless:on
 
