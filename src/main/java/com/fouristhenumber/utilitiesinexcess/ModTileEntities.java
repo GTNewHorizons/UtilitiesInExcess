@@ -1,12 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import net.minecraft.tileentity.TileEntity;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderLocus;
@@ -20,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRadic
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
@@ -87,6 +88,7 @@ public enum ModTileEntities {
     FILING_CABINET_ADVANCED(TileEntityFilingCabinet.Advanced.class             , "FilingCabinetAdvanced"),
     FILING_CABINET_ELITE(TileEntityFilingCabinet.Elite.class                   , "FilingCabinetElite"),
     COLLECTOR(TileEntityCollector.class                                        , "Collector"),
+    SMART_PUMP(TileEntitySmartPump.class                                       , "SmartPump"),
     ;
     // spotless:on
 
