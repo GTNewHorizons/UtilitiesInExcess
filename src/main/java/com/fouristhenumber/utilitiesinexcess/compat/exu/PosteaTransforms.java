@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.ForgeMicroblockItemTransformer;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
@@ -87,6 +88,8 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:endConstructor", 2, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
+        ItemStackReplacementManager
+            .addTransformationHandler("ExtraUtilities:microblocks", new ForgeMicroblockItemTransformer());
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
@@ -362,6 +365,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:temporalHoe");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:unstableingot");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:watering_can");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:microblocks");
         // Blocks
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:angelBlock");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:block_bedrockium");
