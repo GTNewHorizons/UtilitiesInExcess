@@ -56,6 +56,7 @@ public class CommonProxy {
         }
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
+            new Content().init();
         }
     }
 
@@ -84,9 +85,6 @@ public class CommonProxy {
         ItemDestructionPickaxe.initializeCache();
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();
-        }
-        if (Mods.ForgeMicroBlock.isLoaded()) {
-            new Content().init();
         }
     }
 
