@@ -532,6 +532,52 @@ public class RecipeLoader {
             Blocks.emerald_block,
             'j',
             Blocks.jukebox);
+
+        // Filing Cabinets
+        if (RecipeConfig.enableFilingCabinetRecipes) {
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 0),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                Items.iron_ingot,
+                'c',
+                Blocks.chest);
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 1),
+                "mcm",
+                "mcm",
+                "mcm",
+                'm',
+                ModBlocks.MAGIC_WOOD,
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 0));
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 2),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 1));
+        }
+
+        // Filing Cabinet Capacity Upgrade
+        if (RecipeConfig.enableFilingCabinetUpgradeRecipe) addShapedRecipe(
+            ModItems.CAPACITY_UPGRADE,
+            " d ",
+            "gcg",
+            " d ",
+            'g',
+            Items.gold_ingot,
+            'c',
+            ModBlocks.FILING_CABINET.newItemStack(1, 0),
+            'd',
+            Items.diamond);
     }
 
     private static void loadGeneratorRecipes() {
