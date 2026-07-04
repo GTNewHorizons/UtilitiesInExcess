@@ -52,6 +52,10 @@ public class BlockConfig {
     @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
     public static final ColoredBlocks coloredBlocks = new ColoredBlocks();
 
+    @Config.Order(1100)
+    @Config.LangKey("utilitiesinexcess.config.block.filing_cabinets")
+    public static final FilingCabinetsConfig filingCabinets = new FilingCabinetsConfig();
+
     public static class PureLove {
 
         @Config.DefaultBoolean(true)
