@@ -32,8 +32,7 @@ public enum Mixins implements IMixins {
         .addCommonMixins(
             "minecraft.MixinScreenShotHelper_TrueGreenscreen",
             "minecraft.MixinRenderGlobal_TrueGreenscreen",
-            "minecraft.MixinGuiIngame_TrueGreenscreen",
-            "minecraft.MixinEntityRenderer_TrueGreenscreen")
+            "minecraft.MixinGuiIngame_TrueGreenscreen")
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> BlockConfig.enableTrueGreenscreen)),
     ACCESSORS(new MixinBuilder("Accessors for the mod to use")
