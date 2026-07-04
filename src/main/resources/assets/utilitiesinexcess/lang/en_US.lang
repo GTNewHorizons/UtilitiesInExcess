@@ -617,6 +617,10 @@ ue_sphere.name=%s Impossible Object
 item.chunchunmaru.name=Chunchunmaru
 item.chunchunmaru.desc=It's a really cool name
 
+tile.true_greenscreen.name=True Greenscreen™
+nei.infopage.uie.true_greenscreen.0=When you take a screenshot of this block (with [§bF2§0]), it will appear completely transparent in the image, allowing you to take pictures of things without needing to remove the background later.
+nei.infopage.uie.true_greenscreen.1=You may need to disable your HUD (with [§bF1§0] by default) before taking a screenshot.\nThis block is a tile entity with intrusive rendering, please remove it when you're done using it.
+
 tile.void_quarry.name=Void Quarry
 tile.void_marker.name=Void Marker
 tile.void_quarry_upgrade.0.name=Void Quarry World Hole Upgrade

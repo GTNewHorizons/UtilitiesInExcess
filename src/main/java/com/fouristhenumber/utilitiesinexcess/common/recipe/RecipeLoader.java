@@ -532,6 +532,18 @@ public class RecipeLoader {
             Blocks.emerald_block,
             'j',
             Blocks.jukebox);
+
+        addShapedRecipe(
+            ModBlocks.TRUE_GREENSCREEN,
+            "ege",
+            "gig",
+            "ege",
+            'e',
+            ModBlocks.ETHEREAL_GLASS.get(),
+            'g',
+            ModBlocks.LAPIS_AETHERIUS.newItemStack(1, 5),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static void loadGeneratorRecipes() {

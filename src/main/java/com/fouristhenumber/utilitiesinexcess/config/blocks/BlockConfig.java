@@ -329,4 +329,7 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableDecorativeBlocks;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableTrueGreenscreen;
 }

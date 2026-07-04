@@ -94,7 +94,7 @@ public class GloveRenderer implements IItemRenderer {
         1,
         1,
         1,
-        new float[][] { { 8, 8, 16, 16 }, { 16, 8, 24, 16 }, { 0, 8, 8, 16 }, { 8, 0, 16, 8 }, { 0, 0, 8, 8 },
+        new float[][] { { 16, 8, 24, 16 }, { 8, 8, 16, 16 }, { 0, 8, 8, 16 }, { 8, 0, 16, 8 }, { 0, 0, 8, 8 },
             { 16, 0, 24, 8 } });
 
     public static final RenderableCube bottomCube = new RenderableCube(
