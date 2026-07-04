@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import net.minecraft.tileentity.TileEntity;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
@@ -85,6 +86,7 @@ public enum ModTileEntities {
     FILING_CABINET_BASIC(TileEntityFilingCabinet.Basic.class                   , "FilingCabinetBasic"),
     FILING_CABINET_ADVANCED(TileEntityFilingCabinet.Advanced.class             , "FilingCabinetAdvanced"),
     FILING_CABINET_ELITE(TileEntityFilingCabinet.Elite.class                   , "FilingCabinetElite"),
+    COLLECTOR(TileEntityCollector.class                                        , "Collector"),
     ;
     // spotless:on
 
