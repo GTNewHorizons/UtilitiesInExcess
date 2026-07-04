@@ -77,7 +77,7 @@ public enum ModTileEntities {
     PACIFISTS_BENCH(TileEntityPacifistsBench.class                             , "PacifistsBench"),
     TRADING_POST(TileEntityTradingPost.class                                   , "TradingPost"),
     ADVANCED_BLOCK_UPDATE_DETECTOR(TileEntityAdvancedBlockUpdateDetector.class , "AdvancedBlockUpdateDetector"),
-    PENDANT_LIGHT(TileEntityChandelier.class                                   , "PendantLight"),
+    CHANDELIER(TileEntityChandelier.class                                      , "Chandelier"),
     GIGA_TORCH(TileEntityGigaTorch.class                                       , "GigaTorch"),
     ENDER_LOCUS(TileEntityEnderLocus.class                                     , "EnderLocus"),
     VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
