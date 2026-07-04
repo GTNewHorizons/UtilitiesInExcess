@@ -74,7 +74,7 @@ public class ArchitectsWandUtils {
 
     /**
      * Finds the blocks adjacent to the start position that are connected cardinally, or diagonally
-     * and have air in front of them relative to the side clicked on.
+     * and have a placeable block (e.g. air, fluid) in front of them relative to the side clicked on.
      *
      * @param world               The world in which to place
      * @param findCount           The maximum amount of blocks it should search
