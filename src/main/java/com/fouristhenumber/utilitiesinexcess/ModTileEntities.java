@@ -8,6 +8,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChand
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderLocus;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityFilingCabinet;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPacifistsBench;
@@ -79,6 +80,9 @@ public enum ModTileEntities {
     ENDER_LOCUS(TileEntityEnderLocus.class                                     , "EnderLocus"),
     VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
     VOID_MARKER(TileEntityVoidMarker.class                                     , "VoidMarker"),
+    FILING_CABINET_BASIC(TileEntityFilingCabinet.Basic.class                   , "FilingCabinetBasic"),
+    FILING_CABINET_ADVANCED(TileEntityFilingCabinet.Advanced.class             , "FilingCabinetAdvanced"),
+    FILING_CABINET_ELITE(TileEntityFilingCabinet.Elite.class                   , "FilingCabinetElite"),
     ;
     // spotless:on
 
