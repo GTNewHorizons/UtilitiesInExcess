@@ -50,6 +50,19 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
 
         sendInfoPage(
+            "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
+            "nei.infopage.uie.filing_cabinet.1");
+        sendInfoPage(
+            "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
+            "nei.infopage.uie.filing_cabinet.2");
+        sendInfoPage(
+            "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
+            "nei.infopage.uie.filing_cabinet.3");
+        sendInfoPage(
+            "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
+            "nei.infopage.uie.filing_cabinet.4");
+
+        sendInfoPage(
             "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
             "nei.infopage.uie.architects_wand.1");
 

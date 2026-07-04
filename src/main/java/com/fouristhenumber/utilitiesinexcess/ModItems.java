@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -8,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemChunchunmaru;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
