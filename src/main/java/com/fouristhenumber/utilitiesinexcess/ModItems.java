@@ -26,6 +26,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
@@ -77,6 +78,7 @@ public enum ModItems {
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
+    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new Item().setUnlocalizedName("capacity_upgrade").setTextureName("utilitiesinexcess:capacity_upgrade"), "capacity_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

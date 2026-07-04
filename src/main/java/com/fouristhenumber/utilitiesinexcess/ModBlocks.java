@@ -23,6 +23,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLocus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEndspark;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockEtherealGlass;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
@@ -176,6 +177,7 @@ public enum ModBlocks {
     VOID_QUARRY(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
     VOID_MARKER(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
     VOID_QUARRY_UPGRADE(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
+    FILING_CABINET(BlockConfig.filingCabinets.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet"),
     ; // leave trailing semicolon
     // spotless:on
 

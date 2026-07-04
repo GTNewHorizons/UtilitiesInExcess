@@ -10,6 +10,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetOrientationProperty;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
@@ -18,6 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
@@ -90,6 +92,11 @@ public class UtilitiesInExcess {
             ChestGenHooks.addItem(
                 ChestGenHooks.STRONGHOLD_CROSSING,
                 new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+        }
+
+        if (ModBlocks.FILING_CABINET.isEnabled()) {
+            BlockPropertyRegistry
+                .registerBlockItemProperty(ModBlocks.FILING_CABINET.get(), CabinetOrientationProperty.instance);
         }
 
         if (ModBlocks.PINK_GENERATOR.isEnabled()) {

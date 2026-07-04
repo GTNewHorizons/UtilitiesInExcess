@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
@@ -57,6 +58,7 @@ public class CommonProxy {
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
             new Content().init();
+            FMPCompat.init();
         }
     }
 
