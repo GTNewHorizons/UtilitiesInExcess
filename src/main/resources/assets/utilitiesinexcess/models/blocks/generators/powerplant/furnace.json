@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/generators/powerplant/low_temperature_furnace",
+  "textures": {
+    "1": "utilitiesinexcess:models/generators/furnace",
+    "particle": "utilitiesinexcess:models/particle/bedrockium_drum"
+  }
+}
