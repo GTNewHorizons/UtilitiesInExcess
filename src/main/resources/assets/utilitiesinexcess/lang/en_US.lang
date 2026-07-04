@@ -714,7 +714,9 @@ tile.filing_cabinet.tooltip.contents=Contents:
 tile.filing_cabinet.tooltip.total=Total: %d items
 tile.filing_cabinet.tooltip.upgrades=+%d capacity upgrades
 
-item.capacity_upgrade.name=Capacity Upgrade
+item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
+item.capacity_upgrade.desc.1=Max Storage: +%s
+item.capacity_upgrade.desc.2=Max Upgrades: %s
 
 gui.cabinet.storage=Storage: %s / %s
 gui.cabinet.slot=Slot: %s / %s

@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -78,7 +79,7 @@ public enum ModItems {
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
-    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new Item().setUnlocalizedName("capacity_upgrade").setTextureName("utilitiesinexcess:capacity_upgrade"), "capacity_upgrade"),
+    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 
