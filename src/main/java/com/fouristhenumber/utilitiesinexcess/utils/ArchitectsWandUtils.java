@@ -174,10 +174,6 @@ public class ArchitectsWandUtils {
 
                 Block block = Block.getBlockFromItem(itemStackToPlace.getItem());
                 return selection.matches(currentBlock)
-                    && world.isAirBlock(
-                        targetLocation.x + clickedSide.offsetX,
-                        targetLocation.y + clickedSide.offsetY,
-                        targetLocation.z + clickedSide.offsetZ)
                     && block.canPlaceBlockOnSide(
                         world,
                         targetLocation.x + clickedSide.offsetX,
