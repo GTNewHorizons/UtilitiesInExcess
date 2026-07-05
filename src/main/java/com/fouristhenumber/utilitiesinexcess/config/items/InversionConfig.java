@@ -40,7 +40,7 @@ public class InversionConfig {
     @Config.Order(300)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public boolean enableInversionSigil;
+    public boolean enableReversionSigil;
 
     @Config.Order(400)
     @Config.Comment("Set to 0 for unlimited uses")
@@ -50,7 +50,7 @@ public class InversionConfig {
     public int awakenedInversionDurability;
 
     @Config.Order(500)
-    @Config.Comment("Amount of unique items in the list the north chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the north chest has to contain for the pseudo-reversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.RequiresMcRestart
@@ -67,7 +67,7 @@ public class InversionConfig {
     public String[] northChestValidItems;
 
     @Config.Order(700)
-    @Config.Comment("Amount of unique items in the list the east chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the east chest has to contain for the pseudo-reversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.Sync
@@ -88,7 +88,7 @@ public class InversionConfig {
     public String[] eastChestValidItems;
 
     @Config.Order(900)
-    @Config.Comment("Amount of unique items in the list the south chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the south chest has to contain for the pseudo-reversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.Sync
@@ -104,7 +104,7 @@ public class InversionConfig {
     public String[] southChestValidItems;
 
     @Config.Order(1100)
-    @Config.Comment("Amount of unique items in the list the west chest has to contain for the pseudo-inversion ritual")
+    @Config.Comment("Amount of unique items in the list the west chest has to contain for the pseudo-reversion ritual")
     @Config.DefaultInt(12)
     @Config.RangeInt(min = 1, max = 10000)
     @Config.Sync
