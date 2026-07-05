@@ -57,7 +57,7 @@ public class EntitySiegeProperty implements IExtendedEntityProperties {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return InversionConfig.INSTANCE.enableInversionSigil;
+            return InversionConfig.INSTANCE.enableReversionSigil;
         }
 
         @SubscribeEvent
