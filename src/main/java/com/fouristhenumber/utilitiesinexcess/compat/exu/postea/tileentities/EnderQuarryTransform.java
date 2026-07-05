@@ -25,31 +25,39 @@ public class EnderQuarryTransform {
             else tag.setString("state", "STOPPED");
         }
 
-        NBTTagCompound areaTag = new NBTTagCompound();
-        areaTag.setInteger("lowX", oldTag.getInteger("min_x") + 1);
-        areaTag.setInteger("lowZ", oldTag.getInteger("min_z") + 1);
-        areaTag.setInteger("highX", oldTag.getInteger("max_x") - 1);
-        areaTag.setInteger("highZ", oldTag.getInteger("max_z") - 1);
-        tag.setTag("area", areaTag);
+        if (oldTag.getBoolean("started")) {
+            NBTTagCompound areaTag = new NBTTagCompound();
+            areaTag.setInteger("lowX", oldTag.getInteger("min_x") + 1);
+            areaTag.setInteger("lowZ", oldTag.getInteger("min_z") + 1);
+            areaTag.setInteger("highX", oldTag.getInteger("max_x") - 1);
+            areaTag.setInteger("highZ", oldTag.getInteger("max_z") - 1);
+            tag.setTag("area", areaTag);
 
-        tag.setInteger("dx", (oldTag.getInteger("chunk_x") << 4) + oldTag.getInteger("dx"));
-        tag.setInteger("dy", oldTag.getInteger("dy"));
-        tag.setInteger("dz", (oldTag.getInteger("chunk_z") << 4) + oldTag.getInteger("dz"));
+            tag.setInteger("dx", (oldTag.getInteger("chunk_x") << 4) + oldTag.getInteger("dx"));
+            tag.setInteger("dy", oldTag.getInteger("dy"));
+            tag.setInteger("dz", (oldTag.getInteger("chunk_z") << 4) + oldTag.getInteger("dz"));
 
-        tag.setInteger("lowerYBound", 1);
-        tag.setInteger("upperYBound", oldTag.getInteger("chunk_y"));
-
-        if (oldTag.hasKey("item_0")) {
-            NBTTagList itemTag = new NBTTagList();
-            itemTag.appendTag(oldTag.getCompoundTag("item_0"));
-            tag.setTag("Items", itemTag);
+            tag.setInteger("lowerYBound", 1);
+            tag.setInteger("upperYBound", oldTag.getInteger("chunk_y"));
         }
+
+        int i = 0;
+        NBTTagList itemTag = new NBTTagList();
+        while (oldTag.hasKey("item_" + i)) {
+            NBTTagCompound item = oldTag.getCompoundTag("item_" + i);
+            // Void quarry expects shorts for items
+            item.setShort("Count", item.getByte("Count"));
+            itemTag.appendTag(item);
+            i++;
+        }
+        tag.setTag("Items", itemTag);
 
         if (oldTag.hasKey("fluid")) {
             NBTTagList tankTag = new NBTTagList();
             NBTTagCompound oldFluid = oldTag.getCompoundTag("fluid");
             oldFluid.setByte("Slot", (byte) 0);
             tankTag.appendTag(oldFluid);
+            tag.setTag("tanks", tankTag);
         }
 
         return tag;
