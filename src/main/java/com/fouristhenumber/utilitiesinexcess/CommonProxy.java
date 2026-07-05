@@ -11,17 +11,20 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
+import com.gtnewhorizon.gtnhlib.api.gui.WorldConversionWarningManager;
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -60,6 +63,9 @@ public class CommonProxy {
             new Content().init();
             FMPCompat.init();
         }
+        if (OtherConfig.enableWorldConversion) {
+            WorldConversionWarningManager.register(UtilitiesInExcess.MODID + "_EXU", new ExuWorldConversionWarning());
+        }
     }
 
     public void init(FMLInitializationEvent event) {
@@ -91,4 +97,16 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
+
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+        if (!OtherConfig.enableWorldConversion) return;
+        if (ExuWorldConversionWarning.show) return;
+
+        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
+            if (mapping.name.startsWith("ExtraUtilities")) {
+                ExuWorldConversionWarning.show = true;
+                return;
+            }
+        }
+    }
 }

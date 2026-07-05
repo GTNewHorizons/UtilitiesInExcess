@@ -16,18 +16,16 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRe
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.QEDCraftTweakerSupport;
-import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
-import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
-import com.fouristhenumber.utilitiesinexcess.utils.FMLEventHandler;
-import com.fouristhenumber.utilitiesinexcess.utils.ForgeEventHandler;
+import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
-import com.fouristhenumber.utilitiesinexcess.utils.PumpChunkLoadingCallback;
+import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -138,4 +136,9 @@ public class UtilitiesInExcess {
             return ICON_ITEM;
         }
     };
+
+    @Mod.EventHandler
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+        proxy.onMissingMapping(event);
+    }
 }
