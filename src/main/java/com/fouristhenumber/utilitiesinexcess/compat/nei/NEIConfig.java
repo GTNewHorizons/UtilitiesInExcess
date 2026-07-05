@@ -63,8 +63,6 @@ public class NEIConfig implements IConfigureNEI {
             "register-crafting-handler",
             "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.pseudo_reversion")
                 + "@pseudo_reversion_recipes");
-
-        registerAliases();
     }
 
     @SuppressWarnings("unused")
