@@ -6,8 +6,6 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.client.gui.GuiOptionButton;
-import net.minecraft.client.resources.I18n;
 
 import com.gtnewhorizon.gtnhlib.api.gui.GuiConfirmationWCW;
 
@@ -27,6 +25,7 @@ public class ExtendedConfirmationGui extends GuiConfirmationWCW {
                     .split("\\\\n")));
         warning = lines.get(0);
     }
+
     private static byte colorTick = 0;
 
     @Override
