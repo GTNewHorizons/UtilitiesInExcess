@@ -35,7 +35,7 @@ public class ExtendedConfirmationGui extends GuiConfirmationWCW {
 
         colorTick++;
 
-        String color = Math.abs(colorTick % 6) >= 3 ? "§4§l" : "§c§l";
+        String color = Math.abs(colorTick % 16) >= 8 ? "§4§l" : "§c§l";
         lines.set(0, "§kABC§r " + color + warning + " §r§kCBA");
 
         int spaceAvailable = this.height - 58 - 20;

@@ -3,19 +3,19 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.api.gui.GuiConfirmationWCW;
-import com.gtnewhorizon.gtnhlib.api.gui.WorldConversionWarning;
+import com.gtnewhorizon.gtnhlib.api.gui.IWorldConversionWarning;
 
 import cpw.mods.fml.common.StartupQuery;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ExuWorldConversionWarning extends WorldConversionWarning {
+public class ExuWorldConversionWarning implements IWorldConversionWarning {
 
-    public static boolean SHOW = false;
+    public static boolean show = false;
 
     @Override
     public boolean shouldShow() {
-        return SHOW;
+        return show;
     }
 
     @Override

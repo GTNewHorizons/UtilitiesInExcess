@@ -241,13 +241,13 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void onMissingMapping(FMLMissingMappingsEvent event) {
-        if (ExuWorldConversionWarning.SHOW) {
+        if (ExuWorldConversionWarning.show) {
             return;
         }
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
             if (mapping.name.startsWith("ExtraUtilities")) {
-                ExuWorldConversionWarning.SHOW = true;
+                ExuWorldConversionWarning.show = true;
                 return;
             }
         }
