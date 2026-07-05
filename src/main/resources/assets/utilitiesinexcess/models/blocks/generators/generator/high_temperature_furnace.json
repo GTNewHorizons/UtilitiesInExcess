@@ -1,0 +1,6 @@
+{
+  "parent": "utilitiesinexcess:blocks/generators/generator/low_temperature_furnace",
+  "textures": {
+    "1": "utilitiesinexcess:models/generators/high_temperature_furnace"
+  }
+}

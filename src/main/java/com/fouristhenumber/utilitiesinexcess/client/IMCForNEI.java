@@ -15,9 +15,20 @@ public class IMCForNEI {
             "nei.infopage.uie.compressed.1");
 
         sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.1");
-        if (InversionConfig.invertedIngotsImplode) {
+        if (InversionConfig.INSTANCE.invertedIngotMode != InversionConfig.InversionMode.OFF) {
             sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.2");
-            sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.3");
+
+            switch (InversionConfig.INSTANCE.invertedIngotMode) {
+                case IMPLODE -> sendInfoPage(
+                    "<utilitiesinexcess:inverted_ingot:0>",
+                    "nei.infopage.uie.inverted_ingot.3.implode");
+                case DECAY -> sendInfoPage(
+                    "<utilitiesinexcess:inverted_ingot:0>",
+                    "nei.infopage.uie.inverted_ingot.3.decay");
+                case DISAPPEAR -> sendInfoPage(
+                    "<utilitiesinexcess:inverted_ingot:0>",
+                    "nei.infopage.uie.inverted_ingot.3.disappear");
+            }
         }
 
         sendInfoPage(
@@ -78,6 +89,10 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
 
+        sendInfoPage(
+            "<utilitiesinexcess:ender_locus>,<utilitiesinexcess:convergence_crystal>",
+            "nei.infopage.uie.ender_locus.1");
+
         sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
         sendInfoPage(
             "<utilitiesinexcess:advanced_block_update_detector>",
@@ -131,40 +146,40 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:golden_bag>", "nei.infopage.uie.golden_bag.1");
 
         sendInfoPage(
-            "<utilitiesinexcess:low_temperature_furnace_generator>,<utilitiesinexcess:low_temperature_furnace_generator_plus>,<utilitiesinexcess:low_temperature_furnace_generator_plusplus>",
+            "<utilitiesinexcess:low_temperature_furnace_generator>,<utilitiesinexcess:low_temperature_furnace_substation>,<utilitiesinexcess:low_temperature_furnace_powerplant>",
             "nei.infopage.uie.low_temperature_furnace_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:furnace_generator>,<utilitiesinexcess:furnace_generator_plus>,<utilitiesinexcess:furnace_generator_plusplus>",
+            "<utilitiesinexcess:furnace_generator>,<utilitiesinexcess:furnace_substation>,<utilitiesinexcess:furnace_powerplant>",
             "nei.infopage.uie.furnace_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:high_temperature_furnace_generator>,<utilitiesinexcess:high_temperature_furnace_generator_plus>,<utilitiesinexcess:high_temperature_furnace_generator_plusplus>",
+            "<utilitiesinexcess:high_temperature_furnace_generator>,<utilitiesinexcess:high_temperature_furnace_substation>,<utilitiesinexcess:high_temperature_furnace_powerplant>",
             "nei.infopage.uie.high_temperature_furnace_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:ender_generator>,<utilitiesinexcess:ender_generator_plus>,<utilitiesinexcess:ender_generator_plusplus>",
+            "<utilitiesinexcess:ender_generator>,<utilitiesinexcess:ender_substation>,<utilitiesinexcess:ender_powerplant>",
             "nei.infopage.uie.ender_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:food_generator>,<utilitiesinexcess:food_generator_plus>,<utilitiesinexcess:food_generator_plusplus>",
+            "<utilitiesinexcess:food_generator>,<utilitiesinexcess:food_substation>,<utilitiesinexcess:food_powerplant>",
             "nei.infopage.uie.food_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:tnt_generator>,<utilitiesinexcess:tnt_generator_plus>,<utilitiesinexcess:tnt_generator_plusplus>",
+            "<utilitiesinexcess:tnt_generator>,<utilitiesinexcess:tnt_substation>,<utilitiesinexcess:tnt_powerplant>",
             "nei.infopage.uie.tnt_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:nether_star_generator>,<utilitiesinexcess:nether_star_generator_plus>,<utilitiesinexcess:nether_star_generator_plusplus>",
+            "<utilitiesinexcess:nether_star_generator>,<utilitiesinexcess:nether_star_substation>,<utilitiesinexcess:nether_star_powerplant>",
             "nei.infopage.uie.nether_star_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:pink_generator>,<utilitiesinexcess:pink_generator_plus>,<utilitiesinexcess:pink_generator_plusplus>",
+            "<utilitiesinexcess:pink_generator>,<utilitiesinexcess:pink_substation>,<utilitiesinexcess:pink_powerplant>",
             "nei.infopage.uie.pink_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:lava_generator>,<utilitiesinexcess:lava_generator_plus>,<utilitiesinexcess:lava_generator_plusplus>",
+            "<utilitiesinexcess:lava_generator>,<utilitiesinexcess:lava_substation>,<utilitiesinexcess:lava_powerplant>",
             "nei.infopage.uie.lava_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:solar_generator>,<utilitiesinexcess:solar_generator_plus>,<utilitiesinexcess:solar_generator_plusplus>",
+            "<utilitiesinexcess:solar_generator>,<utilitiesinexcess:solar_substation>,<utilitiesinexcess:solar_powerplant>",
             "nei.infopage.uie.solar_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:redstone_generator>,<utilitiesinexcess:redstone_generator_plus>,<utilitiesinexcess:redstone_generator_plusplus>",
+            "<utilitiesinexcess:redstone_generator>,<utilitiesinexcess:redstone_substation>,<utilitiesinexcess:redstone_powerplant>",
             "nei.infopage.uie.redstone_generator.1");
         sendInfoPage(
-            "<utilitiesinexcess:potion_generator>,<utilitiesinexcess:potion_generator_plus>,<utilitiesinexcess:potion_generator_plusplus>",
+            "<utilitiesinexcess:potion_generator>,<utilitiesinexcess:potion_substation>,<utilitiesinexcess:potion_powerplant>",
             "nei.infopage.uie.potion_generator.1");
 
         sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.1");
@@ -195,6 +210,10 @@ public class IMCForNEI {
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
             "nei.infopage.uie.inversion_sigil.4");
 
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.1");
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.2");
+        sendInfoPage("<utilitiesinexcess:pseudo_inversion_sigil>", "nei.infopage.uie.pseudo_inversion_sigil.3");
+
         sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
 
         sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
@@ -210,8 +229,34 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
 
         sendInfoPage("utilitiesinexcess:chandelier", "nei.infopage.uie.chandelier.1");
+
         sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
+
         sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
+
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.2");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.3");
+
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.1");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.2");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.3");
+
+        sendInfoPage(
+            "<utilitiesinexcess:void_quarry>,utilitiesinexcess:void_quarry_upgrade",
+            "nei.infopage.uie.void_quarry_upgrade");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:0>", "nei.infopage.uie.void_quarry_upgrade.world_hole");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:1>", "nei.infopage.uie.void_quarry_upgrade.silk_touch");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:2>", "nei.infopage.uie.void_quarry_upgrade.fluid_pump");
+        sendInfoPage(
+            "<utilitiesinexcess:void_quarry_upgrade:3>,<utilitiesinexcess:void_quarry_upgrade:4>,<utilitiesinexcess:void_quarry_upgrade:5>",
+            "nei.infopage.uie.void_quarry_upgrade.speed");
+        sendInfoPage(
+            "<utilitiesinexcess:void_quarry_upgrade:6>,<utilitiesinexcess:void_quarry_upgrade:7>,<utilitiesinexcess:void_quarry_upgrade:8>",
+            "nei.infopage.uie.void_quarry_upgrade.fortune");
+
+        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.0");
+        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.1");
     }
 
     private static void sendInfoPage(String filter, String page) {

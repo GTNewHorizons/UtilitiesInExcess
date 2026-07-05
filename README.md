@@ -32,6 +32,10 @@ Tinkers Construct conversion works by simply using the same material ids as Extr
 ExU at the same time, you must change the configs **#bedrockiumTinkersID**, **#invertedTinkersID**,
 and **#magicalWoodTinkersID** so that they no longer overlap. Otherwise, the game will crash!
 
+Similarly, dimension remapping works by using the same dimension ids as Extra Utilities. The defaults have been set
+to the same as ExU's defaults (-100 and -112). If you are migrating from a world with different ids, change
+**#underWorldDimensionId** and **#endOfTimeDimensionId** to match.
+
 ## Hard Dependencies
 - [GTNHLib](https://github.com/GTNewHorizons/GTNHLib)
 - [ModularUI2](https://github.com/GTNewHorizons/ModularUI2)
@@ -45,6 +49,7 @@ and **#magicalWoodTinkersID** so that they no longer overlap. Otherwise, the gam
 - [Forge Multipart](https://github.com/GTNewHorizons/ForgeMultipart) (New microblock shapes)
 - [Backhand](https://github.com/GTNewHorizons/Backhand) (Architect's Wand integration)
 - [FindIt](https://github.com/GTNewHorizons/FindIt) (Trading Post integration)
+- [Baubles](https://www.curseforge.com/minecraft/mc-mods/baubles) (Heavenly Ring and Glove integration)
 
 ## Contribution
 
@@ -71,7 +76,7 @@ A special thanks to the 1.0 contributors, without which this project could have 
 
 ### Artists
 <img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate"> &nbsp; &nbsp;&nbsp;Embri <br>
-<img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/chandelier_3.png" alt="SOul Chandelier"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/qed_top.png" alt="QED"> &nbsp; &nbsp;&nbsp;seventh-june <br>
+<img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/chandelier_3.png" alt="SOul Chandelier"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/ender_locus_top.png" alt="Ender Locus"> &nbsp; &nbsp;&nbsp;seventh-june <br>
 <img src="src/main/resources/assets/utilitiesinexcess/textures/items/gourmands_axe.png" alt="Gourmand's Axe"> &nbsp; &nbsp; &nbsp; <img src="img/giga_torch.png" alt="Giga Torch"> &nbsp;&nbsp; &nbsp;&nbsp;Freya <br>
 <img src="img/drum.png" alt="Drum"> &nbsp; <img src="img/trash_can_item.png" alt="Trash Can"> &nbsp; EmeraldsEmerald <br>
 
@@ -85,15 +90,15 @@ A special thanks to the 1.0 contributors, without which this project could have 
 - lynxx131 (Golden Bag of Holding, Block Update Detector)
 - DeathFuel (Blackout Curtains)
 - RecursivePineapple (Conveyors, The Underworld)
-- serenibyss (QED)
+- serenibyss (Ender Locus)
 - koolkrafter5 (End of Time)
-- SuperSoupr (Glove, Blessed Earth, Colored Blocks, Trading Post, World Converter)
+- SuperSoupr (Glove, Blessed Earth, Colored Blocks, Trading Post, World Converter, Chunchunmaru)
 - loenaaaa (Generators, Decorative Blocks, Pseudo-Inversion Ritual)
 - sisyphussy (Underworld Portal Renderer)
 - Ranzuu (Localization Work)
 - Cardinalstars (Forge Microblocks, Transfer Nodes)
 - tomasz-brak (Architects Wand Backhand/GT5U Integration)
 - Spicierspace153 (Collector)
-- Malteez (Void Quarry)
+- MalTeeez (Void Quarry)
 - Spaghetti-OberNub (Bugfixes and Polish)
 - Nikolay-Sitnikov (Code Review)

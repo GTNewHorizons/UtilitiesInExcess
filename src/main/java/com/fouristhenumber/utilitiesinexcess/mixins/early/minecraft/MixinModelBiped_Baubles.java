@@ -31,8 +31,7 @@ public class MixinModelBiped_Baubles {
             value = "INVOKE",
             target = "Lnet/minecraft/client/model/ModelRenderer;render(F)V",
             shift = At.Shift.AFTER,
-            ordinal = 6),
-        remap = false)
+            ordinal = 6))
     private void uie$render1(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_,
         float p_78088_6_, float p_78088_7_, CallbackInfo ci) {
         uie$doExtraRender(p_78088_1_, p_78088_7_);
@@ -44,8 +43,7 @@ public class MixinModelBiped_Baubles {
             value = "INVOKE",
             target = "Lnet/minecraft/client/model/ModelRenderer;render(F)V",
             shift = At.Shift.AFTER,
-            ordinal = 13),
-        remap = false)
+            ordinal = 13))
     private void uie$render2(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_,
         float p_78088_6_, float p_78088_7_, CallbackInfo ci) {
         uie$doExtraRender(p_78088_1_, p_78088_7_);
@@ -53,12 +51,11 @@ public class MixinModelBiped_Baubles {
 
     private float uie$heavenlyRingWing = 1;
 
-    private void uie$doExtraRender(Entity p_78088_1_, float p_78088_7_) {
+    private void uie$doExtraRender(Entity entity, float p_78088_7_) {
         ModelBiped thisObject = (ModelBiped) (Object) this;
 
-        if (p_78088_1_ == null) return;
-        if (!(p_78088_1_ instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer) p_78088_1_;
+        if (entity == null) return;
+        if (!(entity instanceof EntityPlayer player)) return;
 
         ItemStack stack = player.getHeldItem();
         if (stack == null || !(stack.getItem() instanceof ItemGlove))
@@ -69,7 +66,7 @@ public class MixinModelBiped_Baubles {
             ModelPartRenderHelper.renderBipedPart(
                 0.0625F,
                 thisObject.bipedRightArm,
-                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage()));
+                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage(), player));
         }
 
         ItemStack ring = ItemHeavenlyRing.wingedPlayers.getOrDefault(player, null);

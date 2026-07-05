@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.ForgeMicroblockItemTransformer;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
@@ -10,6 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.Drum
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.QEDTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.SpikeTransformation;
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
@@ -80,6 +82,14 @@ public class PosteaTransforms {
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:drum", 0, ModBlocks.DRUM.getItem(), 0);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:drum", 1, ModBlocks.BEDROCKIUM_DRUM.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 0, ModBlocks.ENDER_LOCUS.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 2, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
+        ItemStackReplacementManager
+            .addSimpleReplacement("ExtraUtilities:endConstructor", 3, ModBlocks.CONVERGENCE_CRYSTAL.getItem(), 0);
+        ItemStackReplacementManager
+            .addTransformationHandler("ExtraUtilities:microblocks", new ForgeMicroblockItemTransformer());
         // Custom transformers
         ItemStackReplacementManager
             .addTransformationHandler("ExtraUtilities:divisionSigil", new DivisionSigilTransformation());
@@ -142,7 +152,6 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:magnumTorch", ModBlocks.GIGA_TORCH.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:chandelier", ModBlocks.CHANDELIER.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trading_post", ModBlocks.TRADING_POST.get());
-        // BlockReplacementManager.addSimpleReplacement("ExtraUtilities:", ModBlocks.SPIKE_DIAMOND.get());
     }
 
     private static void transformTileEntities() {
@@ -150,6 +159,7 @@ public class PosteaTransforms {
         TileEntityReplacementManager.tileEntityTransformer("TileMiniChest", MiniChestTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileEnderCollector", CollectorTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("drum", DrumTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("TileEnderConstructor", QEDTransformation::transform);
 
         SpikeTransformation.registerIDResolvers();
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
@@ -273,26 +283,26 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement(
             "ExtraUtilities:generator.8",
             0,
-            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR_PLUS.get(),
+            ModBlocks.LOW_TEMPERATURE_FURNACE_SUBSTATION.get(),
             0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 1, ModBlocks.FURNACE_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 1, ModBlocks.FURNACE_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 2, ModBlocks.LAVA_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 2, ModBlocks.LAVA_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 3, ModBlocks.ENDER_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 3, ModBlocks.ENDER_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 4, ModBlocks.REDSTONE_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 4, ModBlocks.REDSTONE_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 5, ModBlocks.FOOD_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 5, ModBlocks.FOOD_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 6, ModBlocks.POTION_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 6, ModBlocks.POTION_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 7, ModBlocks.SOLAR_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 7, ModBlocks.SOLAR_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 8, ModBlocks.TNT_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 8, ModBlocks.TNT_SUBSTATION.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.8", 9, ModBlocks.PINK_GENERATOR_PLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.8", 9, ModBlocks.PINK_SUBSTATION.get(), 0);
         BlockReplacementManager.addSimpleReplacement(
             "ExtraUtilities:generator.8",
             10,
@@ -304,26 +314,26 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement(
             "ExtraUtilities:generator.64",
             0,
-            ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR_PLUSPLUS.get(),
+            ModBlocks.LOW_TEMPERATURE_FURNACE_POWERPLANT.get(),
             0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 1, ModBlocks.FURNACE_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 1, ModBlocks.FURNACE_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 2, ModBlocks.LAVA_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 2, ModBlocks.LAVA_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 3, ModBlocks.ENDER_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 3, ModBlocks.ENDER_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 4, ModBlocks.REDSTONE_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 4, ModBlocks.REDSTONE_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 5, ModBlocks.FOOD_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 5, ModBlocks.FOOD_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 6, ModBlocks.POTION_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 6, ModBlocks.POTION_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 7, ModBlocks.SOLAR_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 7, ModBlocks.SOLAR_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 8, ModBlocks.TNT_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 8, ModBlocks.TNT_POWERPLANT.get(), 0);
         BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:generator.64", 9, ModBlocks.PINK_GENERATOR_PLUSPLUS.get(), 0);
+            .addSimpleReplacement("ExtraUtilities:generator.64", 9, ModBlocks.PINK_POWERPLANT.get(), 0);
         BlockReplacementManager.addSimpleReplacement(
             "ExtraUtilities:generator.64",
             10,
@@ -355,6 +365,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:temporalHoe");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:unstableingot");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:watering_can");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:microblocks");
         // Blocks
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:angelBlock");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:block_bedrockium");

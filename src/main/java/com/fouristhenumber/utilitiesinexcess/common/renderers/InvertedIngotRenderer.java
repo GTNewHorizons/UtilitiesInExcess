@@ -45,15 +45,16 @@ public class InvertedIngotRenderer implements IItemRenderer {
             .getIconFromDamageForRenderPass(stack.getItemDamage(), 0);
 
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null && tag.hasKey("ImplosionTimer")) {
+        if (tag != null && tag.hasKey("CraftedAt")) {
 
             World world = Minecraft.getMinecraft().theWorld;
             if (world == null) return;
 
-            int remaining = tag.getInteger("ImplosionTimer");
+            double passed = world.getTotalWorldTime() - tag.getLong("CraftedAt");
+            int remaining = (int) (InversionConfig.INSTANCE.invertedIngotImplosionTimer - passed);
 
             float progress = MathHelper
-                .clamp_float((float) remaining / InversionConfig.invertedIngotImplosionTimer, 0f, 1f);
+                .clamp_float((float) remaining / InversionConfig.INSTANCE.invertedIngotImplosionTimer, 0f, 1f);
 
             float r = 1F;
             float g = MathHelper.clamp_float(progress, 0f, 1f);

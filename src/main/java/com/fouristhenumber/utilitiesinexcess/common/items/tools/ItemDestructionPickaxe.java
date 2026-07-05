@@ -1,8 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,11 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
-import akka.japi.Pair;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
 
@@ -24,28 +29,37 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
         super(ToolMaterial.EMERALD);
         setTextureName("utilitiesinexcess:destruction_pickaxe");
         setUnlocalizedName("destruction_pickaxe");
-        if (DestructionPickaxeConfig.unbreakable) setMaxDamage(0);
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
     }
 
-    private final static HashMap<String, Pattern> compiledPatterns = new HashMap<>();
-    private final static HashMap<Pair<String, String>, Boolean> resultLookup = new HashMap<>();
+    public static final Set<BlockMeta> affectedBlockCache = new HashSet<>();
 
-    public static boolean blockMatches(String name, String pattern) {
-        // Prob can be made cleaner
-        if (!compiledPatterns.containsKey(name)) {
-            String replaceWildcard = pattern.replace(".", "\\.")
-                .replace("*", ".*?")
-                .replace("(", "\\(")
-                .replace(")", "\\)");
-            compiledPatterns.put(pattern, Pattern.compile(replaceWildcard));
+    public static void initializeCache() {
+        if (DestructionPickaxeConfig.INSTANCE.includeEffective != null) {
+            for (String blockString : DestructionPickaxeConfig.INSTANCE.includeEffective) {
+                if (blockString == null) continue;
+                try {
+                    String[] split = blockString.trim()
+                        .split(":");
+                    String domain = split[0];
+                    String name = split[1];
+                    int meta = split.length == 3 ? Integer.parseInt(split[2]) : -1;
+
+                    Block block = GameRegistry.findBlock(domain, name);
+
+                    if (block == null) {
+                        UtilitiesInExcess.LOG
+                            .warn("Destruction Pickaxe Config: Could not find {}, skipped", blockString);
+                        continue;
+                    }
+
+                    affectedBlockCache.add(new BlockMeta(block, meta));
+
+                } catch (Exception e) {
+                    UtilitiesInExcess.LOG.warn("Destruction Pickaxe Config: Skipped malformed config: {}", blockString);
+                }
+            }
         }
-        Pattern p = compiledPatterns.get(pattern);
-        if (!resultLookup.containsKey(new Pair<>(pattern, name))) {
-            boolean res = p.matcher(name)
-                .matches();
-            resultLookup.put(new Pair<>(pattern, name), res);
-        }
-        return resultLookup.get(new Pair<>(pattern, name));
     }
 
     @Override
@@ -60,39 +74,61 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
 
     @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
-        var i = DestructionPickaxeConfig.includeEffective;
-        var w = DestructionPickaxeConfig.excludeEffective;
-        var name = block.delegate.name();
-        for (String s : w) if (blockMatches(name, s))
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
-        for (String s : i) if (blockMatches(name, s))
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.effectiveSpeedModifier;
-        return efficiencyOnProperMaterial * DestructionPickaxeConfig.ineffectiveSpeedModifier;
+        BlockMeta exactMatch = new BlockMeta(block, meta);
+        BlockMeta wildcardMatch = new BlockMeta(block, -1);
+
+        if (affectedBlockCache.contains(exactMatch) || affectedBlockCache.contains(wildcardMatch)) {
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.INSTANCE.effectiveSpeedModifier;
+        } else {
+            return efficiencyOnProperMaterial * DestructionPickaxeConfig.INSTANCE.ineffectiveSpeedModifier;
+        }
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (DestructionPickaxeConfig.unbreakable)
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (DestructionPickaxeConfig.unbreakable) return false;
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (DestructionPickaxeConfig.unbreakable) return false;
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (DestructionPickaxeConfig.unbreakable) return false;
+        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return DestructionPickaxeConfig.INSTANCE.enable;
+        }
+
+        @SubscribeEvent
+        public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+            if (!DestructionPickaxeConfig.INSTANCE.voidMinedBlock) return;
+            if (event.harvester == null) return;
+            if (event.harvester.getHeldItem() == null) return;
+
+            if (event.harvester.getHeldItem()
+                .getItem() instanceof ItemDestructionPickaxe) {
+                event.drops.clear();
+            }
+        }
+    }
 }

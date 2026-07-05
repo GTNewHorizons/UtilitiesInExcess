@@ -6,42 +6,53 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 @Config(modid = UtilitiesInExcess.MODID, category = "dimensions.under_world")
 public class UnderWorldConfig {
 
-    @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
-    public static boolean enableUnderWorld;
+    @Config.Ignore
+    public static final UnderWorldConfig INSTANCE = new UnderWorldConfig();
 
+    @Config.Order(0)
+    @Config.DefaultBoolean(true)
+    @Config.Name("Enable")
+    @Config.RequiresMcRestart
+    public boolean enableUnderWorld;
+
+    @Config.Order(100)
     @Config.DefaultInt(10)
     @Config.RequiresMcRestart
-    public static int underWorldDimensionId;
+    public int underWorldDimensionId;
 
+    @Config.Order(200)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     @Config.Comment("Enables the underworld biome")
-    public static boolean enableUnderWorldBiome;
+    public boolean enableUnderWorldBiome;
 
+    @Config.Order(300)
     @Config.DefaultInt(50)
     @Config.RequiresMcRestart
     @Config.Comment("The biome ID for the underworld biome")
-    public static int underWorldBiomeId;
+    public int underWorldBiomeId;
 
+    @Config.Order(400)
     @Config.DefaultInt(50)
     @Config.RequiresMcRestart
     @Config.Comment("The biome to populate the underworld with")
-    public static int defaultBiomeId;
+    public int defaultBiomeId;
 
+    @Config.Order(500)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     @Config.Comment("Enables vanilla ore spawning")
-    public static boolean spawnVanillaOre;
+    public boolean spawnVanillaOre;
 
+    @Config.Order(600)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     @Config.Comment("Enables custom ore spawning (typically used by mods to generate their ore)")
-    public static boolean spawnCustomOre;
+    public boolean spawnCustomOre;
 
+    @Config.Order(700)
     @Config.DefaultBoolean(true)
-    @Config.RequiresMcRestart
     @Config.Comment("Enables increased ore rates and aggressive mob spawning in certain regions")
-    public static boolean enableDifficulty;
+    public boolean enableDifficulty;
 
 }

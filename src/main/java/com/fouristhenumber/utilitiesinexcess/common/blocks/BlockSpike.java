@@ -1,15 +1,23 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.DIAMOND;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.GOLD;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike.SpikeType.WOOD;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -22,12 +30,18 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityLivingBase;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -238,6 +252,64 @@ public class BlockSpike extends Block implements IWailaDataProvider {
                 SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
                 new AttributeModifier(field_111210_e, "Spike Weapon modifier", this.attackDamage, 0));
             return map;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return BlockConfig.spikes.enableDiamondSpike || BlockConfig.spikes.enableGoldSpike
+                || BlockConfig.spikes.enableIronSpike
+                || BlockConfig.spikes.enableWoodenSpike;
+        }
+
+        @SubscribeEvent
+        public static void onLivingDeath(LivingDeathEvent event) {
+            if (!(event.source.getEntity() instanceof EntityPlayer player)) return;
+            if (!(event.entityLiving instanceof EntityLiving entity)) return;
+
+            ItemStack weapon = player.getHeldItem();
+            if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
+
+            BlockSpike.SpikeType type = ((BlockSpike) spike.field_150939_a).getSpikeType();
+
+            if (type != DIAMOND) {
+                entity.recentlyHit = 0;
+            }
+            if (type == GOLD) {
+                int xp = ((AccessorEntityLivingBase) entity).accessGetExperiencePoints(player);
+
+                while (xp > 0) {
+                    int j = EntityXPOrb.getXPSplit(xp);
+                    xp -= j;
+                    entity.worldObj
+                        .spawnEntityInWorld(new EntityXPOrb(entity.worldObj, entity.posX, entity.posY, entity.posZ, j));
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onLivingAttack(LivingAttackEvent event) {
+            if (!(event.source.getEntity() instanceof EntityPlayer player)) return;
+
+            ItemStack weapon = player.getHeldItem();
+            if (weapon == null || !(weapon.getItem() instanceof BlockSpike.ItemSpike spike)) return;
+
+            if (((BlockSpike) spike.field_150939_a).getSpikeType() != WOOD) return;
+
+            EntityLivingBase target = event.entityLiving;
+            float base = (float) player.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                .getAttributeValue();
+            float ench = EnchantmentHelper.getEnchantmentModifierLiving(player, target);
+            float total = base + ench;
+
+            // If attack would kill, cancel
+            if (target.getHealth() - total <= 0.01F) {
+                event.setCanceled(true);
+            }
         }
     }
 

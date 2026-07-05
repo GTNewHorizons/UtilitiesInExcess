@@ -7,24 +7,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 
+import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /// Stores the player's source portal location
-@EventBusSubscriber
 public class EndOfTimeSourceProperty implements IExtendedEntityProperties {
 
     public static final String PROP_KEY = "end-of-time-source";
 
     public int entranceX, entranceY, entranceZ, entranceWorld;
-
-    @SubscribeEvent
-    public static void onEntityConstructing(EntityConstructing event) {
-        if (event.entity instanceof EntityPlayer player) {
-            player.registerExtendedProperties(PROP_KEY, new EndOfTimeSourceProperty());
-        }
-    }
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
@@ -52,5 +45,22 @@ public class EndOfTimeSourceProperty implements IExtendedEntityProperties {
     @Override
     public void init(Entity entity, World world) {
 
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return EndOfTimeConfig.INSTANCE.enableEndOfTime;
+        }
+
+        @SubscribeEvent
+        public static void onEntityConstructing(EntityConstructing event) {
+            if (event.entity instanceof EntityPlayer player) {
+                player.registerExtendedProperties(PROP_KEY, new EndOfTimeSourceProperty());
+            }
+        }
     }
 }

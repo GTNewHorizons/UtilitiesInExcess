@@ -17,7 +17,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.relauncher.Side;
 
-@EventBusSubscriber(side = Side.CLIENT)
 public class TileEntityRainMuffler extends TileEntitySoundMuffler {
 
     public static final String NBT_RAIN_MUFFLED = "RainMuffledUIX";
@@ -33,41 +32,46 @@ public class TileEntityRainMuffler extends TileEntitySoundMuffler {
             .removeRainMuffler(worldObj.provider.dimensionId, xCoord, yCoord, zCoord);
     }
 
-    @EventBusSubscriber.Condition
-    public static boolean shouldEventBusSubscribe() {
-        return BlockConfig.rainMuffler.enableRainMuffler;
-    }
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
 
-    @SubscribeEvent
-    public static void muffleRain(PlaySoundEvent17 event) {
-
-        ISound sound = event.sound;
-        if (!sound.getPositionedSoundLocation()
-            .getResourcePath()
-            .equals("ambient.weather.rain")) return;
-
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return;
-
-        double x = Math.floor(sound.getXPosF());
-        double y = Math.floor(sound.getYPosF());
-        double z = Math.floor(sound.getZPosF());
-
-        if (player.getEntityData()
-            .getCompoundTag(EntityClientPlayerMP.PERSISTED_NBT_TAG)
-            .getBoolean(NBT_RAIN_MUFFLED)
-            || UtilitiesInExcess.proxy.soundVolumeChecks.isInRainMufflerRange(player.dimension, x, y, z)) {
-            event.result = null;
+        @EventBusSubscriber.Condition
+        public static boolean shouldEventBusSubscribe() {
+            return BlockConfig.mufflers.enableRainMuffler;
         }
-    }
 
-    @SubscribeEvent
-    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.player instanceof EntityPlayerMP playerMP) {
-            boolean rainMuffled = event.player.getEntityData()
-                .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG)
-                .getBoolean(NBT_RAIN_MUFFLED);
-            PacketHandler.INSTANCE.sendTo(new PacketRainMuffledSync(rainMuffled), playerMP);
+        @SubscribeEvent
+        public static void muffleRain(PlaySoundEvent17 event) {
+
+            ISound sound = event.sound;
+            if (!sound.getPositionedSoundLocation()
+                .getResourcePath()
+                .equals("ambient.weather.rain")) return;
+
+            EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+            if (player == null) return;
+
+            double x = Math.floor(sound.getXPosF());
+            double y = Math.floor(sound.getYPosF());
+            double z = Math.floor(sound.getZPosF());
+
+            if (player.getEntityData()
+                .getCompoundTag(EntityClientPlayerMP.PERSISTED_NBT_TAG)
+                .getBoolean(NBT_RAIN_MUFFLED)
+                || UtilitiesInExcess.proxy.soundVolumeChecks.isInRainMufflerRange(player.dimension, x, y, z)) {
+                event.result = null;
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+            if (event.player instanceof EntityPlayerMP playerMP) {
+                boolean rainMuffled = event.player.getEntityData()
+                    .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG)
+                    .getBoolean(NBT_RAIN_MUFFLED);
+                PacketHandler.INSTANCE.sendTo(new PacketRainMuffledSync(rainMuffled), playerMP);
+            }
         }
     }
 }

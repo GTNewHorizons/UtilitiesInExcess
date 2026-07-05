@@ -111,7 +111,8 @@ public class TileEntityLavaGenerator extends TileEntityBaseGenerator implements 
 
         panel.child(
             new FluidSlot().syncHandler(fluidSync)
-                .pos(79, 34));
+                .horizontalCenter()
+                .top(34));
 
         return panel;
     }

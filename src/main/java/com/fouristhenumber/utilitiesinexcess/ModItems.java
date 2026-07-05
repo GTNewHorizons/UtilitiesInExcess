@@ -26,18 +26,20 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.AntiParticulateShovelConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.DestructionPickaxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.EthericSwordConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.GourmandsAxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.PrecisionShearsConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.unstabletools.ReversingHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiParticulateShovelConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -46,36 +48,37 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    GOURMANDS_AXE(GourmandsAxeConfig.enable, new ItemGourmandsAxe(), "gourmands_axe"),
-    DESTRUCTION_PICKAXE(DestructionPickaxeConfig.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
-    ANTI_PARTICULATE_SHOVEL(AntiParticulateShovelConfig.enable, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
-    PRECISION_SHEARS(PrecisionShearsConfig.enable, new ItemPrecisionShears(), "precision_shears"),
-    ETHERIC_SWORD(EthericSwordConfig.enable, new ItemEthericSword(), "etheric_sword"),
-    REVERSING_HOE(ReversingHoeConfig.enable, new ItemReversingHoe(), "reversing_hoe"),
+    GOURMANDS_AXE(GourmandsAxeConfig.INSTANCE.enable, new ItemGourmandsAxe(), "gourmands_axe"),
+    DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
+    ANTI_PARTICULATE_SHOVEL(AntiParticulateShovelConfig.INSTANCE.enable, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
+    PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
+    ETHERIC_SWORD(EthericSwordConfig.INSTANCE.enable, new ItemEthericSword(), "etheric_sword"),
+    REVERSING_HOE(ReversingHoeConfig.INSTANCE.enable, new ItemReversingHoe(), "reversing_hoe"),
     HEAVENLY_RING_FEATHER(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),
     HEAVENLY_RING_DRAGON(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("dragon", 8), "heavenly_ring_dragon"),
     HEAVENLY_RING_FAIRY(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("fairy", 8), "heavenly_ring_fairy"),
     HEAVENLY_RING_METAL(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("metal", 8), "heavenly_ring_metal"),
     HEAVENLY_RING_MAGIC(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("magic", 8), "heavenly_ring_magic"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
-    WATERING_CAN_BASIC(WateringCanConfig.wateringCan.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
-    WATERING_CAN_ADVANCED(WateringCanConfig.wateringCan.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
-    WATERING_CAN_ELITE(WateringCanConfig.wateringCan.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
-    INVERSION_SIGIL_INACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
-    INVERSION_SIGIL_ACTIVE(InversionConfig.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
-    PSEUDO_INVERSION_SIGIL(InversionConfig.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
-    INVERTED_INGOT(InversionConfig.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
-    INVERTED_NUGGET(InversionConfig.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
-    ARCHITECTS_WAND(ItemConfig.enableArchitectsWand, new ItemArchitectsWand(ItemConfig.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
-    SUPER_ARCHITECTS_WAND(ItemConfig.enableSuperArchitectsWand, new ItemArchitectsWand(ItemConfig.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
+    WATERING_CAN_BASIC(WateringCanConfig.INSTANCE.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
+    WATERING_CAN_ADVANCED(WateringCanConfig.INSTANCE.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
+    WATERING_CAN_ELITE(WateringCanConfig.INSTANCE.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
+    INVERSION_SIGIL_INACTIVE(InversionConfig.INSTANCE.enableInversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
+    INVERSION_SIGIL_ACTIVE(InversionConfig.INSTANCE.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
+    PSEUDO_INVERSION_SIGIL(InversionConfig.INSTANCE.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
+    INVERTED_INGOT(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
+    INVERTED_NUGGET(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
+    ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
+    SUPER_ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableSuperArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
-    FIRE_BATTERY(FireBatteryConfig.enableFireBattery, new ItemFireBattery(), "fire_battery"),
+    FIRE_BATTERY(FireBatteryConfig.INSTANCE.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),
-    ENDER_LOTUS_SEED(EnderLotusConfig.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
+    ENDER_LOTUS_SEED(EnderLotusConfig.INSTANCE.enableEnderLotus, new ItemEnderLotusSeed(ModBlocks.ENDER_LOTUS.get()), "ender_lotus_seed"),
     XRAY_GLASSES(ItemConfig.enableXRayGlasses, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_glasses"),
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
-    CHUNCHUNMARU(ChunchunmaruConfig.enable, new ItemChunchunmaru(), "chunchunmaru"),
+    CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
+    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new Item().setUnlocalizedName("capacity_upgrade").setTextureName("utilitiesinexcess:capacity_upgrade"), "capacity_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

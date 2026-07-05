@@ -1,0 +1,26 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "utilitiesinexcess:models/filing_cabinet/basic/front",
+		"1": "utilitiesinexcess:models/filing_cabinet/basic/side",
+		"particle": "utilitiesinexcess:models/filing_cabinet/basic/front"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			}
+		}
+	],
+  "display": {
+    "gui": { "rotation": [30, 45, 0], "scale": [0.625, 0.625, 0.625] }
+  }
+}

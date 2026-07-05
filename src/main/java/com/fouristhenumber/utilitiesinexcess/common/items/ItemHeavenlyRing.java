@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
@@ -17,8 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 
-import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.api.BaubleType;
@@ -30,9 +34,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@EventBusSubscriber()
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
-public class ItemHeavenlyRing extends Item implements IBauble {
+public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem {
 
     private final int RING_COUNT;
     private final String SUFFIX;
@@ -81,9 +84,22 @@ public class ItemHeavenlyRing extends Item implements IBauble {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
-            EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage()));
-        tooltip.add(StatCollector.translateToLocal("item.heavenly_ring.desc"));
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "item.heavenly_ring.desc.1",
+                EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
+        int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
+        String keyName = switch (key) {
+            case -99 -> StatCollector.translateToLocal("uie.util.key.rclick");
+            case -98 -> StatCollector.translateToLocal("uie.util.key.lclick");
+            default -> GameSettings.getKeyDisplayString(key);
+        };
+        tooltip.add(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "item.heavenly_ring.desc.2",
+                EnumChatFormatting.GREEN + keyName + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + EnumChatFormatting.GRAY,
+                EnumChatFormatting.AQUA.toString() + RING_COUNT + EnumChatFormatting.GRAY));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -134,60 +150,95 @@ public class ItemHeavenlyRing extends Item implements IBauble {
         return true;
     }
 
-    @EventBusSubscriber.Condition
-    public static boolean shouldEventBusSubscribe() {
-        return !Mods.Baubles.isLoaded();
-    }
-
     public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();
 
-    @SubscribeEvent
-    public static void onPlayerRender(RenderPlayerEvent.Pre event) {
-        if (ClientProxy.frameCount % 40 > 1) return;
+    // This is just a number that ticks up every frame.
+    public static int frameCount = 0;
 
-        EntityPlayer player = event.entityPlayer;
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class EventsClient {
 
-        boolean hasRing = false;
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack stack = player.inventory.getStackInSlot(i);
-            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
-                hasRing = true;
-                wingedPlayers.putIfAbsent(player, stack);
-                break;
-            }
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return ItemConfig.enableHeavenlyRing && !Mods.Baubles.isLoaded();
         }
 
-        if (!hasRing) {
-            wingedPlayers.remove(player);
+        @SubscribeEvent
+        public static void tickRender(TickEvent.RenderTickEvent event) {
+            frameCount++;
+        }
+
+        @SubscribeEvent
+        public static void onPlayerRender(RenderPlayerEvent.Pre event) {
+            if (frameCount % 40 > 1) return;
+
+            EntityPlayer player = event.entityPlayer;
+
+            boolean hasRing = false;
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack stack = player.inventory.getStackInSlot(i);
+                if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                    hasRing = true;
+                    wingedPlayers.put(player, stack);
+                    break;
+                }
+            }
+
+            if (!hasRing) {
+                wingedPlayers.remove(player);
+            }
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side != Side.SERVER || event.phase != TickEvent.Phase.END) {
-            return;
-        }
-        EntityPlayer player = event.player;
+    @SuppressWarnings("unused")
+    // TODO Add (side = Side.SERVER) to the EventBusSubscriber once
+    // https://github.com/GTNewHorizons/GTNHLib/issues/410 is closed
+    @EventBusSubscriber
+    public static class EventsServer {
 
-        boolean hasRing = false;
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            ItemStack stack = player.inventory.getStackInSlot(i);
-            if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
-                hasRing = true;
-                break;
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return !Mods.Baubles.isLoaded();
+        }
+
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+            // TODO Remove once side is added to EventBusSubscriber
+            if (event.side != Side.SERVER) return;
+
+            if (event.phase != TickEvent.Phase.END) {
+                return;
             }
-        }
+            EntityPlayer player = event.player;
 
-        if (player.capabilities.allowFlying == hasRing) return;
+            boolean hasRing = false;
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack stack = player.inventory.getStackInSlot(i);
+                if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemHeavenlyRing) {
+                    hasRing = true;
+                    break;
+                }
+            }
 
-        if (hasRing) {
-            player.capabilities.allowFlying = true;
-        } else {
-            if (!player.capabilities.isCreativeMode) {
+            NBTTagCompound tag = player.getEntityData()
+                .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+            if (hasRing) {
+                player.capabilities.allowFlying = true;
+                tag.setBoolean("HasRingUIE", true);
+                player.getEntityData()
+                    .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                player.sendPlayerAbilities();
+            } else if (!player.capabilities.isCreativeMode && tag.hasKey("HasRingUIE")) {
                 player.capabilities.allowFlying = false;
                 player.capabilities.isFlying = false;
+                tag.removeTag("HasRingUIE");
+                player.getEntityData()
+                    .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                player.sendPlayerAbilities();
             }
         }
-        player.sendPlayerAbilities();
     }
 }
