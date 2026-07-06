@@ -718,7 +718,9 @@ tile.filing_cabinet.tooltip.contents=Contents:
 tile.filing_cabinet.tooltip.total=Total: %d items
 tile.filing_cabinet.tooltip.upgrades=+%d capacity upgrades
 
-item.capacity_upgrade.name=Capacity Upgrade
+item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
+item.capacity_upgrade.desc.1=Max Storage: +%s
+item.capacity_upgrade.desc.2=Max Upgrades: %s
 
 gui.cabinet.storage=Storage: %s / %s
 gui.cabinet.slot=Slot: %s / %s
@@ -739,6 +741,10 @@ gui.cabinet.slot_dir.title=Slot fill direction
 gui.cabinet.slot_dir.horizontal=Horizontal
 gui.cabinet.slot_dir.vertical=Vertical
 
+nei.infopage.uie.filing_cabinet.1=Filing Cabinets provide a convenient way to store large amounts of items, with some restrictions. The standard cabinet can only hold items of the same type, but with different metadata/NBT.
+nei.infopage.uie.filing_cabinet.2=The Advanced Filing Cabinet can only hold items that do not normally stack, but has no type restrictions and more unique item slots.
+nei.infopage.uie.filing_cabinet.3=The Elite Filing Cabinet has no restrictions whatsoever, but has the lowest number of unique item slots.
+nei.infopage.uie.filing_cabinet.4=Filing Cabinet Capacity Upgrades will add additional maximum storage to any cabinet.
 
 # NEI item aliases
 item.heavenly_ring_magic.aliases=Angel Ring
