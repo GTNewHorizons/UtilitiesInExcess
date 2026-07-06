@@ -9,6 +9,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLasso
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.DrumTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.EnderQuarryTransform;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FilingCabinetTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
@@ -157,6 +158,7 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trading_post", ModBlocks.TRADING_POST.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:endMarker", ModBlocks.VOID_MARKER.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderQuarry", ModBlocks.VOID_QUARRY.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:filing", ModBlocks.FILING_CABINET.get());
     }
 
     private static void transformTileEntities() {
@@ -171,6 +173,9 @@ public class PosteaTransforms {
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
 
         GeneratorTransformation.postLoad();
+
+        TileEntityReplacementManager
+            .tileEntityTransformer("TileEntityFilingCabinet", FilingCabinetTransformation::transform);
     }
 
     private static void enderQuarryUpgrades() {
@@ -427,6 +432,7 @@ public class PosteaTransforms {
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderCollector");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderThermicPump");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:etherealglass");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:filing");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator.8");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator.64");
