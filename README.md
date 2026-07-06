@@ -39,8 +39,8 @@ to the same as ExU's defaults (-100 and -112). If you are migrating from a world
 ## Hard Dependencies
 - [GTNHLib](https://github.com/GTNewHorizons/GTNHLib)
 - [ModularUI2](https://github.com/GTNewHorizons/ModularUI2)
-- [CoFH Lib](https://www.curseforge.com/minecraft/mc-mods/cofh-lib)
 - [UniMixins](https://github.com/LegacyModdingMC/UniMixins)
+- [CoFH Lib](https://www.curseforge.com/minecraft/mc-mods/cofh-lib)
 
 ## Optional Dependencies
 
