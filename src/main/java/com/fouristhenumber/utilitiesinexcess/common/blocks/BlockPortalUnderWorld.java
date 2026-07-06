@@ -157,6 +157,8 @@ public class BlockPortalUnderWorld extends BlockContainer {
                     WorldServer dest = MinecraftServer.getServer()
                         .worldServerForDimension(UnderWorldConfig.INSTANCE.underWorldDimensionId);
 
+                    BlockPos spawn;
+
                     if (!tile.hasDest || dest.getBlock(tile.destX, tile.destY, tile.destZ) != this) {
                         BlockPos existing = findPortal(dest, x, z);
 
@@ -165,6 +167,8 @@ public class BlockPortalUnderWorld extends BlockContainer {
                             tile.destX = existing.x;
                             tile.destY = existing.y;
                             tile.destZ = existing.z;
+
+                            spawn = existing;
                         } else {
                             generateSpawnRoom(dest, x, 150, z);
 
@@ -172,24 +176,22 @@ public class BlockPortalUnderWorld extends BlockContainer {
                             tile.destX = x;
                             tile.destY = 150;
                             tile.destZ = z;
+
+                            spawn = new BlockPos(x, 150, z);
                         }
-                    }
-
-                    BlockPos spawn = findPortal(dest, tile.destX, tile.destZ);
-
-                    if (spawn == null) {
-                        player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal_blocked"));
                     } else {
-                        UnderWorldSourceProperty source = (UnderWorldSourceProperty) player
-                            .getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
-
-                        source.entranceWorld = world.provider.dimensionId;
-                        source.entranceX = x;
-                        source.entranceY = y;
-                        source.entranceZ = z;
-
-                        teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y + 1, spawn.z);
+                        spawn = new BlockPos(tile.destX, tile.destY, tile.destZ);
                     }
+
+                    UnderWorldSourceProperty source = (UnderWorldSourceProperty) player
+                        .getExtendedProperties(UnderWorldSourceProperty.PROP_KEY);
+
+                    source.entranceWorld = world.provider.dimensionId;
+                    source.entranceX = x;
+                    source.entranceY = y;
+                    source.entranceZ = z;
+
+                    teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y + 1, spawn.z);
                 }
             }
         }
