@@ -17,7 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoInversionSigil;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
@@ -63,9 +63,9 @@ public enum ModItems {
     WATERING_CAN_BASIC(WateringCanConfig.INSTANCE.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
     WATERING_CAN_ADVANCED(WateringCanConfig.INSTANCE.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
     WATERING_CAN_ELITE(WateringCanConfig.INSTANCE.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
-    INVERSION_SIGIL_INACTIVE(InversionConfig.INSTANCE.enableInversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
-    INVERSION_SIGIL_ACTIVE(InversionConfig.INSTANCE.enableInversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
-    PSEUDO_INVERSION_SIGIL(InversionConfig.INSTANCE.enableInversionSigil, new ItemPseudoInversionSigil(), "pseudo_inversion_sigil"),
+    INVERSION_SIGIL_INACTIVE(InversionConfig.INSTANCE.enableReversionSigil, new ItemInversionSigilInactive(), "inversion_sigil_inactive"),
+    INVERSION_SIGIL_ACTIVE(InversionConfig.INSTANCE.enableReversionSigil, new ItemInversionSigilActive(), "inversion_sigil_active"),
+    PSEUDO_REVERSION_SIGIL(InversionConfig.INSTANCE.enableReversionSigil, new ItemPseudoReversionSigil(), "pseudo_reversion_sigil"),
     INVERTED_INGOT(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
     INVERTED_NUGGET(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
     ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
