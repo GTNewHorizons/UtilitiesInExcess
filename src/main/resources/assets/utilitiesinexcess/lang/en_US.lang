@@ -739,3 +739,5 @@ gui.cabinet.slot_dir.title=Slot fill direction
 gui.cabinet.slot_dir.horizontal=Horizontal
 gui.cabinet.slot_dir.vertical=Vertical
 
+uie.world_conversion.warning.client=WARNING!!\nThe §aExtra Utilities§f mod has been replaced with §aUtilities In Excess§f.\nAfter pressing "Yes" every item in your world from Extra Utilities\nwill be replaced with their Utilities In Excess counterpart.\nWe recommend making a backup of this world before proceeding.
+uie.world_conversion.warning.server=WARNING!! The Extra Utilities mod has been replaced with Utilities In Excess. After typing "/fml confirm" every item in your world from Extra Utilities will be replaced with their Utilities In Excess counterpart. We recommend making a backup of this world before proceeding.
