@@ -48,7 +48,6 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
         sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
-        sendInfoPage("<utilitiesinexcess:chunchunmaru>", "nei.infopage.uie.chunchunmaru.1");
 
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
