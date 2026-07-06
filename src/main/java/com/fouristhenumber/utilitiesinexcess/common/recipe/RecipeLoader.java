@@ -609,6 +609,17 @@ public class RecipeLoader {
             ModBlocks.SMART_PUMP,
             'a',
             Items.diamond_pickaxe);
+
+        // Paint Roller
+        if (RecipeConfig.enablePaintRollerRecipe) addShapedRecipe(
+            ModItems.PAINT_ROLLER,
+            "ws",
+            " s",
+            "s ",
+            's',
+            Items.stick,
+            'w',
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static void loadGeneratorRecipes() {
