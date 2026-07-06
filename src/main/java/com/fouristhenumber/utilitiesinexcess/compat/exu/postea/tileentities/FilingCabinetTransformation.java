@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.gtnewhorizon.gtnhlib.geometry.Orientation;
 import com.gtnewhorizons.postea.api.BlockAccessCompat;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
@@ -43,10 +44,10 @@ public class FilingCabinetTransformation {
 
     private static int getOrientation(int meta) {
         return switch (meta) {
-            case 2, 8 -> 15;
-            case 3, 9 -> 22;
-            case 4, 10 -> 29;
-            default -> 36;
+            case 2, 8 -> Orientation.NORTH_NORTH.ordinal();
+            case 3, 9 -> Orientation.SOUTH_SOUTH.ordinal();
+            case 4, 10 -> Orientation.WEST_WEST.ordinal();
+            default -> Orientation.EAST_EAST.ordinal();
         };
     }
 }
