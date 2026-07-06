@@ -70,6 +70,7 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
         @SubscribeEvent
         public static void onAttackEntity(AttackEntityEvent event) {
             if (event.entity instanceof EntityPlayer player && player.capabilities.isCreativeMode
+                && player.getHeldItem() != null
                 && player.getHeldItem()
                     .getItem() instanceof ItemChunchunmaru) {
                 boolean isCrit = player.fallDistance > 0.0F && !player.onGround
