@@ -35,7 +35,7 @@ public class ColoredBlocksConfig {
         "   MODID: Mod ID of the mod that adds the block. NOT DOMAIN. (example: \"minecraft\")",
         "   BLOCKNAME: Name of the block (example: \"wool\")",
         "   BRIGHTNESS: Brightness multiplier (example: \"1.5\")",
-        "   TEXTUREDOMAIN: Domain for override texture (example: \"utilitiesinexcess\")",
+        "   TEXTUREDOMAIN: Domain for texture (example: \"utilitiesinexcess\")",
         "   TEXTURENAME: Texture location (example: \"textures/blocks/block_update_detector_active.png\")", "",
         "Example: minecraft;double_stone_slab;1;minecraft;textures/blocks/stone_slab_top.png",
         "Example: utilitiesinexcess;block_update_detector;1.5;utilitiesinexcess;textures/blocks/block_update_detector_active.png",
