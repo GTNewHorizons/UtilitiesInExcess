@@ -236,6 +236,14 @@ public class BlockPortalUnderWorld extends BlockContainer {
     }
 
     private void generateSpawnRoom(World world, int x, int y, int z) {
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+        for (int cx = -1; cx <= 1; cx++) {
+            for (int cz = -1; cz <= 1; cz++) {
+                ((WorldServer) world).theChunkProviderServer.loadChunk(chunkX + cx, chunkZ + cz);
+            }
+        }
+
         for (int dy = -1; dy <= 4; dy++) {
             for (int dz = -3; dz <= 3; dz++) {
                 for (int dx = -3; dx <= 3; dx++) {
