@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -102,35 +100,6 @@ public class BlockPortalUnderWorld extends BlockContainer {
             tile.destY = tag.getInteger("destY");
             tile.destZ = tag.getInteger("destZ");
         }
-    }
-
-    private TileEntityPortalUnderWorld tile;
-
-    @Override
-    public void onBlockHarvested(World worldIn, int x, int y, int z, int meta, EntityPlayer player) {
-        super.onBlockHarvested(worldIn, x, y, z, meta, player);
-
-        tile = (TileEntityPortalUnderWorld) worldIn.getTileEntity(x, y, z);
-    }
-
-    @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        NBTTagCompound tag = new NBTTagCompound();
-
-        tag.setInteger("destX", tile.destX);
-        tag.setInteger("destY", tile.destY);
-        tag.setInteger("destZ", tile.destZ);
-
-        tile = null;
-
-        ItemStack stack = new ItemStack(this, 1);
-        stack.setTagCompound(tag);
-
-        ArrayList<ItemStack> list = new ArrayList<>();
-
-        list.add(stack);
-
-        return list;
     }
 
     @Override
