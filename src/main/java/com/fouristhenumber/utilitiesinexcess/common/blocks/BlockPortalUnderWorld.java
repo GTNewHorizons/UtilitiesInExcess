@@ -81,7 +81,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
 
     @Override
     public float getBlockHardness(World worldIn, int x, int y, int z) {
-        if (worldIn.provider instanceof WorldProviderUnderWorld) {
+        if (worldIn.getTileEntity(x, y, z) instanceof TileEntityPortalUnderWorld portal && portal.invulnerable) {
             return -1f;
         } else {
             return 5f;
@@ -228,6 +228,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
         }
 
         world.setBlock(x, y, z, this);
+        ((TileEntityPortalUnderWorld) world.getTileEntity(x, y, z)).invulnerable = true;
 
         world.setBlock(x - 2, y, z - 2, Blocks.torch);
         world.setBlock(x + 2, y, z - 2, Blocks.torch);
