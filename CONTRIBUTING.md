@@ -1,7 +1,7 @@
 ## Contribution
 
 Utilities in Excess is under the GTNewHorizons organization and written with the express intent to support the GT:NH
-modpack. **However,** support for external use has also been one of the core goals for the mod. Please feel free
+modpack. **However**, support for external use has also been one of the core goals for the mod. Please feel free
 to reach out if UiE isn't working for your modpack's use case, and to any GT:NH developers, if you find yourself asking
 "Can I break external compatibility in order to..." the answer is **always no**.
 
