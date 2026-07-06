@@ -2,8 +2,11 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.MODID;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraftforge.client.MinecraftForgeClient;
 
+import com.fouristhenumber.utilitiesinexcess.client.UIERMRL;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
@@ -74,6 +77,9 @@ public class ClientProxy extends CommonProxy {
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
         }
+
+        ((IReloadableResourceManager) Minecraft.getMinecraft()
+            .getResourceManager()).registerReloadListener(new UIERMRL());
     }
 
     @Override
