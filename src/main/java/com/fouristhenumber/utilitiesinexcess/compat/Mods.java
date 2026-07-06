@@ -20,6 +20,7 @@ public enum Mods {
     ForgeMicroBlock("ForgeMicroblock"),
     Backhand("backhand"),
     GT("gregtech_nh"),
+    SimpleSkinBackport("simpleskinbackport"),
     EndlessIDs("endlessids")
     ;
     // spotless:on

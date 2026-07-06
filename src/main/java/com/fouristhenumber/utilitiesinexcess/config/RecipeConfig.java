@@ -254,9 +254,29 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
+    public static boolean enableFilingCabinetRecipes;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableFilingCabinetUpgradeRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
     public static boolean enableSpikeRecipes;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableEnderLocusOreRecipes;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableVoidQuarryRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableVoidMarkerRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableVoidQuarryUpgradeRecipes;
 }

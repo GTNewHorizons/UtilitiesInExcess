@@ -52,6 +52,10 @@ public class BlockConfig {
     @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
     public static final ColoredBlocksConfig coloredBlocks = ColoredBlocksConfig.INSTANCE;
 
+    @Config.Order(1100)
+    @Config.LangKey("utilitiesinexcess.config.block.filing_cabinets")
+    public static final FilingCabinetsConfig filingCabinets = new FilingCabinetsConfig();
+
     public static class PureLove {
 
         @Config.DefaultBoolean(true)
@@ -309,4 +313,7 @@ public class BlockConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableDecorativeBlocks;
+
+    @Config.DefaultBoolean(true)
+    public static boolean enableTrueGreenscreen;
 }
