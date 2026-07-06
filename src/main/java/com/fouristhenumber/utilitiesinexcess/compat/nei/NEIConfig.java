@@ -47,17 +47,17 @@ public class NEIConfig implements IConfigureNEI {
             "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.ender_locus")
                 + "@ender_locus_recipes");
 
-        PseudoInversionRecipeHandler pseudoInversionHandler = new PseudoInversionRecipeHandler();
+        PseudoReversionRecipeHandler pseudoReversionHandler = new PseudoReversionRecipeHandler();
 
-        API.registerRecipeHandler(pseudoInversionHandler);
-        API.registerUsageHandler(pseudoInversionHandler);
+        API.registerRecipeHandler(pseudoReversionHandler);
+        API.registerUsageHandler(pseudoReversionHandler);
 
         FMLInterModComms.sendRuntimeMessage(
             UtilitiesInExcess.MODID,
             "NEIPlugins",
             "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.pseudo_inversion")
-                + "@pseudo_inversion_recipes");
+            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.pseudo_reversion")
+                + "@pseudo_reversion_recipes");
     }
 
     @SuppressWarnings("unused")
@@ -78,10 +78,10 @@ public class NEIConfig implements IConfigureNEI {
                     .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
                     .build());
             event.registerHandlerInfo(
-                new HandlerInfo.Builder("pseudo_inversion_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
+                new HandlerInfo.Builder("pseudo_reversion_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
                     .setHeight(140)
                     .setWidth(166)
-                    .setDisplayStack(ModItems.PSEUDO_INVERSION_SIGIL.newItemStack())
+                    .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
                     .build());
         }
     }
