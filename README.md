@@ -51,7 +51,7 @@ to the same as ExU's defaults (-100 and -112). If you are migrating from a world
 - [Backhand](https://github.com/GTNewHorizons/Backhand) (Architect's Wand integration)
 - [FindIt](https://github.com/GTNewHorizons/FindIt) (Trading Post integration)
 - [Baubles](https://www.curseforge.com/minecraft/mc-mods/baubles) (Heavenly Ring and Glove integration)
-- [EndlessIDs](https://www.curseforge.com/minecraft/mc-mods/endlessids) (Dye-able colored blocks)
+- [EndlessIDs](https://www.curseforge.com/minecraft/mc-mods/endlessids) (Dyeable colored blocks)
 
 ## Credits
 A special thanks to the 1.0 contributors, without which this project could have never gotten off the ground:

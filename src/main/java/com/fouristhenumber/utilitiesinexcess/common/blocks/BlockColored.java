@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.Color;
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
@@ -42,12 +44,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 // to avoid flooding nei crafting recipes with them.
 public class BlockColored extends Block {
 
-    private Block base;
-    private final float colorMultiplier;
+    protected Block base;
+    private float colorMultiplier;
 
     public static final float DEFAULT_BRIGHTNESS = 1.5f;
 
     public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
+
+    private static final HashMap<Block, BlockColored> BASES_TO_COLORED = new HashMap<>();
+
+    public BlockColored(Material material) {
+        super(material);
+    }
 
     public BlockColored(Block base) {
         this(base, DEFAULT_BRIGHTNESS);
@@ -65,6 +73,7 @@ public class BlockColored extends Block {
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
 
         COLORED_BLOCKS.add(this);
+        BASES_TO_COLORED.put(base, this);
     }
 
     private String baseModID;
@@ -115,6 +124,8 @@ public class BlockColored extends Block {
         opaque = isOpaqueCube();
 
         initialized = true;
+
+        BASES_TO_COLORED.put(base, this);
     }
 
     @Override
@@ -138,20 +149,10 @@ public class BlockColored extends Block {
         tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
     }
 
-    public static boolean shouldUsePaintRoller() {
-        return Mods.EndlessIDs.isLoaded() && ColoredBlocksConfig.INSTANCE.enableDying;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        if (shouldUsePaintRoller()) {
-            list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
-        } else {
-            for (int i = 0; i < 16; ++i) {
-                list.add(new ItemStack(itemIn, 1, i));
-            }
-        }
+    // Util methods
+    public static boolean allowDyingBlocks() {
+        return Mods.EndlessIDs.isLoaded() && ColoredBlocksConfig.INSTANCE.enablePaintRoller
+            && ColoredBlocksConfig.INSTANCE.enableDying;
     }
 
     public static int getRGBFromEIDMeta(int meta) {
@@ -170,10 +171,31 @@ public class BlockColored extends Block {
         return ((red << 7) & 0b0_11111_00000_00000) | ((green << 2) & 0b0_00000_11111_00000) | (blue >> 3);
     }
 
+    public static boolean hasColoredVersion(Block block) {
+        return BASES_TO_COLORED.containsKey(block);
+    }
+
+    public static BlockColored getColoredVersion(Block block) {
+        return BASES_TO_COLORED.get(block);
+    }
+    //
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        if (allowDyingBlocks()) {
+            list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
+        } else {
+            for (int i = 0; i < 16; ++i) {
+                list.add(new ItemStack(itemIn, 1, i));
+            }
+        }
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
-        if (shouldUsePaintRoller()) {
+        if (allowDyingBlocks()) {
             return getRGBFromEIDMeta(worldIn.getBlockMetadata(x, y, z));
         }
 
@@ -184,7 +206,7 @@ public class BlockColored extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderColor(int meta) {
-        return shouldUsePaintRoller() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
+        return allowDyingBlocks() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
     }
 
     @Override
@@ -201,6 +223,10 @@ public class BlockColored extends Block {
 
     public Block getBase() {
         return base;
+    }
+
+    public boolean ignoreBaseMeta() {
+        return false;
     }
 
     public static class ItemBlockColored extends ItemBlock {
@@ -220,11 +246,11 @@ public class BlockColored extends Block {
         public String getItemStackDisplayName(ItemStack stack) {
             int dmg = stack.getItemDamage();
             stack.setItemDamage(0);
-            String name = Item.getItemFromBlock(((BlockColored) field_150939_a).base)
+            String name = Item.getItemFromBlock(((BlockColored) field_150939_a).getBase())
                 .getItemStackDisplayName(stack);
             stack.setItemDamage(dmg);
 
-            if (shouldUsePaintRoller()) {
+            if (allowDyingBlocks()) {
                 name = StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable", name);
             } else {
                 name = StatCollector
@@ -235,7 +261,7 @@ public class BlockColored extends Block {
 
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
             super.addInformation(stack, player, tooltip, p_77624_4_);
-            if (shouldUsePaintRoller()) {
+            if (allowDyingBlocks()) {
                 tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
             }
         }
@@ -285,50 +311,51 @@ public class BlockColored extends Block {
         for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
             blockColored.initFromString();
         }
+        COLORED_BLOCKS.add((BlockColored) ModBlocks.LAPIS_AETHERIUS_DYEABLE.get());
         RecipeLoader.loadColoredBlockRecipes();
     }
 
     // Redirects of Block methods
     @Override
     public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return base.getFlammability(world, x, y, z, face);
+        return getBase().getFlammability(world, x, y, z, face);
     }
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return base.getFireSpreadSpeed(world, x, y, z, face);
+        return getBase().getFireSpreadSpeed(world, x, y, z, face);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public int getRenderBlockPass() {
-        return base.getRenderBlockPass();
+        return getBase().getRenderBlockPass();
     }
 
     @Override
     public boolean renderAsNormalBlock() {
-        return base.renderAsNormalBlock();
+        return getBase().renderAsNormalBlock();
     }
 
     @Override
     public boolean isOpaqueCube() {
-        return base == null ? super.isOpaqueCube() : base.isOpaqueCube();
+        return getBase() == null ? super.isOpaqueCube() : getBase().isOpaqueCube();
     }
 
     @Override
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
         Block block = worldIn.getBlock(x, y, z);
-        return base.shouldSideBeRendered(worldIn, x, y, z, side) && block != this;
+        return getBase().shouldSideBeRendered(worldIn, x, y, z, side) && block != this;
     }
 
     @Override
     public int getLightOpacity() {
-        return base.getLightOpacity();
+        return getBase().getLightOpacity();
     }
 
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return base.getLightOpacity(world, x, y, z);
+        return getBase().getLightOpacity(world, x, y, z);
     }
     //
 }

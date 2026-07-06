@@ -10,8 +10,14 @@ public class ColoredBlocksConfig {
     @Config.Order(0)
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    @Config.Name("Enable")
+    @Config.Name("Enable Colored Blocks")
     public boolean enableColoredBlocks;
+
+    @Config.Order(50)
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    @Config.Name("Enable Paint Roller")
+    public boolean enablePaintRoller;
 
     @Config.Order(100)
     @Config.DefaultBoolean(false)
@@ -24,7 +30,7 @@ public class ColoredBlocksConfig {
     @Config.DefaultBoolean(true)
     @Config.Comment({
         "Instead of 16 static colors, with this enabled a paint roller will be added which can be used to dye colored blocks",
-        "Requires EndlessIDs" })
+        "Requires EndlessIDs", "Paint roller and colored blocks must be enabled too" })
     @Config.RequiresMcRestart
     public boolean enableDying;
 

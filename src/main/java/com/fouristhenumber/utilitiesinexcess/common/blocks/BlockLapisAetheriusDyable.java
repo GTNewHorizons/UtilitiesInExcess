@@ -12,23 +12,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLapisAetherius extends Block {
+public class BlockLapisAetheriusDyable extends BlockColored {
 
-    public BlockLapisAetherius() {
+    public BlockLapisAetheriusDyable() {
         super(Material.glass);
-        setBlockName("lapis_aetherius");
+        setBlockName("lapis_aetherius_dyeable");
         setLightOpacity(0);
         setHardness(1);
         setResistance(10F);
+        this.base = ModBlocks.LAPIS_AETHERIUS.get();
     }
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon[] icons;
+    @Override
+    public boolean ignoreBaseMeta() {
+        return true;
+    }
 
     public int damageDropped(int meta) {
         return meta;
@@ -56,45 +60,30 @@ public class BlockLapisAetherius extends Block {
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 16; ++i) {
-            list.add(new ItemStack(itemIn, 1, i));
-        }
+        list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        icons = new IIcon[16];
-        for (int i = 0; i < 16; i++) {
-            icons[i] = iconRegister.registerIcon("utilitiesinexcess:lapis_aetherius_" + i);
-        }
+        this.blockIcon = ((BlockLapisAetherius) ModBlocks.LAPIS_AETHERIUS.get()).icons[0];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        if (meta < 0 || meta >= icons.length) {
-            meta = 0;
-        }
-        return icons[meta];
+        return blockIcon;
     }
 
-    public static class ItemLapisAetherius extends ItemBlock {
+    public static class ItemLapisAetherius extends BlockColored.ItemBlockColored {
 
         public ItemLapisAetherius(Block block) {
             super(block);
-            this.setHasSubtypes(true);
-            this.setMaxDamage(0);
-        }
-
-        @Override
-        public int getMetadata(int damage) {
-            return damage;
         }
 
         @Override
         public String getUnlocalizedName(final ItemStack stack) {
-            return this.getUnlocalizedName() + "." + stack.getItemDamage();
+            return this.getUnlocalizedName();
         }
     }
 }

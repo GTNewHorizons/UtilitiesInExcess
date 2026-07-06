@@ -602,12 +602,14 @@ uie.colored_blocks.color.15=Colored %s (Black)
 uie.colored_blocks.color.dyeable=Dyed %s
 nei.infopage.uie.colored_blocks.dyeable.1=Dyed blocks can be dyed any color you want using a paint roller. Now with a new and improved tile entity-free recipe!
 
+tile.lapis_aetherius_dyeable.name=Lapis Aetherius Iris (Dyeable)
+
 item.paint_roller.name=Paint Roller
 item.paint_roller.desc.0=[§a%s§7] Colorable blocks to dye them
 item.paint_roller.desc.1=[§a%s§7] The air to select hex color
 item.paint_roller.desc.2=[§aCrouch §7+ §a%s§7] Activate line-mode
 item.paint_roller.desc.3=[§a%s§7] Colorable blocks to copy color
-item.paint_roller.help_tooltip.0=Block colors are limited to 16-bit
+item.paint_roller.help_tooltip.0=Block colors are limited to 16-bit,
 item.paint_roller.help_tooltip.1=meaning that hex values will have
 item.paint_roller.help_tooltip.2=each of their RGB values rounded down
 item.paint_roller.help_tooltip.3=to the nearest number divisible by 8

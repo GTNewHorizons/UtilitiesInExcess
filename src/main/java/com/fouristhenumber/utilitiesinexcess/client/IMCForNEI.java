@@ -275,7 +275,7 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.0");
         sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.1");
 
-        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks && BlockColored.shouldUsePaintRoller()) {
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks && BlockColored.allowDyingBlocks()) {
             sendInfoPage("<utilitiesinexcess:paint_roller>", "nei.infopage.uie.paint_roller.1");
 
             for (ModBlocks modBlock : ModBlocks.VALUES) {

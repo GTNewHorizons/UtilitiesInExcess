@@ -61,7 +61,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:paint_roller", ModItems.PAINT_ROLLER.get(), true);
+            .addSimpleReplacement("ExtraUtilities:paintbrush", ModItems.PAINT_ROLLER.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:bedrockiumIngot", ModItems.BEDROCKIUM_INGOT.get(), true);
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:scanner", ModItems.BLOCK_ANALYZER.get(), true);
@@ -385,7 +385,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:unstableingot");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:watering_can");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:microblocks");
-        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:paint_roller");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:paintbrush");
         // Blocks
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:angelBlock");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:block_bedrockium");

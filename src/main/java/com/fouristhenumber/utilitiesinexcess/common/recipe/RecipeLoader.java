@@ -5,6 +5,7 @@ import static net.minecraft.item.Item.getItemFromBlock;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -1243,7 +1244,7 @@ public class RecipeLoader {
     public static void loadColoredBlockRecipes() {
         if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
-        if (BlockColored.shouldUsePaintRoller()) {
+        if (BlockColored.allowDyingBlocks()) {
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
                 loadDyeableColoredBlockRecipe(block);
             }
@@ -1260,31 +1261,72 @@ public class RecipeLoader {
     }
 
     private static void loadDyeableColoredBlockRecipe(BlockColored block) {
-        GameRegistry.addShapedRecipe(
-            new ItemStack(block, 8, 0b0_11111_11111_11111),
-            "bbb",
-            "bdb",
-            "bbb",
-            'b',
-            block.getBase(),
-            'd',
-            new ItemStack(Items.dye, 1, 15));
+        ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
 
+        // From base using dye
+        // GameRegistry.addShapedRecipe(
+        // new ItemStack(block, 7, 0b0_11111_11111_11111),
+        // "bbb",
+        // "bdb",
+        // "bpb",
+        // 'b',
+        // block.getBase(),
+        // 'd',
+        // new ItemStack(Items.dye, 1, 15),
+        // 'p',
+        // paintRoller);
+
+        ItemStack any8 = new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE);
+        // To base using water
         GameRegistry.addShapedRecipe(
-            new ItemStack(block.getBase(), 8),
+            new ItemStack(block.getBase(), 8, block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0),
             "bbb",
             "bdb",
             "bbb",
             'b',
-            new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE),
+            any8,
             'd',
             new ItemStack(Items.water_bucket));
+
+        // From base to dyed using roller
+        ItemStack anyDyed = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack baseItem = new ItemStack(
+            Item.getItemFromBlock(block.getBase()),
+            1,
+            block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0);
+        GameRegistry.addRecipe(
+            new RecipePaintRollerToPaint(
+                3,
+                3,
+                new ItemStack[] { baseItem, baseItem, baseItem, baseItem, paintRoller, baseItem, baseItem, baseItem,
+                    baseItem },
+                any8));
+
+        // From dyed to dyed using roller
+        GameRegistry.addRecipe(
+            new RecipePaintRollerToPaint(
+                3,
+                3,
+                new ItemStack[] { anyDyed, anyDyed, anyDyed, anyDyed, paintRoller, anyDyed, anyDyed, anyDyed, anyDyed },
+                any8));
     }
 
     private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
+        ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
+
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
-            addShapedRecipe(new ItemStack(block, 8, i), "bbb", "bdb", "bbb", 'b', block.getBase(), 'd', dyes[15 - i]);
+            addShapedRecipe(
+                new ItemStack(block, 7, i),
+                "bbb",
+                "bdb",
+                "bpb",
+                'b',
+                block.getBase(),
+                'd',
+                dyes[15 - i],
+                'p',
+                paintRoller);
         }
 
         addShapedRecipe(

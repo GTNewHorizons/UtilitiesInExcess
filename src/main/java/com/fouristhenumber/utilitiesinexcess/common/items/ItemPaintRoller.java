@@ -22,10 +22,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.falsepattern.endlessids.mixin.helpers.SubChunkBlockHook;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
+import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller.PaintRollerColorPickerDialog;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
@@ -39,6 +38,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
     public ItemPaintRoller() {
         setUnlocalizedName("paint_roller");
         setMaxStackSize(1);
+        setContainerItem(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -52,7 +52,6 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister aIconRegister) {
-        super.registerIcons(aIconRegister);
         featherIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller_overlay");
         handleIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller");
     }
@@ -67,40 +66,53 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
         Block block = world.getBlock(x, y, z);
-        if (!(block instanceof BlockColored)) return false;
+        boolean needsIDChange = false;
+        if (!(block instanceof BlockColored)) {
+            if (BlockColored.hasColoredVersion(block)) {
+                needsIDChange = true;
+            } else {
+                return false;
+            }
+        }
 
         int color = BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
 
         if (player.isSneaking()) {
-            paintLine(player, world, x, y, z, color);
+            paintLine(world, block, needsIDChange, x, y, z, side, color);
         } else {
-            paintBlock(world, x, y, z, color);
+            paintBlock(world, block, needsIDChange, x, y, z, color);
         }
 
         return true;
     }
 
-    private void paintBlock(World world, int x, int y, int z, int color) {
-        // TODO cubic chunks compat
-        ((SubChunkBlockHook) world.getChunkFromBlockCoords(x, z)
-            .getBlockStorageArray()[y >> 4]).eid$setMetadata(x & 15, y & 15, z & 15, color);
+    private void paintBlock(World world, Block startBlock, boolean setID, int x, int y, int z, int color) {
+        // There isn't exactly a reason why we have to do this, but I don't want to fire block updates twice by using
+        // the vanilla method for setting the block. So set the id directly, then set the meta directly, then fire a
+        // block update
+        if (setID) {
+            EIDsHelper.setBlockID(world, x, y, z, Block.getIdFromBlock(BlockColored.getColoredVersion(startBlock)));
+        }
+        EIDsHelper.setBlockMeta(world, x, y, z, color);
 
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void paintLine(EntityPlayer player, World world, int x, int y, int z, int color) {
-        ForgeDirection direction = BlockConveyor
-            .getFacing((int) ((((player.rotationYaw % 360) + 45f) / 90f + 4f) % 4f));
-        Block blockFirst = world.getBlock(x, y, z);
+    private void paintLine(World world, Block startBlock, boolean setID, int x, int y, int z, int side, int color) {
+        ForgeDirection direction = ForgeDirection.getOrientation(side)
+            .getOpposite();
 
         for (int i = 0; i < 100; i++) {
             Block block = world
                 .getBlock(x + (direction.offsetX * i), y + (direction.offsetY * i), z + (direction.offsetZ * i));
 
-            if (block != blockFirst) return;
+            if (block != startBlock && !(block instanceof BlockColored bc && bc.getBase() == startBlock)
+                && !(startBlock instanceof BlockColored bc2 && bc2.getBase() == block)) return;
 
             paintBlock(
                 world,
+                startBlock,
+                setID,
                 x + (direction.offsetX * i),
                 y + (direction.offsetY * i),
                 z + (direction.offsetZ * i),
@@ -110,6 +122,8 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
+        if (!BlockColored.allowDyingBlocks()) return itemStackIn;
+
         if (!player.worldObj.isRemote) {
             GuiFactories.playerInventory()
                 .openFromMainHand(player);
@@ -156,14 +170,27 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        String rightClickName = KeybindUtils
-            .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode());
-        String middleClickName = KeybindUtils
-            .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode());
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.0", rightClickName));
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.1", rightClickName));
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.2", rightClickName));
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.3", middleClickName));
+        if (BlockColored.allowDyingBlocks()) {
+            String rightClickName = KeybindUtils
+                .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode());
+            String middleClickName = KeybindUtils
+                .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode());
+            tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.0", rightClickName));
+            tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.1", rightClickName));
+            tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.2", rightClickName));
+            tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.3", middleClickName));
+        }
         super.addInformation(stack, player, tooltip, p_77624_4_);
+    }
+
+    // For crafting
+    @Override
+    public boolean doesContainerItemLeaveCraftingGrid(ItemStack par1ItemStack) {
+        return false;
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        return itemStack;
     }
 }

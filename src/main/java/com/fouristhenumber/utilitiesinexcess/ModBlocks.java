@@ -28,6 +28,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFloating;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetheriusDyable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPacifistsBench;
@@ -116,6 +117,7 @@ public enum ModBlocks {
     CURSED_EARTH(CursedEarthConfig.INSTANCE.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     BLESSED_EARTH(CursedEarthConfig.INSTANCE.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
+    LAPIS_AETHERIUS_DYEABLE(BlockConfig.enableLapisAetherius && BlockColored.allowDyingBlocks(), new BlockLapisAetheriusDyable(), BlockLapisAetheriusDyable.ItemLapisAetherius.class, "lapis_aetherius_dyeable"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.INSTANCE.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator", 1), "low_temperature_furnace_generator"),
