@@ -45,12 +45,12 @@ tile.compressed_gravel.desc=%,d Gravel
 
 nei.title.uie.plugin=UtilitiesInExcess NEI Plugin
 nei.title.uie.ender_locus=Ender Locus Recipes
-nei.title.uie.pseudo_inversion=Pseudo-Inversion Ritual
-nei.pseudo_inversion.label_north=North (Progeny of Fire)
-nei.pseudo_inversion.label_south=South (Bounty of Earth)
-nei.pseudo_inversion.label_east=East (Effects of Water)
-nei.pseudo_inversion.label_west=West (Chimes of Air)
-nei.pseudo_inversion.requires=Requires %s unique items from:
+nei.title.uie.pseudo_reversion=Pseudo-Reversion Ritual
+nei.pseudo_reversion.label_north=North (Progeny of Fire)
+nei.pseudo_reversion.label_south=South (Bounty of Earth)
+nei.pseudo_reversion.label_east=East (Effects of Water)
+nei.pseudo_reversion.label_west=West (Chimes of Air)
+nei.pseudo_reversion.requires=Requires %s unique items from:
 
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
@@ -140,7 +140,7 @@ nei.infopage.uie.bedrockium.1=Bedrockium is a supremely strong material named af
 
 item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
-item.pseudo_inversion_sigil.name=Pseudo-Inversion Sigil
+item.pseudo_reversion_sigil.name=Pseudo-Reversion Sigil
 item.inversion_sigil_active.desc=Uses Remaining: %s
 
 chat.inversion_ritual.header=Ritual Of Inversion:
@@ -151,34 +151,34 @@ chat.inversion_ritual.darkness= - There is no light: %s
 chat.inversion_ritual.moon= - Can see the moon: %s
 chat.inversion_ritual.complete=Ritual succeeded! The Inversion Sigil has transformed.
 
-chat.pseudo_inversion_ritual.header=Ritual Of Pseudo-Inversion:
-chat.pseudo_inversion_ritual.difficultyPeaceful= - Difficulty is incorrect: World is too peaceful
-chat.pseudo_inversion_ritual.correctDimension= - Dimension is correct: ✓ 
-chat.pseudo_inversion_ritual.incorrectDimensionOverworld= - Dimension is incorrect: Too much natural earth 
-chat.pseudo_inversion_ritual.incorrectDimensionNether= - Dimension is incorrect: Too hot 
-chat.pseudo_inversion_ritual.incorrectDimensionOther= - Dimension is incorrect: Too otherworldly
-chat.pseudo_inversion_ritual.chestNorthContents= - North chest: %s
-chat.pseudo_inversion_ritual.chestEastContents= - East chest: %s
-chat.pseudo_inversion_ritual.chestSouthContents= - South chest: %s
-chat.pseudo_inversion_ritual.chestWestContents= - West chest: %s
-chat.pseudo_inversion_ritual.spiral= - Redstone and String spiral done correctly: %s
-chat.pseudo_inversion_ritual.complete=Good luck. Survival is key...
-chat.pseudo_inversion_ritual.ready=Perform the ritual
-chat.pseudo_inversion_ritual.death=Unfortunately, your untimely demise has resulted in a fruitless ritual...
-chat.pseudo_inversion_ritual.leftEnd=Unfortunately, your sudden departure has resulted in a fruitless ritual...
-chat.pseudo_inversion_ritual.onequarter=You've held strong, but there is still a long way to go. %s mobs killed.
-chat.pseudo_inversion_ritual.twoquarters=You're halfway there. Can you do it? %s mobs killed.
-chat.pseudo_inversion_ritual.threequarters=You're almost done, don't let up now. %s mobs killed.
-chat.pseudo_inversion_ritual.victory=You've proven yourself, and your sigil has been refreshed anew as a reward. Cherish it.
+chat.pseudo_reversion_ritual.header=Ritual Of Pseudo-Reversion:
+chat.pseudo_reversion_ritual.difficultyPeaceful= - Difficulty is incorrect: World is too peaceful
+chat.pseudo_reversion_ritual.correctDimension= - Dimension is correct: ✓ 
+chat.pseudo_reversion_ritual.incorrectDimensionOverworld= - Dimension is incorrect: Too much natural earth 
+chat.pseudo_reversion_ritual.incorrectDimensionNether= - Dimension is incorrect: Too hot 
+chat.pseudo_reversion_ritual.incorrectDimensionOther= - Dimension is incorrect: Too otherworldly
+chat.pseudo_reversion_ritual.chestNorthContents= - North chest: %s
+chat.pseudo_reversion_ritual.chestEastContents= - East chest: %s
+chat.pseudo_reversion_ritual.chestSouthContents= - South chest: %s
+chat.pseudo_reversion_ritual.chestWestContents= - West chest: %s
+chat.pseudo_reversion_ritual.spiral= - Redstone and String spiral done correctly: %s
+chat.pseudo_reversion_ritual.complete=Good luck. Survival is key...
+chat.pseudo_reversion_ritual.ready=Perform the ritual
+chat.pseudo_reversion_ritual.death=Unfortunately, your untimely demise has resulted in a fruitless ritual...
+chat.pseudo_reversion_ritual.leftEnd=Unfortunately, your sudden departure has resulted in a fruitless ritual...
+chat.pseudo_reversion_ritual.onequarter=You've held strong, but there is still a long way to go. %s mobs killed.
+chat.pseudo_reversion_ritual.twoquarters=You're halfway there. Can you do it? %s mobs killed.
+chat.pseudo_reversion_ritual.threequarters=You're almost done, don't let up now. %s mobs killed.
+chat.pseudo_reversion_ritual.victory=You've proven yourself, and your sigil has been refreshed anew as a reward. Cherish it.
 
 nei.infopage.uie.inversion_sigil.1=The Inversion Sigil is a powerful item that is found in various structures, such as dungeons. It is also dropped by the Wither. It is used in the creation of Inverted Ingots, but it must first be awakened by a dark ritual.
 nei.infopage.uie.inversion_sigil.2=Using an Inert Inversion Sigil on an Enchantment Table while sneaking gives some hints on how to complete the ritual, or read on for precise instructions.
 nei.infopage.uie.inversion_sigil.3=Place an Enchantment Table outdoors on grass with a clear view of the sky, surround it with a ring of redstone dust, and wait until midnight. Ensure the Enchantment Table is in complete darkness, and sacrifice a living creature upon the table.
 nei.infopage.uie.inversion_sigil.4=If the ritual has been completed successfully, lightning strikes the Enchantment Table, and the surrounding grass transforms into Cursed Earth, which rapidly summons hostile creatures. Be prepared for battle!
 
-nei.infopage.uie.pseudo_inversion_sigil.1=The Pseudo-Inversion Sigil is an improved version of the Awakened Inversion Sigil that crafts Stable Inverted Ingots which never implode. Unfortunately, it is not easy to create. Using the Awakened Sigil on a beacon provides some hints, or read on for precise instructions.
-nei.infopage.uie.pseudo_inversion_sigil.2=To set up the new ritual, place a beacon in The End with spirals of redstone and string leading away from it. Place four chests in the cardinal directions and fill them with specific items.
-nei.infopage.uie.pseudo_inversion_sigil.3=Finally, activate the ritual by sacrificing an Iron Golem inside of the spiral. This begins an otherworldly siege... survive while defeating enemies to complete the ritual. Dying or leaving the dimension cancels it.
+nei.infopage.uie.pseudo_reversion_sigil.1=The Pseudo-Reversion Sigil is an improved version of the Awakened Inversion Sigil that crafts Stable Inverted Ingots which never implode. Unfortunately, it is not easy to create. Using the Awakened Sigil on a beacon provides some hints, or read on for precise instructions.
+nei.infopage.uie.pseudo_reversion_sigil.2=To set up the new ritual, place a beacon in The End with spirals of redstone and string leading away from it. Place four chests in the cardinal directions and fill them with specific items.
+nei.infopage.uie.pseudo_reversion_sigil.3=Finally, activate the ritual by sacrificing an Iron Golem inside of the spiral. This begins an otherworldly siege... survive while defeating enemies to complete the ritual. Dying or leaving the dimension cancels it.
 
 item.architects_wand.name=Architect's Wand
 tooltip.architects_wand.1=Can place up to %s blocks at once
@@ -582,7 +582,6 @@ nei.infopage.uie.trading_post.1=This block allows you to trade with every villag
 
 key.categories.uie=Utilities In Excess
 key.uie.glove=Activate Glove
-
 uie.colored_blocks.color.0=Colored %s (White)
 uie.colored_blocks.color.1=Colored %s (Orange)
 uie.colored_blocks.color.2=Colored %s (Magenta)
@@ -617,6 +616,10 @@ ue_sphere.name=%s Impossible Object
 
 item.chunchunmaru.name=Chunchunmaru
 item.chunchunmaru.desc=It's a really cool name
+
+tile.true_greenscreen.name=True Greenscreen™
+nei.infopage.uie.true_greenscreen.0=When you take a screenshot of this block (with [§bF2§0]), it will appear completely transparent in the image, allowing you to take pictures of things without needing to remove the background later.
+nei.infopage.uie.true_greenscreen.1=You may need to disable your HUD (with [§bF1§0] by default) before taking a screenshot.\nThis block is a tile entity with intrusive rendering, please remove it when you're done using it.
 
 tile.void_quarry.name=Void Quarry
 tile.void_marker.name=Void Marker
@@ -701,3 +704,106 @@ utilitiesinexcess.config.recipes=Recipes
 
 uie.util.key.rclick=Right-Click
 uie.util.key.lclick=Left-Click
+
+utilitiesinexcess.config.block.filing_cabinets=Filing Cabinet
+
+tile.filing_cabinet.basic.name=Filing Cabinet
+tile.filing_cabinet.basic.desc=Stores variants of one type of item.
+tile.filing_cabinet.advanced.name=Advanced Filing Cabinet
+tile.filing_cabinet.advanced.desc=Stores unstackable items.
+tile.filing_cabinet.elite.name=Elite Filing Cabinet
+tile.filing_cabinet.elite.desc=Stores any items.
+
+tile.filing_cabinet.tooltip.contents=Contents:
+tile.filing_cabinet.tooltip.total=Total: %d items
+tile.filing_cabinet.tooltip.upgrades=+%d capacity upgrades
+
+item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
+item.capacity_upgrade.desc.1=Max Storage: +%s
+item.capacity_upgrade.desc.2=Max Upgrades: %s
+
+gui.cabinet.storage=Storage: %s / %s
+gui.cabinet.slot=Slot: %s / %s
+gui.cabinet.upgrades=Upgrades: %d / %d
+gui.cabinet.search=Search
+
+gui.cabinet.sort.title=Sort mode
+gui.cabinet.sort.name=By name
+gui.cabinet.sort.mod_id=By mod
+gui.cabinet.sort.count=By count
+gui.cabinet.sort.ore_dict=By ore dictionary
+
+gui.cabinet.scroll.title=Scroll direction
+gui.cabinet.scroll.horizontal=Horizontal
+gui.cabinet.scroll.vertical=Vertical
+
+gui.cabinet.slot_dir.title=Slot fill direction
+gui.cabinet.slot_dir.horizontal=Horizontal
+gui.cabinet.slot_dir.vertical=Vertical
+
+nei.infopage.uie.filing_cabinet.1=Filing Cabinets provide a convenient way to store large amounts of items, with some restrictions. The standard cabinet can only hold items of the same type, but with different metadata/NBT.
+nei.infopage.uie.filing_cabinet.2=The Advanced Filing Cabinet can only hold items that do not normally stack, but has no type restrictions and more unique item slots.
+nei.infopage.uie.filing_cabinet.3=The Elite Filing Cabinet has no restrictions whatsoever, but has the lowest number of unique item slots.
+nei.infopage.uie.filing_cabinet.4=Filing Cabinet Capacity Upgrades will add additional maximum storage to any cabinet.
+
+# NEI item aliases
+item.heavenly_ring_magic.aliases=Angel Ring
+item.heavenly_ring_metal.aliases=Angel Ring
+item.heavenly_ring_fairy.aliases=Angel Ring
+item.heavenly_ring_dragon.aliases=Angel Ring
+item.heavenly_ring_feather.aliases=Angel Ring
+item.architects_wand.aliases=Builder's Wand
+item.pseudo_reversion_sigil.aliases=Division Sigil
+item.inversion_sigil_active.aliases=Division Sigil
+item.inversion_sigil_inactive.aliases=Division Sigil
+item.anti_particulate_shovel.aliases=Erosion Shovel
+item.mob_jar.aliases=Golden Lasso
+item.fire_battery.aliases=Heating Coil
+item.block_analyzer.aliases=Portable Scanner
+item.xray_glasses.aliases=Sonar Goggles
+item.inverted_ingot.aliases=Unstable Ingot
+item.inverted_ingot.stable.aliases=Mobius "Unstable/Stable" Ingot
+item.chunchunmaru.aliases=Kikoku
+tile.floating_block.aliases=Angel Block
+tile.marginally_maximised_chest.aliases=Slightly Larger Chest
+tile.radically_reduced_chest.aliases=Mini-Chest
+tile.significantly_shrunk_chest.aliases=Mini-Chest
+tile.underworld_portal.aliases=Portal to The Deep Dark
+tile.temporal_gate.aliases=Portal to The Last Millenium
+tile.endspark.aliases=Ender Core
+tile.inverted_block.aliases=Unstable Ingot Block
+tile.magic_wood.aliases=Magical Wood
+tile.decorative_glass.0.aliases=Thickened Glass
+tile.decorative_glass.1.aliases=Edged Glass
+tile.decorative_glass.2.aliases=Glass Bricks
+tile.decorative_glass.3.aliases=Carved Glass
+tile.decorative_glass.4.aliases=Golden Edged Glass
+tile.decorative_glass.5.aliases=Obsidian Glass
+tile.decorative_glass.6.aliases=Swirling Glass
+tile.decorative_glass.7.aliases=Glowstone Glass
+tile.decorative_glass.8.aliases=Heart Glass
+tile.decorative_glass.9.aliases=Square Glass
+tile.collector.aliases=Ender Collector
+tile.low_temperature_furnace_powerplant.aliases=Survivalist Generator
+tile.low_temperature_furnace_substation.aliases=Survivalist Generator
+tile.low_temperature_furnace_generator.aliases=Survivalist Generator
+tile.lapis_aetherius.0.aliases=Lapis Caelestis Albus (White)
+tile.lapis_aetherius.1.aliases=Lapis Caelestis Aurantiacus (Orange)
+tile.lapis_aetherius.2.aliases=Lapis Caelestis Purpura Amethystinus (Magenta)
+tile.lapis_aetherius.3.aliases=Lapis Caelestis Caesicius (Light Blue)
+tile.lapis_aetherius.4.aliases=Lapis Caelestis Flavus (Yellow)
+tile.lapis_aetherius.5.aliases=Lapis Caelestis Viridis (Green)
+tile.lapis_aetherius.6.aliases=Lapis Caelestis Roseus (Pink)
+tile.lapis_aetherius.7.aliases=Lapis Caelestis Cinereus (Gray)
+tile.lapis_aetherius.8.aliases=Lapis Caelestis Lux Cinereus (Light Gray)
+tile.lapis_aetherius.9.aliases=Lapis Caelestis Callainus (Cyan)
+tile.lapis_aetherius.10.aliases=Lapis Caelestis Purpura (Purple)
+tile.lapis_aetherius.11.aliases=Lapis Caelestis Caeruleus (Blue)
+tile.lapis_aetherius.12.aliases=Lapis Caelestis Fuscus (Brown)
+tile.lapis_aetherius.13.aliases=Lapis Caelestis Paphiae Myrti (Dark Green)
+tile.lapis_aetherius.14.aliases=Lapis Caelestis Rufus (Red)
+tile.lapis_aetherius.15.aliases=Lapis Caelestis Nox (Black)
+tile.giga_torch.aliases=Magnum Torch
+tile.pacifists_bench.aliases=Peaceful Table
+item.ender_lotus_seed.aliases=Ender-Lily Seeds
+tile.ender_locus.aliases=QED (Quantum Entanglement Device)

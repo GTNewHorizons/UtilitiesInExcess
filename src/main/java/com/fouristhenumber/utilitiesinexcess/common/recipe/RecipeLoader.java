@@ -534,6 +534,64 @@ public class RecipeLoader {
             'j',
             Blocks.jukebox);
 
+        addShapedRecipe(
+            ModBlocks.TRUE_GREENSCREEN,
+            "ege",
+            "gig",
+            "ege",
+            'e',
+            ModBlocks.ETHEREAL_GLASS.get(),
+            'g',
+            ModBlocks.LAPIS_AETHERIUS.newItemStack(1, 5),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
+        // Filing Cabinets
+        if (RecipeConfig.enableFilingCabinetRecipes) {
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 0),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                Items.iron_ingot,
+                'c',
+                Blocks.chest);
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 1),
+                "mcm",
+                "mcm",
+                "mcm",
+                'm',
+                ModBlocks.MAGIC_WOOD,
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 0));
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 2),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 1));
+        }
+
+        // Filing Cabinet Capacity Upgrade
+        if (RecipeConfig.enableFilingCabinetUpgradeRecipe) addShapedRecipe(
+            ModItems.CAPACITY_UPGRADE,
+            " d ",
+            "gcg",
+            " d ",
+            'g',
+            Items.gold_ingot,
+            'c',
+            ModBlocks.FILING_CABINET.newItemStack(1, 0),
+            'd',
+            Items.diamond);
+
         // Void Quarry
         if (RecipeConfig.enableVoidQuarryRecipe) addShapedRecipe(
             ModBlocks.VOID_QUARRY,
@@ -1240,7 +1298,7 @@ public class RecipeLoader {
             'i',
             Items.iron_ingot,
             's',
-            ModItems.PSEUDO_INVERSION_SIGIL,
+            ModItems.PSEUDO_REVERSION_SIGIL,
             'd',
             Items.diamond);
 
