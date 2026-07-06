@@ -43,16 +43,8 @@ public class BlockPortalEndOfTime extends Block {
 
         setBlockName("temporal_gate");
         setBlockTextureName("utilitiesinexcess:temporal_gate");
+        setHardness(5F);
         setResistance(50F);
-    }
-
-    @Override
-    public float getBlockHardness(World worldIn, int x, int y, int z) {
-        if (worldIn.provider instanceof WorldProviderEndOfTime) {
-            return -1f;
-        } else {
-            return 5f;
-        }
     }
 
     IIcon[] icons;
