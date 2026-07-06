@@ -146,7 +146,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         icons = new IIcon[3];
         icons[0] = reg.registerIcon("utilitiesinexcess:inverted_ingot");
         icons[1] = reg.registerIcon("utilitiesinexcess:inverted_ingot_stable");
-        icons[2] = reg.registerIcon("utilitiesinexcess:inverted_ingot_stable");
+        icons[2] = reg.registerIcon("utilitiesinexcess:inverted_ingot_quasi_normalized");
     }
 
     @SideOnly(Side.CLIENT)
