@@ -19,7 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintbrush;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
@@ -82,7 +82,7 @@ public enum ModItems {
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
     CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
-    PAINTBRUSH(BlockColored.shouldUsePaintBrush(), new ItemPaintbrush(), "paintbrush"),
+    PAINT_ROLLER(BlockColored.shouldUsePaintRoller(), new ItemPaintRoller(), "paint_roller"),
     ; // leave trailing semicolon
     // spotless:on
 

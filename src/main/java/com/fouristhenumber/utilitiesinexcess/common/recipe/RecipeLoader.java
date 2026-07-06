@@ -1232,7 +1232,7 @@ public class RecipeLoader {
     public static void loadColoredBlockRecipes() {
         if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
-        if (BlockColored.shouldUsePaintBrush()) {
+        if (BlockColored.shouldUsePaintRoller()) {
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
                 loadDyeableColoredBlockRecipe(block);
             }

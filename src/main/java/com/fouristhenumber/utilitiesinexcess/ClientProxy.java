@@ -12,7 +12,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRender
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.PaintbrushRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.PaintRollerRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
@@ -74,8 +74,8 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.CHUNCHUNMARU.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.CHUNCHUNMARU.get(), new ChunchunmaruRenderer());
         }
-        if (ModItems.PAINTBRUSH.isEnabled()) {
-            MinecraftForgeClient.registerItemRenderer(ModItems.PAINTBRUSH.get(), new PaintbrushRenderer());
+        if (ModItems.PAINT_ROLLER.isEnabled()) {
+            MinecraftForgeClient.registerItemRenderer(ModItems.PAINT_ROLLER.get(), new PaintRollerRenderer());
         }
 
         if (Mods.FindIt.isLoaded()) {

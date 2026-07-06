@@ -23,14 +23,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.Color;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintbrush;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
-import com.fouristhenumber.utilitiesinexcess.network.client.PaintbrushColorSelect;
+import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.render.BlockColoredTexture;
 import com.fouristhenumber.utilitiesinexcess.utils.ColorUtils;
 
@@ -138,14 +138,14 @@ public class BlockColored extends Block {
         tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
     }
 
-    public static boolean shouldUsePaintBrush() {
+    public static boolean shouldUsePaintRoller() {
         return Mods.EndlessIDs.isLoaded() && ColoredBlocksConfig.INSTANCE.enableDying;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        if (shouldUsePaintBrush()) {
+        if (shouldUsePaintRoller()) {
             list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
         } else {
             for (int i = 0; i < 16; ++i) {
@@ -173,7 +173,7 @@ public class BlockColored extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
-        if (shouldUsePaintBrush()) {
+        if (shouldUsePaintRoller()) {
             return getRGBFromEIDMeta(worldIn.getBlockMetadata(x, y, z));
         }
 
@@ -184,15 +184,15 @@ public class BlockColored extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderColor(int meta) {
-        return shouldUsePaintBrush() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
+        return shouldUsePaintRoller() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItem() instanceof ItemPaintbrush) {
+        if (held != null && held.getItem() instanceof ItemPaintRoller) {
             PacketHandler.INSTANCE
-                .sendToServer(new PaintbrushColorSelect(getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
+                .sendToServer(new PaintRollerColorSelect(getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
             return null;
         }
 
@@ -224,7 +224,7 @@ public class BlockColored extends Block {
                 .getItemStackDisplayName(stack);
             stack.setItemDamage(dmg);
 
-            if (shouldUsePaintBrush()) {
+            if (shouldUsePaintRoller()) {
                 name = StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable", name);
             } else {
                 name = StatCollector
@@ -235,7 +235,7 @@ public class BlockColored extends Block {
 
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
             super.addInformation(stack, player, tooltip, p_77624_4_);
-            if (shouldUsePaintBrush()) {
+            if (shouldUsePaintRoller()) {
                 tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
             }
         }

@@ -26,18 +26,18 @@ import com.falsepattern.endlessids.mixin.helpers.SubChunkBlockHook;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockConveyor;
-import com.fouristhenumber.utilitiesinexcess.compat.mui.paintbrush.PaintbrushColorPickerDialog;
+import com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller.PaintRollerColorPickerDialog;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
-import com.fouristhenumber.utilitiesinexcess.network.client.PaintbrushColorSelect;
+import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.utils.KeybindUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGuiData> {
+public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryGuiData> {
 
-    public ItemPaintbrush() {
-        setUnlocalizedName("paintbrush");
+    public ItemPaintRoller() {
+        setUnlocalizedName("paint_roller");
         setMaxStackSize(1);
     }
 
@@ -53,8 +53,8 @@ public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGu
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
-        featherIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paintbrush_feathers");
-        handleIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paintbrush_handle");
+        featherIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller_overlay");
+        handleIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller");
     }
 
     @Override
@@ -142,8 +142,8 @@ public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGu
     public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
         ItemStack stack = data.getUsedItemStack();
 
-        PaintbrushColorPickerDialog colorPickerDialog = new PaintbrushColorPickerDialog(
-            newColor -> PacketHandler.INSTANCE.sendToServer(new PaintbrushColorSelect(newColor)),
+        PaintRollerColorPickerDialog colorPickerDialog = new PaintRollerColorPickerDialog(
+            newColor -> PacketHandler.INSTANCE.sendToServer(new PaintRollerColorSelect(newColor)),
             getColorFromStack(stack));
 
         return colorPickerDialog;
@@ -160,10 +160,10 @@ public class ItemPaintbrush extends Item implements IGuiHolder<PlayerInventoryGu
             .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode());
         String middleClickName = KeybindUtils
             .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode());
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paintbrush.desc.0", rightClickName));
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paintbrush.desc.1", rightClickName));
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paintbrush.desc.2", rightClickName));
-        tooltip.add(StatCollector.translateToLocalFormatted("item.paintbrush.desc.3", middleClickName));
+        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.0", rightClickName));
+        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.1", rightClickName));
+        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.2", rightClickName));
+        tooltip.add(StatCollector.translateToLocalFormatted("item.paint_roller.desc.3", middleClickName));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 }

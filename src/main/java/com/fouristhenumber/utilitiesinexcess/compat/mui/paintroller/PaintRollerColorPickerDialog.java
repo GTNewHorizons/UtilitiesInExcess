@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.compat.mui.paintbrush;
+package com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller;
 
 import java.util.function.Consumer;
 
@@ -28,7 +28,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradi
 
 // Slightly modified version of ModularUI2's ColorPickerDialog
 // Thank you Modular UI <3
-public class PaintbrushColorPickerDialog extends Dialog<Integer> {
+public class PaintRollerColorPickerDialog extends Dialog<Integer> {
 
     private static final IDrawable handleBackground = new Rectangle().color(Color.WHITE.main);
 
@@ -47,11 +47,11 @@ public class PaintbrushColorPickerDialog extends Dialog<Integer> {
     private final Rectangle sliderBackgroundS = new Rectangle();
     private final Rectangle sliderBackgroundV = new Rectangle();
 
-    public PaintbrushColorPickerDialog(Consumer<Integer> resultConsumer, int startColor) {
+    public PaintRollerColorPickerDialog(Consumer<Integer> resultConsumer, int startColor) {
         this("color_picker", resultConsumer, startColor);
     }
 
-    public PaintbrushColorPickerDialog(String name, Consumer<Integer> resultConsumer, int startColor) {
+    public PaintRollerColorPickerDialog(String name, Consumer<Integer> resultConsumer, int startColor) {
         super(name, resultConsumer);
         updateAll(startColor);
         size(140, 102).background(GuiTextures.MC_BACKGROUND);
@@ -61,7 +61,7 @@ public class PaintbrushColorPickerDialog extends Dialog<Integer> {
                 .left(1)
                 .size(12)
                 .paddingRight(2)
-                .tooltipBuilder(PaintbrushColorPickerDialog::buildHelpToolTip));
+                .tooltipBuilder(PaintRollerColorPickerDialog::buildHelpToolTip));
         child(
             Flow.col()
                 .left(5)
@@ -326,9 +326,9 @@ public class PaintbrushColorPickerDialog extends Dialog<Integer> {
     }
 
     public static void buildHelpToolTip(RichTooltip tooltip) {
-        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.0"));
-        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.1"));
-        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.2"));
-        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.3"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.0"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.1"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.2"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.3"));
     }
 }

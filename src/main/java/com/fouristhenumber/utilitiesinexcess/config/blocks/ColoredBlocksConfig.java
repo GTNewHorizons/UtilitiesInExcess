@@ -23,7 +23,7 @@ public class ColoredBlocksConfig {
     @Config.Order(200)
     @Config.DefaultBoolean(true)
     @Config.Comment({
-        "Instead of 16 static colors, with this enabled a paintbrush will be added which can be used to dye colored blocks",
+        "Instead of 16 static colors, with this enabled a paint_roller will be added which can be used to dye colored blocks",
         "Requires EndlessIDs" })
     @Config.RequiresMcRestart
     public boolean enableDying;

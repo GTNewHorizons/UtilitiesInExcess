@@ -17,7 +17,7 @@ public class ColoredBlocksTransformation implements IBlockTransformationHandler 
 
     @Override
     public boolean apply(BlockConversionInfo info) {
-        if (BlockColored.shouldUsePaintBrush()) {
+        if (BlockColored.shouldUsePaintRoller()) {
             info.metadata = BlockColored.getEIDMetaFromRGB(ColorUtils.getHexColorFromWoolMeta(info.metadata));
         }
         info.blockID = this.blockID;
