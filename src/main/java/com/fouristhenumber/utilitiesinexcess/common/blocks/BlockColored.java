@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -21,14 +20,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 
 import com.cleanroommc.modularui.utils.Color;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintbrush;
+import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
@@ -145,6 +142,7 @@ public class BlockColored extends Block {
         return Mods.EndlessIDs.isLoaded() && ColoredBlocksConfig.INSTANCE.enableDying;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         if (shouldUsePaintBrush()) {
@@ -287,29 +285,7 @@ public class BlockColored extends Block {
         for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
             blockColored.initFromString();
         }
-
-        if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
-        for (BlockColored block : BlockColored.COLORED_BLOCKS) {
-            GameRegistry.addShapedRecipe(
-                new ItemStack(block, 8, 0b0_11111_11111_11111),
-                "bbb",
-                "bdb",
-                "bbb",
-                'b',
-                block.getBase(),
-                'd',
-                new ItemStack(Items.dye, 1, 15));
-
-            GameRegistry.addShapedRecipe(
-                new ItemStack(block.getBase(), 8),
-                "bbb",
-                "bdb",
-                "bbb",
-                'b',
-                new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE),
-                'd',
-                new ItemStack(Items.water_bucket));
-        }
+        RecipeLoader.loadColoredBlockRecipes();
     }
 
     // Redirects of Block methods

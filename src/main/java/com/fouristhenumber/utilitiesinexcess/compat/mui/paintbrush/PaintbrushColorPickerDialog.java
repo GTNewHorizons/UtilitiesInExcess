@@ -44,7 +44,6 @@ public class PaintbrushColorPickerDialog extends Dialog<Integer> {
     private final Rectangle sliderBackgroundR = new Rectangle();
     private final Rectangle sliderBackgroundG = new Rectangle();
     private final Rectangle sliderBackgroundB = new Rectangle();
-    private final Rectangle sliderBackgroundA = new Rectangle();
     private final Rectangle sliderBackgroundS = new Rectangle();
     private final Rectangle sliderBackgroundV = new Rectangle();
 
@@ -317,11 +316,9 @@ public class PaintbrushColorPickerDialog extends Dialog<Integer> {
         int rs = Color.withRed(color, 0), re = Color.withRed(color, 255);
         int gs = Color.withGreen(color, 0), ge = Color.withGreen(color, 255);
         int bs = Color.withBlue(color, 0), be = Color.withBlue(color, 255);
-        int as = Color.withAlpha(color, 0), ae = Color.withAlpha(color, 255);
         this.sliderBackgroundR.horizontalGradient(rs, re);
         this.sliderBackgroundG.horizontalGradient(gs, ge);
         this.sliderBackgroundB.horizontalGradient(bs, be);
-        this.sliderBackgroundA.horizontalGradient(as, ae);
         this.sliderBackgroundS
             .horizontalGradient(Color.withHSVSaturation(color, 0f), Color.withHSVSaturation(color, 1f));
         this.sliderBackgroundV.horizontalGradient(Color.withValue(color, 0f), Color.withValue(color, 1f));

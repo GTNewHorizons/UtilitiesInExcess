@@ -32,7 +32,6 @@ public class RecipeLoader {
         loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
-        loadColoredBlockRecipes();
 
         // Chandeliers
         if (RecipeConfig.enableChandelierRecipe) {
@@ -1229,53 +1228,63 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_GLASS.newItemStack(1, 2));
     }
 
-    private static void loadColoredBlockRecipes() {
+    // DO NOT call from inside RecipeLoader, must be called after config colored blocks get initialized
+    public static void loadColoredBlockRecipes() {
         if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
-        if (BlockColored.shouldUsePaintBrush()) return;
+        if (BlockColored.shouldUsePaintBrush()) {
+            for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                loadDyeableColoredBlockRecipe(block);
+            }
+        } else {
+            ItemStack[] dyes = new ItemStack[16];
+            for (int i = 0; i < 16; ++i) {
+                dyes[i] = new ItemStack(Items.dye, 1, i);
+            }
 
-        ItemStack[] dyes = new ItemStack[16];
-        for (int i = 0; i < 16; ++i) {
-            dyes[i] = new ItemStack(Items.dye, 1, i);
+            for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                loadColoredBlockRecipe(block, dyes);
+            }
         }
-        loadColoredBlockRecipe(ModBlocks.COLORED_WOOD_PLANKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_GLOWSTONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_STONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_COBBLESTONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_QUARTZ_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_SOUL_SAND, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_LAMP, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_BRICKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_STONE_BRICKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_LAPIS_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_OBSIDIAN, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_COAL_BLOCK, dyes);
     }
 
-    private static void loadColoredBlockRecipe(ModBlocks block, ItemStack[] dyes) {
+    private static void loadDyeableColoredBlockRecipe(BlockColored block) {
+        GameRegistry.addShapedRecipe(
+            new ItemStack(block, 8, 0b0_11111_11111_11111),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            block.getBase(),
+            'd',
+            new ItemStack(Items.dye, 1, 15));
+
+        GameRegistry.addShapedRecipe(
+            new ItemStack(block.getBase(), 8),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE),
+            'd',
+            new ItemStack(Items.water_bucket));
+    }
+
+    private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
-            addShapedRecipe(
-                block.newItemStack(8, i),
-                "bbb",
-                "bdb",
-                "bbb",
-                'b',
-                ((BlockColored) block.get()).getBase(),
-                'd',
-                dyes[15 - i]);
-
-            addShapedRecipe(
-                new ItemStack(((BlockColored) block.get()).getBase(), 8),
-                "bbb",
-                "bdb",
-                "bbb",
-                'b',
-                block.newItemStack(1, i),
-                'd',
-                water);
+            addShapedRecipe(new ItemStack(block, 8, i), "bbb", "bdb", "bbb", 'b', block.getBase(), 'd', dyes[15 - i]);
         }
+
+        addShapedRecipe(
+            new ItemStack(block.getBase(), 8),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE),
+            'd',
+            water);
     }
 
     private static void loadInversionRecipes() {
