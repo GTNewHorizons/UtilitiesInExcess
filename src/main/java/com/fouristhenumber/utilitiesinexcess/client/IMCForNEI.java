@@ -32,10 +32,10 @@ public class IMCForNEI {
         }
 
         sendInfoPage(
-            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
+            "<utilitiesinexcess:inverted_nugget>,<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_ingot:2>",
             "nei.infopage.uie.inverted_ingot_stable.1");
         sendInfoPage(
-            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
+            "<utilitiesinexcess:inverted_nugget>,<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_ingot:2>",
             "nei.infopage.uie.inverted_ingot_stable.2");
 
         if (Mods.Tinkers.isLoaded()) {
