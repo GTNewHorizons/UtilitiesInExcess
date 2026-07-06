@@ -533,6 +533,18 @@ public class RecipeLoader {
             'j',
             Blocks.jukebox);
 
+        addShapedRecipe(
+            ModBlocks.TRUE_GREENSCREEN,
+            "ege",
+            "gig",
+            "ege",
+            'e',
+            ModBlocks.ETHEREAL_GLASS.get(),
+            'g',
+            ModBlocks.LAPIS_AETHERIUS.newItemStack(1, 5),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
         // Filing Cabinets
         if (RecipeConfig.enableFilingCabinetRecipes) {
             addShapedRecipe(
@@ -1266,7 +1278,7 @@ public class RecipeLoader {
             'i',
             Items.iron_ingot,
             's',
-            ModItems.PSEUDO_INVERSION_SIGIL,
+            ModItems.PSEUDO_REVERSION_SIGIL,
             'd',
             Items.diamond);
 

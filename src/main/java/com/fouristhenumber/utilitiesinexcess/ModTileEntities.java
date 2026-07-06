@@ -2,9 +2,11 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.tileentity.TileEntity;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityAdvancedBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityBlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityChandelier;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityConveyor;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityDrum;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityEnderLocus;
@@ -18,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRadic
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityRedstoneClock;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySignificantlyShrunkChest;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySpike;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
@@ -75,14 +78,17 @@ public enum ModTileEntities {
     PACIFISTS_BENCH(TileEntityPacifistsBench.class                             , "PacifistsBench"),
     TRADING_POST(TileEntityTradingPost.class                                   , "TradingPost"),
     ADVANCED_BLOCK_UPDATE_DETECTOR(TileEntityAdvancedBlockUpdateDetector.class , "AdvancedBlockUpdateDetector"),
-    PENDANT_LIGHT(TileEntityChandelier.class                                   , "PendantLight"),
+    CHANDELIER(TileEntityChandelier.class                                      , "Chandelier"),
     GIGA_TORCH(TileEntityGigaTorch.class                                       , "GigaTorch"),
     ENDER_LOCUS(TileEntityEnderLocus.class                                     , "EnderLocus"),
     VOID_QUARRY(TileEntityVoidQuarry.class                                     , "VoidQuarry"),
     VOID_MARKER(TileEntityVoidMarker.class                                     , "VoidMarker"),
+    TRUE_GREENSCREEN(BlockTrueGreenscreen.TileEntityTrueGreenscreen.class      , "TrueGreenscreen"),
     FILING_CABINET_BASIC(TileEntityFilingCabinet.Basic.class                   , "FilingCabinetBasic"),
     FILING_CABINET_ADVANCED(TileEntityFilingCabinet.Advanced.class             , "FilingCabinetAdvanced"),
     FILING_CABINET_ELITE(TileEntityFilingCabinet.Elite.class                   , "FilingCabinetElite"),
+    COLLECTOR(TileEntityCollector.class                                        , "Collector"),
+    SMART_PUMP(TileEntitySmartPump.class                                       , "SmartPump"),
     ;
     // spotless:on
 

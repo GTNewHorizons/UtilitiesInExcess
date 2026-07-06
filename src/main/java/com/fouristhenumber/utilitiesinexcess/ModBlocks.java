@@ -45,6 +45,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTradingPost;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanFluid;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrashCanItem;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockEnderGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockFoodGenerator;
@@ -177,6 +178,7 @@ public enum ModBlocks {
     VOID_QUARRY(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarry(), "void_quarry"),
     VOID_MARKER(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidMarker(), "void_marker"),
     VOID_QUARRY_UPGRADE(VoidQuarryConfig.INSTANCE.enableVoidQuarry, new BlockVoidQuarryUpgrade(), BlockVoidQuarryUpgrade.ItemVoidQuarryUpgrade.class, "void_quarry_upgrade"),
+    TRUE_GREENSCREEN(BlockConfig.enableTrueGreenscreen, new BlockTrueGreenscreen(), BlockTrueGreenscreen.ItemBlockTrueGreenscreen.class, "true_greenscreen"),
     FILING_CABINET(BlockConfig.filingCabinets.enableFilingCabinets,new BlockFilingCabinet() , BlockFilingCabinet.ItemBlockFilingCabinet.class,"filing_cabinet"),
     ; // leave trailing semicolon
     // spotless:on
