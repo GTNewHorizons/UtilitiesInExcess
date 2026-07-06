@@ -130,6 +130,9 @@ item.inverted_ingot.stable.desc=This ingot has been stabilized and will not impl
 nei.infopage.uie.inverted_ingot_stable.1=Creating inverted ingots can be dangerous and irritating. Fortunately, it is possible to stabilize the process by either crafting individual stable nuggets with an Awakened Inversion Sigil or by using a Pseudo-Inversion Sigil.
 nei.infopage.uie.inverted_ingot_stable.2=Inverted ingots created in this way never implode, can stack, and can be safely removed from the crafting table.
 
+item.inverted_ingot.quasi_normalized.name=Quasi-Normalized Inverted Ingot
+item.inverted_ingot.quasi_normalized.desc=This ingot has additional potential and will not implode.
+
 item.inverted_nugget.name=Stable Inverted Nugget
 
 death.attack.inverted_ingot=%1$s's insides were inverted!

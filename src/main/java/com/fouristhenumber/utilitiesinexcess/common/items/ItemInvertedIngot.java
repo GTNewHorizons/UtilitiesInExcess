@@ -90,13 +90,17 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        if (stack.getItemDamage() == 0) return "item.inverted_ingot";
-        else return "item.inverted_ingot.stable";
+        return switch (stack.getItemDamage()) {
+            case 0 -> "item.inverted_ingot";
+            case 1 -> "item.inverted_ingot.stable";
+            default -> "item.inverted_ingot.quasi_normalized";
+        };
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (stack.getItemDamage() == 0) {
+        int meta = stack.getItemDamage();
+        if (meta == 0) {
             if (InversionConfig.INSTANCE.invertedIngotMode != InversionConfig.InversionMode.OFF) {
                 if (!stack.hasTagCompound()) {
                     tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
@@ -122,7 +126,8 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
                 }
             }
         } else {
-            tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.stable.desc"));
+            if (meta == 1) tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.stable.desc"));
+            else tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.quasi_normalized.desc"));
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
@@ -138,9 +143,10 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister reg) {
-        icons = new IIcon[2];
+        icons = new IIcon[3];
         icons[0] = reg.registerIcon("utilitiesinexcess:inverted_ingot");
         icons[1] = reg.registerIcon("utilitiesinexcess:inverted_ingot_stable");
+        icons[2] = reg.registerIcon("utilitiesinexcess:inverted_ingot_stable");
     }
 
     @SideOnly(Side.CLIENT)
@@ -154,6 +160,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
     }
 
     public static class InvertedNugget extends Item implements ITranslucentItem {

@@ -32,10 +32,10 @@ public class IMCForNEI {
         }
 
         sendInfoPage(
-            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
+            "<utilitiesinexcess:inverted_nugget>,<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_ingot:2>",
             "nei.infopage.uie.inverted_ingot_stable.1");
         sendInfoPage(
-            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
+            "<utilitiesinexcess:inverted_nugget>,<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_ingot:2>",
             "nei.infopage.uie.inverted_ingot_stable.2");
 
         if (Mods.Tinkers.isLoaded()) {
@@ -48,6 +48,7 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
         sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
         sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
+        sendInfoPage("<utilitiesinexcess:chunchunmaru>", "nei.infopage.uie.chunchunmaru.1");
 
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
