@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.exu;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.blocks.ColoredBlocksTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.DivisionSigilTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
@@ -229,29 +230,45 @@ public class PosteaTransforms {
     }
 
     private static void coloredBlocks() {
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:colorStoneBrick", ModBlocks.COLORED_STONE_BRICKS.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:colorWoodPlanks", ModBlocks.COLORED_WOOD_PLANKS.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_lightgem", ModBlocks.COLORED_GLOWSTONE.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:color_stone", ModBlocks.COLORED_STONE.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_quartzBlock", ModBlocks.COLORED_QUARTZ_BLOCK.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_hellsand", ModBlocks.COLORED_SOUL_SAND.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_redstoneLight", ModBlocks.COLORED_REDSTONE_LAMP.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:color_brick", ModBlocks.COLORED_BRICKS.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_stonebrick", ModBlocks.COLORED_COBBLESTONE.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_blockLapis", ModBlocks.COLORED_LAPIS_BLOCK.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:color_obsidian", ModBlocks.COLORED_OBSIDIAN.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_blockRedstone", ModBlocks.COLORED_REDSTONE_BLOCK.get());
-        BlockReplacementManager
-            .addSimpleReplacement("ExtraUtilities:color_blockCoal", ModBlocks.COLORED_COAL_BLOCK.get());
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:colorStoneBrick",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_STONE_BRICKS.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:colorWoodPlanks",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_WOOD_PLANKS.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_lightgem",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_GLOWSTONE.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_stone",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_STONE.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_quartzBlock",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_QUARTZ_BLOCK.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_hellsand",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_SOUL_SAND.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_redstoneLight",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_REDSTONE_LAMP.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_brick",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_BRICKS.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_stonebrick",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_COBBLESTONE.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_blockLapis",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_LAPIS_BLOCK.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_obsidian",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_OBSIDIAN.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_blockRedstone",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_REDSTONE_BLOCK.get()));
+        BlockReplacementManager.addTransformationHandler(
+            "ExtraUtilities:color_blockCoal",
+            new ColoredBlocksTransformation(ModBlocks.COLORED_COAL_BLOCK.get()));
     }
 
     private static void generatorBlocks() {
@@ -362,6 +379,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:temporalHoe");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:unstableingot");
         ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:watering_can");
+        ItemStackReplacementManager.ignoreMissingMapping("ExtraUtilities:paintbrush");
         // Blocks
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:angelBlock");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:block_bedrockium");
