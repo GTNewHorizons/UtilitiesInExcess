@@ -2,8 +2,12 @@ package com.fouristhenumber.utilitiesinexcess.client;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 
@@ -252,6 +256,23 @@ public class IMCForNEI {
         sendInfoPage(
             "<utilitiesinexcess:void_quarry_upgrade:6>,<utilitiesinexcess:void_quarry_upgrade:7>,<utilitiesinexcess:void_quarry_upgrade:8>",
             "nei.infopage.uie.void_quarry_upgrade.fortune");
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks && BlockColored.shouldUsePaintBrush()) {
+            sendInfoPage("<utilitiesinexcess:paintbrush>", "nei.infopage.uie.paintbrush.1");
+
+            for (ModBlocks modBlock : ModBlocks.VALUES) {
+                if (modBlock.get() instanceof BlockColored && !modBlock.name()
+                    .equals("COLORED_STONE_BRICKS")) {
+                    sendInfoPage("utilitiesinexcess:" + modBlock.name(), "nei.infopage.uie.colored_blocks.dyeable.1");
+                }
+            }
+
+            for (BlockColored block : BlockColored.CONFIG_COLORED_BLOCKS) {
+                sendInfoPage(
+                    "utilitiesinexcess:" + ((AccessorBlock) block).uie$getUnlocalizedNameRaw(),
+                    "nei.infopage.uie.colored_blocks.dyeable.1");
+            }
+        }
     }
 
     private static void sendInfoPage(String filter, String page) {

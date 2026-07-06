@@ -27,6 +27,8 @@ import com.cleanroommc.modularui.utils.Color;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintbrush;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
@@ -235,8 +237,9 @@ public class BlockColored extends Block {
 
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
             super.addInformation(stack, player, tooltip, p_77624_4_);
-            tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
-            tooltip.add(StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable.desc"));
+            if (shouldUsePaintBrush()) {
+                tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
+            }
         }
     }
 
@@ -260,7 +263,9 @@ public class BlockColored extends Block {
                 brightness = Float.parseFloat(args[2]);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(
-                    "Utilities in Excess - Colored Blocks: Couldn't parse brightness value \"" + args[2] + "\" for extra colored blocks entry \"" + configString
+                    "Utilities in Excess - Colored Blocks: Couldn't parse brightness value \"" + args[2]
+                        + "\" for extra colored blocks entry \""
+                        + configString
                         + "\". Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
             }
             String textureDomain = args[3];
@@ -282,6 +287,8 @@ public class BlockColored extends Block {
         for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
             blockColored.initFromString();
         }
+
+        if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
         for (BlockColored block : BlockColored.COLORED_BLOCKS) {
             GameRegistry.addShapedRecipe(
                 new ItemStack(block, 8, 0b0_11111_11111_11111),

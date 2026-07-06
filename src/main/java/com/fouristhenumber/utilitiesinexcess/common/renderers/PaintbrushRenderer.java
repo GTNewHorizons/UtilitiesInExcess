@@ -34,18 +34,11 @@ public class PaintbrushRenderer implements IItemRenderer {
         if (!(stack.getItem() instanceof ItemPaintbrush paintbrush)) return;
         int color = ItemPaintbrush.getColorFromStack(stack);
 
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-
         ItemRenderUtil.applyStandardItemTransform(type);
 
         GL11.glColor3f(Color.getRedF(color), Color.getGreenF(color), Color.getBlueF(color));
         ItemRenderUtil.renderItem(type, paintbrush.featherIcon);
         GL11.glColor3f(1f, 1f, 1f);
         ItemRenderUtil.renderItem(type, paintbrush.handleIcon);
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 }

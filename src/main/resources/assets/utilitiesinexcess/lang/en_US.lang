@@ -601,7 +601,7 @@ uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
 
 uie.colored_blocks.color.dyeable=Dyed %s
-uie.colored_blocks.color.dyeable.desc=Tile entity-free dye-able block!
+nei.infopage.uie.colored_blocks.dyeable.1=Dyed blocks can be dyed any color you want using a paintbrush. Now with a new and improved tile entity-free recipe!
 
 item.paintbrush.name=Paintbrush
 item.paintbrush.desc.0=[§a%s§7] Colorable blocks to dye them
@@ -609,9 +609,10 @@ item.paintbrush.desc.1=[§a%s§7] The air to select hex color
 item.paintbrush.desc.2=[§aCrouch §7+ §a%s§7] Activate line-mode
 item.paintbrush.desc.3=[§a%s§7] Colorable blocks to copy color
 item.paintbrush.help_tooltip.0=Block colors are limited to 16-bit
-item.paintbrush.help_tooltip.1=meaning that hex value will have
+item.paintbrush.help_tooltip.1=meaning that hex values will have
 item.paintbrush.help_tooltip.2=each of their RGB values rounded down
 item.paintbrush.help_tooltip.3=to the nearest number divisible by 8
+nei.infopage.uie.paintbrush.1=This fancy paintbrush can be used to dye any Utilities in Excess dyed block any color you want. Now with a new and improved tile entity-free recipe!
 
 material.bedrockium_uie=Bedrockium
 material.bedrockium_uie.ability=Heavy

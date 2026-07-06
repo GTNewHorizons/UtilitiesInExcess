@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.compat.mui.paintbrush;
 
 import java.util.function.Consumer;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.ModularUI;
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -327,10 +329,9 @@ public class PaintbrushColorPickerDialog extends Dialog<Integer> {
     }
 
     public static void buildHelpToolTip(RichTooltip tooltip) {
-        // tooltip.addLine("wow epic");
-        tooltip.addLine("Block colors are limited to 16-bit");
-        tooltip.addLine("meaning that hex values will have");
-        tooltip.addLine("each of their RGB values rounded down");
-        tooltip.addLine("to the nearest number divisible by 8");
+        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.0"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.1"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.2"));
+        tooltip.addLine(StatCollector.translateToLocal("item.paintbrush.help_tooltip.3"));
     }
 }

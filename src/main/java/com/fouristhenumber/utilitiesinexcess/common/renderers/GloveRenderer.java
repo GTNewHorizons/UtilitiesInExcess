@@ -47,10 +47,6 @@ public class GloveRenderer implements IItemRenderer {
         if (!(stack.getItem() instanceof ItemGlove glove)) return;
         int meta = stack.getItemDamage();
 
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-
         ItemRenderUtil.applyStandardItemTransform(type);
 
         float[] rgb = woolMetaToRGB(meta / 16);
@@ -59,9 +55,6 @@ public class GloveRenderer implements IItemRenderer {
         rgb = woolMetaToRGB(meta % 16);
         GL11.glColor3f(rgb[0], rgb[1], rgb[2]);
         ItemRenderUtil.renderItem(type, glove.bottomIcon);
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 
     public static float[] woolMetaToRGB(int dyeMeta) {
