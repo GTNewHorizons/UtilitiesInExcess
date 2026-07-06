@@ -54,7 +54,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableInvertedIngotStableRecipe;
+    public static boolean enableInvertedIngotQuasiNormalizedRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
@@ -87,6 +87,10 @@ public class RecipeConfig {
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableEthericSwordRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableChunchunmaruRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
