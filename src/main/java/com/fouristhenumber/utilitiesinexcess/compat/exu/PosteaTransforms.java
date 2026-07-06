@@ -60,6 +60,7 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:shears", ModItems.PRECISION_SHEARS.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:paintbrush", ModItems.PAINTBRUSH.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:bedrockiumIngot", ModItems.BEDROCKIUM_INGOT.get(), true);
         ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:scanner", ModItems.BLOCK_ANALYZER.get(), true);
