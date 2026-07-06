@@ -66,7 +66,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:unstableingot", 0, ModItems.INVERTED_INGOT.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 0, true);
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 2, true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:unstableingot", 1, ModItems.INVERTED_NUGGET.get(), 0, true);
         ItemStackReplacementManager
