@@ -9,19 +9,19 @@ import com.gtnewhorizons.postea.utility.BlockConversionInfo;
 
 public class ColoredBlocksTransformation implements IBlockTransformationHandler {
 
-    private final Block block;
+    private final int blockID;
 
     public ColoredBlocksTransformation(Block block) {
-        this.block = block;
+        this.blockID = Block.getIdFromBlock(block);
     }
 
     @Override
     public boolean apply(BlockConversionInfo info) {
         if (BlockColored.shouldUsePaintBrush()) {
-            info.blockID = Block.getIdFromBlock(block);
+            info.blockID = this.blockID;
             info.metadata = BlockColored.getEIDMetaFromRGB(ColorUtils.getHexColorFromWoolMeta(info.metadata));
         }
-        info.blockID = Block.getIdFromBlock(block);
+        info.blockID = this.blockID;
         return true;
     }
 }
