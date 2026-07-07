@@ -127,7 +127,7 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
             }
         } else {
             if (meta == 1) tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.inverted_ingot.stable"));
-            else tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.quasi_normalized.desc"));
+            else tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.inverted_ingot.quasi_normalized"));
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }

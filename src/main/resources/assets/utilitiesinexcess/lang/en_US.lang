@@ -531,6 +531,7 @@ uie.desc.item.inverted_ingot.3=Will also implode if thrown or the crafting table
 uie.desc.item.inverted_ingot.4=Does not stack.
 uie.desc.item.inverted_ingot.5=Cannot be crafted outside of a vanilla crafting table.
 uie.desc.item.inverted_ingot.c=Creatively spawned. Will not implode.
+uie.desc.item.inverted_ingot.quasi_normalized=This ingot has additional potential and will not implode.
 
 uie.desc.item.inverted_ingot.stable=This ingot has been stabilized and will not implode.
 uie.desc.item.inversion_sigil_active.uses=Uses Remaining: %s
@@ -744,6 +745,7 @@ uie.waila.rain_muffler.global_disabled=Rain unmuted
 
 ### Death messages
 death.attack.underworld-ghost=%1$s wasn't afraid of the dark.
+death.attack.inverted_ingot=%1$s's insides were inverted!
 
 ### Keys
 uie.key.categories.uie=Utilities In Excess
@@ -753,8 +755,6 @@ uie.key.rclick=Right-Click
 uie.key.lclick=Left-Click
 
 #### Config
-
-
 uie.config.blocks=Blocks
 #uie.config.title.blocks.tooltip=
 uie.config.blocks.spikes=Spikes
