@@ -67,31 +67,42 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         float clickX, float clickY, float clickZ) {
         if (!BlockColored.allowDyingBlocks()) return false;
 
+        boolean paintStripper = getPaintStripperFromStack(stack);
         Block block = world.getBlock(x, y, z);
-        boolean needsIDChange = false;
-        if (!(block instanceof BlockColored)) {
-            if (BlockColored.hasColoredVersion(block)) {
-                needsIDChange = true;
-            } else {
-                return false;
-            }
-        }
+        Block newBlock = getNewBlock(paintStripper, block);
+        boolean needsIDChange = newBlock != block;
 
         int color = BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
 
         if (player.isSneaking()) {
-            paintLine(world, block, x, y, z, side, color);
+            paintLine(world, block, x, y, z, side, paintStripper, color);
         } else {
             paintBlock(
                 world,
-                needsIDChange ? Block.getIdFromBlock(BlockColored.getColoredVersion(block)) : -1,
+                needsIDChange ? Block.getIdFromBlock(newBlock) : -1,
                 x,
                 y,
                 z,
-                color);
+                newBlock instanceof BlockColored ? color : 0);
         }
 
         return true;
+    }
+
+    private Block getNewBlock(boolean paintStripper, Block currentBlock) {
+        if (paintStripper) {
+            if (currentBlock instanceof BlockColored cbc) {
+                return cbc.getBase();
+            } else {
+                return currentBlock;
+            }
+        } else {
+            if (currentBlock instanceof BlockColored) {
+                return currentBlock;
+            } else {
+                return BlockColored.getColoredVersion(currentBlock);
+            }
+        }
     }
 
     private void paintBlock(World world, int setBlockID, int x, int y, int z, int color) {
@@ -106,11 +117,13 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void paintLine(World world, Block startBlock, int x, int y, int z, int side, int color) {
+    private void paintLine(World world, Block startBlock, int x, int y, int z, int side, boolean paintStripper,
+        int color) {
         ForgeDirection direction = ForgeDirection.getOrientation(side)
             .getOpposite();
 
         int blockID = -1;
+        Block newBlock = getNewBlock(paintStripper, startBlock);
         for (int i = 0; i < 100; i++) {
             Block block = world
                 .getBlock(x + (direction.offsetX * i), y + (direction.offsetY * i), z + (direction.offsetZ * i));
@@ -121,9 +134,9 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
             }
 
             int blockIDTemp = -1;
-            if (!(block instanceof BlockColored)) {
+            if (block != newBlock) {
                 if (blockID == -1) {
-                    blockID = Block.getIdFromBlock(BlockColored.getColoredVersion(block));
+                    blockID = Block.getIdFromBlock(newBlock);
                 }
                 blockIDTemp = blockID;
             }
@@ -133,7 +146,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
                 x + (direction.offsetX * i),
                 y + (direction.offsetY * i),
                 z + (direction.offsetZ * i),
-                color);
+                newBlock instanceof BlockColored ? color : 0);
         }
     }
 
@@ -160,12 +173,25 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         return color;
     }
 
-    public static void setStackColor(ItemStack stack, int color) {
+    public static boolean getPaintStripperFromStack(ItemStack stack) {
+        boolean paintStripper;
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag == null || !tag.hasKey("PaintStripper")) {
+            paintStripper = false;
+        } else {
+            paintStripper = tag.getBoolean("PaintStripper");
+        }
+
+        return paintStripper;
+    }
+
+    public static void setStackColor(ItemStack stack, int color, boolean paintStripper) {
         NBTTagCompound newTag = stack.getTagCompound();
         if (newTag == null) {
             newTag = new NBTTagCompound();
         }
         newTag.setInteger("SelectedColor", color);
+        newTag.setBoolean("PaintStripper", paintStripper);
         stack.setTagCompound(newTag);
     }
 
@@ -174,8 +200,10 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         ItemStack stack = data.getUsedItemStack();
 
         PaintRollerColorPickerDialog colorPickerDialog = new PaintRollerColorPickerDialog(
-            newColor -> PacketHandler.INSTANCE.sendToServer(new PaintRollerColorSelect(newColor)),
-            getColorFromStack(stack));
+            (newColor, paintStripper) -> PacketHandler.INSTANCE
+                .sendToServer(new PaintRollerColorSelect(newColor, paintStripper)),
+            getColorFromStack(stack),
+            getPaintStripperFromStack(stack));
 
         return colorPickerDialog;
     }

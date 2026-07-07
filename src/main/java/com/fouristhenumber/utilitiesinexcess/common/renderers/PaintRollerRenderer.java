@@ -33,12 +33,22 @@ public class PaintRollerRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
         if (!(stack.getItem() instanceof ItemPaintRoller paintRoller)) return;
         int color = ItemPaintRoller.getColorFromStack(stack);
+        boolean paintStripper = ItemPaintRoller.getPaintStripperFromStack(stack);
 
         ItemRenderUtil.applyStandardItemTransform(type);
 
-        GL11.glColor3f(Color.getRedF(color), Color.getGreenF(color), Color.getBlueF(color));
+        if (paintStripper) {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glColor4f(1f, 1f, 1f, 0.5f);
+        } else {
+            GL11.glColor3f(Color.getRedF(color), Color.getGreenF(color), Color.getBlueF(color));
+        }
         ItemRenderUtil.renderItem(type, paintRoller.featherIcon);
-        GL11.glColor3f(1f, 1f, 1f);
+
+        if (paintStripper) {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
+        GL11.glColor4f(1f, 1f, 1f, 1f);
         ItemRenderUtil.renderItem(type, paintRoller.handleIcon);
     }
 }

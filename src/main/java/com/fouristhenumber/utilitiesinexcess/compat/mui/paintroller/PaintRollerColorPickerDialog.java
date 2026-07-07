@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import net.minecraft.util.StatCollector;
 
@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -22,6 +23,7 @@ import com.cleanroommc.modularui.widgets.Dialog;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityTradingPost;
@@ -40,6 +42,8 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
     private double saturation;
     private double value;
 
+    private boolean paintStripper;
+
     private final Rectangle preview = new Rectangle();
     private final Rectangle sliderBackgroundR = new Rectangle();
     private final Rectangle sliderBackgroundG = new Rectangle();
@@ -47,14 +51,17 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
     private final Rectangle sliderBackgroundS = new Rectangle();
     private final Rectangle sliderBackgroundV = new Rectangle();
 
-    public PaintRollerColorPickerDialog(Consumer<Integer> resultConsumer, int startColor) {
-        this("color_picker", resultConsumer, startColor);
+    public PaintRollerColorPickerDialog(BiConsumer<Integer, Boolean> resultConsumer, int startColor,
+        boolean startPaintStripper) {
+        this("color_picker", resultConsumer, startColor, startPaintStripper);
     }
 
-    public PaintRollerColorPickerDialog(String name, Consumer<Integer> resultConsumer, int startColor) {
-        super(name, resultConsumer);
+    public PaintRollerColorPickerDialog(String name, BiConsumer<Integer, Boolean> resultConsumer, int startColor,
+        boolean startPaintStripper) {
+        super(name);
         updateAll(startColor);
-        size(140, 102).background(GuiTextures.MC_BACKGROUND);
+        this.paintStripper = startPaintStripper;
+        size(140, 120).background(GuiTextures.MC_BACKGROUND);
         PagedWidget.Controller controller = new PagedWidget.Controller();
         child(
             new TileEntityTradingPost.HelpWidget().top(2)
@@ -122,6 +129,22 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .addPage(createRGBPage()))
                 .child(
                     Flow.row()
+                        .left(5)
+                        .right(5)
+                        .height(14)
+                        .marginBottom(4)
+                        .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
+                        .child(
+                            new ToggleButton().heightRel(1f)
+                                .widthRel(0.95f)
+                                .anchorLeft(0.5f)
+                                .anchorTop(0.5f)
+                                .leftRel(0.5f)
+                                .topRel(0.5f)
+                                .value(new BoolValue.Dynamic(() -> paintStripper, result -> paintStripper = result))
+                                .overlay(IKey.str("Paint Stripper Mode"))))
+                .child(
+                    Flow.row()
                         .left(10)
                         .right(10)
                         .height(14)
@@ -140,9 +163,12 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                                 .width(50)
                                 .overlay(IKey.str("Confirm"))
                                 .onMousePressed(button -> {
-                                    closeWith(this.color);
+                                    resultConsumer.accept(this.color, this.paintStripper);
+                                    closeIfOpen();
                                     return true;
-                                }))));
+                                })))
+
+        );
     }
 
     private IWidget createRGBPage() {
