@@ -3,12 +3,12 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
@@ -20,12 +20,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockLapisAetheriusDyable extends BlockColored {
 
     public BlockLapisAetheriusDyable() {
-        super(Material.glass);
+        super(ModBlocks.LAPIS_AETHERIUS.get());
         setBlockName("lapis_aetherius_dyeable");
         setLightOpacity(0);
         setHardness(1);
         setResistance(10F);
-        this.base = ModBlocks.LAPIS_AETHERIUS.get();
     }
 
     @Override
@@ -81,8 +80,8 @@ public class BlockLapisAetheriusDyable extends BlockColored {
         }
 
         @Override
-        public String getUnlocalizedName(final ItemStack stack) {
-            return this.getUnlocalizedName();
+        public String getItemStackDisplayName(ItemStack p_77653_1_) {
+            return StatCollector.translateToLocal("tile.lapis_aetherius_dyeable.name");
         }
     }
 }

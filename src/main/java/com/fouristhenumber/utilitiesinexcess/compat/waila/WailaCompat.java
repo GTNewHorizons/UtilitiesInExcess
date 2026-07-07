@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.waila;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCollector;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
@@ -28,5 +29,7 @@ public class WailaCompat {
         registrar.registerBodyProvider(GeneratorDataProvider.INSTANCE, BlockBaseGenerator.class);
 
         registrar.registerBodyProvider(RainMufflerDataProvider.INSTANCE, BlockRainMuffler.class);
+
+        registrar.registerBodyProvider(ColoredBlocksDataProvider.INSTANCE, BlockColored.class);
     }
 }

@@ -23,6 +23,7 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GL11.glDisable(GL11.GL_LIGHTING);
 
         tess.startDrawingQuads();
         tess.setNormal(0, 1, 0);
@@ -37,6 +38,8 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         renderer.renderFaceXNeg(block, 0, 0, 0, block.getIcon(4, metadata));
         renderer.renderFaceXPos(block, 0, 0, 0, block.getIcon(5, metadata));
         tess.draw();
+
+        GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     @Override

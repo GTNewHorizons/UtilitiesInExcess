@@ -65,6 +65,8 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float clickX, float clickY, float clickZ) {
+        if (!BlockColored.allowDyingBlocks()) return false;
+
         Block block = world.getBlock(x, y, z);
         boolean needsIDChange = false;
         if (!(block instanceof BlockColored)) {
@@ -78,41 +80,56 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         int color = BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
 
         if (player.isSneaking()) {
-            paintLine(world, block, needsIDChange, x, y, z, side, color);
+            paintLine(world, block, x, y, z, side, color);
         } else {
-            paintBlock(world, block, needsIDChange, x, y, z, color);
+            paintBlock(
+                world,
+                needsIDChange ? Block.getIdFromBlock(BlockColored.getColoredVersion(block)) : -1,
+                x,
+                y,
+                z,
+                color);
         }
 
         return true;
     }
 
-    private void paintBlock(World world, Block startBlock, boolean setID, int x, int y, int z, int color) {
+    private void paintBlock(World world, int setBlockID, int x, int y, int z, int color) {
         // There isn't exactly a reason why we have to do this, but I don't want to fire block updates twice by using
         // the vanilla method for setting the block. So set the id directly, then set the meta directly, then fire a
         // block update
-        if (setID) {
-            EIDsHelper.setBlockID(world, x, y, z, Block.getIdFromBlock(BlockColored.getColoredVersion(startBlock)));
+        if (setBlockID != -1) {
+            EIDsHelper.setBlockID(world, x, y, z, setBlockID);
         }
         EIDsHelper.setBlockMeta(world, x, y, z, color);
 
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void paintLine(World world, Block startBlock, boolean setID, int x, int y, int z, int side, int color) {
+    private void paintLine(World world, Block startBlock, int x, int y, int z, int side, int color) {
         ForgeDirection direction = ForgeDirection.getOrientation(side)
             .getOpposite();
 
+        int blockID = -1;
         for (int i = 0; i < 100; i++) {
             Block block = world
                 .getBlock(x + (direction.offsetX * i), y + (direction.offsetY * i), z + (direction.offsetZ * i));
 
             if (block != startBlock && !(block instanceof BlockColored bc && bc.getBase() == startBlock)
-                && !(startBlock instanceof BlockColored bc2 && bc2.getBase() == block)) return;
+                && !(startBlock instanceof BlockColored bc2 && bc2.getBase() == block)) {
+                return;
+            }
 
+            int blockIDTemp = -1;
+            if (!(block instanceof BlockColored)) {
+                if (blockID == -1) {
+                    blockID = Block.getIdFromBlock(BlockColored.getColoredVersion(block));
+                }
+                blockIDTemp = blockID;
+            }
             paintBlock(
                 world,
-                startBlock,
-                setID,
+                blockIDTemp,
                 x + (direction.offsetX * i),
                 y + (direction.offsetY * i),
                 z + (direction.offsetZ * i),

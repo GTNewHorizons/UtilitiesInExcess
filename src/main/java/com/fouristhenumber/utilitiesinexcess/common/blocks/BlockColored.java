@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.Color;
-import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
@@ -45,17 +44,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockColored extends Block {
 
     protected Block base;
-    private float colorMultiplier;
+    private final float colorMultiplier;
 
     public static final float DEFAULT_BRIGHTNESS = 1.5f;
 
     public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
 
     private static final HashMap<Block, BlockColored> BASES_TO_COLORED = new HashMap<>();
-
-    public BlockColored(Material material) {
-        super(material);
-    }
 
     public BlockColored(Block base) {
         this(base, DEFAULT_BRIGHTNESS);
@@ -311,7 +306,6 @@ public class BlockColored extends Block {
         for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
             blockColored.initFromString();
         }
-        COLORED_BLOCKS.add((BlockColored) ModBlocks.LAPIS_AETHERIUS_DYEABLE.get());
         RecipeLoader.loadColoredBlockRecipes();
     }
 
