@@ -115,7 +115,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .paddingRight(2)
                 .tooltipBuilder(TileEntityTradingPost::buildHelpToolTip));
         topRow.child(
-            IKey.str(StatCollector.translateToLocalFormatted("uie.gui.text.trading_post.villager_count", merchants.size()))
+            IKey.str(
+                StatCollector.translateToLocalFormatted("uie.gui.text.trading_post.villager_count", merchants.size()))
                 .asWidget()
                 .left(14)
                 .top(4));
@@ -221,7 +222,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.1"));
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.2"));
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.3"));
-        if (Mods.FindIt.isLoaded()) tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.4"));
+        if (Mods.FindIt.isLoaded())
+            tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.4"));
         tooltip.addLine("§7"); // If the line is empty it gets skipped
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.5"));
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.6"));

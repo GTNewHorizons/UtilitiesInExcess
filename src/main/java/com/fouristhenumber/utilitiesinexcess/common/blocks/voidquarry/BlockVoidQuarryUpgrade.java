@@ -101,7 +101,8 @@ public class BlockVoidQuarryUpgrade extends Block {
             if (!upgrade.isBoolean() && upgrade.getTierGroup()
                 .equals(TieredVoidQuarryUpgrade.SPEED.getBaseName())) {
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted("uie.desc.tile.void_quarry_upgrade.speed", upgrade.getValue()));
+                    StatCollector
+                        .translateToLocalFormatted("uie.desc.tile.void_quarry_upgrade.speed", upgrade.getValue()));
             }
         }
     }

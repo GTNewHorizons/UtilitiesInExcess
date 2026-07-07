@@ -397,10 +397,11 @@ public class ItemInversionSigilActive extends Item {
             player.addChatMessage(
                 new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.incorrectDimensionOverworld"));
         } else if (world.provider.dimensionId == -1) {
-            player
-                .addChatMessage(new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.incorrectDimensionNether"));
+            player.addChatMessage(
+                new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.incorrectDimensionNether"));
         } else {
-            player.addChatMessage(new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.incorrectDimensionOther"));
+            player.addChatMessage(
+                new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.incorrectDimensionOther"));
         }
 
         player.addChatMessage(
@@ -419,8 +420,8 @@ public class ItemInversionSigilActive extends Item {
             new ChatComponentTranslation(
                 "uie.chat.pseudo_reversion_ritual.chestWestContents",
                 chestWestContentsOk ? "✓" : "✗"));
-        player
-            .addChatMessage(new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.spiral", spiralOk ? "✓" : "✗"));
+        player.addChatMessage(
+            new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.spiral", spiralOk ? "✓" : "✗"));
 
         if (dimensionOk && difficultyOk
             && chestNorthContentsOk
@@ -587,8 +588,8 @@ public class ItemInversionSigilActive extends Item {
 
                         if (isValidRitualBeacon(world, beaconX, beaconY, beaconZ)) {
                             // Ritual has now succeeded
-                            player
-                                .addChatMessage(new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.complete"));
+                            player.addChatMessage(
+                                new ChatComponentTranslation("uie.chat.pseudo_reversion_ritual.complete"));
                             startSiege(world, beaconX, beaconY, beaconZ, player);
                             return;
                         }
@@ -637,8 +638,9 @@ public class ItemInversionSigilActive extends Item {
         NBTTagCompound tag = stack.getTagCompound();
         if (tag != null && InversionConfig.INSTANCE.awakenedInversionDurability != 0) {
             tt.add(
-                StatCollector
-                    .translateToLocalFormatted("uie.desc.item.inversion_sigil_active.uses", tag.getInteger(DURABILITY_NBT_KEY)));
+                StatCollector.translateToLocalFormatted(
+                    "uie.desc.item.inversion_sigil_active.uses",
+                    tag.getInteger(DURABILITY_NBT_KEY)));
         }
         super.addInformation(stack, player, tt, p_77624_4_);
     }

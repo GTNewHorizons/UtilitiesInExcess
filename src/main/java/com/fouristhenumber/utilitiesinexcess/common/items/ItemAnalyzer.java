@@ -27,8 +27,8 @@ public class ItemAnalyzer extends Item {
         Block clicked = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
         player.addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.header"));
-        player
-            .addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.blockid", clicked.getUnlocalizedName()));
+        player.addChatMessage(
+            new ChatComponentTranslation("uie.chat.block_analyzer.blockid", clicked.getUnlocalizedName()));
         player.addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.blockmeta", meta));
 
         TileEntity tile = world.getTileEntity(x, y, z);

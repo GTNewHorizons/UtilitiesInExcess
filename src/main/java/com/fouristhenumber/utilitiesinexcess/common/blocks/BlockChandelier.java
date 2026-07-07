@@ -135,8 +135,9 @@ public class BlockChandelier extends BlockContainer {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("uie.desc.tile.chandelier.0", BlockConfig.chandelier.chandelierLightRange));
+                StatCollector.translateToLocalFormatted(
+                    "uie.desc.tile.chandelier.0",
+                    BlockConfig.chandelier.chandelierLightRange));
         }
 
         @Override

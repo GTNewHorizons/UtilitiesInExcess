@@ -415,7 +415,8 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
     public String getMode() {
         return switch (operationMode) {
             case DEFAULT -> StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.1.2");
-            case SINGLE -> String.format(StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.2.2"), this.cuboidSize);
+            case SINGLE -> String
+                .format(StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.2.2"), this.cuboidSize);
             case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.3.2");
         };
     }

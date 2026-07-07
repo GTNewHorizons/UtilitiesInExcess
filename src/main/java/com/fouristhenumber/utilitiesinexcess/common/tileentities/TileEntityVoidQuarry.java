@@ -331,8 +331,8 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                 }
             }
         }
-        if (!foundMarkers && player != null) player
-            .addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.4")));
+        if (!foundMarkers && player != null) player.addChatComponentMessage(
+            new ChatComponentText(StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.4")));
     }
 
     private List<Area2d> computeRectanglesFromRectilinearPointPolygon(List<Vector2i> points) {

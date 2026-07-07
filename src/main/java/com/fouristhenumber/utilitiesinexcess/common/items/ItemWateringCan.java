@@ -115,7 +115,8 @@ public class ItemWateringCan extends Item {
         if (INSTANCE.allowWateringCanToggle && player.isSneaking() && !world.isRemote) {
             setActive(stack, !isActive(stack));
             player.addChatMessage(
-                new ChatComponentTranslation("uie.desc.item.watering_can" + (isActive(stack) ? "activated" : "deactivated")));
+                new ChatComponentTranslation(
+                    "uie.desc.item.watering_can" + (isActive(stack) ? "activated" : "deactivated")));
             return true;
         }
         if (isFakePlayer(player) && !world.isRemote) {

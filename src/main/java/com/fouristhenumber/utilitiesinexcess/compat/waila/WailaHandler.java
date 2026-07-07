@@ -72,9 +72,8 @@ public class WailaHandler implements IWailaDataProvider {
             NBTTagCompound nbt = accessor.getNBTData();
             TileEntityVoidMarker.MarkerOperationMode mode = TileEntityVoidMarker.MarkerOperationMode
                 .valueOf(nbt.getString("mode"));
-            currenttip.add(
-                LangUtil.instance
-                    .translate("uie.waila.marker.state", LangUtil.instance.translate(mode.localKey)));
+            currenttip
+                .add(LangUtil.instance.translate("uie.waila.marker.state", LangUtil.instance.translate(mode.localKey)));
         }
         return currenttip;
     }

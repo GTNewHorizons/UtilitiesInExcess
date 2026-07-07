@@ -71,7 +71,8 @@ public class ItemInversionSigilInactive extends Item {
         boolean grassOk = countNearbyGrass(world, x, y, z);
         boolean moonOk = world.canBlockSeeTheSky(x, y, z);
 
-        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("uie.chat.inversion_ritual.header")));
+        player
+            .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("uie.chat.inversion_ritual.header")));
         player.addChatMessage(
             new ChatComponentText(
                 StatCollector.translateToLocalFormatted("uie.chat.inversion_ritual.time", (timeOk ? "✓" : "✗"))));

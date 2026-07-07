@@ -235,7 +235,8 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
 
         if (showBurnTime()) panel.child(
             IKey.dynamic(
-                () -> (burnSyncer.getIntValue() / 1200) + StatCollector.translateToLocal("uie.common.time.minutes_abbreviation")
+                () -> (burnSyncer.getIntValue() / 1200)
+                    + StatCollector.translateToLocal("uie.common.time.minutes_abbreviation")
                     + " "
                     + (burnSyncer.getIntValue() % 1200) / 20
                     + StatCollector.translateToLocal("uie.common.time.seconds_abbreviation"))
