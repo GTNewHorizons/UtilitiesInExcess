@@ -115,7 +115,7 @@ public class ItemWateringCan extends Item {
         if (INSTANCE.allowWateringCanToggle && player.isSneaking() && !world.isRemote) {
             setActive(stack, !isActive(stack));
             player.addChatMessage(
-                new ChatComponentTranslation("item.watering_can." + (isActive(stack) ? "activated" : "deactivated")));
+                new ChatComponentTranslation("uie.desc.item.watering_can" + (isActive(stack) ? "activated" : "deactivated")));
             return true;
         }
         if (isFakePlayer(player) && !world.isRemote) {
@@ -328,7 +328,7 @@ public class ItemWateringCan extends Item {
         int range = (this.range * 2 + 1);
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("item.watering_can.desc.1", range, range));
+                + StatCollector.translateToLocalFormatted("uie.desc.item.watering_can.area", range, range));
     }
 
     public boolean isActive(ItemStack stack) {

@@ -44,7 +44,7 @@ public class ItemGlove extends Item implements IBauble {
         super.addInformation(stack, player, tooltip, p_77624_4_);
         tooltip.add(
             EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
-                "item.glove.desc.1",
+                "uie.desc.item.glove.1",
                 EnumChatFormatting.WHITE + "["
                     + EnumChatFormatting.GOLD
                     + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
@@ -52,8 +52,8 @@ public class ItemGlove extends Item implements IBauble {
                     + "]"
                     + EnumChatFormatting.AQUA));
 
-        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.glove.desc.2"));
-        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.glove.desc.3"));
+        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("uie.desc.item.glove.2"));
+        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("uie.desc.item.glove.3"));
     }
 
     public IIcon topIcon;

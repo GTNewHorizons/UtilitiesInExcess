@@ -33,9 +33,9 @@ public class ItemChunchunmaru extends ItemSword implements ITranslucentItem {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.chunchunmaru.desc"));
+        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("uie.desc.item.chunchunmaru.1"));
         if (ChunchunmaruConfig.INSTANCE.unbreakable) {
-            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.unbreakable.desc"));
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("uie.desc.item.unbreakable"));
         }
     }
 

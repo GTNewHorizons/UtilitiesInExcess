@@ -97,11 +97,11 @@ public class BlockVoidQuarryUpgrade extends Block {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             VoidQuarryUpgrade upgrade = VoidQuarryUpgrade.VALUES[stack.getItemDamage()];
             tooltip.add(
-                StatCollector.translateToLocalFormatted("tile.void_quarry_upgrade.desc.energy", upgrade.getCost()));
+                StatCollector.translateToLocalFormatted("uie.desc.tile.void_quarry_upgrade.energy", upgrade.getCost()));
             if (!upgrade.isBoolean() && upgrade.getTierGroup()
                 .equals(TieredVoidQuarryUpgrade.SPEED.getBaseName())) {
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted("tile.void_quarry_upgrade.desc.speed", upgrade.getValue()));
+                    StatCollector.translateToLocalFormatted("uie.desc.tile.void_quarry_upgrade.speed", upgrade.getValue()));
             }
         }
     }

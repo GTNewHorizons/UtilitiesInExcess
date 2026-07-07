@@ -103,30 +103,30 @@ public class ItemInvertedIngot extends Item implements ITranslucentItem {
         if (meta == 0) {
             if (InversionConfig.INSTANCE.invertedIngotMode != InversionConfig.InversionMode.OFF) {
                 if (!stack.hasTagCompound()) {
-                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.c"));
+                    tooltip.add(StatCollector.translateToLocal("uie.desc.item.inverted_ingot.c"));
                 } else {
-                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.1"));
+                    tooltip.add(StatCollector.translateToLocal("uie.desc.item.inverted_ingot.1"));
                     NBTTagCompound tag = stack.getTagCompound();
                     if (tag.hasKey("CraftedAt")) {
                         double passed = player.worldObj.getTotalWorldTime() - tag.getLong("CraftedAt");
                         double timeLeft = (InversionConfig.INSTANCE.invertedIngotImplosionTimer - passed) / 20D;
                         tooltip.add(
                             StatCollector.translateToLocalFormatted(
-                                "item.inverted_ingot.desc.2",
+                                "uie.desc.item.inverted_ingot.2",
                                 formatNumber(Math.max(0, timeLeft))));
                     } else {
                         tooltip.add(
                             StatCollector.translateToLocalFormatted(
-                                "item.inverted_ingot.desc.2",
+                                "uie.desc.item.inverted_ingot.2",
                                 InversionConfig.INSTANCE.invertedIngotImplosionTimer / 20));
                     }
-                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.3"));
-                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.4"));
-                    tooltip.add(StatCollector.translateToLocal("item.inverted_ingot.desc.5"));
+                    tooltip.add(StatCollector.translateToLocal("uie.desc.item.inverted_ingot.3"));
+                    tooltip.add(StatCollector.translateToLocal("uie.desc.item.inverted_ingot.4"));
+                    tooltip.add(StatCollector.translateToLocal("uie.desc.item.inverted_ingot.5"));
                 }
             }
         } else {
-            if (meta == 1) tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.stable.desc"));
+            if (meta == 1) tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.inverted_ingot.stable"));
             else tooltip.add(StatCollector.translateToLocalFormatted("item.inverted_ingot.quasi_normalized.desc"));
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);

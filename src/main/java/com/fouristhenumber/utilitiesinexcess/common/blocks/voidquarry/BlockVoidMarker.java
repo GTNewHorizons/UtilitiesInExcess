@@ -72,7 +72,7 @@ public class BlockVoidMarker extends BlockContainer {
                 int newCuboidSize = marker.increaseCuboidSize();
                 player.addChatComponentMessage(
                     new ChatComponentText(
-                        String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.3"), newCuboidSize)));
+                        String.format(StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.2.3"), newCuboidSize)));
             } else {
                 marker.rotateMode();
                 player.addChatComponentMessage(new ChatComponentText(marker.getMode()));

@@ -43,7 +43,7 @@ public class BlockPureLove extends BlockContainer {
                 EnumChatFormatting.LIGHT_PURPLE + ""
                     + EnumChatFormatting.ITALIC
                     + StatCollector
-                        .translateToLocalFormatted("tile.pure_love.desc", BlockConfig.pureLove.rangePureLove));
+                        .translateToLocalFormatted("uie.desc.tile.pure_love.range", BlockConfig.pureLove.rangePureLove));
         }
     }
 }

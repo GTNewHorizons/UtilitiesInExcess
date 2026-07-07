@@ -71,23 +71,23 @@ public class ItemInversionSigilInactive extends Item {
         boolean grassOk = countNearbyGrass(world, x, y, z);
         boolean moonOk = world.canBlockSeeTheSky(x, y, z);
 
-        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.inversion_ritual.header")));
+        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("uie.chat.inversion_ritual.header")));
         player.addChatMessage(
             new ChatComponentText(
-                StatCollector.translateToLocalFormatted("chat.inversion_ritual.time", (timeOk ? "✓" : "✗"))));
+                StatCollector.translateToLocalFormatted("uie.chat.inversion_ritual.time", (timeOk ? "✓" : "✗"))));
         player.addChatMessage(
             new ChatComponentText(
                 StatCollector
-                    .translateToLocalFormatted("chat.inversion_ritual.redstone", (redstoneRingOk ? "✓" : "✗"))));
+                    .translateToLocalFormatted("uie.chat.inversion_ritual.redstone", (redstoneRingOk ? "✓" : "✗"))));
         player.addChatMessage(
             new ChatComponentText(
-                StatCollector.translateToLocalFormatted("chat.inversion_ritual.grass", (grassOk ? "✓" : "✗"))));
+                StatCollector.translateToLocalFormatted("uie.chat.inversion_ritual.grass", (grassOk ? "✓" : "✗"))));
         player.addChatMessage(
             new ChatComponentText(
-                StatCollector.translateToLocalFormatted("chat.inversion_ritual.darkness", (darkOk ? "✓" : "✗"))));
+                StatCollector.translateToLocalFormatted("uie.chat.inversion_ritual.darkness", (darkOk ? "✓" : "✗"))));
         player.addChatMessage(
             new ChatComponentText(
-                StatCollector.translateToLocalFormatted("chat.inversion_ritual.moon", (moonOk ? "✓" : "✗"))));
+                StatCollector.translateToLocalFormatted("uie.chat.inversion_ritual.moon", (moonOk ? "✓" : "✗"))));
 
         return true;
     }
@@ -229,7 +229,7 @@ public class ItemInversionSigilInactive extends Item {
             }
 
             if (!world.isRemote) {
-                player.addChatMessage(new ChatComponentTranslation("chat.inversion_ritual.complete"));
+                player.addChatMessage(new ChatComponentTranslation("uie.chat.inversion_ritual.complete"));
             }
         }
     }
