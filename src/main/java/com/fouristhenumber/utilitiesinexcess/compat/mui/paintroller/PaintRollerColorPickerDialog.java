@@ -61,7 +61,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
         super(name);
         updateAll(startColor);
         this.paintStripper = startPaintStripper;
-        size(140, 120).background(GuiTextures.MC_BACKGROUND);
+        size(140, 116).background(GuiTextures.MC_BACKGROUND);
         PagedWidget.Controller controller = new PagedWidget.Controller();
         child(
             new TileEntityTradingPost.HelpWidget().top(2)
@@ -132,11 +132,11 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .left(5)
                         .right(5)
                         .height(14)
-                        .marginBottom(4)
+                        .marginBottom(2)
                         .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
                         .child(
-                            new ToggleButton().heightRel(1f)
-                                .widthRel(0.95f)
+                            new ToggleButton().height(12)
+                                .widthRel(1f)
                                 .anchorLeft(0.5f)
                                 .anchorTop(0.5f)
                                 .leftRel(0.5f)
@@ -338,6 +338,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
     }
 
     public void updateColor(int color) {
+        this.paintStripper = false;
         color = Color.withAlpha(color, 255);
         int rs = Color.withRed(color, 0), re = Color.withRed(color, 255);
         int gs = Color.withGreen(color, 0), ge = Color.withGreen(color, 255);

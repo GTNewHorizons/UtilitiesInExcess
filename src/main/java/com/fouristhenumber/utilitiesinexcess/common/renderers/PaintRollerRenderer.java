@@ -50,5 +50,8 @@ public class PaintRollerRenderer implements IItemRenderer {
         }
         GL11.glColor4f(1f, 1f, 1f, 1f);
         ItemRenderUtil.renderItem(type, paintRoller.handleIcon);
+        if (Color.getAlpha(color) != 0) {
+            ItemRenderUtil.renderItem(type, paintRoller.starIcon);
+        }
     }
 }

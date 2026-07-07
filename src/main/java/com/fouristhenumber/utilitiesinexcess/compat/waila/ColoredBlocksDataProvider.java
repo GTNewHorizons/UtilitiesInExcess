@@ -6,7 +6,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetheriusDyable;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -21,6 +25,11 @@ public class ColoredBlocksDataProvider implements IWailaDataProvider {
     public List<String> getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         currentTip.add(SpecialChars.getRenderString("waila.uie.coloredblock"));
+
+        if (accessor.getBlock() instanceof BlockLapisAetheriusDyable
+            && BlockColored.getExtraMetaBit(accessor.getMetadata()) > 0) {
+            currentTip.add(StatCollector.translateToLocal("tile.lapis_aetherius_dyeable.desc.0"));
+        }
 
         return currentTip;
     }

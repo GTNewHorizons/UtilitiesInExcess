@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -46,14 +47,16 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
     }
 
-    public IIcon featherIcon;
     public IIcon handleIcon;
+    public IIcon featherIcon;
+    public IIcon starIcon;
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister aIconRegister) {
-        featherIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller_overlay");
         handleIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller");
+        featherIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller_overlay");
+        starIcon = aIconRegister.registerIcon(UtilitiesInExcess.MODID + ":paint_roller_overlay_star");
     }
 
     @Override
@@ -70,20 +73,15 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         boolean paintStripper = getPaintStripperFromStack(stack);
         Block block = world.getBlock(x, y, z);
         Block newBlock = getNewBlock(paintStripper, block);
+        if (newBlock == null) return false;
         boolean needsIDChange = newBlock != block;
 
-        int color = BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
+        int color = BlockColored.getEIDMetaFromRGBWithExtraBit(getColorFromStack(stack));
 
         if (player.isSneaking()) {
-            paintLine(world, block, x, y, z, side, paintStripper, color);
+            paintLine(player, world, block, x, y, z, side, paintStripper, color);
         } else {
-            paintBlock(
-                world,
-                needsIDChange ? Block.getIdFromBlock(newBlock) : -1,
-                x,
-                y,
-                z,
-                newBlock instanceof BlockColored ? color : 0);
+            paintBlock(world, needsIDChange ? Block.getIdFromBlock(newBlock) : -1, x, y, z, paintStripper ? 0 : color);
         }
 
         return true;
@@ -117,16 +115,26 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void paintLine(World world, Block startBlock, int x, int y, int z, int side, boolean paintStripper,
-        int color) {
-        ForgeDirection direction = ForgeDirection.getOrientation(side)
-            .getOpposite();
+    private void paintLine(EntityPlayer player, World world, Block startBlock, int x, int y, int z, int side,
+        boolean paintStripper, int color) {
+        ForgeDirection lookSide;
+        Vec3 look = player.getLookVec();
+        double absX = Math.abs(look.xCoord);
+        double absY = Math.abs(look.yCoord);
+        double absZ = Math.abs(look.zCoord);
+        if (absX > absY && absX > absZ) {
+            lookSide = look.xCoord > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+        } else if (absY > absX && absY > absZ) {
+            lookSide = look.yCoord > 0 ? ForgeDirection.UP : ForgeDirection.DOWN;
+        } else {
+            lookSide = look.zCoord > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
+        }
 
         int blockID = -1;
         Block newBlock = getNewBlock(paintStripper, startBlock);
         for (int i = 0; i < 100; i++) {
             Block block = world
-                .getBlock(x + (direction.offsetX * i), y + (direction.offsetY * i), z + (direction.offsetZ * i));
+                .getBlock(x + (lookSide.offsetX * i), y + (lookSide.offsetY * i), z + (lookSide.offsetZ * i));
 
             if (block != startBlock && !(block instanceof BlockColored bc && bc.getBase() == startBlock)
                 && !(startBlock instanceof BlockColored bc2 && bc2.getBase() == block)) {
@@ -143,10 +151,10 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
             paintBlock(
                 world,
                 blockIDTemp,
-                x + (direction.offsetX * i),
-                y + (direction.offsetY * i),
-                z + (direction.offsetZ * i),
-                newBlock instanceof BlockColored ? color : 0);
+                x + (lookSide.offsetX * i),
+                y + (lookSide.offsetY * i),
+                z + (lookSide.offsetZ * i),
+                paintStripper ? 0 : color);
         }
     }
 
@@ -201,7 +209,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
 
         PaintRollerColorPickerDialog colorPickerDialog = new PaintRollerColorPickerDialog(
             (newColor, paintStripper) -> PacketHandler.INSTANCE
-                .sendToServer(new PaintRollerColorSelect(newColor, paintStripper)),
+                .sendToServer(new PaintRollerColorSelect(newColor & 0xFFFFFF, paintStripper)),
             getColorFromStack(stack),
             getPaintStripperFromStack(stack));
 

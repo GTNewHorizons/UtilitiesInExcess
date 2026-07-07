@@ -27,6 +27,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
@@ -150,6 +151,12 @@ public class BlockColored extends Block {
             && ColoredBlocksConfig.INSTANCE.enableDying;
     }
 
+    public static int getRGBFromEIDMetaWithExtraBit(int meta) {
+        int extra = (getExtraMetaBit(meta) << 9) & 0x01000000;
+
+        return extra | getRGBFromEIDMeta(meta);
+    }
+
     public static int getRGBFromEIDMeta(int meta) {
         int red = (meta >> 7) & 0b11111000;
         int green = (meta >> 2) & 0b11111000;
@@ -158,12 +165,29 @@ public class BlockColored extends Block {
         return (red << 16) | (green << 8) | blue;
     }
 
+    public static int getEIDMetaFromRGBWithExtraBit(int rgb) {
+        int extraBit = (rgb >> 24) & 1;
+
+        return getEIDMetaFromRGB(rgb) | (extraBit << 15);
+    }
+
     public static int getEIDMetaFromRGB(int rgb) {
         int red = (rgb >> 16) & 0xFF;
         int green = (rgb >> 8) & 0xFF;
         int blue = rgb & 0xFF;
 
         return ((red << 7) & 0b0_11111_00000_00000) | ((green << 2) & 0b0_00000_11111_00000) | (blue >> 3);
+    }
+
+    public static int getExtraMetaBit(int meta) {
+        return meta & 0b1_00000_00000_00000;
+    }
+
+    public static void setExtraMetaBit(World world, int x, int y, int z, int curMeta, boolean value) {
+        EIDsHelper.setBlockMeta(world, x, y, z, ((value ? 1 : 0) << 15) | (curMeta & 0b0_11111_11111_11111));
+        if (!world.isRemote) {
+            world.markBlockForUpdate(x, y, z);
+        }
     }
 
     public static boolean hasColoredVersion(Block block) {
@@ -208,8 +232,8 @@ public class BlockColored extends Block {
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItem() instanceof ItemPaintRoller) {
-            PacketHandler.INSTANCE
-                .sendToServer(new PaintRollerColorSelect(getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
+            PacketHandler.INSTANCE.sendToServer(
+                new PaintRollerColorSelect(getRGBFromEIDMetaWithExtraBit(world.getBlockMetadata(x, y, z))));
             return null;
         }
 

@@ -604,6 +604,7 @@ uie.colored_blocks.color.dyeable=Dyed %s
 nei.infopage.uie.colored_blocks.dyeable.1=Dyed blocks can be dyed any color you want using a paint roller. Now with a new and improved tile entity-free recipe!
 
 tile.lapis_aetherius_dyeable.name=Lapis Aetherius Iris (Dyeable)
+tile.lapis_aetherius_dyeable.desc.0=Lighting turned off
 
 item.paint_roller.name=Paint Roller
 item.paint_roller.desc.0=[§a%s§7] Colorable blocks to dye them
