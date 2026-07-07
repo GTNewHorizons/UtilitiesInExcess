@@ -233,7 +233,9 @@ public class BlockColored extends Block {
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItem() instanceof ItemPaintRoller) {
             PacketHandler.INSTANCE.sendToServer(
-                new PaintRollerColorSelect(getRGBFromEIDMetaWithExtraBit(world.getBlockMetadata(x, y, z))));
+                new PaintRollerColorSelect(
+                    usesExtraBit() ? getRGBFromEIDMetaWithExtraBit(world.getBlockMetadata(x, y, z))
+                        : getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
             return null;
         }
 
@@ -245,6 +247,10 @@ public class BlockColored extends Block {
     }
 
     public boolean ignoreBaseMeta() {
+        return false;
+    }
+
+    public boolean usesExtraBit() {
         return false;
     }
 

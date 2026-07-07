@@ -74,9 +74,12 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         Block block = world.getBlock(x, y, z);
         Block newBlock = getNewBlock(paintStripper, block);
         if (newBlock == null) return false;
+        BlockColored blockColored = newBlock instanceof BlockColored ? (BlockColored) newBlock
+            : BlockColored.getColoredVersion(newBlock);
         boolean needsIDChange = newBlock != block;
 
-        int color = BlockColored.getEIDMetaFromRGBWithExtraBit(getColorFromStack(stack));
+        int color = blockColored.usesExtraBit() ? BlockColored.getEIDMetaFromRGBWithExtraBit(getColorFromStack(stack))
+            : BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
 
         if (player.isSneaking()) {
             paintLine(player, world, block, x, y, z, side, paintStripper, color);

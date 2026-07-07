@@ -46,6 +46,11 @@ public class BlockLapisAetheriusDyable extends BlockColored {
         return true;
     }
 
+    @Override
+    public boolean usesExtraBit() {
+        return true;
+    }
+
     public int damageDropped(int meta) {
         return meta;
     }
