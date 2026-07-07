@@ -134,7 +134,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableFloatingBlockRecipe;
+    public static boolean enableHeavenlyBlockRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

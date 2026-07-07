@@ -54,9 +54,9 @@ nei.pseudo_reversion.requires=Requires %s unique items from:
 
 nei.infopage.uie.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
 
-tile.floating_block.name=Floating Block
+tile.heavenly_block.name=Heavenly Block
 
-nei.infopage.uie.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
+nei.infopage.uie.heavenly_block.1=Heavenly blocks can be placed in midair. Helpful for building in the middle of the sky.
 
 tile.ethereal_glass.0.name=Ethereal Glass
 tile.ethereal_glass.1.name=Ineffable Glass
@@ -767,7 +767,7 @@ item.xray_glasses.aliases=Sonar Goggles
 item.inverted_ingot.aliases=Unstable Ingot
 item.inverted_ingot.stable.aliases=Mobius "Unstable/Stable" Ingot
 item.chunchunmaru.aliases=Kikoku
-tile.floating_block.aliases=Angel Block
+tile.heavenly_block.aliases=Angel Block
 tile.marginally_maximised_chest.aliases=Slightly Larger Chest
 tile.radically_reduced_chest.aliases=Mini-Chest
 tile.significantly_shrunk_chest.aliases=Mini-Chest
