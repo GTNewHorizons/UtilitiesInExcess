@@ -1263,19 +1263,6 @@ public class RecipeLoader {
     private static void loadDyeableColoredBlockRecipe(BlockColored block) {
         ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
 
-        // From base using dye
-        // GameRegistry.addShapedRecipe(
-        // new ItemStack(block, 7, 0b0_11111_11111_11111),
-        // "bbb",
-        // "bdb",
-        // "bpb",
-        // 'b',
-        // block.getBase(),
-        // 'd',
-        // new ItemStack(Items.dye, 1, 15),
-        // 'p',
-        // paintRoller);
-
         ItemStack any8 = new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE);
         // To base using water
         GameRegistry.addShapedRecipe(
@@ -1288,12 +1275,12 @@ public class RecipeLoader {
             'd',
             new ItemStack(Items.water_bucket));
 
-        // From base to dyed using roller
         ItemStack anyDyed = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack baseItem = new ItemStack(
             Item.getItemFromBlock(block.getBase()),
             1,
             block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0);
+        // From base to dyed using roller
         GameRegistry.addRecipe(
             new RecipePaintRollerToPaint(
                 3,

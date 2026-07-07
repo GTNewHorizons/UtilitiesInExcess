@@ -611,10 +611,13 @@ item.paint_roller.desc.0=[§a%s§7] Colorable blocks to dye them
 item.paint_roller.desc.1=[§a%s§7] The air to select hex color
 item.paint_roller.desc.2=[§aCrouch §7+ §a%s§7] Use line-mode
 item.paint_roller.desc.3=[§a%s§7] Colorable blocks to copy color
-item.paint_roller.help_tooltip.0=Block colors are limited to 16-bit,
-item.paint_roller.help_tooltip.1=meaning that hex values will have
-item.paint_roller.help_tooltip.2=each of their RGB values rounded down
-item.paint_roller.help_tooltip.3=to the nearest number divisible by 8
+item.paint_roller.gui.paintstripper=Paint Stripper Mode
+item.paint_roller.gui.cancel=Cancel
+item.paint_roller.gui.confirm=Confirm
+item.paint_roller.gui.help_tooltip.0=Block colors are limited to 16-bit,
+item.paint_roller.gui.help_tooltip.1=meaning that hex values will have
+item.paint_roller.gui.help_tooltip.2=each of their RGB values rounded down
+item.paint_roller.gui.help_tooltip.3=to the nearest number divisible by 8
 nei.infopage.uie.paint_roller.1=This super advanced paint roller can be used to dye any Utilities in Excess dyed block any color you want. Now with a new and improved tile entity-free recipe!
 
 material.bedrockium_uie=Bedrockium

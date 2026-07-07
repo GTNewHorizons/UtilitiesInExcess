@@ -22,6 +22,7 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
@@ -227,6 +228,14 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (BlockColored.allowDyingBlocks()) {
+            if (getPaintStripperFromStack(stack)) {
+                tooltip.add(StatCollector.translateToLocal("item.paint_roller.gui.paintstripper"));
+            } else {
+                int color = getColorFromStack(stack);
+                if (color != 0xFFFFFF) {
+                    tooltip.add("#" + Color.rgbToFullHexString(color));
+                }
+            }
             String rightClickName = KeybindUtils
                 .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode());
             String middleClickName = KeybindUtils

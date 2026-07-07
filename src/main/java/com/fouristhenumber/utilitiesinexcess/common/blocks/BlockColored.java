@@ -126,7 +126,9 @@ public class BlockColored extends Block {
 
     @Override
     public int damageDropped(int meta) {
-        return meta;
+        // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
+        return meta & 0b0_11111_11111_11111;
+        // return meta;
     }
 
     @SideOnly(Side.CLIENT)
@@ -239,7 +241,12 @@ public class BlockColored extends Block {
             return null;
         }
 
-        return super.getPickBlock(target, world, x, y, z, player);
+        // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
+        ItemStack result = super.getPickBlock(target, world, x, y, z, player);
+        result.setItemDamage(result.getItemDamage() & 0b0_11111_11111_11111);
+
+        return result;
+        // return super.getPickBlock(target, world, x, y, z, player);
     }
 
     public Block getBase() {

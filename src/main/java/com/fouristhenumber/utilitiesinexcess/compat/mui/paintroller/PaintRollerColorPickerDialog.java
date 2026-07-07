@@ -142,7 +142,8 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                                 .leftRel(0.5f)
                                 .topRel(0.5f)
                                 .value(new BoolValue.Dynamic(() -> paintStripper, result -> paintStripper = result))
-                                .overlay(IKey.str("Paint Stripper Mode"))))
+                                .overlay(
+                                    IKey.str(StatCollector.translateToLocal("item.paint_roller.gui.paintstripper")))))
                 .child(
                     Flow.row()
                         .left(10)
@@ -153,7 +154,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .child(
                             new ButtonWidget<>().heightRel(1f)
                                 .width(50)
-                                .overlay(IKey.str("Cancel"))
+                                .overlay(IKey.str(StatCollector.translateToLocal("item.paint_roller.gui.cancel")))
                                 .onMousePressed(button -> {
                                     closeIfOpen();
                                     return true;
@@ -161,7 +162,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .child(
                             new ButtonWidget<>().heightRel(1f)
                                 .width(50)
-                                .overlay(IKey.str("Confirm"))
+                                .overlay(IKey.str(StatCollector.translateToLocal("item.paint_roller.gui.confirm")))
                                 .onMousePressed(button -> {
                                     resultConsumer.accept(this.color, this.paintStripper);
                                     closeIfOpen();

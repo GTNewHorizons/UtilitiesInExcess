@@ -51,10 +51,6 @@ public class BlockLapisAetheriusDyable extends BlockColored {
         return true;
     }
 
-    public int damageDropped(int meta) {
-        return meta;
-    }
-
     @Override
     public int getRenderType() {
         return UtilitiesInExcess.lapisAetheriusRenderID;

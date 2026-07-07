@@ -26,7 +26,14 @@ public class RecipePaintRollerToPaint extends ShapedRecipes {
                 out.stackSize,
                 0);
         } else {
+            // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
             out.setItemDamage(BlockColored.getEIDMetaFromRGB(ItemPaintRoller.getColorFromStack(roller)));
+            // if (((BlockColored) ((ItemBlock) out.getItem()).field_150939_a).usesExtraBit()) {
+            // out.setItemDamage(
+            // BlockColored.getEIDMetaFromRGBWithExtraBit(ItemPaintRoller.getColorFromStack(roller)));
+            // } else {
+            // out.setItemDamage(BlockColored.getEIDMetaFromRGB(ItemPaintRoller.getColorFromStack(roller)));
+            // }
         }
         return out;
     }
