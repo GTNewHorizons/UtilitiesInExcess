@@ -236,6 +236,8 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
 
         sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.1");
+        if (BlockColored.allowDyingBlocks())
+            sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.2");
 
         sendInfoPage("utilitiesinexcess:collector", "nei.infopage.uie.collector.1");
 
