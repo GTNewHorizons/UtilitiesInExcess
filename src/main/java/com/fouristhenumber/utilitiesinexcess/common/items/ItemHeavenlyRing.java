@@ -161,7 +161,8 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return ItemConfig.enableHeavenlyRing && !Mods.Baubles.isLoaded();
+            return ItemConfig.heavenlyRing.enable
+                && (!Mods.Baubles.isLoaded() || ItemConfig.heavenlyRing.enableInInventoryWithBaubles);
         }
 
         @SubscribeEvent
@@ -199,7 +200,8 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return !Mods.Baubles.isLoaded();
+            return ItemConfig.heavenlyRing.enable
+                && (!Mods.Baubles.isLoaded() || ItemConfig.heavenlyRing.enableInInventoryWithBaubles);
         }
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
