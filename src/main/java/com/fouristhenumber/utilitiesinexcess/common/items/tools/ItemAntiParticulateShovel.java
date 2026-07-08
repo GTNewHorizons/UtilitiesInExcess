@@ -2,10 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.common.items.tools;
 
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
-import com.fouristhenumber.utilitiesinexcess.network.client.FloatingBlockParticlePacket;
-import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,10 +14,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiParticulateShovelConfig;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.FloatingBlockParticlePacket;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class ItemAntiParticulateShovel extends ItemSpade implements ITranslucentItem {
 
@@ -47,7 +46,9 @@ public class ItemAntiParticulateShovel extends ItemSpade implements ITranslucent
                     curY,
                     z,
                     32);
-                PacketHandler.INSTANCE.sendToAllAround(new FloatingBlockParticlePacket(x, curY, z, Block.getIdFromBlock(block)), targetPoint);
+                PacketHandler.INSTANCE.sendToAllAround(
+                    new FloatingBlockParticlePacket(x, curY, z, Block.getIdFromBlock(block), meta),
+                    targetPoint);
                 if (block.removedByPlayer(worldIn, hPlayer, x, curY, z, true))
                     block.harvestBlock(worldIn, hPlayer, x, curY, z, meta);
             } else break;

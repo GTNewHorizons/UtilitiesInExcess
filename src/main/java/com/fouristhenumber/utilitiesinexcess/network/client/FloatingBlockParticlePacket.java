@@ -17,15 +17,16 @@ import io.netty.buffer.ByteBuf;
  */
 public class FloatingBlockParticlePacket implements IMessage {
 
-    private int x, y, z, blockId;
+    private int x, y, z, blockId, meta;
 
     public FloatingBlockParticlePacket() {} // Required
 
-    public FloatingBlockParticlePacket(int x, int y, int z, int blockId) {
+    public FloatingBlockParticlePacket(int x, int y, int z, int blockId, int meta) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.blockId = blockId;
+        this.meta = meta;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class FloatingBlockParticlePacket implements IMessage {
         this.y = buf.readInt();
         this.z = buf.readInt();
         this.blockId = buf.readInt();
+        this.meta = buf.readInt();
     }
 
     @Override
@@ -42,6 +44,7 @@ public class FloatingBlockParticlePacket implements IMessage {
         buf.writeInt(y);
         buf.writeInt(z);
         buf.writeInt(blockId);
+        buf.writeInt(meta);
     }
 
     public static class Handler implements IMessageHandler<FloatingBlockParticlePacket, IMessage> {
@@ -68,7 +71,7 @@ public class FloatingBlockParticlePacket implements IMessage {
                                 delta_y - (double) message.y - 0.5D,
                                 delta_z - (double) message.z - 0.5D,
                                 block,
-                                1)).applyColourMultiplier(message.x, message.y, message.z));
+                                message.meta)).applyColourMultiplier(message.x, message.y, message.z));
                     }
                 }
             }
