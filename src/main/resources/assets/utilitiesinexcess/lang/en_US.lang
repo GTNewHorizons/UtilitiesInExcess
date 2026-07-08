@@ -198,9 +198,9 @@ item.destruction_pickaxe.name=Destruction Pickaxe
 
 nei.infopage.uie.destruction_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
 
-item.anti_particulate_shovel.name=Anti-Particulate Shovel
+item.anti_gravity_shovel.name=Anti-Gravity Shovel
 
-nei.infopage.uie.anti_particulate_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
+nei.infopage.uie.anti_gravity_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
 
 item.precision_shears.name=Precision Shears
 
@@ -759,7 +759,7 @@ item.architects_wand.aliases=Builder's Wand
 item.pseudo_reversion_sigil.aliases=Division Sigil
 item.inversion_sigil_active.aliases=Division Sigil
 item.inversion_sigil_inactive.aliases=Division Sigil
-item.anti_particulate_shovel.aliases=Erosion Shovel
+item.anti_gravity_shovel.aliases=Erosion Shovel
 item.mob_jar.aliases=Golden Lasso
 item.fire_battery.aliases=Heating Coil
 item.block_analyzer.aliases=Portable Scanner

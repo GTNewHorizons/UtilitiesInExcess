@@ -111,7 +111,7 @@ public class NEIConfig implements IConfigureNEI {
             new ItemStack(ModBlocks.LOW_TEMPERATURE_FURNACE_POWERPLANT.get()),
             new ItemStack(ModBlocks.COLLECTOR.get()),
 
-            new ItemStack(ModItems.ANTI_PARTICULATE_SHOVEL.get()),
+            new ItemStack(ModItems.ANTI_GRAVITY_SHOVEL.get()),
             new ItemStack(ModItems.MOB_JAR.get()),
             new ItemStack(ModItems.INVERSION_SIGIL_INACTIVE.get()),
             ItemInversionSigilActive.getStack(),
