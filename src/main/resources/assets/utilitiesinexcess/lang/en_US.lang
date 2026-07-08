@@ -23,7 +23,7 @@ uie.nei.text.pseudo_reversion.requires=Requires %s unique items from:
 
 ### NEI Infopage
 uie.nei.infopage.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
-uie.nei.infopage.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
+uie.nei.infopage.heavenly_block.1=Heavenly blocks can be placed in midair. Helpful for building in the middle of the sky.
 uie.nei.infopage.bedrockium.1=Bedrockium is a supremely strong material named after the virtually impervious foundation of the world. It is immensely heavy and slows you to a crawl while holding it.
 uie.nei.infopage.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 uie.nei.infopage.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
@@ -143,7 +143,7 @@ ue_wall.name=%s Wall
 ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
 
-tile.floating_block.name=Floating Block
+tile.heavenly_block.name=Heavenly Block
 tile.bedrockium_block.name=Block of Bedrockium
 tile.inverted_block.name=Inverted Block
 
@@ -366,7 +366,7 @@ tile.sound_muffler.name=Sound Muffler
 tile.rain_muffler.name=Rain Muffler
 
 ### Block aliases
-tile.floating_block.aliases=Angel Block
+tile.heavenly_block.aliases=Angel Block
 tile.marginally_maximised_chest.aliases=Slightly Larger Chest
 tile.radically_reduced_chest.aliases=Mini-Chest
 tile.significantly_shrunk_chest.aliases=Mini-Chest
