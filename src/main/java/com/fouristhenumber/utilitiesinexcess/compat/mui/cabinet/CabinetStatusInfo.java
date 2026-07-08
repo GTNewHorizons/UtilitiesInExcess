@@ -48,7 +48,7 @@ public class CabinetStatusInfo {
                 .tooltipDynamic(
                     tt -> tt.add(
                         StatCollector.translateToLocalFormatted(
-                            "gui.cabinet.slot",
+                            "uie.gui.tooltip.cabinet.slot",
                             formatNumber(tile.inventory.getSlotsUsed()),
                             formatNumber(tile.inventory.getSlots())))));
 
@@ -69,7 +69,7 @@ public class CabinetStatusInfo {
                 .tooltipDynamic(
                     tt -> tt.add(
                         StatCollector.translateToLocalFormatted(
-                            "gui.cabinet.storage",
+                            "uie.gui.tooltip.cabinet.storage",
                             formatNumber(tile.inventory.getStoredQuantity()),
                             formatNumber(tile.inventory.getCapacity())))));
 

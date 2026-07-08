@@ -90,7 +90,8 @@ public class BlockGigaTorch extends BlockContainer {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
-                StatCollector.translateToLocalFormatted("tile.giga_torch.desc", BlockConfig.gigaTorch.gigaTorchRange));
+                StatCollector
+                    .translateToLocalFormatted("uie.desc.tile.giga_torch.0", BlockConfig.gigaTorch.gigaTorchRange));
         }
     }
 

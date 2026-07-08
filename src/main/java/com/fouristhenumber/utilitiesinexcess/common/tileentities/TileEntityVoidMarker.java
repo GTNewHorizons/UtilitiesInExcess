@@ -178,7 +178,7 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
         player.addChatComponentMessage(
             new ChatComponentText(
                 String.format(
-                    StatCollector.translateToLocal("uie.quarry.scanmessage.5"),
+                    StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.5"),
                     lastVisited.current.xCoord,
                     lastVisited.current.yCoord,
                     lastVisited.current.zCoord)));
@@ -414,9 +414,10 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
     public String getMode() {
         return switch (operationMode) {
-            case DEFAULT -> StatCollector.translateToLocal("uie.quarry.marker.mode.1.2");
-            case SINGLE -> String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.2"), this.cuboidSize);
-            case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.quarry.marker.mode.3.2");
+            case DEFAULT -> StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.1.2");
+            case SINGLE -> String
+                .format(StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.2.2"), this.cuboidSize);
+            case ARBITRARY_LOOP -> StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.3.2");
         };
     }
 
@@ -492,9 +493,9 @@ public class TileEntityVoidMarker extends TileEntity implements IFacingTE {
 
     public enum MarkerOperationMode {
 
-        DEFAULT("uie.quarry.marker.mode.1.1"),
-        SINGLE("uie.quarry.marker.mode.2.1"),
-        ARBITRARY_LOOP("uie.quarry.marker.mode.3.1");
+        DEFAULT("uie.gui.text.quarry.marker_mode.1.1"),
+        SINGLE("uie.gui.text.quarry.marker_mode.2.1"),
+        ARBITRARY_LOOP("uie.gui.text.quarry.marker_mode.3.1");
 
         public static final TileEntityVoidMarker.MarkerOperationMode[] VALUES = values();
 

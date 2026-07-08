@@ -76,7 +76,7 @@ public class ItemFireBattery extends ItemEnergyContainer implements IFuelHandler
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean b) {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.fire_battery.desc",
+                "uie.desc.item.fire_battery.1",
                 formatNumber(getEnergyStored(stack)),
                 formatNumber(getMaxEnergyStored(stack))));
         super.addInformation(stack, player, tooltip, b);
