@@ -87,8 +87,8 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         FluidStack fluid = drum.tank.getFluid();
         player.addChatMessage(
             new ChatComponentTranslation(
-                "tile.drum.desc",
-                fluid == null ? StatCollector.translateToLocalFormatted("tile.drum.desc.empty")
+                "uie.desc.tile.drum.value",
+                fluid == null ? StatCollector.translateToLocalFormatted("uie.desc.tile.drum.empty")
                     : fluid.getLocalizedName(),
                 fluid == null ? 0 : NumberFormat.DEFAULT.format(fluid.amount),
                 NumberFormat.DEFAULT.format(capacity)));
@@ -375,11 +375,11 @@ public class BlockDrum extends BlockContainer implements IBlockColor {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             FluidStack fluid = getFluid(stack);
-            String fluidName = fluid == null ? StatCollector.translateToLocalFormatted("tile.drum.desc.empty")
+            String fluidName = fluid == null ? StatCollector.translateToLocalFormatted("uie.desc.tile.drum.empty")
                 : fluid.getLocalizedName();
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "tile.drum.desc",
+                    "uie.desc.tile.drum.value",
                     fluidName,
                     fluid == null ? 0 : NumberFormat.DEFAULT.format(fluid.amount),
                     NumberFormat.DEFAULT.format(capacity)));
