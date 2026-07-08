@@ -28,9 +28,9 @@ public class RainMufflerDataProvider implements IWailaDataProvider {
         NBTTagCompound playerNBT = player.getEntityData();
         NBTTagCompound persistentNBT = playerNBT.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
         if (persistentNBT.getBoolean(TileEntityRainMuffler.NBT_RAIN_MUFFLED)) {
-            currentTip.add(StatCollector.translateToLocal("tile.rain_muffler.waila.global_enabled"));
+            currentTip.add(StatCollector.translateToLocal("uie.waila.rain_muffler.global_enabled"));
         } else {
-            currentTip.add(StatCollector.translateToLocal("tile.rain_muffler.waila.global_disabled"));
+            currentTip.add(StatCollector.translateToLocal("uie.waila.rain_muffler.global_disabled"));
         }
 
         return currentTip;

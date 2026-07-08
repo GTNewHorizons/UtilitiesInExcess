@@ -39,7 +39,7 @@ public class CabinetUpgradeTab {
             .tooltipDynamic(
                 tt -> tt.addLine(
                     StatCollector.translateToLocalFormatted(
-                        "gui.cabinet.upgrades",
+                        "uie.gui.tooltip.cabinet.upgrades",
                         tile.getNumberOfUpgrades(),
                         BlockConfig.filingCabinets.upgradeCountMax)));
 

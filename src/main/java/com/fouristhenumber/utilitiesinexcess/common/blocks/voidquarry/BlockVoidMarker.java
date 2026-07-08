@@ -2,18 +2,15 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry;
 
 import static com.gtnewhorizon.gtnhlib.client.model.ModelISBRH.JSON_ISBRH_ID;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
@@ -26,12 +23,11 @@ import com.fouristhenumber.utilitiesinexcess.utils.DirectionUtil;
 public class BlockVoidMarker extends BlockContainer {
 
     public BlockVoidMarker() {
-        super(Material.iron);
+        super(Material.circuits);
         setBlockName("void_marker");
         setBlockTextureName("utilitiesinexcess:void_marker");
-        setBlockBounds(7F / 16F, 0F / 16F, 7F / 16F, 9F / 16F, 13.5F / 16F, 9F / 16F);
+        setBlockBounds(5F / 16F, 0F / 16F, 5F / 16F, 11F / 16F, 14F / 16F, 11F / 16F);
         setLightOpacity(0);
-        setHardness(2f);
     }
 
     @Override
@@ -41,13 +37,6 @@ public class BlockVoidMarker extends BlockContainer {
         if (te instanceof TileEntityVoidMarker marker) {
             marker.checkForAlignedMarkers();
         }
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask,
-        List<AxisAlignedBB> list, Entity collider) {
-        this.setBlockBounds(7F / 16F, 0F / 16F, 7F / 16F, 9F / 16F, 13.5F / 16F, 9F / 16F);
-        super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
     }
 
     @Override
@@ -83,7 +72,9 @@ public class BlockVoidMarker extends BlockContainer {
                 int newCuboidSize = marker.increaseCuboidSize();
                 player.addChatComponentMessage(
                     new ChatComponentText(
-                        String.format(StatCollector.translateToLocal("uie.quarry.marker.mode.2.3"), newCuboidSize)));
+                        String.format(
+                            StatCollector.translateToLocal("uie.gui.text.quarry.marker_mode.2.3"),
+                            newCuboidSize)));
             } else {
                 marker.rotateMode();
                 player.addChatComponentMessage(new ChatComponentText(marker.getMode()));

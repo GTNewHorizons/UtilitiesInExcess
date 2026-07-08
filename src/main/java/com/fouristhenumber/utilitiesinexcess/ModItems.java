@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemChunchunmaru;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemFireBattery;
@@ -78,7 +79,7 @@ public enum ModItems {
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
-    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new Item().setUnlocalizedName("capacity_upgrade").setTextureName("utilitiesinexcess:capacity_upgrade"), "capacity_upgrade"),
+    CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     ; // leave trailing semicolon
     // spotless:on
 

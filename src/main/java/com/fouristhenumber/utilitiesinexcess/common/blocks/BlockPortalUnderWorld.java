@@ -117,7 +117,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
                 BlockPos spawn = findSpawnLocation(dest, source.entranceX, source.entranceY, source.entranceZ);
 
                 if (spawn == null) {
-                    player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal_blocked"));
+                    player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal.blocked"));
                 } else {
                     teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y, spawn.z);
                 }

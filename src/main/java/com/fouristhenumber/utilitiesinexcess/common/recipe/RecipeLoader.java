@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -544,6 +545,71 @@ public class RecipeLoader {
             ModBlocks.LAPIS_AETHERIUS.newItemStack(1, 5),
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
+        // Filing Cabinets
+        if (RecipeConfig.enableFilingCabinetRecipes) {
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 0),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                Items.iron_ingot,
+                'c',
+                Blocks.chest);
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 1),
+                "mcm",
+                "mcm",
+                "mcm",
+                'm',
+                ModBlocks.MAGIC_WOOD,
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 0));
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 2),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 1));
+        }
+
+        // Filing Cabinet Capacity Upgrade
+        if (RecipeConfig.enableFilingCabinetUpgradeRecipe) addShapedRecipe(
+            ModItems.CAPACITY_UPGRADE,
+            " d ",
+            "gcg",
+            " d ",
+            'g',
+            Items.gold_ingot,
+            'c',
+            ModBlocks.FILING_CABINET.newItemStack(1, 0),
+            'd',
+            Items.diamond);
+
+        // Void Quarry
+        if (RecipeConfig.enableVoidQuarryRecipe) addShapedRecipe(
+            ModBlocks.VOID_QUARRY,
+            "oso",
+            "ede",
+            "pap",
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            's',
+            Blocks.sapling,
+            'e',
+            ModBlocks.ENDSPARK,
+            'd',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0),
+            'p',
+            ModBlocks.SMART_PUMP,
+            'a',
+            Items.diamond_pickaxe);
     }
 
     private static void loadGeneratorRecipes() {
@@ -1224,8 +1290,8 @@ public class RecipeLoader {
                     ModItems.INVERTED_INGOT.newItemStack()));
         }
 
-        if (RecipeConfig.enableInvertedIngotStableRecipe) addShapedRecipe(
-            ModItems.INVERTED_INGOT.newItemStack(1, 1),
+        if (RecipeConfig.enableInvertedIngotQuasiNormalizedRecipe) addShapedRecipe(
+            ModItems.INVERTED_INGOT.newItemStack(1, 2),
             "i",
             "s",
             "d",
@@ -1313,6 +1379,17 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
+        // Chunchunmaru
+        if (RecipeConfig.enableChunchunmaruRecipe) addShapedRecipe(
+            ModItems.CHUNCHUNMARU,
+            "i",
+            "i",
+            "s",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, 2),
+            's',
+            ModItems.ETHERIC_SWORD);
+
         // Precision Shears
         if (RecipeConfig.enablePrecisionShearsRecipe) addShapedRecipe(
             ModItems.PRECISION_SHEARS,
@@ -1366,6 +1443,8 @@ public class RecipeLoader {
     }
 
     private static void loadEnderLocusRecipes() {
+        if (!ModBlocks.ENDER_LOCUS.isEnabled()) return;
+
         // Ender Locus
         if (RecipeConfig.enableEnderLocusRecipe) addShapedRecipe(
             ModBlocks.ENDER_LOCUS,
@@ -1426,6 +1505,162 @@ public class RecipeLoader {
                 "logWood",
                 'C',
                 ModBlocks.CHANDELIER);
+
+        // Void Marker (Ender Locus)
+        if (RecipeConfig.enableVoidMarkerRecipe) EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_MARKER.newItemStack(1),
+                new String[] { " E ", " O ", " O " },
+                'O',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+                'E',
+                Items.ender_pearl);
+
+        // Void Quarry Upgrades (Ender Locus)
+        if (!RecipeConfig.enableVoidQuarryUpgradeRecipes) return;
+
+        // World Hole
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 0),
+                new String[] { " T ", "QBQ", " E " },
+                'T',
+                ModBlocks.TRASH_CAN_ITEM,
+                'Q',
+                Blocks.quartz_block,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Silk Touch
+        ItemStack pickaxe = new ItemStack(Items.golden_pickaxe);
+        pickaxe.addEnchantment(Enchantment.silkTouch, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 1),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fluid Pump
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 2),
+                new String[] { " T ", "RBR", " E " },
+                'T',
+                Items.bucket,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Speed 1
+        // TODO: Redstone -> Transfer Node Speed Upgrade
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.efficiency, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 3),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Speed 2
+        // TODO: Redstone -> Transfer Node Speed Upgrade
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.efficiency, 3);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 4),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 3),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Speed 3
+        // TODO: Redstone -> Transfer Node Stack Upgrade
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.efficiency, 5);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 5),
+                new String[] { "P P", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 4),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fortune 1
+        pickaxe = new ItemStack(Items.iron_pickaxe);
+        pickaxe.addEnchantment(Enchantment.fortune, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 6),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fortune 2
+        pickaxe = new ItemStack(Items.golden_pickaxe);
+        pickaxe.addEnchantment(Enchantment.fortune, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 7),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 6),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fortune 3
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.fortune, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 8),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 7),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
