@@ -4,25 +4,25 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.InvertedTools;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config.LangKey("utilitiesinexcess.config.items")
+@Config.LangKey("uie.config.items")
 @Config(modid = UtilitiesInExcess.MODID, category = "items")
 @Config.Order(100)
 public class ItemConfig {
 
     @Config.Order(0)
-    @Config.LangKey("utilitiesinexcess.config.item.inverted_tools")
+    @Config.LangKey("uie.config.item.inverted_tools")
     public static final InvertedTools invertedTools = InvertedTools.INSTANCE;
 
     @Config.Order(100)
-    @Config.LangKey("utilitiesinexcess.config.item.inversion")
+    @Config.LangKey("uie.config.item.inversion")
     public static final InversionConfig inversion = InversionConfig.INSTANCE;
 
     @Config.Order(200)
-    @Config.LangKey("utilitiesinexcess.config.item.architects_wands")
+    @Config.LangKey("uie.config.item.architects_wands")
     public static final ArchitectsWandsConfig architectsWands = ArchitectsWandsConfig.INSTANCE;
 
     @Config.Order(300)
-    @Config.LangKey("utilitiesinexcess.config.item.watering_can")
+    @Config.LangKey("uie.config.item.watering_can")
     public static final WateringCanConfig wateringCan = WateringCanConfig.INSTANCE;
 
     @Config.Order(400)

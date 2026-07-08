@@ -115,7 +115,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .paddingRight(2)
                 .tooltipBuilder(TileEntityTradingPost::buildHelpToolTip));
         topRow.child(
-            IKey.str(StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
+            IKey.str(
+                StatCollector.translateToLocalFormatted("uie.gui.text.trading_post.villager_count", merchants.size()))
                 .asWidget()
                 .left(14)
                 .top(4));
@@ -217,28 +218,29 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     }
 
     public static void buildHelpToolTip(RichTooltip tooltip) {
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.0"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.1"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.2"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.3"));
-        if (Mods.FindIt.isLoaded()) tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.4"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.0"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.1"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.2"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.3"));
+        if (Mods.FindIt.isLoaded())
+            tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.4"));
         tooltip.addLine("§7"); // If the line is empty it gets skipped
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.5"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.6"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.5"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.6"));
         tooltip.addLine(
             StatCollector.translateToLocalFormatted(
-                "tile.trading_post.help_tooltip.7",
-                StatCollector.translateToLocal("tile.trading_post.search.buy_prefix"),
-                StatCollector.translateToLocal("tile.trading_post.search.sell_prefix")));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.8"));
+                "uie.gui.tooltip.trading_post.help.7",
+                StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.buy_prefix"),
+                StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.sell_prefix")));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.8"));
         tooltip.addLine(
             StatCollector.translateToLocalFormatted(
-                "tile.trading_post.help_tooltip.9",
-                StatCollector.translateToLocal("tile.trading_post.search.sell_prefix")));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.10"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.11"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.12"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.13"));
+                "uie.gui.tooltip.trading_post.help.9",
+                StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.sell_prefix")));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.10"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.11"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.12"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.13"));
     }
 
     public class TradingPostPanel extends ModularPanel {

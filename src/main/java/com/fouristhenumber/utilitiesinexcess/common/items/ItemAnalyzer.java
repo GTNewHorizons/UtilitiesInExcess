@@ -26,28 +26,28 @@ public class ItemAnalyzer extends Item {
         if (world.isRemote) return true;
         Block clicked = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
-        player.addChatMessage(new ChatComponentTranslation("chat.block_analyzer.header"));
-        player
-            .addChatMessage(new ChatComponentTranslation("chat.block_analyzer.blockid", clicked.getUnlocalizedName()));
-        player.addChatMessage(new ChatComponentTranslation("chat.block_analyzer.blockmeta", meta));
+        player.addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.header"));
+        player.addChatMessage(
+            new ChatComponentTranslation("uie.chat.block_analyzer.blockid", clicked.getUnlocalizedName()));
+        player.addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.blockmeta", meta));
 
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null) {
             NBTTagCompound tag = new NBTTagCompound();
             tile.writeToNBT(tag);
-            player.addChatMessage(new ChatComponentTranslation("chat.block_analyzer.foundTE", tag.getString("id")));
+            player.addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.foundTE", tag.getString("id")));
             Stream<String> nbtKeys = tag.func_150296_c()
                 .stream()
                 .sorted();
             nbtKeys.forEach(
                 s -> player.addChatMessage(
                     new ChatComponentTranslation(
-                        "chat.block_analyzer.nbttag",
+                        "uie.chat.block_analyzer.nbttag",
                         s,
                         tag.getTag(s)
                             .toString())));
         }
-        player.addChatMessage(new ChatComponentTranslation("chat.block_analyzer.footer"));
+        player.addChatMessage(new ChatComponentTranslation("uie.chat.block_analyzer.footer"));
         return true;
     }
 }

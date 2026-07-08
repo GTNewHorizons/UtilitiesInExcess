@@ -101,7 +101,7 @@ public class BlockPortalEndOfTime extends Block {
                 .worldServerForDimension(source.entranceWorld);
             BlockPos spawn = findSpawnLocation(dest, source.entranceX, source.entranceY, source.entranceZ);
             if (spawn == null) {
-                player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal_blocked"));
+                player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal.blocked"));
             } else {
                 teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y, spawn.z);
             }
@@ -306,7 +306,7 @@ public class BlockPortalEndOfTime extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
-            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("tile.temporal_gate.desc"));
+            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("uie.desc.tile.temporal_gate.0"));
         }
     }
 }
