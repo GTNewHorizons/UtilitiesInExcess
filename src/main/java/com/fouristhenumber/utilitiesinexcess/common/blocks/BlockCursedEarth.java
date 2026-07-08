@@ -224,9 +224,9 @@ public class BlockCursedEarth extends Block {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
             if (((BlockCursedEarth) field_150939_a).blessed) {
-                tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.blessed.desc"));
+                tooltip.add(StatCollector.translateToLocal("uie.desc.tile.cursed_earth.blessed"));
             } else {
-                tooltip.add(StatCollector.translateToLocal("tile.cursed_earth.desc"));
+                tooltip.add(StatCollector.translateToLocal("uie.desc.tile.cursed_earth.normal"));
             }
             super.addInformation(stack, player, tooltip, p_77624_4_);
         }

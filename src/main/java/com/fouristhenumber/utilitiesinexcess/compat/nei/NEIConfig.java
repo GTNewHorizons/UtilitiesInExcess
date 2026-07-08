@@ -27,7 +27,7 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public String getName() {
-        return StatCollector.translateToLocal("nei.title.uie.plugin");
+        return StatCollector.translateToLocal("uie.nei.title.plugin");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class NEIConfig implements IConfigureNEI {
             UtilitiesInExcess.MODID,
             "NEIPlugins",
             "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.ender_locus")
+            "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.ender_locus")
                 + "@ender_locus_recipes");
 
         PseudoReversionRecipeHandler pseudoReversionHandler = new PseudoReversionRecipeHandler();
@@ -61,7 +61,7 @@ public class NEIConfig implements IConfigureNEI {
             UtilitiesInExcess.MODID,
             "NEIPlugins",
             "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("nei.title.uie.pseudo_reversion")
+            "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.pseudo_reversion")
                 + "@pseudo_reversion_recipes");
     }
 

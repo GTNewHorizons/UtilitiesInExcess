@@ -74,7 +74,7 @@ public class BlockAdvancedUpdateDetector extends BlockContainer {
             tileABUD.toggleFace(side);
             player.addChatMessage(
                 new ChatComponentTranslation(
-                    "chat.tile.advanced_block_update_detector.toggle",
+                    "uie.chat.advanced_block_update_detector.toggle",
                     facings[side],
                     tileABUD.getScanning(side)));
             return true;

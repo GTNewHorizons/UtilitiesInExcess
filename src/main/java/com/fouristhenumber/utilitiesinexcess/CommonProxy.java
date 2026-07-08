@@ -64,7 +64,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
-        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
+        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("uie.key.glove", "uie.key.categories.uie", Keyboard.KEY_NONE);
         ARCHITECTS_KEYBIND_H = SyncedKeybind
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
         ARCHITECTS_KEYBIND_V = SyncedKeybind
