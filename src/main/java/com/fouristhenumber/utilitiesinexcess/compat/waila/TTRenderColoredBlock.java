@@ -19,8 +19,10 @@ import mcp.mobius.waila.overlay.OverlayConfig;
 public class TTRenderColoredBlock implements IWailaTooltipRenderer {
 
     public static void register() {
-        ModuleRegistrar.instance()
-            .registerTooltipRenderer("waila.uie.coloredblock", new TTRenderColoredBlock());
+        if (BlockColored.allowDyingBlocks()) {
+            ModuleRegistrar.instance()
+                .registerTooltipRenderer("waila.uie.coloredblock", new TTRenderColoredBlock());
+        }
     }
 
     private String string;

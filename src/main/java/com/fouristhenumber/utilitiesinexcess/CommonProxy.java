@@ -77,12 +77,6 @@ public class CommonProxy {
         ARCHITECTS_KEYBIND_V = SyncedKeybind
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
         ModTileEntities.init();
-        if (Mods.Waila.isLoaded()) {
-            FMLInterModComms.sendMessage(
-                "Waila",
-                "register",
-                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaHandler.callbackRegister");
-        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {

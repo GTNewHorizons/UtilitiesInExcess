@@ -7,6 +7,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockRainMuffler;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSmartPump;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockSpike;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockBaseGenerator;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidMarker;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry;
 
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
@@ -30,6 +32,13 @@ public class WailaCompat {
 
         registrar.registerBodyProvider(RainMufflerDataProvider.INSTANCE, BlockRainMuffler.class);
 
-        registrar.registerBodyProvider(ColoredBlocksDataProvider.INSTANCE, BlockColored.class);
+        registrar.registerBodyProvider(VoidQuarryDataProvider.INSTANCE, TileEntityVoidQuarry.class);
+        registrar.registerNBTProvider(VoidQuarryDataProvider.INSTANCE, TileEntityVoidQuarry.class);
+        registrar.registerBodyProvider(VoidQuarryDataProvider.INSTANCE, TileEntityVoidMarker.class);
+        registrar.registerNBTProvider(VoidQuarryDataProvider.INSTANCE, TileEntityVoidMarker.class);
+
+        if (BlockColored.allowDyingBlocks()) {
+            registrar.registerBodyProvider(ColoredBlocksDataProvider.INSTANCE, BlockColored.class);
+        }
     }
 }
