@@ -29,6 +29,9 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         tess.setNormal(0, 1, 0);
         if (block instanceof BlockLapisAetheriusDyable) {
             int color = BlockColored.getRGBFromEIDMeta(metadata);
+            if (color == 0xF8F8F8) {
+                color = Color.ofHSV((System.currentTimeMillis() >> 4) % 360, 1, 1);
+            }
             tess.setColorRGBA(Color.getRed(color), Color.getGreen(color), Color.getBlue(color), 255);
         }
         renderer.renderFaceYNeg(block, 0, 0, 0, block.getIcon(0, metadata));

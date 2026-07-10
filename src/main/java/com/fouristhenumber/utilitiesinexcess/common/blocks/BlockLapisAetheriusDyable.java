@@ -31,11 +31,6 @@ public class BlockLapisAetheriusDyable extends BlockColored {
     }
 
     @Override
-    public boolean ignoreBaseMeta() {
-        return true;
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
         if (player.getHeldItem() != null && player.getHeldItem()
@@ -47,8 +42,18 @@ public class BlockLapisAetheriusDyable extends BlockColored {
     }
 
     @Override
+    public boolean ignoreBaseMeta() {
+        return true;
+    }
+
+    @Override
     public boolean usesExtraBit() {
         return true;
+    }
+
+    @Override
+    public boolean useNEIPage() {
+        return false;
     }
 
     @Override

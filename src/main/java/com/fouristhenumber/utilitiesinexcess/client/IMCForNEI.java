@@ -281,8 +281,9 @@ public class IMCForNEI {
             sendInfoPage("<utilitiesinexcess:paint_roller>", "nei.infopage.uie.paint_roller.1");
 
             for (ModBlocks modBlock : ModBlocks.VALUES) {
-                if (modBlock.get() instanceof BlockColored && !modBlock.name()
-                    .equals("COLORED_STONE_BRICKS")) {
+                if (modBlock.get() instanceof BlockColored bc && bc.useNEIPage()
+                    && !modBlock.name()
+                        .equals("COLORED_STONE_BRICKS")) {
                     sendInfoPage("utilitiesinexcess:" + modBlock.name(), "nei.infopage.uie.colored_blocks.dyeable.1");
                 }
             }

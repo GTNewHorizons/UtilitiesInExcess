@@ -261,6 +261,10 @@ public class BlockColored extends Block {
         return false;
     }
 
+    public boolean useNEIPage() {
+        return true;
+    }
+
     public static class ItemBlockColored extends ItemBlock {
 
         public ItemBlockColored(Block block) {
