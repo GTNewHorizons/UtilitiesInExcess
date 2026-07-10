@@ -36,7 +36,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.9.9,);after:ForgeMicroblock;after:Waila;")
+    dependencies = "required-after:gtnhlib@[0.9.9,);after:ForgeMicroblock;after:Waila;after:NotEnoughItems@[2.8.108-GTNH,);")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
