@@ -1408,9 +1408,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Anti-Particulate Shovel
-        if (RecipeConfig.enableAntiParticulateShovelRecipe) addShapedRecipe(
-            ModItems.ANTI_PARTICULATE_SHOVEL,
+        // Anti-Gravity Shovel
+        if (RecipeConfig.enableAntiGravityShovelRecipe) addShapedRecipe(
+            ModItems.ANTI_GRAVITY_SHOVEL,
             "i",
             "s",
             "s",

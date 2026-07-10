@@ -55,7 +55,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.GOURMANDS_AXE.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_PARTICULATE_SHOVEL.get(), true);
+            .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_GRAVITY_SHOVEL.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.REVERSING_HOE.get(), true);
         ItemStackReplacementManager
