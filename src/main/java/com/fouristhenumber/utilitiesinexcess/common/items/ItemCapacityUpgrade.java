@@ -22,11 +22,11 @@ public class ItemCapacityUpgrade extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.capacity_upgrade.desc.1",
+                "uie.desc.item.capacity_upgrade.1",
                 formatNumber(BlockConfig.filingCabinets.upgradeCapacity)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.capacity_upgrade.desc.2",
+                "uie.desc.item.capacity_upgrade.2",
                 formatNumber(BlockConfig.filingCabinets.upgradeCountMax)));
         super.addInformation(stack, player, tooltip, advanced);
     }

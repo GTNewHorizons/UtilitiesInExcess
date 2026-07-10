@@ -16,266 +16,266 @@ public class IMCForNEI {
     public static void IMCSender() {
         sendInfoPage(
             "utilitiesinexcess:compressed_cobblestone,utilitiesinexcess:compressed_dirt,utilitiesinexcess:compressed_gravel,utilitiesinexcess:compressed_sand",
-            "nei.infopage.uie.compressed.1");
+            "uie.nei.infopage.compressed.1");
 
-        sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.1");
+        sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "uie.nei.infopage.inverted_ingot.1");
         if (InversionConfig.INSTANCE.invertedIngotMode != InversionConfig.InversionMode.OFF) {
-            sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "nei.infopage.uie.inverted_ingot.2");
+            sendInfoPage("<utilitiesinexcess:inverted_ingot:0>", "uie.nei.infopage.inverted_ingot.2");
 
             switch (InversionConfig.INSTANCE.invertedIngotMode) {
                 case IMPLODE -> sendInfoPage(
                     "<utilitiesinexcess:inverted_ingot:0>",
-                    "nei.infopage.uie.inverted_ingot.3.implode");
+                    "uie.nei.infopage.inverted_ingot.3.implode");
                 case DECAY -> sendInfoPage(
                     "<utilitiesinexcess:inverted_ingot:0>",
-                    "nei.infopage.uie.inverted_ingot.3.decay");
+                    "uie.nei.infopage.inverted_ingot.3.decay");
                 case DISAPPEAR -> sendInfoPage(
                     "<utilitiesinexcess:inverted_ingot:0>",
-                    "nei.infopage.uie.inverted_ingot.3.disappear");
+                    "uie.nei.infopage.inverted_ingot.3.disappear");
             }
         }
 
         sendInfoPage(
-            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
-            "nei.infopage.uie.inverted_ingot_stable.1");
+            "<utilitiesinexcess:inverted_nugget>,<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_ingot:2>",
+            "uie.nei.infopage.inverted_ingot_stable.1");
         sendInfoPage(
-            "<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_nugget>",
-            "nei.infopage.uie.inverted_ingot_stable.2");
+            "<utilitiesinexcess:inverted_nugget>,<utilitiesinexcess:inverted_ingot:1>,<utilitiesinexcess:inverted_ingot:2>",
+            "uie.nei.infopage.inverted_ingot_stable.2");
 
         if (Mods.Tinkers.isLoaded()) {
-            sendInfoPage("utilitiesinexcess:inverted_ingot", "nei.infopage.uie.ticon_inverted");
+            sendInfoPage("utilitiesinexcess:inverted_ingot", "uie.nei.infopage.ticon_inverted");
         }
 
-        sendInfoPage("<utilitiesinexcess:gourmands_axe>", "nei.infopage.uie.gourmands_axe.1");
-        sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "nei.infopage.uie.destruction_pickaxe.1");
-        sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "nei.infopage.uie.anti_particulate_shovel.1");
-        sendInfoPage("<utilitiesinexcess:precision_shears>", "nei.infopage.uie.precision_shears.1");
-        sendInfoPage("<utilitiesinexcess:etheric_sword>", "nei.infopage.uie.etheric_sword.1");
-        sendInfoPage("<utilitiesinexcess:reversing_hoe>", "nei.infopage.uie.reversing_hoe.1");
+        sendInfoPage("<utilitiesinexcess:gourmands_axe>", "uie.nei.infopage.gourmands_axe.1");
+        sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "uie.nei.infopage.destruction_pickaxe.1");
+        sendInfoPage("<utilitiesinexcess:anti_particulate_shovel>", "uie.nei.infopage.anti_particulate_shovel.1");
+        sendInfoPage("<utilitiesinexcess:precision_shears>", "uie.nei.infopage.precision_shears.1");
+        sendInfoPage("<utilitiesinexcess:etheric_sword>", "uie.nei.infopage.etheric_sword.1");
+        sendInfoPage("<utilitiesinexcess:reversing_hoe>", "uie.nei.infopage.reversing_hoe.1");
 
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
-            "nei.infopage.uie.filing_cabinet.1");
+            "uie.nei.infopage.filing_cabinet.1");
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
-            "nei.infopage.uie.filing_cabinet.2");
+            "uie.nei.infopage.filing_cabinet.2");
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
-            "nei.infopage.uie.filing_cabinet.3");
+            "uie.nei.infopage.filing_cabinet.3");
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
-            "nei.infopage.uie.filing_cabinet.4");
+            "uie.nei.infopage.filing_cabinet.4");
 
         sendInfoPage(
             "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-            "nei.infopage.uie.architects_wand.1");
+            "uie.nei.infopage.architects_wand.1");
 
         if (Mods.Backhand.isLoaded()) {
             sendInfoPage(
                 "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-                "nei.infopage.uie.architects_wand.2");
+                "uie.nei.infopage.architects_wand.2");
             if (Mods.GT.isLoaded()) sendInfoPage(
                 "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-                "nei.infopage.uie.architects_wand.3");
+                "uie.nei.infopage.architects_wand.3");
         }
-        sendInfoPage("<utilitiesinexcess:mob_jar>", "nei.infopage.uie.mob_jar.1");
+        sendInfoPage("<utilitiesinexcess:mob_jar>", "uie.nei.infopage.mob_jar.1");
 
-        sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.1");
-        if (Mods.Baubles.isLoaded()) sendInfoPage("utilitiesinexcess:glove", "nei.infopage.uie.glove.2");
+        sendInfoPage("utilitiesinexcess:glove", "uie.nei.infopage.glove.1");
+        if (Mods.Baubles.isLoaded()) sendInfoPage("utilitiesinexcess:glove", "uie.nei.infopage.glove.2");
 
-        sendInfoPage("<utilitiesinexcess:floating_block>", "nei.infopage.uie.floating_block.1");
+        sendInfoPage("<utilitiesinexcess:floating_block>", "uie.nei.infopage.floating_block.1");
 
-        sendInfoPage("<utilitiesinexcess:redstone_clock>", "nei.infopage.uie.redstone_clock.1");
+        sendInfoPage("<utilitiesinexcess:redstone_clock>", "uie.nei.infopage.redstone_clock.1");
 
-        sendInfoPage("<utilitiesinexcess:wood_spike>", "nei.infopage.uie.wood_spike.1");
-        sendInfoPage("<utilitiesinexcess:iron_spike>", "nei.infopage.uie.iron_spike.1");
-        sendInfoPage("<utilitiesinexcess:gold_spike>", "nei.infopage.uie.gold_spike.1");
-        sendInfoPage("<utilitiesinexcess:diamond_spike>", "nei.infopage.uie.diamond_spike.1");
+        sendInfoPage("<utilitiesinexcess:wood_spike>", "uie.nei.infopage.wood_spike.1");
+        sendInfoPage("<utilitiesinexcess:iron_spike>", "uie.nei.infopage.iron_spike.1");
+        sendInfoPage("<utilitiesinexcess:gold_spike>", "uie.nei.infopage.gold_spike.1");
+        sendInfoPage("<utilitiesinexcess:diamond_spike>", "uie.nei.infopage.diamond_spike.1");
 
-        sendInfoPage("<utilitiesinexcess:fire_battery>", "nei.infopage.uie.fire_battery.1");
+        sendInfoPage("<utilitiesinexcess:fire_battery>", "uie.nei.infopage.fire_battery.1");
 
-        sendInfoPage("<utilitiesinexcess:block_analyzer>", "nei.infopage.uie.block_analyzer.1");
+        sendInfoPage("<utilitiesinexcess:block_analyzer>", "uie.nei.infopage.block_analyzer.1");
 
-        sendInfoPage("<utilitiesinexcess:conveyor>", "nei.infopage.uie.conveyor.1");
+        sendInfoPage("<utilitiesinexcess:conveyor>", "uie.nei.infopage.conveyor.1");
 
-        sendInfoPage("<utilitiesinexcess:marginally_maximised_chest>", "nei.infopage.uie.marginally_maximised_chest.1");
-        sendInfoPage("<utilitiesinexcess:significantly_shrunk_chest>", "nei.infopage.uie.significantly_shrunk_chest.1");
-        sendInfoPage("<utilitiesinexcess:radically_reduced_chest>", "nei.infopage.uie.radically_reduced_chest.1");
+        sendInfoPage("<utilitiesinexcess:marginally_maximised_chest>", "uie.nei.infopage.marginally_maximised_chest.1");
+        sendInfoPage("<utilitiesinexcess:significantly_shrunk_chest>", "uie.nei.infopage.significantly_shrunk_chest.1");
+        sendInfoPage("<utilitiesinexcess:radically_reduced_chest>", "uie.nei.infopage.radically_reduced_chest.1");
 
-        sendInfoPage("<utilitiesinexcess:pure_love>", "nei.infopage.uie.pure_love.1");
+        sendInfoPage("<utilitiesinexcess:pure_love>", "uie.nei.infopage.pure_love.1");
 
-        sendInfoPage("<utilitiesinexcess:drum>", "nei.infopage.uie.drum.1");
+        sendInfoPage("<utilitiesinexcess:drum>", "uie.nei.infopage.drum.1");
 
         sendInfoPage(
             "<utilitiesinexcess:ender_locus>,<utilitiesinexcess:convergence_crystal>",
-            "nei.infopage.uie.ender_locus.1");
+            "uie.nei.infopage.ender_locus.1");
 
-        sendInfoPage("<utilitiesinexcess:block_update_detector>", "nei.infopage.uie.block_update_detector.1");
+        sendInfoPage("<utilitiesinexcess:block_update_detector>", "uie.nei.infopage.block_update_detector.1");
         sendInfoPage(
             "<utilitiesinexcess:advanced_block_update_detector>",
-            "nei.infopage.uie.advanced.block_update_detector.1");
+            "uie.nei.infopage.advanced.block_update_detector.1");
 
-        sendInfoPage("<utilitiesinexcess:rain_muffler>", "nei.infopage.uie.rain_muffler.1");
-        sendInfoPage("<utilitiesinexcess:sound_muffler>", "nei.infopage.uie.sound_muffler.1");
+        sendInfoPage("<utilitiesinexcess:rain_muffler>", "uie.nei.infopage.rain_muffler.1");
+        sendInfoPage("<utilitiesinexcess:sound_muffler>", "uie.nei.infopage.sound_muffler.1");
 
         sendInfoPage(
             "<utilitiesinexcess:bedrockium_ingot>,<utilitiesinexcess:bedrockium_block>",
-            "nei.infopage.uie.bedrockium.1");
+            "uie.nei.infopage.bedrockium.1");
         if (Mods.Tinkers.isLoaded()) {
-            sendInfoPage("<utilitiesinexcess:bedrockium_ingot>", "nei.infopage.uie.ticon_bedrockium");
+            sendInfoPage("<utilitiesinexcess:bedrockium_ingot>", "uie.nei.infopage.ticon_bedrockium");
         }
 
         sendInfoPage(
             "<utilitiesinexcess:watering_can_basic>,<utilitiesinexcess:watering_can_advanced>,<utilitiesinexcess:watering_can_elite>",
-            "nei.infopage.uie.watering_can.1");
+            "uie.nei.infopage.watering_can.1");
 
         if (Mods.Baubles.isLoaded()) {
             sendInfoPage(
                 "<utilitiesinexcess:heavenly_ring_feather>,<utilitiesinexcess:heavenly_ring_dragon>,<utilitiesinexcess:heavenly_ring_fairy>,<utilitiesinexcess:heavenly_ring_metal>,<utilitiesinexcess:heavenly_ring_magic>",
-                "nei.infopage.uie.heavenly_ring.2");
+                "uie.nei.infopage.heavenly_ring.2");
         } else {
             sendInfoPage(
                 "<utilitiesinexcess:heavenly_ring_feather>,<utilitiesinexcess:heavenly_ring_dragon>,<utilitiesinexcess:heavenly_ring_fairy>,<utilitiesinexcess:heavenly_ring_metal>,<utilitiesinexcess:heavenly_ring_magic>",
-                "nei.infopage.uie.heavenly_ring.1");
+                "uie.nei.infopage.heavenly_ring.1");
         }
 
-        sendInfoPage("<utilitiesinexcess:trash_can_item>", "nei.infopage.uie.trash_can_item.1");
-        sendInfoPage("<utilitiesinexcess:trash_can_fluid>", "nei.infopage.uie.trash_can_fluid.1");
-        sendInfoPage("<utilitiesinexcess:trash_can_energy>", "nei.infopage.uie.trash_can_energy.1");
+        sendInfoPage("<utilitiesinexcess:trash_can_item>", "uie.nei.infopage.trash_can_item.1");
+        sendInfoPage("<utilitiesinexcess:trash_can_fluid>", "uie.nei.infopage.trash_can_fluid.1");
+        sendInfoPage("<utilitiesinexcess:trash_can_energy>", "uie.nei.infopage.trash_can_energy.1");
 
-        sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.magic_wood.1");
+        sendInfoPage("<utilitiesinexcess:magic_wood>", "uie.nei.infopage.magic_wood.1");
         if (Mods.Tinkers.isLoaded()) {
-            sendInfoPage("<utilitiesinexcess:magic_wood>", "nei.infopage.uie.ticon_magic_wood");
+            sendInfoPage("<utilitiesinexcess:magic_wood>", "uie.nei.infopage.ticon_magic_wood");
         }
 
-        sendInfoPage("<utilitiesinexcess:endspark>", "nei.infopage.uie.endspark.1");
+        sendInfoPage("<utilitiesinexcess:endspark>", "uie.nei.infopage.endspark.1");
 
-        sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.1");
-        sendInfoPage("<utilitiesinexcess:pacifists_bench>", "nei.infopage.uie.pacifists_bench.2");
+        sendInfoPage("<utilitiesinexcess:pacifists_bench>", "uie.nei.infopage.pacifists_bench.1");
+        sendInfoPage("<utilitiesinexcess:pacifists_bench>", "uie.nei.infopage.pacifists_bench.2");
 
-        sendInfoPage("<utilitiesinexcess:smart_pump>", "nei.infopage.uie.smart_pump.1");
-        sendInfoPage("<utilitiesinexcess:smart_pump>", "nei.infopage.uie.smart_pump.2");
+        sendInfoPage("<utilitiesinexcess:smart_pump>", "uie.nei.infopage.smart_pump.1");
+        sendInfoPage("<utilitiesinexcess:smart_pump>", "uie.nei.infopage.smart_pump.2");
 
-        sendInfoPage("<utilitiesinexcess:ender_lotus_seed>", "nei.infopage.uie.ender_lotus_seed.1");
+        sendInfoPage("<utilitiesinexcess:ender_lotus_seed>", "uie.nei.infopage.ender_lotus_seed.1");
 
-        sendInfoPage("<utilitiesinexcess:xray_glasses>", "nei.infopage.uie.xray_glasses.1");
+        sendInfoPage("<utilitiesinexcess:xray_glasses>", "uie.nei.infopage.xray_glasses.1");
 
-        sendInfoPage("<utilitiesinexcess:golden_bag>", "nei.infopage.uie.golden_bag.1");
+        sendInfoPage("<utilitiesinexcess:golden_bag>", "uie.nei.infopage.golden_bag.1");
 
         sendInfoPage(
             "<utilitiesinexcess:low_temperature_furnace_generator>,<utilitiesinexcess:low_temperature_furnace_substation>,<utilitiesinexcess:low_temperature_furnace_powerplant>",
-            "nei.infopage.uie.low_temperature_furnace_generator.1");
+            "uie.nei.infopage.low_temperature_furnace_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:furnace_generator>,<utilitiesinexcess:furnace_substation>,<utilitiesinexcess:furnace_powerplant>",
-            "nei.infopage.uie.furnace_generator.1");
+            "uie.nei.infopage.furnace_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:high_temperature_furnace_generator>,<utilitiesinexcess:high_temperature_furnace_substation>,<utilitiesinexcess:high_temperature_furnace_powerplant>",
-            "nei.infopage.uie.high_temperature_furnace_generator.1");
+            "uie.nei.infopage.high_temperature_furnace_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:ender_generator>,<utilitiesinexcess:ender_substation>,<utilitiesinexcess:ender_powerplant>",
-            "nei.infopage.uie.ender_generator.1");
+            "uie.nei.infopage.ender_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:food_generator>,<utilitiesinexcess:food_substation>,<utilitiesinexcess:food_powerplant>",
-            "nei.infopage.uie.food_generator.1");
+            "uie.nei.infopage.food_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:tnt_generator>,<utilitiesinexcess:tnt_substation>,<utilitiesinexcess:tnt_powerplant>",
-            "nei.infopage.uie.tnt_generator.1");
+            "uie.nei.infopage.tnt_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:nether_star_generator>,<utilitiesinexcess:nether_star_substation>,<utilitiesinexcess:nether_star_powerplant>",
-            "nei.infopage.uie.nether_star_generator.1");
+            "uie.nei.infopage.nether_star_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:pink_generator>,<utilitiesinexcess:pink_substation>,<utilitiesinexcess:pink_powerplant>",
-            "nei.infopage.uie.pink_generator.1");
+            "uie.nei.infopage.pink_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:lava_generator>,<utilitiesinexcess:lava_substation>,<utilitiesinexcess:lava_powerplant>",
-            "nei.infopage.uie.lava_generator.1");
+            "uie.nei.infopage.lava_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:solar_generator>,<utilitiesinexcess:solar_substation>,<utilitiesinexcess:solar_powerplant>",
-            "nei.infopage.uie.solar_generator.1");
+            "uie.nei.infopage.solar_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:redstone_generator>,<utilitiesinexcess:redstone_substation>,<utilitiesinexcess:redstone_powerplant>",
-            "nei.infopage.uie.redstone_generator.1");
+            "uie.nei.infopage.redstone_generator.1");
         sendInfoPage(
             "<utilitiesinexcess:potion_generator>,<utilitiesinexcess:potion_substation>,<utilitiesinexcess:potion_powerplant>",
-            "nei.infopage.uie.potion_generator.1");
+            "uie.nei.infopage.potion_generator.1");
 
-        sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.1");
-        sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.2");
-        sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.3");
-        sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.4");
-        sendInfoPage("<utilitiesinexcess:temporal_gate>", "nei.infopage.uie.temporal_gate.5");
+        sendInfoPage("<utilitiesinexcess:temporal_gate>", "uie.nei.infopage.temporal_gate.1");
+        sendInfoPage("<utilitiesinexcess:temporal_gate>", "uie.nei.infopage.temporal_gate.2");
+        sendInfoPage("<utilitiesinexcess:temporal_gate>", "uie.nei.infopage.temporal_gate.3");
+        sendInfoPage("<utilitiesinexcess:temporal_gate>", "uie.nei.infopage.temporal_gate.4");
+        sendInfoPage("<utilitiesinexcess:temporal_gate>", "uie.nei.infopage.temporal_gate.5");
 
         sendInfoPage(
             "<utilitiesinexcess:ethereal_glass>,<utilitiesinexcess:ethereal_glass:1>",
-            "nei.infopage.uie.ethereal_glass.0");
-        sendInfoPage("<utilitiesinexcess:ethereal_glass:2>", "nei.infopage.uie.ethereal_glass.2");
+            "uie.nei.infopage.ethereal_glass.0");
+        sendInfoPage("<utilitiesinexcess:ethereal_glass:2>", "uie.nei.infopage.ethereal_glass.2");
         sendInfoPage(
             "<utilitiesinexcess:ethereal_glass:3>,<utilitiesinexcess:ethereal_glass:4>",
-            "nei.infopage.uie.ethereal_glass.3");
-        sendInfoPage("<utilitiesinexcess:ethereal_glass:5>", "nei.infopage.uie.ethereal_glass.5");
+            "uie.nei.infopage.ethereal_glass.3");
+        sendInfoPage("<utilitiesinexcess:ethereal_glass:5>", "uie.nei.infopage.ethereal_glass.5");
 
         sendInfoPage(
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
-            "nei.infopage.uie.inversion_sigil.1");
+            "uie.nei.infopage.inversion_sigil.1");
         sendInfoPage(
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
-            "nei.infopage.uie.inversion_sigil.2");
+            "uie.nei.infopage.inversion_sigil.2");
         sendInfoPage(
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
-            "nei.infopage.uie.inversion_sigil.3");
+            "uie.nei.infopage.inversion_sigil.3");
         sendInfoPage(
             "<utilitiesinexcess:inversion_sigil_inactive>,<utilitiesinexcess:inversion_sigil_active>",
-            "nei.infopage.uie.inversion_sigil.4");
+            "uie.nei.infopage.inversion_sigil.4");
 
-        sendInfoPage("<utilitiesinexcess:pseudo_reversion_sigil>", "nei.infopage.uie.pseudo_reversion_sigil.1");
-        sendInfoPage("<utilitiesinexcess:pseudo_reversion_sigil>", "nei.infopage.uie.pseudo_reversion_sigil.2");
-        sendInfoPage("<utilitiesinexcess:pseudo_reversion_sigil>", "nei.infopage.uie.pseudo_reversion_sigil.3");
+        sendInfoPage("<utilitiesinexcess:pseudo_reversion_sigil>", "uie.nei.infopage.pseudo_reversion_sigil.1");
+        sendInfoPage("<utilitiesinexcess:pseudo_reversion_sigil>", "uie.nei.infopage.pseudo_reversion_sigil.2");
+        sendInfoPage("<utilitiesinexcess:pseudo_reversion_sigil>", "uie.nei.infopage.pseudo_reversion_sigil.3");
 
-        sendInfoPage("<utilitiesinexcess:cursed_earth>", "nei.infopage.uie.cursed_earth.1");
+        sendInfoPage("<utilitiesinexcess:cursed_earth>", "uie.nei.infopage.cursed_earth.1");
 
-        sendInfoPage("<utilitiesinexcess:blessed_earth>", "nei.infopage.uie.blessed_earth.1");
+        sendInfoPage("<utilitiesinexcess:blessed_earth>", "uie.nei.infopage.blessed_earth.1");
 
-        sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.1");
+        sendInfoPage("utilitiesinexcess:lapis_aetherius", "uie.nei.infopage.lapis_aetherius.1");
         if (BlockColored.allowDyingBlocks())
-            sendInfoPage("utilitiesinexcess:lapis_aetherius", "nei.infopage.uie.lapis_aetherius.2");
+            sendInfoPage("utilitiesinexcess:lapis_aetherius", "uie.nei.infopage.lapis_aetherius.2");
 
-        sendInfoPage("utilitiesinexcess:collector", "nei.infopage.uie.collector.1");
+        sendInfoPage("utilitiesinexcess:collector", "uie.nei.infopage.collector.1");
 
-        sendInfoPage("<utilitiesinexcess:blackout_curtains>", "nei.infopage.uie.blackout_curtains.1");
+        sendInfoPage("<utilitiesinexcess:blackout_curtains>", "uie.nei.infopage.blackout_curtains.1");
 
-        sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.1");
-        sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.2");
-        sendInfoPage("<utilitiesinexcess:underworld_portal>", "nei.infopage.uie.underworld_portal.3");
+        sendInfoPage("<utilitiesinexcess:underworld_portal>", "uie.nei.infopage.underworld_portal.1");
+        sendInfoPage("<utilitiesinexcess:underworld_portal>", "uie.nei.infopage.underworld_portal.2");
+        sendInfoPage("<utilitiesinexcess:underworld_portal>", "uie.nei.infopage.underworld_portal.3");
 
-        sendInfoPage("utilitiesinexcess:chandelier", "nei.infopage.uie.chandelier.1");
+        sendInfoPage("utilitiesinexcess:chandelier", "uie.nei.infopage.chandelier.1");
 
-        sendInfoPage("<utilitiesinexcess:giga_torch>", "nei.infopage.uie.giga_torch.1");
+        sendInfoPage("<utilitiesinexcess:giga_torch>", "uie.nei.infopage.giga_torch.1");
 
-        sendInfoPage("<utilitiesinexcess:trading_post>", "nei.infopage.uie.trading_post.1");
+        sendInfoPage("<utilitiesinexcess:trading_post>", "uie.nei.infopage.trading_post.1");
 
-        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.1");
-        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.2");
-        sendInfoPage("<utilitiesinexcess:void_quarry>", "nei.infopage.uie.void_quarry.3");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "uie.nei.infopage.void_quarry.1");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "uie.nei.infopage.void_quarry.2");
+        sendInfoPage("<utilitiesinexcess:void_quarry>", "uie.nei.infopage.void_quarry.3");
 
-        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.1");
-        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.2");
-        sendInfoPage("<utilitiesinexcess:void_marker>", "nei.infopage.uie.void_marker.3");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "uie.nei.infopage.void_marker.1");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "uie.nei.infopage.void_marker.2");
+        sendInfoPage("<utilitiesinexcess:void_marker>", "uie.nei.infopage.void_marker.3");
 
         sendInfoPage(
             "<utilitiesinexcess:void_quarry>,utilitiesinexcess:void_quarry_upgrade",
-            "nei.infopage.uie.void_quarry_upgrade");
-        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:0>", "nei.infopage.uie.void_quarry_upgrade.world_hole");
-        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:1>", "nei.infopage.uie.void_quarry_upgrade.silk_touch");
-        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:2>", "nei.infopage.uie.void_quarry_upgrade.fluid_pump");
+            "uie.nei.infopage.void_quarry_upgrade");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:0>", "uie.nei.infopage.void_quarry_upgrade.world_hole");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:1>", "uie.nei.infopage.void_quarry_upgrade.silk_touch");
+        sendInfoPage("<utilitiesinexcess:void_quarry_upgrade:2>", "uie.nei.infopage.void_quarry_upgrade.fluid_pump");
         sendInfoPage(
             "<utilitiesinexcess:void_quarry_upgrade:3>,<utilitiesinexcess:void_quarry_upgrade:4>,<utilitiesinexcess:void_quarry_upgrade:5>",
-            "nei.infopage.uie.void_quarry_upgrade.speed");
+            "uie.nei.infopage.void_quarry_upgrade.speed");
         sendInfoPage(
             "<utilitiesinexcess:void_quarry_upgrade:6>,<utilitiesinexcess:void_quarry_upgrade:7>,<utilitiesinexcess:void_quarry_upgrade:8>",
-            "nei.infopage.uie.void_quarry_upgrade.fortune");
+            "uie.nei.infopage.void_quarry_upgrade.fortune");
 
-        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.0");
-        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "nei.infopage.uie.true_greenscreen.1");
+        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "uie.nei.infopage.true_greenscreen.0");
+        sendInfoPage("<utilitiesinexcess:true_greenscreen>", "uie.nei.infopage.true_greenscreen.1");
 
         if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks && BlockColored.allowDyingBlocks()) {
             sendInfoPage("<utilitiesinexcess:paint_roller>", "nei.infopage.uie.paint_roller.1");

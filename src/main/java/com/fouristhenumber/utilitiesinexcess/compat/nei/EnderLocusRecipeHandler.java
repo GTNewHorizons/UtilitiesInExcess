@@ -21,7 +21,7 @@ public class EnderLocusRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal("nei.title.uie.ender_locus");
+        return StatCollector.translateToLocal("uie.nei.title.ender_locus");
     }
 
     @Override

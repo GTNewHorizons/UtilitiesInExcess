@@ -9,6 +9,8 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenBagTr
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.items.GoldenLassoTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.CollectorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.DrumTransformation;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.EnderQuarryTransform;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FilingCabinetTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.FullChestTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.GeneratorTransformation;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.postea.tileentities.MiniChestTransformation;
@@ -68,7 +70,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:unstableingot", 0, ModItems.INVERTED_INGOT.get(), 0, true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 0, true);
+            .addSimpleReplacement("ExtraUtilities:unstableingot", 2, ModItems.INVERTED_INGOT.get(), 2, true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:unstableingot", 1, ModItems.INVERTED_NUGGET.get(), 0, true);
         ItemStackReplacementManager
@@ -107,6 +109,8 @@ public class PosteaTransforms {
         coloredBlocks();
         decoBlocks();
         generatorBlocks();
+        enderQuarryUpgrades();
+
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:chestFull", ModBlocks.MARGINALLY_MAXIMISED_CHEST.get());
         BlockReplacementManager
@@ -155,6 +159,9 @@ public class PosteaTransforms {
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:magnumTorch", ModBlocks.GIGA_TORCH.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:chandelier", ModBlocks.CHANDELIER.get());
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:trading_post", ModBlocks.TRADING_POST.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:endMarker", ModBlocks.VOID_MARKER.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:enderQuarry", ModBlocks.VOID_QUARRY.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:filing", ModBlocks.FILING_CABINET.get());
     }
 
     private static void transformTileEntities() {
@@ -163,11 +170,39 @@ public class PosteaTransforms {
         TileEntityReplacementManager.tileEntityTransformer("TileEnderCollector", CollectorTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("drum", DrumTransformation::transform);
         TileEntityReplacementManager.tileEntityTransformer("TileEnderConstructor", QEDTransformation::transform);
+        TileEntityReplacementManager.tileEntityTransformer("enderQuarry", EnderQuarryTransform::transform);
 
         SpikeTransformation.registerIDResolvers();
         TileEntityReplacementManager.tileEntityTransformer("TileEntityEnchantedSpike", SpikeTransformation::transform);
 
         GeneratorTransformation.postLoad();
+
+        TileEntityReplacementManager
+            .tileEntityTransformer("TileEntityFilingCabinet", FilingCabinetTransformation::transform);
+    }
+
+    private static void enderQuarryUpgrades() {
+        // We don't have an equivalent of the "base" upgrade
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 0, ModBlocks.DECORATIVE_BLOCKS.get(), 2);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 1, ModBlocks.VOID_QUARRY_UPGRADE.get(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 2, ModBlocks.VOID_QUARRY_UPGRADE.get(), 1);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 3, ModBlocks.VOID_QUARRY_UPGRADE.get(), 6);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 4, ModBlocks.VOID_QUARRY_UPGRADE.get(), 7);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 5, ModBlocks.VOID_QUARRY_UPGRADE.get(), 8);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 6, ModBlocks.VOID_QUARRY_UPGRADE.get(), 3);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 7, ModBlocks.VOID_QUARRY_UPGRADE.get(), 4);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 8, ModBlocks.VOID_QUARRY_UPGRADE.get(), 5);
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:enderQuarryUpgrade", 9, ModBlocks.VOID_QUARRY_UPGRADE.get(), 2);
     }
 
     private static void compressedBlocks() {
@@ -417,6 +452,7 @@ public class PosteaTransforms {
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderCollector");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderThermicPump");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:etherealglass");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:filing");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator.8");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:generator.64");
@@ -433,5 +469,9 @@ public class PosteaTransforms {
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:timer");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:trading_post");
         BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:trashcan");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:endConstructor");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderQuarry");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:endMarker");
+        BlockReplacementManager.ignoreMissingMapping("ExtraUtilities:enderQuarryUpgrade");
     }
 }

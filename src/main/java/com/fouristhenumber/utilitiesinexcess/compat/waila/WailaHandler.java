@@ -57,7 +57,7 @@ public class WailaHandler implements IWailaDataProvider {
                     // Can't pass the time format string via the localization system since it seems to remove the
                     // leading zero formatting
                     LangUtil.instance.translate(
-                        "uie.quarry.waila.timeleft",
+                        "uie.waila.timeleft.state",
                         String.format(
                             "%02d:%02d:%02d",
                             estimatedSecondsLeft / 3600,
@@ -67,14 +67,13 @@ public class WailaHandler implements IWailaDataProvider {
             TileEntityVoidQuarry.QuarryWorkState state = TileEntityVoidQuarry.QuarryWorkState
                 .valueOf(nbt.getString("state"));
             currenttip.add(
-                LangUtil.instance.translate("uie.quarry.waila.state", LangUtil.instance.translate(state.localKey)));
+                LangUtil.instance.translate("uie.waila.quarry.state", LangUtil.instance.translate(state.localKey)));
         } else if (accessor.getTileEntity() instanceof TileEntityVoidMarker) {
             NBTTagCompound nbt = accessor.getNBTData();
             TileEntityVoidMarker.MarkerOperationMode mode = TileEntityVoidMarker.MarkerOperationMode
                 .valueOf(nbt.getString("mode"));
-            currenttip.add(
-                LangUtil.instance
-                    .translate("uie.quarry.marker.waila.state", LangUtil.instance.translate(mode.localKey)));
+            currenttip
+                .add(LangUtil.instance.translate("uie.waila.marker.state", LangUtil.instance.translate(mode.localKey)));
         }
         return currenttip;
     }

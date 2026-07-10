@@ -1341,8 +1341,8 @@ public class RecipeLoader {
                     ModItems.INVERTED_INGOT.newItemStack()));
         }
 
-        if (RecipeConfig.enableInvertedIngotStableRecipe) addShapedRecipe(
-            ModItems.INVERTED_INGOT.newItemStack(1, 1),
+        if (RecipeConfig.enableInvertedIngotQuasiNormalizedRecipe) addShapedRecipe(
+            ModItems.INVERTED_INGOT.newItemStack(1, 2),
             "i",
             "s",
             "d",
@@ -1429,6 +1429,17 @@ public class RecipeLoader {
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             's',
             Blocks.obsidian);
+
+        // Chunchunmaru
+        if (RecipeConfig.enableChunchunmaruRecipe) addShapedRecipe(
+            ModItems.CHUNCHUNMARU,
+            "i",
+            "i",
+            "s",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, 2),
+            's',
+            ModItems.ETHERIC_SWORD);
 
         // Precision Shears
         if (RecipeConfig.enablePrecisionShearsRecipe) addShapedRecipe(

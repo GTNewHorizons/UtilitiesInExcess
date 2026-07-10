@@ -224,7 +224,7 @@ public class BlockFilingCabinet extends BlockContainer {
                 return vanillaLines;
             }
             List<String> header = new ArrayList<>(vanillaLines);
-            header.add(ChatFormatting.GRAY + StatCollector.translateToLocal("tile.filing_cabinet.tooltip.contents"));
+            header.add(ChatFormatting.GRAY + StatCollector.translateToLocal("uie.desc.tile.filing_cabinet.contents"));
             return header;
         }
 
@@ -236,12 +236,12 @@ public class BlockFilingCabinet extends BlockContainer {
                 .isEmpty()) {
                 footer.add(
                     ChatFormatting.GRAY + StatCollector
-                        .translateToLocalFormatted("tile.filing_cabinet.tooltip.total", contents.totalItems()));
+                        .translateToLocalFormatted("uie.desc.tile.filing_cabinet.total", contents.totalItems()));
             }
             if (contents.upgrades() > 0) {
                 footer.add(
                     ChatFormatting.GRAY + StatCollector
-                        .translateToLocalFormatted("tile.filing_cabinet.tooltip.upgrades", contents.upgrades()));
+                        .translateToLocalFormatted("uie.desc.tile.filing_cabinet.upgrades", contents.upgrades()));
             }
             return footer;
         }
@@ -296,7 +296,7 @@ public class BlockFilingCabinet extends BlockContainer {
             CabinetTier[] tiers = cabinet.getTiers();
             int meta = stack.getItemDamage();
             if (meta < 0 || meta >= tiers.length) return;
-            String key = "tile.filing_cabinet." + tiers[meta].getName() + ".desc";
+            String key = "uie.desc.tile.filing_cabinet." + tiers[meta].getName();
             if (StatCollector.canTranslate(key)) {
                 tooltip.add(ChatFormatting.GRAY + I18n.format(key));
             }

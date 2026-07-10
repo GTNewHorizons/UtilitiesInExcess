@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.config;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config.LangKey("utilitiesinexcess.config.recipes")
+@Config.LangKey("uie.config.recipes")
 @Config(modid = UtilitiesInExcess.MODID, category = "recipes")
 @Config.Order(400)
 public class RecipeConfig {
@@ -54,7 +54,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableInvertedIngotStableRecipe;
+    public static boolean enableInvertedIngotQuasiNormalizedRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
@@ -87,6 +87,10 @@ public class RecipeConfig {
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableEthericSwordRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enableChunchunmaruRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

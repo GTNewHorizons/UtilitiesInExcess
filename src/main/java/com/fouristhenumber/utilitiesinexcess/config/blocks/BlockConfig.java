@@ -3,57 +3,57 @@ package com.fouristhenumber.utilitiesinexcess.config.blocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config.LangKey("utilitiesinexcess.config.blocks")
+@Config.LangKey("uie.config.blocks")
 @Config(modid = UtilitiesInExcess.MODID, category = "blocks")
 @Config.Order(0)
 public class BlockConfig {
 
     @Config.Order(0)
-    @Config.LangKey("utilitiesinexcess.config.block.spikes")
+    @Config.LangKey("uie.config.blocks.spikes")
     public static final Spikes spikes = new Spikes();
 
     @Config.Order(100)
-    @Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
+    @Config.LangKey("uie.config.blocks.cursed_earth")
     public static final CursedEarthConfig cursedEarth = CursedEarthConfig.INSTANCE;
 
     @Config.Order(200)
-    @Config.LangKey("utilitiesinexcess.config.block.muffler")
+    @Config.LangKey("uie.config.blocks.muffler")
     public static final Mufflers mufflers = new Mufflers();
 
     @Config.Order(300)
-    @Config.LangKey("utilitiesinexcess.config.block.chandelier")
+    @Config.LangKey("uie.config.blocks.chandelier")
     public static final Chandelier chandelier = new Chandelier();
 
     @Config.Order(400)
-    @Config.LangKey("tile.giga_torch.name")
+    @Config.LangKey("uie.config.blocks.giga_torch")
     public static final GigaTorch gigaTorch = new GigaTorch();
 
     @Config.Order(500)
-    @Config.LangKey("tile.smart_pump.name")
+    @Config.LangKey("uie.config.blocks.smart_pump")
     public static final SmartPump smartPump = new SmartPump();
 
     @Config.Order(600)
-    @Config.LangKey("tile.void_quarry.name")
+    @Config.LangKey("uie.config.blocks.void_quarry")
     public static final VoidQuarryConfig voidQuarry = VoidQuarryConfig.INSTANCE;
 
     @Config.Order(700)
-    @Config.LangKey("tile.pure_love.name")
+    @Config.LangKey("uie.config.blocks.pure_love")
     public static final PureLove pureLove = new PureLove();
 
     @Config.Order(800)
-    @Config.LangKey("tile.pacifists_bench.name")
+    @Config.LangKey("uie.config.blocks.pacifists_bench")
     public static final PacifistsBench pacifistsBench = new PacifistsBench();
 
     @Config.Order(900)
-    @Config.LangKey("tile.ender_lotus.name")
+    @Config.LangKey("uie.config.blocks.ender_lotus")
     public static final EnderLotusConfig enderLotus = EnderLotusConfig.INSTANCE;
 
     @Config.Order(1000)
-    @Config.LangKey("utilitiesinexcess.config.block.colored_blocks")
-    public static final ColoredBlocksConfig coloredBlocks = ColoredBlocksConfig.INSTANCE;
+    @Config.LangKey("uie.config.blocks.colored_blocks")
+    public static final ColoredBlocksConfig coloredBlocks = new ColoredBlocksConfig();
 
     @Config.Order(1100)
-    @Config.LangKey("utilitiesinexcess.config.block.filing_cabinets")
+    @Config.LangKey("uie.config.blocks.filing_cabinets")
     public static final FilingCabinetsConfig filingCabinets = new FilingCabinetsConfig();
 
     public static class PureLove {
