@@ -70,6 +70,11 @@ public class MixinModelBiped_Baubles {
         }
 
         ItemStack ring = ItemHeavenlyRing.wingedPlayers.getOrDefault(player, null);
+        if (ring == null && player.getHeldItem() != null
+            && player.getHeldItem()
+                .getItem() instanceof ItemHeavenlyRing) {
+            ring = player.getHeldItem();
+        }
         if (ring == null) {
             ring = UIEUtils.getBauble(player, ItemHeavenlyRing.class);
         }
