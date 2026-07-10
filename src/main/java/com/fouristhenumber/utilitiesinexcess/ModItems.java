@@ -21,7 +21,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
@@ -35,7 +35,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiParticulateShovelConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
@@ -51,7 +51,7 @@ public enum ModItems {
     // make sure to leave a trailing comma
     GOURMANDS_AXE(GourmandsAxeConfig.INSTANCE.enable, new ItemGourmandsAxe(), "gourmands_axe"),
     DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
-    ANTI_PARTICULATE_SHOVEL(AntiParticulateShovelConfig.INSTANCE.enable, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
+    ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
     ETHERIC_SWORD(EthericSwordConfig.INSTANCE.enable, new ItemEthericSword(), "etheric_sword"),
     REVERSING_HOE(ReversingHoeConfig.INSTANCE.enable, new ItemReversingHoe(), "reversing_hoe"),
