@@ -77,6 +77,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         if (newBlock == null) return false;
         BlockColored blockColored = newBlock instanceof BlockColored ? (BlockColored) newBlock
             : BlockColored.getColoredVersion(newBlock);
+        if (blockColored == null) return false;
         boolean needsIDChange = newBlock != block;
 
         int color = blockColored.usesExtraBit() ? BlockColored.getEIDMetaFromRGBWithExtraBit(getColorFromStack(stack))
@@ -229,7 +230,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (BlockColored.allowDyingBlocks()) {
             if (getPaintStripperFromStack(stack)) {
-                tooltip.add(StatCollector.translateToLocal("item.paint_roller.gui.paintstripper"));
+                tooltip.add(StatCollector.translateToLocal("uie.gui.text.paint_roller.paintstripper"));
             } else {
                 int color = getColorFromStack(stack);
                 if (color != 0xFFFFFF) {
