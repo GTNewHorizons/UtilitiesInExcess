@@ -278,20 +278,20 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:true_greenscreen>", "uie.nei.infopage.true_greenscreen.1");
 
         if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks && BlockColored.allowDyingBlocks()) {
-            sendInfoPage("<utilitiesinexcess:paint_roller>", "nei.infopage.uie.paint_roller.1");
+            sendInfoPage("<utilitiesinexcess:paint_roller>", "uie.nei.infopage.paint_roller");
 
             for (ModBlocks modBlock : ModBlocks.VALUES) {
                 if (modBlock.get() instanceof BlockColored bc && bc.useNEIPage()
                     && !modBlock.name()
                         .equals("COLORED_STONE_BRICKS")) {
-                    sendInfoPage("utilitiesinexcess:" + modBlock.name(), "nei.infopage.uie.colored_blocks.dyeable.1");
+                    sendInfoPage("utilitiesinexcess:" + modBlock.name(), "uie.nei.infopage.colored_blocks.dyeable");
                 }
             }
 
             for (BlockColored block : BlockColored.CONFIG_COLORED_BLOCKS) {
                 sendInfoPage(
                     "utilitiesinexcess:" + ((AccessorBlock) block).uie$getUnlocalizedNameRaw(),
-                    "nei.infopage.uie.colored_blocks.dyeable.1");
+                    "uie.nei.infopage.colored_blocks.dyeable");
             }
         }
     }

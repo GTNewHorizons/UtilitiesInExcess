@@ -76,7 +76,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                 .top(4)
                 .bottom(5)
                 .child(
-                    IKey.str("Select Color:")
+                    IKey.str(StatCollector.translateToLocal("uie.gui.title.paint_roller"))
                         .asWidget()
                         .leftRel(0.5f)
                         .anchorLeft(0.5f)
@@ -143,7 +143,8 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                                 .topRel(0.5f)
                                 .value(new BoolValue.Dynamic(() -> paintStripper, result -> paintStripper = result))
                                 .overlay(
-                                    IKey.str(StatCollector.translateToLocal("item.paint_roller.gui.paintstripper")))))
+                                    IKey.str(
+                                        StatCollector.translateToLocal("uie.gui.text.paint_roller.paintstripper")))))
                 .child(
                     Flow.row()
                         .left(10)
@@ -154,7 +155,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .child(
                             new ButtonWidget<>().heightRel(1f)
                                 .width(50)
-                                .overlay(IKey.str(StatCollector.translateToLocal("item.paint_roller.gui.cancel")))
+                                .overlay(IKey.str(StatCollector.translateToLocal("uie.gui.text.paint_roller.cancel")))
                                 .onMousePressed(button -> {
                                     closeIfOpen();
                                     return true;
@@ -162,7 +163,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .child(
                             new ButtonWidget<>().heightRel(1f)
                                 .width(50)
-                                .overlay(IKey.str(StatCollector.translateToLocal("item.paint_roller.gui.confirm")))
+                                .overlay(IKey.str(StatCollector.translateToLocal("uie.gui.text.paint_roller.confirm")))
                                 .onMousePressed(button -> {
                                     resultConsumer.accept(this.color, this.paintStripper);
                                     closeIfOpen();
@@ -354,9 +355,9 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
     }
 
     public static void buildHelpToolTip(RichTooltip tooltip) {
-        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.0"));
-        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.1"));
-        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.2"));
-        tooltip.addLine(StatCollector.translateToLocal("item.paint_roller.help_tooltip.3"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.0"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.1"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.2"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.3"));
     }
 }

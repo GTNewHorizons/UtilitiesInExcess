@@ -50,7 +50,7 @@ public class BlockConfig {
 
     @Config.Order(1000)
     @Config.LangKey("uie.config.blocks.colored_blocks")
-    public static final ColoredBlocksConfig coloredBlocks = new ColoredBlocksConfig();
+    public static final ColoredBlocksConfig coloredBlocks = ColoredBlocksConfig.INSTANCE;
 
     @Config.Order(1100)
     @Config.LangKey("uie.config.blocks.filing_cabinets")

@@ -108,7 +108,7 @@ public class BlockLapisAetheriusDyable extends BlockColored {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
             super.addInformation(stack, player, tooltip, p_77624_4_);
             if (BlockColored.getExtraMetaBit(stack.getItemDamage()) > 0) {
-                tooltip.add(StatCollector.translateToLocal("tile.lapis_aetherius_dyeable.desc.0"));
+                tooltip.add(StatCollector.translateToLocal("uie.desc.lapis_aetherius_dyeable"));
             }
         }
     }
