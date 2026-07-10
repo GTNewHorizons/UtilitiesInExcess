@@ -28,7 +28,7 @@ public class ColoredBlocksDataProvider implements IWailaDataProvider {
 
         if (accessor.getBlock() instanceof BlockLapisAetheriusDyable
             && BlockColored.getExtraMetaBit(accessor.getMetadata()) > 0) {
-            currentTip.add(StatCollector.translateToLocal("tile.lapis_aetherius_dyeable.desc.0"));
+            currentTip.add(StatCollector.translateToLocal("uie.desc.lapis_aetherius_dyeable"));
         }
 
         return currentTip;
