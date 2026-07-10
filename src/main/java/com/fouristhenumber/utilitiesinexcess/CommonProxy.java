@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
@@ -14,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
@@ -22,6 +24,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -60,6 +63,10 @@ public class CommonProxy {
             new Content().init();
             FMPCompat.init();
         }
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.registerConfigBlocks();
+        }
     }
 
     public void init(FMLInitializationEvent event) {
@@ -88,6 +95,14 @@ public class CommonProxy {
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();
         }
+    }
+
+    public void loadComplete(FMLLoadCompleteEvent event) {
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.initColoredBlocks();
+        }
+
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}

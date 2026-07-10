@@ -6,6 +6,7 @@ import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePack
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketRainMuffledSync;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
+import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -40,5 +41,10 @@ public class PacketHandler {
             FloatingBlockParticlePacket.class,
             packetId++,
             Side.CLIENT);
+        INSTANCE.registerMessage(
+            PaintRollerColorSelect.Handler.class,
+            PaintRollerColorSelect.class,
+            packetId++,
+            Side.SERVER);
     }
 }

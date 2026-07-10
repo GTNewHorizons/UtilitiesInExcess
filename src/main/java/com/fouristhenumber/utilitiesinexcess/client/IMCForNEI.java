@@ -2,8 +2,12 @@ package com.fouristhenumber.utilitiesinexcess.client;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 
@@ -232,6 +236,8 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:blessed_earth>", "uie.nei.infopage.blessed_earth.1");
 
         sendInfoPage("utilitiesinexcess:lapis_aetherius", "uie.nei.infopage.lapis_aetherius.1");
+        if (BlockColored.allowDyingBlocks())
+            sendInfoPage("utilitiesinexcess:lapis_aetherius", "uie.nei.infopage.lapis_aetherius.2");
 
         sendInfoPage("utilitiesinexcess:collector", "uie.nei.infopage.collector.1");
 
@@ -270,6 +276,24 @@ public class IMCForNEI {
 
         sendInfoPage("<utilitiesinexcess:true_greenscreen>", "uie.nei.infopage.true_greenscreen.0");
         sendInfoPage("<utilitiesinexcess:true_greenscreen>", "uie.nei.infopage.true_greenscreen.1");
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks && BlockColored.allowDyingBlocks()) {
+            sendInfoPage("<utilitiesinexcess:paint_roller>", "uie.nei.infopage.paint_roller");
+
+            for (ModBlocks modBlock : ModBlocks.VALUES) {
+                if (modBlock.get() instanceof BlockColored bc && bc.useNEIPage()
+                    && !modBlock.name()
+                        .equals("COLORED_STONE_BRICKS")) {
+                    sendInfoPage("utilitiesinexcess:" + modBlock.name(), "uie.nei.infopage.colored_blocks.dyeable");
+                }
+            }
+
+            for (BlockColored block : BlockColored.CONFIG_COLORED_BLOCKS) {
+                sendInfoPage(
+                    "utilitiesinexcess:" + ((AccessorBlock) block).uie$getUnlocalizedNameRaw(),
+                    "uie.nei.infopage.colored_blocks.dyeable");
+            }
+        }
     }
 
     private static void sendInfoPage(String filter, String page) {

@@ -28,7 +28,7 @@ public class BlockLapisAetherius extends Block {
     }
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons;
+    protected IIcon[] icons;
 
     public int damageDropped(int meta) {
         return meta;

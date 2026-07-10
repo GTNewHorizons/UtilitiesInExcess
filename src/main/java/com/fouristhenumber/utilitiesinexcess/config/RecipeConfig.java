@@ -283,4 +283,8 @@ public class RecipeConfig {
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableVoidQuarryUpgradeRecipes;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enablePaintRollerRecipe;
 }
