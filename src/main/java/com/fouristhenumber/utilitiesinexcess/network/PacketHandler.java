@@ -1,10 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.network;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.network.client.FloatingBlockParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketRainMuffledSync;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
+import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
 
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;

@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,11 +32,20 @@ public class BlockLapisAetheriusDyable extends BlockColored {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        if (player.getHeldItem() != null && player.getHeldItem()
-            .getItem() instanceof ItemPaintRoller) return false;
+        if (player.getHeldItem() != null) return false;
 
         int curMeta = worldIn.getBlockMetadata(x, y, z);
-        setExtraMetaBit(worldIn, x, y, z, curMeta, !(getExtraMetaBit(curMeta) > 0));
+        boolean newExtraBit = !(getExtraMetaBit(curMeta) > 0);
+        setExtraMetaBit(worldIn, x, y, z, curMeta, newExtraBit);
+        if (!worldIn.isRemote) {
+            worldIn.playSoundEffect(
+                (double) x + 0.5D,
+                (double) y + 0.5D,
+                (double) z + 0.5D,
+                "random.click",
+                0.3F,
+                newExtraBit ? 0.3F : 0.8F);
+        }
         return true;
     }
 
