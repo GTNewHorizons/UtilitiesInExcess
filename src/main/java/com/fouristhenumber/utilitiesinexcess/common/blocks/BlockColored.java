@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
@@ -45,12 +47,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockColored extends Block {
 
     protected Block base;
+    private String baseModID;
+    private String baseName;
+    private boolean initialized = true;
+    public String textureOverrideDomain;
+    public String textureOverrideName;
+    private IIcon[] icons;
+    private int baseMeta;
+
     private final float colorMultiplier;
-
     public static final float DEFAULT_BRIGHTNESS = 1.5f;
-
     public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
-
     private static final HashMap<Block, BlockColored> BASES_TO_COLORED = new HashMap<>();
 
     public BlockColored(Block base) {
@@ -58,9 +65,13 @@ public class BlockColored extends Block {
     }
 
     public BlockColored(Block base, float colorMultiplier) {
+        this(base, colorMultiplier, 0);
+    }
+    public BlockColored(Block base, float colorMultiplier, int baseMeta) {
         super(base.getMaterial());
         this.base = base;
         this.colorMultiplier = colorMultiplier;
+        this.baseMeta = baseMeta;
 
         setHardness(base.getBlockHardness(null, 0, 0, 0));
         // This dumb ratio is due to the random scalars present in both get and set resistance.
@@ -72,15 +83,6 @@ public class BlockColored extends Block {
         BASES_TO_COLORED.put(base, this);
     }
 
-    private String baseModID;
-
-    private String baseName;
-
-    private boolean initialized = true;
-
-    public String textureOverrideDomain;
-
-    public String textureOverrideName;
 
     public BlockColored(String baseModID, String baseName, float colorMultiplier, @Nullable String textureDomain,
         @Nullable String textureName) {
@@ -122,29 +124,6 @@ public class BlockColored extends Block {
         initialized = true;
 
         BASES_TO_COLORED.put(base, this);
-    }
-
-    @Override
-    public int damageDropped(int meta) {
-        // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
-        return meta & 0b0_11111_11111_11111;
-        // return meta;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerBlockIcons(IIconRegister reg) {
-        String textureName;
-        if (base != null) {
-            textureName = ((AccessorBlock_Client) base).uie$getTextureName() + "_colored_grayscale";
-        } else {
-            textureName = baseModID + "_" + baseName + "_colored_grayscale";
-        }
-        blockIcon = new BlockColoredTexture(textureName, this, colorMultiplier);
-
-        if (!(reg instanceof TextureMap tm)) return;
-
-        tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
     }
 
     // Util methods
@@ -201,54 +180,7 @@ public class BlockColored extends Block {
     }
     //
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        if (allowDyingBlocks()) {
-            list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
-        } else {
-            for (int i = 0; i < 16; ++i) {
-                list.add(new ItemStack(itemIn, 1, i));
-            }
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
-        if (allowDyingBlocks()) {
-            return getRGBFromEIDMeta(worldIn.getBlockMetadata(x, y, z));
-        }
-
-        int meta = worldIn.getBlockMetadata(x, y, z);
-        return ColorUtils.getHexColorFromWoolMeta(meta);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int meta) {
-        return allowDyingBlocks() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
-    }
-
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-        ItemStack held = player.getHeldItem();
-        if (held != null && held.getItem() instanceof ItemPaintRoller) {
-            PacketHandler.INSTANCE.sendToServer(
-                new PaintRollerColorSelect(
-                    usesExtraBit() ? getRGBFromEIDMetaWithExtraBit(world.getBlockMetadata(x, y, z))
-                        : getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
-            return null;
-        }
-
-        // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
-        ItemStack result = super.getPickBlock(target, world, x, y, z, player);
-        result.setItemDamage(result.getItemDamage() & 0b0_11111_11111_11111);
-
-        return result;
-        // return super.getPickBlock(target, world, x, y, z, player);
-    }
-
+    // BlockColored-specific methods
     public Block getBase() {
         return base;
     }
@@ -265,6 +197,7 @@ public class BlockColored extends Block {
         return true;
     }
 
+    // Item
     public static class ItemBlockColored extends ItemBlock {
 
         public ItemBlockColored(Block block) {
@@ -303,6 +236,7 @@ public class BlockColored extends Block {
         }
     }
 
+    // Config colored blocks handling
     public static final ArrayList<BlockColored> CONFIG_COLORED_BLOCKS = new ArrayList<>();
 
     public static void registerConfigBlocks() {
@@ -348,6 +282,108 @@ public class BlockColored extends Block {
             blockColored.initFromString();
         }
         RecipeLoader.loadColoredBlockRecipes();
+    }
+
+    // Implementations of Block methods
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerBlockIcons(IIconRegister reg) {
+        if (!(reg instanceof TextureMap tm)) return;
+
+        if (base != null) {
+            IIcon[] icons = new IIcon[6];
+            HashSet<String> names = new HashSet<>();
+
+            for (int i = 0; i < 6; i++) {
+                icons[i] = base.getIcon(i, this.baseMeta);
+                names.add(icons[i].getIconName());
+            }
+
+            HashMap<String, IIcon> iconMap = new HashMap<>();
+            for (String name : names) {
+                String textureName = UtilitiesInExcess.MODID + ":" + name.replace(':', '_') + "_colored_grayscale";
+                BlockColoredTexture icon = new BlockColoredTexture(textureName, name, this, colorMultiplier);
+                tm.setTextureEntry(textureName, icon);
+                iconMap.put(name, icon);
+            }
+
+            for (int i = 0; i < 6; i++) {
+                icons[i] = iconMap.get(icons[i].getIconName());
+            }
+
+            this.icons = icons;
+            this.blockIcon = icons[0];
+        } else {
+            String textureName = UtilitiesInExcess.MODID + ":" + baseModID + "_" + baseName + "_colored_grayscale";
+            blockIcon = new BlockColoredTexture(textureName, this, colorMultiplier);
+
+            tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
+        if (allowDyingBlocks()) {
+            return getRGBFromEIDMeta(worldIn.getBlockMetadata(x, y, z));
+        }
+
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        return ColorUtils.getHexColorFromWoolMeta(meta);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderColor(int meta) {
+        return allowDyingBlocks() ? getRGBFromEIDMeta(meta) : ColorUtils.getHexColorFromWoolMeta(meta);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        if (icons != null) {
+            return icons[side];
+        }
+
+        return this.blockIcon;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        if (allowDyingBlocks()) {
+            list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
+        } else {
+            for (int i = 0; i < 16; ++i) {
+                list.add(new ItemStack(itemIn, 1, i));
+            }
+        }
+    }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItem() instanceof ItemPaintRoller) {
+            PacketHandler.INSTANCE.sendToServer(
+                new PaintRollerColorSelect(
+                    usesExtraBit() ? getRGBFromEIDMetaWithExtraBit(world.getBlockMetadata(x, y, z))
+                        : getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
+            return null;
+        }
+
+        // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
+        ItemStack result = super.getPickBlock(target, world, x, y, z, player);
+        result.setItemDamage(result.getItemDamage() & 0b0_11111_11111_11111);
+
+        return result;
+        // return super.getPickBlock(target, world, x, y, z, player);
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
+        return meta & 0b0_11111_11111_11111;
+        // return meta;
     }
 
     // Redirects of Block methods

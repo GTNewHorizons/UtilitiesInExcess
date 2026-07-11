@@ -19,6 +19,13 @@ public class BlockColoredTexture extends TextureAtlasSprite {
     private final BlockColored block;
     private final float colorMultiplier;
 
+    private String baseName;
+
+    public BlockColoredTexture(String name, String baseName, BlockColored block, float colorMultiplier) {
+        this.baseName = baseName;
+        this(name, block, colorMultiplier);
+    }
+
     public BlockColoredTexture(String name, BlockColored block, float colorMultiplier) {
         super(name);
         this.block = block;
@@ -37,11 +44,8 @@ public class BlockColoredTexture extends TextureAtlasSprite {
             if (block.textureOverrideName != null) {
                 baseLocation = new ResourceLocation(block.textureOverrideDomain, block.textureOverrideName);
             } else {
-                String textureName = ((AccessorBlock_Client) block.getBase()).uie$getTextureName();
-                textureName = textureName.equals("planks") ? textureName + "_oak" : textureName;
-                textureName = textureName.equals("quartz_block") ? textureName + "_top" : textureName;
-                textureName = textureName.equals("redstone_lamp_off") ? "redstone_lamp_on" : textureName;
-                baseLocation = new ResourceLocation("textures/blocks/" + textureName + ".png");
+                ResourceLocation temp = new ResourceLocation(baseName);
+                baseLocation = new ResourceLocation(temp.getResourceDomain(), "textures/blocks/" + temp.getResourcePath() + ".png");
             }
 
             BufferedImage img = ImageIO.read(
