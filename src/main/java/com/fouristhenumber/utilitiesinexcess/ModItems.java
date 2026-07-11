@@ -24,10 +24,10 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemLiminalSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemSatingAxe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -39,10 +39,10 @@ import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -51,7 +51,7 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    GOURMANDS_AXE(GourmandsAxeConfig.INSTANCE.enable, new ItemGourmandsAxe(), "gourmands_axe"),
+    SATING_AXE(SatingAxeConfig.INSTANCE.enable, new ItemSatingAxe(), "sating_axe"),
     DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
     ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),

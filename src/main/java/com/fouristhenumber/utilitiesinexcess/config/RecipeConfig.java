@@ -70,7 +70,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableGourmandsAxeRecipe;
+    public static boolean enableSatingAxeRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

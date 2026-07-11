@@ -17,9 +17,9 @@ public class InvertedTools {
     @Config.Order(100)
     public final DestructionPickaxeConfig destructionPickaxeConfig = DestructionPickaxeConfig.INSTANCE;
 
-    @Config.LangKey("item.gourmands_axe.name")
+    @Config.LangKey("item.sating_axe.name")
     @Config.Order(200)
-    public final GourmandsAxeConfig gourmandsAxeConfig = GourmandsAxeConfig.INSTANCE;
+    public final SatingAxeConfig satingAxeConfig = SatingAxeConfig.INSTANCE;
 
     @Config.LangKey("item.anti_gravity_shovel.name")
     @Config.Order(300)

@@ -1375,9 +1375,9 @@ public class RecipeLoader {
             'n',
             ModItems.INVERTED_NUGGET);
 
-        // Gourmand's Axe
-        if (RecipeConfig.enableGourmandsAxeRecipe) addShapedRecipe(
-            ModItems.GOURMANDS_AXE,
+        // Sating Axe
+        if (RecipeConfig.enableSatingAxeRecipe) addShapedRecipe(
+            ModItems.SATING_AXE,
             "ii",
             "is",
             " s",
