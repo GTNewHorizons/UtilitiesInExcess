@@ -49,7 +49,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_BUILDERS_WAND.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.ETHERIC_SWORD.get(), true);
+            .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.LIMINAL_SWORD.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE.get(), true);
         ItemStackReplacementManager

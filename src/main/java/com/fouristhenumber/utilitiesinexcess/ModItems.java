@@ -24,8 +24,8 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemLiminalSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -39,8 +39,8 @@ import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
 
@@ -55,7 +55,7 @@ public enum ModItems {
     DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
     ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
-    ETHERIC_SWORD(EthericSwordConfig.INSTANCE.enable, new ItemEthericSword(), "etheric_sword"),
+    LIMINAL_SWORD(LiminalSwordConfig.INSTANCE.enable, new ItemLiminalSword(), "liminal_sword"),
     REVERSING_HOE(ReversingHoeConfig.INSTANCE.enable, new ItemReversingHoe(), "reversing_hoe"),
     HEAVENLY_RING_FEATHER(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),
     HEAVENLY_RING_DRAGON(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("dragon", 8), "heavenly_ring_dragon"),

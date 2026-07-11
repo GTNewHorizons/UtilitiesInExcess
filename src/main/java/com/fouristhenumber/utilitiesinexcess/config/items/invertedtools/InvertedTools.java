@@ -9,9 +9,9 @@ public class InvertedTools {
     @Config.Ignore
     public static final InvertedTools INSTANCE = new InvertedTools();
 
-    @Config.LangKey("item.etheric_sword.name")
+    @Config.LangKey("item.liminal_sword.name")
     @Config.Order(0)
-    public final EthericSwordConfig ethericSwordConfig = EthericSwordConfig.INSTANCE;
+    public final LiminalSwordConfig liminalSwordConfig = LiminalSwordConfig.INSTANCE;
 
     @Config.LangKey("item.destruction_pickaxe.name")
     @Config.Order(100)

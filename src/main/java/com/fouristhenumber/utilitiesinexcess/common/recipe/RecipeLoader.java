@@ -1419,9 +1419,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Etheric Sword
-        if (RecipeConfig.enableEthericSwordRecipe) addShapedRecipe(
-            ModItems.ETHERIC_SWORD,
+        // Liminal Sword
+        if (RecipeConfig.enableLiminalSwordRecipe) addShapedRecipe(
+            ModItems.LIMINAL_SWORD,
             "i",
             "i",
             "s",
@@ -1439,7 +1439,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, 2),
             's',
-            ModItems.ETHERIC_SWORD);
+            ModItems.LIMINAL_SWORD);
 
         // Precision Shears
         if (RecipeConfig.enablePrecisionShearsRecipe) addShapedRecipe(

@@ -86,7 +86,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableEthericSwordRecipe;
+    public static boolean enableLiminalSwordRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
