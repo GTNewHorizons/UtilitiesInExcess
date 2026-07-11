@@ -1451,9 +1451,9 @@ public class RecipeLoader {
             'f',
             ModBlocks.FLOATING_BLOCK);
 
-        // Architect's Wand
-        if (RecipeConfig.enableArchitectsWandRecipe) addShapedRecipe(
-            ModItems.ARCHITECTS_WAND,
+        // Builder's Wand
+        if (RecipeConfig.enableBuildersWandRecipe) addShapedRecipe(
+            ModItems.BUILDERS_WAND,
             " i",
             "s ",
             'i',
@@ -1461,15 +1461,15 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Super Architect's Wand
-        if (RecipeConfig.enableSuperArchitectsWandRecipe) addShapedRecipe(
-            ModItems.SUPER_ARCHITECTS_WAND,
+        // Super Builder's Wand
+        if (RecipeConfig.enableSuperBuildersWandRecipe) addShapedRecipe(
+            ModItems.SUPER_BUILDERS_WAND,
             " i",
             "s ",
             'i',
             ModItems.BEDROCKIUM_INGOT,
             's',
-            ModItems.ARCHITECTS_WAND);
+            ModItems.BUILDERS_WAND);
 
         // Inverted Ingot -> Block
         if (RecipeConfig.enableInvertedBlockRecipe) addShapedRecipe(

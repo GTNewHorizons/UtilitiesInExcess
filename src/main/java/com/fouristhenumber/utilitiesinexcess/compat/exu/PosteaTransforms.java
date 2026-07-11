@@ -45,9 +45,9 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:builderswand", ModItems.ARCHITECTS_WAND.get(), true);
+            .addSimpleReplacement("ExtraUtilities:builderswand", ModItems.BUILDERS_WAND.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_ARCHITECTS_WAND.get(), true);
+            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_BUILDERS_WAND.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.ETHERIC_SWORD.get(), true);
         ItemStackReplacementManager

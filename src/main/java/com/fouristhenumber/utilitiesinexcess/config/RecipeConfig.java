@@ -98,11 +98,11 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableArchitectsWandRecipe;
+    public static boolean enableBuildersWandRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableSuperArchitectsWandRecipe;
+    public static boolean enableSuperBuildersWandRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

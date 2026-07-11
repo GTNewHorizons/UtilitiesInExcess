@@ -5,8 +5,8 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuildersWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemChunchunmaru;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
@@ -31,7 +31,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
@@ -71,8 +71,8 @@ public enum ModItems {
     PSEUDO_REVERSION_SIGIL(InversionConfig.INSTANCE.enableReversionSigil, new ItemPseudoReversionSigil(), "pseudo_reversion_sigil"),
     INVERTED_INGOT(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
     INVERTED_NUGGET(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
-    ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
-    SUPER_ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableSuperArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
+    BUILDERS_WAND(BuildersWandsConfig.INSTANCE.enableBuildersWand, new ItemBuildersWand(BuildersWandsConfig.INSTANCE.buildersWandBuildLimit).setTextureName("utilitiesinexcess:builders_wand"), "builders_wand"),
+    SUPER_BUILDERS_WAND(BuildersWandsConfig.INSTANCE.enableSuperBuildersWand, new ItemBuildersWand(BuildersWandsConfig.INSTANCE.superBuildersWandBuildLimit).setTextureName("utilitiesinexcess:super_builders_wand"), "super_builders_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
     FIRE_BATTERY(FireBatteryConfig.INSTANCE.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),

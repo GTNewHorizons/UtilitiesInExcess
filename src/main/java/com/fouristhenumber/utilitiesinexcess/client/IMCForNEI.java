@@ -67,16 +67,16 @@ public class IMCForNEI {
             "uie.nei.infopage.filing_cabinet.4");
 
         sendInfoPage(
-            "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-            "uie.nei.infopage.architects_wand.1");
+            "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+            "uie.nei.infopage.builders_wand.1");
 
         if (Mods.Backhand.isLoaded()) {
             sendInfoPage(
-                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-                "uie.nei.infopage.architects_wand.2");
+                "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+                "uie.nei.infopage.builders_wand.2");
             if (Mods.GT.isLoaded()) sendInfoPage(
-                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-                "uie.nei.infopage.architects_wand.3");
+                "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+                "uie.nei.infopage.builders_wand.3");
         }
         sendInfoPage("<utilitiesinexcess:mob_jar>", "uie.nei.infopage.mob_jar.1");
 

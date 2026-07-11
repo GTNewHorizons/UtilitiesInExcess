@@ -35,8 +35,8 @@ public class CommonProxy {
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
     public SyncedKeybind GLOVE_KEYBIND;
-    public SyncedKeybind ARCHITECTS_KEYBIND_H;
-    public SyncedKeybind ARCHITECTS_KEYBIND_V;
+    public SyncedKeybind BUILDERS_KEYBIND_H;
+    public SyncedKeybind BUILDERS_KEYBIND_V;
 
     public void preInit(FMLPreInitializationEvent event) {
         // Config is handled in the early mixin loader (UIEMixinLoader)
@@ -72,9 +72,8 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
         GLOVE_KEYBIND = SyncedKeybind.createConfigurable("uie.key.glove", "uie.key.categories.uie", Keyboard.KEY_NONE);
-        ARCHITECTS_KEYBIND_H = SyncedKeybind
-            .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
-        ARCHITECTS_KEYBIND_V = SyncedKeybind
+        BUILDERS_KEYBIND_H = SyncedKeybind.createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
+        BUILDERS_KEYBIND_V = SyncedKeybind
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
         ModTileEntities.init();
     }
