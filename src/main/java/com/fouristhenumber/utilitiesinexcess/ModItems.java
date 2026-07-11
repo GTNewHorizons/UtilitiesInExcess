@@ -25,7 +25,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemLiminalSword;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRecallShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemSatingAxe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -40,7 +40,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ErasurePickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RecallShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
 
@@ -54,7 +54,7 @@ public enum ModItems {
     SATING_AXE(SatingAxeConfig.INSTANCE.enable, new ItemSatingAxe(), "sating_axe"),
     ERASURE_PICKAXE(ErasurePickaxeConfig.INSTANCE.enable, new ItemErasurePickaxe(), "erasure_pickaxe"),
     ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
-    PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
+    RECALL_SHEARS(RecallShearsConfig.INSTANCE.enable, new ItemRecallShears(), "recall_shears"),
     LIMINAL_SWORD(LiminalSwordConfig.INSTANCE.enable, new ItemLiminalSword(), "liminal_sword"),
     RETROGRADE_HOE(RetrogradeHoeConfig.INSTANCE.enable, new ItemRetrogradeHoe(), "retrograde_hoe"),
     HEAVENLY_RING_FEATHER(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),

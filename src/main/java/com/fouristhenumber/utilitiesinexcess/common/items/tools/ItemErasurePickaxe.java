@@ -48,8 +48,7 @@ public class ItemErasurePickaxe extends ItemPickaxe implements ITranslucentItem 
                     Block block = GameRegistry.findBlock(domain, name);
 
                     if (block == null) {
-                        UtilitiesInExcess.LOG
-                            .warn("Erasure Pickaxe Config: Could not find {}, skipped", blockString);
+                        UtilitiesInExcess.LOG.warn("Erasure Pickaxe Config: Could not find {}, skipped", blockString);
                         continue;
                     }
 

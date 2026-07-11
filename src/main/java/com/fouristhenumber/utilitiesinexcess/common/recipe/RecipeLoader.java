@@ -1441,9 +1441,9 @@ public class RecipeLoader {
             's',
             ModItems.LIMINAL_SWORD);
 
-        // Precision Shears
-        if (RecipeConfig.enablePrecisionShearsRecipe) addShapedRecipe(
-            ModItems.PRECISION_SHEARS,
+        // Recall Shears
+        if (RecipeConfig.enableRecallShearsRecipe) addShapedRecipe(
+            ModItems.RECALL_SHEARS,
             "fi",
             "if",
             'i',

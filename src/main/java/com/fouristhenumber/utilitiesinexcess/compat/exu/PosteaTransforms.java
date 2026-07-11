@@ -58,8 +58,7 @@ public class PosteaTransforms {
             .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_GRAVITY_SHOVEL.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.RETROGRADE_HOE.get(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:shears", ModItems.PRECISION_SHEARS.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:shears", ModItems.RECALL_SHEARS.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get(), true);
         ItemStackReplacementManager

@@ -29,8 +29,8 @@ public class InvertedTools {
     @Config.Order(400)
     public final RetrogradeHoeConfig retrogradeHoeConfig = RetrogradeHoeConfig.INSTANCE;
 
-    @Config.LangKey("item.precision_shears.name")
+    @Config.LangKey("item.recall_shears.name")
     @Config.Order(500)
-    public final PrecisionShearsConfig precisionShearsConfig = PrecisionShearsConfig.INSTANCE;
+    public final RecallShearsConfig recallShearsConfig = RecallShearsConfig.INSTANCE;
 
 }

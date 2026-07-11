@@ -94,7 +94,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enablePrecisionShearsRecipe;
+    public static boolean enableRecallShearsRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
