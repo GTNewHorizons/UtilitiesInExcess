@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ErasurePickaxeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
@@ -23,20 +23,20 @@ import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentItem {
+public class ItemErasurePickaxe extends ItemPickaxe implements ITranslucentItem {
 
-    public ItemDestructionPickaxe() {
+    public ItemErasurePickaxe() {
         super(ToolMaterial.EMERALD);
-        setTextureName("utilitiesinexcess:destruction_pickaxe");
-        setUnlocalizedName("destruction_pickaxe");
-        if (DestructionPickaxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        setTextureName("utilitiesinexcess:erasure_pickaxe");
+        setUnlocalizedName("erasure_pickaxe");
+        if (ErasurePickaxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
     }
 
     public static final Set<BlockMeta> affectedBlockCache = new HashSet<>();
 
     public static void initializeCache() {
-        if (DestructionPickaxeConfig.INSTANCE.includeEffective != null) {
-            for (String blockString : DestructionPickaxeConfig.INSTANCE.includeEffective) {
+        if (ErasurePickaxeConfig.INSTANCE.includeEffective != null) {
+            for (String blockString : ErasurePickaxeConfig.INSTANCE.includeEffective) {
                 if (blockString == null) continue;
                 try {
                     String[] split = blockString.trim()
@@ -49,14 +49,14 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
 
                     if (block == null) {
                         UtilitiesInExcess.LOG
-                            .warn("Destruction Pickaxe Config: Could not find {}, skipped", blockString);
+                            .warn("Erasure Pickaxe Config: Could not find {}, skipped", blockString);
                         continue;
                     }
 
                     affectedBlockCache.add(new BlockMeta(block, meta));
 
                 } catch (Exception e) {
-                    UtilitiesInExcess.LOG.warn("Destruction Pickaxe Config: Skipped malformed config: {}", blockString);
+                    UtilitiesInExcess.LOG.warn("Erasure Pickaxe Config: Skipped malformed config: {}", blockString);
                 }
             }
         }
@@ -78,34 +78,34 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
         BlockMeta wildcardMatch = new BlockMeta(block, -1);
 
         if (affectedBlockCache.contains(exactMatch) || affectedBlockCache.contains(wildcardMatch)) {
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.INSTANCE.effectiveSpeedModifier;
+            return efficiencyOnProperMaterial * ErasurePickaxeConfig.INSTANCE.effectiveSpeedModifier;
         } else {
-            return efficiencyOnProperMaterial * DestructionPickaxeConfig.INSTANCE.ineffectiveSpeedModifier;
+            return efficiencyOnProperMaterial * ErasurePickaxeConfig.INSTANCE.ineffectiveSpeedModifier;
         }
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (DestructionPickaxeConfig.INSTANCE.unbreakable)
+        if (ErasurePickaxeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
+        if (ErasurePickaxeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
+        if (ErasurePickaxeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (DestructionPickaxeConfig.INSTANCE.unbreakable) return false;
+        if (ErasurePickaxeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
@@ -116,17 +116,17 @@ public class ItemDestructionPickaxe extends ItemPickaxe implements ITranslucentI
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return DestructionPickaxeConfig.INSTANCE.enable;
+            return ErasurePickaxeConfig.INSTANCE.enable;
         }
 
         @SubscribeEvent
         public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
-            if (!DestructionPickaxeConfig.INSTANCE.voidMinedBlock) return;
+            if (!ErasurePickaxeConfig.INSTANCE.voidMinedBlock) return;
             if (event.harvester == null) return;
             if (event.harvester.getHeldItem() == null) return;
 
             if (event.harvester.getHeldItem()
-                .getItem() instanceof ItemDestructionPickaxe) {
+                .getItem() instanceof ItemErasurePickaxe) {
                 event.drops.clear();
             }
         }

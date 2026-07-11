@@ -1,12 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
@@ -84,7 +84,7 @@ public class CommonProxy {
         }
 
         ItemRetrogradeHoe.initializeCache();
-        ItemDestructionPickaxe.initializeCache();
+        ItemErasurePickaxe.initializeCache();
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();
         }

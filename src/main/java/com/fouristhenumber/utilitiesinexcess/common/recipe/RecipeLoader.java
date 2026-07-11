@@ -1386,9 +1386,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Destruction Pickaxe
-        if (RecipeConfig.enableDestructionPickaxeRecipe) addShapedRecipe(
-            ModItems.DESTRUCTION_PICKAXE,
+        // Erasure Pickaxe
+        if (RecipeConfig.enableErasurePickaxeRecipe) addShapedRecipe(
+            ModItems.ERASURE_PICKAXE,
             "iii",
             " s ",
             " s ",

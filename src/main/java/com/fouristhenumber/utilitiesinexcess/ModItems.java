@@ -23,7 +23,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSig
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemLiminalSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
@@ -38,7 +38,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ErasurePickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
@@ -52,7 +52,7 @@ public enum ModItems {
 
     // make sure to leave a trailing comma
     SATING_AXE(SatingAxeConfig.INSTANCE.enable, new ItemSatingAxe(), "sating_axe"),
-    DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
+    ERASURE_PICKAXE(ErasurePickaxeConfig.INSTANCE.enable, new ItemErasurePickaxe(), "erasure_pickaxe"),
     ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
     LIMINAL_SWORD(LiminalSwordConfig.INSTANCE.enable, new ItemLiminalSword(), "liminal_sword"),

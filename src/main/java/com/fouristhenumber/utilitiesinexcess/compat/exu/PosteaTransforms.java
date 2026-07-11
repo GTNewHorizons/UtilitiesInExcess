@@ -51,7 +51,7 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.LIMINAL_SWORD.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE.get(), true);
+            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.ERASURE_PICKAXE.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.SATING_AXE.get(), true);
         ItemStackReplacementManager

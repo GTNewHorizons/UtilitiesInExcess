@@ -74,7 +74,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableDestructionPickaxeRecipe;
+    public static boolean enableErasurePickaxeRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

@@ -48,7 +48,7 @@ uie.nei.infopage.builders_wand.1=This wand is designed to aid the bearer in cons
 uie.nei.infopage.builders_wand.2=When holding a building block in your off-hand, the wand tries to place it instead.
 uie.nei.infopage.builders_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar are placed.
 uie.nei.infopage.sating_axe.1=This axe contains potent restorative magic that restores the bearer's hunger while it is held. Attacking with the axe heals whatever is hit at the cost of hunger - but this healing is deadly to the undead.
-uie.nei.infopage.destruction_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
+uie.nei.infopage.erasure_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
 uie.nei.infopage.anti_gravity_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
 uie.nei.infopage.precision_shears.1=These shears can break any block at a stone harvest level and mining speed. Shift-using the shears breaks a block instantly. Any blocks broken are instantly teleported to your inventory.
 uie.nei.infopage.liminal_sword.1=This sword is partially ethereal and deals an additional 3 hearts of magical armor-piercing damage.
@@ -456,7 +456,7 @@ item.pseudo_reversion_sigil.name=Pseudo-Reversion Sigil
 
 item.builders_wand.name=Builder's Wand
 item.sating_axe.name=Sating Axe
-item.destruction_pickaxe.name=Destruction Pickaxe
+item.erasure_pickaxe.name=Erasure Pickaxe
 item.anti_gravity_shovel.name=Anti-Gravity Shovel
 item.precision_shears.name=Precision Shears
 item.liminal_sword.name=Liminal Sword

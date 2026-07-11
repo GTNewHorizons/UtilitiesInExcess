@@ -13,9 +13,9 @@ public class InvertedTools {
     @Config.Order(0)
     public final LiminalSwordConfig liminalSwordConfig = LiminalSwordConfig.INSTANCE;
 
-    @Config.LangKey("item.destruction_pickaxe.name")
+    @Config.LangKey("item.erasure_pickaxe.name")
     @Config.Order(100)
-    public final DestructionPickaxeConfig destructionPickaxeConfig = DestructionPickaxeConfig.INSTANCE;
+    public final ErasurePickaxeConfig erasurePickaxeConfig = ErasurePickaxeConfig.INSTANCE;
 
     @Config.LangKey("item.sating_axe.name")
     @Config.Order(200)
