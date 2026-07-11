@@ -1397,9 +1397,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Reversing Hoe
-        if (RecipeConfig.enableReversingHoeRecipe) addShapedRecipe(
-            ModItems.REVERSING_HOE,
+        // Retrograde Hoe
+        if (RecipeConfig.enableRetrogradeHoeRecipe) addShapedRecipe(
+            ModItems.RETROGRADE_HOE,
             "ii",
             " s",
             " s",

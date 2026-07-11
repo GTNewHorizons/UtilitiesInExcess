@@ -26,7 +26,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityS
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemLiminalSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemSatingAxe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
@@ -41,7 +41,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGrav
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -56,7 +56,7 @@ public enum ModItems {
     ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
     LIMINAL_SWORD(LiminalSwordConfig.INSTANCE.enable, new ItemLiminalSword(), "liminal_sword"),
-    REVERSING_HOE(ReversingHoeConfig.INSTANCE.enable, new ItemReversingHoe(), "reversing_hoe"),
+    RETROGRADE_HOE(RetrogradeHoeConfig.INSTANCE.enable, new ItemRetrogradeHoe(), "retrograde_hoe"),
     HEAVENLY_RING_FEATHER(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),
     HEAVENLY_RING_DRAGON(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("dragon", 8), "heavenly_ring_dragon"),
     HEAVENLY_RING_FAIRY(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("fairy", 8), "heavenly_ring_fairy"),

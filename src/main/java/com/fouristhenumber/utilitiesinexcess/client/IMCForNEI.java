@@ -51,7 +51,7 @@ public class IMCForNEI {
         sendInfoPage("<utilitiesinexcess:anti_gravity_shovel>", "uie.nei.infopage.anti_gravity_shovel.1");
         sendInfoPage("<utilitiesinexcess:precision_shears>", "uie.nei.infopage.precision_shears.1");
         sendInfoPage("<utilitiesinexcess:liminal_sword>", "uie.nei.infopage.liminal_sword.1");
-        sendInfoPage("<utilitiesinexcess:reversing_hoe>", "uie.nei.infopage.reversing_hoe.1");
+        sendInfoPage("<utilitiesinexcess:retrograde_hoe>", "uie.nei.infopage.retrograde_hoe.1");
 
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",

@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
@@ -83,7 +83,7 @@ public class CommonProxy {
             PosteaTransforms.postInit();
         }
 
-        ItemReversingHoe.initializeCache();
+        ItemRetrogradeHoe.initializeCache();
         ItemDestructionPickaxe.initializeCache();
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();

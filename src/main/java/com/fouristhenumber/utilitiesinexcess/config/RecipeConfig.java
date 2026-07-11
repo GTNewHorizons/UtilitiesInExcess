@@ -78,7 +78,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableReversingHoeRecipe;
+    public static boolean enableRetrogradeHoeRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

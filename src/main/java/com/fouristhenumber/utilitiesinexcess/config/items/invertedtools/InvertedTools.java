@@ -25,9 +25,9 @@ public class InvertedTools {
     @Config.Order(300)
     public final AntiGravityShovelConfig antiGravityShovelConfig = AntiGravityShovelConfig.INSTANCE;
 
-    @Config.LangKey("item.reversing_hoe.name")
+    @Config.LangKey("item.retrograde_hoe.name")
     @Config.Order(400)
-    public final ReversingHoeConfig reversingHoeConfig = ReversingHoeConfig.INSTANCE;
+    public final RetrogradeHoeConfig retrogradeHoeConfig = RetrogradeHoeConfig.INSTANCE;
 
     @Config.LangKey("item.precision_shears.name")
     @Config.Order(500)

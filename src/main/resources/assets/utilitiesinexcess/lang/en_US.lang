@@ -52,7 +52,7 @@ uie.nei.infopage.destruction_pickaxe.1=This pickaxe is imbued with a destructive
 uie.nei.infopage.anti_gravity_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
 uie.nei.infopage.precision_shears.1=These shears can break any block at a stone harvest level and mining speed. Shift-using the shears breaks a block instantly. Any blocks broken are instantly teleported to your inventory.
 uie.nei.infopage.liminal_sword.1=This sword is partially ethereal and deals an additional 3 hearts of magical armor-piercing damage.
-uie.nei.infopage.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It also converts dirt into grass and cobblestone into stone.
+uie.nei.infopage.retrograde_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It also converts dirt into grass and cobblestone into stone.
 uie.nei.infopage.mob_jar.1=A deceptively small jar that can hold the soul of any passive creature. Use to capture a mob and again to release.
 uie.nei.infopage.redstone_clock.1=A precisely calibrated redstone mechanism which emits a pulse once every second. Turns off when redstone powered.
 uie.nei.infopage.smart_pump.1=The Smart Pump is a lag-light way to gather in-world fluids. Placed directly above the a fluid block and fed RF, it begins collecting fluid and replacing it with stone without triggering block updates.
@@ -94,7 +94,7 @@ uie.nei.infopage.trash_can_energy.1=A painless way to dispose of unwanted RF! Wh
 uie.nei.infopage.magic_wood.1=The enchantments woven into this block give it the enchanting power of five bookshelves!
 uie.nei.infopage.endspark.1=Combining enchanted wood with the power of The End makes it even stronger, boosting enchanting tables by 20 levels! 
 uie.nei.infopage.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's Awakening Ritual. It rapidly spawns monsters, spreads in darkness, and burns away in bright light. Monster Spawners are supercharged when Cursed Earth is below them, and they continue to operate even when a player is not nearby.
-uie.nei.infopage.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Reversing Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
+uie.nei.infopage.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Retrograde Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
 uie.nei.infopage.pure_love.1=This infectiously positive block inspires nearby animals to fall in love. Cute!
 uie.nei.infopage.marginally_maximised_chest.1=This chest is ever-so-slightly larger than normal (not large enough to store any more items than usual). It does not form double chests and can be opened even if there is a block above it.
 uie.nei.infopage.significantly_shrunk_chest.1=This tiny chest holds only a single stack of items. It's not very space-efficient, but look at how adorable it is!
@@ -460,7 +460,7 @@ item.destruction_pickaxe.name=Destruction Pickaxe
 item.anti_gravity_shovel.name=Anti-Gravity Shovel
 item.precision_shears.name=Precision Shears
 item.liminal_sword.name=Liminal Sword
-item.reversing_hoe.name=Reversing Hoe
+item.retrograde_hoe.name=Retrograde Hoe
 
 item.mob_jar.name=Mob Jar
 
