@@ -13,6 +13,9 @@ import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.HueBar;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.BoolValue;
@@ -222,6 +225,10 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
     }
 
     private IWidget createHSVPage() {
+        double[] stoppers = new double[32];
+        for (int i = 0; i < 32; i++) {
+            stoppers[i] = ((float) i) / 31f * 0.9725490212440491f;
+        }
         return Flow.col()
             .sizeRel(1f, 1f)
             .child(
@@ -246,8 +253,9 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                             .heightRel(1f))
                     .child(
                         createSlider(this.sliderBackgroundS).name("saturation")
-                            .bounds(0, 1)
-                            .value(new DoubleValue.Dynamic(() -> this.saturation, this::updateSaturation))))
+                            .bounds(0, 0.9725490212440491f) // magic number for how high this goes for 0xF8F8F8
+                            .value(new DoubleValue.Dynamic(() -> this.saturation, this::updateSaturation))
+                            .stopper(stoppers)))
             .child(
                 Flow.row()
                     .widthRel(1f)
@@ -258,18 +266,31 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                             .heightRel(1f))
                     .child(
                         createSlider(this.sliderBackgroundV).name("value")
-                            .bounds(0, 1)
-                            .value(new DoubleValue.Dynamic(() -> this.value, this::updateValue))));
+                            .bounds(0, 0.9725490212440491f) // magic number for how high this goes for 0xF8F8F8
+                            .value(new DoubleValue.Dynamic(() -> this.value, this::updateValue))
+                            .stopper(stoppers)));
     }
 
     private static SliderWidget createSlider(IDrawable background) {
-        return new SliderWidget().expanded()
+        SliderWidget sliderWidget = new SliderWidget() {
+
+            @Override // Don't draw stopper points
+            public void drawBackground(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
+                WidgetTheme theme = getActiveWidgetTheme(widgetTheme, isHovering());
+                IDrawable bg = getCurrentBackground(widgetTheme);
+                if (bg != null) {
+                    bg.drawAtZero(context, getArea(), theme);
+                }
+            }
+        };
+        sliderWidget.expanded()
             .heightRel(1f)
             .background(
                 background.asIcon()
                     .size(0, 4))
             .sliderTexture(handleBackground)
             .sliderSize(2, 8);
+        return sliderWidget;
     }
 
     private String validateRawColor(String raw) {
@@ -313,7 +334,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
     }
 
     private void updateFromRGB() {
-        this.color = Color.rgb(this.red, this.green, this.blue);
+        this.color = Color.rgb(this.red, this.green, this.blue) & 0b00000000_11111000_11111000_11111000;
         this.saturation = Color.getHSVSaturation(this.color);
         this.value = Color.getValue(this.color);
         this.hue = Color.getHue(this.color);
