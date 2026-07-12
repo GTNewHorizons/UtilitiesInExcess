@@ -26,13 +26,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.Color;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.IUIERegistered;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
-import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock_Client;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.render.BlockColoredTexture;
@@ -44,33 +44,34 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 // These are intentionally not ore dictionary'd to their originals
 // to avoid flooding nei crafting recipes with them.
-public class BlockColored extends Block {
+public class BlockColored extends Block implements IUIERegistered {
 
-    protected Block base;
+    protected BaseBlock base;
     private String baseModID;
     private String baseName;
     private boolean initialized = true;
     public String textureOverrideDomain;
     public String textureOverrideName;
     private IIcon[] icons;
-    private int baseMeta;
+    private int baseMeta = 0;
 
-    private final float colorMultiplier;
+    private final float brightnessMultiplier;
     public static final float DEFAULT_BRIGHTNESS = 1.5f;
     public static final ArrayList<BlockColored> COLORED_BLOCKS = new ArrayList<>();
-    private static final HashMap<Block, BlockColored> BASES_TO_COLORED = new HashMap<>();
+    private static final HashMap<BaseBlock, BlockColored> BASES_TO_COLORED = new HashMap<>();
 
     public BlockColored(Block base) {
         this(base, DEFAULT_BRIGHTNESS);
     }
 
-    public BlockColored(Block base, float colorMultiplier) {
-        this(base, colorMultiplier, 0);
+    public BlockColored(Block base, float brightnessMultiplier) {
+        this(base, brightnessMultiplier, 0);
     }
-    public BlockColored(Block base, float colorMultiplier, int baseMeta) {
+
+    public BlockColored(Block base, float brightnessMultiplier, int baseMeta) {
         super(base.getMaterial());
-        this.base = base;
-        this.colorMultiplier = colorMultiplier;
+        this.base = baseOf(base, baseMeta);
+        this.brightnessMultiplier = brightnessMultiplier;
         this.baseMeta = baseMeta;
 
         setHardness(base.getBlockHardness(null, 0, 0, 0));
@@ -80,14 +81,13 @@ public class BlockColored extends Block {
         setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
 
         COLORED_BLOCKS.add(this);
-        BASES_TO_COLORED.put(base, this);
+        BASES_TO_COLORED.put(baseOf(base, baseMeta), this);
     }
 
-
-    public BlockColored(String baseModID, String baseName, float colorMultiplier, @Nullable String textureDomain,
+    public BlockColored(String baseModID, String baseName, float brightnessMultiplier, @Nullable String textureDomain,
         @Nullable String textureName) {
         super(Material.rock);
-        this.colorMultiplier = colorMultiplier;
+        this.brightnessMultiplier = brightnessMultiplier;
         this.baseModID = baseModID;
         this.baseName = baseName;
         this.initialized = false;
@@ -99,7 +99,7 @@ public class BlockColored extends Block {
 
     public void initFromString() {
         if (base == null) {
-            base = GameRegistry.findBlock(baseModID, baseName);
+            base = baseOf(GameRegistry.findBlock(baseModID, baseName), 0);
         }
 
         if (base == null) {
@@ -110,14 +110,21 @@ public class BlockColored extends Block {
                     + "\" not found. Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
         }
 
-        ((AccessorBlock) this).uie$setBlockMaterial(base.getMaterial());
-        this.canBlockGrass = !base.getMaterial()
+        ((AccessorBlock) this).uie$setBlockMaterial(
+            base.getBlock()
+                .getMaterial());
+        this.canBlockGrass = !base.getBlock()
+            .getMaterial()
             .getCanBlockGrass();
 
-        setHardness(base.getBlockHardness(null, 0, 0, 0));
+        setHardness(
+            base.getBlock()
+                .getBlockHardness(null, 0, 0, 0));
         // This dumb ratio is due to the random scalars present in both get and set resistance.
-        setResistance(base.getExplosionResistance(null) * (5f / 3f));
-        setStepSound(base.stepSound);
+        setResistance(
+            base.getBlock()
+                .getExplosionResistance(null) * (5f / 3f));
+        setStepSound(base.getBlock().stepSound);
 
         opaque = isOpaqueCube();
 
@@ -166,23 +173,21 @@ public class BlockColored extends Block {
 
     public static void setExtraMetaBit(World world, int x, int y, int z, int curMeta, boolean value) {
         EIDsHelper.setBlockMeta(world, x, y, z, ((value ? 1 : 0) << 15) | (curMeta & 0b0_11111_11111_11111));
-        if (!world.isRemote) {
-            world.markBlockForUpdate(x, y, z);
-        }
+        world.markBlockForUpdate(x, y, z);
     }
 
-    public static boolean hasColoredVersion(Block block) {
-        return BASES_TO_COLORED.containsKey(block);
-    }
-
-    public static BlockColored getColoredVersion(Block block) {
-        return BASES_TO_COLORED.get(block);
+    public static BlockColored getColoredVersion(Block block, int meta) {
+        return BASES_TO_COLORED.get(baseOf(block, meta));
     }
     //
 
     // BlockColored-specific methods
-    public Block getBase() {
+    public BaseBlock getBase() {
         return base;
+    }
+
+    public float getBrightnessMultiplier() {
+        return brightnessMultiplier;
     }
 
     public boolean ignoreBaseMeta() {
@@ -195,6 +200,19 @@ public class BlockColored extends Block {
 
     public boolean useNEIPage() {
         return true;
+    }
+
+    // IUIEModBLock
+    private String registryName;
+
+    @Override
+    public void setRegistryName(String name) {
+        registryName = name;
+    }
+
+    @Override
+    public String getRegistryName() {
+        return registryName;
     }
 
     // Item
@@ -214,8 +232,13 @@ public class BlockColored extends Block {
         @Override
         public String getItemStackDisplayName(ItemStack stack) {
             int dmg = stack.getItemDamage();
-            stack.setItemDamage(0);
-            String name = Item.getItemFromBlock(((BlockColored) field_150939_a).getBase())
+            BlockColored bc = (BlockColored) field_150939_a;
+            stack.setItemDamage(
+                bc.getBase()
+                    .getMeta());
+            String name = Item.getItemFromBlock(
+                bc.getBase()
+                    .getBlock())
                 .getItemStackDisplayName(stack);
             stack.setItemDamage(dmg);
 
@@ -269,10 +292,8 @@ public class BlockColored extends Block {
             newBlock.setCreativeTab(UtilitiesInExcess.uieTab);
             CONFIG_COLORED_BLOCKS.add(newBlock);
             COLORED_BLOCKS.add(newBlock);
-            GameRegistry.registerBlock(
-                newBlock,
-                ItemBlockColored.class,
-                ((AccessorBlock) newBlock).uie$getUnlocalizedNameRaw());
+            newBlock.setRegistryName(((AccessorBlock) newBlock).uie$getUnlocalizedNameRaw());
+            GameRegistry.registerBlock(newBlock, ItemBlockColored.class, newBlock.getRegistryName());
 
         }
     }
@@ -295,14 +316,15 @@ public class BlockColored extends Block {
             HashSet<String> names = new HashSet<>();
 
             for (int i = 0; i < 6; i++) {
-                icons[i] = base.getIcon(i, this.baseMeta);
+                icons[i] = base.getBlock()
+                    .getIcon(i, this.baseMeta);
                 names.add(icons[i].getIconName());
             }
 
             HashMap<String, IIcon> iconMap = new HashMap<>();
             for (String name : names) {
                 String textureName = UtilitiesInExcess.MODID + ":" + name.replace(':', '_') + "_colored_grayscale";
-                BlockColoredTexture icon = new BlockColoredTexture(textureName, name, this, colorMultiplier);
+                BlockColoredTexture icon = new BlockColoredTexture(textureName, name, this, brightnessMultiplier);
                 tm.setTextureEntry(textureName, icon);
                 iconMap.put(name, icon);
             }
@@ -315,7 +337,7 @@ public class BlockColored extends Block {
             this.blockIcon = icons[0];
         } else {
             String textureName = UtilitiesInExcess.MODID + ":" + baseModID + "_" + baseName + "_colored_grayscale";
-            blockIcon = new BlockColoredTexture(textureName, this, colorMultiplier);
+            blockIcon = new BlockColoredTexture(textureName, this, brightnessMultiplier);
 
             tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
         }
@@ -389,44 +411,90 @@ public class BlockColored extends Block {
     // Redirects of Block methods
     @Override
     public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return getBase().getFlammability(world, x, y, z, face);
+        return getBase().getBlock()
+            .getFlammability(world, x, y, z, face);
     }
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return getBase().getFireSpreadSpeed(world, x, y, z, face);
+        return getBase().getBlock()
+            .getFireSpreadSpeed(world, x, y, z, face);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public int getRenderBlockPass() {
-        return getBase().getRenderBlockPass();
+        return getBase().getBlock()
+            .getRenderBlockPass();
     }
 
     @Override
     public boolean renderAsNormalBlock() {
-        return getBase().renderAsNormalBlock();
+        return getBase().getBlock()
+            .renderAsNormalBlock();
     }
 
     @Override
     public boolean isOpaqueCube() {
-        return getBase() == null ? super.isOpaqueCube() : getBase().isOpaqueCube();
+        return getBase() == null ? super.isOpaqueCube()
+            : getBase().getBlock()
+                .isOpaqueCube();
     }
 
     @Override
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
         Block block = worldIn.getBlock(x, y, z);
-        return getBase().shouldSideBeRendered(worldIn, x, y, z, side) && block != this;
+        return getBase().getBlock()
+            .shouldSideBeRendered(worldIn, x, y, z, side) && block != this;
     }
 
     @Override
     public int getLightOpacity() {
-        return getBase().getLightOpacity();
+        return getBase().getBlock()
+            .getLightOpacity();
     }
 
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return getBase().getLightOpacity(world, x, y, z);
+        return getBase().getBlock()
+            .getLightOpacity(world, x, y, z);
     }
     //
+
+    public static BaseBlock baseOf(Block block, int meta) {
+        return new BaseBlock(block, meta);
+    }
+
+    public static class BaseBlock {
+
+        private final Block block;
+        private final int meta;
+
+        public BaseBlock(Block block, int meta) {
+            this.block = block;
+            this.meta = meta;
+        }
+
+        public Block getBlock() {
+            return block;
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof BaseBlock bb) {
+                return bb.getBlock() == block && bb.getMeta() == meta;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return getBlock().hashCode() + getMeta();
+        }
+    }
 }

@@ -21,7 +21,8 @@ public enum Mods {
     Backhand("backhand"),
     GT("gregtech_nh"),
     SimpleSkinBackport("simpleskinbackport"),
-    EndlessIDs("endlessids")
+    EndlessIDs("endlessids"),
+    Angelica("angelica")
     ;
     // spotless:on
 

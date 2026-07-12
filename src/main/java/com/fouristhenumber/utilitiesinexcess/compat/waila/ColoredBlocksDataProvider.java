@@ -10,6 +10,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColoredCTM;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetheriusDyable;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -26,9 +27,12 @@ public class ColoredBlocksDataProvider implements IWailaDataProvider {
         IWailaConfigHandler config) {
         currentTip.add(SpecialChars.getRenderString("waila.uie.coloredblock"));
 
-        if (accessor.getBlock() instanceof BlockLapisAetheriusDyable
-            && BlockColored.getExtraMetaBit(accessor.getMetadata()) > 0) {
-            currentTip.add(StatCollector.translateToLocal("uie.desc.lapis_aetherius_dyeable"));
+        if (BlockColored.getExtraMetaBit(accessor.getMetadata()) > 0) {
+            if (accessor.getBlock() instanceof BlockLapisAetheriusDyable) {
+                currentTip.add(StatCollector.translateToLocal("uie.desc.lapis_aetherius_dyeable"));
+            } else if (accessor.getBlock() instanceof BlockColoredCTM) {
+                currentTip.add(StatCollector.translateToLocal("uie.desc.block_colored_ctm"));
+            }
         }
 
         return currentTip;

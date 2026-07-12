@@ -439,6 +439,7 @@ uie.desc.filing_cabinet.advanced=Stores unstackable items.
 uie.desc.filing_cabinet.elite=Stores any items.
 
 uie.desc.lapis_aetherius_dyeable=Lighting turned off
+uie.desc.block_colored_ctm=Connects to any color
 
 #### Items
 item.block_analyzer.name=Block Analyzer

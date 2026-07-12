@@ -19,7 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLapisAetheriusDyable extends BlockColored {
+public class BlockLapisAetheriusDyable extends BlockColoredWithUse {
 
     public BlockLapisAetheriusDyable() {
         super(ModBlocks.LAPIS_AETHERIUS.get());
@@ -30,38 +30,24 @@ public class BlockLapisAetheriusDyable extends BlockColored {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
-        float subY, float subZ) {
-        if (player.getHeldItem() != null) return false;
-
-        int curMeta = worldIn.getBlockMetadata(x, y, z);
-        boolean newExtraBit = !(getExtraMetaBit(curMeta) > 0);
-        setExtraMetaBit(worldIn, x, y, z, curMeta, newExtraBit);
-        if (!worldIn.isRemote) {
-            worldIn.playSoundEffect(
-                (double) x + 0.5D,
-                (double) y + 0.5D,
-                (double) z + 0.5D,
-                "random.click",
-                0.3F,
-                newExtraBit ? 0.3F : 0.8F);
-        }
-        return true;
-    }
-
-    @Override
     public boolean ignoreBaseMeta() {
-        return true;
-    }
-
-    @Override
-    public boolean usesExtraBit() {
         return true;
     }
 
     @Override
     public boolean useNEIPage() {
         return false;
+    }
+
+    @Override
+    protected void playSoundEffect(World worldIn, int x, int y, int z, boolean newExtraBit) {
+        worldIn.playSoundEffect(
+            (double) x + 0.5D,
+            (double) y + 0.5D,
+            (double) z + 0.5D,
+            "random.click",
+            0.3F,
+            newExtraBit ? 0.3F : 0.8F);
     }
 
     @Override

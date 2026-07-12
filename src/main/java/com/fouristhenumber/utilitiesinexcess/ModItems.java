@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.IUIERegistered;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
@@ -93,6 +94,10 @@ public enum ModItems {
             if (item.isEnabled()) {
                 item.theItem.setCreativeTab(UtilitiesInExcess.uieTab);
                 GameRegistry.registerItem(item.get(), item.name);
+
+                if (item.theItem instanceof IUIERegistered iUIERegistered) {
+                    iUIERegistered.setRegistryName(item.name);
+                }
             }
         }
     }
