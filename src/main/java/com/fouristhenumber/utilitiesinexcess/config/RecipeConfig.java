@@ -82,7 +82,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableAntiParticulateShovelRecipe;
+    public static boolean enableAntiGravityShovelRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
@@ -283,4 +283,8 @@ public class RecipeConfig {
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enableVoidQuarryUpgradeRecipes;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enablePaintRollerRecipe;
 }

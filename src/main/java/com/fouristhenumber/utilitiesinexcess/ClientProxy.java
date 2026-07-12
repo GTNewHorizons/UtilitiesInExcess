@@ -12,6 +12,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRender
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.PaintRollerRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
@@ -19,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.I
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.compat.simpleskinbackport.SsbCompat;
+import com.fouristhenumber.utilitiesinexcess.compat.waila.TTRenderColoredBlock;
 import com.fouristhenumber.utilitiesinexcess.compat.waila.TTRenderUIETimeLeftBar;
 import com.fouristhenumber.utilitiesinexcess.render.CollectorRangeBox;
 import com.fouristhenumber.utilitiesinexcess.render.ISBRHUnderworldPortal;
@@ -73,6 +75,9 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.CHUNCHUNMARU.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.CHUNCHUNMARU.get(), new ChunchunmaruRenderer());
         }
+        if (ModItems.PAINT_ROLLER.isEnabled()) {
+            MinecraftForgeClient.registerItemRenderer(ModItems.PAINT_ROLLER.get(), new PaintRollerRenderer());
+        }
 
         if (Mods.FindIt.isLoaded()) {
             FindItHelper.init();
@@ -87,6 +92,7 @@ public class ClientProxy extends CommonProxy {
         super.postInit(event);
         if (Mods.Waila.isLoaded()) {
             TTRenderUIETimeLeftBar.register();
+            TTRenderColoredBlock.register();
         }
         if (Mods.SimpleSkinBackport.isLoaded()) {
             SsbCompat.init();
