@@ -203,7 +203,7 @@ public class BlockColored extends Block implements IUIERegistered {
         return false;
     }
 
-    public boolean useNEIPage() {
+    public boolean useDefaultNEIPage() {
         return true;
     }
 
@@ -213,6 +213,10 @@ public class BlockColored extends Block implements IUIERegistered {
 
     public String getDisplayNameOverride() {
         return displayNameOverride;
+    }
+
+    public String getCustomNEIPage() {
+        return null;
     }
 
     // IUIEModBLock
@@ -315,6 +319,7 @@ public class BlockColored extends Block implements IUIERegistered {
                 case "default" -> new BlockColored(blockDomain, blockName, blockMeta, brightness);
                 case "ctm" -> new BlockColoredCTM(blockDomain, blockName, blockMeta, brightness);
                 case "rotatable" -> new BlockColored(blockDomain, blockName, blockMeta, brightness);
+                case "light" -> new BlockColoredWithLight(blockDomain, blockName, blockMeta, brightness);
                 default -> throw new IllegalArgumentException(
                     "Utilities in Excess - Colored Blocks: Couldn't parse type value \"" + args[4]
                         + "\" for extra colored blocks entry \""

@@ -139,6 +139,9 @@ uie.nei.infopage.filing_cabinet.2=The Advanced Filing Cabinet can only hold item
 uie.nei.infopage.filing_cabinet.3=The Elite Filing Cabinet has no restrictions whatsoever, but has the lowest number of unique item slots.
 uie.nei.infopage.filing_cabinet.4=Filing Cabinet Capacity Upgrades will add additional maximum storage to any cabinet.
 uie.nei.infopage.colored_blocks.dyeable=Dyed blocks can be dyed any color you want using a paint roller. Now with a new and improved tile entity-free recipe!
+uie.nei.infopage.colored_blocks.ctm=This block supports connected textures! Click on it with an empty hand to allow it to connect regardless of color.
+uie.nei.infopage.colored_blocks.light=This block emits light! Click on it with an empty hand to toggle its light emission.
+uie.nei.infopage.colored_blocks.rotatable=This block can be (very slightly) rotated (once)! Click on it with an empty hand to rotate it 90 degrees.
 uie.nei.infopage.paint_roller=This super advanced paint roller can be used to dye any Utilities in Excess dyed block any color you want. Now with a new and improved tile entity-free recipe!
 
 #### Blocks
@@ -438,7 +441,7 @@ uie.desc.filing_cabinet.basic=Stores variants of one type of item.
 uie.desc.filing_cabinet.advanced=Stores unstackable items.
 uie.desc.filing_cabinet.elite=Stores any items.
 
-uie.desc.lapis_aetherius_dyeable=Lighting turned off
+uie.desc.block_colored_light=Lighting turned off
 uie.desc.block_colored_ctm=Connects to any color
 
 #### Items

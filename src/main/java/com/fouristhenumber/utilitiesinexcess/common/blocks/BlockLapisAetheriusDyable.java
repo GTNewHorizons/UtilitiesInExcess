@@ -1,25 +1,14 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockLapisAetheriusDyable extends BlockColoredWithUse {
+public class BlockLapisAetheriusDyable extends BlockColoredWithLight {
 
     public BlockLapisAetheriusDyable() {
         super(ModBlocks.LAPIS_AETHERIUS.get());
@@ -35,19 +24,8 @@ public class BlockLapisAetheriusDyable extends BlockColoredWithUse {
     }
 
     @Override
-    public boolean useNEIPage() {
+    public boolean useDefaultNEIPage() {
         return false;
-    }
-
-    @Override
-    protected void playSoundEffect(World worldIn, int x, int y, int z, boolean newExtraBit) {
-        worldIn.playSoundEffect(
-            (double) x + 0.5D,
-            (double) y + 0.5D,
-            (double) z + 0.5D,
-            "random.click",
-            0.3F,
-            newExtraBit ? 0.3F : 0.8F);
     }
 
     @Override
@@ -60,34 +38,7 @@ public class BlockLapisAetheriusDyable extends BlockColoredWithUse {
         return true;
     }
 
-    @Override
-    public int getLightValue(IBlockAccess world, int x, int y, int z) {
-        return BlockColored.getExtraMetaBit(world.getBlockMetadata(x, y, z)) != 0 ? 0 : 10;
-    }
-
-    @Override
-    public int getLightValue() {
-        return 10;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = ((BlockLapisAetherius) ModBlocks.LAPIS_AETHERIUS.get()).icons[0];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return blockIcon;
-    }
-
-    public static class ItemLapisAetherius extends BlockColored.ItemBlockColored {
+    public static class ItemLapisAetherius extends ItemBlockColoredWithLight {
 
         public ItemLapisAetherius(Block block) {
             super(block);
@@ -96,14 +47,6 @@ public class BlockLapisAetheriusDyable extends BlockColoredWithUse {
         @Override
         public String getItemStackDisplayName(ItemStack p_77653_1_) {
             return StatCollector.translateToLocal("tile.lapis_aetherius_dyeable.name");
-        }
-
-        @Override
-        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-            super.addInformation(stack, player, tooltip, p_77624_4_);
-            if (BlockColored.getExtraMetaBit(stack.getItemDamage()) > 0) {
-                tooltip.add(StatCollector.translateToLocal("uie.desc.lapis_aetherius_dyeable"));
-            }
         }
     }
 }

@@ -279,10 +279,13 @@ public class IMCForNEI {
             sendInfoPage("<utilitiesinexcess:paint_roller>", "uie.nei.infopage.paint_roller");
 
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
-                if (block.useNEIPage()) {
+                if (block.useDefaultNEIPage()) {
                     sendInfoPage(
                         "utilitiesinexcess:" + block.getRegistryName(),
                         "uie.nei.infopage.colored_blocks.dyeable");
+                }
+                if (block.getCustomNEIPage() != null) {
+                    sendInfoPage("utilitiesinexcess:" + block.getRegistryName(), block.getCustomNEIPage());
                 }
             }
         }

@@ -36,6 +36,11 @@ public class BlockColoredCTM extends BlockColoredWithUse implements ICTMBlock {
     }
 
     @Override
+    public String getCustomNEIPage() {
+        return "uie.nei.infopage.colored_blocks.ctm";
+    }
+
+    @Override
     public boolean shouldConnectByBlock(RenderBlockState renderBlockState, Block neighbor, int neighborX, int neighborY,
         int neighborZ) {
         if (renderBlockState.getBlock() != neighbor) {
