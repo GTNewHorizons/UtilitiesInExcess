@@ -699,6 +699,18 @@ uie.gui.tooltip.paint_roller.help.1=meaning that hex values will have
 uie.gui.tooltip.paint_roller.help.2=each of their RGB values rounded down
 uie.gui.tooltip.paint_roller.help.3=to the nearest number divisible by 8
 
+uie.gui.tooltip.paint_roller.help2.0=When your paint roller has a star next to it
+uie.gui.tooltip.paint_roller.help2.1=like it does now, that means you copied from
+uie.gui.tooltip.paint_roller.help2.2=a block that has extra functionality, for example
+uie.gui.tooltip.paint_roller.help2.3=toggling its light.
+uie.gui.tooltip.paint_roller.help2.4=Any dyeable block you paint that also has extra
+uie.gui.tooltip.paint_roller.help2.5=functionality will have its toggle changed too.
+uie.gui.tooltip.paint_roller.help2.6=§7
+uie.gui.tooltip.paint_roller.help2.7=Fun fact: The reason why dyeable blocks with
+uie.gui.tooltip.paint_roller.help2.8=toggles can only have 2 options is because after
+uie.gui.tooltip.paint_roller.help2.9=they store their color, they literally only have
+uie.gui.tooltip.paint_roller.help2.10=one bit left to store extra data in.
+
 # These are the prefixes used in the search bar of the trading post
 # For example: searching "sell:emerald" will find all trades that sell emeralds
 # If you are translating this, please make sure it's something short

@@ -25,8 +25,8 @@ public class BlockColoredTexture extends TextureAtlasSprite {
     }
 
     public BlockColoredTexture(String name, String baseName, BlockColored block, float brightnessMultiplier) {
-        this.baseName = baseName;
         this(name, block, brightnessMultiplier);
+        this.baseName = baseName;
     }
 
     public BlockColoredTexture(String name, BlockColored block, float brightnessMultiplier) {

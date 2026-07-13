@@ -67,11 +67,17 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
         size(140, 116).background(GuiTextures.MC_BACKGROUND);
         PagedWidget.Controller controller = new PagedWidget.Controller();
         child(
-            new TileEntityTradingPost.HelpWidget().top(2)
+            new TileEntityTradingPost.HelpWidget(Color.BLUE.main).top(2)
                 .left(1)
                 .size(12)
-                .paddingRight(2)
                 .tooltipBuilder(PaintRollerColorPickerDialog::buildHelpToolTip));
+        if (Color.getAlpha(startColor) != 0) {
+            child(
+                new TileEntityTradingPost.HelpWidget(0xFFBA68C8).top(2)
+                    .right(2)
+                    .size(12)
+                    .tooltipBuilder(PaintRollerColorPickerDialog::buildHelpToolTip2));
+        }
         child(
             Flow.col()
                 .left(5)
@@ -380,5 +386,19 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.1"));
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.2"));
         tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help.3"));
+    }
+
+    public static void buildHelpToolTip2(RichTooltip tooltip) {
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.0"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.1"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.2"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.3"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.4"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.5"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.6"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.7"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.8"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.9"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.paint_roller.help2.10"));
     }
 }
