@@ -50,6 +50,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:waila:1.19.30:dev")
     compileOnly("com.github.GTNewHorizons:Postea:1.2.5:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:SimpleSkinBackport:1.0.2-GTNH:dev") {transitive = false}
+    compileOnly('com.falsepattern:endlessids-mc1.7.10:1.7.4:dev') {transitive = false}
 
     devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.110-GTNH:dev")
     devOnlyNonPublishable("com.github.GTNewHorizons:Baubles-Expanded:2.2.21-GTNH:dev")

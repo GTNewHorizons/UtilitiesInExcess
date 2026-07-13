@@ -49,7 +49,7 @@ uie.nei.infopage.architects_wand.2=When holding a building block in your off-han
 uie.nei.infopage.architects_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar are placed.
 uie.nei.infopage.gourmands_axe.1=This axe contains potent restorative magic that restores the bearer's hunger while it is held. Attacking with the axe heals whatever is hit at the cost of hunger - but this healing is deadly to the undead.
 uie.nei.infopage.destruction_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
-uie.nei.infopage.anti_particulate_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
+uie.nei.infopage.anti_gravity_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
 uie.nei.infopage.precision_shears.1=These shears can break any block at a stone harvest level and mining speed. Shift-using the shears breaks a block instantly. Any blocks broken are instantly teleported to your inventory.
 uie.nei.infopage.etheric_sword.1=This sword is partially ethereal and deals an additional 3 hearts of damage as magical armor-piercing damage.
 uie.nei.infopage.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It also converts dirt into grass and cobblestone into stone.
@@ -103,6 +103,7 @@ uie.nei.infopage.sound_muffler.1=The calming presence of this block lowers the v
 uie.nei.infopage.rain_muffler.1=This comforting block allows you tune out the sounds of nearby weather. You can power it with redstone to turn it off and can right click to toggle weather sounds globally.
 uie.nei.infopage.collector.1=Picks up items dropped in the world and deposits them to inventories placed under it. Right click to increment range and sneak right click to decrement.
 uie.nei.infopage.lapis_aetherius.1=Lapis Aetherius is a luminous decorative block that comes in 16 different colors. Its bright, solid colors are sure to make your base pop!
+uie.nei.infopage.lapis_aetherius.2=This block also has a dyeable variant (Lapis Aetherius Iris) which can be dyed any color using a paint roller, maintaining its luminous qualities. Its light emission can also be toggled by clicking on it with an empty hand. Like other dyeable blocks, it uses no tile entity.
 uie.nei.infopage.blackout_curtains.1=Blackout Curtains have no collision and block most light from passing through them.
 uie.nei.infopage.conveyor.1=A simple conveyor belt which pushes anything on it, keeping it centered on the block if possible. If a conveyor pushes an item into the side of another conveyor, it is pushed up and onto it.
 uie.nei.infopage.underworld_portal.1=The Underworld is a dimension fraught with peril and treasures. While the ground is rich with ore, the very darkness itself begins to damage you if you stray from the light for too long!
@@ -137,6 +138,8 @@ uie.nei.infopage.filing_cabinet.1=Filing Cabinets provide a convenient way to st
 uie.nei.infopage.filing_cabinet.2=The Advanced Filing Cabinet can only hold items that do not normally stack, but has no type restrictions and more unique item slots.
 uie.nei.infopage.filing_cabinet.3=The Elite Filing Cabinet has no restrictions whatsoever, but has the lowest number of unique item slots.
 uie.nei.infopage.filing_cabinet.4=Filing Cabinet Capacity Upgrades will add additional maximum storage to any cabinet.
+uie.nei.infopage.colored_blocks.dyeable=Dyed blocks can be dyed any color you want using a paint roller. Now with a new and improved tile entity-free recipe!
+uie.nei.infopage.paint_roller=This super advanced paint roller can be used to dye any Utilities in Excess dyed block any color you want. Now with a new and improved tile entity-free recipe!
 
 #### Blocks
 ue_wall.name=%s Wall
@@ -294,6 +297,7 @@ tile.lapis_aetherius.12.name=Lapis Aetherius Brunneus (Brown)
 tile.lapis_aetherius.13.name=Lapis Aetherius Smaragdinus (Dark Green)
 tile.lapis_aetherius.14.name=Lapis Aetherius Sanguineus (Red)
 tile.lapis_aetherius.15.name=Lapis Aetherius Ater (Black)
+tile.lapis_aetherius_dyeable.name=Lapis Aetherius Iris (Dyeable)
 tile.collector.name=Collector
 tile.blackout_curtains.name=Blackout Curtains
 tile.conveyor.name=Conveyor
@@ -335,6 +339,7 @@ uie.colored_blocks.color.12=Colored %s (Brown)
 uie.colored_blocks.color.13=Colored %s (Dark Green)
 uie.colored_blocks.color.14=Colored %s (Red)
 uie.colored_blocks.color.15=Colored %s (Black)
+uie.colored_blocks.color.dyeable=Dyed %s
 
 tile.filing_cabinet.basic.name=Filing Cabinet
 tile.filing_cabinet.advanced.name=Advanced Filing Cabinet
@@ -433,6 +438,8 @@ uie.desc.filing_cabinet.basic=Stores variants of one type of item.
 uie.desc.filing_cabinet.advanced=Stores unstackable items.
 uie.desc.filing_cabinet.elite=Stores any items.
 
+uie.desc.lapis_aetherius_dyeable=Lighting turned off
+
 #### Items
 item.block_analyzer.name=Block Analyzer
 
@@ -450,7 +457,7 @@ item.pseudo_reversion_sigil.name=Pseudo-Reversion Sigil
 item.architects_wand.name=Architect's Wand
 item.gourmands_axe.name=Gourmand's Axe
 item.destruction_pickaxe.name=Destruction Pickaxe
-item.anti_particulate_shovel.name=Anti-Particulate Shovel
+item.anti_gravity_shovel.name=Anti-Gravity Shovel
 item.precision_shears.name=Precision Shears
 item.etheric_sword.name=Etheric Sword
 item.reversing_hoe.name=Reversing Hoe
@@ -524,6 +531,8 @@ item.chunchunmaru.name=Chunchunmaru
 
 item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
 
+item.paint_roller.name=Paint Roller
+
 ### Item Description
 uie.desc.item.inverted_ingot.1=This ingot is deteriorating rapidly...
 uie.desc.item.inverted_ingot.2=Will implode in %s seconds!
@@ -561,6 +570,11 @@ uie.desc.item.unbreakable=Unbreakable
 
 uie.desc.item.architects_wand.1=Can place up to %s blocks at once
 
+uie.desc.item.paint_roller.0=[§a%s§7] Colorable blocks to dye them
+uie.desc.item.paint_roller.1=[§a%s§7] The air to select hex color
+uie.desc.item.paint_roller.2=[§aCrouch §7+ §a%s§7] Use line-mode
+uie.desc.item.paint_roller.3=[§a%s§7] Colorable blocks to copy color
+
 ### Item aliases
 item.heavenly_ring_magic.aliases=Angel Ring
 item.heavenly_ring_metal.aliases=Angel Ring
@@ -571,7 +585,7 @@ item.architects_wand.aliases=Builder's Wand
 item.pseudo_reversion_sigil.aliases=Division Sigil
 item.inversion_sigil_active.aliases=Division Sigil
 item.inversion_sigil_inactive.aliases=Division Sigil
-item.anti_particulate_shovel.aliases=Erosion Shovel
+item.anti_gravity_shovel.aliases=Erosion Shovel
 item.mob_jar.aliases=Golden Lasso
 item.fire_battery.aliases=Heating Coil
 item.block_analyzer.aliases=Portable Scanner
@@ -594,6 +608,7 @@ material.inverted.ability=Fully Inverted
 ## Gui Titles
 uie.gui.title.trash_can=Trash Can
 uie.gui.title.trash_can_fluid=Trash Can (Fluid)
+uie.gui.title.paint_roller=Select Color:
 
 ## Gui Strings
 uie.gui.text.ender_locus.energy-tick= RF/t
@@ -648,6 +663,10 @@ uie.gui.text.cabinet.slot_dir.title=Slot fill direction
 uie.gui.text.slot_dir.horizontal=Horizontal
 uie.gui.text.slot_dir.vertical=Vertical
 
+uie.gui.text.paint_roller.paintstripper=Paint Stripper Mode
+uie.gui.text.paint_roller.cancel=Cancel
+uie.gui.text.paint_roller.confirm=Confirm
+
 ## Gui Tooltips
 uie.gui.tooltip.generator.energy-max=RF: %s / %s
 
@@ -670,6 +689,11 @@ uie.gui.tooltip.cabinet.storage=Storage: %s / %s
 uie.gui.tooltip.cabinet.slot=Slot: %s / %s
 uie.gui.tooltip.cabinet.upgrades=Upgrades: %d / %d
 uie.gui.tooltip.cabinet.search=Search
+
+uie.gui.tooltip.paint_roller.help.0=Block colors are limited to 16-bit,
+uie.gui.tooltip.paint_roller.help.1=meaning that hex values will have
+uie.gui.tooltip.paint_roller.help.2=each of their RGB values rounded down
+uie.gui.tooltip.paint_roller.help.3=to the nearest number divisible by 8
 
 # These are the prefixes used in the search bar of the trading post
 # For example: searching "sell:emerald" will find all trades that sell emeralds
@@ -753,6 +777,7 @@ uie.key.glove=Activate Glove
 
 uie.key.rclick=Right-Click
 uie.key.lclick=Left-Click
+uie.key.mclick=Middle-Click
 
 #### Config
 uie.config.blocks=Blocks
@@ -795,6 +820,8 @@ uie.config.items.inverted_tools=Inverted Tools
 #uie.config.items.inverted_tools.tooltip=
 uie.config.items.inversion=Inversion Ritual
 #uie.config.items.inversion.tooltip=
+uie.config.items.heavenly_rings=Heavenly Rings
+#uie.config.items.heavenly_rings.tooltip=
 uie.config.items.watering_can=Watering Can
 #uie.config.items.watering_can.tooltip=
 uie.config.items.watering_can_tier=Watering Can Tiers

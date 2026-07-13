@@ -5,6 +5,7 @@ import static net.minecraft.item.Item.getItemFromBlock;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -32,7 +33,6 @@ public class RecipeLoader {
         loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
-        loadColoredBlockRecipes();
 
         // Chandeliers
         if (RecipeConfig.enableChandelierRecipe) {
@@ -610,6 +610,17 @@ public class RecipeLoader {
             ModBlocks.SMART_PUMP,
             'a',
             Items.diamond_pickaxe);
+
+        // Paint Roller
+        if (RecipeConfig.enablePaintRollerRecipe) addShapedRecipe(
+            ModItems.PAINT_ROLLER,
+            "ws",
+            " s",
+            "s ",
+            's',
+            Items.stick,
+            'w',
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static void loadGeneratorRecipes() {
@@ -1229,51 +1240,91 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_GLASS.newItemStack(1, 2));
     }
 
-    private static void loadColoredBlockRecipes() {
+    // DO NOT call from inside RecipeLoader, must be called after config colored blocks get initialized
+    public static void loadColoredBlockRecipes() {
         if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
-        ItemStack[] dyes = new ItemStack[16];
-        for (int i = 0; i < 16; ++i) {
-            dyes[i] = new ItemStack(Items.dye, 1, i);
+        if (BlockColored.allowDyingBlocks()) {
+            for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                loadDyeableColoredBlockRecipe(block);
+            }
+        } else {
+            ItemStack[] dyes = new ItemStack[16];
+            for (int i = 0; i < 16; ++i) {
+                dyes[i] = new ItemStack(Items.dye, 1, i);
+            }
+
+            for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                loadColoredBlockRecipe(block, dyes);
+            }
         }
-        loadColoredBlockRecipe(ModBlocks.COLORED_WOOD_PLANKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_GLOWSTONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_STONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_COBBLESTONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_QUARTZ_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_SOUL_SAND, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_LAMP, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_BRICKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_STONE_BRICKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_LAPIS_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_OBSIDIAN, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_COAL_BLOCK, dyes);
     }
 
-    private static void loadColoredBlockRecipe(ModBlocks block, ItemStack[] dyes) {
+    private static void loadDyeableColoredBlockRecipe(BlockColored block) {
+        ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
+
+        ItemStack any8 = new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE);
+        // To base using water
+        GameRegistry.addShapedRecipe(
+            new ItemStack(block.getBase(), 8, block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            any8,
+            'd',
+            new ItemStack(Items.water_bucket));
+
+        ItemStack anyDyed = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack baseItem = new ItemStack(
+            Item.getItemFromBlock(block.getBase()),
+            1,
+            block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0);
+        // From base to dyed using roller
+        GameRegistry.addRecipe(
+            new RecipePaintRollerToPaint(
+                3,
+                3,
+                new ItemStack[] { baseItem, baseItem, baseItem, baseItem, paintRoller, baseItem, baseItem, baseItem,
+                    baseItem },
+                any8));
+
+        // From dyed to dyed using roller
+        GameRegistry.addRecipe(
+            new RecipePaintRollerToPaint(
+                3,
+                3,
+                new ItemStack[] { anyDyed, anyDyed, anyDyed, anyDyed, paintRoller, anyDyed, anyDyed, anyDyed, anyDyed },
+                any8));
+    }
+
+    private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
+        ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
+
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
             addShapedRecipe(
-                block.newItemStack(8, i),
+                new ItemStack(block, 7, i),
                 "bbb",
                 "bdb",
-                "bbb",
+                "bpb",
                 'b',
-                ((BlockColored) block.get()).getBase(),
+                block.getBase(),
                 'd',
-                dyes[15 - i]);
-
-            addShapedRecipe(
-                new ItemStack(((BlockColored) block.get()).getBase(), 8),
-                "bbb",
-                "bdb",
-                "bbb",
-                'b',
-                block.newItemStack(1, i),
-                'd',
-                water);
+                dyes[15 - i],
+                'p',
+                paintRoller);
         }
+
+        addShapedRecipe(
+            new ItemStack(block.getBase(), 8),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE),
+            'd',
+            water);
     }
 
     private static void loadInversionRecipes() {
@@ -1357,9 +1408,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Anti-Particulate Shovel
-        if (RecipeConfig.enableAntiParticulateShovelRecipe) addShapedRecipe(
-            ModItems.ANTI_PARTICULATE_SHOVEL,
+        // Anti-Gravity Shovel
+        if (RecipeConfig.enableAntiGravityShovelRecipe) addShapedRecipe(
+            ModItems.ANTI_GRAVITY_SHOVEL,
             "i",
             "s",
             "s",

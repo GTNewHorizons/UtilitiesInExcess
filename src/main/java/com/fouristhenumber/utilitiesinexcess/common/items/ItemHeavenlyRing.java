@@ -6,7 +6,6 @@ import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +21,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.utils.KeybindUtils;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -89,11 +89,7 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
                 EnumChatFormatting.WHITE + StatCollector
                     .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
         int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
-        String keyName = switch (key) {
-            case -99 -> StatCollector.translateToLocal("uie.key.rclick");
-            case -98 -> StatCollector.translateToLocal("uie.key.lclick");
-            default -> GameSettings.getKeyDisplayString(key);
-        };
+        String keyName = KeybindUtils.getKeyDisplayNameWithMouse(key);
         tooltip.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "uie.desc.item.heavenly_ring.2",
@@ -161,7 +157,8 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return ItemConfig.enableHeavenlyRing && !Mods.Baubles.isLoaded();
+            return ItemConfig.heavenlyRing.enable
+                && (!Mods.Baubles.isLoaded() || ItemConfig.heavenlyRing.enableInInventoryWithBaubles);
         }
 
         @SubscribeEvent
@@ -199,7 +196,8 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return !Mods.Baubles.isLoaded();
+            return ItemConfig.heavenlyRing.enable
+                && (!Mods.Baubles.isLoaded() || ItemConfig.heavenlyRing.enableInInventoryWithBaubles);
         }
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)

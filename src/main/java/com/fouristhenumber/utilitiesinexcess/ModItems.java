@@ -18,16 +18,18 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiParticulateShovel;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
@@ -35,7 +37,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiParticulateShovelConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
@@ -51,15 +53,15 @@ public enum ModItems {
     // make sure to leave a trailing comma
     GOURMANDS_AXE(GourmandsAxeConfig.INSTANCE.enable, new ItemGourmandsAxe(), "gourmands_axe"),
     DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
-    ANTI_PARTICULATE_SHOVEL(AntiParticulateShovelConfig.INSTANCE.enable, new ItemAntiParticulateShovel(), "anti_particulate_shovel"),
+    ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
     PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
     ETHERIC_SWORD(EthericSwordConfig.INSTANCE.enable, new ItemEthericSword(), "etheric_sword"),
     REVERSING_HOE(ReversingHoeConfig.INSTANCE.enable, new ItemReversingHoe(), "reversing_hoe"),
-    HEAVENLY_RING_FEATHER(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),
-    HEAVENLY_RING_DRAGON(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("dragon", 8), "heavenly_ring_dragon"),
-    HEAVENLY_RING_FAIRY(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("fairy", 8), "heavenly_ring_fairy"),
-    HEAVENLY_RING_METAL(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("metal", 8), "heavenly_ring_metal"),
-    HEAVENLY_RING_MAGIC(ItemConfig.enableHeavenlyRing, new ItemHeavenlyRing("magic", 8), "heavenly_ring_magic"),
+    HEAVENLY_RING_FEATHER(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),
+    HEAVENLY_RING_DRAGON(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("dragon", 8), "heavenly_ring_dragon"),
+    HEAVENLY_RING_FAIRY(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("fairy", 8), "heavenly_ring_fairy"),
+    HEAVENLY_RING_METAL(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("metal", 8), "heavenly_ring_metal"),
+    HEAVENLY_RING_MAGIC(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("magic", 8), "heavenly_ring_magic"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
     WATERING_CAN_BASIC(WateringCanConfig.INSTANCE.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
     WATERING_CAN_ADVANCED(WateringCanConfig.INSTANCE.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
@@ -80,6 +82,7 @@ public enum ModItems {
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
     CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
+    PAINT_ROLLER(ColoredBlocksConfig.INSTANCE.enablePaintRoller, new ItemPaintRoller(), "paint_roller"),
     ; // leave trailing semicolon
     // spotless:on
 

@@ -28,6 +28,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockGigaTorch;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockHeavenly;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockInverted;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetherius;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetheriusDyable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMagicWood;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockMarginallyMaximisedChest;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockPacifistsBench;
@@ -97,7 +98,7 @@ public enum ModBlocks {
     COLORED_LAPIS_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.lapis_block), BlockColored.ItemBlockColored.class, "colored_lapis_block"),
     COLORED_OBSIDIAN(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.obsidian), BlockColored.ItemBlockColored.class, "colored_obsidian"),
     COLORED_REDSTONE_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.redstone_block, 2f), BlockColored.ItemBlockColored.class, "colored_redstone_block"),
-    COLORED_COAL_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.coal_block), BlockColored.ItemBlockColored.class, "colored_coal_block"),
+    COLORED_COAL_BLOCK(BlockConfig.coloredBlocks.enableColoredBlocks, new BlockColored(Blocks.coal_block, 2), BlockColored.ItemBlockColored.class, "colored_coal_block"),
     REDSTONE_CLOCK(BlockConfig.enableRedstoneClock, new BlockRedstoneClock(), "redstone_clock"),
     ETHEREAL_GLASS(BlockConfig.enableEtherealGlass, new BlockEtherealGlass(), BlockEtherealGlass.ItemBlockEtherealGlass.class, "ethereal_glass"),
     TRASH_CAN_ITEM(BlockConfig.enableTrashCanItem, new BlockTrashCanItem(), "trash_can_item"),
@@ -116,6 +117,7 @@ public enum ModBlocks {
     CURSED_EARTH(CursedEarthConfig.INSTANCE.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     BLESSED_EARTH(CursedEarthConfig.INSTANCE.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
+    LAPIS_AETHERIUS_DYEABLE(BlockConfig.enableLapisAetherius && BlockColored.allowDyingBlocks(), new BlockLapisAetheriusDyable(), BlockLapisAetheriusDyable.ItemLapisAetherius.class, "lapis_aetherius_dyeable"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.INSTANCE.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator", 1), "low_temperature_furnace_generator"),
