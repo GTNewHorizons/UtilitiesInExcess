@@ -9,10 +9,18 @@ import com.prupe.mcpatcher.ctm.CTMUtils;
 import com.prupe.mcpatcher.ctm.TileOverride;
 import com.prupe.mcpatcher.mal.block.BlockStateMatcher;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
+
 public class CTMForColoredBlocks {
 
     public static void init() {
         CTMUtils.addCtmRegistrationCallback(overrides -> {
+            if (Loader.instance()
+                .getLoaderState() == LoaderState.AVAILABLE) {
+                BlockColored.initColoredBlocks(null);
+            }
+
             ArrayList<PropertiesFileColored> toRegister = new ArrayList<>();
             overrides.getBlock()
                 .forEach((block, blockStateMatchers) -> {

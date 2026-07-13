@@ -43,9 +43,7 @@ public class BlockColoredTexture extends TextureAtlasSprite {
     @Override
     public boolean load(IResourceManager manager, ResourceLocation location) {
         ResourceLocation baseLocation;
-        if (block != null && block.textureOverrideName != null) {
-            baseLocation = new ResourceLocation(block.textureOverrideDomain, block.textureOverrideName);
-        } else if (baseName == null) {
+        if (baseName == null) {
             baseLocation = new ResourceLocation(getIconName().replace("/___UIE_COLORED___", ""));
         } else {
             ResourceLocation temp = new ResourceLocation(baseName);

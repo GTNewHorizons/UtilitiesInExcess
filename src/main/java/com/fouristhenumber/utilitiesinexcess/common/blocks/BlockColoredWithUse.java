@@ -18,6 +18,10 @@ public class BlockColoredWithUse extends BlockColored {
         super(base, brightnessMultiplier, baseMeta);
     }
 
+    public BlockColoredWithUse(String baseModID, String baseName, int baseMeta, float brightnessMultiplier) {
+        super(baseModID, baseName, baseMeta, brightnessMultiplier);
+    }
+
     @Override
     public boolean usesExtraBit() {
         return true;

@@ -35,6 +35,10 @@ public enum Mixins implements IMixins {
             "minecraft.MixinGuiIngame_TrueGreenscreen")
         .setPhase(Phase.EARLY)
         .setApplyIf(() -> BlockConfig.enableTrueGreenscreen)),
+    COLORED_BLOCKS_TEXTURES(new MixinBuilder("Registers textures for colored blocks")
+        .addClientMixins("minecraft.MixinTextureMap_ColoredBlocks")
+        .setPhase(Phase.EARLY)
+        .setApplyIf(() -> BlockConfig.coloredBlocks.enableColoredBlocks)),
     ACCESSORS(new MixinBuilder("Accessors for the mod to use")
         .setPhase(Phase.EARLY)
         .addCommonMixins(

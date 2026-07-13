@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
-import javax.annotation.Nullable;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -50,10 +48,9 @@ public class BlockColored extends Block implements IUIERegistered {
     private String baseModID;
     private String baseName;
     private boolean initialized = true;
-    public String textureOverrideDomain;
-    public String textureOverrideName;
     private IIcon[] icons;
     private int baseMeta = 0;
+    private String displayNameOverride = null;
 
     private final float brightnessMultiplier;
     public static final float DEFAULT_BRIGHTNESS = 1.5f;
@@ -78,31 +75,39 @@ public class BlockColored extends Block implements IUIERegistered {
         // This dumb ratio is due to the random scalars present in both get and set resistance.
         setResistance(base.getExplosionResistance(null) * (5f / 3f));
         setStepSound(base.stepSound);
-        setBlockName(((AccessorBlock) base).uie$getUnlocalizedNameRaw() + "_colored");
+        setBlockName("colored_" + ((AccessorBlock) base).uie$getUnlocalizedNameRaw());
 
         COLORED_BLOCKS.add(this);
         BASES_TO_COLORED.put(baseOf(base, baseMeta), this);
     }
 
-    public BlockColored(String baseModID, String baseName, float brightnessMultiplier, @Nullable String textureDomain,
-        @Nullable String textureName) {
+    // Config colored blocks initialization:
+    // Pre-Init: registerConfigBlocks() parses the config, then constructs and registers instances
+    // MixinTextureMap_ColoredBlocks (loader state is available, after post init events): initColoredBlocks() finds base
+    // blocks, register their recipes, and registers them with the atlas
+    // If angelica is present: initColoredBlocks() finds base blocks during CTM registration, mixin only registers with
+    // atlas
+    public BlockColored(String baseModID, String baseName, int baseMeta, float brightnessMultiplier) {
         super(Material.rock);
         this.brightnessMultiplier = brightnessMultiplier;
         this.baseModID = baseModID;
         this.baseName = baseName;
+        this.baseMeta = baseMeta;
         this.initialized = false;
-        this.textureOverrideDomain = textureDomain;
-        this.textureOverrideName = textureName;
 
-        setBlockName(baseModID + "_" + baseName + "_colored");
+        setBlockName("colored_" + baseModID + "_" + baseName + "_" + baseMeta);
     }
 
     public void initFromString() {
-        if (base == null) {
-            base = baseOf(GameRegistry.findBlock(baseModID, baseName), 0);
+        if (initialized) {
+            return;
         }
 
         if (base == null) {
+            base = baseOf(GameRegistry.findBlock(baseModID, baseName), baseMeta);
+        }
+
+        if (base.getBlock() == null) {
             throw new IllegalArgumentException(
                 "Utilities in Excess - Colored Blocks: Block \"" + baseName
                     + "\" from mod ID \""
@@ -202,6 +207,14 @@ public class BlockColored extends Block implements IUIERegistered {
         return true;
     }
 
+    public void setDisplayNameOverride(String displayName) {
+        this.displayNameOverride = displayName;
+    }
+
+    public String getDisplayNameOverride() {
+        return displayNameOverride;
+    }
+
     // IUIEModBLock
     private String registryName;
 
@@ -233,14 +246,17 @@ public class BlockColored extends Block implements IUIERegistered {
         public String getItemStackDisplayName(ItemStack stack) {
             int dmg = stack.getItemDamage();
             BlockColored bc = (BlockColored) field_150939_a;
-            stack.setItemDamage(
-                bc.getBase()
-                    .getMeta());
-            String name = Item.getItemFromBlock(
-                bc.getBase()
-                    .getBlock())
-                .getItemStackDisplayName(stack);
-            stack.setItemDamage(dmg);
+            String name = bc.getDisplayNameOverride();
+            if (name == null) {
+                stack.setItemDamage(
+                    bc.getBase()
+                        .getMeta());
+                name = Item.getItemFromBlock(
+                    bc.getBase()
+                        .getBlock())
+                    .getItemStackDisplayName(stack);
+                stack.setItemDamage(dmg);
+            }
 
             if (allowDyingBlocks()) {
                 name = StatCollector.translateToLocalFormatted("uie.colored_blocks.color.dyeable", name);
@@ -275,9 +291,9 @@ public class BlockColored extends Block implements IUIERegistered {
 
             String blockDomain = args[0];
             String blockName = args[1];
-            float brightness;
+            int blockMeta;
             try {
-                brightness = Float.parseFloat(args[2]);
+                blockMeta = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(
                     "Utilities in Excess - Colored Blocks: Couldn't parse brightness value \"" + args[2]
@@ -285,63 +301,90 @@ public class BlockColored extends Block implements IUIERegistered {
                         + configString
                         + "\". Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
             }
-            String textureDomain = args[3];
-            String textureName = args[4];
+            float brightness;
+            try {
+                brightness = Float.parseFloat(args[3]);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(
+                    "Utilities in Excess - Colored Blocks: Couldn't parse brightness value \"" + args[3]
+                        + "\" for extra colored blocks entry \""
+                        + configString
+                        + "\". Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
+            }
+            BlockColored newBlock = switch (args[4].toLowerCase()) {
+                case "default" -> new BlockColored(blockDomain, blockName, blockMeta, brightness);
+                case "ctm" -> new BlockColoredCTM(blockDomain, blockName, blockMeta, brightness);
+                case "rotatable" -> new BlockColored(blockDomain, blockName, blockMeta, brightness);
+                default -> throw new IllegalArgumentException(
+                    "Utilities in Excess - Colored Blocks: Couldn't parse type value \"" + args[4]
+                        + "\" for extra colored blocks entry \""
+                        + configString
+                        + "\". Please check the \"extraColoredBlocks\" option in your Utilities in Excess config.");
+            };
+            Class<? extends ItemBlock> itemClass = switch (args[4].toLowerCase()) {
+                case "ctm" -> BlockColoredCTM.ItemBlockColoredCTM.class;
+                case "light" -> BlockColoredWithLight.ItemBlockColoredWithLight.class;
+                default -> BlockColored.ItemBlockColored.class;
+            };
 
-            BlockColored newBlock = new BlockColored(blockDomain, blockName, brightness, textureDomain, textureName);
+            if (args.length >= 6) {
+                newBlock.setDisplayNameOverride(args[5]);
+            }
+
             newBlock.setCreativeTab(UtilitiesInExcess.uieTab);
             CONFIG_COLORED_BLOCKS.add(newBlock);
             COLORED_BLOCKS.add(newBlock);
             newBlock.setRegistryName(((AccessorBlock) newBlock).uie$getUnlocalizedNameRaw());
-            GameRegistry.registerBlock(newBlock, ItemBlockColored.class, newBlock.getRegistryName());
-
+            GameRegistry.registerBlock(newBlock, itemClass, newBlock.getRegistryName());
         }
     }
 
-    public static void initColoredBlocks() {
-        for (BlockColored blockColored : CONFIG_COLORED_BLOCKS) {
+    private static boolean recipesLoaded = false;
+
+    public static void initColoredBlocks(Map<String, TextureAtlasSprite> mapRegisteredSprites) {
+        for (BlockColored blockColored : COLORED_BLOCKS) {
             blockColored.initFromString();
+            if (mapRegisteredSprites != null) {
+                blockColored.actuallyRegisterBlockIcons(mapRegisteredSprites);
+            }
         }
-        RecipeLoader.loadColoredBlockRecipes();
+        if (!recipesLoaded) {
+            RecipeLoader.loadColoredBlockRecipes();
+            recipesLoaded = true;
+        }
+    }
+
+    protected void actuallyRegisterBlockIcons(Map<String, TextureAtlasSprite> mapRegisteredSprites) {
+
+        IIcon[] icons = new IIcon[6];
+        HashSet<String> names = new HashSet<>();
+
+        for (int i = 0; i < 6; i++) {
+            icons[i] = base.getBlock()
+                .getIcon(i, this.baseMeta);
+            names.add(icons[i].getIconName());
+        }
+
+        HashMap<String, IIcon> iconMap = new HashMap<>();
+        for (String name : names) {
+            String textureName = UtilitiesInExcess.MODID + ":" + name.replace(':', '_') + "_colored_grayscale";
+            BlockColoredTexture icon = new BlockColoredTexture(textureName, name, this, brightnessMultiplier);
+            mapRegisteredSprites.put(textureName, icon);
+            iconMap.put(name, icon);
+        }
+
+        for (int i = 0; i < 6; i++) {
+            icons[i] = iconMap.get(icons[i].getIconName());
+        }
+
+        this.icons = icons;
+        this.blockIcon = icons[0];
     }
 
     // Implementations of Block methods
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerBlockIcons(IIconRegister reg) {
-        if (!(reg instanceof TextureMap tm)) return;
-
-        if (base != null) {
-            IIcon[] icons = new IIcon[6];
-            HashSet<String> names = new HashSet<>();
-
-            for (int i = 0; i < 6; i++) {
-                icons[i] = base.getBlock()
-                    .getIcon(i, this.baseMeta);
-                names.add(icons[i].getIconName());
-            }
-
-            HashMap<String, IIcon> iconMap = new HashMap<>();
-            for (String name : names) {
-                String textureName = UtilitiesInExcess.MODID + ":" + name.replace(':', '_') + "_colored_grayscale";
-                BlockColoredTexture icon = new BlockColoredTexture(textureName, name, this, brightnessMultiplier);
-                tm.setTextureEntry(textureName, icon);
-                iconMap.put(name, icon);
-            }
-
-            for (int i = 0; i < 6; i++) {
-                icons[i] = iconMap.get(icons[i].getIconName());
-            }
-
-            this.icons = icons;
-            this.blockIcon = icons[0];
-        } else {
-            String textureName = UtilitiesInExcess.MODID + ":" + baseModID + "_" + baseName + "_colored_grayscale";
-            blockIcon = new BlockColoredTexture(textureName, this, brightnessMultiplier);
-
-            tm.setTextureEntry(textureName, (TextureAtlasSprite) blockIcon);
-        }
-    }
+    public void registerBlockIcons(IIconRegister reg) {}
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -424,40 +467,44 @@ public class BlockColored extends Block implements IUIERegistered {
     @SideOnly(Side.CLIENT)
     @Override
     public int getRenderBlockPass() {
-        return getBase().getBlock()
-            .getRenderBlockPass();
+        return (getBase() == null || getBase().getBlock() == null) ? super.getRenderBlockPass()
+            : getBase().getBlock()
+                .getRenderBlockPass();
     }
 
     @Override
     public boolean renderAsNormalBlock() {
-        return getBase().getBlock()
-            .renderAsNormalBlock();
+        return (getBase() == null || getBase().getBlock() == null) ? super.renderAsNormalBlock()
+            : getBase().getBlock()
+                .renderAsNormalBlock();
     }
 
     @Override
     public boolean isOpaqueCube() {
-        return getBase() == null ? super.isOpaqueCube()
+        return (getBase() == null || getBase().getBlock() == null) ? super.isOpaqueCube()
             : getBase().getBlock()
                 .isOpaqueCube();
     }
 
     @Override
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
-        Block block = worldIn.getBlock(x, y, z);
-        return getBase().getBlock()
-            .shouldSideBeRendered(worldIn, x, y, z, side) && block != this;
+        return (getBase() == null || getBase().getBlock() == null) ? super.shouldSideBeRendered(worldIn, x, y, z, side)
+            : getBase().getBlock()
+                .shouldSideBeRendered(worldIn, x, y, z, side) && worldIn.getBlock(x, y, z) != this;
     }
 
     @Override
     public int getLightOpacity() {
-        return getBase().getBlock()
-            .getLightOpacity();
+        return (getBase() == null || getBase().getBlock() == null) ? super.getLightOpacity()
+            : getBase().getBlock()
+                .getLightOpacity();
     }
 
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return getBase().getBlock()
-            .getLightOpacity(world, x, y, z);
+        return (getBase() == null || getBase().getBlock() == null) ? super.getLightOpacity(world, x, y, z)
+            : getBase().getBlock()
+                .getLightOpacity(world, x, y, z);
     }
     //
 
