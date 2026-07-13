@@ -11,6 +11,9 @@ import net.minecraft.util.StatCollector;
 import com.prupe.mcpatcher.ctm.ICTMBlock;
 import com.prupe.mcpatcher.ctm.RenderBlockState;
 
+import cpw.mods.fml.common.Optional;
+
+@Optional.Interface(iface = "com.prupe.mcpatcher.ctm.ICTMBlock", modid = "angelica")
 public class BlockColoredCTM extends BlockColoredWithUse implements ICTMBlock {
 
     public static final ArrayList<BlockColored> CTM_COLORED_BLOCKS = new ArrayList<>();
@@ -40,6 +43,7 @@ public class BlockColoredCTM extends BlockColoredWithUse implements ICTMBlock {
         return "uie.nei.infopage.colored_blocks.ctm";
     }
 
+    @Optional.Method(modid = "angelica")
     @Override
     public boolean shouldConnectByBlock(RenderBlockState renderBlockState, Block neighbor, int neighborX, int neighborY,
         int neighborZ) {
