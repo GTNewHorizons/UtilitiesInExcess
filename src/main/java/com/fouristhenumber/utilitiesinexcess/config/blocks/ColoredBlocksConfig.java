@@ -56,6 +56,7 @@ public class ColoredBlocksConfig {
         "",
         "Example: minecraft;stained_glass;0;1.5;CTM;Stained Glass",
         "Example: minecraft;double_stone_slab;8;1.5;DEFAULT",
+        "Example: minecraft;pumpkin;0;1.5;ROTATABLE",
         ""
     })
     // spotless:on

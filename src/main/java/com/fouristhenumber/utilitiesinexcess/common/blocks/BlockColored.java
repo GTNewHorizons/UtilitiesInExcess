@@ -318,7 +318,7 @@ public class BlockColored extends Block implements IUIERegistered {
             BlockColored newBlock = switch (args[4].toLowerCase()) {
                 case "default" -> new BlockColored(blockDomain, blockName, blockMeta, brightness);
                 case "ctm" -> new BlockColoredCTM(blockDomain, blockName, blockMeta, brightness);
-                case "rotatable" -> new BlockColored(blockDomain, blockName, blockMeta, brightness);
+                case "rotatable" -> new BlockColoredRotatable(blockDomain, blockName, blockMeta, brightness);
                 case "light" -> new BlockColoredWithLight(blockDomain, blockName, blockMeta, brightness);
                 default -> throw new IllegalArgumentException(
                     "Utilities in Excess - Colored Blocks: Couldn't parse type value \"" + args[4]
@@ -380,6 +380,14 @@ public class BlockColored extends Block implements IUIERegistered {
 
         for (int i = 0; i < 6; i++) {
             icons[i] = iconMap.get(icons[i].getIconName());
+        }
+
+        if (this instanceof BlockColoredRotatable rotatable) {
+            for (int i = 0; i < 6; i++) {
+                rotatable.iconsRotated[i] = base.getBlock()
+                    .getIcon(i, baseMeta + 1 < 16 ? baseMeta + 1 : baseMeta - 1);
+                rotatable.iconsRotated[i] = iconMap.get(rotatable.iconsRotated[i].getIconName());
+            }
         }
 
         this.icons = icons;
