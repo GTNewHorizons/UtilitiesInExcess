@@ -167,9 +167,9 @@ public class RecipeLoader {
             'e',
             Items.ender_eye);
 
-        // Floating Block
-        if (RecipeConfig.enableFloatingBlockRecipe) addShapedRecipe(
-            ModBlocks.FLOATING_BLOCK,
+        // Heavenly Block
+        if (RecipeConfig.enableHeavenlyBlockRecipe) addShapedRecipe(
+            ModBlocks.HEAVENLY_BLOCK,
             " g ",
             "fof",
             'g',
@@ -1449,7 +1449,7 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             'f',
-            ModBlocks.FLOATING_BLOCK);
+            ModBlocks.HEAVENLY_BLOCK);
 
         // Architect's Wand
         if (RecipeConfig.enableArchitectsWandRecipe) addShapedRecipe(

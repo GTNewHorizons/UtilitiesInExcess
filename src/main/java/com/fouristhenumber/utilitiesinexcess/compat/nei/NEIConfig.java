@@ -94,7 +94,7 @@ public class NEIConfig implements IConfigureNEI {
     public static void registerAliases() {
         // spotless:off
         ArrayList<ItemStack> aliasedItemStacks = new ArrayList<>(List.of(
-            new ItemStack(ModBlocks.FLOATING_BLOCK.getItem()),
+            new ItemStack(ModBlocks.HEAVENLY_BLOCK.getItem()),
             new ItemStack(ModBlocks.UNDERWORLD_PORTAL.getItem()),
             new ItemStack(ModBlocks.END_OF_TIME_PORTAL.getItem()),
             new ItemStack(ModBlocks.PACIFISTS_BENCH.getItem()),
