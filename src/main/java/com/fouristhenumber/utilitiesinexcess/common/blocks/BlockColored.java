@@ -28,6 +28,7 @@ import com.fouristhenumber.utilitiesinexcess.common.IUIERegistered;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.chromatictooltips.ColorChromaticTooltip;
 import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
@@ -274,7 +275,11 @@ public class BlockColored extends Block implements IUIERegistered {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
             super.addInformation(stack, player, tooltip, p_77624_4_);
             if (allowDyingBlocks()) {
-                tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
+                if (Mods.ChromaticTooltips.isLoaded()) {
+                    tooltip.add(ColorChromaticTooltip.makeTooltip(getRGBFromEIDMeta(stack.getItemDamage())));
+                } else {
+                    tooltip.add("#" + Color.rgbToFullHexString(getRGBFromEIDMeta(stack.getItemDamage())));
+                }
             }
         }
     }

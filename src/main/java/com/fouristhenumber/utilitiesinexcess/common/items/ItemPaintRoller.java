@@ -26,6 +26,8 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.chromatictooltips.ColorChromaticTooltip;
 import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller.PaintRollerColorPickerDialog;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
@@ -242,8 +244,12 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
                 tooltip.add(StatCollector.translateToLocal("uie.gui.text.paint_roller.paintstripper"));
             } else {
                 int color = getColorFromStack(stack);
-                if (color != 0xFFFFFF) {
-                    tooltip.add("#" + Color.rgbToFullHexString(color));
+                if (color != 0xF8F8F8) {
+                    if (Mods.ChromaticTooltips.isLoaded()) {
+                        tooltip.add(ColorChromaticTooltip.makeTooltip(color));
+                    } else {
+                        tooltip.add("#" + Color.rgbToFullHexString(color));
+                    }
                 }
             }
             String rightClickName = KeybindUtils

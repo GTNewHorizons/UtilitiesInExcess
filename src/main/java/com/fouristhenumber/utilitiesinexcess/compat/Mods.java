@@ -22,7 +22,8 @@ public enum Mods {
     GT("gregtech_nh"),
     SimpleSkinBackport("simpleskinbackport"),
     EndlessIDs("endlessids"),
-    Angelica("angelica")
+    Angelica("angelica"),
+    ChromaticTooltips("chromatictooltips")
     ;
     // spotless:on
 
