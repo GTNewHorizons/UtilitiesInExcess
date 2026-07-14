@@ -29,6 +29,11 @@ public class BlockLapisAetheriusDyable extends BlockColoredWithLight {
     }
 
     @Override
+    public String getCustomNEIPage() {
+        return null;
+    }
+
+    @Override
     public int getRenderType() {
         return UtilitiesInExcess.lapisAetheriusRenderID;
     }
