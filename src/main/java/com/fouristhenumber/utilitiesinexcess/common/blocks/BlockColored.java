@@ -88,6 +88,7 @@ public class BlockColored extends Block implements IUIERegistered {
     // blocks, register their recipes, and registers them with the atlas
     // If angelica is present: initColoredBlocks() finds base blocks during CTM registration, mixin only registers with
     // atlas
+    // On load complete: try finding base blocks again, for dedicated servers
     public BlockColored(String baseModID, String baseName, int baseMeta, float brightnessMultiplier) {
         super(Material.rock);
         this.brightnessMultiplier = brightnessMultiplier;

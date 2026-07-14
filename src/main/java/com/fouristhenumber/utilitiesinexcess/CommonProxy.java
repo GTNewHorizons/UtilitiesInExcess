@@ -24,6 +24,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -89,6 +90,14 @@ public class CommonProxy {
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();
         }
+    }
+
+    public void loadComplete(FMLLoadCompleteEvent event) {
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.initColoredBlocks(null);
+        }
+
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
