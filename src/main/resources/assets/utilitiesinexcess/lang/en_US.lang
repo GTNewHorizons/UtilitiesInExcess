@@ -574,10 +574,10 @@ uie.desc.item.unbreakable=Unbreakable
 
 uie.desc.item.architects_wand.1=Can place up to %s blocks at once
 
-uie.desc.item.paint_roller.0=[§a%s§7] Colorable blocks to dye them
+uie.desc.item.paint_roller.0=[§a%s§7] Dyeable blocks to dye them
 uie.desc.item.paint_roller.1=[§a%s§7] The air to select hex color
 uie.desc.item.paint_roller.2=[§aCrouch §7+ §a%s§7] Use line-mode
-uie.desc.item.paint_roller.3=[§a%s§7] Colorable blocks to copy color
+uie.desc.item.paint_roller.3=[§a%s§7] Dyeable blocks to copy color
 
 ### Item aliases
 item.heavenly_ring_magic.aliases=Angel Ring
