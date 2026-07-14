@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,11 +42,6 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         setUnlocalizedName("paint_roller");
         setMaxStackSize(1);
         setContainerItem(this);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
     }
 
     public IIcon handleIcon;
@@ -189,7 +183,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         int color;
         NBTTagCompound tag = stack.getTagCompound();
         if (tag == null || !tag.hasKey("SelectedColor")) {
-            color = 0xFFFFFF;
+            color = 0xF8F8F8;
         } else {
             color = tag.getInteger("SelectedColor");
         }
