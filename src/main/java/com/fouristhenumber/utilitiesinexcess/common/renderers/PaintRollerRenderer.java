@@ -59,6 +59,5 @@ public class PaintRollerRenderer implements IItemRenderer {
         }
 
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 }
