@@ -110,7 +110,7 @@ public class BlockPortalEndOfTime extends Block {
                 .worldServerForDimension(EndOfTimeConfig.INSTANCE.endOfTimeDimensionId);
             // Extra Utilities has it's End of Time equivalent's platform generate at world spawn, so we replicate that
             // behavior for compatibility with older saves.
-            // However, this lead to a bug causing the platform to generate multiple times if world spawn was ever
+            // However, this led to a bug causing the platform to generate multiple times if world spawn was ever
             // changed, so anchor it the first time we're loaded.
             if (PlatformAnchorData.get(dest)
                 .isZero()) {
