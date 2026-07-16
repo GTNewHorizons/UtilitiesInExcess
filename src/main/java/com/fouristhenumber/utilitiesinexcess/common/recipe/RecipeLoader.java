@@ -1375,9 +1375,9 @@ public class RecipeLoader {
             'n',
             ModItems.INVERTED_NUGGET);
 
-        // Gourmand's Axe
-        if (RecipeConfig.enableGourmandsAxeRecipe) addShapedRecipe(
-            ModItems.GOURMANDS_AXE,
+        // Sating Axe
+        if (RecipeConfig.enableSatingAxeRecipe) addShapedRecipe(
+            ModItems.SATING_AXE,
             "ii",
             "is",
             " s",
@@ -1386,9 +1386,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Destruction Pickaxe
-        if (RecipeConfig.enableDestructionPickaxeRecipe) addShapedRecipe(
-            ModItems.DESTRUCTION_PICKAXE,
+        // Erasure Pickaxe
+        if (RecipeConfig.enableErasurePickaxeRecipe) addShapedRecipe(
+            ModItems.ERASURE_PICKAXE,
             "iii",
             " s ",
             " s ",
@@ -1397,9 +1397,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Reversing Hoe
-        if (RecipeConfig.enableReversingHoeRecipe) addShapedRecipe(
-            ModItems.REVERSING_HOE,
+        // Retrograde Hoe
+        if (RecipeConfig.enableRetrogradeHoeRecipe) addShapedRecipe(
+            ModItems.RETROGRADE_HOE,
             "ii",
             " s",
             " s",
@@ -1419,9 +1419,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Etheric Sword
-        if (RecipeConfig.enableEthericSwordRecipe) addShapedRecipe(
-            ModItems.ETHERIC_SWORD,
+        // Liminal Sword
+        if (RecipeConfig.enableLiminalSwordRecipe) addShapedRecipe(
+            ModItems.LIMINAL_SWORD,
             "i",
             "i",
             "s",
@@ -1439,11 +1439,11 @@ public class RecipeLoader {
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, 2),
             's',
-            ModItems.ETHERIC_SWORD);
+            ModItems.LIMINAL_SWORD);
 
-        // Precision Shears
-        if (RecipeConfig.enablePrecisionShearsRecipe) addShapedRecipe(
-            ModItems.PRECISION_SHEARS,
+        // Recall Shears
+        if (RecipeConfig.enableRecallShearsRecipe) addShapedRecipe(
+            ModItems.RECALL_SHEARS,
             "fi",
             "if",
             'i',
@@ -1451,9 +1451,9 @@ public class RecipeLoader {
             'f',
             ModBlocks.HEAVENLY_BLOCK);
 
-        // Architect's Wand
-        if (RecipeConfig.enableArchitectsWandRecipe) addShapedRecipe(
-            ModItems.ARCHITECTS_WAND,
+        // Builder's Wand
+        if (RecipeConfig.enableBuildersWandRecipe) addShapedRecipe(
+            ModItems.BUILDERS_WAND,
             " i",
             "s ",
             'i',
@@ -1461,15 +1461,15 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Super Architect's Wand
-        if (RecipeConfig.enableSuperArchitectsWandRecipe) addShapedRecipe(
-            ModItems.SUPER_ARCHITECTS_WAND,
+        // Super Builder's Wand
+        if (RecipeConfig.enableSuperBuildersWandRecipe) addShapedRecipe(
+            ModItems.SUPER_BUILDERS_WAND,
             " i",
             "s ",
             'i',
             ModItems.BEDROCKIUM_INGOT,
             's',
-            ModItems.ARCHITECTS_WAND);
+            ModItems.BUILDERS_WAND);
 
         // Inverted Ingot -> Block
         if (RecipeConfig.enableInvertedBlockRecipe) addShapedRecipe(

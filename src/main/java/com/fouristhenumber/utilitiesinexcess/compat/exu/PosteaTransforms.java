@@ -45,21 +45,20 @@ public class PosteaTransforms {
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:heatingElement", ModItems.FIRE_BATTERY.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:builderswand", ModItems.ARCHITECTS_WAND.get(), true);
+            .addSimpleReplacement("ExtraUtilities:builderswand", ModItems.BUILDERS_WAND.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_ARCHITECTS_WAND.get(), true);
+            .addSimpleReplacement("ExtraUtilities:creativebuilderswand", ModItems.SUPER_BUILDERS_WAND.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.ETHERIC_SWORD.get(), true);
+            .addSimpleReplacement("ExtraUtilities:ethericsword", ModItems.LIMINAL_SWORD.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.DESTRUCTION_PICKAXE.get(), true);
+            .addSimpleReplacement("ExtraUtilities:destructionpickaxe", ModItems.ERASURE_PICKAXE.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.GOURMANDS_AXE.get(), true);
+            .addSimpleReplacement("ExtraUtilities:defoliageAxe", ModItems.SATING_AXE.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:erosionShovel", ModItems.ANTI_GRAVITY_SHOVEL.get(), true);
         ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.REVERSING_HOE.get(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("ExtraUtilities:shears", ModItems.PRECISION_SHEARS.get(), true);
+            .addSimpleReplacement("ExtraUtilities:temporalHoe", ModItems.RETROGRADE_HOE.get(), true);
+        ItemStackReplacementManager.addSimpleReplacement("ExtraUtilities:shears", ModItems.RECALL_SHEARS.get(), true);
         ItemStackReplacementManager
             .addSimpleReplacement("ExtraUtilities:sonar_goggles", ModItems.XRAY_GLASSES.get(), true);
         ItemStackReplacementManager

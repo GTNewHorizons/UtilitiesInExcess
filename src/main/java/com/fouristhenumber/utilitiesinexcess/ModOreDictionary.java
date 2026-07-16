@@ -15,7 +15,7 @@ public class ModOreDictionary {
             .registerOre("ingotInverted", ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("nuggetUnstable", ModItems.INVERTED_NUGGET.get());
         OreDictionary.registerOre("nuggetInverted", ModItems.INVERTED_NUGGET.get());
-        OreDictionary.registerOre("craftingToolShears", ModItems.PRECISION_SHEARS.get());
+        OreDictionary.registerOre("craftingToolShears", ModItems.RECALL_SHEARS.get());
 
         // Blocks
         OreDictionary.registerOre("burntQuartz", ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2));
