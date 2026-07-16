@@ -83,7 +83,7 @@ public class IMCForNEI {
         sendInfoPage("utilitiesinexcess:glove", "uie.nei.infopage.glove.1");
         if (Mods.Baubles.isLoaded()) sendInfoPage("utilitiesinexcess:glove", "uie.nei.infopage.glove.2");
 
-        sendInfoPage("<utilitiesinexcess:floating_block>", "uie.nei.infopage.floating_block.1");
+        sendInfoPage("<utilitiesinexcess:heavenly_block>", "uie.nei.infopage.heavenly_block.1");
 
         sendInfoPage("<utilitiesinexcess:redstone_clock>", "uie.nei.infopage.redstone_clock.1");
 

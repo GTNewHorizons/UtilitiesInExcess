@@ -132,8 +132,12 @@ public class PosteaTransforms {
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:dark_portal", 0, ModBlocks.UNDERWORLD_PORTAL.get());
         BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:dark_portal", 1, ModBlocks.UNDERWORLD_PORTAL.get());
+        BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:dark_portal", 2, ModBlocks.END_OF_TIME_PORTAL.get());
-        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:angelBlock", ModBlocks.FLOATING_BLOCK.get());
+        BlockReplacementManager
+            .addSimpleReplacement("ExtraUtilities:dark_portal", 3, ModBlocks.END_OF_TIME_PORTAL.get());
+        BlockReplacementManager.addSimpleReplacement("ExtraUtilities:angelBlock", ModBlocks.HEAVENLY_BLOCK.get());
         BlockReplacementManager
             .addSimpleReplacement("ExtraUtilities:budoff", 3, ModBlocks.ADVANCED_BLOCK_UPDATE_DETECTOR.get(), 0);
         BlockReplacementManager.addSimpleReplacement("ExtraUtilities:budoff", ModBlocks.BLOCK_UPDATE_DETECTOR.get());
