@@ -23,7 +23,7 @@ uie.nei.text.pseudo_reversion.requires=Requires %s unique items from:
 
 ### NEI Infopage
 uie.nei.infopage.compressed.1=Tons of spare blocks lying around? Save yourself some space by compacting them. Compressible blocks can be repeatedly compressed up to eight times!
-uie.nei.infopage.floating_block.1=Floating blocks can be placed in midair. Helpful for building in the middle of the sky.
+uie.nei.infopage.heavenly_block.1=Heavenly blocks can be placed in midair. Helpful for building in the middle of the sky.
 uie.nei.infopage.bedrockium.1=Bedrockium is a supremely strong material named after the virtually impervious foundation of the world. It is immensely heavy and slows you to a crawl while holding it.
 uie.nei.infopage.ethereal_glass.0=Ethereal Glass makes for the perfect zombie-proof door. It stops all creatures in their tracks while letting players through. Sneaking causes players to collide with this block. Ineffable Glass is a variant block with connected textures.
 uie.nei.infopage.ethereal_glass.2=Dark Ethereal Glass works just like Ethereal Glass, stopping creatures and allowing players who aren't sneaking to pass through, but it also blocks light. How can you see through it? Stop asking so many questions!
@@ -44,15 +44,15 @@ uie.nei.infopage.inversion_sigil.4=If the ritual has been completed successfully
 uie.nei.infopage.pseudo_reversion_sigil.1=The Pseudo-Reversion Sigil is an improved version of the Awakened Inversion Sigil that crafts Stable Inverted Ingots which never implode. Unfortunately, it is not easy to create. Using the Awakened Sigil on a beacon provides some hints, or read on for precise instructions.
 uie.nei.infopage.pseudo_reversion_sigil.2=To set up the new ritual, place a beacon in The End with spirals of redstone and string leading away from it. Place four chests in the cardinal directions and fill them with specific items.
 uie.nei.infopage.pseudo_reversion_sigil.3=Finally, activate the ritual by sacrificing an Iron Golem inside of the spiral. This begins an otherworldly siege... survive while defeating enemies to complete the ritual. Dying or leaving the dimension cancels it.
-uie.nei.infopage.architects_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, a wireframe indicates where the wand will place blocks. Holding Sprint or Sneak locks the orientation of the wand.
-uie.nei.infopage.architects_wand.2=When holding a building block in your off-hand, the wand tries to place it instead.
-uie.nei.infopage.architects_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar are placed.
-uie.nei.infopage.gourmands_axe.1=This axe contains potent restorative magic that restores the bearer's hunger while it is held. Attacking with the axe heals whatever is hit at the cost of hunger - but this healing is deadly to the undead.
-uie.nei.infopage.destruction_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
+uie.nei.infopage.builders_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, a wireframe indicates where the wand will place blocks. Holding Sprint or Sneak locks the orientation of the wand.
+uie.nei.infopage.builders_wand.2=When holding a building block in your off-hand, the wand tries to place it instead.
+uie.nei.infopage.builders_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar are placed.
+uie.nei.infopage.sating_axe.1=This axe contains potent restorative magic that restores the bearer's hunger while it is held. Attacking with the axe heals whatever is hit at the cost of hunger - but this healing is deadly to the undead.
+uie.nei.infopage.erasure_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
 uie.nei.infopage.anti_gravity_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
-uie.nei.infopage.precision_shears.1=These shears can break any block at a stone harvest level and mining speed. Shift-using the shears breaks a block instantly. Any blocks broken are instantly teleported to your inventory.
-uie.nei.infopage.etheric_sword.1=This sword is partially ethereal and deals an additional 3 hearts of damage as magical armor-piercing damage.
-uie.nei.infopage.reversing_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It also converts dirt into grass and cobblestone into stone.
+uie.nei.infopage.recall_shears.1=These shears can break any block at a stone harvest level and mining speed. Sneak-using the shears breaks a block instantly. Any blocks broken are instantly teleported to your inventory.
+uie.nei.infopage.liminal_sword.1=This sword is partially ethereal and deals an additional 3 hearts of magical armor-piercing damage.
+uie.nei.infopage.retrograde_hoe.1=This hoe is steeped in inversion magic and can reverse crop growth on use. It also converts dirt into grass and cobblestone into stone.
 uie.nei.infopage.mob_jar.1=A deceptively small jar that can hold the soul of any passive creature. Use to capture a mob and again to release.
 uie.nei.infopage.redstone_clock.1=A precisely calibrated redstone mechanism which emits a pulse once every second. Turns off when redstone powered.
 uie.nei.infopage.smart_pump.1=The Smart Pump is a lag-light way to gather in-world fluids. Placed directly above the a fluid block and fed RF, it begins collecting fluid and replacing it with stone without triggering block updates.
@@ -94,7 +94,7 @@ uie.nei.infopage.trash_can_energy.1=A painless way to dispose of unwanted RF! Wh
 uie.nei.infopage.magic_wood.1=The enchantments woven into this block give it the enchanting power of five bookshelves!
 uie.nei.infopage.endspark.1=Combining enchanted wood with the power of The End makes it even stronger, boosting enchanting tables by 20 levels! 
 uie.nei.infopage.cursed_earth.1=Cursed Earth is created by the Inversion Sigil's Awakening Ritual. It rapidly spawns monsters, spreads in darkness, and burns away in bright light. Monster Spawners are supercharged when Cursed Earth is below them, and they continue to operate even when a player is not nearby.
-uie.nei.infopage.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Reversing Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
+uie.nei.infopage.blessed_earth.1=Blessed Earth is created by inverting Cursed Earth with a Retrograde Hoe. It rapidly spawns passive mobs and spreads similarly to Cursed Earth.
 uie.nei.infopage.pure_love.1=This infectiously positive block inspires nearby animals to fall in love. Cute!
 uie.nei.infopage.marginally_maximised_chest.1=This chest is ever-so-slightly larger than normal (not large enough to store any more items than usual). It does not form double chests and can be opened even if there is a block above it.
 uie.nei.infopage.significantly_shrunk_chest.1=This tiny chest holds only a single stack of items. It's not very space-efficient, but look at how adorable it is!
@@ -146,7 +146,7 @@ ue_wall.name=%s Wall
 ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
 
-tile.floating_block.name=Floating Block
+tile.heavenly_block.name=Heavenly Block
 tile.bedrockium_block.name=Block of Bedrockium
 tile.inverted_block.name=Inverted Block
 
@@ -371,7 +371,7 @@ tile.sound_muffler.name=Sound Muffler
 tile.rain_muffler.name=Rain Muffler
 
 ### Block aliases
-tile.floating_block.aliases=Angel Block
+tile.heavenly_block.aliases=Angel Block
 tile.marginally_maximised_chest.aliases=Slightly Larger Chest
 tile.radically_reduced_chest.aliases=Mini-Chest
 tile.significantly_shrunk_chest.aliases=Mini-Chest
@@ -454,13 +454,13 @@ item.inversion_sigil_inactive.name=Inert Inversion Sigil
 item.inversion_sigil_active.name=Awakened Inversion Sigil
 item.pseudo_reversion_sigil.name=Pseudo-Reversion Sigil
 
-item.architects_wand.name=Architect's Wand
-item.gourmands_axe.name=Gourmand's Axe
-item.destruction_pickaxe.name=Destruction Pickaxe
+item.builders_wand.name=Builder's Wand
+item.sating_axe.name=Sating Axe
+item.erasure_pickaxe.name=Erasure Pickaxe
 item.anti_gravity_shovel.name=Anti-Gravity Shovel
-item.precision_shears.name=Precision Shears
-item.etheric_sword.name=Etheric Sword
-item.reversing_hoe.name=Reversing Hoe
+item.recall_shears.name=Recall Shears
+item.liminal_sword.name=Liminal Sword
+item.retrograde_hoe.name=Retrograde Hoe
 
 item.mob_jar.name=Mob Jar
 
@@ -568,7 +568,7 @@ uie.desc.item.capacity_upgrade.2=Max Upgrades: %s
 
 uie.desc.item.unbreakable=Unbreakable
 
-uie.desc.item.architects_wand.1=Can place up to %s blocks at once
+uie.desc.item.builders_wand.1=Can place up to %s blocks at once
 
 uie.desc.item.paint_roller.0=[§a%s§7] Colorable blocks to dye them
 uie.desc.item.paint_roller.1=[§a%s§7] The air to select hex color
@@ -581,7 +581,7 @@ item.heavenly_ring_metal.aliases=Angel Ring
 item.heavenly_ring_fairy.aliases=Angel Ring
 item.heavenly_ring_dragon.aliases=Angel Ring
 item.heavenly_ring_feather.aliases=Angel Ring
-item.architects_wand.aliases=Builder's Wand
+item.builders_wand.aliases=Builder's Wand
 item.pseudo_reversion_sigil.aliases=Division Sigil
 item.inversion_sigil_active.aliases=Division Sigil
 item.inversion_sigil_inactive.aliases=Division Sigil
@@ -828,8 +828,8 @@ uie.config.items.watering_can_tier=Watering Can Tiers
 #uie.config.items.watering_can_tier.tooltip=
 uie.config.items.watering_can_flowering=Watering Can Flowering
 #uie.config.items.watering_can_flowering.tooltip=
-uie.config.items.architects_wands=Architect's Wands
-#uie.config.items.architects_wands.tooltip=
+uie.config.items.builders_wands=Builder's Wands
+#uie.config.items.builders_wands.tooltip=
 uie.config.other=Other
 #uie.config.other.tooltip=
 uie.config.recipes=Recipes

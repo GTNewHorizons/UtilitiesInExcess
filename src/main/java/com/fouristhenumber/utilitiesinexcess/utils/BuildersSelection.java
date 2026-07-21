@@ -16,20 +16,20 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.tools.ToolTrowel;
 import xonin.backhand.api.core.BackhandUtils;
 
-public class ArchitectsSelection {
+public class BuildersSelection {
 
     private final Set<ItemStack> validBlocks;
     private final ItemStack backhand;
     private final ItemStack lookAtBlock;
 
-    public ArchitectsSelection(EntityPlayer player, World world, MovingObjectPosition movingObjectPosition) {
+    public BuildersSelection(EntityPlayer player, World world, MovingObjectPosition movingObjectPosition) {
         this.validBlocks = new HashSet<>();
         backhand = Mods.Backhand.isLoaded() ? BackhandUtils.getOffhandItem(player) : null;
         lookAtBlock = getBlockByLocation(world, movingObjectPosition, player);
@@ -73,11 +73,11 @@ public class ArchitectsSelection {
     }
 
     public int maxPlaceCount(EntityPlayer player, int wandLimit) {
-        if (player.capabilities.isCreativeMode) return ArchitectsWandsConfig.INSTANCE.architectsWandCreativeBuildLimit;
+        if (player.capabilities.isCreativeMode) return BuildersWandsConfig.INSTANCE.buildersWandCreativeBuildLimit;
 
         int count = 0;
         for (ItemStack block : blockToPlace(player)) {
-            count += ArchitectsWandUtils.countItemInInventory(player, block);
+            count += BuildersWandUtils.countItemInInventory(player, block);
         }
         return Math.min(count, wandLimit);
     }

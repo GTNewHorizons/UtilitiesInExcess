@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 
-public class BlockFloating extends Block {
+public class BlockHeavenly extends Block {
 
-    public BlockFloating() {
+    public BlockHeavenly() {
         super(Material.rock);
-        setBlockName("floating_block");
-        setBlockTextureName("utilitiesinexcess:floating_block");
+        setBlockName("heavenly_block");
+        setBlockTextureName("utilitiesinexcess:heavenly_block");
         setHardness(0.0F);
         setResistance(7.0F);
     }
@@ -41,16 +41,16 @@ public class BlockFloating extends Block {
     @Override
     public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
         if (player != null) {
-            EntityItem entityItem = player.dropItem(ModBlocks.FLOATING_BLOCK.getItem(), 1);
+            EntityItem entityItem = player.dropItem(ModBlocks.HEAVENLY_BLOCK.getItem(), 1);
             entityItem.delayBeforeCanPickup = 0;
         } else {
             super.harvestBlock(world, player, x, y, z, meta);
         }
     }
 
-    public static class ItemBlockFloating extends ItemBlock {
+    public static class ItemBlockHeavenly extends ItemBlock {
 
-        public ItemBlockFloating(Block block) {
+        public ItemBlockHeavenly(Block block) {
             super(block);
         }
 

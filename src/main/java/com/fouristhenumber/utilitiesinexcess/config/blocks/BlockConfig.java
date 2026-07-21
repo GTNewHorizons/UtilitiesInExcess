@@ -199,7 +199,7 @@ public class BlockConfig {
 
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean enableFloatingBlock;
+    public static boolean enableHeavenlyBlock;
 
     @Config.DefaultBoolean(false)
     @Config.Comment("If enabled, inverted block will have a similar X-Ray effect to Extra Utilities' Unstable Block.")
