@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -116,8 +117,17 @@ public class BlockPortalUnderWorld extends BlockContainer {
 
                 BlockPos spawn = findSpawnLocation(dest, source.entranceX, source.entranceY, source.entranceZ);
 
-                if (spawn == null) {
+                if (!source.isSet || spawn == null) {
+                    ChunkCoordinates playerSpawn = player.getBedLocation(0);
+                    if (playerSpawn != null)
+                        playerSpawn = EntityPlayer.verifyRespawnCoordinates(dest, playerSpawn, false);
+                    if (playerSpawn == null) {
+                        playerSpawn = dest.getSpawnPoint();
+                        playerSpawn.posY = dest.getTopSolidOrLiquidBlock(playerSpawn.posX, playerSpawn.posZ);
+                    }
+
                     player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal.blocked"));
+                    teleport((EntityPlayerMP) player, dest, playerSpawn.posX, playerSpawn.posY, playerSpawn.posZ);
                 } else {
                     teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y, spawn.z);
                 }
@@ -159,6 +169,7 @@ public class BlockPortalUnderWorld extends BlockContainer {
                     source.entranceX = x;
                     source.entranceY = y;
                     source.entranceZ = z;
+                    source.isSet = true;
 
                     teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y + 1, spawn.z);
                 }

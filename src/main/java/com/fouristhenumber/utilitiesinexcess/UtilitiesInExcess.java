@@ -134,7 +134,7 @@ public class UtilitiesInExcess {
                 .getItem();
         }
 
-        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.GOURMANDS_AXE.get());
+        public static final ItemStack ICON_ITEM = new ItemStack(ModItems.SATING_AXE.get());
 
         @Override
         public ItemStack getIconItemStack() {

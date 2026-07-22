@@ -5,8 +5,8 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuildersWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemChunchunmaru;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnderLotusSeed;
@@ -23,26 +23,26 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSig
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemEthericSword;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemGourmandsAxe;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemPrecisionShears;
-import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemLiminalSword;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRecallShears;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemSatingAxe;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ChunchunmaruConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.WateringCanConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.AntiGravityShovelConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.DestructionPickaxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ErasurePickaxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RecallShearsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -51,12 +51,12 @@ public enum ModItems {
     // spotless:off
 
     // make sure to leave a trailing comma
-    GOURMANDS_AXE(GourmandsAxeConfig.INSTANCE.enable, new ItemGourmandsAxe(), "gourmands_axe"),
-    DESTRUCTION_PICKAXE(DestructionPickaxeConfig.INSTANCE.enable, new ItemDestructionPickaxe(), "destruction_pickaxe"),
+    SATING_AXE(SatingAxeConfig.INSTANCE.enable, new ItemSatingAxe(), "sating_axe"),
+    ERASURE_PICKAXE(ErasurePickaxeConfig.INSTANCE.enable, new ItemErasurePickaxe(), "erasure_pickaxe"),
     ANTI_GRAVITY_SHOVEL(AntiGravityShovelConfig.INSTANCE.enable, new ItemAntiGravityShovel(), "anti_gravity_shovel"),
-    PRECISION_SHEARS(PrecisionShearsConfig.INSTANCE.enable, new ItemPrecisionShears(), "precision_shears"),
-    ETHERIC_SWORD(EthericSwordConfig.INSTANCE.enable, new ItemEthericSword(), "etheric_sword"),
-    REVERSING_HOE(ReversingHoeConfig.INSTANCE.enable, new ItemReversingHoe(), "reversing_hoe"),
+    RECALL_SHEARS(RecallShearsConfig.INSTANCE.enable, new ItemRecallShears(), "recall_shears"),
+    LIMINAL_SWORD(LiminalSwordConfig.INSTANCE.enable, new ItemLiminalSword(), "liminal_sword"),
+    RETROGRADE_HOE(RetrogradeHoeConfig.INSTANCE.enable, new ItemRetrogradeHoe(), "retrograde_hoe"),
     HEAVENLY_RING_FEATHER(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("feather", 8), "heavenly_ring_feather"),
     HEAVENLY_RING_DRAGON(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("dragon", 8), "heavenly_ring_dragon"),
     HEAVENLY_RING_FAIRY(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("fairy", 8), "heavenly_ring_fairy"),
@@ -71,8 +71,8 @@ public enum ModItems {
     PSEUDO_REVERSION_SIGIL(InversionConfig.INSTANCE.enableReversionSigil, new ItemPseudoReversionSigil(), "pseudo_reversion_sigil"),
     INVERTED_INGOT(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot(), "inverted_ingot"),
     INVERTED_NUGGET(InversionConfig.INSTANCE.enableInvertedIngot, new ItemInvertedIngot.InvertedNugget(), "inverted_nugget"),
-    ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.architectsWandBuildLimit).setTextureName("utilitiesinexcess:architects_wand"), "architects_wand"),
-    SUPER_ARCHITECTS_WAND(ArchitectsWandsConfig.INSTANCE.enableSuperArchitectsWand, new ItemArchitectsWand(ArchitectsWandsConfig.INSTANCE.superArchitectsWandBuildLimit).setTextureName("utilitiesinexcess:super_architects_wand"), "super_architects_wand"),
+    BUILDERS_WAND(BuildersWandsConfig.INSTANCE.enableBuildersWand, new ItemBuildersWand(BuildersWandsConfig.INSTANCE.buildersWandBuildLimit).setTextureName("utilitiesinexcess:builders_wand"), "builders_wand"),
+    SUPER_BUILDERS_WAND(BuildersWandsConfig.INSTANCE.enableSuperBuildersWand, new ItemBuildersWand(BuildersWandsConfig.INSTANCE.superBuildersWandBuildLimit).setTextureName("utilitiesinexcess:super_builders_wand"), "super_builders_wand"),
     BEDROCKIUM_INGOT(ItemConfig.enableBedrockium, new ItemBedrockiumIngot().setUnlocalizedName("bedrockium_ingot").setTextureName("utilitiesinexcess:bedrockium_ingot"), "bedrockium_ingot"),
     FIRE_BATTERY(FireBatteryConfig.INSTANCE.enableFireBattery, new ItemFireBattery(), "fire_battery"),
     GOLDEN_BAG(ItemConfig.enableGoldenBagOfHolding, new ItemGoldenBag(), "golden_bag"),

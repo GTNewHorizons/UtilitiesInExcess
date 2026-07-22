@@ -18,8 +18,8 @@ public class ItemConfig {
     public static final InversionConfig inversion = InversionConfig.INSTANCE;
 
     @Config.Order(200)
-    @Config.LangKey("uie.config.item.architects_wands")
-    public static final ArchitectsWandsConfig architectsWands = ArchitectsWandsConfig.INSTANCE;
+    @Config.LangKey("uie.config.item.builders_wands")
+    public static final BuildersWandsConfig buildersWands = BuildersWandsConfig.INSTANCE;
 
     @Config.Order(300)
     @Config.LangKey("uie.config.item.watering_can")

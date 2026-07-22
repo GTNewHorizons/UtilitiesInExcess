@@ -70,15 +70,15 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableGourmandsAxeRecipe;
+    public static boolean enableSatingAxeRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableDestructionPickaxeRecipe;
+    public static boolean enableErasurePickaxeRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableReversingHoeRecipe;
+    public static boolean enableRetrogradeHoeRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
@@ -86,7 +86,7 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableEthericSwordRecipe;
+    public static boolean enableLiminalSwordRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
@@ -94,15 +94,15 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enablePrecisionShearsRecipe;
+    public static boolean enableRecallShearsRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableArchitectsWandRecipe;
+    public static boolean enableBuildersWandRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
-    public static boolean enableSuperArchitectsWandRecipe;
+    public static boolean enableSuperBuildersWandRecipe;
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)

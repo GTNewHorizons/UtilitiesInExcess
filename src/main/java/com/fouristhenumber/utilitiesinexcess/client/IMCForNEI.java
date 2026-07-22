@@ -46,12 +46,12 @@ public class IMCForNEI {
             sendInfoPage("utilitiesinexcess:inverted_ingot", "uie.nei.infopage.ticon_inverted");
         }
 
-        sendInfoPage("<utilitiesinexcess:gourmands_axe>", "uie.nei.infopage.gourmands_axe.1");
-        sendInfoPage("<utilitiesinexcess:destruction_pickaxe>", "uie.nei.infopage.destruction_pickaxe.1");
+        sendInfoPage("<utilitiesinexcess:sating_axe>", "uie.nei.infopage.sating_axe.1");
+        sendInfoPage("<utilitiesinexcess:erasure_pickaxe>", "uie.nei.infopage.erasure_pickaxe.1");
         sendInfoPage("<utilitiesinexcess:anti_gravity_shovel>", "uie.nei.infopage.anti_gravity_shovel.1");
-        sendInfoPage("<utilitiesinexcess:precision_shears>", "uie.nei.infopage.precision_shears.1");
-        sendInfoPage("<utilitiesinexcess:etheric_sword>", "uie.nei.infopage.etheric_sword.1");
-        sendInfoPage("<utilitiesinexcess:reversing_hoe>", "uie.nei.infopage.reversing_hoe.1");
+        sendInfoPage("<utilitiesinexcess:recall_shears>", "uie.nei.infopage.recall_shears.1");
+        sendInfoPage("<utilitiesinexcess:liminal_sword>", "uie.nei.infopage.liminal_sword.1");
+        sendInfoPage("<utilitiesinexcess:retrograde_hoe>", "uie.nei.infopage.retrograde_hoe.1");
 
         sendInfoPage(
             "utilitiesinexcess:filing_cabinet,<utilitiesinexcess:capacity_upgrade>",
@@ -67,16 +67,16 @@ public class IMCForNEI {
             "uie.nei.infopage.filing_cabinet.4");
 
         sendInfoPage(
-            "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-            "uie.nei.infopage.architects_wand.1");
+            "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+            "uie.nei.infopage.builders_wand.1");
 
         if (Mods.Backhand.isLoaded()) {
             sendInfoPage(
-                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-                "uie.nei.infopage.architects_wand.2");
+                "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+                "uie.nei.infopage.builders_wand.2");
             if (Mods.GT.isLoaded()) sendInfoPage(
-                "<utilitiesinexcess:architects_wand>,<utilitiesinexcess:super_architects_wand>",
-                "uie.nei.infopage.architects_wand.3");
+                "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+                "uie.nei.infopage.builders_wand.3");
         }
         sendInfoPage("<utilitiesinexcess:mob_jar>", "uie.nei.infopage.mob_jar.1");
 

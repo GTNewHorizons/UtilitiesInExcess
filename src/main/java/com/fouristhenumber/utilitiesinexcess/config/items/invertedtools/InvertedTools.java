@@ -9,28 +9,28 @@ public class InvertedTools {
     @Config.Ignore
     public static final InvertedTools INSTANCE = new InvertedTools();
 
-    @Config.LangKey("item.etheric_sword.name")
+    @Config.LangKey("item.liminal_sword.name")
     @Config.Order(0)
-    public final EthericSwordConfig ethericSwordConfig = EthericSwordConfig.INSTANCE;
+    public final LiminalSwordConfig liminalSwordConfig = LiminalSwordConfig.INSTANCE;
 
-    @Config.LangKey("item.destruction_pickaxe.name")
+    @Config.LangKey("item.erasure_pickaxe.name")
     @Config.Order(100)
-    public final DestructionPickaxeConfig destructionPickaxeConfig = DestructionPickaxeConfig.INSTANCE;
+    public final ErasurePickaxeConfig erasurePickaxeConfig = ErasurePickaxeConfig.INSTANCE;
 
-    @Config.LangKey("item.gourmands_axe.name")
+    @Config.LangKey("item.sating_axe.name")
     @Config.Order(200)
-    public final GourmandsAxeConfig gourmandsAxeConfig = GourmandsAxeConfig.INSTANCE;
+    public final SatingAxeConfig satingAxeConfig = SatingAxeConfig.INSTANCE;
 
     @Config.LangKey("item.anti_gravity_shovel.name")
     @Config.Order(300)
     public final AntiGravityShovelConfig antiGravityShovelConfig = AntiGravityShovelConfig.INSTANCE;
 
-    @Config.LangKey("item.reversing_hoe.name")
+    @Config.LangKey("item.retrograde_hoe.name")
     @Config.Order(400)
-    public final ReversingHoeConfig reversingHoeConfig = ReversingHoeConfig.INSTANCE;
+    public final RetrogradeHoeConfig retrogradeHoeConfig = RetrogradeHoeConfig.INSTANCE;
 
-    @Config.LangKey("item.precision_shears.name")
+    @Config.LangKey("item.recall_shears.name")
     @Config.Order(500)
-    public final PrecisionShearsConfig precisionShearsConfig = PrecisionShearsConfig.INSTANCE;
+    public final RecallShearsConfig recallShearsConfig = RecallShearsConfig.INSTANCE;
 
 }
