@@ -3,12 +3,14 @@ package com.fouristhenumber.utilitiesinexcess.network.client;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class PaintRollerColorSelect implements IMessage {
 
@@ -54,7 +56,12 @@ public class PaintRollerColorSelect implements IMessage {
             if (ctx.side == Side.CLIENT) return null;
 
             ItemStack stack = ctx.getServerHandler().playerEntity.getHeldItem();
-            if (!(stack.getItem() instanceof ItemPaintRoller)) return null;
+            if (stack == null || !(stack.getItem() instanceof ItemPaintRoller)) {
+                if (Mods.Backhand.isLoaded()) {
+                    stack = BackhandUtils.getOffhandItem(ctx.getServerHandler().playerEntity);
+                }
+            }
+            if (stack == null || !(stack.getItem() instanceof ItemPaintRoller)) return null;
 
             ItemPaintRoller.setStackColor(stack, message.getColor(), message.getPaintStripper());
 

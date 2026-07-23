@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +25,8 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.chromatictooltips.ColorChromaticTooltip;
 import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller.PaintRollerColorPickerDialog;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
@@ -41,11 +42,6 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         setUnlocalizedName("paint_roller");
         setMaxStackSize(1);
         setContainerItem(this);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(itemIn, 1, 0b0_11111_11111_11111));
     }
 
     public IIcon handleIcon;
@@ -73,37 +69,44 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
 
         boolean paintStripper = getPaintStripperFromStack(stack);
         Block block = world.getBlock(x, y, z);
-        Block newBlock = getNewBlock(paintStripper, block);
-        if (newBlock == null) return false;
-        BlockColored blockColored = newBlock instanceof BlockColored ? (BlockColored) newBlock
-            : BlockColored.getColoredVersion(newBlock);
+        int currentMeta = world.getBlockMetadata(x, y, z);
+        BlockColored.BaseBlock newBlock = getNewBlock(paintStripper, block, currentMeta);
+        if (newBlock == null || newBlock.getBlock() == null) return false;
+        BlockColored blockColored = newBlock.getBlock() instanceof BlockColored ? (BlockColored) newBlock.getBlock()
+            : BlockColored.getColoredVersion(newBlock.getBlock(), newBlock.getMeta());
         if (blockColored == null) return false;
-        boolean needsIDChange = newBlock != block;
+        boolean needsIDChange = newBlock.getBlock() != block;
 
         int color = blockColored.usesExtraBit() ? BlockColored.getEIDMetaFromRGBWithExtraBit(getColorFromStack(stack))
             : BlockColored.getEIDMetaFromRGB(getColorFromStack(stack));
 
         if (player.isSneaking()) {
-            paintLine(player, world, block, x, y, z, side, paintStripper, color);
+            paintLine(player, world, block, currentMeta, x, y, z, paintStripper, color);
         } else {
-            paintBlock(world, needsIDChange ? Block.getIdFromBlock(newBlock) : -1, x, y, z, paintStripper ? 0 : color);
+            paintBlock(
+                world,
+                needsIDChange ? Block.getIdFromBlock(newBlock.getBlock()) : -1,
+                x,
+                y,
+                z,
+                paintStripper ? newBlock.getMeta() : color);
         }
 
         return true;
     }
 
-    private Block getNewBlock(boolean paintStripper, Block currentBlock) {
+    private BlockColored.BaseBlock getNewBlock(boolean paintStripper, Block currentBlock, int currentMeta) {
         if (paintStripper) {
             if (currentBlock instanceof BlockColored cbc) {
                 return cbc.getBase();
             } else {
-                return currentBlock;
+                return BlockColored.baseOf(currentBlock, currentMeta);
             }
         } else {
             if (currentBlock instanceof BlockColored) {
-                return currentBlock;
+                return BlockColored.baseOf(currentBlock, currentMeta);
             } else {
-                return BlockColored.getColoredVersion(currentBlock);
+                return BlockColored.baseOf(BlockColored.getColoredVersion(currentBlock, currentMeta), currentMeta);
             }
         }
     }
@@ -120,7 +123,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         world.markBlockForUpdate(x, y, z);
     }
 
-    private void paintLine(EntityPlayer player, World world, Block startBlock, int x, int y, int z, int side,
+    private void paintLine(EntityPlayer player, World world, Block startBlock, int startMeta, int x, int y, int z,
         boolean paintStripper, int color) {
         ForgeDirection lookSide;
         Vec3 look = player.getLookVec();
@@ -136,20 +139,22 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         }
 
         int blockID = -1;
-        Block newBlock = getNewBlock(paintStripper, startBlock);
+        BlockColored.BaseBlock newBlock = getNewBlock(paintStripper, startBlock, startMeta);
         for (int i = 0; i < 100; i++) {
             Block block = world
                 .getBlock(x + (lookSide.offsetX * i), y + (lookSide.offsetY * i), z + (lookSide.offsetZ * i));
 
-            if (block != startBlock && !(block instanceof BlockColored bc && bc.getBase() == startBlock)
-                && !(startBlock instanceof BlockColored bc2 && bc2.getBase() == block)) {
+            if (block != startBlock && !(block instanceof BlockColored bc && bc.getBase()
+                .getBlock() == startBlock)
+                && !(startBlock instanceof BlockColored bc2 && bc2.getBase()
+                    .getBlock() == block)) {
                 return;
             }
 
             int blockIDTemp = -1;
-            if (block != newBlock) {
+            if (block != newBlock.getBlock()) {
                 if (blockID == -1) {
-                    blockID = Block.getIdFromBlock(newBlock);
+                    blockID = Block.getIdFromBlock(newBlock.getBlock());
                 }
                 blockIDTemp = blockID;
             }
@@ -159,7 +164,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
                 x + (lookSide.offsetX * i),
                 y + (lookSide.offsetY * i),
                 z + (lookSide.offsetZ * i),
-                paintStripper ? 0 : color);
+                paintStripper ? newBlock.getMeta() : color);
         }
     }
 
@@ -178,7 +183,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         int color;
         NBTTagCompound tag = stack.getTagCompound();
         if (tag == null || !tag.hasKey("SelectedColor")) {
-            color = 0xFFFFFF;
+            color = 0xF8F8F8;
         } else {
             color = tag.getInteger("SelectedColor");
         }
@@ -233,8 +238,12 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
                 tooltip.add(StatCollector.translateToLocal("uie.gui.text.paint_roller.paintstripper"));
             } else {
                 int color = getColorFromStack(stack);
-                if (color != 0xFFFFFF) {
-                    tooltip.add("#" + Color.rgbToFullHexString(color));
+                if (color != 0xF8F8F8) {
+                    if (Mods.ChromaticTooltips.isLoaded()) {
+                        tooltip.add(ColorChromaticTooltip.makeTooltip(color));
+                    } else {
+                        tooltip.add("#" + Color.rgbToFullHexString(color));
+                    }
                 }
             }
             String rightClickName = KeybindUtils

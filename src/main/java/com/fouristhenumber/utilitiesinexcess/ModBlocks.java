@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.fouristhenumber.utilitiesinexcess.common.IUIERegistered;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockAdvancedUpdateDetector;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBedrockium;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
@@ -230,6 +231,10 @@ public enum ModBlocks {
         itemBlock = iblock;
         hasItemBlock = iblock != null;
         this.name = name;
+
+        if (block instanceof IUIERegistered iUIERegistered) {
+            iUIERegistered.setRegistryName(name);
+        }
     }
 
     /**

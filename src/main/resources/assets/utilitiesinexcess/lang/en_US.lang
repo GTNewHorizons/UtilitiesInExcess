@@ -139,6 +139,9 @@ uie.nei.infopage.filing_cabinet.2=The Advanced Filing Cabinet can only hold item
 uie.nei.infopage.filing_cabinet.3=The Elite Filing Cabinet has no restrictions whatsoever, but has the lowest number of unique item slots.
 uie.nei.infopage.filing_cabinet.4=Filing Cabinet Capacity Upgrades will add additional maximum storage to any cabinet.
 uie.nei.infopage.colored_blocks.dyeable=Dyed blocks can be dyed any color you want using a paint roller. Now with a new and improved tile entity-free recipe!
+uie.nei.infopage.colored_blocks.ctm=This block supports connected textures! Click on it with an empty hand to allow it to connect regardless of color.
+uie.nei.infopage.colored_blocks.light=This block emits light! Click on it with an empty hand to toggle its light emission.
+uie.nei.infopage.colored_blocks.rotatable=This block can be (very slightly) rotated (once)! Click on it with an empty hand to rotate it 90 degrees.
 uie.nei.infopage.paint_roller=This super advanced paint roller can be used to dye any Utilities in Excess dyed block any color you want. Now with a new and improved tile entity-free recipe!
 
 #### Blocks
@@ -438,7 +441,8 @@ uie.desc.filing_cabinet.basic=Stores variants of one type of item.
 uie.desc.filing_cabinet.advanced=Stores unstackable items.
 uie.desc.filing_cabinet.elite=Stores any items.
 
-uie.desc.lapis_aetherius_dyeable=Lighting turned off
+uie.desc.block_colored_light=Lighting turned off
+uie.desc.block_colored_ctm=Connects to any color
 
 #### Items
 item.block_analyzer.name=Block Analyzer
@@ -570,10 +574,10 @@ uie.desc.item.unbreakable=Unbreakable
 
 uie.desc.item.builders_wand.1=Can place up to %s blocks at once
 
-uie.desc.item.paint_roller.0=[§a%s§7] Colorable blocks to dye them
+uie.desc.item.paint_roller.0=[§a%s§7] Dyeable blocks to dye them
 uie.desc.item.paint_roller.1=[§a%s§7] The air to select hex color
 uie.desc.item.paint_roller.2=[§aCrouch §7+ §a%s§7] Use line-mode
-uie.desc.item.paint_roller.3=[§a%s§7] Colorable blocks to copy color
+uie.desc.item.paint_roller.3=[§a%s§7] Dyeable blocks to copy color
 
 ### Item aliases
 item.heavenly_ring_magic.aliases=Angel Ring
@@ -670,7 +674,7 @@ uie.gui.text.paint_roller.confirm=Confirm
 ## Gui Tooltips
 uie.gui.tooltip.generator.energy-max=RF: %s / %s
 
-uie.gui.tooltip.trading_post.help.0=Trade Controls:
+uie.gui.tooltip.trading_post.help.0=§7Trade Controls:
 uie.gui.tooltip.trading_post.help.1=§6Left-Click§7 to Trade
 uie.gui.tooltip.trading_post.help.2=§6Shift + Left-Click§7 to Trade Stack
 uie.gui.tooltip.trading_post.help.3=§6Alt + Left-Click§7 to Favorite Trade
@@ -690,10 +694,22 @@ uie.gui.tooltip.cabinet.slot=Slot: %s / %s
 uie.gui.tooltip.cabinet.upgrades=Upgrades: %d / %d
 uie.gui.tooltip.cabinet.search=Search
 
-uie.gui.tooltip.paint_roller.help.0=Block colors are limited to 16-bit,
-uie.gui.tooltip.paint_roller.help.1=meaning that hex values will have
-uie.gui.tooltip.paint_roller.help.2=each of their RGB values rounded down
-uie.gui.tooltip.paint_roller.help.3=to the nearest number divisible by 8
+uie.gui.tooltip.paint_roller.help.0=§7Block colors are limited to 16-bit,
+uie.gui.tooltip.paint_roller.help.1=§7meaning that hex values will have
+uie.gui.tooltip.paint_roller.help.2=§7each of their RGB values rounded down
+uie.gui.tooltip.paint_roller.help.3=§7to the nearest number divisible by 8
+
+uie.gui.tooltip.paint_roller.help2.0=§7When your paint roller has a star next to it
+uie.gui.tooltip.paint_roller.help2.1=§7like it does now, that means you copied from
+uie.gui.tooltip.paint_roller.help2.2=§7a block that has extra functionality, for example
+uie.gui.tooltip.paint_roller.help2.3=§7toggling its light.
+uie.gui.tooltip.paint_roller.help2.4=§7Any dyeable block you paint that also has extra
+uie.gui.tooltip.paint_roller.help2.5=§7functionality will have its toggle changed too.
+uie.gui.tooltip.paint_roller.help2.6=§7
+uie.gui.tooltip.paint_roller.help2.7=§7Fun fact: The reason why dyeable blocks with
+uie.gui.tooltip.paint_roller.help2.8=§7toggles can only have 2 options is because after
+uie.gui.tooltip.paint_roller.help2.9=§7they store their color, they literally only have
+uie.gui.tooltip.paint_roller.help2.10=§7one bit left to store extra data in.
 
 # These are the prefixes used in the search bar of the trading post
 # For example: searching "sell:emerald" will find all trades that sell emeralds
