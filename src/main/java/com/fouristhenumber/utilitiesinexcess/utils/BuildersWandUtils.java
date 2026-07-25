@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.getBlockByLocation;
-import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection.isTrowel;
+import static com.fouristhenumber.utilitiesinexcess.utils.BuildersSelection.getBlockByLocation;
+import static com.fouristhenumber.utilitiesinexcess.utils.BuildersSelection.isTrowel;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.TranslateMovingObjectPoistionToLocation;
 
 import java.util.HashSet;
@@ -24,9 +24,9 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import gregtech.api.items.MetaGeneratedTool;
 import xonin.backhand.api.core.BackhandUtils;
 
-public class ArchitectsWandUtils {
+public class BuildersWandUtils {
 
-    public ArchitectsWandUtils() {}
+    public BuildersWandUtils() {}
 
     ;
 
@@ -76,16 +76,16 @@ public class ArchitectsWandUtils {
      * Finds the blocks adjacent to the start position that are connected cardinally, or diagonally
      * and have a placeable block (e.g. air, fluid) in front of them relative to the side clicked on.
      *
-     * @param world               The world in which to place
-     * @param findCount           The maximum amount of blocks it should search
-     * @param clickedSide         The side of the block that was clicked
-     * @param startPos            The position to start
-     * @param architectsSelection The pattern used to search adjacent blocks
+     * @param world             The world in which to place
+     * @param findCount         The maximum amount of blocks it should search
+     * @param clickedSide       The side of the block that was clicked
+     * @param startPos          The position to start
+     * @param buildersSelection The pattern used to search adjacent blocks
      * @return The set of 1<=x<=findCount adjacent blocks with air on their face
      */
     public static Set<BlockPos> findAdjacentBlocks(World world, List<ItemStack> possiblePlacements, int findCount,
         ForgeDirection clickedSide, BlockPos startPos, MovingObjectPosition mop, EntityPlayer player,
-        ArchitectsSelection architectsSelection, WandAxisMode axisMode) {
+        BuildersSelection buildersSelection, WandAxisMode axisMode) {
         Set<BlockPos> region = new HashSet<>();
         if (findCount <= 0) {
             return region;
@@ -120,7 +120,7 @@ public class ArchitectsWandUtils {
         TranslateMovingObjectPoistionToLocation(mop, startPos);
 
         // Base case
-        if (IsValidForWireFrame(world, possiblePlacements, startPos, mop, player, clickedSide, architectsSelection)) {
+        if (IsValidForWireFrame(world, possiblePlacements, startPos, mop, player, clickedSide, buildersSelection)) {
             region.add(startPos);
             queue.add(startPos);
             visited.add(startPos);
@@ -145,14 +145,7 @@ public class ArchitectsWandUtils {
 
                 // translate the mop
                 TranslateMovingObjectPoistionToLocation(mop, key);
-                if (IsValidForWireFrame(
-                    world,
-                    possiblePlacements,
-                    key,
-                    mop,
-                    player,
-                    clickedSide,
-                    architectsSelection)) {
+                if (IsValidForWireFrame(world, possiblePlacements, key, mop, player, clickedSide, buildersSelection)) {
                     region.add(key);
                     queue.add(key);
                 }
@@ -163,7 +156,7 @@ public class ArchitectsWandUtils {
     }
 
     private static boolean IsValidForWireFrame(World world, List<ItemStack> possibleBlocks, BlockPos targetLocation,
-        MovingObjectPosition mop, EntityPlayer player, ForgeDirection clickedSide, ArchitectsSelection selection) {
+        MovingObjectPosition mop, EntityPlayer player, ForgeDirection clickedSide, BuildersSelection selection) {
         ItemStack currentBlock = getBlockByLocation(world, mop, player);
 
         if (currentBlock == null) return false;

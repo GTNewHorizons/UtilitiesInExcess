@@ -3,11 +3,11 @@ package com.fouristhenumber.utilitiesinexcess.config.items.invertedtools;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.destruction_pickaxe")
-public class DestructionPickaxeConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.erasure_pickaxe")
+public class ErasurePickaxeConfig {
 
     @Config.Ignore
-    public static final DestructionPickaxeConfig INSTANCE = new DestructionPickaxeConfig();
+    public static final ErasurePickaxeConfig INSTANCE = new ErasurePickaxeConfig();
 
     @Config.DefaultBoolean(true)
     @Config.Name("Enable")

@@ -18,6 +18,7 @@ public class UnderWorldSourceProperty implements IExtendedEntityProperties {
     public static final String PROP_KEY = "underworld-source";
 
     public int entranceX, entranceY, entranceZ, entranceWorld;
+    public boolean isSet;
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
@@ -28,6 +29,7 @@ public class UnderWorldSourceProperty implements IExtendedEntityProperties {
         tag.setInteger("entranceY", entranceY);
         tag.setInteger("entranceZ", entranceZ);
         tag.setInteger("entranceWorld", entranceWorld);
+        tag.setBoolean("isSet", isSet);
     }
 
     @Override
@@ -39,6 +41,7 @@ public class UnderWorldSourceProperty implements IExtendedEntityProperties {
             entranceY = tag.getInteger("entranceY");
             entranceZ = tag.getInteger("entranceZ");
             entranceWorld = tag.getInteger("entranceWorld");
+            isSet = tag.getBoolean("isSet");
         }
     }
 
