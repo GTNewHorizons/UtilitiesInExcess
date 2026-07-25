@@ -27,7 +27,6 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -71,7 +70,7 @@ public class CommonProxy {
             BlockColored.registerConfigBlocks();
         }
 
-        if (OtherConfig.enableWorldConversion) {
+        if (OtherConfig.enableWorldConversionWarning) {
             WorldConversionWarningManager.register(UtilitiesInExcess.MODID + "_EXU", new ExuWorldConversionWarning());
         }
     }
@@ -108,15 +107,4 @@ public class CommonProxy {
 
     public void serverStarting(FMLServerStartingEvent event) {}
 
-    public void onMissingMapping(FMLMissingMappingsEvent event) {
-        if (!OtherConfig.enableWorldConversion) return;
-        if (ExuWorldConversionWarning.show) return;
-
-        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
-            if (mapping.name.startsWith("ExtraUtilities")) {
-                ExuWorldConversionWarning.show = true;
-                return;
-            }
-        }
-    }
 }

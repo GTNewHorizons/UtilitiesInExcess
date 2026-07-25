@@ -10,9 +10,18 @@ public class OtherConfig {
 
     @Config.Order(0)
     @Config.DefaultBoolean(true) // TODO Set default to false before release
-    @Config.Comment("Enable the Extra Utilities to Utilities In Excess world conversion system")
+    @Config.Name("World Conversion")
+    @Config.Comment({ "Enable the Extra Utilities to Utilities In Excess world conversion system",
+        "Requires the Postea mod" })
     @Config.RequiresMcRestart
     public static boolean enableWorldConversion;
+
+    @Config.Order(50)
+    @Config.DefaultBoolean(true)
+    @Config.Name("World Conversion warning")
+    @Config.Comment("Display a warning before loading a world that needs to have its Extra Utilities items and blocks be converted to UiE items and blocks")
+    @Config.RequiresMcRestart
+    public static boolean enableWorldConversionWarning;
 
     @Config.Order(100)
     @Config.DefaultBoolean(true)

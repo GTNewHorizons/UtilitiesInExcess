@@ -17,6 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
@@ -145,6 +146,6 @@ public class UtilitiesInExcess {
 
     @Mod.EventHandler
     public void onMissingMapping(FMLMissingMappingsEvent event) {
-        proxy.onMissingMapping(event);
+        ExuWorldConversionWarning.onMissingMapping(event);
     }
 }

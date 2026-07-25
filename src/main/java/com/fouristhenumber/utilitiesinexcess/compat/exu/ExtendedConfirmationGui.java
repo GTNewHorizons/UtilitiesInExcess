@@ -6,6 +6,8 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
+import net.minecraft.client.gui.GuiOptionButton;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.api.gui.GuiConfirmationWCW;
 
@@ -24,6 +26,25 @@ public class ExtendedConfirmationGui extends GuiConfirmationWCW {
                 query.getText()
                     .split("\\\\n")));
         warning = lines.get(0);
+    }
+
+    @Override
+    public void initGui() {
+        boolean dwc = ExuWorldConversionWarning.doWorldConversion();
+        this.buttonList.add(
+            new GuiOptionButton(
+                0,
+                this.width / 2 - 155,
+                this.height - 58,
+                dwc ? StatCollector.translateToLocal("gui.yes")
+                    : StatCollector.translateToLocal("uie.gui.text.continue")));
+        this.buttonList.add(
+            new GuiOptionButton(
+                1,
+                this.width / 2 - 155 + 160,
+                this.height - 58,
+                dwc ? StatCollector.translateToLocal("gui.no")
+                    : StatCollector.translateToLocal("uie.gui.text.cancel")));
     }
 
     private static byte colorTick = 0;
