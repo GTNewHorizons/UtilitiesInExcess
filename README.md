@@ -52,6 +52,7 @@ to the same as ExU's defaults (-100 and -112). If you are migrating from a world
 - [FindIt](https://github.com/GTNewHorizons/FindIt) (Trading Post integration)
 - [Baubles](https://www.curseforge.com/minecraft/mc-mods/baubles) (Heavenly Ring and Glove integration)
 - [EndlessIDs](https://www.curseforge.com/minecraft/mc-mods/endlessids) (Dyeable colored blocks)
+- [NoHotbarNeeded](https://github.com/GTNewHorizons/NoHotbarNeeded) (Open Golden Bag from inventory)
 
 ## Credits
 A special thanks to the 1.0 contributors, without which this project could have never gotten off the ground:

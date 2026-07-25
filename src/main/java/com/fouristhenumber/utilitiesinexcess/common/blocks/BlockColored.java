@@ -236,6 +236,7 @@ public class BlockColored extends Block {
         if (held != null && held.getItem() instanceof ItemPaintRoller) {
             PacketHandler.INSTANCE.sendToServer(
                 new PaintRollerColorSelect(
+                    player.inventory.currentItem,
                     usesExtraBit() ? getRGBFromEIDMetaWithExtraBit(world.getBlockMetadata(x, y, z))
                         : getRGBFromEIDMeta(world.getBlockMetadata(x, y, z))));
             return null;

@@ -12,29 +12,34 @@ import io.netty.buffer.ByteBuf;
 
 public class PaintRollerColorSelect implements IMessage {
 
+    private int slot;
+
     private int color;
 
     private boolean paintStripper;
 
     public PaintRollerColorSelect() {}
 
-    public PaintRollerColorSelect(int color) {
-        this(color, false);
+    public PaintRollerColorSelect(int slot, int color) {
+        this(slot, color, false);
     }
 
-    public PaintRollerColorSelect(int color, boolean paintStripper) {
+    public PaintRollerColorSelect(int slot, int color, boolean paintStripper) {
+        this.slot = slot;
         this.color = color;
         this.paintStripper = paintStripper;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        slot = buf.readInt();
         color = buf.readInt();
         paintStripper = buf.readBoolean();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
+        buf.writeInt(slot);
         buf.writeInt(color);
         buf.writeBoolean(paintStripper);
     }
@@ -53,7 +58,7 @@ public class PaintRollerColorSelect implements IMessage {
         public IMessage onMessage(PaintRollerColorSelect message, MessageContext ctx) {
             if (ctx.side == Side.CLIENT) return null;
 
-            ItemStack stack = ctx.getServerHandler().playerEntity.getHeldItem();
+            ItemStack stack = ctx.getServerHandler().playerEntity.inventory.getStackInSlot(message.slot);
             if (!(stack.getItem() instanceof ItemPaintRoller)) return null;
 
             ItemPaintRoller.setStackColor(stack, message.getColor(), message.getPaintStripper());
