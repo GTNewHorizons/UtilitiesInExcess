@@ -17,7 +17,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.GourmandsAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
@@ -25,20 +25,20 @@ import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
+public class ItemSatingAxe extends ItemAxe implements ITranslucentItem {
 
-    public ItemGourmandsAxe() {
+    public ItemSatingAxe() {
         super(ToolMaterial.EMERALD);
-        setTextureName("utilitiesinexcess:gourmands_axe");
-        setUnlocalizedName("gourmands_axe");
-        if (GourmandsAxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
-        ((AccessorItemTool) this).setDamageVsEntity(GourmandsAxeConfig.INSTANCE.damageAgainstUndead);
+        setTextureName("utilitiesinexcess:sating_axe");
+        setUnlocalizedName("sating_axe");
+        if (SatingAxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        ((AccessorItemTool) this).setDamageVsEntity(SatingAxeConfig.INSTANCE.damageAgainstUndead);
     }
 
     private static final Random particleRandom = new Random();;
 
     public static void spawnParticles(Entity e) {
-        if (!GourmandsAxeConfig.INSTANCE.spawnParticles) return;
+        if (!SatingAxeConfig.INSTANCE.spawnParticles) return;
         int ci = Potion.potionTypes[Potion.heal.getId()].getLiquidColor();
         double d0 = (double) (ci >> 16 & 255) / 255.0D;
         double d1 = (double) (ci >> 8 & 255) / 255.0D;
@@ -63,7 +63,7 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
         if (e instanceof EntityPlayer p && selected) {
             if (w.getTotalWorldTime() % (2 * 20) == 0) {
                 FoodStats fs = p.getFoodStats();
-                fs.addStats(GourmandsAxeConfig.INSTANCE.foodGain, GourmandsAxeConfig.INSTANCE.saturationGain);
+                fs.addStats(SatingAxeConfig.INSTANCE.foodGain, SatingAxeConfig.INSTANCE.saturationGain);
             }
         }
     }
@@ -85,11 +85,10 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
         }
         if (!target.isEntityUndead()) {
 
-            float amountToHeal = Math
-                .min(GourmandsAxeConfig.INSTANCE.maxHeal, target.getMaxHealth() - target.getHealth());
-            if (amountToHeal == 0) if (GourmandsAxeConfig.INSTANCE.useHungerAlways) attacker.addExhaustion(3 * 4);
+            float amountToHeal = Math.min(SatingAxeConfig.INSTANCE.maxHeal, target.getMaxHealth() - target.getHealth());
+            if (amountToHeal == 0) if (SatingAxeConfig.INSTANCE.useHungerAlways) attacker.addExhaustion(3 * 4);
             else {
-                if (GourmandsAxeConfig.INSTANCE.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
+                if (SatingAxeConfig.INSTANCE.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
                     attacker.setHealth(attacker.getHealth() - amountToHeal);
                 else return true;
                 target.setHealth(target.getHealth() + (amountToHeal + 1));
@@ -105,26 +104,26 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (GourmandsAxeConfig.INSTANCE.unbreakable)
+        if (SatingAxeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (GourmandsAxeConfig.INSTANCE.unbreakable) return false;
+        if (SatingAxeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (GourmandsAxeConfig.INSTANCE.unbreakable) return false;
+        if (SatingAxeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (GourmandsAxeConfig.INSTANCE.unbreakable) return false;
+        if (SatingAxeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
@@ -135,17 +134,17 @@ public class ItemGourmandsAxe extends ItemAxe implements ITranslucentItem {
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return GourmandsAxeConfig.INSTANCE.enable;
+            return SatingAxeConfig.INSTANCE.enable;
         }
 
         @SubscribeEvent
         public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
-            if (!GourmandsAxeConfig.INSTANCE.voidMinedBlock) return;
+            if (!SatingAxeConfig.INSTANCE.voidMinedBlock) return;
             if (event.harvester == null) return;
             if (event.harvester.getHeldItem() == null) return;
 
             if (event.harvester.getHeldItem()
-                .getItem() instanceof ItemGourmandsAxe) {
+                .getItem() instanceof ItemSatingAxe) {
                 event.drops.clear();
             }
         }

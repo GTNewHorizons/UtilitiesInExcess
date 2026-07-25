@@ -10,8 +10,8 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemArchitectsWand;
-import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuildersWand;
+import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.eventbus.Phase;
@@ -39,7 +39,7 @@ public class WireframeRenderer {
 
     @EventBusSubscriber.Condition
     public static boolean shouldSubscribe() {
-        return ArchitectsWandsConfig.INSTANCE.enableArchitectsWand;
+        return BuildersWandsConfig.INSTANCE.enableBuildersWand;
     }
 
     @SubscribeEvent
@@ -47,7 +47,7 @@ public class WireframeRenderer {
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
         ItemStack held = player.getHeldItem();
-        if (held == null || !(held.getItem() instanceof ItemArchitectsWand)) {
+        if (held == null || !(held.getItem() instanceof ItemBuildersWand)) {
             clearCandidatePositions();
             return;
         }

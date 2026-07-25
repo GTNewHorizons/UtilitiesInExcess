@@ -3,11 +3,11 @@ package com.fouristhenumber.utilitiesinexcess.config.items.invertedtools;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.etheric_sword")
-public class EthericSwordConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.liminal_sword")
+public class LiminalSwordConfig {
 
     @Config.Ignore
-    public static final EthericSwordConfig INSTANCE = new EthericSwordConfig();
+    public static final LiminalSwordConfig INSTANCE = new LiminalSwordConfig();
 
     @Config.DefaultBoolean(true)
     @Config.Name("Enable")
