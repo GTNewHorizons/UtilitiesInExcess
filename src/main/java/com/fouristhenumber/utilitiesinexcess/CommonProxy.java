@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemDestructionPickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemReversingHoe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
@@ -15,6 +16,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarnin
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.gtnewhorizon.gtnhlib.api.gui.WorldConversionWarningManager;
@@ -24,6 +26,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -63,6 +66,11 @@ public class CommonProxy {
             new Content().init();
             FMPCompat.init();
         }
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.registerConfigBlocks();
+        }
+
         if (OtherConfig.enableWorldConversion) {
             WorldConversionWarningManager.register(UtilitiesInExcess.MODID + "_EXU", new ExuWorldConversionWarning());
         }
@@ -70,18 +78,12 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
-        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
+        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("uie.key.glove", "uie.key.categories.uie", Keyboard.KEY_NONE);
         ARCHITECTS_KEYBIND_H = SyncedKeybind
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
         ARCHITECTS_KEYBIND_V = SyncedKeybind
             .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
         ModTileEntities.init();
-        if (Mods.Waila.isLoaded()) {
-            FMLInterModComms.sendMessage(
-                "Waila",
-                "register",
-                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaHandler.callbackRegister");
-        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {
@@ -94,6 +96,14 @@ public class CommonProxy {
         if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
             TinkersCompat.init();
         }
+    }
+
+    public void loadComplete(FMLLoadCompleteEvent event) {
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.initColoredBlocks();
+        }
+
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}

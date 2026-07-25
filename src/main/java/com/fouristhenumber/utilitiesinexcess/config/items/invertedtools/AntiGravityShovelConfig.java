@@ -3,11 +3,11 @@ package com.fouristhenumber.utilitiesinexcess.config.items.invertedtools;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.anti_particulate_shovel")
-public class AntiParticulateShovelConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.anti_gravity_shovel")
+public class AntiGravityShovelConfig {
 
     @Config.Ignore
-    public static final AntiParticulateShovelConfig INSTANCE = new AntiParticulateShovelConfig();
+    public static final AntiGravityShovelConfig INSTANCE = new AntiGravityShovelConfig();
 
     @Config.Order(0)
     @Config.DefaultBoolean(true)

@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.config;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config.LangKey("utilitiesinexcess.config.other")
+@Config.LangKey("uie.config.other")
 @Config(modid = UtilitiesInExcess.MODID, category = "other")
 @Config.Order(500)
 public class OtherConfig {

@@ -193,10 +193,10 @@ public class UnderWorldEvents {
 
         if (prev != current) {
             if (isAggressive) {
-                player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.underworld_aggressive"));
+                player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.underworld.aggressive"));
             } else {
                 if (prev != null) {
-                    player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.underworld_safe"));
+                    player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.underworld.safe"));
                 }
             }
 

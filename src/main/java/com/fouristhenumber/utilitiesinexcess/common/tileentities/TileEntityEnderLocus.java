@@ -143,7 +143,9 @@ public class TileEntityEnderLocus extends TileEntity implements IInventory, IGui
                 .marginTop(5));
 
         panel.child(
-            IKey.dynamic(() -> StatCollector.translateToLocalFormatted("gui.flux_strength", connected.getStringValue()))
+            IKey.dynamic(
+                () -> StatCollector
+                    .translateToLocalFormatted("uie.gui.text.ender_locus.flux_strength", connected.getStringValue()))
                 .asWidget()
                 .marginTop(70)
                 .horizontalCenter());

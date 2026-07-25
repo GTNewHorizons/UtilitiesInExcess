@@ -9,10 +9,10 @@ public class WateringCanConfig {
     @Config.Ignore
     public static final WateringCanConfig INSTANCE = new WateringCanConfig();
 
-    @Config.LangKey("utilitiesinexcess.config.item.watering_can_tier")
+    @Config.LangKey("uie.config.item.watering_can_tier")
     public final WateringCanTier Tier = new WateringCanTier();
 
-    @Config.LangKey("utilitiesinexcess.config.item.watering_can_flowering")
+    @Config.LangKey("uie.config.item.watering_can_flowering")
     public final WateringCanFlowering Flowering = new WateringCanFlowering();
 
     @Config.DefaultBoolean(false)

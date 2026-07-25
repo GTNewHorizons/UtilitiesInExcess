@@ -20,6 +20,7 @@ public class ModOreDictionary {
         // Blocks
         OreDictionary.registerOre("burntQuartz", ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2));
         OreDictionary.registerOre("blockIcestone", ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 4));
+        OreDictionary.registerOre("blockEnderObsidian", ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
         OreDictionary.registerOre("bricksGravel", ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 6));
         OreDictionary.registerOre("blockGlassSandy", ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 3));
         OreDictionary.registerOre("blockMagicWood", ModBlocks.MAGIC_WOOD.get());

@@ -30,19 +30,19 @@ public class PseudoReversionRecipeHandler extends TemplateRecipeHandler {
     private void buildGroups() {
         groups = new ChestGroup[] {
             new ChestGroup(
-                "nei.pseudo_reversion.label_north",
+                "uie.nei.text.pseudo_reversion.label_north",
                 InversionConfig.INSTANCE.northChestRequiredItems,
                 ItemInversionSigilActive.getPseudoReversionChestAtDirection(ForgeDirection.NORTH)),
             new ChestGroup(
-                "nei.pseudo_reversion.label_south",
+                "uie.nei.text.pseudo_reversion.label_south",
                 InversionConfig.INSTANCE.southChestRequiredItems,
                 ItemInversionSigilActive.getPseudoReversionChestAtDirection(ForgeDirection.SOUTH)),
             new ChestGroup(
-                "nei.pseudo_reversion.label_east",
+                "uie.nei.text.pseudo_reversion.label_east",
                 InversionConfig.INSTANCE.eastChestRequiredItems,
                 ItemInversionSigilActive.getPseudoReversionChestAtDirection(ForgeDirection.EAST)),
             new ChestGroup(
-                "nei.pseudo_reversion.label_west",
+                "uie.nei.text.pseudo_reversion.label_west",
                 InversionConfig.INSTANCE.westChestRequiredItems,
                 ItemInversionSigilActive.getPseudoReversionChestAtDirection(ForgeDirection.WEST)) };
     }
@@ -59,7 +59,7 @@ public class PseudoReversionRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal("nei.title.uie.pseudo_reversion");
+        return StatCollector.translateToLocal("uie.nei.title.pseudo_reversion");
     }
 
     @Override
@@ -126,7 +126,7 @@ public class PseudoReversionRecipeHandler extends TemplateRecipeHandler {
             GuiDraw.drawString(StatCollector.translateToLocalFormatted(group.label), 5, y, 0x404040, false);
             y += 10;
             GuiDraw.drawString(
-                StatCollector.translateToLocalFormatted("nei.pseudo_reversion.requires", group.required()),
+                StatCollector.translateToLocalFormatted("uie.nei.text.pseudo_reversion.requires", group.required()),
                 5,
                 y,
                 0x404040,

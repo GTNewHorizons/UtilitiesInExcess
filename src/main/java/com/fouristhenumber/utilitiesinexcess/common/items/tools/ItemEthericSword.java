@@ -62,7 +62,7 @@ public class ItemEthericSword extends ItemSword implements ITranslucentItem {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (EthericSwordConfig.INSTANCE.unbreakable) {
-            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
         }
     }
 

@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.config.blocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config.LangKey("utilitiesinexcess.config.generators")
+@Config.LangKey("uie.config.generators")
 @Config(modid = UtilitiesInExcess.MODID, category = "generators")
 @Config.Order(200)
 public class GeneratorConfig {

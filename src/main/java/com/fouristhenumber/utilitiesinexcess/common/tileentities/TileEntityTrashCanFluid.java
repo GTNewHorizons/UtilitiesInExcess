@@ -84,7 +84,7 @@ public class TileEntityTrashCanFluid extends TileEntity
 
         // Add title
         panel.child(
-            IKey.str(StatCollector.translateToLocal("gui.title.trash_can_fluid.name"))
+            IKey.str(StatCollector.translateToLocal("uie.gui.title.trash_can_fluid"))
                 .asWidget()
                 .marginLeft(5)
                 .marginTop(5));

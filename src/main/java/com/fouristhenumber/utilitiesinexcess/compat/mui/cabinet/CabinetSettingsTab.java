@@ -221,12 +221,12 @@ public class CabinetSettingsTab {
 
         @Override
         public String titleKey() {
-            return "gui.cabinet.sort.title";
+            return "uie.gui.text.cabinet.sort.title";
         }
 
         @Override
         public String labelKey() {
-            return "gui.cabinet.sort." + label;
+            return "uie.gui.text.sort." + label;
         }
 
         public static String displayName(ItemStack stack) {
@@ -276,12 +276,12 @@ public class CabinetSettingsTab {
 
         @Override
         public String titleKey() {
-            return "gui.cabinet.scroll.title";
+            return "uie.gui.text.cabinet.scroll.title";
         }
 
         @Override
         public String labelKey() {
-            return "gui.cabinet.scroll." + label;
+            return "uie.gui.text.scroll." + label;
         }
     }
 
@@ -314,12 +314,12 @@ public class CabinetSettingsTab {
 
         @Override
         public String titleKey() {
-            return "gui.cabinet.slot_dir.title";
+            return "uie.gui.text.cabinet.slot_dir.title";
         }
 
         @Override
         public String labelKey() {
-            return "gui.cabinet.slot_dir." + label;
+            return "uie.gui.text.slot_dir." + label;
         }
     }
 }

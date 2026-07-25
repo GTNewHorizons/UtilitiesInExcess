@@ -130,10 +130,10 @@ public class ItemMobJar extends Item {
             Entity dummy = EntityList.createEntityByName(id, player.worldObj);
             if (dummy instanceof EntityLivingBase) {
                 String mobName = dummy.getCommandSenderName();
-                tooltip.add(StatCollector.translateToLocalFormatted("item.mob_jar.desc.full", mobName));
+                tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.mob_jar.full", mobName));
             }
         } else {
-            tooltip.add(StatCollector.translateToLocal("item.mob_jar.desc.empty"));
+            tooltip.add(StatCollector.translateToLocal("uie.desc.item.mob_jar.empty"));
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }

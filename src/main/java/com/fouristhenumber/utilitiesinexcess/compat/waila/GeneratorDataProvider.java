@@ -33,7 +33,7 @@ public class GeneratorDataProvider implements IWailaDataProvider {
         }
         currentTip.add(
             StatCollector.translateToLocalFormatted(
-                "uie.generators.waila.fuel",
+                "uie.waila.generators.fuel",
                 fuelStack.stackSize + "x " + fuelStack.getDisplayName()));
 
         return currentTip;

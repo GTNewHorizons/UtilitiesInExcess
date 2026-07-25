@@ -57,11 +57,11 @@ public class BlockSoundMuffler extends BlockContainer {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             String formatted = StatCollector
-                .translateToLocalFormatted("tile.sound_muffler.desc.1", BlockConfig.mufflers.soundMufflerRange);
+                .translateToLocalFormatted("uie.desc.tile.sound_muffler.range", BlockConfig.mufflers.soundMufflerRange);
             tooltip.add(formatted);
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "tile.sound_muffler.desc.2",
+                    "uie.desc.tile.sound_muffler.volume",
                     BlockConfig.mufflers.soundMufflerReduction));
         }
     }

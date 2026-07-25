@@ -21,9 +21,9 @@ public class InvertedTools {
     @Config.Order(200)
     public final GourmandsAxeConfig gourmandsAxeConfig = GourmandsAxeConfig.INSTANCE;
 
-    @Config.LangKey("item.anti_particulate_shovel.name")
+    @Config.LangKey("item.anti_gravity_shovel.name")
     @Config.Order(300)
-    public final AntiParticulateShovelConfig antiParticulateShovelConfig = AntiParticulateShovelConfig.INSTANCE;
+    public final AntiGravityShovelConfig antiGravityShovelConfig = AntiGravityShovelConfig.INSTANCE;
 
     @Config.LangKey("item.reversing_hoe.name")
     @Config.Order(400)

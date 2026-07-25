@@ -103,7 +103,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         if (PrecisionShearsConfig.INSTANCE.unbreakable)
-            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("item.unbreakable.desc"));
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
     }
 
     // Unbreakable

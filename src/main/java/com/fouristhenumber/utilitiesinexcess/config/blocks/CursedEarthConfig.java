@@ -5,7 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 @Config(modid = UtilitiesInExcess.MODID, category = "blocks.cursed_earth")
 @Config.Comment("Cursed Earth Configuration")
-@Config.LangKey("utilitiesinexcess.config.block.cursed_earth")
+@Config.LangKey("uie.config.blocks.cursed_earth")
 public class CursedEarthConfig {
 
     @Config.Ignore

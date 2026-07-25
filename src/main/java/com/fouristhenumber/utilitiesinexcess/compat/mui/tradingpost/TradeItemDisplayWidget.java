@@ -55,23 +55,23 @@ public class TradeItemDisplayWidget extends TooltipItemDisplayWidget {
                 .toLowerCase()
                 .contains(search)
             || tooltipMatches(search)
-            || (search.startsWith(StatCollector.translateToLocal("tile.trading_post.search.buy_prefix"))
+            || (search.startsWith(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.buy_prefix"))
                 && (getTradeItemType() == TradeItemType.BUY || getTradeItemType() == TradeItemType.BUY2)
                 && itemStack.getItem()
                     .getItemStackDisplayName(itemStack)
                     .toLowerCase()
                     .contains(
                         search.substring(
-                            StatCollector.translateToLocal("tile.trading_post.search.buy_prefix")
+                            StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.buy_prefix")
                                 .length())))
-            || (search.startsWith(StatCollector.translateToLocal("tile.trading_post.search.sell_prefix"))
+            || (search.startsWith(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.sell_prefix"))
                 && getTradeItemType() == TradeItemType.SELL
                 && itemStack.getItem()
                     .getItemStackDisplayName(itemStack)
                     .toLowerCase()
                     .contains(
                         search.substring(
-                            StatCollector.translateToLocal("tile.trading_post.search.sell_prefix")
+                            StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.sell_prefix")
                                 .length())));
     }
 

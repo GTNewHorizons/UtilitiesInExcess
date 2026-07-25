@@ -1,8 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.api;
 
+import static net.minecraft.item.ItemStack.areItemStacksEqual;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 public class EnderLocusRecipe {
 
@@ -32,14 +36,7 @@ public class EnderLocusRecipe {
                 if (rawRecipeInput == null || providedInput == null) return false;
 
                 if (rawRecipeInput instanceof ItemStack recipeInput) {
-                    if (recipeInput.getItem() != providedInput.getItem()) {
-                        return false;
-                    }
-
-                    if (recipeInput.getItemDamage() != providedInput.getItemDamage()
-                        && recipeInput.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
-                        return false;
-                    }
+                    if (!ItemUtil.areStacksEqual(recipeInput, providedInput)) return false;
                 } else if (rawRecipeInput instanceof ItemStack[]ores) {
                     boolean matched = false;
                     for (ItemStack ore : ores) {
@@ -63,12 +60,12 @@ public class EnderLocusRecipe {
     public boolean containsInput(ItemStack testStack) {
         for (Object rawInput : this.inputs) {
             if (rawInput instanceof ItemStack inputStack) {
-                if (ItemStack.areItemStacksEqual(inputStack, testStack)) {
+                if (areItemStacksEqual(inputStack, testStack)) {
                     return true;
                 }
             } else if (rawInput instanceof ItemStack[]inputStacks) {
                 for (ItemStack inputStack : inputStacks) {
-                    if (ItemStack.areItemStacksEqual(inputStack, testStack)) {
+                    if (areItemStacksEqual(inputStack, testStack)) {
                         return true;
                     }
                 }

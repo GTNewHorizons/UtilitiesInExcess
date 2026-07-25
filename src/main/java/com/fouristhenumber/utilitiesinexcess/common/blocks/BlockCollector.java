@@ -52,7 +52,7 @@ public class BlockCollector extends BlockContainer implements IWailaDataProvider
 
         collector.incrementSize(player);
         if (!worldIn.isRemote)
-            player.addChatMessage(new ChatComponentTranslation("uie.chat.collector_size", collector.getRange()));
+            player.addChatMessage(new ChatComponentTranslation("uie.chat.collector.range", collector.getRange()));
         collector.showBorderFor(40);
         worldIn.markBlockForUpdate(x, y, z);
         return true;
@@ -64,7 +64,7 @@ public class BlockCollector extends BlockContainer implements IWailaDataProvider
         IWailaConfigHandler config) {
         currentTip.add(
             StatCollector.translateToLocalFormatted(
-                "uie.chat.collector_size",
+                "uie.chat.collector.range",
                 Float.toString(
                     accessor.getNBTData()
                         .getFloat("range"))));

@@ -229,16 +229,17 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
                 .tooltipDynamic(
                     tt -> tt.add(
                         StatCollector.translateToLocalFormatted(
-                            "gui.tooltip.energy-max",
+                            "uie.gui.tooltip.generator.energy-max",
                             formatNumber(energySyncer.getIntValue()),
                             formatNumber(maxEnergySyncer.getIntValue())))));
 
         if (showBurnTime()) panel.child(
             IKey.dynamic(
-                () -> (burnSyncer.getIntValue() / 1200) + StatCollector.translateToLocal("time.minutes_abbreviation")
+                () -> (burnSyncer.getIntValue() / 1200)
+                    + StatCollector.translateToLocal("uie.common.time.minutes_abbreviation")
                     + " "
                     + (burnSyncer.getIntValue() % 1200) / 20
-                    + StatCollector.translateToLocal("time.seconds_abbreviation"))
+                    + StatCollector.translateToLocal("uie.common.time.seconds_abbreviation"))
                 .asWidget()
                 .pos(10, 50));
 
@@ -246,7 +247,7 @@ public abstract class TileEntityBaseGenerator extends TileEntity implements IEne
             int curValue = multSyncer.getIntValue() * rftSyncer.getIntValue();
 
             return (curValue > 0 ? EnumChatFormatting.DARK_GREEN + "+" : "") + curValue
-                + StatCollector.translateToLocal("gui.tooltip.energy-tick");
+                + StatCollector.translateToLocal("uie.gui.text.ender_locus.energy-tick");
         })
             .asWidget()
             .pos(10, 62));

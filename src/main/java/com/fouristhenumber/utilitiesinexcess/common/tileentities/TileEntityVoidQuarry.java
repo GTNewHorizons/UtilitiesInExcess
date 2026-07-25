@@ -138,25 +138,25 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
 
     public String getState() {
         return switch (state) {
-            case STOPPED -> StatCollector.translateToLocal("uie.quarry.state.detail.1");
-            case STOPPED_WAITING_FOR_FLUID_SPACE -> StatCollector.translateToLocal("uie.quarry.state.detail.2");
-            case STOPPED_WAITING_FOR_ITEM_SPACE -> StatCollector.translateToLocal("uie.quarry.state.detail.3");
-            case STOPPED_WAITING_FOR_ENERGY -> StatCollector.translateToLocal("uie.quarry.state.detail.4");
-            case THROTTLED_BY_ENERGY -> StatCollector.translateToLocal("uie.quarry.state.detail.5");
+            case STOPPED -> StatCollector.translateToLocal("uie.gui.text.quarry.detail.1");
+            case STOPPED_WAITING_FOR_FLUID_SPACE -> StatCollector.translateToLocal("uie.gui.text.quarry.detail.2");
+            case STOPPED_WAITING_FOR_ITEM_SPACE -> StatCollector.translateToLocal("uie.gui.text.quarry.detail.3");
+            case STOPPED_WAITING_FOR_ENERGY -> StatCollector.translateToLocal("uie.gui.text.quarry.detail.4");
+            case THROTTLED_BY_ENERGY -> StatCollector.translateToLocal("uie.gui.text.quarry.detail.5");
             case FINISHED -> String.format(
-                StatCollector.translateToLocal("uie.quarry.state.detail.6.1"),
+                StatCollector.translateToLocal("uie.gui.text.quarry.detail.6.1"),
                 brokenBlocksTotal,
                 String.format(
-                    storedItems > 0 ? StatCollector.translateToLocal("uie.quarry.state.detail.6.2") : ".",
+                    storedItems > 0 ? StatCollector.translateToLocal("uie.gui.text.quarry.detail.6.2") : ".",
                     storedItems));
             case RUNNING -> String.format(
-                StatCollector.translateToLocal("uie.quarry.state.detail.7.1"),
+                StatCollector.translateToLocal("uie.gui.text.quarry.detail.7.1"),
                 dx,
                 dy,
                 dz,
                 brokenBlocksTotal,
                 estimatedSecondsLeft > 0 ? String.format(
-                    StatCollector.translateToLocal("uie.quarry.state.detail.7.2"),
+                    StatCollector.translateToLocal("uie.gui.text.quarry.detail.7.2"),
                     String.format(
                         "%02d:%02d:%02d",
                         estimatedSecondsLeft / 3600,
@@ -266,7 +266,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                         if (player != null) player.addChatComponentMessage(
                             new ChatComponentText(
                                 String.format(
-                                    StatCollector.translateToLocal("uie.quarry.scanmessage.1"),
+                                    StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.1"),
                                     workArea.low.x,
                                     workArea.low.y,
                                     workArea.high.x,
@@ -309,7 +309,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                         if (player != null) player.addChatComponentMessage(
                             new ChatComponentText(
                                 String.format(
-                                    StatCollector.translateToLocal("uie.quarry.scanmessage.2"),
+                                    StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.2"),
                                     scanReturn.size(),
                                     estBlocks)));
 
@@ -323,7 +323,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     if (player != null) player.addChatComponentMessage(
                         new ChatComponentText(
                             String.format(
-                                StatCollector.translateToLocal("uie.quarry.scanmessage.3"),
+                                StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.3"),
                                 marker.xCoord,
                                 marker.yCoord,
                                 marker.zCoord)));
@@ -331,8 +331,8 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                 }
             }
         }
-        if (!foundMarkers && player != null) player
-            .addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("uie.quarry.scanmessage.4")));
+        if (!foundMarkers && player != null) player.addChatComponentMessage(
+            new ChatComponentText(StatCollector.translateToLocal("uie.gui.text.quarry.scanmessage.4")));
     }
 
     private List<Area2d> computeRectanglesFromRectilinearPointPolygon(List<Vector2i> points) {
@@ -1272,7 +1272,7 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
                     owner.addChatMessage(
                         new ChatComponentText(
                             String.format(
-                                StatCollector.translateToLocal("uie.quarry.finished"),
+                                StatCollector.translateToLocal("uie.chat.quarry.finished"),
                                 xCoord,
                                 yCoord,
                                 zCoord,
@@ -1538,13 +1538,13 @@ public class TileEntityVoidQuarry extends LoadableTE implements IEnergyReceiver,
 
     public enum QuarryWorkState {
 
-        STOPPED("uie.quarry.state.1"),
-        STOPPED_WAITING_FOR_FLUID_SPACE("uie.quarry.state.2"),
-        STOPPED_WAITING_FOR_ITEM_SPACE("uie.quarry.state.3"),
-        STOPPED_WAITING_FOR_ENERGY("uie.quarry.state.4"),
-        THROTTLED_BY_ENERGY("uie.quarry.state.5"),
-        FINISHED("uie.quarry.state.6"),
-        RUNNING("uie.quarry.state.7");
+        STOPPED("uie.gui.text.quarry.state.1"),
+        STOPPED_WAITING_FOR_FLUID_SPACE("uie.gui.text.quarry.state.2"),
+        STOPPED_WAITING_FOR_ITEM_SPACE("uie.gui.text.quarry.state.3"),
+        STOPPED_WAITING_FOR_ENERGY("uie.gui.text.quarry.state.4"),
+        THROTTLED_BY_ENERGY("uie.gui.text.quarry.state.5"),
+        FINISHED("uie.gui.text.quarry.state.6"),
+        RUNNING("uie.gui.text.quarry.state.7");
 
         public static final QuarryWorkState[] VALUES = values();
 

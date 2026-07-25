@@ -63,9 +63,9 @@ public class BlockRainMuffler extends BlockContainer {
         persistentNBT.setBoolean(NBT_RAIN_MUFFLED, nowActive);
         playerNBT.setTag(EntityPlayer.PERSISTED_NBT_TAG, persistentNBT);
         if (nowActive) {
-            player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_enable"));
+            player.addChatMessage(new ChatComponentTranslation("uie.chat.rain_muffler.global_enable"));
         } else {
-            player.addChatMessage(new ChatComponentTranslation("tile.rain_muffler.chat.global_disable"));
+            player.addChatMessage(new ChatComponentTranslation("uie.chat.rain_muffler.global_disable"));
         }
         return true;
     }
@@ -79,8 +79,9 @@ public class BlockRainMuffler extends BlockContainer {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             tooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("tile.rain_muffler.desc.1", BlockConfig.mufflers.rainMufflerRange));
+                StatCollector.translateToLocalFormatted(
+                    "uie.desc.tile.rain_muffler.range",
+                    BlockConfig.mufflers.rainMufflerRange));
         }
     }
 }
