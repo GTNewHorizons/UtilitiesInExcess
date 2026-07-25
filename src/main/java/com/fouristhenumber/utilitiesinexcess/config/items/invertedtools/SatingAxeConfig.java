@@ -3,11 +3,11 @@ package com.fouristhenumber.utilitiesinexcess.config.items.invertedtools;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.gourmands_axe")
-public class GourmandsAxeConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.sating_axe")
+public class SatingAxeConfig {
 
     @Config.Ignore
-    public static final GourmandsAxeConfig INSTANCE = new GourmandsAxeConfig();
+    public static final SatingAxeConfig INSTANCE = new SatingAxeConfig();
 
     @Config.DefaultBoolean(true)
     @Config.Name("Enable")

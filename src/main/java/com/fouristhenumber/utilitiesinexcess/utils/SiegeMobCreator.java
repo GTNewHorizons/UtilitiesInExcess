@@ -18,7 +18,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.EthericSwordConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalSwordConfig;
 
 public class SiegeMobCreator {
 
@@ -107,7 +107,7 @@ public class SiegeMobCreator {
         else if (rng < 70) weapon = new ItemStack(Items.iron_sword);
         else if (rng < 85) weapon = new ItemStack(Items.diamond_axe);
         else if (rng < 95) weapon = new ItemStack(Items.diamond_sword);
-        else weapon = EthericSwordConfig.INSTANCE.enable ? ModItems.ETHERIC_SWORD.newItemStack()
+        else weapon = LiminalSwordConfig.INSTANCE.enable ? ModItems.LIMINAL_SWORD.newItemStack()
             : new ItemStack(Items.diamond_sword);
 
         if (rand.nextInt(100) < 40) weapon.addEnchantment(Enchantment.sharpness, rand.nextInt(5) + 1);
