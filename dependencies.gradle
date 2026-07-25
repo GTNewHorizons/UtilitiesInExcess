@@ -58,7 +58,7 @@ dependencies {
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.49:dev')
 
     // Deobf Extra Utilities, allows hodgepodge mixins to not crash. For testing feature parity and postea only.
-    runtimeOnlyNonPublishable("curse.maven:extrautilities-225561:2264384")
+//    runtimeOnlyNonPublishable("curse.maven:extrautilities-225561:2264384")
 
     // See oredictionary entries in NEI
     // runtimeOnlyNonPublishable("com.github.slprime:ChromaticTooltips:1.0.29-GTNH:dev")

@@ -12,7 +12,7 @@ public class OtherConfig {
     @Config.DefaultBoolean(true) // TODO Set default to false before release
     @Config.Name("World Conversion")
     @Config.Comment({ "Enable the Extra Utilities to Utilities In Excess world conversion system",
-        "Requires the Postea mod" })
+        "Requires the Postea mod (Except for ForgeMultipart materials conversion)" })
     @Config.RequiresMcRestart
     public static boolean enableWorldConversion;
 
