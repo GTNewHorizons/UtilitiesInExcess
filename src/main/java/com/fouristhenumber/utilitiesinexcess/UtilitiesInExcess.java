@@ -17,6 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
@@ -26,6 +27,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -37,7 +39,7 @@ import minetweaker.MineTweakerAPI;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.9.9,);after:ForgeMicroblock;after:Waila;after:NotEnoughItems@[2.8.108-GTNH,);")
+    dependencies = "required-after:gtnhlib@[0.11.23,);after:ForgeMicroblock;after:Waila;after:NotEnoughItems@[2.8.108-GTNH,);")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
@@ -141,4 +143,9 @@ public class UtilitiesInExcess {
             return ICON_ITEM;
         }
     };
+
+    @Mod.EventHandler
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+        ExuWorldConversionWarning.onMissingMapping(event);
+    }
 }
