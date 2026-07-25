@@ -24,11 +24,11 @@ public class BlockLapisAetherius extends Block {
         setBlockName("lapis_aetherius");
         setLightOpacity(0);
         setHardness(1);
-        setResistance(8F);
+        setResistance(10F);
     }
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons;
+    protected IIcon[] icons;
 
     public int damageDropped(int meta) {
         return meta;

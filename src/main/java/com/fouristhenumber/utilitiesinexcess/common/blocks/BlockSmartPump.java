@@ -1,24 +1,36 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
+import java.util.List;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySmartPump;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 
-public class BlockSmartPump extends BlockContainer {
+@Optional.Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")
+public class BlockSmartPump extends BlockContainer implements IWailaDataProvider {
 
     public BlockSmartPump() {
-        super(Material.iron);
+        super(Material.rock);
         setBlockName("smart_pump");
         setBlockTextureName("utilitiesinexcess:smart_pump");
+        setHardness(10F);
     }
 
     IIcon sides;
@@ -44,5 +56,51 @@ public class BlockSmartPump extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntitySmartPump();
+    }
+
+    @Optional.Method(modid = "Waila")
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        NBTTagCompound tag = accessor.getNBTData();
+        if (!tag.getBoolean("finished")) {
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "tile.smart_pump.waila.working",
+                    tag.getInteger("workingX") + " " + tag.getInteger("workingY") + " " + tag.getInteger("workingZ")));
+        } else {
+            currentTip.add(StatCollector.translateToLocal("tile.smart_pump.waila.finished"));
+        }
+        return currentTip;
+    }
+
+    @Optional.Method(modid = "Waila")
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
+        int y, int z) {
+        TileEntitySmartPump pump = (TileEntitySmartPump) te;
+        tag.setInteger("workingX", pump.getWorkingX());
+        tag.setInteger("workingY", pump.getWorkingY());
+        tag.setInteger("workingZ", pump.getWorkingZ());
+        tag.setBoolean("finished", pump.isFinished());
+        return tag;
+    }
+
+    @Optional.Method(modid = "Waila")
+    // Stubs
+    public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return null;
+    }
+
+    @Optional.Method(modid = "Waila")
+    public List<String> getWailaHead(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        return currentTip;
+    }
+
+    @Optional.Method(modid = "Waila")
+    public List<String> getWailaTail(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        return currentTip;
     }
 }

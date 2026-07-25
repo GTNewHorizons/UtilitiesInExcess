@@ -6,10 +6,13 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.event.world.WorldEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.UIEWorldChunkManager;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,8 +20,8 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.defaultBiomeId));
-        this.dimensionId = EndOfTimeConfig.endOfTimeDimensionId;
+        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.INSTANCE.defaultBiomeId));
+        this.dimensionId = EndOfTimeConfig.INSTANCE.endOfTimeDimensionId;
         this.hasNoSky = true;
     }
 
@@ -97,6 +100,24 @@ public class WorldProviderEndOfTime extends WorldProvider {
     @Override
     public String getDimensionName() {
         return "The End of Time";
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class SpawningEvents {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return !EndOfTimeConfig.INSTANCE.endOfTimeSpawning;
+        }
+
+        @SubscribeEvent
+        public static void disableSpawning(WorldEvent.PotentialSpawns event) {
+            if (event.world.provider.dimensionId == EndOfTimeConfig.INSTANCE.endOfTimeDimensionId) {
+                event.setCanceled(true);
+            }
+        }
+
     }
 
 }

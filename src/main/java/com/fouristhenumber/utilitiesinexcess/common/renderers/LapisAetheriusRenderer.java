@@ -7,7 +7,10 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.utils.Color;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetheriusDyable;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -20,9 +23,17 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GL11.glDisable(GL11.GL_LIGHTING);
 
         tess.startDrawingQuads();
         tess.setNormal(0, 1, 0);
+        if (block instanceof BlockLapisAetheriusDyable) {
+            int color = BlockColored.getRGBFromEIDMeta(metadata);
+            if (color == 0xF8F8F8) {
+                color = Color.ofHSV((System.currentTimeMillis() >> 4) % 360, 1, 1);
+            }
+            tess.setColorRGBA(Color.getRed(color), Color.getGreen(color), Color.getBlue(color), 255);
+        }
         renderer.renderFaceYNeg(block, 0, 0, 0, block.getIcon(0, metadata));
         renderer.renderFaceYPos(block, 0, 0, 0, block.getIcon(1, metadata));
         renderer.renderFaceZNeg(block, 0, 0, 0, block.getIcon(2, metadata));
@@ -30,6 +41,8 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         renderer.renderFaceXNeg(block, 0, 0, 0, block.getIcon(4, metadata));
         renderer.renderFaceXPos(block, 0, 0, 0, block.getIcon(5, metadata));
         tess.draw();
+
+        GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     @Override
@@ -38,7 +51,14 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         Tessellator tess = Tessellator.instance;
 
         tess.setBrightness(240);
-        tess.setColorOpaque_F(1F, 1F, 1F);
+
+        boolean dyeable = block instanceof BlockLapisAetheriusDyable;
+        if (dyeable) {
+            int color = BlockColored.getRGBFromEIDMeta(world.getBlockMetadata(x, y, z));
+            tess.setColorRGBA(Color.getRed(color), Color.getGreen(color), Color.getBlue(color), 255);
+        } else {
+            tess.setColorOpaque_F(1F, 1F, 1F);
+        }
 
         int meta = world.getBlockMetadata(x, y, z);
         if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x, y - 1, z, 0)) {
@@ -59,6 +79,8 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
         if (renderer.renderAllFaces || block.shouldSideBeRendered(world, x + 1, y, z, 5)) {
             renderer.renderFaceXPos(block, x, y, z, block.getIcon(5, meta));
         }
+
+        if (dyeable) tess.setColorOpaque_F(1F, 1F, 1F);
 
         return true;
     }

@@ -34,8 +34,8 @@ import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.SearchBar;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.tradingpost.VillagerColumn;
@@ -47,7 +47,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static ArrayList<VillagerColumn> villagerColumns;
 
-    // Trading post UI heirarchy:
+    // Trading post UI hierarchy:
     // panel > mainColumn > (topRow > villagercount) - (TradeList > tradeListRow >
     // 3x(VillagerColumn > VillagerWidget > TradeWidget))
     @Override
@@ -57,7 +57,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         TradingPostPanel panel = new TradingPostPanel("uie:trading_post");
         panel.height(226)
             .width(259);
-        Column mainColumn = new Column();
+        Flow mainColumn = Flow.column();
         mainColumn.height(229)
             .width(265)
             .pos(0, 0)
@@ -67,13 +67,13 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         TradeList tradeList = new TradeList().coverChildrenWidth()
             .height(125)
             .pos(6, 15);
-        Row tradeListRow = new Row();
+        Flow tradeListRow = Flow.row();
         tradeListRow.coverChildren()
             .childPadding(3)
             .left(0);
         for (int i = 0; i < 3; i++) {
             VillagerColumn columnOfVillagers = new VillagerColumn();
-            columnOfVillagers.alignY(0)
+            columnOfVillagers.anchorTop(0)
                 .coverChildren()
                 .childPadding(3);
 
@@ -104,8 +104,8 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
         tradeList.child(tradeListRow);
 
-        Row topRow = new Row();
-        topRow.alignX(0)
+        Flow topRow = Flow.row();
+        topRow.anchorLeft(0)
             .coverChildrenWidth()
             .height(10);
         topRow.child(
@@ -115,16 +115,15 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
                 .paddingRight(2)
                 .tooltipBuilder(TileEntityTradingPost::buildHelpToolTip));
         topRow.child(
-            IKey.str(StatCollector.translateToLocalFormatted("tile.trading_post.villager_count", merchants.size()))
+            IKey.str(
+                StatCollector.translateToLocalFormatted("uie.gui.text.trading_post.villager_count", merchants.size()))
                 .asWidget()
                 .left(14)
                 .top(4));
         panel.child(
             new SearchBar().villagerParent(tradeListRow)
-                .alignX(1)
-                .alignY(0)
                 .top(4)
-                .right(1)
+                .right(4)
                 .height(10)
                 .width(70));
 
@@ -132,7 +131,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         mainColumn.child(
             tradeList.margin(5, 5)
                 .marginRight(10));
-        Row bottomRow = new Row();
+        Flow bottomRow = Flow.row();
         bottomRow.coverChildrenHeight()
             .width(259)
             .pos(0, 229 - 85);
@@ -141,17 +140,18 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         bottomRow.child(
             inventory.marginBottom(6)
                 .paddingRight(6)
-                .alignX(1));
+                .anchorRight(1));
         bottomRow.child(
             new VillagerEntityDisplay(() -> VillagerWidget.lastVillager).left(26)
                 .bottom(20));
         bottomRow.child(
-            new Row().child(
-                new MerchantNameKey().asWidget()
-                    .center())
+            Flow.row()
+                .child(
+                    new MerchantNameKey().asWidget()
+                        .center())
                 .width(86)
                 .height(26)
-                .alignY(1));
+                .anchorBottom(1));
         mainColumn.child(bottomRow);
         panel.child(mainColumn);
         return panel;
@@ -167,7 +167,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         });
     }
 
-    public static class TradeList extends ListWidget<Row, TradeList> {
+    public static class TradeList extends ListWidget<Flow, TradeList> {
 
         @Override
         public void onInit() {
@@ -202,6 +202,11 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
         }
     }
 
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
+    }
+
     public static class HelpWidget extends Widget<HelpWidget> {
 
         @Override
@@ -213,16 +218,29 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
     }
 
     public static void buildHelpToolTip(RichTooltip tooltip) {
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.0"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.1"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.2"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.3"));
-        if (Mods.FindIt.isLoaded()) tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.4"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.0"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.1"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.2"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.3"));
+        if (Mods.FindIt.isLoaded())
+            tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.4"));
         tooltip.addLine("§7"); // If the line is empty it gets skipped
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.5"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.6"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.7"));
-        tooltip.addLine(StatCollector.translateToLocal("tile.trading_post.help_tooltip.8"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.5"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.6"));
+        tooltip.addLine(
+            StatCollector.translateToLocalFormatted(
+                "uie.gui.tooltip.trading_post.help.7",
+                StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.buy_prefix"),
+                StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.sell_prefix")));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.8"));
+        tooltip.addLine(
+            StatCollector.translateToLocalFormatted(
+                "uie.gui.tooltip.trading_post.help.9",
+                StatCollector.translateToLocal("uie.gui.tooltip.trading_post.search.sell_prefix")));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.10"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.11"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.12"));
+        tooltip.addLine(StatCollector.translateToLocal("uie.gui.tooltip.trading_post.help.13"));
     }
 
     public class TradingPostPanel extends ModularPanel {

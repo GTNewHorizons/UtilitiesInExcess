@@ -21,8 +21,8 @@ public class BlockBlackoutCurtains extends Block {
         setBlockName("blackout_curtains");
         setBlockTextureName("utilitiesinexcess:blackout_curtains");
         setLightOpacity(8);
-        setHardness(0);
-        setResistance(0);
+        setHardness(0F);
+        setResistance(0F);
         setStepSound(soundTypeCloth);
     }
 
@@ -80,5 +80,15 @@ public class BlockBlackoutCurtains extends Block {
 
     public boolean canConnectTo(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
         return canConnectToBlock(world.getBlock(x, y, z)) || world.isSideSolid(x, y, z, dir.getOpposite(), false);
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 60;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 30;
     }
 }

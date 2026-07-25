@@ -43,7 +43,8 @@ public class BlockPortalEndOfTime extends Block {
 
         setBlockName("temporal_gate");
         setBlockTextureName("utilitiesinexcess:temporal_gate");
-        setResistance(5);
+        setHardness(5F);
+        setResistance(50F);
     }
 
     IIcon[] icons;
@@ -96,17 +97,27 @@ public class BlockPortalEndOfTime extends Block {
             }
             EndOfTimeSourceProperty source = (EndOfTimeSourceProperty) player
                 .getExtendedProperties(EndOfTimeSourceProperty.PROP_KEY);
+
             WorldServer dest = MinecraftServer.getServer()
                 .worldServerForDimension(source.entranceWorld);
+
             BlockPos spawn = findSpawnLocation(dest, source.entranceX, source.entranceY, source.entranceZ);
-            if (spawn == null) {
-                player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal_blocked"));
+
+            if (!source.isSet || spawn == null) {
+                ChunkCoordinates playerSpawn = player.getBedLocation(0);
+                if (playerSpawn != null) playerSpawn = EntityPlayer.verifyRespawnCoordinates(dest, playerSpawn, false);
+                if (playerSpawn == null) {
+                    playerSpawn = dest.getSpawnPoint();
+                    playerSpawn.posY = dest.getTopSolidOrLiquidBlock(playerSpawn.posX, playerSpawn.posZ);
+                }
+                player.addChatComponentMessage(new ChatComponentTranslation("uie.chat.portal.blocked"));
+                teleport((EntityPlayerMP) player, dest, playerSpawn.posX, playerSpawn.posY, playerSpawn.posZ);
             } else {
                 teleport((EntityPlayerMP) player, dest, spawn.x, spawn.y, spawn.z);
             }
         } else {
             WorldServer dest = MinecraftServer.getServer()
-                .worldServerForDimension(EndOfTimeConfig.endOfTimeDimensionId);
+                .worldServerForDimension(EndOfTimeConfig.INSTANCE.endOfTimeDimensionId);
             if (dest.getBlock(0, 64, 0) != Blocks.bedrock) {
                 generateSpawnArea(dest, 0, 65, 0);
             }
@@ -121,6 +132,8 @@ public class BlockPortalEndOfTime extends Block {
             source.entranceX = x;
             source.entranceY = y;
             source.entranceZ = z;
+            source.isSet = true;
+
             teleport((EntityPlayerMP) player, dest, spawn.posX, spawn.posY + 1, spawn.posZ);
         }
         return true;
@@ -305,7 +318,7 @@ public class BlockPortalEndOfTime extends Block {
 
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
-            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("tile.temporal_gate.desc"));
+            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("uie.desc.tile.temporal_gate.0"));
         }
     }
 }

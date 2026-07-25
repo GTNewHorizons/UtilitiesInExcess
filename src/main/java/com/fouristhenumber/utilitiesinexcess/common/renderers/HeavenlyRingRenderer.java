@@ -34,7 +34,7 @@ public class HeavenlyRingRenderer {
         return UIEUtils.lerp(curAngle, (float) ((Math.sin(time * 0.001 * speed) + 1) * max), 0.1F);
     }
 
-    public static void render(int meta, float angle) {
+    public static void render(ItemHeavenlyRing ring, int meta, float angle) {
         Tessellator t = Tessellator.instance;
 
         int boundTexIndex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
@@ -48,7 +48,7 @@ public class HeavenlyRingRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        IIcon icon = ItemHeavenlyRing.wingIcons[meta];
+        IIcon icon = ring.wingIcons[meta];
 
         // Derive scale
         float scaleX = icon.getIconWidth() / 16.0F;

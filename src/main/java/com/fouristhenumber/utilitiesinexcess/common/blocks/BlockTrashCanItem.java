@@ -14,8 +14,10 @@ public class BlockTrashCanItem extends BlockContainer {
 
     public BlockTrashCanItem() {
         super(Material.rock);
+        setHardness(3.5F);
         setBlockName("trash_can_item");
         setBlockTextureName("utilitiesinexcess:trash_can_item");
+        setBlockBounds(0F, 0.0F, 0F, 1F, 0.875F, 1F);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class WorldGenEnderLotus implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
         IChunkProvider chunkProvider) {
-        if (!EnderLotusConfig.spawnEnderLotusesInEnd) return;
+        if (!EnderLotusConfig.INSTANCE.spawnEnderLotusesInEnd) return;
         if (world.provider.dimensionId == 1) {
             for (int i = 0; i < ATTEMPTS_PER_CHUNK; i++) {
 

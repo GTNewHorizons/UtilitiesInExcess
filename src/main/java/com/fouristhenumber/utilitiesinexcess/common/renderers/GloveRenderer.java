@@ -1,7 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers;
 
+import java.util.function.Function;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,12 +14,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
+import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.RenderableCube;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -88,7 +96,7 @@ public class GloveRenderer implements IItemRenderer {
         1,
         1,
         1,
-        new float[][] { { 8, 8, 16, 16 }, { 16, 8, 24, 16 }, { 0, 8, 8, 16 }, { 8, 0, 16, 8 }, { 0, 0, 8, 8 },
+        new float[][] { { 16, 8, 24, 16 }, { 8, 8, 16, 16 }, { 0, 8, 8, 16 }, { 8, 0, 16, 8 }, { 0, 0, 8, 8 },
             { 16, 0, 24, 8 } });
 
     public static final RenderableCube bottomCube = new RenderableCube(
@@ -101,39 +109,59 @@ public class GloveRenderer implements IItemRenderer {
         new float[][] { { 8, 8, 16, 16 }, { 8, 8, 16, 16 }, { 0, 16, 8, 18 }, { 0, 16, 8, 18 }, { 0, 16, 8, 18 },
             { 0, 16, 8, 18 } });
 
+    public static final RenderableCube topCubeSlim = new RenderableCube(
+        0.21,
+        0,
+        0,
+        1,
+        1,
+        1,
+        new float[][] { { 16, 8, 24, 16 }, { 8, 8, 16, 16 }, { 3, 8, 8, 16 }, { 11, 0, 16, 8 }, { 0, 0, 8, 8 },
+            { 16, 0, 24, 8 } });
+
+    public static final RenderableCube bottomCubeSlim = new RenderableCube(
+        0.21,
+        0,
+        0,
+        1,
+        0.25,
+        1,
+        new float[][] { { 8, 8, 16, 16 }, { 8, 8, 16, 16 }, { 3, 16, 8, 18 }, { 3, 16, 8, 18 }, { 0, 16, 8, 18 },
+            { 0, 16, 8, 18 } });
+
     public static final ResourceLocation gloveTexture = new ResourceLocation(
         "utilitiesinexcess",
         "textures/items/glove_model.png");
 
-    public static void renderGloveAsBauble(int meta) {
+    public static Function<EntityPlayer, RenderableCube> getTopCube = (player) -> topCube;
+
+    public static Function<EntityPlayer, RenderableCube> getBottomCube = (player) -> bottomCube;
+
+    public static void renderGloveAsBauble(int meta, EntityPlayer player) {
         int previousTex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
         // 0.27 -0.73 1.43 -0.5 0 0 0 1
         Minecraft mc = Minecraft.getMinecraft();
-        GL11.glScalef(0.27F, 0.27F, 0.27F);
-        GL11.glTranslatef(-0.73F, 1.43F, -0.5F);
-
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glScalef(0.285F, 0.285F, 0.285F);
+        GL11.glTranslatef(-0.72F, 1.43F, -0.5F);
 
         mc.renderEngine.bindTexture(gloveTexture);
         Tessellator t = Tessellator.instance;
         float[] rgb = woolMetaToRGB(meta / 16);
         t.startDrawingQuads();
         t.setColorOpaque_F(rgb[0], rgb[1], rgb[2]);
-        topCube.draw(t, 0, 0, 0, 24, false);
+        getTopCube.apply(player)
+            .draw(t, 0, 0, 0, 24, false);
         t.draw();
 
         GL11.glTranslatef(0, -0.25F, 0F);
         rgb = woolMetaToRGB(meta % 16);
         t.startDrawingQuads();
         t.setColorOpaque_F(rgb[0], rgb[1], rgb[2]);
-        bottomCube.draw(t, 0, 0, 0, 24, false);
+        getBottomCube.apply(player)
+            .draw(t, 0, 0, 0, 24, false);
         t.draw();
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, previousTex);
     }
 
@@ -167,5 +195,52 @@ public class GloveRenderer implements IItemRenderer {
         t.draw();
 
         GL11.glPopMatrix();
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber(side = Side.CLIENT)
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return ItemConfig.enableGlove;
+        }
+
+        @SubscribeEvent
+        public static void tickRender(TickEvent.RenderTickEvent event) {
+            if (!ItemGlove.isUsingGlove(Minecraft.getMinecraft().thePlayer)) return;
+
+            // Setup hud rendering
+            // Move if new hud stuff is ever added
+            if (event.phase == TickEvent.Phase.END) {
+                Minecraft mc = Minecraft.getMinecraft();
+                if (!(mc.currentScreen == null && mc.theWorld != null
+                    && Minecraft.isGuiEnabled()
+                    && !mc.gameSettings.keyBindPlayerList.getIsKeyPressed())) return;
+
+                GL11.glPushMatrix();
+
+                boolean hasBlending = GL11.glGetBoolean(GL11.GL_BLEND);
+                boolean hasDepthTest = GL11.glGetBoolean(GL11.GL_DEPTH_TEST);
+                int boundTexIndex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+                GL11.glPushAttrib(GL11.GL_CURRENT_BIT);
+
+                GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+                RenderHelper.disableStandardItemLighting();
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+                GloveRenderer.renderGloveHudIcon();
+
+                if (hasBlending) GL11.glEnable(GL11.GL_BLEND);
+                else GL11.glDisable(GL11.GL_BLEND);
+                if (hasDepthTest) GL11.glEnable(GL11.GL_DEPTH_TEST);
+                else GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, boundTexIndex);
+
+                GL11.glPopAttrib();
+                GL11.glPopMatrix();
+            }
+        }
     }
 }

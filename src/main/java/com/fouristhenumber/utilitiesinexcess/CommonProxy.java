@@ -1,12 +1,21 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
-import com.fouristhenumber.utilitiesinexcess.common.dimensions.endoftime.EndOfTimeEvents;
-import com.fouristhenumber.utilitiesinexcess.common.dimensions.underworld.UnderWorldEvents;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
+import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
+import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
@@ -14,6 +23,8 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -24,6 +35,8 @@ public class CommonProxy {
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
     public SyncedKeybind GLOVE_KEYBIND;
+    public SyncedKeybind BUILDERS_KEYBIND_H;
+    public SyncedKeybind BUILDERS_KEYBIND_V;
 
     public void preInit(FMLPreInitializationEvent event) {
         // Config is handled in the early mixin loader (UIEMixinLoader)
@@ -32,24 +45,58 @@ public class CommonProxy {
         PacketHandler.init();
         ModBlocks.init();
         ModItems.init();
+        ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
-        UnderWorldEvents.init();
-        EndOfTimeEvents.init();
+
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
+        if (Mods.Waila.isLoaded()) {
+            FMLInterModComms.sendMessage(
+                "Waila",
+                "register",
+                "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaCompat.callbackRegister");
+        }
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
+            new Content().init();
+            FMPCompat.init();
+        }
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.registerConfigBlocks();
         }
     }
 
     public void init(FMLInitializationEvent event) {
         soundVolumeChecks = new SoundVolumeChecks();
-        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("key.uie.glove", "key.categories.uie", Keyboard.KEY_NONE);
+        GLOVE_KEYBIND = SyncedKeybind.createConfigurable("uie.key.glove", "uie.key.categories.uie", Keyboard.KEY_NONE);
+        BUILDERS_KEYBIND_H = SyncedKeybind.createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
+        BUILDERS_KEYBIND_V = SyncedKeybind
+            .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSprint);
+        ModTileEntities.init();
     }
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+        if (OtherConfig.enableWorldConversion && !Mods.ExtraUtilities.isLoaded() && Mods.Postea.isLoaded()) {
+            PosteaTransforms.postInit();
+        }
+
+        ItemRetrogradeHoe.initializeCache();
+        ItemErasurePickaxe.initializeCache();
+        if (Mods.Tinkers.isLoaded() && OtherConfig.enableTinkersIntegration) {
+            TinkersCompat.init();
+        }
+    }
+
+    public void loadComplete(FMLLoadCompleteEvent event) {
+
+        if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
+            BlockColored.initColoredBlocks();
+        }
+
+    }
 
     public void serverStarting(FMLServerStartingEvent event) {}
 }

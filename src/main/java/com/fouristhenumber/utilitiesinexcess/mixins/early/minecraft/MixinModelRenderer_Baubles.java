@@ -22,8 +22,7 @@ public class MixinModelRenderer_Baubles {
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/model/ModelRenderer;render(F)V",
-            shift = At.Shift.AFTER),
-        remap = false)
+            shift = At.Shift.AFTER))
     private void uie$renderFirstPersonArm(EntityPlayer player, CallbackInfo ci) {
         RenderPlayer thisObject = (RenderPlayer) (Object) this;
 
@@ -38,7 +37,7 @@ public class MixinModelRenderer_Baubles {
             ModelPartRenderHelper.renderBipedPart(
                 0.0625F,
                 thisObject.modelBipedMain.bipedRightArm,
-                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage()));
+                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage(), player));
         }
     }
 }

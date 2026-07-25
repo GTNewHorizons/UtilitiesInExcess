@@ -42,8 +42,9 @@ public class BlockPureLove extends BlockContainer {
             tooltip.add(
                 EnumChatFormatting.LIGHT_PURPLE + ""
                     + EnumChatFormatting.ITALIC
-                    + StatCollector
-                        .translateToLocalFormatted("tile.pure_love.desc", BlockConfig.pureLove.rangePureLove));
+                    + StatCollector.translateToLocalFormatted(
+                        "uie.desc.tile.pure_love.range",
+                        BlockConfig.pureLove.rangePureLove));
         }
     }
 }

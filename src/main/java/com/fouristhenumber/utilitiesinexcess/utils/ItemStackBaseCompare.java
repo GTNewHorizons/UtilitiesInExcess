@@ -33,4 +33,8 @@ public class ItemStackBaseCompare {
         result = 31 * result + damage;
         return result;
     }
+
+    public ItemStack toItemStack() {
+        return new ItemStack(item, count, damage);
+    }
 }
