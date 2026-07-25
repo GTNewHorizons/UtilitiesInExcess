@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.xonich.mc.nohotbarneeded.api.ActivatableFromInventoryServerSide;
+import net.xonich.mc.nohotbarneeded.handlers.KeyboardEventHandler;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiFactories;
@@ -26,16 +29,22 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.endlessids.EIDsHelper;
 import com.fouristhenumber.utilitiesinexcess.compat.mui.paintroller.PaintRollerColorPickerDialog;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.utils.KeybindUtils;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryGuiData> {
+@Optional.Interface(
+    iface = "net.xonich.mc.nohotbarneeded.api.ActivatableFromInventoryServerSide",
+    modid = "nohotbarneeded")
+public class ItemPaintRoller extends Item
+    implements IGuiHolder<PlayerInventoryGuiData>, ActivatableFromInventoryServerSide {
 
     public ItemPaintRoller() {
         setUnlocalizedName("paint_roller");
@@ -174,6 +183,15 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
         return itemStackIn;
     }
 
+    @Optional.Method(modid = "nohotbarneeded")
+    @Override
+    public void activateFromInventory(EntityPlayerMP playerMP, int slotIdx) {
+        if (!BlockColored.allowDyingBlocks()) return;
+
+        GuiFactories.playerInventory()
+            .openFromPlayerInventory(playerMP, slotIdx);
+    }
+
     public static int getColorFromStack(ItemStack stack) {
         int color;
         NBTTagCompound tag = stack.getTagCompound();
@@ -214,7 +232,7 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
 
         PaintRollerColorPickerDialog colorPickerDialog = new PaintRollerColorPickerDialog(
             (newColor, paintStripper) -> PacketHandler.INSTANCE
-                .sendToServer(new PaintRollerColorSelect(newColor & 0xFFFFFF, paintStripper)),
+                .sendToServer(new PaintRollerColorSelect(data.getSlotIndex(), newColor & 0xFFFFFF, paintStripper)),
             getColorFromStack(stack),
             getPaintStripperFromStack(stack));
 
@@ -245,6 +263,13 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
             tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.paint_roller.1", rightClickName));
             tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.paint_roller.2", rightClickName));
             tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.paint_roller.3", middleClickName));
+            if (Mods.NoHotbarNeeded.isLoaded()) {
+                String nohotbarneededKeybind = KeybindUtils
+                    .getKeyDisplayNameWithMouse(KeyboardEventHandler.INSTANCE.keyBinding.getKeyCode());
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("uie.desc.item.paint_roller.nohotbarneeded", nohotbarneededKeybind));
+            }
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }

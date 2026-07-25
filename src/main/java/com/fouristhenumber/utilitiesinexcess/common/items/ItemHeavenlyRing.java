@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +19,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
+import net.xonich.mc.nohotbarneeded.api.ActivatableFromInventoryServerSide;
+import net.xonich.mc.nohotbarneeded.handlers.KeyboardEventHandler;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
@@ -34,8 +37,11 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
-public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem {
+@Optional.InterfaceList({ @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+    @Optional.Interface(
+        iface = "net.xonich.mc.nohotbarneeded.api.ActivatableFromInventoryServerSide",
+        modid = "nohotbarneeded") })
+public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem, ActivatableFromInventoryServerSide {
 
     private final int RING_COUNT;
     private final String SUFFIX;
@@ -57,6 +63,11 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        cycleWings(stack, world, player);
+        return super.onItemRightClick(stack, world, player);
+    }
+
+    private void cycleWings(ItemStack stack, World world, EntityPlayer player) {
         int meta = stack.getItemDamage();
         if (meta == RING_COUNT - 1) {
             stack.setItemDamage(0);
@@ -69,7 +80,6 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
                     "uie.chat.heavenly_ring_modify",
                     StatCollector.translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
         }
-        return super.onItemRightClick(stack, world, player);
     }
 
     @Override
@@ -96,6 +106,13 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
                 EnumChatFormatting.GREEN + keyName + EnumChatFormatting.GRAY,
                 EnumChatFormatting.AQUA.toString() + (stack.getItemDamage() + 1) + EnumChatFormatting.GRAY,
                 EnumChatFormatting.AQUA.toString() + RING_COUNT + EnumChatFormatting.GRAY));
+        if (Mods.NoHotbarNeeded.isLoaded()) {
+            String nohotbarneededKeybind = KeybindUtils
+                .getKeyDisplayNameWithMouse(KeyboardEventHandler.INSTANCE.keyBinding.getKeyCode());
+            tooltip.add(
+                StatCollector
+                    .translateToLocalFormatted("uie.desc.item.heavenly_ring.nohotbarneeded", nohotbarneededKeybind));
+        }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -144,6 +161,12 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
     @Override
     public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
         return true;
+    }
+
+    @Optional.Method(modid = "nohotbarneeded")
+    @Override
+    public void activateFromInventory(EntityPlayerMP playerMP, int slotIdx) {
+        cycleWings(playerMP.inventory.getStackInSlot(slotIdx), playerMP.worldObj, playerMP);
     }
 
     public static Map<EntityPlayer, ItemStack> wingedPlayers = new HashMap<>();

@@ -1,9 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.xonich.mc.nohotbarneeded.api.ActivatableFromInventoryServerSide;
+import net.xonich.mc.nohotbarneeded.handlers.KeyboardEventHandler;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -20,8 +26,15 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.utils.KeybindUtils;
 
-public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGuiData> {
+import cpw.mods.fml.common.Optional;
+
+@Optional.Interface(
+    iface = "net.xonich.mc.nohotbarneeded.api.ActivatableFromInventoryServerSide",
+    modid = "nohotbarneeded")
+public class ItemGoldenBag extends Item
+    implements IGuiHolder<PlayerInventoryGuiData>, ActivatableFromInventoryServerSide {
 
     private ItemStackHandler inventoryHandler;
     private InvWrapper playerInventory;
@@ -40,6 +53,22 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
         }
 
         return super.onItemRightClick(stack, world, player);
+    }
+
+    @Optional.Method(modid = "nohotbarneeded")
+    @Override
+    public void activateFromInventory(EntityPlayerMP playerMP, int slotIdx) {
+        GuiFactories.playerInventory()
+            .openFromPlayerInventory(playerMP, slotIdx);
+    }
+
+    @Optional.Method(modid = "nohotbarneeded")
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        String nohotbarneededKeybind = KeybindUtils
+            .getKeyDisplayNameWithMouse(KeyboardEventHandler.INSTANCE.keyBinding.getKeyCode());
+        tooltip.add(
+            StatCollector.translateToLocalFormatted("uie.desc.item.golden_bag.nohotbarneeded", nohotbarneededKeybind));
     }
 
     @Override
@@ -63,7 +92,8 @@ public class ItemGoldenBag extends Item implements IGuiHolder<PlayerInventoryGui
 
             @Override
             public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if (slot == player.inventory.currentItem) {
+                if (getStackInSlot(slot) != null && getStackInSlot(slot).getItem() != null
+                    && getStackInSlot(slot).getItem() instanceof ItemGoldenBag) {
                     return null;
                 }
 

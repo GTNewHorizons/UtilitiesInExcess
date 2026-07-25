@@ -550,6 +550,7 @@ uie.desc.item.mob_jar.empty=Empty
 
 uie.desc.item.heavenly_ring.1=Current: %s
 uie.desc.item.heavenly_ring.2=[%s] to cycle wings (%s/%s)
+uie.desc.item.heavenly_ring.nohotbarneeded=[§a%s§7] Cycle from inventory
 
 uie.desc.item.watering_can.activated=Activated (Toggle)
 uie.desc.item.watering_can.deactivated=Deactivated (Toggle)
@@ -574,6 +575,9 @@ uie.desc.item.paint_roller.0=[§a%s§7] Colorable blocks to dye them
 uie.desc.item.paint_roller.1=[§a%s§7] The air to select hex color
 uie.desc.item.paint_roller.2=[§aCrouch §7+ §a%s§7] Use line-mode
 uie.desc.item.paint_roller.3=[§a%s§7] Colorable blocks to copy color
+uie.desc.item.paint_roller.nohotbarneeded=[§a%s§7] Edit from inventory
+
+uie.desc.item.golden_bag.nohotbarneeded=[§a%s§7] Open from inventory
 
 ### Item aliases
 item.heavenly_ring_magic.aliases=Angel Ring
