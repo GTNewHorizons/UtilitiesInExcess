@@ -4,6 +4,9 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -11,14 +14,38 @@ import net.minecraft.world.World;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
+
 import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderId;
 
 public class BlockTransferNode extends BlockNodeBase {
 
-    enum TransferNodeType
+    public enum TransferNodeType
     {
-        ITEM("item_transfer_node", "item_transfer_node_top", "item_transfer_node_face"),
-        FLUID("fluid_transfer_node", "fluid_transefer_node_top", "fluid_transfer_node_face");
+        ITEM("transfer_node_item", "transfer_node_item_top", "transfer_node_item_face") {
+            @Override
+            public IIcon getIcon(int side, int meta) // Note that we're just using the first 3 bits here. Fourth bit is the type
+            {
+                int sideDependentMeta = meta & 7;
+                return switch (sideDependentMeta) {
+                    case 0 -> iicons[1];
+                    case 1, 2, 3, 4, 5 -> iicons[0];
+                    default -> null;
+                };
+            }
+        },
+        FLUID("transfer_node_fluid", "transfer_node_fluid_top", "transfer_node_fluid_face") {
+            @Override
+            public IIcon getIcon(int side, int meta)
+            {
+                int sideDependentMeta = meta & 7;
+                return switch (sideDependentMeta) {
+                    case 0 -> iicons[1];
+                    case 1, 2, 3, 4, 5 -> iicons[0];
+                    default -> null;
+                };
+            }
+        };
 
         private final String name;
         private final String[] textureNames;
@@ -43,11 +70,37 @@ public class BlockTransferNode extends BlockNodeBase {
                 this.iicons[i] = reg.registerIcon("utilitiesinexcess:" + textureNames[i]);
             }
         }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public static TransferNodeType fromMeta(int meta) {
+            if (meta >= 0 && meta < TransferNodeType.values().length)
+            {
+                return TransferNodeType.values()[meta];
+            }
+            return FLUID;
+        }
+
+        // Meta corresponds to the ForgeDirection that is pointing toward the target container.
+        // So if the first three bits are equal to 5 then the target direction is east.
+        public abstract IIcon getIcon(int side, int meta);
     }
 
     public BlockTransferNode() {
         super();
         setBlockName("transfer_node");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+    {
+        for (int i = 0; i < TransferNodeType.values().length; i++)
+        {
+            list.add(new ItemStack(itemIn, 1, i));
+        }
     }
 
     @Override
@@ -73,5 +126,12 @@ public class BlockTransferNode extends BlockNodeBase {
         {
             TransferNodeType.values()[i].registerIcon(reg);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int side, int meta)
+    {
+        return TransferNodeType.fromMeta(meta >> 3).getIcon(side, meta);
     }
 }

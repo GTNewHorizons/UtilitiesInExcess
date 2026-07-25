@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import codechicken.lib.world.TileChunkLoadHook;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityEnergyPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityFilterPipe;
@@ -181,7 +182,7 @@ public class UtilitiesInExcess {
         GameRegistry.registerTileEntity(TileEntityModSortingPipe.class, "TileEntityModSortingPipe");
 //        GameRegistry.registerTileEntity(TileEntityRetrievalNode.class,"TileEntityRetrievalNodeUIE"); // not sure if i did the naming correctly
         GameRegistry.registerTileEntity(TileEntityItemTransferNode.class, "TileEntityTransferNodeUIE");
-//        GameRegistry.registerTileEntity(TileEntityTransferNodeFluid.class, "TileEntityTransferNodeFluidUIE");
+        GameRegistry.registerTileEntity(TileEntityFluidTransferNode.class, "TileEntityTransferNodeFluidUIE");
 
         lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());

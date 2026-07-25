@@ -21,8 +21,6 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        IIcon icon = block.getIcon(0, metadata);
-
         float t = 2f / 16f;
         float s12 = 12f / 16f;
         float s8 = 8f / 16f;
@@ -50,6 +48,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         if (modelId != getRenderId()) return false;
 
         int meta = world.getBlockMetadata(x, y, z);
+        int side = meta & 7;
 
         float t = 2f / 16f;
         float s12 = 12f / 16f;
@@ -57,7 +56,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         float s12Half = (1f - s12) / 2f;
         float s8Half = (1f - s8) / 2f;
 
-        switch (meta) {
+        switch (side) {
             case 0:
                 renderer.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, t, 1.0F);
                 break;
@@ -80,7 +79,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
         renderer.renderStandardBlock(block, x, y, z);
 
-        switch (meta) {
+        switch (side) {
             case 0:
                 renderer.setRenderBounds(s12Half, t, s12Half, s12Half + s12, 2f * t, s12Half + s12);
                 break;
@@ -102,7 +101,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         }
         renderer.renderStandardBlock(block, x, y, z);
 
-        switch (meta) {
+        switch (side) {
             case 0:
                 renderer.setRenderBounds(s8Half, 2f * t, s8Half, s8Half + s8, 3f * t, s8Half + s8);
                 break;

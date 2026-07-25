@@ -64,7 +64,6 @@ public class BlockPipe extends BlockTransferBase
         return PipeType.fromMeta(meta).createTileEntity();
     }
 
-
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta)
@@ -81,6 +80,7 @@ public class BlockPipe extends BlockTransferBase
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
     {
@@ -163,7 +163,6 @@ public class BlockPipe extends BlockTransferBase
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
                                     float subY, float subZ)
     {
-
         if (!worldIn.isRemote)
         {
             if (worldIn.getBlockMetadata(x, y, z) == 2 && worldIn.getTileEntity(x, y, z) instanceof TileEntityFilterPipe)

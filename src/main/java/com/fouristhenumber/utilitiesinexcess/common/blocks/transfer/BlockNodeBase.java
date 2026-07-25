@@ -3,10 +3,13 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
@@ -15,8 +18,6 @@ import java.util.List;
 
 public abstract class BlockNodeBase extends BlockTransferBase
 {
-
-
     protected BlockNodeBase() {
         super(Material.iron);
     }
@@ -24,6 +25,12 @@ public abstract class BlockNodeBase extends BlockTransferBase
     @Override
     public boolean renderAsNormalBlock() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side)
+    {
+        return true;
     }
 
     @Override

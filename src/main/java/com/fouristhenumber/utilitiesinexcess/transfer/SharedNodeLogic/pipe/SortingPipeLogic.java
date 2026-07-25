@@ -45,7 +45,7 @@ public class SortingPipeLogic extends DefaultNetworkLogic
                 {
                     if (conn.target() instanceof IInventory inventory)
                     {
-                        if (containsItemOrEmpty(inventory, itemNodeTE.getStackInSlot(0)))
+                        if (containsItemOrEmpty(inventory, itemNodeTE.getWalkingObject()))
                         {
                             ret[i] = conn;
                             continue;

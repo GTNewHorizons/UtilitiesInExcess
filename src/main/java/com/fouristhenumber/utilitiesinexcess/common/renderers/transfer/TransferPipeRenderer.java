@@ -69,16 +69,8 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
         tess.startDrawingQuads();
         tess.setNormal(0, 1, 0);
 
-//        if (block instanceof BlockCrossoverPipe)
-//        {
-//            renderer.setRenderBounds(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875);
-//            renderInventoryCube(renderer, block, metadata);
-//        }
-//        else
-//        {
-            renderer.setRenderBounds(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
-            renderInventoryCube(renderer, block, metadata);
-//        }
+        renderer.setRenderBounds(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
+        renderInventoryCube(renderer, block, metadata);
         renderer.setRenderBounds(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
         renderInventoryCube(renderer, block, metadata);
         renderer.setRenderBounds(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);

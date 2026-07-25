@@ -48,79 +48,9 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return logic.getSizeInventory();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slotIn)
-    {
-        return logic.getStackInSlot(slotIn);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        return logic.decrStackSize(index, count);
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int index)
-    {
-        return logic.getStackInSlotOnClosing(index);
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        logic.setInventorySlotContents(index, stack);
-    }
-
-    @Override
-    public String getInventoryName()
-    {
-        return logic.getInventoryName();
-    }
-
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return logic.hasCustomInventoryName();
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return logic.getInventoryStackLimit();
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player)
-    {
-        return logic.isUseableByPlayer(player);
-    }
-
-    @Override
-    public void openInventory()
-    {
-    }
-
-    @Override
-    public void closeInventory()
-    {
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        return logic.isItemValidForSlot(index, stack);
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
-        return logic.buildUI(data, syncManager, settings, this);
+        return logic.buildUI(data, syncManager, settings);
     }
 
     @Override
@@ -130,38 +60,14 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
-    {
-        if (ForgeDirection.getOrientation(side).getOpposite().ordinal() == blockMetadata)
-        {
-            return null;
-        }
-        return new int[]
-        {
-            0
-        };
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side)
-    {
-        return side != blockMetadata;
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side)
-    {
-        return false;
-    }
-
-    @Override
     public void updateSource()
     {
         logic.updateSourceInventory();
     }
 
     @Override
-    public ItemStack getWalkingObject() {
+    public ItemStack getWalkingObject()
+    {
         return logic.getStackInSlot(0);
     }
 }

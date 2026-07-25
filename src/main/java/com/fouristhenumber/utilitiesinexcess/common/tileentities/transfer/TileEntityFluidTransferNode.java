@@ -9,6 +9,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.FluidTrans
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -22,7 +23,21 @@ public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<Flui
 
     @Override
     public ModularPanel buildUI(PosGuiData posGuiData, PanelSyncManager panelSyncManager, UISettings uiSettings) {
-        return null;
+        return logic.buildUI(posGuiData, panelSyncManager, uiSettings);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        this.logic.writeToNBT(nbt);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.logic.readFromNBT(nbt);
     }
 
     @Override
@@ -33,81 +48,6 @@ public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<Flui
 
     @Override
     public FluidStack getWalkingObject() {
-        return null;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
-    }
-
-    @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slotIn) {
-        return null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-
-    }
-
-    @Override
-    public String getInventoryName() {
-        return "";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 0;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
+        return logic.buffer.getFluid();
     }
 }

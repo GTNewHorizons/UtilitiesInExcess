@@ -551,13 +551,14 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         return true;
     }
 
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings, INodeLogicHost host)
+    // TODO Does this need to be taking the host actually? Why host any of the inventory logic there?
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
         syncManager.syncValue("searchLocationSyncer", searchLocationSyncer);
 
-        SlotGroup slotGroup = new SlotGroup("transfer_node_buffer[0]", 1);
-        SlotGroup slotGroup1 = new SlotGroup("transfer_node_upgrades", 1);
+        SlotGroup bufferSlotGroup = new SlotGroup("transfer_node_buffer", 1);
+        SlotGroup upgradeSlotGroup = new SlotGroup("transfer_node_upgrades", 1);
 
         ModularPanel panel = new ModularPanel("panel");
         panel.bindPlayerInventory();
@@ -573,7 +574,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
                         .marginTop(5)
                         .marginBottom(-15)));
 
-        IItemHandler itemHandler = new InvWrapper(host);
+        IItemHandler itemHandler = new InvWrapper(this);
 
         panel.child(
             IKey.dynamic(() -> "Search Location: " + searchLocationSyncer.getStringValue())
@@ -584,12 +585,12 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
 
         Flow flow = Flow.row();
         flow.pos(34,60).size(108,18);
-        for (int i = 0; i < 6; i++)
+        for (int i = 1; i < getSizeInventory(); i++) // First slot is for buffer
         {
-            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i + 1).slotGroup(slotGroup1)));
+            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup)));
         }
         panel.child(flow);
-        ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
+        ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(bufferSlotGroup);
 
         panel.child(
             new Grid().coverChildren()
