@@ -8,7 +8,6 @@ public enum Mods {
 
     // spotless:off
     Baubles("Baubles"),
-    Dreamcraft("dreamcraft"),
     Thaumcraft("Thaumcraft"),
     NEI("NotEnoughItems"),
     CraftTweaker("MineTweaker3"),
