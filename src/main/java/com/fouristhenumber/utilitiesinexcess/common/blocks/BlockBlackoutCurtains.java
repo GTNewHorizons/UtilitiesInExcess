@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 
 public class BlockBlackoutCurtains extends Block {
 
@@ -35,7 +35,7 @@ public class BlockBlackoutCurtains extends Block {
     }
 
     public int getRenderType() {
-        return UtilitiesInExcess.blackoutCurtainsRenderID;
+        return ClientProxy.blackoutCurtainsRenderID;
     }
 
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask,

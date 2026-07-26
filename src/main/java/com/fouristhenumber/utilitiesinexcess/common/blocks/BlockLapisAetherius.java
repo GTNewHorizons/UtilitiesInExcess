@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.ClientProxy;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,7 +36,7 @@ public class BlockLapisAetherius extends Block {
 
     @Override
     public int getRenderType() {
-        return UtilitiesInExcess.lapisAetheriusRenderID;
+        return ClientProxy.lapisAetheriusRenderID;
     }
 
     @Override

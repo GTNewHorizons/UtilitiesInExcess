@@ -1,25 +1,36 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.ForgeChunkManager;
 
 import org.lwjgl.input.Keyboard;
 
 import com.fouristhenumber.utilitiesinexcess.client.IMCForNEI;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
+import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
+import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
 import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
+import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
 import com.gtnewhorizon.gtnhlib.api.gui.WorldConversionWarningManager;
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
@@ -27,9 +38,12 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import minetweaker.MineTweakerAPI;
 
 public class CommonProxy {
 
@@ -51,15 +65,21 @@ public class CommonProxy {
         ModDimensions.init();
         ModBiomes.init();
 
+        GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
+
+        ForgeChunkManager.setForcedChunkLoadingCallback(UtilitiesInExcess.uieInstance, new TEChunkLoadingCallback());
+
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();
         }
+
         if (Mods.Waila.isLoaded()) {
             FMLInterModComms.sendMessage(
                 "Waila",
                 "register",
                 "com.fouristhenumber.utilitiesinexcess.compat.waila.WailaCompat.callbackRegister");
         }
+
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
             new Content().init();
@@ -73,6 +93,32 @@ public class CommonProxy {
         if (OtherConfig.enableWorldConversionWarning) {
             WorldConversionWarningManager.register(UtilitiesInExcess.MODID + "_EXU", new ExuWorldConversionWarning());
         }
+
+        if (ModItems.ENDER_LOTUS_SEED.isEnabled()) {
+            ChestGenHooks.addItem(
+                ChestGenHooks.DUNGEON_CHEST,
+                new WeightedRandomChestContent(ModItems.ENDER_LOTUS_SEED.get(), 0, 1, 2, 8));
+        }
+
+        if (ModItems.INVERSION_SIGIL_INACTIVE.isEnabled()) {
+            ItemInversionSigilInactive.registerChestLoot();
+        }
+
+        if (ModBlocks.FILING_CABINET.isEnabled()) {
+            BlockPropertyRegistry.registerBlockItemProperty(
+                ModBlocks.FILING_CABINET.get(),
+                BlockFilingCabinet.CabinetOrientationProperty.instance);
+        }
+
+        if (ModBlocks.PINK_GENERATOR.isEnabled()) {
+            PinkFuelHelper.scanRecipesForPinkFuel();
+        }
+
+        if (Mods.CraftTweaker.isLoaded()) {
+            MineTweakerAPI.registerClass(EnderLocusCraftTweakerSupport.class);
+        }
+
+        RecipeLoader.run();
     }
 
     public void init(FMLInitializationEvent event) {
@@ -105,5 +151,9 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
+
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+        ExuWorldConversionWarning.onMissingMapping(event);
+    }
 
 }
