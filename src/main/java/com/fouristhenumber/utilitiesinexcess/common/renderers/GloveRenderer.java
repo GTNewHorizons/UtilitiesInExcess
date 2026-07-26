@@ -63,7 +63,6 @@ public class GloveRenderer implements IItemRenderer {
         ItemRenderUtil.renderItem(type, glove.bottomIcon);
 
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 
     public static float[] woolMetaToRGB(int dyeMeta) {

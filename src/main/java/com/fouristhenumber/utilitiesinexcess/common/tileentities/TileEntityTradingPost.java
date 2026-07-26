@@ -109,7 +109,7 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
             .coverChildrenWidth()
             .height(10);
         topRow.child(
-            new HelpWidget().top(2)
+            new HelpWidget(Color.BLUE.main).top(2)
                 .left(1)
                 .size(12)
                 .paddingRight(2)
@@ -209,10 +209,17 @@ public class TileEntityTradingPost extends TileEntity implements IGuiHolder<PosG
 
     public static class HelpWidget extends Widget<HelpWidget> {
 
+        private final int color;
+
+        public HelpWidget(int color) {
+            super();
+            this.color = color;
+        }
+
         @Override
         public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
             super.draw(context, widgetTheme);
-            Color.setGlColorOpaque(Color.BLUE.main);
+            Color.setGlColorOpaque(color);
             GuiTextures.HELP.draw(0, 0, 12, 12);
         }
     }
