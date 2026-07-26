@@ -74,7 +74,7 @@ public class IMCForNEI {
             sendInfoPage(
                 "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
                 "uie.nei.infopage.builders_wand.2");
-            if (Mods.GT.isLoaded()) sendInfoPage(
+            if (Mods.GregTech.isLoaded()) sendInfoPage(
                 "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
                 "uie.nei.infopage.builders_wand.3");
         }
