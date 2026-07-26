@@ -86,8 +86,8 @@ public class BlockSmartPump extends BlockContainer implements IWailaDataProvider
         return tag;
     }
 
+    // <editor-fold desc="IWailaDataProvider Stubs" defaultstate="collapsed">
     @Optional.Method(modid = "Waila")
-    // Stubs
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
     }
@@ -103,4 +103,5 @@ public class BlockSmartPump extends BlockContainer implements IWailaDataProvider
         IWailaConfigHandler config) {
         return currentTip;
     }
+    // </editor-fold>
 }
