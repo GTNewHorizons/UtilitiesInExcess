@@ -22,6 +22,12 @@ public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<Flui
     }
 
     @Override
+    public void updateEntity()
+    {
+        this.logic.updateEntity();
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData posGuiData, PanelSyncManager panelSyncManager, UISettings uiSettings) {
         return logic.buildUI(posGuiData, panelSyncManager, uiSettings);
     }

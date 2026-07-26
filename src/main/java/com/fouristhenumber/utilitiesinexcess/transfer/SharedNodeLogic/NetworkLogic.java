@@ -5,6 +5,10 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITrans
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,26 +25,85 @@ public abstract class NetworkLogic<T extends ITransferNetworkComponent> implemen
     protected Connection[] externalConnections = new Connection[6];
     protected int externalConnectionMask = 0;
 
-
     private boolean joined = false;
     public NetworkLogic(T host)
     {
         this.host = host;
     }
 
+    // Note that this method is on both client and server. Client just for discover and fast rendering.
     @Override
-    public void tryJoinWorld()
+    public void tryJoinWorld(World world)
     {
-        World world = host.getWorld();
-        int x = host.getX();
-        int y = host.getY();
-        int z = host.getZ();
-        if (!joined && world != null && world.blockExists(x, y, z))
+        if (world != null && !joined)
         {
-            joined = true;
-            updateNetworkConnections(world, x, y, z);
-            updateExternalConnections();
+            int x = host.getX();
+            int y = host.getY();
+            int z = host.getZ();
+            if (world.blockExists(x, y, z))
+            {
+                joined = true;
+                updateNetworkConnections(world, x, y, z);
+                updateExternalConnections();
+            }
         }
+    }
+
+    @Override
+    public void separateWorld(World world)
+    {
+        for(int i = 0; i < networkNeighbors.length; i++)
+        {
+            if (networkNeighbors[i] != null)
+            {
+                networkNeighbors[i].removeNeighbor(ForgeDirection.getOrientation(i).getOpposite());
+            }
+        }
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        // Common data
+        tag.setInteger("connectionMask", externalConnectionMask | networkMask);
+
+        // Allow subclasses to add data
+        writeSyncData(tag);
+
+        return new S35PacketUpdateTileEntity(
+            host.getX(),
+            host.getY(),
+            host.getZ(),
+            1,
+            tag
+        );
+    }
+
+    // We set external connection to 0 because it doesn't matter what the client knows. It just uses those for rendering.
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    {
+        NBTTagCompound tag = packet.func_148857_g();
+
+        this.networkMask = tag.getInteger("connectionMask");
+        this.externalConnectionMask = 0;
+        readSyncData(tag);
+
+        host.getWorld().markBlockForUpdate(host.getX(), host.getY(), host.getZ());
+    }
+
+    @Override
+    public void writeSyncData(NBTTagCompound tag)
+    {
+
+    }
+
+    @Override
+    public void readSyncData(NBTTagCompound tag)
+    {
+
     }
 
     public void updateExternalConnections()
@@ -108,18 +171,6 @@ public abstract class NetworkLogic<T extends ITransferNetworkComponent> implemen
                     component.addNeighbor(dir.getOpposite(), host);
                     addNeighbor(dir, component);
                 }
-            }
-        }
-    }
-
-    @Override
-    public void separateWorld()
-    {
-        for(int i = 0; i < networkNeighbors.length; i++)
-        {
-            if (networkNeighbors[i] != null)
-            {
-                networkNeighbors[i].removeNeighbor(ForgeDirection.getOrientation(i).getOpposite());
             }
         }
     }

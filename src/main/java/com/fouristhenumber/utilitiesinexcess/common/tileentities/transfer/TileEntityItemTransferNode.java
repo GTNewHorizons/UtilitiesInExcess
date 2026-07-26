@@ -33,19 +33,19 @@ public class TileEntityItemTransferNode extends TileEntityTransferNodeBase<ItemT
         this.logic.updateEntity();
     }
 
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        this.logic.writeToNBT(nbt);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        this.logic.readFromNBT(nbt);
-    }
+//    @Override
+//    public void writeToNBT(NBTTagCompound nbt)
+//    {
+//        super.writeToNBT(nbt);
+//        this.logic.writeToNBT(nbt);
+//    }
+//
+//    @Override
+//    public void readFromNBT(NBTTagCompound nbt)
+//    {
+//        super.readFromNBT(nbt);
+//        this.logic.readFromNBT(nbt);
+//    }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)

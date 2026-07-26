@@ -13,5 +13,5 @@ public class TransferConfig {
     @Config.Comment("Should the transfer system be enabled.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
-    public static boolean EnableTransferSystem;
+    public boolean EnableTransferSystem;
 }

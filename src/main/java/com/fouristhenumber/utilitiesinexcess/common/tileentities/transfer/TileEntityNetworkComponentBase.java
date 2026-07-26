@@ -6,6 +6,10 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.ITransferN
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,25 +24,37 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
     public void invalidate()
     {
         super.invalidate();
-        logic.separateWorld();
+        logic.separateWorld(worldObj);
     }
 
     @Override
     public void onChunkUnload()
     {
-        logic.separateWorld();
+        logic.separateWorld(worldObj);
     }
 
     @Override
     public void validate()
     {
         super.validate();
-        logic.tryJoinWorld();
+        logic.tryJoinWorld(worldObj);
     }
 
     @Override
     public void onChunkLoad() {
-        logic.tryJoinWorld();
+        logic.tryJoinWorld(worldObj);
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        return logic.getDescriptionPacket();
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+        logic.onDataPacket(net, pkt);
     }
 
     @Override

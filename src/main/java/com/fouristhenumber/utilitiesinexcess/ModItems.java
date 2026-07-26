@@ -85,7 +85,7 @@ public enum ModItems {
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
     // todo config
-    UPGRADE(TransferConfig.EnableTransferSystem, new ItemUpgrade(), "upgrade"),
+    UPGRADE(TransferConfig.INSTANCE.EnableTransferSystem, new ItemUpgrade(), "upgrade"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
     CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     PAINT_ROLLER(ColoredBlocksConfig.INSTANCE.enablePaintRoller, new ItemPaintRoller(), "paint_roller"),

@@ -4,6 +4,7 @@ import static net.minecraft.item.Item.getItemFromBlock;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1314,6 +1315,8 @@ public class RecipeLoader {
     private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
         ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
 
+        System.out.println("Dyable ID: " + Block.getIdFromBlock(block));
+        System.out.println("Base ID: " + Block.getIdFromBlock(block.getBase()));
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
             addShapedRecipe(
@@ -1850,7 +1853,7 @@ public class RecipeLoader {
 
     private static void loadFilterVariantRecipes()
     {
-        if (TransferConfig.EnableTransferSystem)
+        if (TransferConfig.INSTANCE.EnableTransferSystem)
         {
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(

@@ -437,40 +437,40 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
             && ItemStack.areItemStackTagsEqual(a, b);
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.buffer.length; ++i)
-        {
-            if (this.buffer[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
-                this.buffer[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-
-        nbt.setTag("Items", nbttaglist);
-    }
-
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-        this.buffer = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
-            int slot = compound.getByte("Slot") & 255;
-
-            if (slot < this.buffer.length)
-            {
-                this.buffer[slot] = ItemStack.loadItemStackFromNBT(compound);
-            }
-        }
-    }
+//    public void writeToNBT(NBTTagCompound nbt)
+//    {
+//        NBTTagList nbttaglist = new NBTTagList();
+//
+//        for (int i = 0; i < this.buffer.length; ++i)
+//        {
+//            if (this.buffer[i] != null)
+//            {
+//                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+//                nbttagcompound1.setByte("Slot", (byte)i);
+//                this.buffer[i].writeToNBT(nbttagcompound1);
+//                nbttaglist.appendTag(nbttagcompound1);
+//            }
+//        }
+//
+//        nbt.setTag("Items", nbttaglist);
+//    }
+//
+//    public void readFromNBT(NBTTagCompound nbt)
+//    {
+//        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+//        this.buffer = new ItemStack[this.getSizeInventory()];
+//
+//        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+//        {
+//            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
+//            int slot = compound.getByte("Slot") & 255;
+//
+//            if (slot < this.buffer.length)
+//            {
+//                this.buffer[slot] = ItemStack.loadItemStackFromNBT(compound);
+//            }
+//        }
+//    }
 
     @Override
     public int getSizeInventory()
