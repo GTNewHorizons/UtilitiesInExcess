@@ -39,15 +39,15 @@ dependencies {
     implementation("com.github.GTNewHorizons:GTNHLib:0.11.23:dev")
     implementation("com.github.GTNewHorizons:ModularUI2:2.3.79-1.7.10:dev")
     implementation("curse.maven:cofh-lib-220333:2388748")
-    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.7:dev")
-    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
-    compileOnly("com.github.GTNewHorizons:Angelica:2.1.49:dev")
-    compileOnly("com.github.GTNewHorizons:FindIt:1.4.3:dev")
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.14.93-GTNH:dev")
-    compileOnly("com.github.GTNewHorizons:ForgeMultipart:1.7.10:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:Backhand:1.8.11:dev")
     compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.54.12:dev")
-    compileOnly("com.github.GTNewHorizons:waila:1.19.30:dev")
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.7:dev") {transitive = false}
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:Angelica:2.1.49:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:FindIt:1.4.3:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.14.93-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:ForgeMultipart:1.7.10:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:Backhand:1.8.11:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:waila:1.19.30:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Postea:1.2.5:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:SimpleSkinBackport:1.0.2-GTNH:dev") {transitive = false}
     compileOnly("com.falsepattern:endlessids-mc1.7.10:1.7.4:dev") {transitive = false}
