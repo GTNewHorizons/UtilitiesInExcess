@@ -189,8 +189,6 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
     }
 
     @SuppressWarnings("unused")
-    // TODO Add (side = Side.SERVER) to the EventBusSubscriber once
-    // https://github.com/GTNewHorizons/GTNHLib/issues/410 is closed
     @EventBusSubscriber
     public static class EventsServer {
 
@@ -202,7 +200,6 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-            // TODO Remove once side is added to EventBusSubscriber
             if (event.side != Side.SERVER) return;
 
             if (event.phase != TickEvent.Phase.END) {
