@@ -88,8 +88,7 @@ public class ItemHeavenlyRing extends Item implements IBauble, ITranslucentItem 
                 "uie.desc.item.heavenly_ring.1",
                 EnumChatFormatting.WHITE + StatCollector
                     .translateToLocal("item.heavenly_ring_" + SUFFIX + ".type." + stack.getItemDamage())));
-        int key = Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode();
-        String keyName = KeybindUtils.getKeyDisplayNameWithMouse(key);
+        String keyName = KeybindUtils.getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem);
         tooltip.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "uie.desc.item.heavenly_ring.2",
