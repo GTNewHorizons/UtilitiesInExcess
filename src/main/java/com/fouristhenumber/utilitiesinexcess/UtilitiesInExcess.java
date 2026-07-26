@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockFilingCabinet.CabinetOrientationProperty;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
@@ -79,22 +80,9 @@ public class UtilitiesInExcess {
                 ChestGenHooks.DUNGEON_CHEST,
                 new WeightedRandomChestContent(ModItems.ENDER_LOTUS_SEED.get(), 0, 1, 2, 8));
         }
+
         if (ModItems.INVERSION_SIGIL_INACTIVE.isEnabled()) {
-            ChestGenHooks.addItem(
-                ChestGenHooks.DUNGEON_CHEST,
-                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
-            ChestGenHooks.addItem(
-                ChestGenHooks.MINESHAFT_CORRIDOR,
-                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
-            ChestGenHooks.addItem(
-                ChestGenHooks.PYRAMID_DESERT_CHEST,
-                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
-            ChestGenHooks.addItem(
-                ChestGenHooks.STRONGHOLD_CORRIDOR,
-                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
-            ChestGenHooks.addItem(
-                ChestGenHooks.STRONGHOLD_CROSSING,
-                new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+            ItemInversionSigilInactive.registerChestLoot();
         }
 
         if (ModBlocks.FILING_CABINET.isEnabled()) {

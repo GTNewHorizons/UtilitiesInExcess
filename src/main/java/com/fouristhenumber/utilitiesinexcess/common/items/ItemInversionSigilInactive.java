@@ -12,7 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
@@ -127,6 +129,24 @@ public class ItemInversionSigilInactive extends Item {
             }
         }
         return false;
+    }
+
+    public static void registerChestLoot() {
+        ChestGenHooks.addItem(
+            ChestGenHooks.DUNGEON_CHEST,
+            new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
+        ChestGenHooks.addItem(
+            ChestGenHooks.MINESHAFT_CORRIDOR,
+            new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
+        ChestGenHooks.addItem(
+            ChestGenHooks.PYRAMID_DESERT_CHEST,
+            new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
+        ChestGenHooks.addItem(
+            ChestGenHooks.STRONGHOLD_CORRIDOR,
+            new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 2));
+        ChestGenHooks.addItem(
+            ChestGenHooks.STRONGHOLD_CROSSING,
+            new WeightedRandomChestContent(ModItems.INVERSION_SIGIL_INACTIVE.get(), 0, 1, 1, 1));
     }
 
     @SuppressWarnings("unused")
