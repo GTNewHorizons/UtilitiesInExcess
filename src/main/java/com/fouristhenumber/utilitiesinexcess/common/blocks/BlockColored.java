@@ -223,6 +223,7 @@ public class BlockColored extends Block implements IUIERegistered {
 
     // IUIEModBLock
     private String registryName;
+    private boolean wasRegistered = false;
 
     @Override
     public void setRegistryName(String name) {
@@ -232,6 +233,16 @@ public class BlockColored extends Block implements IUIERegistered {
     @Override
     public String getRegistryName() {
         return registryName;
+    }
+
+    @Override
+    public void setWasRegistered(boolean wasRegistered) {
+        this.wasRegistered = wasRegistered;
+    }
+
+    @Override
+    public boolean wasRegistered() {
+        return wasRegistered;
     }
 
     // Item
@@ -354,6 +365,8 @@ public class BlockColored extends Block implements IUIERegistered {
 
     public static void initColoredBlocks(Map<String, TextureAtlasSprite> mapRegisteredSprites) {
         for (BlockColored blockColored : COLORED_BLOCKS) {
+            if (!blockColored.wasRegistered()) continue;
+
             blockColored.initFromString();
             if (mapRegisteredSprites != null) {
                 blockColored.actuallyRegisterBlockIcons(mapRegisteredSprites);

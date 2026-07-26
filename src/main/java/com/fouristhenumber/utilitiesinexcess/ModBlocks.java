@@ -192,6 +192,7 @@ public enum ModBlocks {
         for (ModBlocks block : VALUES) {
             if (block.isEnabled()) {
                 block.theBlock.setCreativeTab(UtilitiesInExcess.uieTab);
+
                 if (block.getItemBlock() != null || !block.getHasItemBlock()) {
                     GameRegistry.registerBlock(block.get(), block.getItemBlock(), block.name);
                     // This part is used if the getItemBlock() is not ItemBlock.class, so we register a custom ItemBlock
@@ -202,6 +203,10 @@ public enum ModBlocks {
                     GameRegistry.registerBlock(block.get(), block.name);
                     // Used if getItemBlock() == null but getHasItemBlock() is true, registering it with a default
                     // inventory item.
+                }
+
+                if (block.theBlock instanceof IUIERegistered iUIERegistered) {
+                    iUIERegistered.setWasRegistered(true);
                 }
             }
         }

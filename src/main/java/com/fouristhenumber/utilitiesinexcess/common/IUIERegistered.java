@@ -8,4 +8,8 @@ public interface IUIERegistered {
     void setRegistryName(String name);
 
     String getRegistryName();
+
+    void setWasRegistered(boolean wasRegistered);
+
+    boolean wasRegistered();
 }

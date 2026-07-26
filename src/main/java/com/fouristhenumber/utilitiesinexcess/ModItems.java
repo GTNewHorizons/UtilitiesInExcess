@@ -96,7 +96,7 @@ public enum ModItems {
                 GameRegistry.registerItem(item.get(), item.name);
 
                 if (item.theItem instanceof IUIERegistered iUIERegistered) {
-                    iUIERegistered.setRegistryName(item.name);
+                    iUIERegistered.setWasRegistered(true);
                 }
             }
         }
@@ -110,6 +110,10 @@ public enum ModItems {
         this.isEnabled = enabled;
         theItem = item;
         this.name = name;
+
+        if (theItem instanceof IUIERegistered iUIERegistered) {
+            iUIERegistered.setRegistryName(name);
+        }
     }
 
     public boolean isEnabled() {

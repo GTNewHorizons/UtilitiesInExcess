@@ -1246,6 +1246,8 @@ public class RecipeLoader {
 
         if (BlockColored.allowDyingBlocks()) {
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                if (!block.wasRegistered()) continue;
+
                 loadDyeableColoredBlockRecipe(block);
             }
         } else {
@@ -1255,6 +1257,8 @@ public class RecipeLoader {
             }
 
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                if (!block.wasRegistered()) continue;
+
                 loadColoredBlockRecipe(block, dyes);
             }
         }
