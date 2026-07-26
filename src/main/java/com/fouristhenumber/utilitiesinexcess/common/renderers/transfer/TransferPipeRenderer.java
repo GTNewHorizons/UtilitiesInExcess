@@ -4,6 +4,7 @@ import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferPi
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
 //import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockCrossoverPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -87,12 +88,12 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess worldAccess, int x, int y, int z, Block block, int modelId,
-        RenderBlocks renderer) {
-        TileEntityNetworkComponentBase<?> te = (TileEntityNetworkComponentBase<?>) worldAccess.getTileEntity(x, y, z);
-        if (te == null) return false;
-
-        RenderPipes(te.getRawConnectionMask(), x, y, z, block, renderer, true);
-
+        RenderBlocks renderer)
+    {
+        if (block instanceof BlockTransferBase transferBase)
+        {
+            RenderPipes(transferBase.getConnectionMask(worldAccess, x, y, z, worldAccess.getBlockMetadata(x, y, z)), x, y, z, block, renderer, true);
+        }
         return true;
     }
 

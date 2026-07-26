@@ -16,9 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<FluidTransferNodeLogic>
     implements IGuiHolder<PosGuiData>, IWalkingComponent<FluidStack>
 {
-    public TileEntityFluidTransferNode(ForgeDirection facing)
+    public TileEntityFluidTransferNode()
     {
-        logic = new FluidTransferNodeLogic(this, facing);
     }
 
     @Override
@@ -55,5 +54,10 @@ public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<Flui
     @Override
     public FluidStack getWalkingObject() {
         return logic.buffer.getFluid();
+    }
+
+    @Override
+    protected FluidTransferNodeLogic createLogic() {
+        return new FluidTransferNodeLogic(this);
     }
 }

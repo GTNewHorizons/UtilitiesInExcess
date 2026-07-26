@@ -310,58 +310,55 @@ public class FilterPipeLogic extends DefaultNetworkLogic implements IInventory
         }
     }
 
-    @Override
-    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent walkingComponent)
-    {
-        Object walkingObject = walkingComponent.getWalkingObject();
-        if (walkingObject instanceof ItemStack stack)
-        {
-            return new MaskedArrayView<>(getValidMask(incomingDirection, stack, networkMask), networkNeighbors);
-        }
-        return super.getWalkableDirs(transportType, incomingDirection, walkingComponent);
-    }
+//    @Override
+//    public MaskedArrayView<ITransferNetworkComponent> getWalkableDirs(TransportType transportType, ForgeDirection incomingDirection, IWalkingComponent walkingComponent)
+//    {
+//        Object walkingObject = walkingComponent.getWalkingObject();
+//        if (walkingObject instanceof ItemStack stack)
+//        {
+//            return new MaskedArrayView<>(getValidMask(incomingDirection, stack, networkMask), networkNeighbors);
+//        }
+//        return super.getWalkableDirs(transportType, incomingDirection, walkingComponent);
+//    }
+//
+//    @Override
+//    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent walker)
+//    {
+//        Object walkingObject = walker.getWalkingObject();
+//        if (walkingObject instanceof ItemStack stack)
+//        {
+//            int validMask = getValidMask(fromDirection, stack, externalConnectionMask);
+//            Connection[] retCons = new Connection[Integer.bitCount(validMask)];
+//            int conIter = 0;
+//            for (int i = 0; i < 6; i++)
+//            {
+//                if ((validMask & (1 << i)) != 0)
+//                {
+//                    retCons[conIter] = externalConnections[i];
+//                }
+//            }
+//            return retCons;
+//        }
+//        return super.getValidExternalConnections(fromDirection, walker);
+//    }
 
-    @Override
-    public Connection[] getValidExternalConnections(ForgeDirection fromDirection, IWalkingComponent walker)
-    {
-        Object walkingObject = walker.getWalkingObject();
-        if (walkingObject instanceof ItemStack stack)
-        {
-            int validMask = getValidMask(fromDirection, stack, externalConnectionMask);
-            Connection[] retCons = new Connection[Integer.bitCount(validMask)];
-            int conIter = 0;
-            for (int i = 0; i < 6; i++)
-            {
-                if ((validMask & (1 << i)) != 0)
-                {
-                    retCons[conIter] = externalConnections[i];
-                }
-            }
-            return retCons;
-        }
-        return super.getValidExternalConnections(fromDirection, walker);
-    }
-
-    private int getValidMask(ForgeDirection incomingDirection, ItemStack stack, int inputMask)
+    public int getValidMask(ForgeDirection fromDirection, ItemStack stack)
     {
         int mask = 0;
         int filteredMask = 0;
         boolean filtered = false;
         for (int i = 0; i < filters.length; i++)
         {
-            if (incomingDirection.ordinal() != i)
+            if (fromDirection.ordinal() != i)
             {
-                if ((inputMask & (1 << i)) != 0) // No reason to look in non-networked directions
+                if (filters[i] == null) // If a direction is unfiltered and has a network connection.
                 {
-                    if (filters[i] == null) // If a direction is unfiltered and has a network connection.
-                    {
-                        mask = mask | (1 << i);
-                    }
-                    else if (logicalFilter[i] != null && logicalFilter[i].matches(stack))// We're filtered
-                    {
-                        filtered = true;
-                        filteredMask = filteredMask | (1 << i);
-                    }
+                    mask = mask | (1 << i);
+                }
+                else if (logicalFilter[i] != null && logicalFilter[i].matches(stack))// We're filtered
+                {
+                    filtered = true;
+                    filteredMask = filteredMask | (1 << i);
                 }
             }
         }

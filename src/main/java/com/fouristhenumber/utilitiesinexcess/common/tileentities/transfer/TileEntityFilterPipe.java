@@ -1,11 +1,10 @@
-package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe;
+package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe.FilterPipeLogic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,7 +18,11 @@ public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterP
 
     public TileEntityFilterPipe()
     {
-        logic = new FilterPipeLogic(this);
+    }
+
+    public int getValidMask(ForgeDirection fromDirection, ItemStack stack)
+    {
+        return logic.getValidMask(fromDirection, stack);
     }
 
     @Override
@@ -34,11 +37,6 @@ public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterP
     {
         super.writeToNBT(compound);
         logic.writeToNBT(compound);
-    }
-
-    @Override
-    public boolean canConnectToSide(ForgeDirection side) {
-        return true;
     }
 
     @Override
@@ -103,5 +101,10 @@ public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterP
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return logic.isItemValidForSlot(index, stack);
+    }
+
+    @Override
+    protected FilterPipeLogic createLogic() {
+        return new FilterPipeLogic(this);
     }
 }

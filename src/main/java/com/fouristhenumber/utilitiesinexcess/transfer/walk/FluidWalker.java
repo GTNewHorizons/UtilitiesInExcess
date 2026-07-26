@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.*;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -11,32 +12,34 @@ import java.util.List;
 public class FluidWalker extends WalkerBase<IFluidHandler, FluidStack>
 {
     StepStrategy stepper;
-    TargetResolver<IFluidHandler> targeter = new FluidTargetResolver();
+    TargetResolver<IFluidHandler> targeter;
 
     public FluidWalker(IWalkingComponent<FluidStack> walkingComponent) {
         super(walkingComponent);
         stepper = new RandomStepper(TransportType.FLUID);
+        targeter = new FluidTargetResolver();
     }
 
     @Override
-    public void step() {
-        currentComponent = stepper.step(currentComponent, walkingComponent);
+    public void step(World world)
+    {
+        walkerPos = stepper.step(world, walkerPos, walkingComponent);
     }
 
     @Override
-    public void reset() {
-        currentComponent = stepper.reset(currentComponent, walkingComponent);
-
-    }
-
-    @Override
-    public List<TargetResolver.Target<IFluidHandler>> getValidTargets() {
-        return targeter.getValidTargets(currentComponent, walkingComponent, stepper.fromDirection);
+    public List<TargetResolver.Target<IFluidHandler>> getValidTargets(World world) {
+        return targeter.getValidTargets(world, walkerPos, walkingComponent, stepper.fromDirection);
     }
 
     // TODO Double check that fluids aren't affected by rationing pipes
     @Override
     public int getInsertLimit() {
         return -1;
+    }
+
+    @Override
+    public void reset()
+    {
+        stepper.reset(walkerPos, walkingComponent);
     }
 }

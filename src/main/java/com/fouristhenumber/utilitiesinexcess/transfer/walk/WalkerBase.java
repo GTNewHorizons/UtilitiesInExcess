@@ -3,6 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
@@ -10,35 +12,28 @@ import java.util.Random;
 public abstract class WalkerBase<T, E>
 {
     protected IWalkingComponent<E> walkingComponent;
-    protected ITransferNetworkComponent currentComponent;
+    BlockPos walkerPos;
 
-    Random rand = new Random();
     WalkerBase(IWalkingComponent<E> walkingComponent)
     {
         this.walkingComponent = walkingComponent;
-        this.currentComponent = walkingComponent;
+        walkerPos = new BlockPos(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
     }
-    public abstract void step();
+    public abstract void step(World world);
 
     public String getLocationString()
     {
-        if (currentComponent == null)
-        {
-            return "";
-        }
-        StringBuilder location = new StringBuilder();
-        location.append("x: ");
-        location.append(currentComponent.getX() - walkingComponent.getX());
-        location.append(" y: ");
-        location.append(currentComponent.getY() - walkingComponent.getY());
-        location.append(" z: ");
-        location.append(currentComponent.getZ() - walkingComponent.getZ());
-        return location.toString();
+        return "x: " +
+            (walkerPos.x - walkingComponent.getX()) +
+            " y: " +
+            (walkerPos.y - walkingComponent.getY()) +
+            " z: " +
+            (walkerPos.z - walkingComponent.getZ());
     }
 
     public abstract void reset();
 
-    public abstract List<TargetResolver.Target<T>> getValidTargets();
+    public abstract List<TargetResolver.Target<T>> getValidTargets(World world);
 
     public abstract int getInsertLimit();
 }

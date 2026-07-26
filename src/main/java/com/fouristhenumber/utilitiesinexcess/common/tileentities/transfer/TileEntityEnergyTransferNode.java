@@ -14,4 +14,9 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<Ene
     public void updateSource() {
 
     }
+
+    @Override
+    protected EnergyTransferNodeLogic createLogic() {
+        return null;
+    }
 }

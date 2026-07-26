@@ -7,42 +7,45 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ItemWalker extends WalkerBase<IInventory, ItemStack>
 {
     StepStrategy stepper;
-    TargetResolver<IInventory> targeter = new ItemTargetResolver();
+    TargetResolver<IInventory> targeter;
 
     public ItemWalker(IWalkingComponent<ItemStack> originComponent)
     {
         super(originComponent);
         stepper = new RandomStepper(TransportType.ITEM);
+        targeter = new ItemTargetResolver();
     }
 
     @Override
-    public void step()
+    public void step(World world)
     {
-        currentComponent = stepper.step(currentComponent, walkingComponent);
+        walkerPos = stepper.step(world, walkerPos, walkingComponent);
     }
 
     @Override
-    public List<TargetResolver.Target<IInventory>> getValidTargets()
+    public List<TargetResolver.Target<IInventory>> getValidTargets(World world)
     {
-        return targeter.getValidTargets(currentComponent, walkingComponent, stepper.fromDirection);
+        return targeter.getValidTargets(world, walkerPos, walkingComponent, stepper.fromDirection);
     }
 
+    // TODO
     // Gets the amount of items that can be put into an inventory by a certain component. This is relevant
     // for rationing pipes. If result is -1, the limit is ignored.
     @Override
     public int getInsertLimit() {
-        return currentComponent.getInsertLimit();
+        return -1;
     }
 
     @Override
     public void reset()
     {
-        currentComponent = stepper.reset(currentComponent, walkingComponent);
+        stepper.reset(walkerPos, walkingComponent);
     }
 }

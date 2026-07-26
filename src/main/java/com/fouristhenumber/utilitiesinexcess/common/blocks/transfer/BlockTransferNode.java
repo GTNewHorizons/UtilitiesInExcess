@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -9,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
@@ -113,9 +115,9 @@ public class BlockTransferNode extends BlockNodeBase {
 
         if (metadata >> 3 == 0)
         {
-            return new TileEntityItemTransferNode(ForgeDirection.getOrientation(metadata & 7));
+            return new TileEntityItemTransferNode();
         }
-        return new TileEntityFluidTransferNode(ForgeDirection.getOrientation(metadata & 7));
+        return new TileEntityFluidTransferNode();
     }
 
     @Override
@@ -133,5 +135,26 @@ public class BlockTransferNode extends BlockNodeBase {
     public IIcon getIcon(int side, int meta)
     {
         return TransferNodeType.fromMeta(meta >> 3).getIcon(side, meta);
+    }
+
+    @Override
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, int metadata, IWalkingComponent<?> walkingComponent)
+    {
+        int mask = 0b111111;
+        int facing = metadata & 7;
+        if (facing < 6)
+        {
+            mask &= ~(1 << facing);
+        }
+        if (fromDirection != ForgeDirection.UNKNOWN)
+        {
+            mask &= ~(1 << fromDirection.ordinal());
+        }
+        return mask;
+    }
+
+    @Override
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int metadata) {
+        return 0;
     }
 }

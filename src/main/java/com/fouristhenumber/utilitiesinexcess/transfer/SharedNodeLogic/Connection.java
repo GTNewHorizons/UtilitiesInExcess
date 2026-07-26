@@ -11,12 +11,12 @@ public record Connection(TileEntity target, int flags, int side)
         return (flags & 1) != 0;
     }
 
-    public boolean canConnectEnergy()
+    public boolean canConnectFluid()
     {
         return (flags & 2) != 0;
     }
 
-    public boolean canConnectFluid()
+    public boolean canConnectEnergy()
     {
         return (flags & 4) != 0;
     }

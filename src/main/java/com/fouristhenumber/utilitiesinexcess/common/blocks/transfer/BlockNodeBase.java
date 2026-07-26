@@ -5,6 +5,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,11 +40,6 @@ public abstract class BlockNodeBase extends BlockTransferBase
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
-    }
-
-    @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
         if (!worldIn.isRemote) GuiFactories.tileEntity()
@@ -62,52 +58,60 @@ public abstract class BlockNodeBase extends BlockTransferBase
     @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
     {
-        TileEntityNetworkComponentBase<?> te = (TileEntityNetworkComponentBase<?>) worldIn.getTileEntity(x, y, z);
-        if (te == null) return;
-
-        int connectionMask = te.getRawConnectionMask();
-
-        AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getBoundingBox().copy().offset(x, y, z);
-        if (boundingBox.intersectsWith(mask))
+        Block block = worldIn.getBlock(x, y, z);
+        if (block instanceof BlockTransferBase transferBase)
         {
-            list.add(boundingBox);
+            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z));
+
+            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getBoundingBox().copy().offset(x, y, z);
+            if (boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
+
+            boundingBox = PipeCollision.DOWN.getBoundingBox().copy().offset(x, y, z);
+            if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
+
+            boundingBox = PipeCollision.UP.getBoundingBox().copy().offset(x, y, z);
+            if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
+
+            boundingBox = PipeCollision.NORTH.getBoundingBox().copy().offset(x, y, z);
+            if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
+
+            boundingBox = PipeCollision.SOUTH.getBoundingBox().copy().offset(x, y, z);
+            if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
+
+            boundingBox = PipeCollision.WEST.getBoundingBox().copy().offset(x, y, z);
+            if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
+
+            boundingBox = PipeCollision.EAST.getBoundingBox().copy().offset(x, y, z);
+            if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask))
+            {
+                list.add(boundingBox);
+            }
         }
 
-        boundingBox = PipeCollision.DOWN.getBoundingBox().copy().offset(x, y, z);
-        if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask))
-        {
-            list.add(boundingBox);
-        }
+    }
 
-        boundingBox = PipeCollision.UP.getBoundingBox().copy().offset(x, y, z);
-        if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask))
-        {
-            list.add(boundingBox);
-        }
-
-        boundingBox = PipeCollision.NORTH.getBoundingBox().copy().offset(x, y, z);
-        if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask))
-        {
-            list.add(boundingBox);
-        }
-
-        boundingBox = PipeCollision.SOUTH.getBoundingBox().copy().offset(x, y, z);
-        if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask))
-        {
-            list.add(boundingBox);
-        }
-
-        boundingBox = PipeCollision.WEST.getBoundingBox().copy().offset(x, y, z);
-        if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask))
-        {
-            list.add(boundingBox);
-        }
-
-        boundingBox = PipeCollision.EAST.getBoundingBox().copy().offset(x, y, z);
-        if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask))
-        {
-            list.add(boundingBox);
-        }
+    @Override
+    public boolean hasTileEntity(int metadata)
+    {
+        return true;
     }
 
     public abstract int getRenderType();

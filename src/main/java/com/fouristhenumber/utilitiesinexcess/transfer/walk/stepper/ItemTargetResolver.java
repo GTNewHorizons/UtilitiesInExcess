@@ -1,9 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -11,17 +13,35 @@ import java.util.List;
 
 public class ItemTargetResolver implements TargetResolver<IInventory> {
 
-    @Override
-    public List<Target<IInventory>> getValidTargets(ITransferNetworkComponent from, IWalkingComponent<?> walking, ForgeDirection fromDir)
+    public ItemTargetResolver()
     {
-        Connection[] conns = from.getValidExternalNeighbors(fromDir, walking);
+    }
 
+    @Override
+    public List<Target<IInventory>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir) {
         List<Target<IInventory>> validTargets = new ArrayList<>();
-        for (Connection conn : conns)
+
+        Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
+        if (block instanceof BlockTransferBase transferBlock)
         {
-            if (conn != null && conn.canConnectItem())
+            int meta = world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z);
+
+            int validOutputDirs = transferBlock.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, meta, walking);
+
+            for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
             {
-                validTargets.add(new Target<>((IInventory) conn.target(), conn.side()));
+                if ((validOutputDirs & (1 << searchDir.ordinal())) == 0)
+                {
+                    continue;
+                }
+
+                if (world.getTileEntity(
+                    walkerPos.x + searchDir.offsetX,
+                    walkerPos.y + searchDir.offsetY,
+                    walkerPos.z + searchDir.offsetZ)
+                    instanceof IInventory target) {
+                    validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
+                }
             }
         }
         return validTargets;

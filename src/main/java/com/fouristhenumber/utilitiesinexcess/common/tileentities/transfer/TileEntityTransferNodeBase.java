@@ -12,31 +12,16 @@ public abstract class TileEntityTransferNodeBase<T extends ITransferNetworkLogic
 {
 
 //    @Override
-//    public Packet getDescriptionPacket()
+//    public boolean canConnectToSide(ForgeDirection side)
 //    {
-//        NBTTagCompound nbt = new NBTTagCompound();
-//        writeToNBT(nbt);
-//        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+//        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != side.ordinal();
 //    }
-//
-//    @Override
-//    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-//        readFromNBT(pkt.func_148857_g());
-//        if (worldObj != null) {
-//            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-//        }
-//    }
-
-    @Override
-    public boolean canConnectToSide(ForgeDirection side)
-    {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != side.ordinal();
-    }
 
     @Override
     public ForgeDirection getFacing() {
         return ForgeDirection.getOrientation(worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
     }
+
 
     public abstract void updateSource();
 }

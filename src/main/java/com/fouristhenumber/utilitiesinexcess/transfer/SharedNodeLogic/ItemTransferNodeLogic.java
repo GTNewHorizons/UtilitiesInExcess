@@ -36,22 +36,18 @@ import java.util.List;
 
 public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNode> implements IInventory
 {
-
     ItemStack[] buffer = new ItemStack[getSizeInventory()];
-
     IInventory connectedInventory;
     public ItemWalker walker;
-    private final ForgeDirection facing;
 
-    public ItemTransferNodeLogic(TileEntityItemTransferNode host, ForgeDirection facing)
+    public ItemTransferNodeLogic(TileEntityItemTransferNode host)
     {
         super(host);
-        this.facing = facing;
-        walker = new ItemWalker(host);
+        this.walker = new ItemWalker(host);
     }
 
     // Note that I did write quite lengthy insertion logic for this. I felt that it is more important to keep the
-    // logic consise and fast for the cases where there is no rationing pipe.
+    // logic concise and fast for the cases where there is no rationing pipe.
     public void updateEntity()
     {
         if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
@@ -73,7 +69,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
             return;
         }
 
-        List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets();
+        List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
         if (!targets.isEmpty())
         {
             // As mentioned elsewhere some pipes have a maximum insertion limit.
@@ -115,7 +111,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
                 }
             }
         }
-        walker.step();
+        walker.step(host.getWorld());
     }
 
     // TODO MAKE THIS SIDED
@@ -437,40 +433,40 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
             && ItemStack.areItemStackTagsEqual(a, b);
     }
 
-//    public void writeToNBT(NBTTagCompound nbt)
-//    {
-//        NBTTagList nbttaglist = new NBTTagList();
-//
-//        for (int i = 0; i < this.buffer.length; ++i)
-//        {
-//            if (this.buffer[i] != null)
-//            {
-//                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-//                nbttagcompound1.setByte("Slot", (byte)i);
-//                this.buffer[i].writeToNBT(nbttagcompound1);
-//                nbttaglist.appendTag(nbttagcompound1);
-//            }
-//        }
-//
-//        nbt.setTag("Items", nbttaglist);
-//    }
-//
-//    public void readFromNBT(NBTTagCompound nbt)
-//    {
-//        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-//        this.buffer = new ItemStack[this.getSizeInventory()];
-//
-//        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-//        {
-//            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
-//            int slot = compound.getByte("Slot") & 255;
-//
-//            if (slot < this.buffer.length)
-//            {
-//                this.buffer[slot] = ItemStack.loadItemStackFromNBT(compound);
-//            }
-//        }
-//    }
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        NBTTagList nbttaglist = new NBTTagList();
+
+        for (int i = 0; i < this.buffer.length; ++i)
+        {
+            if (this.buffer[i] != null)
+            {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte)i);
+                this.buffer[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
+            }
+        }
+
+        nbt.setTag("Items", nbttaglist);
+    }
+
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+        this.buffer = new ItemStack[this.getSizeInventory()];
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
+            int slot = compound.getByte("Slot") & 255;
+
+            if (slot < this.buffer.length)
+            {
+                this.buffer[slot] = ItemStack.loadItemStackFromNBT(compound);
+            }
+        }
+    }
 
     @Override
     public int getSizeInventory()
@@ -551,7 +547,6 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         return true;
     }
 
-    // TODO Does this need to be taking the host actually? Why host any of the inventory logic there?
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
@@ -622,6 +617,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
 
     public void updateSourceInventory()
     {
+        ForgeDirection facing = host.getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IInventory inventory) {
             connectedInventory = inventory;

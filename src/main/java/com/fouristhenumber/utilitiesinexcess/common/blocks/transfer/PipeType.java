@@ -1,24 +1,30 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityCrossoverPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityEnergyExtractionPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityEnergyPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityFilterPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityHyperRationingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityModSortingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityRationingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntitySortingPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.pipe.TileEntityTransferPipe;
-import com.fouristhenumber.utilitiesinexcess.utils.ITileFactory;
+import cofh.api.energy.IEnergyHandler;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public enum PipeType
 {
-    TRANSFER("transfer_pipe", TileEntityTransferPipe::new),
-    CROSSOVER("crossover_pipe", TileEntityCrossoverPipe::new),
-    FILTER("filter_pipe", TileEntityFilterPipe::new, "filter_pipe_0", "filter_pipe_1", "filter_pipe_2")
+    TRANSFER("transfer_pipe"),
+    CROSSOVER("crossover_pipe") {
+        @Override
+        public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+        {
+            return 1 << fromDirection.getOpposite().ordinal();
+        }
+    },
+    FILTER("filter_pipe", "filter_pipe_0", "filter_pipe_1", "filter_pipe_2")
     {
         @Override
         public IIcon getIcon(int side)
@@ -41,29 +47,40 @@ public enum PipeType
                     return this.iicons[0];
             }
         }
+
+        @Override
+        public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+        {
+            if (world.getTileEntity(x, y, z) instanceof TileEntityFilterPipe filterPipe)
+            {
+                Object walkingObject = walkingComponent.getWalkingObject();
+                if (walkingObject instanceof ItemStack stack) {
+                    return filterPipe.getValidMask(fromDirection, stack);
+                }
+            }
+            return 0;
+        }
     },
-    SORTING("sorting_pipe", TileEntitySortingPipe::new),
-    MODSORTING("mod_sorting_pipe", TileEntityModSortingPipe::new),
-    RATIONING("rationing_pipe", TileEntityRationingPipe::new),
-    HYPERRATIONING("hyper_rationing_pipe", TileEntityHyperRationingPipe::new),
-    ENERGY("energy_pipe", TileEntityEnergyPipe::new),
-    ENERGYEXTRACTION("energy_extraction_pipe", TileEntityEnergyExtractionPipe::new);
+    SORTING("sorting_pipe"),
+    MODSORTING("mod_sorting_pipe"),
+    RATIONING("rationing_pipe"),
+    HYPERRATIONING("hyper_rationing_pipe"),
+    ENERGY("energy_pipe"),
+    ENERGYEXTRACTION("energy_extraction_pipe");
 
     private final String name;
-    private final ITileFactory factory;
     private final String[] textureNames;
     protected IIcon[] iicons;
 
-    PipeType(String name, ITileFactory factory)
+    PipeType(String name)
     {
-        this(name, factory, name);
+        this(name, name);
     }
 
-    PipeType(String name, ITileFactory factory, String... textures)
+    PipeType(String name, String... textures)
     {
         this.name = name;
         this.textureNames = textures;
-        this.factory = factory;
         this.iicons = new IIcon[this.textureNames.length];
     }
 
@@ -93,15 +110,45 @@ public enum PipeType
         return iicons[0];
     }
 
-    public TileEntity createTileEntity() {
-        return factory.create();
-    }
-
     public static PipeType fromMeta(int meta) {
         if (meta >= 0 && meta < PipeType.values().length)
         {
             return PipeType.values()[meta];
         }
         return TRANSFER;
+    }
+
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    {
+        if (fromDirection != ForgeDirection.UNKNOWN)
+        {
+            return 0b111111 ^ (1 << fromDirection.ordinal());
+        }
+        return 0b111111;
+    }
+
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z)
+    {
+        int mask = 0;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            Block block = world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+            boolean connects;
+            if (block instanceof BlockTransferBase transferBase)
+            {
+                connects = transferBase.acceptsConnectionFrom(dir.getOpposite());
+            }
+            else
+            {
+                TileEntity te = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+                connects = te instanceof IFluidHandler || te instanceof IInventory || te instanceof IEnergyHandler;
+            }
+            if (connects)
+            {
+                mask |= 1 << dir.ordinal();
+            }
+        }
+        return mask;
     }
 }

@@ -1,8 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.Connection;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -11,19 +14,44 @@ import java.util.List;
 
 public class FluidTargetResolver implements TargetResolver<IFluidHandler>
 {
-    @Override
-    public List<Target<IFluidHandler>> getValidTargets(ITransferNetworkComponent from, IWalkingComponent<?> walking, ForgeDirection fromDir)
-    {
-        Connection[] conns = from.getValidExternalNeighbors(fromDir, walking);
 
+    public FluidTargetResolver()
+    {}
+
+    @Override
+    public List<Target<IFluidHandler>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir) {
         List<Target<IFluidHandler>> validTargets = new ArrayList<>();
-        for (Connection conn : conns)
+
+        Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
+        if (block instanceof BlockTransferBase transferBlock)
         {
-            if (conn != null && conn.canConnectFluid())
+            if (world.getTileEntity(walkerPos.x, walkerPos.y, walkerPos.z) instanceof TileEntityFilterPipe)
             {
-                validTargets.add(new Target<>((IFluidHandler) conn.target(), conn.side()));
+
+            }
+            int meta = world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z);
+
+            int validOuputDirs = transferBlock.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, meta, walking);
+
+            for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
+            {
+                if ((validOuputDirs & (1 << searchDir.ordinal())) == 0)
+                {
+                    continue;
+                }
+
+                if (searchDir != fromDir) {
+                    if (world.getTileEntity(
+                        walkerPos.x + searchDir.offsetX,
+                        walkerPos.y + searchDir.offsetY,
+                        walkerPos.z + searchDir.offsetZ)
+                        instanceof IFluidHandler target) {
+                        validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
+                    }
+                }
             }
         }
         return validTargets;
     }
+
 }

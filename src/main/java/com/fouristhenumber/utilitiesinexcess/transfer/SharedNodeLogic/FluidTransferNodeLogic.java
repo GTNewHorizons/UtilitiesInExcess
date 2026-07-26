@@ -40,11 +40,9 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 
     IFluidHandler connectedTank;
     public FluidWalker walker;
-    private final ForgeDirection facing;
 
-    public FluidTransferNodeLogic(TileEntityFluidTransferNode host, ForgeDirection facing) {
+    public FluidTransferNodeLogic(TileEntityFluidTransferNode host) {
         super(host);
-        this.facing = facing;
         walker = new FluidWalker(host);
     }
 
@@ -71,17 +69,47 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
             return;
         }
 
-        List<TargetResolver.Target<IFluidHandler>> targets = walker.getValidTargets();
+        List<TargetResolver.Target<IFluidHandler>> targets = walker.getValidTargets(host.getWorld());
         if (!targets.isEmpty())
         {
+            FluidStack fluid = buffer.getFluid();
+            if (fluid != null)
+            {
+                FluidStack toInsert = fluid.copy();
+                toInsert.amount = fluid.amount;
 
+                for (TargetResolver.Target<IFluidHandler> target : targets)
+                {
+                    int filled;
+
+                    filled = target.handler.fill(
+                        ForgeDirection.getOrientation(target.side).getOpposite(),
+                        toInsert,
+                        true
+                    );
+
+                    toInsert.amount -= filled;
+
+                    if (toInsert.amount <= 0)
+                    {
+                        break;
+                    }
+                }
+
+                int inserted = fluid.amount - toInsert.amount;
+
+                if (inserted > 0)
+                {
+                    buffer.drain(inserted, true);
+                }
+            }
         }
-
+        walker.step(host.getWorld());
     }
 
     public void importFluids()
     {
-        ForgeDirection fromDir = facing.getOpposite();
+        ForgeDirection fromDir = host.getFacing().getOpposite();
 
         int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
         if (spaceRemaining <= 0) return;
@@ -142,6 +170,7 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 
     public void updateSourceTank()
     {
+        ForgeDirection facing = host.getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IFluidHandler tank)
         {

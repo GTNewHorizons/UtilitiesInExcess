@@ -1,11 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
-import com.fouristhenumber.utilitiesinexcess.utils.MaskedArrayView;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RandomStepper extends StepStrategy
@@ -17,26 +21,42 @@ public class RandomStepper extends StepStrategy
     }
 
     @Override
-    public ITransferNetworkComponent step(ITransferNetworkComponent currentComponent, IWalkingComponent walkingComponent)
+    public BlockPos step(World world, BlockPos walkerPos, IWalkingComponent walkingComponent)
     {
-        ITransferNetworkComponent newComponent;
-        MaskedArrayView<ITransferNetworkComponent> options = currentComponent.getWalkableDirs(transporting, fromDirection, walkingComponent);
-        if (options.size() != 0)
+        Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
+        if (block instanceof BlockTransferBase transferBlock)
         {
-            int direction = rand.nextInt(options.size());
-            newComponent = options.get(direction);
-            fromDirection = ForgeDirection.getOrientation(options.actualLocation(direction)).getOpposite();
+            int meta = world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z);
+            int validDirs = transferBlock.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, meta, walkingComponent);
+            List<ForgeDirection> dirList = new ArrayList<>();
+
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            {
+                if ((validDirs & (1 << dir.ordinal())) != 0)
+                {
+                    if (world.getBlock(walkerPos.x + dir.offsetX,
+                        walkerPos.y + dir.offsetY,
+                        walkerPos.z + dir.offsetZ) instanceof BlockTransferBase)
+                    {
+                        dirList.add(dir);
+                    }
+                }
+            }
+
+            if (!dirList.isEmpty())
+            {
+                ForgeDirection chosenDir = dirList.get(rand.nextInt(dirList.size()));
+                fromDirection = chosenDir.getOpposite();
+                return walkerPos.offset(chosenDir);
+            }
         }
-        else
-        {
-            newComponent = walkingComponent;
-            fromDirection = null;
-        }
-        return newComponent;
+        return reset(walkerPos, walkingComponent);
     }
 
     @Override
-    public ITransferNetworkComponent reset(ITransferNetworkComponent currentComponent, IWalkingComponent walkingComponent) {
-        return currentComponent;
+    public BlockPos reset(BlockPos walkerPos, IWalkingComponent walkingComponent) {
+        return walkerPos.set(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
     }
+
+
 }
