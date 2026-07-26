@@ -8,7 +8,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import com.cleanroommc.modularui.utils.Color;
-import com.fouristhenumber.utilitiesinexcess.ClientProxy;
+import com.fouristhenumber.utilitiesinexcess.CommonProxy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockLapisAetheriusDyable;
 
@@ -92,6 +92,6 @@ public class LapisAetheriusRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return ClientProxy.lapisAetheriusRenderID;
+        return CommonProxy.lapisAetheriusRenderID;
     }
 }

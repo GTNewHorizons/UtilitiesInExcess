@@ -14,6 +14,8 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInac
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemErasurePickaxe;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemRetrogradeHoe;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.RecipeLoader;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
@@ -35,6 +37,7 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -47,6 +50,8 @@ import minetweaker.MineTweakerAPI;
 
 public class CommonProxy {
 
+    public static int lapisAetheriusRenderID;
+    public static int blackoutCurtainsRenderID;
     public SoundVolumeChecks soundVolumeChecks;
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
@@ -68,6 +73,16 @@ public class CommonProxy {
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
         ForgeChunkManager.setForcedChunkLoadingCallback(UtilitiesInExcess.uieInstance, new TEChunkLoadingCallback());
+
+        if (ModBlocks.LAPIS_AETHERIUS.isEnabled()) {
+            CommonProxy.lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
+            RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
+        }
+
+        if (ModBlocks.BLACKOUT_CURTAINS.isEnabled()) {
+            CommonProxy.blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
+            RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
+        }
 
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();

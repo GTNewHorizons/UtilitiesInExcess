@@ -8,12 +8,10 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.fouristhenumber.utilitiesinexcess.client.UIERMRL;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockTrueGreenscreen;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.BlackoutCurtainsRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.ChunchunmaruRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.FireBatteryRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.InvertedIngotRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.PaintRollerRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityCollector;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPortalUnderWorld;
@@ -39,9 +37,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
-    public static int lapisAetheriusRenderID;
-    public static int blackoutCurtainsRenderID;
-
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -51,16 +46,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-
-        if (ModBlocks.LAPIS_AETHERIUS.isEnabled()) {
-            ClientProxy.lapisAetheriusRenderID = RenderingRegistry.getNextAvailableRenderId();
-            RenderingRegistry.registerBlockHandler(new LapisAetheriusRenderer());
-        }
-
-        if (ModBlocks.BLACKOUT_CURTAINS.isEnabled()) {
-            ClientProxy.blackoutCurtainsRenderID = RenderingRegistry.getNextAvailableRenderId();
-            RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
-        }
 
         if (ModItems.INVERTED_NUGGET.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.INVERTED_INGOT.get(), new InvertedIngotRenderer());

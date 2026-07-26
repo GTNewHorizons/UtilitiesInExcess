@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.ClientProxy;
+import com.fouristhenumber.utilitiesinexcess.CommonProxy;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 
 import cpw.mods.fml.relauncher.Side;
@@ -66,7 +66,7 @@ public class BlockLapisAetheriusDyable extends BlockColored {
 
     @Override
     public int getRenderType() {
-        return ClientProxy.lapisAetheriusRenderID;
+        return CommonProxy.lapisAetheriusRenderID;
     }
 
     @Override
