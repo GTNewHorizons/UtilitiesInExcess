@@ -8,7 +8,6 @@ public enum Mods {
 
     // spotless:off
     Baubles("Baubles"),
-    Dreamcraft("dreamcraft"),
     Thaumcraft("Thaumcraft"),
     NEI("NotEnoughItems"),
     CraftTweaker("MineTweaker3"),
@@ -19,9 +18,10 @@ public enum Mods {
     Postea("postea"),
     ForgeMicroBlock("ForgeMicroblock"),
     Backhand("backhand"),
-    GT("gregtech_nh"),
+    GregTech("gregtech_nh"),
     SimpleSkinBackport("simpleskinbackport"),
-    EndlessIDs("endlessids")
+    EndlessIDs("endlessids"),
+    Controlling("controlling")
     ;
     // spotless:on
 

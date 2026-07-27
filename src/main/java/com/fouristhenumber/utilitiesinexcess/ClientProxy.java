@@ -46,20 +46,25 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
+
         if (ModItems.INVERTED_NUGGET.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.INVERTED_INGOT.get(), new InvertedIngotRenderer());
         }
+
         if (Mods.ForgeMicroBlock.isLoaded()) {
             MinecraftForgeClient.registerItemRenderer(FMPItems.UE_MULTI_PART.get(), new ItemUEMultiPartRenderer());
         }
+
         if (ModBlocks.UNDERWORLD_PORTAL.isEnabled()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPortalUnderWorld.class, new TESRUnderworldPortal());
             RenderingRegistry.registerBlockHandler(ISBRHUnderworldPortal.INSTANCE);
         }
+
         if (ModBlocks.COLLECTOR.isEnabled()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCollector.class, new CollectorRangeBox());
 
         }
+
         if (ModBlocks.TRUE_GREENSCREEN.isEnabled()) {
             ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockTrueGreenscreen.TileEntityTrueGreenscreen.class,
@@ -69,12 +74,15 @@ public class ClientProxy extends CommonProxy {
         if (ModItems.GLOVE.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.GLOVE.get(), new GloveRenderer());
         }
+
         if (ModItems.FIRE_BATTERY.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.FIRE_BATTERY.get(), new FireBatteryRenderer());
         }
+
         if (ModItems.CHUNCHUNMARU.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.CHUNCHUNMARU.get(), new ChunchunmaruRenderer());
         }
+
         if (ModItems.PAINT_ROLLER.isEnabled()) {
             MinecraftForgeClient.registerItemRenderer(ModItems.PAINT_ROLLER.get(), new PaintRollerRenderer());
         }

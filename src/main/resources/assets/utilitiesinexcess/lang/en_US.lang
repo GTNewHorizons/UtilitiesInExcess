@@ -557,9 +557,9 @@ uie.desc.item.watering_can.area=Area: %dx%d
 
 uie.desc.item.fire_battery.1=RF %s / %s
 
-uie.desc.item.glove.1=Press %s to activate.
-uie.desc.item.glove.2=+2,147,483,647 Breeze Projection
-uie.desc.item.glove.3=§oP.S. Breeze Projection does nothing.
+uie.desc.item.glove.1=§bPress §r[§6%s§r]§b to activate.
+uie.desc.item.glove.2=§9+2,147,483,647 Breeze Projection
+uie.desc.item.glove.3=§7§oP.S. Breeze Projection does nothing.
 
 uie.desc.item.chunchunmaru.1=It's a really cool name
 
