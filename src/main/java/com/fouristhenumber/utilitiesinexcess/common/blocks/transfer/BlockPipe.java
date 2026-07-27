@@ -190,8 +190,15 @@ public class BlockPipe extends BlockTransferBase
         return PipeType.values()[metadata].getConnectionMask(world, x, y, z);
     }
 
+    @Override
     public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction)
     {
         return PipeType.values()[metadata].acceptsConnectionFrom(world, x, y, z, direction);
+    }
+
+    @Override
+    public int maxInsertable(int metadata)
+    {
+        return PipeType.values()[metadata].maxInsertable();
     }
 }

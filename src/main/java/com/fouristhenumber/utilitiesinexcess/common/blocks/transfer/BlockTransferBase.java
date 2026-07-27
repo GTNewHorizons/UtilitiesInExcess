@@ -30,6 +30,11 @@ public abstract class BlockTransferBase extends BlockContainer
     // Given a block can it connect to the block from the given direction.
     public abstract boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction);
 
+    public int maxInsertable(int metadata)
+    {
+        return -1;
+    }
+
     public static boolean isValidConnectable(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
     {
         boolean connects;

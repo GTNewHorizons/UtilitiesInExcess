@@ -85,8 +85,20 @@ public enum PipeType
     },
     SORTING("sorting_pipe"),
     MODSORTING("mod_sorting_pipe"),
-    RATIONING("rationing_pipe"),
-    HYPERRATIONING("hyper_rationing_pipe"),
+    RATIONING("rationing_pipe")
+    {
+        public int maxInsertable()
+        {
+            return 64;
+        }
+    },
+    HYPERRATIONING("hyper_rationing_pipe")
+    {
+        public int maxInsertable()
+        {
+            return 1;
+        }
+    },
     ENERGY("energy_pipe"),
     ENERGYEXTRACTION("energy_extraction_pipe");
 
@@ -166,5 +178,10 @@ public enum PipeType
     public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
     {
         return true;
+    }
+
+    public int maxInsertable()
+    {
+        return -1;
     }
 }

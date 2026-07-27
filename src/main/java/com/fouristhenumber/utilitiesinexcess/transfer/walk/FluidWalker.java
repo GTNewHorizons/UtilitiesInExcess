@@ -31,12 +31,6 @@ public class FluidWalker extends WalkerBase<IFluidHandler, FluidStack>
         return targeter.getValidTargets(world, walkerPos, walkingComponent, stepper.fromDirection);
     }
 
-    // TODO Double check that fluids aren't affected by rationing pipes
-    @Override
-    public int getInsertLimit() {
-        return -1;
-    }
-
     @Override
     public void reset()
     {

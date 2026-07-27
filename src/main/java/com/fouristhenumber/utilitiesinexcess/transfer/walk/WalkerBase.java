@@ -35,5 +35,9 @@ public abstract class WalkerBase<T, E>
 
     public abstract List<TargetResolver.Target<T>> getValidTargets(World world);
 
-    public abstract int getInsertLimit();
+    // TODO Double check that fluids aren't affected by rationing pipes
+    public int getInsertLimit(World world, int x, int y, int z)
+    {
+        return -1;
+    }
 }

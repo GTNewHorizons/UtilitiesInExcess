@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.ItemTargetResolver;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
@@ -39,7 +40,11 @@ public class ItemWalker extends WalkerBase<IInventory, ItemStack>
     // Gets the amount of items that can be put into an inventory by a certain component. This is relevant
     // for rationing pipes. If result is -1, the limit is ignored.
     @Override
-    public int getInsertLimit() {
+    public int getInsertLimit(World world, int x, int y, int z) {
+        if (world.getBlock(x, y, z) instanceof BlockTransferBase networkBlock)
+        {
+            return networkBlock.maxInsertable(world.getBlockMetadata(x, y, z));
+        }
         return -1;
     }
 

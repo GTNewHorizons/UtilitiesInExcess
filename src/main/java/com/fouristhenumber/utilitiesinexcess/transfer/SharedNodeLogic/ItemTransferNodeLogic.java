@@ -73,7 +73,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         if (!targets.isEmpty())
         {
             // As mentioned elsewhere some pipes have a maximum insertion limit.
-            int insertLimit = walker.getInsertLimit();
+            int insertLimit = walker.getInsertLimit(host.getWorld(), host.getX(), host.getY(), host.getZ());
             if (insertLimit == -1) // Unlimited insert logic
             {
                 for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
