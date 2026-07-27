@@ -154,7 +154,27 @@ public class BlockTransferNode extends BlockNodeBase {
     }
 
     @Override
-    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int metadata) {
-        return 0;
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int metadata)
+    {
+        int mask = 0;
+        int facing = metadata & 7;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            if (dir != ForgeDirection.getOrientation(facing))
+            {
+                if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
+                {
+                    mask |= 1 << dir.ordinal();
+                }
+            }
+
+        }
+        return mask;
+    }
+
+    @Override
+    public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction)
+    {
+        return direction.ordinal() != (metadata & 7);
     }
 }
