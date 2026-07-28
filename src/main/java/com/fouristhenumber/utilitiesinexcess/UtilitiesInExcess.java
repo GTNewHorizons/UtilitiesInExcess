@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import codechicken.lib.world.TileChunkLoadHook;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
@@ -55,7 +56,8 @@ public class UtilitiesInExcess {
     public static int blackoutCurtainsRenderID;
     public static int spikeRenderID;
     public static int transferPipeRenderID;
-    public static int flatNodeRenderId;
+    public static int energyNodeRenderID;
+    public static int flatNodeRenderID;
 
     @SidedProxy(
         clientSide = "com.fouristhenumber.utilitiesinexcess.ClientProxy",
@@ -79,8 +81,10 @@ public class UtilitiesInExcess {
         RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
         transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
-        flatNodeRenderId = RenderingRegistry.getNextAvailableRenderId();
+        flatNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
+        energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
 
         ColoredSlots.init();
 

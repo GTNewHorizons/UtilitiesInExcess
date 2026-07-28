@@ -10,7 +10,6 @@ public interface ITransferNetworkComponent
     int getY();
     int getZ();
 
-    int getInsertLimit();
 
     void markHostDirty();
 }

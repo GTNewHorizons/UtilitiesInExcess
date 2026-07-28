@@ -12,9 +12,5 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ITransferNetworkLogic
 {
-    boolean canConnectEnergy();
-    boolean canConnectFluid();
-    boolean canConnectItem();
-
     int getMaxInsertable();
 }

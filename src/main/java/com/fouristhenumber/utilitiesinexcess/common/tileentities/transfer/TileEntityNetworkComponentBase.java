@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
-public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkLogic> extends TileEntity implements ITransferNetworkComponent
+public abstract class TileEntityNetworkComponentBase<T> extends TileEntity implements ITransferNetworkComponent
 {
     protected T logic;
 
@@ -39,11 +39,6 @@ public abstract class TileEntityNetworkComponentBase<T extends ITransferNetworkL
     @Override
     public int getZ() {
         return this.zCoord;
-    }
-
-    @Override
-    public int getInsertLimit() {
-        return logic.getMaxInsertable();
     }
 
     @Override

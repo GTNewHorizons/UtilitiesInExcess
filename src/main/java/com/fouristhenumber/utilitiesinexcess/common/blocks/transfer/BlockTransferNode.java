@@ -18,7 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderId;
+import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderID;
 
 public class BlockTransferNode extends BlockNodeBase {
 
@@ -78,14 +78,6 @@ public class BlockTransferNode extends BlockNodeBase {
             return name;
         }
 
-        public static TransferNodeType fromMeta(int meta) {
-            if (meta >= 0 && meta < TransferNodeType.values().length)
-            {
-                return TransferNodeType.values()[meta];
-            }
-            return FLUID;
-        }
-
         // Meta corresponds to the ForgeDirection that is pointing toward the target container.
         // So if the first three bits are equal to 5 then the target direction is east.
         public abstract IIcon getIcon(int side, int meta);
@@ -106,8 +98,9 @@ public class BlockTransferNode extends BlockNodeBase {
     }
 
     @Override
-    public int getRenderType() {
-        return flatNodeRenderId;
+    public int getRenderType()
+    {
+        return flatNodeRenderID;
     }
 
     @Override
@@ -134,7 +127,7 @@ public class BlockTransferNode extends BlockNodeBase {
     @Override
     public IIcon getIcon(int side, int meta)
     {
-        return TransferNodeType.fromMeta(meta >> 3).getIcon(side, meta);
+        return TransferNodeType.values()[(meta >> 3)].getIcon(side, meta);
     }
 
     @Override

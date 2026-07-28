@@ -1,6 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
+import cofh.api.energy.IEnergyConnection;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
@@ -11,15 +14,15 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FluidTargetResolver implements TargetResolver<IFluidHandler>
-{
+public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
 
-    public FluidTargetResolver()
+    public EnergyTargetResolver()
     {}
 
     @Override
-    public List<Target<IFluidHandler>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir) {
-        List<Target<IFluidHandler>> validTargets = new ArrayList<>();
+    public List<Target<IEnergyConnection>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir)
+    {
+        List<Target<IEnergyConnection>> validTargets = new ArrayList<>();
 
         Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
         if (block instanceof BlockTransferBase networkBlock)
@@ -40,7 +43,7 @@ public class FluidTargetResolver implements TargetResolver<IFluidHandler>
                         walkerPos.x + searchDir.offsetX,
                         walkerPos.y + searchDir.offsetY,
                         walkerPos.z + searchDir.offsetZ)
-                        instanceof IFluidHandler target) {
+                        instanceof IEnergyConnection target) {
                         validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
                     }
                 }
@@ -48,5 +51,4 @@ public class FluidTargetResolver implements TargetResolver<IFluidHandler>
         }
         return validTargets;
     }
-
 }

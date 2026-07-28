@@ -55,21 +55,6 @@ public class FilterPipeLogic extends DefaultNetworkLogic implements IInventory
         super(host);
     }
 
-    @Override
-    public boolean canConnectEnergy() {
-        return true;
-    }
-
-    @Override
-    public boolean canConnectFluid() {
-        return true;
-    }
-
-    @Override
-    public boolean canConnectItem() {
-        return true;
-    }
-
     public void readFromNBT(NBTTagCompound compound)
     {
         NBTTagList list = compound.getTagList("Items", 10);

@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderId;
+import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
@@ -9,10 +9,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransfe
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -134,12 +132,13 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean shouldRender3DInInventory(int modelId) {
+    public boolean shouldRender3DInInventory(int modelId)
+    {
         return true;
     }
 
     @Override
     public int getRenderId() {
-        return flatNodeRenderId;
+        return flatNodeRenderID;
     }
 }

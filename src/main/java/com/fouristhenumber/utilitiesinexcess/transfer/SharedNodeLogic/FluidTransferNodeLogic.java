@@ -149,21 +149,6 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
     }
 
     @Override
-    public boolean canConnectEnergy() {
-        return true;
-    }
-
-    @Override
-    public boolean canConnectFluid() {
-        return true;
-    }
-
-    @Override
-    public boolean canConnectItem() {
-        return true;
-    }
-
-    @Override
     public int getSizeInventory() {
         return 6;
     }

@@ -45,7 +45,7 @@ public abstract class BlockTransferBase extends BlockContainer
         }
         else
         {
-            TileEntity te = world.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+            TileEntity te = world.getTileEntity(x, y, z);
             connects = te instanceof IFluidHandler || te instanceof IInventory || te instanceof IEnergyHandler;
         }
         return connects;

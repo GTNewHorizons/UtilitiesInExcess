@@ -7,19 +7,13 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class TileEntityTransferNodeBase<T extends ITransferNetworkLogic> extends TileEntityNetworkComponentBase<T>
+public abstract class TileEntityTransferNodeBase<T> extends TileEntityNetworkComponentBase<T>
     implements INodeLogicHost
 {
-
-//    @Override
-//    public boolean canConnectToSide(ForgeDirection side)
-//    {
-//        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != side.ordinal();
-//    }
-
     @Override
-    public ForgeDirection getFacing() {
-        return ForgeDirection.getOrientation(worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+    public ForgeDirection getFacing()
+    {
+        return ForgeDirection.getOrientation(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 7);
     }
 
 

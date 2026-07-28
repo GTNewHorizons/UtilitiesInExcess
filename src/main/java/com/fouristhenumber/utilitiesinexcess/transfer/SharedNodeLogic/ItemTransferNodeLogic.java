@@ -600,21 +600,6 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
-    @Override
-    public boolean canConnectEnergy() {
-        return true;
-    }
-
-    @Override
-    public boolean canConnectFluid() {
-        return true;
-    }
-
-    @Override
-    public boolean canConnectItem() {
-        return true;
-    }
-
     public void updateSourceInventory()
     {
         ForgeDirection facing = host.getFacing();

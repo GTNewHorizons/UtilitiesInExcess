@@ -57,6 +57,4 @@ public class RandomStepper extends StepStrategy
     public BlockPos reset(BlockPos walkerPos, IWalkingComponent walkingComponent) {
         return walkerPos.set(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
     }
-
-
 }

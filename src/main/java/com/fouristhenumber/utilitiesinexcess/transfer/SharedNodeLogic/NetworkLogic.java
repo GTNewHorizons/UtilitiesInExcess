@@ -14,18 +14,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public abstract class NetworkLogic<T extends ITransferNetworkComponent> implements ITransferNetworkLogic
+public abstract class NetworkLogic<T extends ITransferNetworkComponent>
 {
     protected T host;
 
     public NetworkLogic(T host)
     {
         this.host = host;
-    }
-
-    @Override
-    public int getMaxInsertable()
-    {
-        return -1;
     }
 }
