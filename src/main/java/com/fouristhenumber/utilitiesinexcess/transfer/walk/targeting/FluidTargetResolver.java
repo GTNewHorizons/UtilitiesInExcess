@@ -1,25 +1,25 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
+package com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting;
 
-import cofh.api.energy.IEnergyConnection;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
+public class FluidTargetResolver implements TargetResolver<IFluidHandler>
+{
 
-    public EnergyTargetResolver()
+    public FluidTargetResolver()
     {}
 
     @Override
-    public List<Target<IEnergyConnection>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir)
-    {
-        List<Target<IEnergyConnection>> validTargets = new ArrayList<>();
+    public List<Target<IFluidHandler>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir) {
+        List<Target<IFluidHandler>> validTargets = new ArrayList<>();
 
         Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
         if (block instanceof BlockTransferBase networkBlock)
@@ -40,8 +40,7 @@ public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
                         walkerPos.x + searchDir.offsetX,
                         walkerPos.y + searchDir.offsetY,
                         walkerPos.z + searchDir.offsetZ)
-                        instanceof IEnergyConnection target)
-                    {
+                        instanceof IFluidHandler target) {
                         validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
                     }
                 }
@@ -49,4 +48,5 @@ public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
         }
         return validTargets;
     }
+
 }

@@ -4,10 +4,10 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransfe
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.ItemTargetResolver;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.ItemTargetResolver;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

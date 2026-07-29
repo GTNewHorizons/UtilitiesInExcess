@@ -18,8 +18,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -28,7 +27,6 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

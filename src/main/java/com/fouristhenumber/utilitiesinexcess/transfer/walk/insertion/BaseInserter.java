@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;

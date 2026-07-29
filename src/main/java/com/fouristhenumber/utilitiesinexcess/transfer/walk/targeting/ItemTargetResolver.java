@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
+package com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;

@@ -5,6 +5,8 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.*;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.EnergyTargetResolver;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import net.minecraft.world.World;
 
 import java.util.List;

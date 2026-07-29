@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
-import cpw.mods.fml.common.registry.GameRegistry;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;

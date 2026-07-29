@@ -19,11 +19,12 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -83,33 +84,68 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         walker.step(host.getWorld());
     }
 
-    // TODO MAKE THIS SIDED
+    // Watch this one. I was lazy and had GPT re-write it to be sided.
     public void importItems()
     {
-        for (int slot = 0; slot < connectedInventory.getSizeInventory(); slot++)
+        ForgeDirection facing = host.getFacing();
+        // Determine which slots we are allowed to access
+        int[] slots;
+
+        if (connectedInventory instanceof ISidedInventory sided)
+        {
+            slots = sided.getAccessibleSlotsFromSide(facing.ordinal());
+        }
+        else
+        {
+            int size = connectedInventory.getSizeInventory();
+            slots = new int[size];
+            for (int i = 0; i < size; i++)
+            {
+                slots[i] = i;
+            }
+        }
+
+        for (int slot : slots)
         {
             ItemStack stackInSlot = connectedInventory.getStackInSlot(slot);
-            if (stackInSlot != null)
+            if (stackInSlot == null)
             {
-                if (buffer[0] == null)
+                continue;
+            }
+
+            // Respect sided extraction rules if applicable
+            if (connectedInventory instanceof ISidedInventory sided)
+            {
+                if (!sided.canExtractItem(slot, stackInSlot, facing.ordinal()))
                 {
-                    buffer[0] = stackInSlot.splitStack(1);
-                    if (stackInSlot.stackSize <= 0)
-                    {
-                        connectedInventory.setInventorySlotContents(slot, null);
-                    }
-                    break;
+                    continue;
                 }
-                else if (buffer[0].isItemEqual(stackInSlot))
+            }
+
+            if (buffer[0] == null)
+            {
+                buffer[0] = stackInSlot.splitStack(1);
+
+                if (stackInSlot.stackSize <= 0)
                 {
-                    stackInSlot.splitStack(1);
-                    buffer[0].stackSize += 1;
-                    if (stackInSlot.stackSize <= 0)
-                    {
-                        connectedInventory.setInventorySlotContents(slot, null);
-                    }
-                    break;
+                    connectedInventory.setInventorySlotContents(slot, null);
                 }
+
+                connectedInventory.markDirty();
+                break;
+            }
+            else if (buffer[0].isItemEqual(stackInSlot))
+            {
+                stackInSlot.splitStack(1);
+                buffer[0].stackSize += 1;
+
+                if (stackInSlot.stackSize <= 0)
+                {
+                    connectedInventory.setInventorySlotContents(slot, null);
+                }
+
+                connectedInventory.markDirty();
+                break;
             }
         }
     }

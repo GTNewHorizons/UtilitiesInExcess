@@ -11,9 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 // Energy Steppers are unique in how they step. They are also unaffected by
-// upgrades to step strategies
+// upgrades to step strategies.
 public class EnergyStepper extends StepStrategy
 {
     LongArrayFIFOQueue stepQueue = new LongArrayFIFOQueue();
