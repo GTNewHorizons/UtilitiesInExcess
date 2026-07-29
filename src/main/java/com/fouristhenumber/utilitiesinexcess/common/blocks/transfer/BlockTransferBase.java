@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyHandler;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -29,6 +30,8 @@ public abstract class BlockTransferBase extends BlockContainer
 
     // Given a block can it connect to the block from the given direction.
     public abstract boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction);
+
+    public abstract BaseInserter getInserter(int meta);
 
     public int maxInsertable(int metadata)
     {

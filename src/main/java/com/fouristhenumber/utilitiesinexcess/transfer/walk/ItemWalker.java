@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.ItemTargetResolver;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
@@ -9,6 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolve
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import scala.util.hashing.Hashing;
 
 import java.util.List;
 
@@ -36,16 +39,15 @@ public class ItemWalker extends WalkerBase<IInventory, ItemStack>
         return targeter.getValidTargets(world, walkerPos, walkingComponent, stepper.fromDirection);
     }
 
-    // TODO
     // Gets the amount of items that can be put into an inventory by a certain component. This is relevant
     // for rationing pipes. If result is -1, the limit is ignored.
-    @Override
-    public int getInsertLimit(World world, int x, int y, int z) {
-        if (world.getBlock(x, y, z) instanceof BlockTransferBase networkBlock)
+    public BaseInserter getInserter(World world)
+    {
+        if (world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z) instanceof BlockTransferBase transferBase)
         {
-            return networkBlock.maxInsertable(world.getBlockMetadata(x, y, z));
+            return transferBase.getInserter(world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z));
         }
-        return -1;
+        return new DefaultInserter();
     }
 
     @Override

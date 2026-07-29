@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemRetrievalNode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,33 +10,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderID;
+public class BlockRetrievalNode extends BlockNodeBase
+{
 
-public class BlockTransferNode extends BlockNodeBase {
-
-    public enum TransferNodeType
+    public enum RetrievalNodeType
     {
-        ITEM("transfer_node_item", "transfer_node_item_top", "transfer_node_item_face"),
-        FLUID("transfer_node_fluid", "transfer_node_fluid_top", "transfer_node_fluid_face");
+        ITEM("retrieval_node_item", "retrieval_node_item_top", "retrieval_node_item_face"),
+        FLUID("retrieval_node_fluid", "retrieval_node_fluid_top", "retrieval_node_fluid_face");
 
         private final String name;
         private final String[] textureNames;
         protected IIcon[] iicons;
 
-        TransferNodeType(String name)
+        RetrievalNodeType(String name)
         {
             this(name, name);
         }
 
-        TransferNodeType(String name, String... textures)
+        RetrievalNodeType(String name, String... textures)
         {
             this.name = name;
             this.textureNames = textures;
@@ -68,15 +63,15 @@ public class BlockTransferNode extends BlockNodeBase {
         }
     }
 
-    public BlockTransferNode() {
+    public BlockRetrievalNode() {
         super();
-        setBlockName("transfer_node");
+        setBlockName("retrieval_node");
     }
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (int i = 0; i < TransferNodeType.values().length; i++)
+        for (int i = 0; i < BlockRetrievalNode.RetrievalNodeType.values().length; i++)
         {
             list.add(new ItemStack(itemIn, 1, i));
         }
@@ -87,18 +82,18 @@ public class BlockTransferNode extends BlockNodeBase {
 
         if (metadata >> 3 == 0)
         {
-            return new TileEntityItemTransferNode();
+            return new TileEntityItemRetrievalNode();
         }
-        return new TileEntityFluidTransferNode();
+        return new TileEntityFluidRetrievalNode();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg)
     {
-        for (int i = 0; i < TransferNodeType.values().length; i++)
+        for (int i = 0; i < BlockTransferNode.TransferNodeType.values().length; i++)
         {
-            TransferNodeType.values()[i].registerIcon(reg);
+            BlockRetrievalNode.RetrievalNodeType.values()[i].registerIcon(reg);
         }
     }
 
@@ -106,6 +101,6 @@ public class BlockTransferNode extends BlockNodeBase {
     @Override
     public IIcon getIcon(int side, int meta)
     {
-        return TransferNodeType.values()[(meta >> 3)].getIcon(side, meta);
+        return BlockRetrievalNode.RetrievalNodeType.values()[(meta >> 3)].getIcon(side, meta);
     }
 }

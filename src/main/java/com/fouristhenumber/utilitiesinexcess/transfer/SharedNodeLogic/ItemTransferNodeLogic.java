@@ -18,6 +18,7 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,6 +47,9 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         this.walker = new ItemWalker(host);
     }
 
+    // Perhaps the best way to do this is creating a inserter logic that deals with insertion?
+    // You can call walker.getInserter() then do inserter.insert()?
+
     // Note that I did write quite lengthy insertion logic for this. I felt that it is more important to keep the
     // logic concise and fast for the cases where there is no rationing pipe.
     public void updateEntity()
@@ -72,43 +76,10 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
         List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
         if (!targets.isEmpty())
         {
-            // As mentioned elsewhere some pipes have a maximum insertion limit.
-            int insertLimit = walker.getInsertLimit(host.getWorld(), host.getX(), host.getY(), host.getZ());
-            if (insertLimit == -1) // Unlimited insert logic
+            BaseInserter inserter = walker.getInserter(host.getWorld());
+            for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
             {
-                for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
-                {
-                    if (target.handler instanceof ISidedInventory sidedInventory) // Sided logic
-                    {
-                        buffer[0] = TryInsertItemSided(sidedInventory, buffer[0], target.side);
-                    }
-                    else // Basic logic
-                    {
-                        buffer[0] = TryInsertItem(target.handler, buffer[0]);
-                    }
-                    if (buffer[0] == null)
-                    {
-                        break;
-                    }
-                }
-            }
-            else // Limited insert logic
-            {
-                for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
-                {
-                    if (target.handler instanceof ISidedInventory sidedInventory) // Sided logic
-                    {
-                        buffer[0] = TryInsertItemSidedLimited(sidedInventory, buffer[0], target.side, insertLimit);
-                    }
-                    else // Basic logic
-                    {
-                        buffer[0] = TryInsertItemLimited(target.handler, buffer[0], insertLimit);
-                    }
-                    if (buffer[0] == null)
-                    {
-                        break;
-                    }
-                }
+                inserter.insert(target, buffer[0]);
             }
         }
         walker.step(host.getWorld());
@@ -143,294 +114,6 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
                 }
             }
         }
-    }
-
-    // Insertion logic for non-sided inventories where there's a maxAllowed in the inventory
-    public ItemStack TryInsertItemLimited(IInventory inventory, ItemStack stack, int maxAllowed)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
-            return null;
-        }
-
-        int size = inventory.getSizeInventory();
-
-        // I'm using IntArrayLists to be the fastest.
-        // Even entries are slot numbers and subsequent odd entries are the amount of items that can be put into them.
-        IntArrayList mergeableSlots = new IntArrayList();
-        IntArrayList emptySlots = new IntArrayList();
-
-        int found = 0;
-
-        for (int slot = 0; slot < size; slot++)
-        {
-            if (!inventory.isItemValidForSlot(slot, stack))
-            {
-                continue;
-            }
-
-            ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
-                emptySlots.add(slot);
-                emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else if (canStacksMerge(existing, stack))
-            {
-                found += existing.stackSize;
-                if (found >= maxAllowed)
-                {
-                    return stack;
-                }
-
-                int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
-                int space = max - existing.stackSize;
-                if (space > 0)
-                {
-                    mergeableSlots.add(slot);
-                    mergeableSlots.add(space);
-                }
-            }
-        }
-
-        int preMergeStackSize = stack.stackSize;
-        // Once for mergeable slots first, then the empty slots.
-        StackToInventoryMergingHelperLimited(mergeableSlots, inventory, stack, found, maxAllowed);
-        if (stack.stackSize <= 0)
-        {
-            return null;
-        }
-        found += preMergeStackSize - stack.stackSize;
-        return StackToInventoryMergingHelperLimited(emptySlots, inventory, stack, found, maxAllowed);
-    }
-
-    // Insertion logic for sided inventories where there's a maxAllowed in the inventory
-    public ItemStack TryInsertItemSidedLimited(ISidedInventory inventory, ItemStack stack, int side, int maxAllowed)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
-            return null;
-        }
-
-        int[] slots = inventory.getAccessibleSlotsFromSide(side);
-
-        // I'm using IntArrayLists to be the fastest.
-        // Even entries are slot numbers and subsequent odd entries are the amount of items that can be put into them.
-        IntArrayList mergeableSlots = new IntArrayList();
-        IntArrayList emptySlots = new IntArrayList();
-
-        int found = 0;
-        for (int slot : slots)
-        {
-            if (!inventory.canInsertItem(slot, stack, side))
-            {
-                continue;
-            }
-
-            ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
-                emptySlots.add(slot);
-                emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else if (canStacksMerge(existing, stack))
-            {
-                found += existing.stackSize;
-                if (found >= maxAllowed)
-                {
-                    return stack;
-                }
-
-                int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
-                int space = max - existing.stackSize;
-                if (space > 0)
-                {
-                    mergeableSlots.add(slot);
-                    mergeableSlots.add(space);
-                }
-            }
-        }
-
-        // Once for mergeable slots first, then the empty slots.
-        int preMergeStackSize = stack.stackSize;
-        StackToInventoryMergingHelperLimited(mergeableSlots, inventory, stack, found, maxAllowed);
-        if (stack.stackSize <= 0)
-        {
-            return null;
-        }
-        found += preMergeStackSize - stack.stackSize;
-        return StackToInventoryMergingHelperLimited(emptySlots, inventory, stack, found, maxAllowed);
-    }
-
-    // Helper for consistent inventory insertion/merging
-    private ItemStack StackToInventoryMergingHelperLimited(IntArrayList slotInfo, IInventory inventory, ItemStack insertionStack, int currentItemsInInventory, int maxAllowedInInventory)
-    {
-        int insertAmount = maxAllowedInInventory - currentItemsInInventory;
-        for (int i = 0; i < slotInfo.size(); i += 2)
-        {
-            int slot = slotInfo.getInt(i);
-            int amountInsertable = Math.min(slotInfo.getInt(i + 1), Math.min(insertionStack.stackSize, insertAmount));
-            insertionStack.stackSize -= amountInsertable;
-            currentItemsInInventory += amountInsertable;
-            if (inventory.getStackInSlot(slot) == null)
-            {
-                ItemStack newStack = insertionStack.copy();
-                newStack.stackSize = amountInsertable;
-                inventory.setInventorySlotContents(slot, newStack);
-            }
-            else
-            {
-                inventory.getStackInSlot(slot).stackSize += amountInsertable;
-            }
-
-            if (currentItemsInInventory == maxAllowedInInventory)
-            {
-                if (insertionStack.stackSize <= 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return insertionStack;
-                }
-            }
-            if (insertionStack.stackSize <= 0)
-            {
-                return null;
-            }
-        }
-        return insertionStack;
-    }
-
-    // Default sided insertion logic
-    public ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
-            return null;
-        }
-
-        int[] slots = inventory.getAccessibleSlotsFromSide(side);
-
-        IntArrayList mergeableSlots = new IntArrayList();
-        IntArrayList emptySlots = new IntArrayList();
-
-        // Note that we have to iterate the whole inventory first or we won't know if there's mergable slots
-        for (int slot : slots)
-        {
-            if (!inventory.canInsertItem(slot, stack, side))
-            {
-                continue;
-            }
-
-            ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
-                emptySlots.add(slot);
-                emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else if (canStacksMerge(existing, stack))
-            {
-                int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
-                int space = max - existing.stackSize;
-                if (space > 0)
-                {
-                    mergeableSlots.add(slot);
-                    mergeableSlots.add(space);
-                }
-            }
-        }
-        StackToInventoryMergingHelper(mergeableSlots, inventory, stack);
-        if (stack.stackSize <= 0)
-        {
-            return null;
-        }
-        return StackToInventoryMergingHelper(emptySlots, inventory, stack);
-    }
-
-    // Default insertion logic
-    public ItemStack TryInsertItem(IInventory inventory, ItemStack stack)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
-            return null;
-        }
-
-        int size = inventory.getSizeInventory();
-
-        // I'm using IntArrayLists to be the fastest.
-        // Even entries are slot numbers and subsequent odd entries are the amount of items that can be put into them.
-        IntArrayList mergeableSlots = new IntArrayList();
-        IntArrayList emptySlots = new IntArrayList();
-
-        for (int slot = 0; slot < size; slot++)
-        {
-            if (!inventory.isItemValidForSlot(slot, stack))
-            {
-                continue;
-            }
-
-            ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
-                emptySlots.add(slot);
-                emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else if (canStacksMerge(existing, stack))
-            {
-
-
-                int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
-                int space = max - existing.stackSize;
-                if (space > 0)
-                {
-                    mergeableSlots.add(slot);
-                    mergeableSlots.add(space);
-                }
-            }
-        }
-        StackToInventoryMergingHelper(mergeableSlots, inventory, stack);
-        if (stack.stackSize <= 0)
-        {
-            return null;
-        }
-        return StackToInventoryMergingHelper(emptySlots, inventory, stack);
-    }
-
-    // Helper for consistent inventory insertion/merging
-    private ItemStack StackToInventoryMergingHelper(IntArrayList slotInfo, IInventory inventory, ItemStack insertionStack)
-    {
-        for (int i = 0; i < slotInfo.size(); i += 2)
-        {
-            int slot = slotInfo.getInt(i);
-            int amountInsertable = Math.min(slotInfo.getInt(i + 1), insertionStack.stackSize);
-            insertionStack.stackSize -= amountInsertable;
-            if (inventory.getStackInSlot(slot) == null)
-            {
-                ItemStack newStack = insertionStack.copy();
-                newStack.stackSize = amountInsertable;
-                inventory.setInventorySlotContents(slot, newStack);
-            }
-            else
-            {
-                inventory.getStackInSlot(slot).stackSize += amountInsertable;
-            }
-
-            if (insertionStack.stackSize <= 0)
-            {
-                return null;
-            }
-        }
-        return insertionStack;
-    }
-
-    // Not sure if this is the correct way to do this tbh. I don't know if any of the built in
-    // itemstack stuff is better.
-    private static boolean canStacksMerge(ItemStack a, ItemStack b)
-    {
-        return a.getItem() == b.getItem()
-            && a.getItemDamage() == b.getItemDamage()
-            && ItemStack.areItemStackTagsEqual(a, b);
     }
 
     public void writeToNBT(NBTTagCompound nbt)

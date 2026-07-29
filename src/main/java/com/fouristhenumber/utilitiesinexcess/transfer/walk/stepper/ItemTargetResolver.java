@@ -5,6 +5,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingCo
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,7 +19,8 @@ public class ItemTargetResolver implements TargetResolver<IInventory> {
     }
 
     @Override
-    public List<Target<IInventory>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir) {
+    public List<Target<IInventory>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir)
+    {
         List<Target<IInventory>> validTargets = new ArrayList<>();
 
         Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
@@ -35,11 +37,12 @@ public class ItemTargetResolver implements TargetResolver<IInventory> {
                     continue;
                 }
 
-                if (world.getTileEntity(
+                TileEntity te = world.getTileEntity(
                     walkerPos.x + searchDir.offsetX,
                     walkerPos.y + searchDir.offsetY,
-                    walkerPos.z + searchDir.offsetZ)
-                    instanceof IInventory target) {
+                    walkerPos.z + searchDir.offsetZ);
+                if (te instanceof IInventory target)
+                {
                     validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
                 }
             }

@@ -6,6 +6,7 @@ import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInve
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -32,11 +33,11 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         tess.setNormal(0, 1, 0);
 
         renderer.setRenderBounds(0, 0, 0, 1, t, 1);
-        renderInventoryCube(renderer, block, metadata);
+        renderInventoryCube(renderer, block, metadata << 3);
         renderer.setRenderBounds(s12Half, t, s12Half, s12Half + s12, 2f * t, s12Half + s12);
-        renderInventoryCube(renderer, block, metadata);
+        renderInventoryCube(renderer, block, metadata << 3);
         renderer.setRenderBounds(s8Half, 2f * t, s8Half, s8Half + s8, 3f * t, s8Half + s8);
-        renderInventoryCube(renderer, block, metadata);
+        renderInventoryCube(renderer, block, metadata << 3);
 
         tess.draw();
     }
@@ -124,9 +125,10 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
         if (block instanceof BlockTransferBase transferBase)
         {
-
             int mask = transferBase.getConnectionMask(world, x, y, z, world.getBlockMetadata(x, y, z));
+            renderer.setOverrideBlockTexture(PipeType.TRANSFER.getIcon(0));
             RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
+            renderer.clearOverrideBlockTexture();
         }
         return true;
     }
