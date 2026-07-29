@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
@@ -92,16 +93,10 @@ public enum ModTileEntities {
     FILING_CABINET_ELITE(TileEntityFilingCabinet.Elite.class                   , "FilingCabinetElite"),
     COLLECTOR(TileEntityCollector.class                                        , "Collector"),
     SMART_PUMP(TileEntitySmartPump.class                                       , "SmartPump"),
-//    TRANSFER_PIPE(TileEntityTransferPipe.class                                 , "TransferPipe"),
-//    CROSSOVER_PIPE(TileEntityCrossoverPipe.class                               , "CrossoverPipe"),
-//    SORTING_PIPE(TileEntitySortingPipe.class                                   , "SortingPipe"),
-//    RATIONING_PIPE(TileEntityRationingPipe.class                               , "RationingPipe"),
-//    HYPER_RATIONING_PIPE(TileEntityHyperRationingPipe.class                    , "HyperRationingPipe"),
     FILTER_PIPE(TileEntityFilterPipe.class                                     , "FilterPipe"),
-//    ENERGY_PIPE(TileEntityEnergyPipe.class                                     , "EnergyPipe"),
-//    MOD_SORTING_PIPE(TileEntityModSortingPipe.class                            , "ModSortingPipe"),
     ITEM_TRANSFER_NODE(TileEntityItemTransferNode.class                        , "ItemTransferNode"),
-    FLUID_TRANSFER_NODE(TileEntityFluidTransferNode.class                      , "FluidTransferNode")
+    FLUID_TRANSFER_NODE(TileEntityFluidTransferNode.class                      , "FluidTransferNode"),
+    ENERGY_TRANSFER_NODE(TileEntityEnergyTransferNode.class                    , "EnergyTransferNode")
     ;
     // spotless:on
 

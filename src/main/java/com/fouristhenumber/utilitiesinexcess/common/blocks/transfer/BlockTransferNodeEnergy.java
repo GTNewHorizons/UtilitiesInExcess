@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
+import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
@@ -8,6 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +27,7 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
 
     public enum EnergyNodeType {
         BASE("transfer_node_energy"),
-        HYPER("transfer_node_fluid");
+        HYPER("transfer_node_hyper_energy");
 
         private final String name;
         private final String textureName;
@@ -45,18 +47,11 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
             return name;
         }
 
-        public IIcon getIcon(int side, int meta)
+        public IIcon getIcon()
         {
             return iicon;
         }
     }
-
-    public IIcon[] iicons = new IIcon[2];
-    public String[] textureNames = new String[]
-    {
-        "transfer_node_energy",
-        "transfer_node_hyper_energy"
-    };
 
     public BlockTransferNodeEnergy()
     {
@@ -74,9 +69,9 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg)
     {
-        for (int i = 0; i < textureNames.length; i++)
+        for (int i = 0; i < EnergyNodeType.values().length; i++)
         {
-            this.iicons[0] = reg.registerIcon("utilitiesinexcess:" + textureNames[0]);
+            EnergyNodeType.values()[i].registerIcon(reg);
         }
     }
 
@@ -84,7 +79,7 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     @Override
     public IIcon getIcon(int side, int meta)
     {
-        return iicons[meta];
+        return EnergyNodeType.values()[meta].getIcon();
     }
 
     @SideOnly(Side.CLIENT)
@@ -131,4 +126,28 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     {
         return true;
     }
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+                                    float subY, float subZ) {
+        if (!worldIn.isRemote) GuiFactories.tileEntity()
+            .open(player, x, y, z);
+        return true;
+    }
+
 }

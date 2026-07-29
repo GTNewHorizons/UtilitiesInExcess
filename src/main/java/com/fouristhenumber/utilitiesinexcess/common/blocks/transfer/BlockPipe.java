@@ -152,7 +152,7 @@ public class BlockPipe extends BlockTransferBase
     {
         if (!worldIn.isRemote)
         {
-            if (worldIn.getBlockMetadata(x, y, z) == 2 && worldIn.getTileEntity(x, y, z) instanceof TileEntityFilterPipe)
+            if (worldIn.getBlockMetadata(x, y, z) == PipeType.FILTER.ordinal() && worldIn.getTileEntity(x, y, z) instanceof TileEntityFilterPipe)
             {
                 GuiFactories.tileEntity().open(player, x, y, z);
             }
