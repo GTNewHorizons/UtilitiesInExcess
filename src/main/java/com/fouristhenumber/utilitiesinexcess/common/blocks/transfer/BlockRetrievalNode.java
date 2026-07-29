@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -102,5 +104,10 @@ public class BlockRetrievalNode extends BlockNodeBase
     public IIcon getIcon(int side, int meta)
     {
         return BlockRetrievalNode.RetrievalNodeType.values()[(meta >> 3)].getIcon(side, meta);
+    }
+
+    @Override
+    public BaseInserter getInserter(int meta) {
+        return new DefaultInserter();
     }
 }

@@ -2,6 +2,11 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.ModSortedInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.RationedInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.SortedInserter;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -83,20 +88,37 @@ public enum PipeType
             return 0;
         }
     },
-    SORTING("sorting_pipe"),
-    MODSORTING("mod_sorting_pipe"),
+    SORTING("sorting_pipe")
+    {
+
+        @Override
+        public BaseInserter getInserter()
+        {
+            return new SortedInserter();
+        }
+    },
+    MODSORTING("mod_sorting_pipe")
+    {
+        @Override
+        public BaseInserter getInserter()
+        {
+            return new ModSortedInserter();
+        }
+    },
     RATIONING("rationing_pipe")
     {
-        public int maxInsertable()
+        @Override
+        public BaseInserter getInserter()
         {
-            return 64;
+            return new RationedInserter(64);
         }
     },
     HYPERRATIONING("hyper_rationing_pipe")
     {
-        public int maxInsertable()
+        @Override
+        public BaseInserter getInserter()
         {
-            return 1;
+            return new RationedInserter(1);
         }
     },
     ENERGY("energy_pipe"),
@@ -180,8 +202,7 @@ public enum PipeType
         return true;
     }
 
-    public int maxInsertable()
-    {
-        return -1;
+    public BaseInserter getInserter() {
+        return new DefaultInserter();
     }
 }

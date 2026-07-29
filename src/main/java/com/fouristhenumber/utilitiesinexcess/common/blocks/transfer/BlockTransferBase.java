@@ -33,11 +33,6 @@ public abstract class BlockTransferBase extends BlockContainer
 
     public abstract BaseInserter getInserter(int meta);
 
-    public int maxInsertable(int metadata)
-    {
-        return -1;
-    }
-
     public static boolean isValidConnectable(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
     {
         boolean connects;

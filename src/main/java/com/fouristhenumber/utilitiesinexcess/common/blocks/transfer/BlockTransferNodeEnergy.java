@@ -4,6 +4,8 @@ import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -150,4 +152,8 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
         return true;
     }
 
+    @Override
+    public BaseInserter getInserter(int meta) {
+        return new DefaultInserter();
+    }
 }

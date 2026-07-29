@@ -2,6 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -71,6 +73,11 @@ public class BlockTransferNode extends BlockNodeBase {
     public BlockTransferNode() {
         super();
         setBlockName("transfer_node");
+    }
+
+    @Override
+    public BaseInserter getInserter(int meta) {
+        return new DefaultInserter();
     }
 
     @SideOnly(Side.CLIENT)

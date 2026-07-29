@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class RationedInserter extends BaseInserter
 {
     int limit;
-    RationedInserter(int limit)
+    public RationedInserter(int limit)
     {
         this.limit = limit;
     }
@@ -134,16 +134,38 @@ public class RationedInserter extends BaseInserter
     }
 
     // Helper for consistent inventory insertion/merging
-    private ItemStack StackToInventoryMergingHelperLimited(IntArrayList slotInfo, IInventory inventory, ItemStack insertionStack, int currentItemsInInventory)
+    private ItemStack StackToInventoryMergingHelperLimited(
+        IntArrayList slotInfo,
+        IInventory inventory,
+        ItemStack insertionStack,
+        int currentItemsInInventory)
     {
-        int insertAmount = limit - currentItemsInInventory;
         for (int i = 0; i < slotInfo.size(); i += 2)
         {
+            int insertAmount = limit - currentItemsInInventory;
+            if (insertAmount <= 0)
+            {
+                return insertionStack.stackSize <= 0 ? null : insertionStack;
+            }
+
             int slot = slotInfo.getInt(i);
-            int amountInsertable = Math.min(slotInfo.getInt(i + 1), Math.min(insertionStack.stackSize, insertAmount));
+
+            int amountInsertable = Math.min(
+                slotInfo.getInt(i + 1),
+                Math.min(insertionStack.stackSize, insertAmount)
+            );
+
+            if (amountInsertable <= 0)
+            {
+                continue;
+            }
+
             insertionStack.stackSize -= amountInsertable;
             currentItemsInInventory += amountInsertable;
-            if (inventory.getStackInSlot(slot) == null)
+
+            ItemStack existing = inventory.getStackInSlot(slot);
+
+            if (existing == null)
             {
                 ItemStack newStack = insertionStack.copy();
                 newStack.stackSize = amountInsertable;
@@ -151,25 +173,15 @@ public class RationedInserter extends BaseInserter
             }
             else
             {
-                inventory.getStackInSlot(slot).stackSize += amountInsertable;
+                existing.stackSize += amountInsertable;
             }
 
-            if (currentItemsInInventory == limit)
-            {
-                if (insertionStack.stackSize <= 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return insertionStack;
-                }
-            }
             if (insertionStack.stackSize <= 0)
             {
                 return null;
             }
         }
+
         return insertionStack;
     }
 

@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -197,8 +198,8 @@ public class BlockPipe extends BlockTransferBase
     }
 
     @Override
-    public int maxInsertable(int metadata)
-    {
-        return PipeType.values()[metadata].maxInsertable();
+    public BaseInserter getInserter(int meta) {
+        return PipeType.values()[meta].getInserter();
     }
+
 }
