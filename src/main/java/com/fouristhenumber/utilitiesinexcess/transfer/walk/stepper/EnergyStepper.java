@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
@@ -38,9 +38,9 @@ public class EnergyStepper extends StepStrategy
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                 if ((validDirs & (1 << dir.ordinal())) != 0)
                 {
-                    int nx = walkerPos.x;
-                    int ny = walkerPos.y;
-                    int nz = walkerPos.z;
+                    int nx = walkerPos.x + dir.offsetX;
+                    int ny = walkerPos.y + dir.offsetY;
+                    int nz = walkerPos.z + dir.offsetZ;
 
                     if (world.getBlock(nx, ny, nz) instanceof BlockTransferBase)
                     {

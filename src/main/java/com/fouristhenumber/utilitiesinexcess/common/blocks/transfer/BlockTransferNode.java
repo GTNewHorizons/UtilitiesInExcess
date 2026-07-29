@@ -1,7 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import cpw.mods.fml.relauncher.Side;
@@ -12,15 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
-
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderID;
 
 public class BlockTransferNode extends BlockNodeBase {
 

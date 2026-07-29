@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.pipe;
+package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.DefaultNetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 import com.fouristhenumber.utilitiesinexcess.utils.filter.ItemFilter;

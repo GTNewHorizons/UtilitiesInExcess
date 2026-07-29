@@ -1,15 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
 import cofh.api.energy.IEnergyConnection;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,8 @@ public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
                         walkerPos.x + searchDir.offsetX,
                         walkerPos.y + searchDir.offsetY,
                         walkerPos.z + searchDir.offsetZ)
-                        instanceof IEnergyConnection target) {
+                        instanceof IEnergyConnection target)
+                    {
                         validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
                     }
                 }

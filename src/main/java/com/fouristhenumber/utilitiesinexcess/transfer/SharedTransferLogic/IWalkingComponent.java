@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
 // Honestly I don't like how I'm doing this with the inheritance.
 public interface IWalkingComponent<T> extends INodeLogicHost

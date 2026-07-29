@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 import cofh.api.energy.IEnergyConnection;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.*;
 import net.minecraft.world.World;
 
@@ -16,7 +16,7 @@ public class EnergyWalker extends WalkerBase<IEnergyConnection, Integer>
     StepStrategy stepper;
     TargetResolver<IEnergyConnection> targeter;
 
-    EnergyWalker(IWalkingComponent<Integer> walkingComponent) {
+    public EnergyWalker(IWalkingComponent<Integer> walkingComponent) {
         super(walkingComponent);
         stepper = new EnergyStepper(TransportType.ENERGY);
         targeter = new EnergyTargetResolver();

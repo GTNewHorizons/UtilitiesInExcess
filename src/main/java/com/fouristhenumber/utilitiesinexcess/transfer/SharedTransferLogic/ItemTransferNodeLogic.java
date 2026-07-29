@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -22,10 +22,8 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserte
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

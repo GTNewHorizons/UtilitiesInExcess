@@ -2,8 +2,10 @@ package com.fouristhenumber.utilitiesinexcess;
 
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnergyNode;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import net.minecraft.block.Block;
@@ -186,7 +188,7 @@ public enum ModBlocks {
     TRANSFER_PIPE(TransferConfig.INSTANCE.EnableTransferSystem, new BlockPipe(), ItemPipe.class, "transfer_pipe"),
     TRANSFER_NODE(TransferConfig.INSTANCE.EnableTransferSystem, new BlockTransferNode(), ItemTransferNode.class, "transfer_node"),
     TRANSFER_NODE_ENERGY(TransferConfig.INSTANCE.EnableTransferSystem, new BlockTransferNodeEnergy(), ItemEnergyNode.class, "transfer_node_energy"),
-//    RETRIEVAL_NODE(true, new BlockRetrievalNode(), "retrieval_node"),
+    RETRIEVAL_NODE(TransferConfig.INSTANCE.EnableTransferSystem, new BlockRetrievalNode(), ItemRetrievalNode.class, "retrieval_node"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),

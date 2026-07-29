@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 

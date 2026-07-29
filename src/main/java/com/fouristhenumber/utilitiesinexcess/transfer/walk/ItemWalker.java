@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.ItemTargetResolver;
@@ -11,7 +11,6 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.TargetResolve
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import scala.util.hashing.Hashing;
 
 import java.util.List;
 

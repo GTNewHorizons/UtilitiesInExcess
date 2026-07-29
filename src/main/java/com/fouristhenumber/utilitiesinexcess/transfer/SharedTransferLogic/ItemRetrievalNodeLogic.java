@@ -1,16 +1,20 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedNodeLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IInventory
+public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IInventory
 {
-    public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host) {
+    public ItemRetrievalNodeLogic(TileEntityFluidRetrievalNode host) {
         super(host);
     }
 
+    // Weird thing to note, retrieval node walkers just get locked out of filter pipes in all directions that are filtered.
+    // Also, retrieval pipes will reset once one type of item has been emptied from the target inventory.
+    // For example if you have 50 cobble and 10 dirt. It will take out all the dirt, reset, then take out all
+    // the cobble on the next time it finds the target inventory.
     public void updateEntity()
     {
 
