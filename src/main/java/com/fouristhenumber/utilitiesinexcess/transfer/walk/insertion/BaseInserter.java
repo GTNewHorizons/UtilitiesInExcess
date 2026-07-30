@@ -8,15 +8,15 @@ import net.minecraft.item.ItemStack;
 
 public abstract class BaseInserter
 {
-    public void insert(TargetResolver.Target<IInventory> target, ItemStack stack)
+    public ItemStack insert(TargetResolver.Target<IInventory> target, ItemStack stack)
     {
         if (target.handler instanceof ISidedInventory sidedInventory) // Sided logic
         {
-            stack = TryInsertItemSided(sidedInventory, stack, target.side);
+            return TryInsertItemSided(sidedInventory, stack, target.side);
         }
         else // Basic logic
         {
-            stack = TryInsertItem(target.handler, stack);
+            return TryInsertItem(target.handler, stack);
         }
     }
 

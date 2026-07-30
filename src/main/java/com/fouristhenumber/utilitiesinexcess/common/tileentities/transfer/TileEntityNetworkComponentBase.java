@@ -8,8 +8,6 @@ public abstract class TileEntityNetworkComponentBase<T> extends TileEntity imple
 {
     protected T logic;
 
-    protected abstract T createLogic();
-
     @Override
     public World getWorld() {
         return this.worldObj;

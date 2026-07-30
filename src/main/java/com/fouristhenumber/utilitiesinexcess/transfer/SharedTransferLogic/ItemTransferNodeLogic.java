@@ -78,7 +78,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
             BaseInserter inserter = walker.getInserter(host.getWorld());
             for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
             {
-                inserter.insert(target, buffer[0]);
+                buffer[0] = inserter.insert(target, buffer[0]);
             }
         }
         walker.step(host.getWorld());
@@ -88,7 +88,6 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
     public void importItems()
     {
         ForgeDirection facing = host.getFacing();
-        // Determine which slots we are allowed to access
         int[] slots;
 
         if (connectedInventory instanceof ISidedInventory sided)

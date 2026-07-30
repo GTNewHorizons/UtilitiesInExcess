@@ -3,21 +3,23 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterPipeLogic>
-    implements IGuiHolder<PosGuiData>, IInventory
+    implements IGuiHolder<PosGuiData>
 {
 
     public TileEntityFilterPipe()
     {
+        this.logic = new FilterPipeLogic(this);
     }
 
     public int getValidMask(ForgeDirection fromDirection, ItemStack stack)
@@ -42,69 +44,12 @@ public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterP
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
-        return logic.buildUI(data, syncManager, settings, this);
+        return logic.buildUI(data, syncManager, settings);
     }
 
     @Override
-    public int getSizeInventory() {
-        return logic.getSizeInventory();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slotIn) {
-        return logic.getStackInSlot(slotIn);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return logic.decrStackSize(index, count);
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        return logic.getStackInSlotOnClosing(index);
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        logic.setInventorySlotContents(index, stack);
-    }
-
-    @Override
-    public String getInventoryName() {
-        return logic.getInventoryName();
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return logic.hasCustomInventoryName();
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return logic.getInventoryStackLimit();
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return logic.isUseableByPlayer(player);
-    }
-
-    @Override
-    public void openInventory()
-    {}
-
-    @Override
-    public void closeInventory()
-    {}
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return logic.isItemValidForSlot(index, stack);
-    }
-
-    @Override
-    protected FilterPipeLogic createLogic() {
-        return new FilterPipeLogic(this);
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return logic.createScreen(data, mainPanel);
     }
 }

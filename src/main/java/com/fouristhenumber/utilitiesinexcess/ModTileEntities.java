@@ -2,7 +2,9 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import net.minecraft.tileentity.TileEntity;
 
@@ -96,7 +98,9 @@ public enum ModTileEntities {
     FILTER_PIPE(TileEntityFilterPipe.class                                     , "FilterPipe"),
     ITEM_TRANSFER_NODE(TileEntityItemTransferNode.class                        , "ItemTransferNode"),
     FLUID_TRANSFER_NODE(TileEntityFluidTransferNode.class                      , "FluidTransferNode"),
-    ENERGY_TRANSFER_NODE(TileEntityEnergyTransferNode.class                    , "EnergyTransferNode")
+    ENERGY_TRANSFER_NODE(TileEntityEnergyTransferNode.class                    , "EnergyTransferNode"),
+    ITEM_RETRIEVAL_NODE(TileEntityItemRetrievalNode.class                      , "ItemRetrievalNode"),
+    FLUID_RETRIEVAL_NODE(TileEntityFluidRetrievalNode.class                    , "FluidRetrievalNode")
     ;
     // spotless:on
 

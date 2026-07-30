@@ -38,6 +38,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
+
 public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiData>, ItemStackInventoryContainer
 {
     public enum FilterMode {
@@ -318,7 +320,7 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
                                 }
                                 else if (filteredStack.getItemDamage() == TransferUpgrade.ADV_FILTER.ordinal())
                                 {
-                                    list.add(indent + "  AdvancedFilter: " + AdvancedFilterMode.values()[filteredStack.getItemDamage()].getLabel());
+                                    list.add(indent + "  AdvancedFilter: " + AdvancedFilterMode.values()[getAdvFilterMode(filteredStack)].getLabel());
                                 }
                             }
                             else

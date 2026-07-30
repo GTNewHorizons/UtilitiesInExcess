@@ -5,12 +5,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class TileEntityTransferNodeBase<T> extends TileEntityNetworkComponentBase<T>
     implements INodeLogicHost
 {
+    public boolean init = false;
+
     @Override
     public ForgeDirection getFacing()
     {
         return ForgeDirection.getOrientation(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 7);
     }
-
-
-    public abstract void updateSource();
 }

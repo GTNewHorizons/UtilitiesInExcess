@@ -68,8 +68,8 @@ dependencies {
     // Misc testing utilities
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.4.1:dev") // (/nbtedit)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:worldedit-gtnh:v0.0.9:dev")
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderCore:0.5.14:dev") { transitive = false }
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.31:dev") { transitive = false }
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderCore:0.5.14:dev") { transitive = false }
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.31:dev") { transitive = false }
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritiaddons:1.9.4-GTNH:dev') { transitive = true }
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritia:1.97:dev') { transitive = false }
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-997-GTNH:dev') { transitive = true }

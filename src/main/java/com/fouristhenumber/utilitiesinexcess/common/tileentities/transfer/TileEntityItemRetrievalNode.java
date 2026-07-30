@@ -3,34 +3,65 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidRetrievalNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemRetrievalNodeLogic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityItemRetrievalNode extends TileEntityTransferNodeBase<ItemRetrievalNodeLogic>
     implements IGuiHolder<PosGuiData>, IWalkingComponent<ItemStack>
 {
+    public TileEntityItemRetrievalNode() {}
+
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
+    public void updateEntity()
     {
-        return null;
+        this.logic.updateEntity();
     }
 
     @Override
-    public void updateSource()
+    public void validate()
     {
-
+        if (worldObj != null && !init)
+        {
+            this.logic = new ItemRetrievalNodeLogic(this);
+            init = true;
+        }
     }
 
     @Override
-    protected ItemRetrievalNodeLogic createLogic() {
-        return null;
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        this.logic.writeToNBT(nbt);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.logic.readFromNBT(nbt);
     }
 
     @Override
     public ItemStack getWalkingObject() {
-        return null;
+        return logic.getStackInSlot(0);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData posGuiData, PanelSyncManager panelSyncManager, UISettings uiSettings) {
+        return logic.buildUI(posGuiData, panelSyncManager, uiSettings);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return logic.createScreen(data, mainPanel);
     }
 }

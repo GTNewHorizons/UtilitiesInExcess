@@ -3,26 +3,21 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemRetrievalNodeLogic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<EnergyTransferNodeLogic>
     implements IGuiHolder<PosGuiData>, IWalkingComponent<Integer>
 {
 
-    public TileEntityEnergyTransferNode()
-    {
-        logic = new EnergyTransferNodeLogic(this);
-    }
-
-    public TileEntityEnergyTransferNode(boolean isHyper)
-    {
-        logic = new EnergyTransferNodeLogic(this);
-        logic.hyper = isHyper;
-    }
+    public TileEntityEnergyTransferNode() {}
 
     @Override
     public void updateEntity()
@@ -31,13 +26,20 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<Ene
     }
 
     @Override
-    public void updateSource() {
-        // TODO?
-    }
-
-    @Override
-    protected EnergyTransferNodeLogic createLogic() {
-        return new EnergyTransferNodeLogic(this);
+    public void validate()
+    {
+        if (worldObj != null && !init)
+        {
+            if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1)
+            {
+                this.logic = new EnergyTransferNodeLogic(this, true);
+            }
+            else
+            {
+                this.logic = new EnergyTransferNodeLogic(this, false);
+            }
+            init = true;
+        }
     }
 
     @Override
@@ -55,13 +57,19 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<Ene
     }
 
     @Override
+    public Integer getWalkingObject() {
+        return logic.containedEnergy;
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         return logic.buildUI(data, syncManager, settings);
     }
 
     @Override
-    public Integer getWalkingObject() {
-        return logic.containedEnergy;
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return logic.createScreen(data, mainPanel);
     }
 }

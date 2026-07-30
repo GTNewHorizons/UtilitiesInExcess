@@ -95,11 +95,8 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-        if (metadata == 0)
-        {
-            return new TileEntityEnergyTransferNode(false);
-        }
-        return new TileEntityEnergyTransferNode(true);
+        return new TileEntityEnergyTransferNode();
+
     }
 
     @Override

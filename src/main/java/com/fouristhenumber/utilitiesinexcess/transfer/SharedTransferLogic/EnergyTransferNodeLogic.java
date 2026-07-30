@@ -6,6 +6,7 @@ import cofh.api.energy.IEnergyReceiver;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
@@ -16,9 +17,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -35,15 +39,21 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
     ItemStack[] upgrades = new ItemStack[getSizeInventory()];
 
     public EnergyWalker walker;
-    public Set<IEnergyProvider> sources = new HashSet<IEnergyProvider>() {
-    };
+    public Set<IEnergyProvider> sources = new HashSet<IEnergyProvider>();
     public Set<IEnergyReceiver> sinks = new HashSet<IEnergyReceiver>();
     public int containedEnergy = 0;
 
-    public boolean hyper = false;
+    private int MAX_CAPACITY = 10000;
+    private int MAX_TRANSFER = 10000;
 
-    public EnergyTransferNodeLogic(TileEntityEnergyTransferNode host) {
+    public EnergyTransferNodeLogic(TileEntityEnergyTransferNode host, boolean isHyper)
+    {
         super(host);
+        if (isHyper)
+        {
+            MAX_CAPACITY = 1000000;
+            MAX_TRANSFER = 25000;
+        }
         walker = new EnergyWalker(host);
     }
 
@@ -61,7 +71,7 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
     // it does not supply it power.
     public void updateEntity()
     {
-        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        if (host.getWorld().isRemote)
         {
             return;
         }
@@ -74,6 +84,11 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
         if (!sinks.isEmpty())
         {
             exportEnergy();
+        }
+
+        if (host.getWorld().getTotalWorldTime() % 20 != 0)
+        {
+            return;
         }
 
         List<TargetResolver.Target<IEnergyConnection>> targets = walker.getValidTargets(host.getWorld());
@@ -112,12 +127,87 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
 
     public void importEnergy()
     {
+        if (sources.isEmpty() || containedEnergy >= MAX_CAPACITY)
+        {
+            return;
+        }
 
+        int space = MAX_CAPACITY - containedEnergy;
+        int totalTransfer = Math.min(space, MAX_TRANSFER);
+
+        int count = sources.size();
+        int perSource = totalTransfer / count;
+        int remainder = totalTransfer % count;
+
+        for (IEnergyProvider provider : sources)
+        {
+            if (provider == null)
+            {
+                continue;
+            }
+
+            int request = perSource;
+
+            if (remainder > 0)
+            {
+                request++;
+                remainder--;
+            }
+
+            if (request <= 0)
+            {
+                continue;
+            }
+
+            int extracted = provider.extractEnergy(null, request, false);
+
+            if (extracted > 0)
+            {
+                containedEnergy += extracted;
+            }
+        }
     }
 
     public void exportEnergy()
     {
+        if (sinks.isEmpty() || containedEnergy <= 0)
+        {
+            return;
+        }
 
+        int totalTransfer = Math.min(containedEnergy, MAX_TRANSFER);
+
+        int count = sinks.size();
+        int perSink = totalTransfer / count;
+        int remainder = totalTransfer % count;
+
+        for (IEnergyReceiver receiver : sinks)
+        {
+            if (receiver == null)
+            {
+                continue;
+            }
+
+            int offer = perSink;
+
+            if (remainder > 0)
+            {
+                offer++;
+                remainder--;
+            }
+
+            if (offer <= 0)
+            {
+                continue;
+            }
+
+            int accepted = receiver.receiveEnergy(null, offer, false);
+
+            if (accepted > 0)
+            {
+                containedEnergy -= accepted;
+            }
+        }
     }
 
     public void writeToNBT(NBTTagCompound nbt)
@@ -279,4 +369,8 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
         return panel;
     }
 
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
+    }
 }
