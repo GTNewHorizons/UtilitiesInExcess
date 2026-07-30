@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -47,15 +48,47 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
 
     }
 
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-
-    }
-
     public void writeToNBT(NBTTagCompound nbt)
     {
+        NBTTagList itemTagList = new NBTTagList();
 
+        for (int i = 0; i < this.upgrades.length; ++i)
+        {
+            if (this.upgrades[i] != null)
+            {
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte)i);
+                this.upgrades[i].writeToNBT(nbttagcompound);
+                itemTagList.appendTag(nbttagcompound);
+            }
+        }
+
+        nbt.setTag("Items", itemTagList);
+
+        NBTTagCompound fluidTag = new NBTTagCompound();
+        buffer.writeToNBT(fluidTag);
+        nbt.setTag("Fluid", fluidTag);
     }
+
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+        this.upgrades = new ItemStack[this.getSizeInventory()];
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
+            int slot = compound.getByte("Slot") & 255;
+
+            if (slot < this.upgrades.length)
+            {
+                this.upgrades[slot] = ItemStack.loadItemStackFromNBT(compound);
+            }
+        }
+
+        buffer.readFromNBT(nbt.getCompoundTag("Fluid"));
+    }
+
     @Override
     public int getSizeInventory()
     {

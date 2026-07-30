@@ -16,21 +16,27 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.List;
 
 public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrievalNode> implements IInventory
 {
     public ItemWalker walker;
     ItemStack[] buffer = new ItemStack[getSizeInventory()];
+    IInventory connectedInventory;
 
     public ItemRetrievalNodeLogic(TileEntityItemRetrievalNode host) {
         super(host);
@@ -38,22 +44,71 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
     }
 
     // Weird thing to note, retrieval node walkers just get locked out of filter pipes in all directions that are filtered.
+    // All other types of pipes sans energy are fine to walk through.
     // Also, retrieval pipes will reset once one type of item has been emptied from the target inventory.
-    // For example if you have 50 cobble and 10 dirt. It will take out all the dirt, reset, then take out all
+    // For example if you have 50 cobble and 10 dirt. It will take out all the dirt, reset move on, then take out all
     // the cobble on the next time it finds the target inventory.
     public void updateEntity()
     {
+        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        {
+            return;
+        }
 
+        if (connectedInventory == null) {
+            updateSourceInventory();
+        }
+
+        List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
+        if (!targets.isEmpty())
+        {
+
+        }
+        walker.step(host.getWorld());
     }
 
     public void writeToNBT(NBTTagCompound nbt)
     {
+        NBTTagList nbttaglist = new NBTTagList();
 
+        for (int i = 0; i < this.buffer.length; ++i)
+        {
+            if (this.buffer[i] != null)
+            {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte)i);
+                this.buffer[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
+            }
+        }
+
+        nbt.setTag("Items", nbttaglist);
     }
 
     public void readFromNBT(NBTTagCompound nbt)
     {
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+        this.buffer = new ItemStack[this.getSizeInventory()];
 
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
+            int slot = compound.getByte("Slot") & 255;
+
+            if (slot < this.buffer.length)
+            {
+                this.buffer[slot] = ItemStack.loadItemStackFromNBT(compound);
+            }
+        }
+    }
+
+    public void updateSourceInventory()
+    {
+        ForgeDirection facing = host.getFacing();
+        TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
+        if (neighbor instanceof IInventory inventory) {
+            connectedInventory = inventory;
+        }
     }
 
     @Override

@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ItemWalker extends WalkerBase<IInventory, ItemStack>
 {
-    StepStrategy stepper;
     TargetResolver<IInventory> targeter;
 
     public ItemWalker(IWalkingComponent<ItemStack> originComponent)

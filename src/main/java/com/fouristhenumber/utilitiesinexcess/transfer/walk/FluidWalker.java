@@ -12,7 +12,6 @@ import java.util.List;
 
 public class FluidWalker extends WalkerBase<IFluidHandler, FluidStack>
 {
-    StepStrategy stepper;
     TargetResolver<IFluidHandler> targeter;
 
     public FluidWalker(IWalkingComponent<FluidStack> walkingComponent) {

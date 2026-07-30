@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.world.World;
@@ -11,11 +12,17 @@ public abstract class WalkerBase<T, E>
 {
     protected IWalkingComponent<E> walkingComponent;
     BlockPos walkerPos;
+    protected StepStrategy stepper;
 
     WalkerBase(IWalkingComponent<E> walkingComponent)
     {
         this.walkingComponent = walkingComponent;
         walkerPos = new BlockPos(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
+    }
+
+    public void setStepper(StepStrategy stepper)
+    {
+        this.stepper = stepper;
     }
     public abstract void step(World world);
 
