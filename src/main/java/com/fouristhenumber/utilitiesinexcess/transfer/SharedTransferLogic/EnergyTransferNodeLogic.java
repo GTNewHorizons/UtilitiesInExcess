@@ -46,14 +46,10 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
     private int MAX_CAPACITY = 10000;
     private int MAX_TRANSFER = 10000;
 
-    public EnergyTransferNodeLogic(TileEntityEnergyTransferNode host, boolean isHyper)
+    boolean hyperInit = false;
+    public EnergyTransferNodeLogic(TileEntityEnergyTransferNode host)
     {
         super(host);
-        if (isHyper)
-        {
-            MAX_CAPACITY = 1000000;
-            MAX_TRANSFER = 25000;
-        }
         walker = new EnergyWalker(host);
     }
 
@@ -76,6 +72,15 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
             return;
         }
 
+        if (!hyperInit)
+        {
+            if (host.getWorld().getBlockMetadata(host.xCoord, host.yCoord, host.zCoord) == 1)
+            {
+                MAX_CAPACITY = 1000000;
+                MAX_TRANSFER = 25000;
+            }
+            hyperInit = true;
+        }
         if (!sources.isEmpty())
         {
             importEnergy();

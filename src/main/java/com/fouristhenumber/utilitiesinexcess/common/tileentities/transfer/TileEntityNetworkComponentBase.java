@@ -33,4 +33,6 @@ public abstract class TileEntityNetworkComponentBase<T> extends TileEntity imple
     {
         this.markDirty();
     }
+
+    protected abstract T getLogic();
 }

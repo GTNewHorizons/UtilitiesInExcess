@@ -38,9 +38,10 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
 {
     ItemStack[] upgrades = new ItemStack[getSizeInventory()];
 
-    public static final int maxFluidAmount = 10000;
+    public static final int maxFluidAmount = 8000;
+    public int maxDrainAmount = 200;
     public FluidTank buffer = new FluidTank(maxFluidAmount);
-    public int maxDrainAmount = 1000;
+
 
     IFluidHandler connectedTank;
     public FluidWalker walker;

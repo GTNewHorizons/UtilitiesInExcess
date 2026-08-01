@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidRetrievalNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidTransferNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import cpw.mods.fml.relauncher.Side;
@@ -22,47 +21,47 @@ public class TileEntityFluidTransferNode extends TileEntityTransferNodeBase<Flui
     @Override
     public void updateEntity()
     {
-        this.logic.updateEntity();
-    }
-
-    @Override
-    public void validate()
-    {
-        if (worldObj != null && !init)
-        {
-            this.logic = new FluidTransferNodeLogic(this);
-            init = true;
-        }
+        this.getLogic().updateEntity();
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.logic.writeToNBT(nbt);
+        this.getLogic().writeToNBT(nbt);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.logic.readFromNBT(nbt);
+        this.getLogic().readFromNBT(nbt);
     }
 
     @Override
     public FluidStack getWalkingObject() {
-        return logic.buffer.getFluid();
+        return getLogic().buffer.getFluid();
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData posGuiData, PanelSyncManager panelSyncManager, UISettings uiSettings) {
-        return logic.buildUI(posGuiData, panelSyncManager, uiSettings);
+        return getLogic().buildUI(posGuiData, panelSyncManager, uiSettings);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return logic.createScreen(data, mainPanel);
+        return getLogic().createScreen(data, mainPanel);
+    }
+
+    @Override
+    protected FluidTransferNodeLogic getLogic()
+    {
+        if (logic == null)
+        {
+            logic = new FluidTransferNodeLogic(this);
+        }
+        return logic;
     }
 
 }

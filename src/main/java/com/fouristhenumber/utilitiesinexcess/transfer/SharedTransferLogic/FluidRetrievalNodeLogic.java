@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,17 +27,25 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidHandler;
+
+import java.util.List;
 
 public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IInventory
 {
     ItemStack[] upgrades = new ItemStack[getSizeInventory()];
-
-    public static final int maxFluidAmount = 10000;
+    public static final int maxFluidAmount = 8000;
+    public int maxDrainAmount = 200;
     public FluidTank buffer = new FluidTank(maxFluidAmount);
-
     public FluidWalker walker;
+    IFluidHandler connectedTank;
+
+    private FluidStack pullingFluid;
 
     public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host) {
         super(host);
@@ -45,7 +54,136 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
 
     public void updateEntity()
     {
+        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        {
+            return;
+        }
 
+        if (connectedTank == null)
+        {
+            updateConnectedTank();
+        }
+        else
+        {
+            exportToConnected();
+        }
+
+        if (buffer.getFluid() != null && buffer.getFluid().amount == maxFluidAmount)
+        {
+            walker.reset();
+            return;
+        }
+
+        List<TargetResolver.Target<IFluidHandler>> pullingTanks = walker.getValidTargets(host.getWorld());
+
+        if (pullingTanks.isEmpty())
+        {
+            walker.step(host.getWorld());
+            return;
+        }
+
+        if (!importFromPullingTanks(pullingTanks))
+        {
+            pullingFluid = null;
+            walker.step(host.getWorld());
+        }
+    }
+
+    public boolean importFromPullingTanks(List<TargetResolver.Target<IFluidHandler>> pullingTanks)
+    {
+        boolean foundTargetFluid = false;
+        for (TargetResolver.Target<IFluidHandler> tank : pullingTanks)
+        {
+            foundTargetFluid = importFluid(tank) | foundTargetFluid;
+        }
+        return foundTargetFluid;
+    }
+
+
+    public boolean importFluid(TargetResolver.Target<IFluidHandler> tank)
+    {
+        ForgeDirection fromDir = ForgeDirection.getOrientation(tank.side);
+
+        int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
+        if (spaceRemaining <= 0)
+        {
+            return false;
+        }
+
+        int drainAmount = Math.min(spaceRemaining, maxDrainAmount);
+
+        FluidStack bufferedFluid = buffer.getFluid();
+
+        if (bufferedFluid == null)
+        {
+            FluidStack drainableFluid = tank.handler.drain(fromDir, drainAmount, false);
+            if (drainableFluid != null && drainableFluid.amount > 0)
+            {
+                FluidStack drained = tank.handler.drain(fromDir, drainableFluid.amount, true);
+                if (drained != null)
+                {
+                    buffer.fill(drained, true);
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            if (tank.handler.canDrain(fromDir, bufferedFluid.getFluid()))
+            {
+                FluidStack request = new FluidStack(bufferedFluid.getFluid(), drainAmount);
+                FluidStack drainableFluid = tank.handler.drain(fromDir, request, false);
+                if (drainableFluid != null && drainableFluid.amount > 0)
+                {
+                    FluidStack drained = tank.handler.drain(fromDir, new FluidStack(bufferedFluid.getFluid(), drainableFluid.amount), true);
+                    if (drained != null)
+                    {
+                        buffer.fill(drained, true);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public void updateConnectedTank()
+    {
+        ForgeDirection facing = host.getFacing();
+        TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
+        if (neighbor instanceof IFluidHandler tank)
+        {
+            connectedTank = tank;
+        }
+    }
+
+    public void exportToConnected()
+    {
+        if (connectedTank == null)
+        {
+            return;
+        }
+        ForgeDirection connectedSide = host.getFacing().getOpposite();
+        FluidStack available = buffer.getFluid();
+
+        if (available == null || available.amount <= 0)
+        {
+            return;
+        }
+
+        if (!connectedTank.canFill(connectedSide, available.getFluid()))
+        {
+            return;
+        }
+
+        FluidStack toExport = available.copy();
+
+        int filled = connectedTank.fill(connectedSide, toExport, true);
+
+        if (filled > 0)
+        {
+            buffer.drain(filled, true);
+        }
     }
 
     public void writeToNBT(NBTTagCompound nbt)

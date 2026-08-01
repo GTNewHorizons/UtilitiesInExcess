@@ -22,46 +22,46 @@ public class TileEntityItemRetrievalNode extends TileEntityTransferNodeBase<Item
     @Override
     public void updateEntity()
     {
-        this.logic.updateEntity();
-    }
-
-    @Override
-    public void validate()
-    {
-        if (worldObj != null && !init)
-        {
-            this.logic = new ItemRetrievalNodeLogic(this);
-            init = true;
-        }
+        this.getLogic().updateEntity();
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.logic.writeToNBT(nbt);
+        this.getLogic().writeToNBT(nbt);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.logic.readFromNBT(nbt);
+        this.getLogic().readFromNBT(nbt);
     }
 
     @Override
     public ItemStack getWalkingObject() {
-        return logic.getStackInSlot(0);
+        return getLogic().getStackInSlot(0);
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData posGuiData, PanelSyncManager panelSyncManager, UISettings uiSettings) {
-        return logic.buildUI(posGuiData, panelSyncManager, uiSettings);
+        return getLogic().buildUI(posGuiData, panelSyncManager, uiSettings);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return logic.createScreen(data, mainPanel);
+        return getLogic().createScreen(data, mainPanel);
+    }
+
+    @Override
+    protected ItemRetrievalNodeLogic getLogic()
+    {
+        if (logic == null)
+        {
+            logic = new ItemRetrievalNodeLogic(this);
+        }
+        return logic;
     }
 }

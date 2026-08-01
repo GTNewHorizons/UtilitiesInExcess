@@ -5,8 +5,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class TileEntityTransferNodeBase<T> extends TileEntityNetworkComponentBase<T>
     implements INodeLogicHost
 {
-    public boolean init = false;
-
     @Override
     public ForgeDirection getFacing()
     {

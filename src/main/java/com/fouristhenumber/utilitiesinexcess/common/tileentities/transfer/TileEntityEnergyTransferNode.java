@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemRetrievalNodeLogic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,54 +21,47 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<Ene
     @Override
     public void updateEntity()
     {
-        this.logic.updateEntity();
-    }
-
-    @Override
-    public void validate()
-    {
-        if (worldObj != null && !init)
-        {
-            if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1)
-            {
-                this.logic = new EnergyTransferNodeLogic(this, true);
-            }
-            else
-            {
-                this.logic = new EnergyTransferNodeLogic(this, false);
-            }
-            init = true;
-        }
+        this.getLogic().updateEntity();
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.logic.writeToNBT(nbt);
+        this.getLogic().writeToNBT(nbt);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.logic.readFromNBT(nbt);
+        this.getLogic().readFromNBT(nbt);
     }
 
     @Override
     public Integer getWalkingObject() {
-        return logic.containedEnergy;
+        return getLogic().containedEnergy;
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
-        return logic.buildUI(data, syncManager, settings);
+        return getLogic().buildUI(data, syncManager, settings);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return logic.createScreen(data, mainPanel);
+        return getLogic().createScreen(data, mainPanel);
+    }
+
+    @Override
+    protected EnergyTransferNodeLogic getLogic()
+    {
+        if (logic == null)
+        {
+            logic = new EnergyTransferNodeLogic(this);
+        }
+        return logic;
     }
 }

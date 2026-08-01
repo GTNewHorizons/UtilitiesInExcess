@@ -25,7 +25,7 @@ public abstract class BaseInserter
     protected abstract ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side);
 
 
-    public boolean canStacksMerge(ItemStack a, ItemStack b)
+    public static boolean canStacksMerge(ItemStack a, ItemStack b)
     {
         return a.getItem() == b.getItem()
             && a.getItemDamage() == b.getItemDamage()

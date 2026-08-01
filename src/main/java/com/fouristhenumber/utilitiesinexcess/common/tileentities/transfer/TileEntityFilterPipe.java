@@ -16,40 +16,46 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityFilterPipe extends TileEntityNetworkComponentBase<FilterPipeLogic>
     implements IGuiHolder<PosGuiData>
 {
-
-    public TileEntityFilterPipe()
-    {
-        this.logic = new FilterPipeLogic(this);
-    }
+    public TileEntityFilterPipe() {}
 
     public int getValidMask(ForgeDirection fromDirection, ItemStack stack)
     {
-        return logic.getValidMask(fromDirection, stack);
+        return getLogic().getValidMask(fromDirection, stack);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        logic.readFromNBT(compound);
         super.readFromNBT(compound);
+        getLogic().readFromNBT(compound);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        logic.writeToNBT(compound);
+        getLogic().writeToNBT(compound);
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
-        return logic.buildUI(data, syncManager, settings);
+        return getLogic().buildUI(data, syncManager, settings);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return logic.createScreen(data, mainPanel);
+        return getLogic().createScreen(data, mainPanel);
+    }
+
+    @Override
+    protected FilterPipeLogic getLogic()
+    {
+        if (logic == null)
+        {
+            logic = new FilterPipeLogic(this);
+        }
+        return logic;
     }
 }
