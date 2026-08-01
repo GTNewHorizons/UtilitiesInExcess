@@ -13,10 +13,12 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
+import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
@@ -36,7 +38,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
-public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IInventory
+public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IInventory, IOnSlotChanged
 {
     ItemStack[] upgrades = new ItemStack[getSizeInventory()];
     public static final int maxFluidAmount = 8000;
@@ -45,9 +47,11 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
     public FluidWalker walker;
     IFluidHandler connectedTank;
 
+    // TODO?
     private FluidStack pullingFluid;
 
-    public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host) {
+    public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host)
+    {
         super(host);
         this.walker = new FluidWalker(host);
     }
@@ -186,6 +190,21 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
         }
     }
 
+    // Basically, parses the upgrade.
+    //
+    // Round-robin behavior is that it will pull once then move on.
+    // Round-robin is sort of annoying for all nodes in that it inherently changes
+    // the order of behavior and not just the search function...
+    // Back to the mines I guess...
+    @Override
+    public void onChange(ItemStack newItem, boolean onlyAmountChanged, boolean client, boolean init)
+    {
+        if (!client && !init)
+        {
+            System.out.println("Change listener called.");
+        }
+    }
+
     public void writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList itemTagList = new NBTTagList();
@@ -234,23 +253,32 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
     }
 
     @Override
-    public ItemStack getStackInSlot(int slotIn) {
-        return null;
+    public ItemStack getStackInSlot(int slotIn)
+    {
+        return upgrades[slotIn];
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return null;
+    public ItemStack decrStackSize(int index, int count)
+    {
+        if (upgrades[index] == null)
+        {
+            return null;
+        }
+        return upgrades[index].splitStack(count);
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        return null;
+    public ItemStack getStackInSlotOnClosing(int index)
+    {
+        return upgrades[index];
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        upgrades[index] = stack;
+        this.markDirty();
     }
 
     @Override
@@ -265,17 +293,17 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
 
     @Override
     public int getInventoryStackLimit() {
-        return 0;
+        return 64;
     }
 
     @Override
     public void markDirty() {
-
+        host.markDirty();
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return false;
+        return true;
     }
 
     @Override
@@ -289,8 +317,9 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
+    public boolean isItemValidForSlot(int index, ItemStack stack)
+    {
+        return stack.getItem() instanceof ItemUpgrade;
     }
 
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
@@ -327,7 +356,7 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
         flow.pos(34,60).size(108,18);
         for (int i = 0; i < getSizeInventory(); i++)
         {
-            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup)));
+            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup).changeListener(this)));
         }
         panel.child(flow);
 
@@ -343,5 +372,4 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
         return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
-
 }

@@ -202,6 +202,7 @@ public class FilterPipeLogic extends DefaultNetworkLogic implements IInventory
             parseInventoryToFilter();
         }
     }
+
     public void parseInventoryToFilter()
     {
         for (int i = 0; i < filters.length; i++)
