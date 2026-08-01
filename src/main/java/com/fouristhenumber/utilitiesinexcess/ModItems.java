@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBoxingGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBuildersWand;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemCapacityUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemChunchunmaru;
@@ -83,6 +84,7 @@ public enum ModItems {
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
     CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     PAINT_ROLLER(ColoredBlocksConfig.INSTANCE.enablePaintRoller, new ItemPaintRoller(), "paint_roller"),
+    BOXING_GLOVE(ItemConfig.enableBoxingGlove, new ItemBoxingGlove(), "boxing_glove"),
     ; // leave trailing semicolon
     // spotless:on
 

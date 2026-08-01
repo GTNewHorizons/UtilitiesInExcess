@@ -76,4 +76,9 @@ public class ItemConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean enableGlove;
+
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    @Config.Comment("Different from the regular glove")
+    public static boolean enableBoxingGlove;
 }

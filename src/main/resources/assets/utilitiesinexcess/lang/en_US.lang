@@ -140,6 +140,7 @@ uie.nei.infopage.filing_cabinet.3=The Elite Filing Cabinet has no restrictions w
 uie.nei.infopage.filing_cabinet.4=Filing Cabinet Capacity Upgrades will add additional maximum storage to any cabinet.
 uie.nei.infopage.colored_blocks.dyeable=Dyed blocks can be dyed any color you want using a paint roller. Now with a new and improved tile entity-free recipe!
 uie.nei.infopage.paint_roller=This super advanced paint roller can be used to dye any Utilities in Excess dyed block any color you want. Now with a new and improved tile entity-free recipe!
+uie.nei.infopage.boxing_glove=Have you ever wanted a mob to JUST MOVE ALREADY?? Using this revolutionary boxing glove, you can push mobs without angering them. Just don't ask how it works.
 
 #### Blocks
 ue_wall.name=%s Wall
@@ -533,6 +534,8 @@ item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
 
 item.paint_roller.name=Paint Roller
 
+item.boxing_glove.name=Boxing Glove
+
 ### Item Description
 uie.desc.item.inverted_ingot.1=This ingot is deteriorating rapidly...
 uie.desc.item.inverted_ingot.2=Will implode in %s seconds!
@@ -559,7 +562,6 @@ uie.desc.item.fire_battery.1=RF %s / %s
 
 uie.desc.item.glove.1=§bPress §r[§6%s§r]§b to activate.
 uie.desc.item.glove.2=§9+2,147,483,647 Breeze Projection
-uie.desc.item.glove.3=§7§oP.S. Breeze Projection does nothing.
 
 uie.desc.item.chunchunmaru.1=It's a really cool name
 
