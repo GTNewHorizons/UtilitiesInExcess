@@ -20,7 +20,12 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeableNetworkItem;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,7 +43,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
-public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IInventory, IOnSlotChanged
+public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFluidRetrievalNode> implements IInventory
 {
     ItemStack[] upgrades = new ItemStack[getSizeInventory()];
     public static final int maxFluidAmount = 8000;
@@ -201,7 +206,45 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
     {
         if (!client && !init)
         {
-            System.out.println("Change listener called.");
+            boolean foundSearchUpgrade = false;
+            for (ItemStack upgrade : upgrades)
+            {
+                if (upgrade != null && upgrade.getItem() instanceof ItemUpgrade)
+                {
+                    TransferUpgrade upgradeType = TransferUpgrade.values()[upgrade.getItemDamage()];
+                    switch(upgradeType)
+                    {
+                        case TransferUpgrade.SEARCH_BREADTH:
+                        {
+                            walker.setStepper(new BFSStepper());
+                            foundSearchUpgrade = true;
+                            break;
+                        }
+                        case TransferUpgrade.SEARCH_DEPTH:
+                        {
+                            walker.setStepper(new DFSStepper());
+                            foundSearchUpgrade = true;
+                            break;
+                        }
+                        case TransferUpgrade.SPEED:
+                        {
+                            break;
+                        }
+                        case TransferUpgrade.STACK:
+                        {
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!foundSearchUpgrade)
+            {
+                walker.setStepper(new RandomStepper());
+            }
         }
     }
 

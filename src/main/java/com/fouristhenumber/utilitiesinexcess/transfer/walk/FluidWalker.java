@@ -16,7 +16,7 @@ public class FluidWalker extends WalkerBase<IFluidHandler, FluidStack>
 
     public FluidWalker(IWalkingComponent<FluidStack> walkingComponent) {
         super(walkingComponent);
-        stepper = new RandomStepper(TransportType.FLUID);
+        stepper = new RandomStepper();
         targeter = new FluidTargetResolver();
     }
 

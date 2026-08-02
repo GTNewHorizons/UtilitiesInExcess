@@ -21,7 +21,7 @@ public class ItemWalker extends WalkerBase<IInventory, ItemStack>
     public ItemWalker(IWalkingComponent<ItemStack> originComponent)
     {
         super(originComponent);
-        stepper = new RandomStepper(TransportType.ITEM);
+        stepper = new RandomStepper();
         targeter = new ItemTargetResolver();
     }
 

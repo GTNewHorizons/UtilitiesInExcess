@@ -23,6 +23,7 @@ public abstract class WalkerBase<T, E>
     public void setStepper(StepStrategy stepper)
     {
         this.stepper = stepper;
+        this.reset();
     }
     public abstract void step(World world);
 

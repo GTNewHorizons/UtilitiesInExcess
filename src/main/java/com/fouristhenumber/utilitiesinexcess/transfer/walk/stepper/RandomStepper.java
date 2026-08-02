@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.TransportType;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -16,8 +15,8 @@ public class RandomStepper extends StepStrategy
 {
     Random rand = new Random();
 
-    public RandomStepper(TransportType transporting) {
-        super(transporting);
+    public RandomStepper() {
+        super();
     }
 
     @Override

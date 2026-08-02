@@ -18,7 +18,7 @@ public class EnergyWalker extends WalkerBase<IEnergyConnection, Integer>
 
     public EnergyWalker(IWalkingComponent<Integer> walkingComponent) {
         super(walkingComponent);
-        stepper = new EnergyStepper(TransportType.ENERGY);
+        stepper = new BFSStepper(); // Energy walkers are default BFS
         targeter = new EnergyTargetResolver();
     }
 
@@ -29,7 +29,7 @@ public class EnergyWalker extends WalkerBase<IEnergyConnection, Integer>
 
     @Override
     public void reset() {
-
+        stepper.reset(walkerPos, walkingComponent);
     }
 
     @Override
