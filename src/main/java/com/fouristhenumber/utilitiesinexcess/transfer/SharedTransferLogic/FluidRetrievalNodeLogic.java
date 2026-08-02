@@ -13,25 +13,17 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
-import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeableNetworkItem;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.IUpgradeable;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -43,14 +35,16 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
-public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFluidRetrievalNode> implements IInventory
+public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IUpgradeable
 {
-    ItemStack[] upgrades = new ItemStack[getSizeInventory()];
+//    ItemStack[] upgrades = new ItemStack[getSizeInventory()];
     public static final int maxFluidAmount = 8000;
     public int maxDrainAmount = 200;
     public FluidTank buffer = new FluidTank(maxFluidAmount);
     public FluidWalker walker;
     IFluidHandler connectedTank;
+
+    UpgradeInventory upgrades;
 
     // TODO?
     private FluidStack pullingFluid;
@@ -59,6 +53,7 @@ public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFl
     {
         super(host);
         this.walker = new FluidWalker(host);
+        this.upgrades = new UpgradeInventory(6, this);
     }
 
     public void updateEntity()
@@ -195,73 +190,22 @@ public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFl
         }
     }
 
-    // Basically, parses the upgrade.
-    //
-    // Round-robin behavior is that it will pull once then move on.
-    // Round-robin is sort of annoying for all nodes in that it inherently changes
-    // the order of behavior and not just the search function...
-    // Back to the mines I guess...
     @Override
-    public void onChange(ItemStack newItem, boolean onlyAmountChanged, boolean client, boolean init)
+    public void resetUpgrades()
     {
-        if (!client && !init)
-        {
-            boolean foundSearchUpgrade = false;
-            for (ItemStack upgrade : upgrades)
-            {
-                if (upgrade != null && upgrade.getItem() instanceof ItemUpgrade)
-                {
-                    TransferUpgrade upgradeType = TransferUpgrade.values()[upgrade.getItemDamage()];
-                    switch(upgradeType)
-                    {
-                        case TransferUpgrade.SEARCH_BREADTH:
-                        {
-                            walker.setStepper(new BFSStepper());
-                            foundSearchUpgrade = true;
-                            break;
-                        }
-                        case TransferUpgrade.SEARCH_DEPTH:
-                        {
-                            walker.setStepper(new DFSStepper());
-                            foundSearchUpgrade = true;
-                            break;
-                        }
-                        case TransferUpgrade.SPEED:
-                        {
-                            break;
-                        }
-                        case TransferUpgrade.STACK:
-                        {
-                            break;
-                        }
-                        default:
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!foundSearchUpgrade)
-            {
-                walker.setStepper(new RandomStepper());
-            }
-        }
+
+    }
+
+    @Override
+    public void markDirty() {
+        host.markDirty();
     }
 
     public void writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList itemTagList = new NBTTagList();
 
-        for (int i = 0; i < this.upgrades.length; ++i)
-        {
-            if (this.upgrades[i] != null)
-            {
-                NBTTagCompound nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)i);
-                this.upgrades[i].writeToNBT(nbttagcompound);
-                itemTagList.appendTag(nbttagcompound);
-            }
-        }
+        this.upgrades.writeToNBT(nbt);
 
         nbt.setTag("Items", itemTagList);
 
@@ -273,96 +217,9 @@ public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFl
     public void readFromNBT(NBTTagCompound nbt)
     {
         NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-        this.upgrades = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
-            int slot = compound.getByte("Slot") & 255;
-
-            if (slot < this.upgrades.length)
-            {
-                this.upgrades[slot] = ItemStack.loadItemStackFromNBT(compound);
-            }
-        }
+        upgrades.readFromNBT(nbt);
 
         buffer.readFromNBT(nbt.getCompoundTag("Fluid"));
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return 6;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slotIn)
-    {
-        return upgrades[slotIn];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        if (upgrades[index] == null)
-        {
-            return null;
-        }
-        return upgrades[index].splitStack(count);
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int index)
-    {
-        return upgrades[index];
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        upgrades[index] = stack;
-        this.markDirty();
-    }
-
-    @Override
-    public String getInventoryName() {
-        return "";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public void markDirty() {
-        host.markDirty();
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        return stack.getItem() instanceof ItemUpgrade;
     }
 
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
@@ -379,14 +236,14 @@ public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFl
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
+                    IKey.str(StatCollector.translateToLocal(""))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)
                         .marginTop(5)
                         .marginBottom(-15)));
 
-        IItemHandler itemHandler = new InvWrapper(this);
+        IItemHandler itemHandler = new InvWrapper(upgrades);
 
         panel.child(
             IKey.dynamic(() -> "Search Location: " + searchLocationSyncer.getStringValue())
@@ -397,9 +254,9 @@ public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFl
 
         Flow flow = Flow.row();
         flow.pos(34,60).size(108,18);
-        for (int i = 0; i < getSizeInventory(); i++)
+        for (int i = 0; i < upgrades.getSizeInventory(); i++)
         {
-            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup).changeListener(this)));
+            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup).changeListener(upgrades)));
         }
         panel.child(flow);
 
@@ -415,4 +272,6 @@ public class FluidRetrievalNodeLogic extends UpgradeableNetworkItem<TileEntityFl
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
         return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
+
+
 }
