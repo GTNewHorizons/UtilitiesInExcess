@@ -6,26 +6,26 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 
-public class DimensionPortalData extends WorldSavedData {
+public class PlatformAnchorData extends WorldSavedData {
 
-    public static final String DATA_NAME = "PortalTarget";
+    public static final String DATA_NAME = "PlatformAnchor";
     private int x, y, z;
-    static DimensionPortalData INSTANCE;
+    static PlatformAnchorData INSTANCE;
 
-    public DimensionPortalData() {
+    public PlatformAnchorData() {
         this(DATA_NAME);
     }
 
-    public DimensionPortalData(String tagName) {
+    public PlatformAnchorData(String tagName) {
         super(tagName);
     }
 
-    public static DimensionPortalData get(World world) {
+    public static PlatformAnchorData get(World world) {
         MapStorage storage = world.perWorldStorage;
-        DimensionPortalData.INSTANCE = (DimensionPortalData) storage
-            .loadData(DimensionPortalData.class, DimensionPortalData.DATA_NAME);
+        PlatformAnchorData.INSTANCE = (PlatformAnchorData) storage
+            .loadData(PlatformAnchorData.class, PlatformAnchorData.DATA_NAME);
         if (INSTANCE == null) {
-            INSTANCE = new DimensionPortalData(DATA_NAME);
+            INSTANCE = new PlatformAnchorData(DATA_NAME);
             storage.setData(DATA_NAME, INSTANCE);
         }
         return INSTANCE;
@@ -40,6 +40,10 @@ public class DimensionPortalData extends WorldSavedData {
 
     public ChunkCoordinates getTarget() {
         return new ChunkCoordinates(x, y, z);
+    }
+
+    public boolean isZero() {
+        return x == 0 && y == 0 && z == 0;
     }
 
     @Override
