@@ -19,22 +19,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.PrecisionShearsConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RecallShearsConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class ItemPrecisionShears extends ItemShears implements ITranslucentItem {
+public class ItemRecallShears extends ItemShears implements ITranslucentItem {
 
     public static final String COOLDOWN_NBT_TAG = "uie:cooldown";
     private IIcon cooldownIcon;
 
-    public ItemPrecisionShears() {
-        setTextureName("utilitiesinexcess:precision_shears");
-        setUnlocalizedName("precision_shears");
-        if (PrecisionShearsConfig.INSTANCE.unbreakable) setMaxDamage(0);
-        int harvestLevel = PrecisionShearsConfig.INSTANCE.toolLevel;
+    public ItemRecallShears() {
+        setTextureName("utilitiesinexcess:recall_shears");
+        setUnlocalizedName("recall_shears");
+        if (RecallShearsConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        int harvestLevel = RecallShearsConfig.INSTANCE.toolLevel;
         setHarvestLevel("pickaxe", harvestLevel);
         setHarvestLevel("axe", harvestLevel);
         setHarvestLevel("shovel", harvestLevel);
@@ -65,10 +65,10 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
             return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
         if (!world.isRemote && block.removedByPlayer(world, player, x, y, z, true)) {
             block.harvestBlock(world, player, x, y, z, meta);
-            nbt.setInteger(COOLDOWN_NBT_TAG, PrecisionShearsConfig.INSTANCE.cooldown);
+            nbt.setInteger(COOLDOWN_NBT_TAG, RecallShearsConfig.INSTANCE.cooldown);
             itemStack.setTagCompound(nbt);
-            if (!PrecisionShearsConfig.INSTANCE.unbreakable) itemStack.damageItem(1, player);
-        } else if (PrecisionShearsConfig.INSTANCE.spawnParticles) {
+            if (!RecallShearsConfig.INSTANCE.unbreakable) itemStack.damageItem(1, player);
+        } else if (RecallShearsConfig.INSTANCE.spawnParticles) {
             world.spawnParticle("smoke", x + 0.5d, y + 0.5d, z + 0.5d, 0.0D, 0.0D, 0.0D);
         }
         return super.onItemUse(itemStack, player, world, x, y, z, side, clickX, clickY, clickZ);
@@ -77,7 +77,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
     @Override
     public float getDigSpeed(ItemStack itemstack, Block block, int metadata) {
         if (ForgeHooks.isToolEffective(itemstack, block, metadata)) {
-            return PrecisionShearsConfig.INSTANCE.efficiency;
+            return RecallShearsConfig.INSTANCE.efficiency;
         } else {
             return super.getDigSpeed(itemstack, block, metadata);
         }
@@ -86,7 +86,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
     @Override
     public void registerIcons(IIconRegister register) {
         super.registerIcons(register);
-        cooldownIcon = register.registerIcon("utilitiesinexcess:precision_shears_cooldown");
+        cooldownIcon = register.registerIcon("utilitiesinexcess:recall_shears_cooldown");
     }
 
     @Override
@@ -102,26 +102,26 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (PrecisionShearsConfig.INSTANCE.unbreakable)
+        if (RecallShearsConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (PrecisionShearsConfig.INSTANCE.unbreakable) return false;
+        if (RecallShearsConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (PrecisionShearsConfig.INSTANCE.unbreakable) return false;
+        if (RecallShearsConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (PrecisionShearsConfig.INSTANCE.unbreakable) return false;
+        if (RecallShearsConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //
@@ -132,7 +132,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
 
         @EventBusSubscriber.Condition
         public static boolean shouldSubscribe() {
-            return PrecisionShearsConfig.INSTANCE.enable;
+            return RecallShearsConfig.INSTANCE.enable;
         }
 
         @SubscribeEvent
@@ -141,7 +141,7 @@ public class ItemPrecisionShears extends ItemShears implements ITranslucentItem 
             if (event.harvester.getHeldItem() == null) return;
 
             if (event.harvester.getHeldItem()
-                .getItem() instanceof ItemPrecisionShears) {
+                .getItem() instanceof ItemRecallShears) {
                 EntityPlayer player = event.harvester;
 
                 AxisAlignedBB dropSearchArea = AxisAlignedBB

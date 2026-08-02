@@ -3,11 +3,11 @@ package com.fouristhenumber.utilitiesinexcess.config.items.invertedtools;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.precision_shears")
-public class PrecisionShearsConfig {
+@Config(modid = UtilitiesInExcess.MODID, category = "items.inverted_tools.recall_shears")
+public class RecallShearsConfig {
 
     @Config.Ignore
-    public static final PrecisionShearsConfig INSTANCE = new PrecisionShearsConfig();
+    public static final RecallShearsConfig INSTANCE = new RecallShearsConfig();
 
     @Config.Order(0)
     @Config.DefaultBoolean(true)

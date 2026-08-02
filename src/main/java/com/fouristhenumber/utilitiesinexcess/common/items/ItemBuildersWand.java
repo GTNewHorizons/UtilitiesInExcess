@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.damageBackhand;
+import static com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils.damageBackhand;
 
 import java.util.List;
 import java.util.Set;
@@ -23,24 +23,24 @@ import org.jetbrains.annotations.NotNull;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
-import com.fouristhenumber.utilitiesinexcess.config.items.ArchitectsWandsConfig;
-import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsSelection;
-import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils;
-import com.fouristhenumber.utilitiesinexcess.utils.ArchitectsWandUtils.WandAxisMode;
+import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
+import com.fouristhenumber.utilitiesinexcess.utils.BuildersSelection;
+import com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils;
+import com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils.WandAxisMode;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemArchitectsWand extends Item implements ITranslucentItem {
+public class ItemBuildersWand extends Item implements ITranslucentItem {
 
     public int buildLimit;
 
-    public ItemArchitectsWand(int buildLimit) {
+    public ItemBuildersWand(int buildLimit) {
         super();
         this.buildLimit = buildLimit;
-        setUnlocalizedName("architects_wand");
+        setUnlocalizedName("builders_wand");
         setMaxDamage(0);
         setMaxStackSize(1);
     }
@@ -49,7 +49,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         tooltip.add(
             EnumChatFormatting.AQUA
-                + StatCollector.translateToLocalFormatted("uie.desc.item.architects_wand.1", this.buildLimit));
+                + StatCollector.translateToLocalFormatted("uie.desc.item.builders_wand.1", this.buildLimit));
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }
 
@@ -85,27 +85,27 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
             UtilitiesInExcess.LOG
-                .warn("Architect wand onUpdate was called with invalid facing direction: {}", forgeSide);
+                .warn("Builder's wand onUpdate was called with invalid facing direction: {}", forgeSide);
             return;
         }
 
         WandAxisMode axisMode;
-        if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_H.isKeyDown(player)) {
+        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) {
             axisMode = WandAxisMode.HORIZONTAL;
-        } else if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_V.isKeyDown(player)) {
+        } else if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) {
             axisMode = WandAxisMode.VERTICAL;
         } else {
             axisMode = WandAxisMode.FREE;
         }
 
         // 4. Target block to place
-        ArchitectsSelection selection = new ArchitectsSelection(player, world, movingObjectPosition);
+        BuildersSelection selection = new BuildersSelection(player, world, movingObjectPosition);
         List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
 
         // 3. Total amount to place
         int placeCount = selection.maxPlaceCount(player, buildLimit);
 
-        Set<BlockPos> blocksToPlace = ArchitectsWandUtils.findAdjacentBlocks(
+        Set<BlockPos> blocksToPlace = BuildersWandUtils.findAdjacentBlocks(
             world,
             itemStackToPlace,
             placeCount,
@@ -164,20 +164,20 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
             UtilitiesInExcess.LOG
-                .warn("Architects wand onItemUse was called with invalid facing direction: {}", forgeSide);
+                .warn("Builder's wand onItemUse was called with invalid facing direction: {}", forgeSide);
             return false;
         }
 
         BlockPos target = new BlockPos(x, y, z);
         MovingObjectPosition mop = new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(hitX, hitY, hitZ));
-        ArchitectsSelection selection = new ArchitectsSelection(player, world, mop);
+        BuildersSelection selection = new BuildersSelection(player, world, mop);
 
         List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
 
         WandAxisMode axisMode;
-        if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_H.isKeyDown(player)) {
+        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) {
             axisMode = WandAxisMode.HORIZONTAL;
-        } else if (UtilitiesInExcess.proxy.ARCHITECTS_KEYBIND_V.isKeyDown(player)) {
+        } else if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) {
             axisMode = WandAxisMode.VERTICAL;
         } else {
             axisMode = WandAxisMode.FREE;
@@ -185,7 +185,7 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
 
         int placeCount = selection.maxPlaceCount(player, buildLimit);
 
-        Set<BlockPos> blocksToPlace = ArchitectsWandUtils.findAdjacentBlocks(
+        Set<BlockPos> blocksToPlace = BuildersWandUtils.findAdjacentBlocks(
             world,
             itemStackToPlace,
             placeCount,
@@ -207,8 +207,8 @@ public class ItemArchitectsWand extends Item implements ITranslucentItem {
                         .nextInt(candidates.size()));
             }
 
-            if (player.capabilities.isCreativeMode || (ArchitectsWandUtils.decreaseFromInventory(player, nowPlacing)
-                && damageBackhand(ArchitectsWandsConfig.INSTANCE.damageTrowelWithArchitectsWand, player))) {
+            if (player.capabilities.isCreativeMode || (BuildersWandUtils.decreaseFromInventory(player, nowPlacing)
+                && damageBackhand(BuildersWandsConfig.INSTANCE.damageTrowelWithBuildersWand, player))) {
                 placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
             }
         }

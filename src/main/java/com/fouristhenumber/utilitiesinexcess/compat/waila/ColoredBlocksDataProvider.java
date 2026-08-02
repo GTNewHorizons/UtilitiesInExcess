@@ -34,7 +34,7 @@ public class ColoredBlocksDataProvider implements IWailaDataProvider {
         return currentTip;
     }
 
-    // Stubs
+    // <editor-fold desc="IWailaDataProvider Stubs" defaultstate="collapsed">
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
         int y, int z) {
         return tag;
@@ -53,4 +53,5 @@ public class ColoredBlocksDataProvider implements IWailaDataProvider {
         IWailaConfigHandler config) {
         return currentTip;
     }
+    // </editor-fold>
 }

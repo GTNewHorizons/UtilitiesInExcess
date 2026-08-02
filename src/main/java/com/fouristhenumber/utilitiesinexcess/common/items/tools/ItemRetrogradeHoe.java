@@ -13,31 +13,30 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.ReversingHoeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-// TODO: Add new features to the reversing hoe
-public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
+public class ItemRetrogradeHoe extends ItemHoe implements ITranslucentItem {
 
     public static final HashMap<BlockMeta, BlockMeta> blockConversionCache = new HashMap<>();
 
-    public ItemReversingHoe() {
+    public ItemRetrogradeHoe() {
         super(ToolMaterial.EMERALD);
-        setTextureName("utilitiesinexcess:reversing_hoe");
-        setUnlocalizedName("reversing_hoe");
-        if (ReversingHoeConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        setTextureName("utilitiesinexcess:retrograde_hoe");
+        setUnlocalizedName("retrograde_hoe");
+        if (RetrogradeHoeConfig.INSTANCE.unbreakable) setMaxDamage(0);
     }
 
     public static void initializeCache() {
-        if (ReversingHoeConfig.INSTANCE.blockTransformations != null) {
-            for (String transformation : ReversingHoeConfig.INSTANCE.blockTransformations) {
+        if (RetrogradeHoeConfig.INSTANCE.blockTransformations != null) {
+            for (String transformation : RetrogradeHoeConfig.INSTANCE.blockTransformations) {
                 if (transformation == null) continue;
                 if (!transformation.contains("->")) {
                     UtilitiesInExcess.LOG
-                        .warn("Reversing Hoe Config: {} does not contain '->', skipped", transformation);
+                        .warn("Retrograde Hoe Config: {} does not contain '->', skipped", transformation);
                     continue;
                 }
                 try {
@@ -59,7 +58,7 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
                     Block targetBlock = GameRegistry.findBlock(targetDomain, targetName);
 
                     if (sourceBlock == null || targetBlock == null) {
-                        UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Could not find {}, skipped", transformation);
+                        UtilitiesInExcess.LOG.warn("Retrograde Hoe Config: Could not find {}, skipped", transformation);
                         continue;
                     }
 
@@ -67,7 +66,7 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
                         .put(new BlockMeta(sourceBlock, sourceMeta), new BlockMeta(targetBlock, targetMeta));
 
                 } catch (Exception e) {
-                    UtilitiesInExcess.LOG.warn("Reversing Hoe Config: Skipped malformed config: {}", transformation);
+                    UtilitiesInExcess.LOG.warn("Retrograde Hoe Config: Skipped malformed config: {}", transformation);
                 }
             }
         }
@@ -98,7 +97,7 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
             if (!world.isRemote) {
                 world.setBlock(x, y, z, targetBlock, targetMeta, 3);
 
-                if (!ReversingHoeConfig.INSTANCE.unbreakable) {
+                if (!RetrogradeHoeConfig.INSTANCE.unbreakable) {
                     itemStack.damageItem(1, player);
                 }
             }
@@ -120,26 +119,26 @@ public class ItemReversingHoe extends ItemHoe implements ITranslucentItem {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
-        if (ReversingHoeConfig.INSTANCE.unbreakable)
+        if (RetrogradeHoeConfig.INSTANCE.unbreakable)
             tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
     }
 
     // Unbreakable
     @Override
     public boolean isDamageable() {
-        if (ReversingHoeConfig.INSTANCE.unbreakable) return false;
+        if (RetrogradeHoeConfig.INSTANCE.unbreakable) return false;
         return super.isDamageable();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
-        if (ReversingHoeConfig.INSTANCE.unbreakable) return false;
+        if (RetrogradeHoeConfig.INSTANCE.unbreakable) return false;
         return super.getIsRepairable(stack, repairMaterial);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        if (ReversingHoeConfig.INSTANCE.unbreakable) return false;
+        if (RetrogradeHoeConfig.INSTANCE.unbreakable) return false;
         return super.showDurabilityBar(stack);
     }
     //

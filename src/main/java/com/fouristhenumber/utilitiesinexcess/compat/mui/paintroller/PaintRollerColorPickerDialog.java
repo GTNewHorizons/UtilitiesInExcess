@@ -155,7 +155,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .child(
                             new ButtonWidget<>().heightRel(1f)
                                 .width(50)
-                                .overlay(IKey.str(StatCollector.translateToLocal("uie.gui.text.paint_roller.cancel")))
+                                .overlay(IKey.str(StatCollector.translateToLocal("uie.gui.text.cancel")))
                                 .onMousePressed(button -> {
                                     closeIfOpen();
                                     return true;
@@ -163,7 +163,7 @@ public class PaintRollerColorPickerDialog extends Dialog<Integer> {
                         .child(
                             new ButtonWidget<>().heightRel(1f)
                                 .width(50)
-                                .overlay(IKey.str(StatCollector.translateToLocal("uie.gui.text.paint_roller.confirm")))
+                                .overlay(IKey.str(StatCollector.translateToLocal("uie.gui.text.confirm")))
                                 .onMousePressed(button -> {
                                     resultConsumer.accept(this.color, this.paintStripper);
                                     closeIfOpen();
