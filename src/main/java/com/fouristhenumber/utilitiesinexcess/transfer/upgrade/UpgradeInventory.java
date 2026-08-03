@@ -15,6 +15,7 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
     public UpgradeInventory(int size, IUpgradeable node)
     {
         upgrades = new ItemStack[size];
+        host = node;
     }
 
     @Override

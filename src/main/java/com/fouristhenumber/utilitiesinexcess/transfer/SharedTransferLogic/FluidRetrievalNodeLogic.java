@@ -18,12 +18,16 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.IUpgradeable;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RoundRobinStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -35,18 +39,23 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
-public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetrievalNode> implements IUpgradeable
+// This class doesn't really even need to be a IInventory because of composition on FluidTank + UpgradeInventory.
+// I think it's just simpler design.
+public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrievalNode>
 {
-//    ItemStack[] upgrades = new ItemStack[getSizeInventory()];
     public static final int maxFluidAmount = 8000;
-    public int maxDrainAmount = 200;
+    public static final int DEFAULT_MAX_DRAIN_AMOUNT = 200;
+    public int maxDrainAmount = DEFAULT_MAX_DRAIN_AMOUNT;
     public FluidTank buffer = new FluidTank(maxFluidAmount);
     public FluidWalker walker;
     IFluidHandler connectedTank;
 
+    // Upgrades
     UpgradeInventory upgrades;
+    private boolean isCreative = false;
+    private boolean isWorldInteraction = false;
 
-    // TODO?
+    // TODO needed?
     private FluidStack pullingFluid;
 
     public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host)
@@ -56,40 +65,39 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
         this.upgrades = new UpgradeInventory(6, this);
     }
 
+    // ======================================= Ticking =======================================
     public void updateEntity()
     {
-        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        if (host.getWorld().isRemote)
         {
             return;
         }
 
-        if (connectedTank == null)
+        int actionsThisTick = actionsThisTick();
+        for (int i = 0; i < actionsThisTick; i ++)
         {
-            updateConnectedTank();
-        }
-        else
-        {
-            exportToConnected();
-        }
+            if (connectedTank == null) {
+                updateConnectedTank();
+            } else {
+                exportToConnected();
+            }
 
-        if (buffer.getFluid() != null && buffer.getFluid().amount == maxFluidAmount)
-        {
-            walker.reset();
-            return;
-        }
+            if (buffer.getFluid() != null && buffer.getFluid().amount == maxFluidAmount) {
+                walker.reset();
+                return;
+            }
 
-        List<TargetResolver.Target<IFluidHandler>> pullingTanks = walker.getValidTargets(host.getWorld());
+            List<TargetResolver.Target<IFluidHandler>> pullingTanks = walker.getValidTargets(host.getWorld());
 
-        if (pullingTanks.isEmpty())
-        {
-            walker.step(host.getWorld());
-            return;
-        }
+            if (pullingTanks.isEmpty()) {
+                walker.step(host.getWorld());
+                return;
+            }
 
-        if (!importFromPullingTanks(pullingTanks))
-        {
-            pullingFluid = null;
-            walker.step(host.getWorld());
+            if (!importFromPullingTanks(pullingTanks)) {
+                pullingFluid = null;
+                walker.step(host.getWorld());
+            }
         }
     }
 
@@ -190,15 +198,52 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
         }
     }
 
+    // ======================================= Upgrades =======================================
+    // Applicable upgrades: Creative, Speed, Stack, BFS, DFS, RoundRobin, WorldInteraction
     @Override
     public void resetUpgrades()
     {
-
+        super.resetUpgrades();
+        this.walker.setStepper(new RandomStepper());
+        this.isCreative = false;
+        this.maxDrainAmount = DEFAULT_MAX_DRAIN_AMOUNT;
+        this.isWorldInteraction = false;
     }
 
     @Override
-    public void markDirty() {
-        host.markDirty();
+    public void applySearchDepthUpgrade(ItemStack stack)
+    {
+        this.walker.setStepper(new DFSStepper());
+    }
+
+    @Override
+    public void applySearchBreadthUpgrade(ItemStack stack)
+    {
+        this.walker.setStepper(new BFSStepper());
+    }
+
+    @Override
+    public void applySearchRoundRobinUpgrade(ItemStack stack)
+    {
+        this.walker.setStepper(new RoundRobinStepper());
+    }
+
+    @Override
+    public void applyCreativeUpgrade(ItemStack stack)
+    {
+        this.isCreative = true;
+    }
+
+    @Override
+    public void applyWorldInteractionUpgrade(ItemStack stack)
+    {
+        this.isWorldInteraction = true;
+    }
+
+    @Override
+    public void applyStackUpgrade(ItemStack stack)
+    {
+        this.maxDrainAmount = maxFluidAmount;
     }
 
     public void writeToNBT(NBTTagCompound nbt)
@@ -222,6 +267,7 @@ public class FluidRetrievalNodeLogic extends NetworkLogic<TileEntityFluidRetriev
         buffer.readFromNBT(nbt.getCompoundTag("Fluid"));
     }
 
+    // ======================================= UI =======================================
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());

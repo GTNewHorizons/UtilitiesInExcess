@@ -48,7 +48,8 @@ public enum TransferUpgrade {
         return VALUES[meta];
     }
 
-    public void applyTo(IUpgradeable node, ItemStack stack) {
+    public void applyTo(IUpgradeable node, ItemStack stack)
+    {
         switch (this) {
             case SPEED:                node.applySpeedUpgrade(stack); break;
             case FILTER:                node.applyFilterUpgrade(stack); break;
