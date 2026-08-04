@@ -238,9 +238,9 @@ public class ItemPaintRoller extends Item implements IGuiHolder<PlayerInventoryG
                 }
             }
             String rightClickName = KeybindUtils
-                .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem.getKeyCode());
+                .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindUseItem);
             String middleClickName = KeybindUtils
-                .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode());
+                .getKeyDisplayNameWithMouse(Minecraft.getMinecraft().gameSettings.keyBindPickBlock);
             tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.paint_roller.0", rightClickName));
             tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.paint_roller.1", rightClickName));
             tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.paint_roller.2", rightClickName));

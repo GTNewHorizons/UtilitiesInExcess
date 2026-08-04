@@ -557,9 +557,9 @@ uie.desc.item.watering_can.area=Area: %dx%d
 
 uie.desc.item.fire_battery.1=RF %s / %s
 
-uie.desc.item.glove.1=Press %s to activate.
-uie.desc.item.glove.2=+2,147,483,647 Breeze Projection
-uie.desc.item.glove.3=§oP.S. Breeze Projection does nothing.
+uie.desc.item.glove.1=§bPress §r[§6%s§r]§b to activate.
+uie.desc.item.glove.2=§9+2,147,483,647 Breeze Projection
+uie.desc.item.glove.3=§7§oP.S. Breeze Projection does nothing.
 
 uie.desc.item.chunchunmaru.1=It's a really cool name
 
@@ -682,8 +682,10 @@ uie.gui.text.slot_dir.horizontal=Horizontal
 uie.gui.text.slot_dir.vertical=Vertical
 
 uie.gui.text.paint_roller.paintstripper=Paint Stripper Mode
-uie.gui.text.paint_roller.cancel=Cancel
-uie.gui.text.paint_roller.confirm=Confirm
+
+uie.gui.text.cancel=Cancel
+uie.gui.text.confirm=Confirm
+uie.gui.text.continue=Continue
 
 ## Gui Tooltips
 uie.gui.tooltip.generator.energy-max=RF: %s / %s
@@ -719,6 +721,12 @@ uie.gui.tooltip.paint_roller.help.3=to the nearest number divisible by 8
 uie.gui.tooltip.trading_post.search.buy_prefix=buy:
 uie.gui.tooltip.trading_post.search.sell_prefix=sell:
 #
+
+## World conversion warning gui
+uie.world_conversion.warning_enabled.client=WARNING!!\n\nThe §aExtra Utilities§f mod has been replaced with §aUtilities in Excess§f.\nAfter pressing "Yes" every item in your world from Extra Utilities\nwill be replaced with their Utilities in Excess counterpart.\nWe recommend making a backup of this world before proceeding.
+uie.world_conversion.warning_enabled.server=WARNING!! The Extra Utilities mod has been replaced with Utilities in Excess. After typing "/fml confirm" every item in your world from Extra Utilities will be replaced with their Utilities in Excess counterpart. We recommend making a backup of this world before proceeding.
+uie.world_conversion.warning_disabled.client=WARNING!!\n\nThe §aExtra Utilities§f mod has been removed, but the §aUtilities in Excess\n§4§l§nWorld Conversion system is DISABLED!! §rIf you continue,\nEvery item and block in your world from Extra Utilities will be §lpermanently deleted§r.\nYou can enable the Utilities in Excess world conversion system in the config\n(Requires the §aPostea§r mod)
+uie.world_conversion.warning_disabled.server=WARNING!! The Extra Utilities mod has been removed, but the Utilities in Excess World Conversion system is DISABLED!!. If you continue, every item and block in your world from Extra Utilities will be PERMANENTLY DELETED. You can enable the Utilities in Excess world conversion system in the config, (Requires the Postea mod).
 
 ### Chat 
 uie.chat.quarry.finished=Your Void Quarry at (%d %d %d) in DIM %d has finished.
