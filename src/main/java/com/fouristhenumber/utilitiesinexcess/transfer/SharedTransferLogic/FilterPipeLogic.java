@@ -17,6 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITrans
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.filter.ItemFilter;
 import com.fouristhenumber.utilitiesinexcess.utils.filter.MatchMode;
 import cpw.mods.fml.relauncher.Side;
@@ -103,11 +104,7 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        if (filters[index] == null)
-        {
-            return null;
-        }
-        return filters[index].splitStack(count);
+        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, filters, this);
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -199,11 +200,7 @@ public class ItemTransferNodeLogic extends NetworkLogic<TileEntityItemTransferNo
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        if (buffer[index] == null)
-        {
-            return null;
-        }
-        return buffer[index].splitStack(count);
+        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, buffer, this);
     }
 
     @Override

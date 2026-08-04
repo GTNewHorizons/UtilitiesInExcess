@@ -20,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -177,11 +178,7 @@ public class FluidTransferNodeLogic extends NetworkLogic<TileEntityFluidTransfer
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        if (upgrades[index] == null)
-        {
-            return null;
-        }
-        return upgrades[index].splitStack(count);
+        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, upgrades, this);
     }
 
     @Override

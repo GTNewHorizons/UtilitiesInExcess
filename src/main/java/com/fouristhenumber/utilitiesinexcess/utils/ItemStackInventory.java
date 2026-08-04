@@ -117,12 +117,7 @@ public class ItemStackInventory implements IInventory
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        if (filters[index] == null)
-        {
-            return null;
-        }
-        markDirty();
-        return filters[index].splitStack(count);
+        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, filters, this);
     }
 
     @Override
@@ -176,6 +171,36 @@ public class ItemStackInventory implements IInventory
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return true;
+    }
+
+    public static ItemStack decrStackSizeInItemStackArray(int index, int count, ItemStack[] arr, IInventory inv)
+    {
+        if (arr[index] == null)
+        {
+            return null;
+        }
+
+        ItemStack itemstack;
+        if (arr[index].stackSize <= count)
+        {
+            itemstack = arr[index];
+            arr[index] = null;
+        }
+        else
+        {
+            itemstack = arr[index].splitStack(count);
+
+            if (arr[index].stackSize == 0)
+            {
+                arr[index] = null;
+            }
+        }
+
+        if (inv != null)
+        {
+            inv.markDirty();
+        }
+        return itemstack;
     }
 
 

@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
 import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -58,11 +59,7 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        if (upgrades[index] == null)
-        {
-            return null;
-        }
-        return upgrades[index].splitStack(count);
+        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, upgrades, this);
     }
 
     @Override
