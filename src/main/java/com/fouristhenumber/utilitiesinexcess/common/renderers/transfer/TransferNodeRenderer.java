@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 

@@ -21,7 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.energyNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.energyNodeRenderID;
 
 public class BlockTransferNodeEnergy extends BlockTransferBase
 {

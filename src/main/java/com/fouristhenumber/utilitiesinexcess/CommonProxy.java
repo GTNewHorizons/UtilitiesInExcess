@@ -1,5 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import codechicken.lib.world.TileChunkLoadHook;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
+import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
@@ -31,6 +37,10 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
 
+    public static int spikeRenderID;
+    public static int transferPipeRenderID;
+    public static int energyNodeRenderID;
+    public static int flatNodeRenderID;
     public SoundVolumeChecks soundVolumeChecks;
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
@@ -48,6 +58,15 @@ public class CommonProxy {
         ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
+        TileChunkLoadHook.init();
+        ColoredSlots.init();
+
+        transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
+        flatNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
+        energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
 
         if (Mods.NEI.isLoaded()) {
             IMCForNEI.IMCSender();

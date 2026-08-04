@@ -1,11 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferPipeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.transferPipeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
 //import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.pipe.BlockCrossoverPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;

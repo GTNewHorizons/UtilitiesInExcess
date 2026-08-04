@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferPipeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.transferPipeRenderID;
 
 public class BlockPipe extends BlockTransferBase
 {

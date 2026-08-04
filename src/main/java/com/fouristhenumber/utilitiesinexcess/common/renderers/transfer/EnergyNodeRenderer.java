@@ -6,9 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
-import org.lwjgl.opengl.GL11;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.energyNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.energyNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
 @ThreadSafeISBRH(perThread = false)

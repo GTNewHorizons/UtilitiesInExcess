@@ -18,7 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.flatNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
 
 public abstract class BlockNodeBase extends BlockTransferBase
 {
