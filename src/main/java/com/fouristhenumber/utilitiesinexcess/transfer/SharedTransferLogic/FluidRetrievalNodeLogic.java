@@ -29,7 +29,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -51,7 +50,6 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     IFluidHandler connectedTank;
 
     // Upgrades
-    UpgradeInventory upgrades;
     private boolean isCreative = false;
     private boolean isWorldInteraction = false;
 
@@ -62,7 +60,6 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     {
         super(host);
         this.walker = new FluidWalker(host);
-        this.upgrades = new UpgradeInventory(6, this);
     }
 
     // ======================================= Ticking =======================================
@@ -199,7 +196,7 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     }
 
     // ======================================= Upgrades =======================================
-    // Applicable upgrades: Creative, Speed, Stack, BFS, DFS, RoundRobin, WorldInteraction
+    // Applicable upgrades: Creative, Speed, Stack, BFS, DFS, RoundRobin
     @Override
     public void resetUpgrades()
     {
@@ -235,12 +232,6 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     }
 
     @Override
-    public void applyWorldInteractionUpgrade(ItemStack stack)
-    {
-        this.isWorldInteraction = true;
-    }
-
-    @Override
     public void applyStackUpgrade(ItemStack stack)
     {
         this.maxDrainAmount = maxFluidAmount;
@@ -248,11 +239,7 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
 
     public void writeToNBT(NBTTagCompound nbt)
     {
-        NBTTagList itemTagList = new NBTTagList();
-
-        this.upgrades.writeToNBT(nbt);
-
-        nbt.setTag("Items", itemTagList);
+        super.writeToNBT(nbt);
 
         NBTTagCompound fluidTag = new NBTTagCompound();
         buffer.writeToNBT(fluidTag);
@@ -261,9 +248,7 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
 
     public void readFromNBT(NBTTagCompound nbt)
     {
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-        upgrades.readFromNBT(nbt);
-
+        super.readFromNBT(nbt);
         buffer.readFromNBT(nbt.getCompoundTag("Fluid"));
     }
 

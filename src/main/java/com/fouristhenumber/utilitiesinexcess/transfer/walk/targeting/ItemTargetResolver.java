@@ -12,6 +12,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.getInventory;
+
 public class ItemTargetResolver implements TargetResolver<IInventory> {
 
     public ItemTargetResolver()
@@ -37,13 +39,13 @@ public class ItemTargetResolver implements TargetResolver<IInventory> {
                     continue;
                 }
 
-                TileEntity te = world.getTileEntity(
+                IInventory inv = getInventory(world,
                     walkerPos.x + searchDir.offsetX,
                     walkerPos.y + searchDir.offsetY,
                     walkerPos.z + searchDir.offsetZ);
-                if (te instanceof IInventory target)
+                if (inv != null)
                 {
-                    validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
+                    validTargets.add(new Target<>(inv, searchDir.getOpposite().ordinal()));
                 }
             }
         }

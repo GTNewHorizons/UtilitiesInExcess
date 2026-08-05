@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public class UpgradeInventory implements IOnSlotChanged, IInventory
 {
@@ -39,10 +40,37 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
 
     public void writeToNBT(NBTTagCompound nbt)
     {
+        NBTTagList itemTagList = new NBTTagList();
+
+        for (int i = 0; i < this.upgrades.length; ++i)
+        {
+            if (this.upgrades[i] != null)
+            {
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte)i);
+                this.upgrades[i].writeToNBT(nbttagcompound);
+                itemTagList.appendTag(nbttagcompound);
+            }
+        }
+
+        nbt.setTag("Upgrades", itemTagList);
     }
 
     public void readFromNBT(NBTTagCompound nbt)
     {
+        NBTTagList nbttaglist = nbt.getTagList("Upgrades", 10);
+        this.upgrades = new ItemStack[this.getSizeInventory()];
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
+            int slot = compound.getByte("Slot") & 255;
+
+            if (slot < this.upgrades.length)
+            {
+                this.upgrades[slot] = ItemStack.loadItemStackFromNBT(compound);
+            }
+        }
     }
 
     @Override

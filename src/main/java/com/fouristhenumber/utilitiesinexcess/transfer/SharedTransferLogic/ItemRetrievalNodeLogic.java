@@ -16,10 +16,17 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RoundRobinStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
+import com.fouristhenumber.utilitiesinexcess.utils.filter.ItemFilter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,21 +34,27 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.getModesFromStack;
+import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic.parseFilterItem;
+import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
 import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 
-public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrievalNode> implements IInventory
+public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrievalNode> implements IInventory
 {
     public ItemWalker walker;
-    ItemStack[] buffer = new ItemStack[getSizeInventory()];
+    ItemStack buffer;
     IInventory connectedInventory;
+
+    // Upgrades
+    private boolean isCreative = false;
+    private boolean isStackUpgrade = false;
+    private ItemFilter logicalFilter;
 
     private ItemStack pullingItem;
 
@@ -73,7 +86,7 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
             exportToConnected();
         }
 
-        if (buffer[0] != null && buffer[0].stackSize == buffer[0].getMaxStackSize())
+        if (buffer != null && buffer.stackSize == buffer.getMaxStackSize())
         {
             walker.reset();
             return;
@@ -130,13 +143,18 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
                 continue;
             }
 
+            if (logicalFilter != null && !logicalFilter.matches(stack))
+            {
+                continue;
+            }
+
             if (pullingItem == null)
             {
                 // Sometimes if for some reason you have a transfer node that doesn't have a connected inventory
                 // (or the inventory is full) you will just keep walking with a stack in the buffer.
-                if (buffer[0] != null)
+                if (buffer != null)
                 {
-                    pullingItem = buffer[0];
+                    pullingItem = buffer;
                 }
                 else
                 {
@@ -186,12 +204,12 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
 
     private void exportToConnected()
     {
-        if (connectedInventory == null || buffer[0] == null || buffer[0].stackSize <= 0)
+        if (connectedInventory == null || buffer == null || buffer.stackSize <= 0)
         {
             return;
         }
 
-        ItemStack toExport = buffer[0];
+        ItemStack toExport = buffer;
         ForgeDirection connectedSide = host.getFacing();
 
         if (connectedInventory instanceof ISidedInventory sidedInventory)
@@ -230,7 +248,7 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
             }
         }
 
-        buffer[0] = toExport.stackSize <= 0 ? null : toExport;
+        buffer = toExport.stackSize <= 0 ? null : toExport;
     }
 
     private void tryMergeIntoSlot(IInventory inventory, int slot, ItemStack toExport)
@@ -263,36 +281,24 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
 
     public void writeToNBT(NBTTagCompound nbt)
     {
-        NBTTagList nbttaglist = new NBTTagList();
+        super.writeToNBT(nbt);
 
-        for (int i = 0; i < this.buffer.length; ++i)
+        if (buffer != null)
         {
-            if (this.buffer[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
-                this.buffer[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
+            NBTTagCompound compound = new NBTTagCompound();
+            this.buffer.writeToNBT(compound);
+            nbt.setTag("Buffer", compound);
         }
-
-        nbt.setTag("Items", nbttaglist);
     }
 
     public void readFromNBT(NBTTagCompound nbt)
     {
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-        this.buffer = new ItemStack[this.getSizeInventory()];
+        super.readFromNBT(nbt);
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        if (nbt.hasKey("Buffer"))
         {
-            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
-            int slot = compound.getByte("Slot") & 255;
-
-            if (slot < this.buffer.length)
-            {
-                this.buffer[slot] = ItemStack.loadItemStackFromNBT(compound);
-            }
+            NBTTagCompound compound = nbt.getCompoundTag("Buffer");
+            this.buffer = ItemStack.loadItemStackFromNBT(compound);
         }
     }
 
@@ -307,28 +313,28 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
 
     @Override
     public int getSizeInventory() {
-        return 7;
+        return 1;
     }
 
     @Override
     public ItemStack getStackInSlot(int slotIn) {
-        return buffer[slotIn];
+        return buffer;
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, buffer, this);
+        return ItemStackInventory.decrStackSize(count, this);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int index) {
-        return buffer[index];
+        return buffer;
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.buffer[index] = stack;
+        this.buffer = stack;
         this.markDirty();
     }
 
@@ -374,6 +380,71 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
         return true;
     }
 
+    // ======================================= Upgrades =======================================
+    // Applicable upgrades: Creative x, Speed x, Stack x , BFS x, DFS x, RoundRobin x, Filter x, Adv Filter x
+    @Override
+    public void resetUpgrades()
+    {
+        super.resetUpgrades();
+        this.walker.setStepper(new RandomStepper());
+        this.isCreative = false;
+        this.isStackUpgrade = false;
+        this.logicalFilter = null;
+    }
+
+    @Override
+    public void applySearchDepthUpgrade(ItemStack stack)
+    {
+        this.walker.setStepper(new DFSStepper());
+    }
+
+    @Override
+    public void applySearchBreadthUpgrade(ItemStack stack)
+    {
+        this.walker.setStepper(new BFSStepper());
+    }
+
+    @Override
+    public void applySearchRoundRobinUpgrade(ItemStack stack)
+    {
+        this.walker.setStepper(new RoundRobinStepper());
+    }
+
+    @Override
+    public void applyCreativeUpgrade(ItemStack stack)
+    {
+        this.isCreative = true;
+    }
+
+    @Override
+    public void applyStackUpgrade(ItemStack stack)
+    {
+        this.isStackUpgrade = true;
+    }
+
+    @Override
+    public void applyFilterUpgrade(ItemStack filter)
+    {
+        if (logicalFilter == null)
+        {
+            logicalFilter = new ItemFilter();
+        }
+        parseFilterItem(logicalFilter, filter, getModesFromStack(filter));
+    }
+
+    @Override
+    public void applyAdvFilterUpgrade(ItemStack advFilter)
+    {
+        if (logicalFilter == null)
+        {
+            logicalFilter = new ItemFilter();
+        }
+        logicalFilter.addToPredicates(
+            AdvancedFilterMode.values()[getAdvFilterMode(advFilter)]::matches,
+            ItemUpgrade.FilterMode.isInverted(advFilter)
+        );
+    }
+
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
@@ -396,7 +467,6 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
                         .marginTop(5)
                         .marginBottom(-15)));
 
-        IItemHandler itemHandler = new InvWrapper(this);
 
         panel.child(
             IKey.dynamic(() -> "Search Location: " + searchLocationSyncer.getStringValue())
@@ -407,12 +477,18 @@ public class ItemRetrievalNodeLogic extends NetworkLogic<TileEntityItemRetrieval
 
         Flow flow = Flow.row();
         flow.pos(34,60).size(108,18);
-        for (int i = 1; i < getSizeInventory(); i++) // First slot is for buffer
+        // Upgrades
+        IItemHandler upgradeItemHandler = new InvWrapper(upgrades);
+
+        for (int i = 0; i < upgrades.getSizeInventory(); i++)
         {
-            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup)));
+            flow.child(new ItemSlot().slot(new ModularSlot(upgradeItemHandler,i).slotGroup(upgradeSlotGroup).changeListener(upgrades)));
         }
+
         panel.child(flow);
-        ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(bufferSlotGroup);
+        // Buffer
+        IItemHandler bufferItemHandler = new InvWrapper(this);
+        ModularSlot slot = new ModularSlot(bufferItemHandler, 0).slotGroup(bufferSlotGroup);
 
         panel.child(
             new Grid().coverChildren()

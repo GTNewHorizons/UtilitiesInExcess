@@ -348,7 +348,6 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
             }
         }
     }
-
 }
 
 

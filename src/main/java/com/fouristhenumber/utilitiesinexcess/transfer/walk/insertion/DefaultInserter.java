@@ -66,7 +66,7 @@ public class DefaultInserter extends BaseInserter
         IntArrayList mergeableSlots = new IntArrayList();
         IntArrayList emptySlots = new IntArrayList();
 
-        // Note that we have to iterate the whole inventory first or we won't know if there's mergable slots
+        // Note that we have to iterate the whole inventory first, or we won't know if there's mergeable slots
         for (int slot : slots)
         {
             if (!inventory.canInsertItem(slot, stack, side))

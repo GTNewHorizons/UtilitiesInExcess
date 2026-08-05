@@ -213,7 +213,7 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
                 {
                     if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.FILTER) // Case where it's a filter
                     {
-                        parseFilterItem(filters[i], i, 0);
+                         parseFilterItem(logicalFilter[i], filters[i], 0);
                     }
                     else if (TransferUpgrade.getUpgrade(filters[i]) == TransferUpgrade.ADV_FILTER) // Case where it's an advanced filter
                     {
@@ -234,7 +234,7 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
     // ParentFilterMask is the settings of the parent. This is needed because if the parent says inverted
     // and the child says inverted then they cancel out and the items in the child are NOT inverted.
     // On the other hand, metadata and NBT ignoring behaviors are propagated to children, but do not cancel each other out.
-    private void parseFilterItem(ItemStack filter, int slot, int parentMode)
+    public static void parseFilterItem(ItemFilter logicalFilter, ItemStack filter, int parentMode)
     {
         // This next block basically does the following: XOR bit 0, then OR bit 1 and 2.
         int extractedMode = parentMode & 0b110;
@@ -256,11 +256,11 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
             {
                 if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.FILTER)
                 {
-                    parseFilterItem(containedItem, slot, mode);
+                    parseFilterItem(logicalFilter, containedItem, mode);
                 }
                 else if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.ADV_FILTER)
                 {
-                    logicalFilter[slot].addToPredicates(AdvancedFilterMode.values()[getAdvFilterMode(containedItem)]::matches, inverted);
+                    logicalFilter.addToPredicates(AdvancedFilterMode.values()[getAdvFilterMode(containedItem)]::matches, inverted);
                 }
             }
             else
@@ -269,22 +269,22 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
                 {
                     case (0b000):
                     {
-                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.DEFAULT);
+                        logicalFilter.addToRuleList(containedItem, inverted, MatchMode.DEFAULT);
                         break;
                     }
                     case (0b010):
                     {
-                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT);
+                        logicalFilter.addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT);
                         break;
                     }
                     case (0b100):
                     {
-                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.IGNORE_META);
+                        logicalFilter.addToRuleList(containedItem, inverted, MatchMode.IGNORE_META);
                         break;
                     }
                     case (0b110):
                     {
-                        logicalFilter[slot].addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT_MET);
+                        logicalFilter.addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT_MET);
                         break;
                     }
                 }

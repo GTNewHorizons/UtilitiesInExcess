@@ -203,5 +203,34 @@ public class ItemStackInventory implements IInventory
         return itemstack;
     }
 
+    public static ItemStack decrStackSize(int count, IInventory inv)
+    {
+        ItemStack item = inv.getStackInSlot(0);
+
+        if (item == null)
+        {
+            return null;
+        }
+
+        ItemStack result;
+
+        if (item.stackSize <= count)
+        {
+            result = item;
+            inv.setInventorySlotContents(0, null);
+        }
+        else
+        {
+            result = item.splitStack(count);
+
+            if (item.stackSize == 0)
+            {
+                inv.setInventorySlotContents(0, null);
+            }
+        }
+
+        inv.markDirty();
+        return result;
+    }
 
 }

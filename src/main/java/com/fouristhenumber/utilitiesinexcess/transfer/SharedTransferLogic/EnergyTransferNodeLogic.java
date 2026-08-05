@@ -19,25 +19,23 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
-import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransferNode> implements IInventory {
-    ItemStack[] upgrades = new ItemStack[getSizeInventory()];
+public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTransferNode>
+{
+    UpgradeInventory upgrades;
+
 
     public EnergyWalker walker;
     public Set<IEnergyProvider> sources = new HashSet<IEnergyProvider>();
@@ -218,112 +216,15 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
 
     public void writeToNBT(NBTTagCompound nbt)
     {
-        NBTTagList itemTagList = new NBTTagList();
-
-        for (int i = 0; i < this.upgrades.length; ++i)
-        {
-            if (this.upgrades[i] != null)
-            {
-                NBTTagCompound nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)i);
-                this.upgrades[i].writeToNBT(nbttagcompound);
-                itemTagList.appendTag(nbttagcompound);
-            }
-        }
-
-        nbt.setTag("Items", itemTagList);
-
+        super.writeToNBT(nbt);
         NBTTagInt energy = new NBTTagInt(containedEnergy);
         nbt.setTag("Energy", energy);
     }
 
     public void readFromNBT(NBTTagCompound nbt)
     {
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
-        this.upgrades = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
-            int slot = compound.getByte("Slot") & 255;
-
-            if (slot < this.upgrades.length)
-            {
-                this.upgrades[slot] = ItemStack.loadItemStackFromNBT(compound);
-            }
-        }
-
+        super.readFromNBT(nbt);
         containedEnergy = nbt.getInteger("Energy");
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 6;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slotIn)
-    {
-        return upgrades[slotIn];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        return ItemStackInventory.decrStackSizeInItemStackArray(index, count, upgrades, this);
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int index)
-    {
-        return upgrades[index];
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        upgrades[index] = stack;
-        this.markDirty();
-    }
-
-    @Override
-    public String getInventoryName() {
-        return "";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public void markDirty() {
-        host.markHostDirty();
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
     }
 
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
@@ -343,14 +244,14 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
             new ParentWidget<>().coverChildren()
                 .topRelAnchor(0, 1)
                 .child(
-                    IKey.str(StatCollector.translateToLocal(getInventoryName()))
+                    IKey.str(StatCollector.translateToLocal(upgrades.getInventoryName()))
                         .asWidget()
                         .marginLeft(5)
                         .marginRight(5)
                         .marginTop(5)
                         .marginBottom(-15)));
 
-        IItemHandler itemHandler = new InvWrapper(this);
+        IItemHandler itemHandler = new InvWrapper(upgrades);
 
         panel.child(
             IKey.dynamic(searchLocationSyncer::getStringValue)
@@ -361,9 +262,9 @@ public class EnergyTransferNodeLogic extends NetworkLogic<TileEntityEnergyTransf
 
         Flow flow = Flow.row();
         flow.pos(34,60).size(108,18);
-        for (int i = 0; i < getSizeInventory(); i++)
+        for (int i = 0; i < upgrades.getSizeInventory(); i++)
         {
-            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup)));
+            flow.child(new ItemSlot().slot(new ModularSlot(itemHandler,i).slotGroup(upgradeSlotGroup).changeListener(upgrades)));
         }
         panel.child(flow);
 
