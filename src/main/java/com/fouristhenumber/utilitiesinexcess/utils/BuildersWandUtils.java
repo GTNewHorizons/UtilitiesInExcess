@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import gregtech.api.items.MetaGeneratedTool;
 import xonin.backhand.api.core.BackhandUtils;
@@ -27,8 +28,6 @@ import xonin.backhand.api.core.BackhandUtils;
 public class BuildersWandUtils {
 
     public BuildersWandUtils() {}
-
-    ;
 
     /**
      * Counts the items of a certain type in a player's inventory
@@ -41,8 +40,7 @@ public class BuildersWandUtils {
         int count = 0;
 
         for (ItemStack stack : player.inventory.mainInventory) {
-            if (stack != null && stack.getItem() == itemStack.getItem()
-                && stack.getItemDamage() == itemStack.getItemDamage()) {
+            if (ItemUtil.areStacksEqual(stack, itemStack)) {
                 count += stack.stackSize;
             }
         }
@@ -60,8 +58,7 @@ public class BuildersWandUtils {
     public static boolean decreaseFromInventory(EntityPlayer player, ItemStack itemStack) {
         for (int slotIndex = player.inventory.mainInventory.length - 1; slotIndex >= 0; slotIndex--) {
             ItemStack stack = player.inventory.mainInventory[slotIndex];
-            if (stack != null && stack.getItem() == itemStack.getItem()
-                && stack.getItemDamage() == itemStack.getItemDamage()) {
+            if (ItemUtil.areStacksEqual(stack, itemStack)) {
                 stack.stackSize -= 1;
                 if (stack.stackSize <= 0) {
                     player.inventory.setInventorySlotContents(slotIndex, null);
