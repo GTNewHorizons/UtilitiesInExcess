@@ -45,7 +45,10 @@ public class ItemTargetResolver implements TargetResolver<IInventory> {
                     walkerPos.z + searchDir.offsetZ);
                 if (inv != null)
                 {
-                    validTargets.add(new Target<>(inv, searchDir.getOpposite().ordinal()));
+                    validTargets.add(new Target<>(inv, searchDir.getOpposite().ordinal(),
+                        walkerPos.x + searchDir.offsetX,
+                        walkerPos.y + searchDir.offsetY,
+                        walkerPos.z + searchDir.offsetZ));
                 }
             }
         }

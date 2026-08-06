@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
 import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -19,37 +20,59 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ByteOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTransferNode>
+public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTransferNode> implements IEnergyHandler
 {
-    UpgradeInventory upgrades;
-
-
     public EnergyWalker walker;
-    public Set<IEnergyProvider> sources = new HashSet<IEnergyProvider>();
-    public Set<IEnergyReceiver> sinks = new HashSet<IEnergyReceiver>();
+
+    // Because I can't find a cleaner way to do this, I'm packing generation and side in this same
+    // map. First 3 bits are the side to push/pull from and the rest of the bits are the generation of scan it's on.
+    // Generation of scan is used for invalidating old items. If they haven't been seen between generations of the
+    // walker then we remove them from the map.
+    public Long2IntOpenHashMap sources = new Long2IntOpenHashMap();
+    public Long2IntOpenHashMap sinks = new Long2IntOpenHashMap();
     public int containedEnergy = 0;
 
     private int MAX_CAPACITY = 10000;
     private int MAX_TRANSFER = 10000;
+    private int WIRELESS_TRANSFER_SPEED = 250;
 
-    boolean hyperInit = false;
+    private boolean init = false;
+    private int scanGeneration = 0;
+
+    // Upgrades
+    private boolean isCreative = false;
+    private final Object2IntOpenHashMap<String> pushingFrequencies = new Object2IntOpenHashMap<>();
+
     public EnergyTransferNodeLogic(TileEntityEnergyTransferNode host)
     {
         super(host);
         walker = new EnergyWalker(host);
+        sources.defaultReturnValue((byte) -1);
+        sinks.defaultReturnValue((byte) -1);
     }
 
     // Energy nodes seem to have a few rules.
@@ -71,15 +94,17 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
             return;
         }
 
-        if (!hyperInit)
+        if (!init)
         {
             if (host.getWorld().getBlockMetadata(host.xCoord, host.yCoord, host.zCoord) == 1)
             {
                 MAX_CAPACITY = 1000000;
                 MAX_TRANSFER = 25000;
             }
-            hyperInit = true;
+            upgrades.init();
+            init = true;
         }
+
         if (!sources.isEmpty())
         {
             importEnergy();
@@ -90,44 +115,66 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
             exportEnergy();
         }
 
-        if (host.getWorld().getTotalWorldTime() % 20 != 0)
+        int actionsThisTick = actionsThisTick();
+        for (int i = 0; i < actionsThisTick; i ++)
         {
-            return;
-        }
-
-        List<TargetResolver.Target<IEnergyConnection>> targets = walker.getValidTargets(host.getWorld());
-        if (!targets.isEmpty())
-        {
-            for (TargetResolver.Target<IEnergyConnection> target : targets)
+            List<TargetResolver.Target<IEnergyConnection>> targets = walker.getValidTargets(host.getWorld());
+            if (!targets.isEmpty())
             {
-                if (walker.isOnExtractionPipe(host.getWorld()))
+                for (TargetResolver.Target<IEnergyConnection> target : targets)
                 {
-                    if (target.handler instanceof IEnergyProvider source)
+                    if (!(target.handler instanceof TileEntityEnergyTransferNode))
                     {
-
-                        sources.add(source);
+                        if (walker.isOnExtractionPipe(host.getWorld()))
+                        {
+                            if (target.handler instanceof IEnergyProvider)
+                            {
+                                sources.put(CoordinatePacker.pack(target.x, target.y, target.z), pack(scanGeneration, target.side));
+                            }
+                        }
+                        else if (walker.isAtOrigin()) // Means we're on the node
+                        {
+                            if (target.handler instanceof IEnergyProvider)
+                            {
+                                sources.put(CoordinatePacker.pack(target.x, target.y, target.z), pack(scanGeneration, target.side));
+                            }
+                            else if (target.handler instanceof IEnergyReceiver)
+                            {
+                                sinks.put(CoordinatePacker.pack(target.x, target.y, target.z), pack(scanGeneration, target.side));
+                            }
+                        }
+                        else if (target.handler instanceof IEnergyReceiver)
+                        {
+                            sinks.put(CoordinatePacker.pack(target.x, target.y, target.z), pack(scanGeneration, target.side));
+                        }
                     }
-                }
-                else if (walker.isAtOrigin()) // Means we're on the node
-                {
-                    if (target.handler instanceof IEnergyProvider source)
-                    {
-                        sources.add(source);
-                    }
-                    else if (target.handler instanceof IEnergyReceiver sink)
-                    {
-                        sinks.add(sink);
-                    }
-                }
-                else if (target.handler instanceof IEnergyReceiver sink)
-                {
-                    sinks.add(sink);
                 }
             }
+            walker.step(host.getWorld());
+            if (walker.isAtOrigin())
+            {
+                sources.long2IntEntrySet().removeIf(entry -> getGeneration(entry.getIntValue()) != scanGeneration);
+                sinks.long2IntEntrySet().removeIf(entry -> getGeneration(entry.getIntValue()) != scanGeneration);
+                scanGeneration++;
+            }
         }
-        walker.step(host.getWorld());
     }
 
+
+    private static int pack(int generation, int side)
+    {
+        return (generation << 8) | (side & 0xFF);
+    }
+
+    private static int getGeneration(int packed)
+    {
+        return packed >>> 8;
+    }
+
+    private static byte getSide(int packed)
+    {
+        return (byte)(packed & 0xFF);
+    }
 
     public void importEnergy()
     {
@@ -136,80 +183,259 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
             return;
         }
 
-        int space = MAX_CAPACITY - containedEnergy;
-        int totalTransfer = Math.min(space, MAX_TRANSFER);
+        int remaining = Math.min(MAX_CAPACITY - containedEnergy, MAX_TRANSFER);
 
-        int count = sources.size();
-        int perSource = totalTransfer / count;
-        int remainder = totalTransfer % count;
+        LongArrayList active = new LongArrayList(sources.keySet());
 
-        for (IEnergyProvider provider : sources)
+        while (!active.isEmpty() && remaining > 0)
         {
-            if (provider == null)
+            for (int i = 0; i < active.size(); i++)
             {
-                continue;
-            }
+                long coord = active.getLong(i);
 
-            int request = perSource;
+                TileEntity te = host.getWorld().getTileEntity(
+                    CoordinatePacker.unpackX(coord),
+                    CoordinatePacker.unpackY(coord),
+                    CoordinatePacker.unpackZ(coord)
+                );
 
-            if (remainder > 0)
-            {
-                request++;
-                remainder--;
-            }
+                if (!(te instanceof IEnergyProvider provider))
+                {
+                    active.removeLong(i--);
+                    sources.remove(coord);
+                    continue;
+                }
 
-            if (request <= 0)
-            {
-                continue;
-            }
+                ForgeDirection dir = ForgeDirection.getOrientation(getSide(sources.get(coord)));
 
-            int extracted = provider.extractEnergy(null, request, false);
+                int chunk = Math.max(1, remaining / active.size());
 
-            if (extracted > 0)
-            {
-                containedEnergy += extracted;
+                int extracted = provider.extractEnergy(dir, chunk, false);
+
+                if (extracted > 0)
+                {
+                    containedEnergy += extracted;
+                    remaining -= extracted;
+                }
+                else
+                {
+                    active.removeLong(i--);
+                }
+
+                if (remaining <= 0 || containedEnergy >= MAX_CAPACITY)
+                {
+                    return;
+                }
             }
         }
     }
 
+    // Wireless networks are second to wired networks
     public void exportEnergy()
     {
-        if (sinks.isEmpty() || containedEnergy <= 0)
+        if ((sinks.isEmpty() && pushingFrequencies.isEmpty()) || containedEnergy <= 0)
         {
             return;
         }
 
-        int totalTransfer = Math.min(containedEnergy, MAX_TRANSFER);
+        int remaining = Math.min(containedEnergy, MAX_TRANSFER);
 
-        int count = sinks.size();
-        int perSink = totalTransfer / count;
-        int remainder = totalTransfer % count;
+        LongArrayList active = new LongArrayList(sinks.keySet());
 
-        for (IEnergyReceiver receiver : sinks)
+        // Really irritating but this needs to be roundrobin or it doesn't work for
+        // machines that don't accept the max amount of energy. Fucking annoying to figure out.
+        while (!active.isEmpty() && remaining > 0)
         {
-            if (receiver == null)
+            for (int i = 0; i < active.size(); i++)
+            {
+                long coord = active.getLong(i);
+
+                TileEntity te = host.getWorld().getTileEntity(
+                    CoordinatePacker.unpackX(coord),
+                    CoordinatePacker.unpackY(coord),
+                    CoordinatePacker.unpackZ(coord)
+                );
+
+                if (!(te instanceof IEnergyReceiver receiver))
+                {
+                    active.removeLong(i--);
+                    sinks.remove(coord);
+                    continue;
+                }
+
+                ForgeDirection dir = ForgeDirection.getOrientation(getSide(sinks.get(coord)));
+
+                int chunk = Math.max(1, remaining / active.size());
+
+                int accepted = receiver.receiveEnergy(dir, chunk, false);
+
+                if (accepted > 0)
+                {
+                    remaining -= accepted;
+                    containedEnergy -= accepted;
+                }
+                else
+                {
+                    active.removeLong(i--);
+                }
+
+                if (remaining <= 0)
+                {
+                    return;
+                }
+            }
+        }
+
+        if (remaining <= 0)
+        {
+            return;
+        }
+
+
+        for (String frequency : pushingFrequencies.keySet())
+        {
+            Int2ObjectOpenHashMap<LongOpenHashSet> receiversByDim = WirelessNetworkManager.getReceiversByFrequency(frequency);
+            if (receiversByDim == null || receiversByDim.isEmpty())
             {
                 continue;
             }
 
-            int offer = perSink;
+            int power = pushingFrequencies.getInt(frequency);
 
-            if (remainder > 0)
+            for (int dim : receiversByDim.keySet())
             {
-                offer++;
-                remainder--;
+                LongOpenHashSet receivers = receiversByDim.get(dim);
+
+                for (long coord : receivers)
+                {
+                    World world = DimensionManager.getWorld(dim);
+                    if (world == null)
+                    {
+                        continue;
+                    }
+
+                    int x = CoordinatePacker.unpackX(coord);
+                    int y = CoordinatePacker.unpackY(coord);
+                    int z = CoordinatePacker.unpackZ(coord);
+                    TileEntity te = world.getTileEntity(x, y, z);
+
+                    if (te instanceof TileEntityEnergyTransferNode receivingNode)
+                    {
+                        int maxSend = Math.min(remaining, power * WIRELESS_TRANSFER_SPEED);
+                        int lossySend = (int)(maxSend * 0.9);
+                        int accepted = receivingNode.receiveEnergy(
+                            ForgeDirection.UNKNOWN,
+                            lossySend,
+                            true
+                        );
+
+                        receivingNode.receiveEnergy(
+                            ForgeDirection.UNKNOWN,
+                            accepted,
+                            false
+                        );
+
+                        int extracted = (int)Math.ceil(accepted / 0.9);
+                        containedEnergy -= extracted;
+                        remaining -= extracted;
+                        if (remaining <= 0)
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        WirelessNetworkManager.deregisterReceiver(dim, x, y, z);
+                    }
+                }
             }
+        }
+    }
 
-            if (offer <= 0)
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+    {
+        int acceptedAmount = Math.min(maxReceive, MAX_CAPACITY - containedEnergy);
+        if (!simulate)
+        {
+            containedEnergy += acceptedAmount;
+        }
+        return acceptedAmount;
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+    {
+        int extractedAmount = Math.min(maxExtract, containedEnergy);
+        if (!simulate)
+        {
+            containedEnergy -= extractedAmount;
+        }
+        return extractedAmount;
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return containedEnergy;
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return MAX_CAPACITY;
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return true;
+    }
+
+    // ======================================= Upgrades =======================================
+    // Applicable upgrades: Speed, Creative, Transmitter, Receiver
+    // Note speed is just changing the stepping speed of the node, nothing to do with the energy transfer
+    @Override
+    public void resetUpgrades()
+    {
+        super.resetUpgrades();
+        this.walker.setStepper(new RandomStepper());
+        this.isCreative = false;
+        if (host.getWorld() != null)
+        {
+            WirelessNetworkManager.deregisterReceiver(host.getWorld().provider.dimensionId, host.getX(), host.getY(), host.getZ());
+            WirelessNetworkManager.deregisterTransmitter(host.getWorld().provider.dimensionId, host.getX(), host.getY(), host.getZ());
+        }
+        pushingFrequencies.clear();
+    }
+
+    @Override
+    public void applyCreativeUpgrade(ItemStack stack)
+    {
+        this.isCreative = true;
+    }
+
+    @Override
+    public void applyEnderTransmitterUpgrade(ItemStack stack)
+    {
+        if (stack.hasTagCompound())
+        {
+            NBTTagCompound compound = stack.getTagCompound();
+            if (compound.hasKey("Frequency"))
             {
-                continue;
+                String frequency = compound.getString("Frequency");
+                WirelessNetworkManager.registerTransmitter(frequency, host.getWorld().provider.dimensionId, host.getX(), host.getY(), host.getZ());
+                pushingFrequencies.addTo(frequency, stack.stackSize);
             }
+        }
+    }
 
-            int accepted = receiver.receiveEnergy(null, offer, false);
-
-            if (accepted > 0)
+    @Override
+    public void applyEnderReceiverUpgrade(ItemStack stack)
+    {
+        if (stack.hasTagCompound())
+        {
+            NBTTagCompound compound = stack.getTagCompound();
+            if (compound.hasKey("Frequency"))
             {
-                containedEnergy -= accepted;
+                WirelessNetworkManager.registerReceiver(compound.getString("Frequency"), host.getWorld().provider.dimensionId, host.getX(), host.getY(), host.getZ());
             }
         }
     }

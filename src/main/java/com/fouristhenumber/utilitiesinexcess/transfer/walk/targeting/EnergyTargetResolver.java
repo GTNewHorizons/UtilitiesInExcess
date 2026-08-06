@@ -42,7 +42,10 @@ public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
                         walkerPos.z + searchDir.offsetZ)
                         instanceof IEnergyConnection target)
                     {
-                        validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
+                        validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal(),
+                            walkerPos.x + searchDir.offsetX,
+                            walkerPos.y + searchDir.offsetY,
+                            walkerPos.z + searchDir.offsetZ));
                     }
                 }
             }

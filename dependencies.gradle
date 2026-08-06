@@ -57,6 +57,7 @@ dependencies {
     devOnlyNonPublishable("com.github.GTNewHorizons:Baubles-Expanded:2.2.21-GTNH:dev")
     devOnlyNonPublishable("io.github.legacymoddingmc:unimixins:0.1.23:dev")
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:Angelica:2.1.49:dev")
+    implementation("com.github.GTNewHorizons:ServerUtilities:2.4.6:dev")
 
     // Deobf Extra Utilities, allows hodgepodge mixins to not crash. For testing feature parity and postea only.
     runtimeOnlyNonPublishable("curse.maven:extrautilities-225561:2264384")

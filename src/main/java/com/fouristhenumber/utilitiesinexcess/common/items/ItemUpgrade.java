@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.inventory.InventoryTypes;
@@ -12,11 +13,15 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventoryContainer;
@@ -156,24 +161,27 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        if (!world.isRemote && TransferUpgrade.getUpgrade(stack) == TransferUpgrade.FILTER) // SERVER side only
+        if (!world.isRemote)
         {
-            GuiFactories.playerInventory().open(player, InventoryTypes.PLAYER, player.inventory.currentItem);
-        }
-        else if (!world.isRemote && TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ADV_FILTER)
-        {
-            AdvancedFilterMode mode;
-            if (player.isSneaking())
+            TransferUpgrade upgrade = TransferUpgrade.getUpgrade(stack);
+            if (upgrade == TransferUpgrade.FILTER || upgrade == TransferUpgrade.ENDER_TRANSMITTER || upgrade == TransferUpgrade.ENDER_RECEIVER) // SERVER side only
             {
-                mode = cycleAdvancedFilter(stack, false);
+                GuiFactories.playerInventory().open(player, InventoryTypes.PLAYER, player.inventory.currentItem);
             }
-            else
+            else if (upgrade == TransferUpgrade.ADV_FILTER)
             {
-                mode = cycleAdvancedFilter(stack, true);
+                AdvancedFilterMode mode;
+                if (player.isSneaking())
+                {
+                    mode = cycleAdvancedFilter(stack, false);
+                }
+                else
+                {
+                    mode = cycleAdvancedFilter(stack, true);
+                }
+                player.addChatMessage(new ChatComponentText("Filter Mode: " + mode.getLabel()));
             }
-            player.addChatMessage(new ChatComponentText("Filter Mode: " + mode.getLabel()));
         }
-
         return stack;
     }
 
@@ -214,7 +222,17 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
     }
 
     @Override
-    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings)
+    {
+        if (TransferUpgrade.getUpgrade(data.getPlayer().getHeldItem()) == TransferUpgrade.FILTER)
+        {
+            return buildFilterUI(data, syncManager, settings);
+        }
+        return buildWirelessUI(data, syncManager, settings);
+    }
+
+    private ModularPanel buildFilterUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings)
+    {
         ModularPanel panel = new ModularPanel("panel").height(125);
         panel.bindPlayerInventory();
 
@@ -253,6 +271,62 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
         panel.child(flow);
         syncManager.addCloseListener(itemInventory::writeInventoryToHeldStack);
 
+        return panel;
+    }
+
+    private ModularPanel buildWirelessUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings)
+    {
+        ModularPanel panel = new ModularPanel("panel").height(125);
+        panel.size(175, 50);
+        Flow flow = Flow.row().width(160).height(18).center();
+        flow.child(IKey.str("Frequency:").asWidget());
+
+        ItemStack heldItem = data.getPlayer().getHeldItem();
+
+        String initValue = "";
+        if (heldItem != null && heldItem.hasTagCompound())
+        {
+            if (heldItem.getTagCompound().hasKey("Frequency"))
+            {
+                initValue =  heldItem.getTagCompound().getString("Frequency");
+            }
+        }
+
+        StringValue stringValue = new StringValue(initValue);
+
+        TextFieldWidget frequencyBox = new TextFieldWidget().width(80).value(stringValue);
+
+        flow.child(frequencyBox);
+        ButtonWidget<?> buttonWidget = new ButtonWidget<>();
+        flow.child(
+            buttonWidget
+                .overlay(GuiTextures.CHECKMARK)
+                .onMousePressed(mouseButton -> {
+                    buttonWidget.playClickSound();
+                    if (mouseButton == 0 || mouseButton == 1)
+                    {
+                        ItemStack itemToWriteTo = data.getPlayer().getHeldItem();
+                        {
+                            if (itemToWriteTo != null)
+                            {
+                                if (itemToWriteTo.hasTagCompound())
+                                {
+                                    itemToWriteTo.getTagCompound().setString("Frequency", frequencyBox.getText());
+                                }
+                                else
+                                {
+                                    NBTTagCompound newCompound = new NBTTagCompound();
+                                    newCompound.setString("Frequency", frequencyBox.getText());
+                                    itemToWriteTo.setTagCompound(newCompound);
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                }));
+        flow.childPadding(2);
+        panel.child(flow);
         return panel;
     }
 
@@ -344,6 +418,16 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
                         list.add(AdvancedFilterMode.values()[advFilterMode].getLabel());
                         list.add(AdvancedFilterMode.values()[advFilterMode].getDescription());
                     }
+                }
+            }
+        }
+        else if (TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ENDER_RECEIVER || TransferUpgrade.getUpgrade(stack) == TransferUpgrade.ENDER_TRANSMITTER)
+        {
+            if (stack.hasTagCompound())
+            {
+                if (stack.stackTagCompound.hasKey("Frequency"))
+                {
+                    list.add(stack.stackTagCompound.getString("Frequency"));
                 }
             }
         }

@@ -41,7 +41,10 @@ public class FluidTargetResolver implements TargetResolver<IFluidHandler>
                         walkerPos.y + searchDir.offsetY,
                         walkerPos.z + searchDir.offsetZ)
                         instanceof IFluidHandler target) {
-                        validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal()));
+                        validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal(),
+                            walkerPos.x + searchDir.offsetX,
+                            walkerPos.y + searchDir.offsetY,
+                            walkerPos.z + searchDir.offsetZ));
                     }
                 }
             }

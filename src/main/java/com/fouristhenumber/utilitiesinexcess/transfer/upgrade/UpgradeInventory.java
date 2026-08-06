@@ -38,6 +38,17 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
         }
     }
 
+    public void init()
+    {
+        for (ItemStack stack : upgrades)
+        {
+            TransferUpgrade upgrade = TransferUpgrade.getUpgrade(stack);
+            if (upgrade != null)
+            {
+                upgrade.applyTo(host, stack);
+            }
+        }
+    }
     public void writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList itemTagList = new NBTTagList();

@@ -18,7 +18,6 @@ public abstract class BaseNodeLogic<T extends ITransferNetworkComponent> extends
     public BaseNodeLogic(T host) {
         super(host);
         this.upgrades = new UpgradeInventory(6, this);
-
     }
 
     @Override

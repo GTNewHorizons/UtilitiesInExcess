@@ -16,11 +16,17 @@ public interface TargetResolver<T>
     {
         public final T handler;
         public final int side;
+        public final int x;
+        public final int y;
+        public final int z;
 
-        public Target(T handler, int side)
+        public Target(T handler, int side, int x, int y, int z)
         {
             this.handler = handler;
             this.side = side;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
     }
 }
