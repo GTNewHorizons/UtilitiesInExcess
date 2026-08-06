@@ -46,7 +46,6 @@ public class ItemGlove extends Item implements IBauble {
                 KeybindUtils.getKeyDisplayNameWithMouse(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeybinding())));
 
         tooltip.add(StatCollector.translateToLocal("uie.desc.item.glove.2"));
-        tooltip.add(StatCollector.translateToLocal("uie.desc.item.glove.3"));
     }
 
     public IIcon topIcon;

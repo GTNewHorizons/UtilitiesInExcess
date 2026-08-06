@@ -7,13 +7,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBoxingGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 @Mixin(ItemRenderer.class)
-public class MixinItemRenderer_Glove {
+public class MixinItemRenderer_Gloves {
 
     @Expression("? != null")
     @WrapOperation(method = "renderItemInFirstPerson", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 5))
@@ -23,8 +24,10 @@ public class MixinItemRenderer_Glove {
 
         if (player == null) original.call(left, right);
 
-        if ((player.getHeldItem() != null && player.getHeldItem()
-            .getItem() instanceof ItemGlove)) {
+        if ((player.getHeldItem() != null && (player.getHeldItem()
+            .getItem() instanceof ItemGlove
+            || player.getHeldItem()
+                .getItem() instanceof ItemBoxingGlove))) {
             return false;
         }
         return original.call(left, right);

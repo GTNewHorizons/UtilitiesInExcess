@@ -71,8 +71,12 @@ public class ClientProxy extends CommonProxy {
                 new TESRTrueGreenscreen());
         }
 
+        GloveRenderer gloveRenderer = new GloveRenderer();
         if (ModItems.GLOVE.isEnabled()) {
-            MinecraftForgeClient.registerItemRenderer(ModItems.GLOVE.get(), new GloveRenderer());
+            MinecraftForgeClient.registerItemRenderer(ModItems.GLOVE.get(), gloveRenderer);
+        }
+        if (ModItems.BOXING_GLOVE.isEnabled()) {
+            MinecraftForgeClient.registerItemRenderer(ModItems.BOXING_GLOVE.get(), gloveRenderer);
         }
 
         if (ModItems.FIRE_BATTERY.isEnabled()) {
