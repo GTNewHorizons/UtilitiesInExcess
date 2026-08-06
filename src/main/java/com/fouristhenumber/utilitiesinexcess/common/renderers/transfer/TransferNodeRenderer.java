@@ -1,16 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess.transferNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -20,8 +21,6 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        IIcon icon = block.getIcon(0, metadata);
-
         float t = 2f / 16f;
         float s12 = 12f / 16f;
         float s8 = 8f / 16f;
@@ -34,11 +33,11 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         tess.setNormal(0, 1, 0);
 
         renderer.setRenderBounds(0, 0, 0, 1, t, 1);
-        renderInventoryCube(renderer, block, metadata);
+        renderInventoryCube(renderer, block, metadata << 3);
         renderer.setRenderBounds(s12Half, t, s12Half, s12Half + s12, 2f * t, s12Half + s12);
-        renderInventoryCube(renderer, block, metadata);
+        renderInventoryCube(renderer, block, metadata << 3);
         renderer.setRenderBounds(s8Half, 2f * t, s8Half, s8Half + s8, 3f * t, s8Half + s8);
-        renderInventoryCube(renderer, block, metadata);
+        renderInventoryCube(renderer, block, metadata << 3);
 
         tess.draw();
     }
@@ -49,6 +48,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         if (modelId != getRenderId()) return false;
 
         int meta = world.getBlockMetadata(x, y, z);
+        int side = meta & 7;
 
         float t = 2f / 16f;
         float s12 = 12f / 16f;
@@ -56,7 +56,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         float s12Half = (1f - s12) / 2f;
         float s8Half = (1f - s8) / 2f;
 
-        switch (meta) {
+        switch (side) {
             case 0:
                 renderer.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, t, 1.0F);
                 break;
@@ -79,7 +79,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
 
         renderer.renderStandardBlock(block, x, y, z);
 
-        switch (meta) {
+        switch (side) {
             case 0:
                 renderer.setRenderBounds(s12Half, t, s12Half, s12Half + s12, 2f * t, s12Half + s12);
                 break;
@@ -101,7 +101,7 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         }
         renderer.renderStandardBlock(block, x, y, z);
 
-        switch (meta) {
+        switch (side) {
             case 0:
                 renderer.setRenderBounds(s8Half, 2f * t, s8Half, s8Half + s8, 3f * t, s8Half + s8);
                 break;
@@ -123,23 +123,24 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         }
         renderer.renderStandardBlock(block, x, y, z);
 
-        TileEntityTransferNodeBase te = (TileEntityTransferNodeBase) world.getTileEntity(x, y, z);
-        if (te == null) return false;
-
-        int mask = te.getConnectionsMask();
-
-        RenderPipes(mask, x, y, z, renderer, mask != 0);
-
+        if (block instanceof BlockTransferBase transferBase)
+        {
+            int mask = transferBase.getConnectionMask(world, x, y, z, world.getBlockMetadata(x, y, z));
+            renderer.setOverrideBlockTexture(PipeType.TRANSFER.getIcon(0));
+            RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
+            renderer.clearOverrideBlockTexture();
+        }
         return true;
     }
 
     @Override
-    public boolean shouldRender3DInInventory(int modelId) {
+    public boolean shouldRender3DInInventory(int modelId)
+    {
         return true;
     }
 
     @Override
     public int getRenderId() {
-        return transferNodeRenderID;
+        return flatNodeRenderID;
     }
 }

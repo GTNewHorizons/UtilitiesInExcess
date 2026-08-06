@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.CommonProxy;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,11 +24,11 @@ public class BlockLapisAetherius extends Block {
         setBlockName("lapis_aetherius");
         setLightOpacity(0);
         setHardness(1);
-        setResistance(8F);
+        setResistance(10F);
     }
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons;
+    protected IIcon[] icons;
 
     public int damageDropped(int meta) {
         return meta;
@@ -36,7 +36,7 @@ public class BlockLapisAetherius extends Block {
 
     @Override
     public int getRenderType() {
-        return UtilitiesInExcess.lapisAetheriusRenderID;
+        return CommonProxy.lapisAetheriusRenderID;
     }
 
     @Override

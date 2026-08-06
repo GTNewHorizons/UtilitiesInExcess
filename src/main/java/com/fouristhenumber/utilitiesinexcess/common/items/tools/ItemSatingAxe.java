@@ -1,0 +1,152 @@
+package com.fouristhenumber.utilitiesinexcess.common.items.tools;
+
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.FoodStats;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
+
+import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorEntityZombie;
+import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorItemTool;
+import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+public class ItemSatingAxe extends ItemAxe implements ITranslucentItem {
+
+    public ItemSatingAxe() {
+        super(ToolMaterial.EMERALD);
+        setTextureName("utilitiesinexcess:sating_axe");
+        setUnlocalizedName("sating_axe");
+        if (SatingAxeConfig.INSTANCE.unbreakable) setMaxDamage(0);
+        ((AccessorItemTool) this).setDamageVsEntity(SatingAxeConfig.INSTANCE.damageAgainstUndead);
+    }
+
+    private static final Random particleRandom = new Random();;
+
+    public static void spawnParticles(Entity e) {
+        if (!SatingAxeConfig.INSTANCE.spawnParticles) return;
+        int ci = Potion.potionTypes[Potion.heal.getId()].getLiquidColor();
+        double d0 = (double) (ci >> 16 & 255) / 255.0D;
+        double d1 = (double) (ci >> 8 & 255) / 255.0D;
+        double d2 = (double) (ci >> 0 & 255) / 255.0D;
+        for (int i = 0; i < 5; i++) {
+
+            e.worldObj.spawnParticle(
+                "mobSpell",
+                e.posX + (particleRandom.nextDouble() - 0.5D) * (double) e.width,
+                e.posY + particleRandom.nextDouble() * (double) e.height - (double) e.yOffset,
+                e.posZ + (particleRandom.nextDouble() - 0.5D) * (double) e.width,
+                d0,
+                d1,
+                d2);
+        }
+    }
+
+    // Restore hunger every 2 seconds
+    @Override
+    public void onUpdate(ItemStack s, World w, Entity e, int slot, boolean selected) {
+        super.onUpdate(s, w, e, slot, selected);
+        if (e instanceof EntityPlayer p && selected) {
+            if (w.getTotalWorldTime() % (2 * 20) == 0) {
+                FoodStats fs = p.getFoodStats();
+                fs.addStats(SatingAxeConfig.INSTANCE.foodGain, SatingAxeConfig.INSTANCE.saturationGain);
+            }
+        }
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z,
+        EntityLivingBase entity) {
+        return true;
+    }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer attacker, Entity e) {
+        if (!(e instanceof EntityLivingBase target)) return false;
+        if (target instanceof EntityZombie z && z.isVillager()) {
+            attacker.addExhaustion(3 * 4);
+            spawnParticles(target);
+            if (!attacker.worldObj.isRemote) ((AccessorEntityZombie) z).uie$convertToVillager();
+            return true;
+        }
+        if (!target.isEntityUndead()) {
+
+            float amountToHeal = Math.min(SatingAxeConfig.INSTANCE.maxHeal, target.getMaxHealth() - target.getHealth());
+            if (amountToHeal == 0) if (SatingAxeConfig.INSTANCE.useHungerAlways) attacker.addExhaustion(3 * 4);
+            else {
+                if (SatingAxeConfig.INSTANCE.drainHp) if (attacker.getHealth() >= amountToHeal + 1)
+                    attacker.setHealth(attacker.getHealth() - amountToHeal);
+                else return true;
+                target.setHealth(target.getHealth() + (amountToHeal + 1));
+                attacker.addExhaustion(amountToHeal * 4);
+            }
+            spawnParticles(target);
+            return true;
+        }
+        attacker.addExhaustion(3 * 4);
+        spawnParticles(target);
+        return false;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
+        if (SatingAxeConfig.INSTANCE.unbreakable)
+            tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("uie.desc.item.unbreakable"));
+    }
+
+    // Unbreakable
+    @Override
+    public boolean isDamageable() {
+        if (SatingAxeConfig.INSTANCE.unbreakable) return false;
+        return super.isDamageable();
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+        if (SatingAxeConfig.INSTANCE.unbreakable) return false;
+        return super.getIsRepairable(stack, repairMaterial);
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        if (SatingAxeConfig.INSTANCE.unbreakable) return false;
+        return super.showDurabilityBar(stack);
+    }
+    //
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class Events {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return SatingAxeConfig.INSTANCE.enable;
+        }
+
+        @SubscribeEvent
+        public static void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+            if (!SatingAxeConfig.INSTANCE.voidMinedBlock) return;
+            if (event.harvester == null) return;
+            if (event.harvester.getHeldItem() == null) return;
+
+            if (event.harvester.getHeldItem()
+                .getItem() instanceof ItemSatingAxe) {
+                event.drops.clear();
+            }
+        }
+    }
+}

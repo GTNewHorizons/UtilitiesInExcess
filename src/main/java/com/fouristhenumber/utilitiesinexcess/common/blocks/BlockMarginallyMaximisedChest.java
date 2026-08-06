@@ -1,18 +1,16 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import java.util.Random;
+import static com.fouristhenumber.utilitiesinexcess.utils.UIEUtils.dropItemsFromIInventory;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -26,13 +24,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMarginallyMaximisedChest extends BlockContainer {
 
-    private final Random random = new Random();
-
     public BlockMarginallyMaximisedChest() {
         super(Material.wood);
         setBlockName("marginally_maximised_chest");
         setBlockTextureName("scaled_chest"); // Used as prefix for icons
         setHardness(2.5F);
+        setResistance(2.5F);
         setStepSound(soundTypeWood);
     }
 
@@ -78,45 +75,9 @@ public class BlockMarginallyMaximisedChest extends BlockContainer {
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te instanceof IInventory inv) {
-            dropContent(0, inv, worldIn, te.xCoord, te.yCoord, te.zCoord);
+            dropItemsFromIInventory(0, inv, worldIn, te.xCoord, te.yCoord, te.zCoord);
         }
         super.breakBlock(worldIn, x, y, z, blockBroken, meta);
-    }
-
-    public void dropContent(int newSize, IInventory chest, World world, int x, int y, int z) {
-        for (int l = newSize; l < chest.getSizeInventory(); l++) {
-            ItemStack itemstack = chest.getStackInSlot(l);
-            if (itemstack == null) {
-                continue;
-            }
-            float f = random.nextFloat() * 0.8F + 0.1F;
-            float f1 = random.nextFloat() * 0.8F + 0.1F;
-            float f2 = random.nextFloat() * 0.8F + 0.1F;
-            while (itemstack.stackSize > 0) {
-                int i1 = random.nextInt(21) + 10;
-                if (i1 > itemstack.stackSize) {
-                    i1 = itemstack.stackSize;
-                }
-                itemstack.stackSize -= i1;
-                EntityItem entityitem = new EntityItem(
-                    world,
-                    (float) x + f,
-                    (float) y + (newSize > 0 ? 1 : 0) + f1,
-                    (float) z + f2,
-                    new ItemStack(itemstack.getItem(), i1, itemstack.getItemDamage()));
-                float f3 = 0.05F;
-                entityitem.motionX = (float) random.nextGaussian() * f3;
-                entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
-                entityitem.motionZ = (float) random.nextGaussian() * f3;
-                if (itemstack.hasTagCompound()) {
-                    entityitem.getEntityItem()
-                        .setTagCompound(
-                            (NBTTagCompound) itemstack.getTagCompound()
-                                .copy());
-                }
-                world.spawnEntityInWorld(entityitem);
-            }
-        }
     }
 
     @Override

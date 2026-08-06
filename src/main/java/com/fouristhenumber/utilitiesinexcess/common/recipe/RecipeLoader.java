@@ -2,26 +2,37 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.api.QEDRegistry;
+import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class RecipeLoader {
 
     public static void run() {
-        if (Mods.Dreamcraft.isLoaded()) return;
         loadCompressedBlockRecipes();
         loadInversionRecipes();
         loadBedrockiumRecipes();
@@ -30,14 +41,73 @@ public class RecipeLoader {
         loadLapisAetheriusRecipes();
         loadSpikeRecipes();
         loadGeneratorRecipes();
-        loadQEDRecipes();
+        loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
         loadTransferNodeRecipes();
+        loadFilterVariantRecipes();
+
+        // Chandeliers
+        if (RecipeConfig.enableChandelierRecipe) {
+            addShapedRecipe(
+                ModBlocks.CHANDELIER.newItemStack(1, 0),
+                "gdg",
+                "ttt",
+                " t ",
+                'g',
+                Items.gold_ingot,
+                'd',
+                Items.diamond,
+                't',
+                Blocks.torch);
+            addShapedRecipe(
+                ModBlocks.CHANDELIER.newItemStack(1, 1),
+                " e ",
+                "ici",
+                'c',
+                ModBlocks.CHANDELIER.newItemStack(1, 0),
+                'i',
+                Items.iron_ingot,
+                'e',
+                Items.ender_pearl);
+            addShapedRecipe(
+                ModBlocks.CHANDELIER.newItemStack(1, 2),
+                " t ",
+                "rcr",
+                'c',
+                ModBlocks.CHANDELIER.newItemStack(1, 0),
+                'r',
+                Items.redstone,
+                't',
+                Blocks.redstone_torch);
+            addShapedRecipe(
+                ModBlocks.CHANDELIER.newItemStack(1, 3),
+                " o ",
+                "scs",
+                'c',
+                ModBlocks.CHANDELIER.newItemStack(1, 0),
+                's',
+                Blocks.soul_sand,
+                'o',
+                Blocks.obsidian);
+        }
+
+        // Collector
+        if (RecipeConfig.enableCollectorRecipe) addShapedRecipe(
+            ModBlocks.COLLECTOR,
+            "eie",
+            " i ",
+            "ooo",
+            'e',
+            Items.ender_pearl,
+            'i',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'o',
+            Blocks.obsidian);
 
         // Pacifist's Bench
-        addShapedRecipe(
+        if (RecipeConfig.enablePacifistsBenchRecipe) addShapedRecipe(
             ModBlocks.PACIFISTS_BENCH,
             "ewe",
             "wpw",
@@ -50,45 +120,46 @@ public class RecipeLoader {
             new ItemStack(Blocks.planks, 1, OreDictionary.WILDCARD_VALUE));
 
         // Smart Pump
-        // TODO: Replace obsidian with "ender-infused obsidian" equivalent
-        addShapedRecipe(
-            ModBlocks.SMART_PUMP,
-            "odo",
-            "lew",
-            "opo",
-            'o',
-            Blocks.obsidian,
-            'd',
-            Items.diamond,
-            'l',
-            Items.lava_bucket,
-            'e',
-            Items.ender_eye,
-            'w',
-            Items.water_bucket,
-            'p',
-            Items.iron_pickaxe);
+        if (RecipeConfig.enableSmartPumpRecipe) {
+            addShapedRecipe(
+                ModBlocks.SMART_PUMP,
+                "odo",
+                "lew",
+                "opo",
+                'o',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+                'd',
+                Items.diamond,
+                'l',
+                Items.lava_bucket,
+                'e',
+                Items.ender_eye,
+                'w',
+                Items.water_bucket,
+                'p',
+                Items.iron_pickaxe);
 
-        addShapedRecipe(
-            ModBlocks.SMART_PUMP,
-            "odo",
-            "wel",
-            "opo",
-            'o',
-            Blocks.obsidian,
-            'd',
-            Items.diamond,
-            'l',
-            Items.lava_bucket,
-            'e',
-            Items.ender_eye,
-            'w',
-            Items.water_bucket,
-            'p',
-            Items.iron_pickaxe);
+            addShapedRecipe(
+                ModBlocks.SMART_PUMP,
+                "odo",
+                "wel",
+                "opo",
+                'o',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+                'd',
+                Items.diamond,
+                'l',
+                Items.lava_bucket,
+                'e',
+                Items.ender_eye,
+                'w',
+                Items.water_bucket,
+                'p',
+                Items.iron_pickaxe);
+        }
 
         // Block Analyzer
-        addShapedRecipe(
+        if (RecipeConfig.enableBlockAnalyzerRecipe) addShapedRecipe(
             ModItems.BLOCK_ANALYZER,
             "iii",
             "eri",
@@ -101,7 +172,7 @@ public class RecipeLoader {
             Items.ender_eye);
 
         // X-Ray Glasses
-        addShapedRecipe(
+        if (RecipeConfig.enableXRayGlassesRecipe) addShapedRecipe(
             ModItems.XRAY_GLASSES,
             "iii",
             "eie",
@@ -110,9 +181,9 @@ public class RecipeLoader {
             'e',
             Items.ender_eye);
 
-        // Floating Block
-        addShapedRecipe(
-            ModBlocks.FLOATING_BLOCK,
+        // Heavenly Block
+        if (RecipeConfig.enableHeavenlyBlockRecipe) addShapedRecipe(
+            ModBlocks.HEAVENLY_BLOCK,
             " g ",
             "fof",
             'g',
@@ -122,23 +193,79 @@ public class RecipeLoader {
             'o',
             Blocks.obsidian);
 
-        // Heavenly Ring
-        addShapedRecipe(
-            ModItems.HEAVENLY_RING,
-            "#g#",
-            "g*g",
-            "igi",
-            '#',
-            Blocks.glass,
-            'g',
-            Items.gold_ingot,
-            '*',
-            Items.nether_star,
-            'i',
-            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        // Heavenly Rings
+        if (RecipeConfig.enableHeavenlyRingRecipes) {
+            addShapedRecipe(
+                ModItems.HEAVENLY_RING_FEATHER,
+                "bgb",
+                "gsg",
+                "igi",
+                'b',
+                Items.feather,
+                'g',
+                Items.gold_ingot,
+                's',
+                Items.nether_star,
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+            addShapedRecipe(
+                ModItems.HEAVENLY_RING_DRAGON,
+                "bgb",
+                "gsg",
+                "igi",
+                'b',
+                Items.leather,
+                'g',
+                Items.gold_ingot,
+                's',
+                Items.nether_star,
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+            addShapedRecipe(
+                ModItems.HEAVENLY_RING_FAIRY,
+                "pgd",
+                "gsg",
+                "igi",
+                'p',
+                new ItemStack(Items.dye, 1, 5),
+                'd',
+                new ItemStack(Items.dye, 1, 9),
+                'g',
+                Items.gold_ingot,
+                's',
+                Items.nether_star,
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+            addShapedRecipe(
+                ModItems.HEAVENLY_RING_METAL,
+                "bgb",
+                "gsg",
+                "igi",
+                'b',
+                Items.gold_nugget,
+                'g',
+                Items.gold_ingot,
+                's',
+                Items.nether_star,
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+            addShapedRecipe(
+                ModItems.HEAVENLY_RING_MAGIC,
+                "bgb",
+                "gsg",
+                "igi",
+                'b',
+                Blocks.glass,
+                'g',
+                Items.gold_ingot,
+                's',
+                Items.nether_star,
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+        }
 
         // Redstone Clock
-        addShapedRecipe(
+        if (RecipeConfig.enableRedstoneClockRecipe) addShapedRecipe(
             ModBlocks.REDSTONE_CLOCK,
             "rsr",
             "sts",
@@ -151,7 +278,7 @@ public class RecipeLoader {
             Blocks.redstone_torch);
 
         // Block Update Detector
-        addShapedRecipe(
+        if (RecipeConfig.enableBlockUpdateDetectorRecipe) addShapedRecipe(
             ModBlocks.BLOCK_UPDATE_DETECTOR,
             "srs",
             "sps",
@@ -166,7 +293,7 @@ public class RecipeLoader {
             Blocks.sticky_piston);
 
         // Advanced Block Update Detector
-        addShapedRecipe(
+        if (RecipeConfig.enableAdvancedBlockUpdateDetectorRecipe) addShapedRecipe(
             ModBlocks.ADVANCED_BLOCK_UPDATE_DETECTOR,
             "srs",
             "rbr",
@@ -179,7 +306,7 @@ public class RecipeLoader {
             ModBlocks.BLOCK_UPDATE_DETECTOR);
 
         // Trash Can (Items)
-        addShapedRecipe(
+        if (RecipeConfig.enableTrashCanItemRecipe) addShapedRecipe(
             ModBlocks.TRASH_CAN_ITEM,
             "sss",
             "c#c",
@@ -192,10 +319,11 @@ public class RecipeLoader {
             Blocks.chest);
 
         // Trash Can (Fluids)
-        addShapelessRecipe(ModBlocks.TRASH_CAN_FLUID, ModBlocks.TRASH_CAN_ITEM, Items.bucket);
+        if (RecipeConfig.enableTrashCanFluidRecipe)
+            addShapelessRecipe(ModBlocks.TRASH_CAN_FLUID, ModBlocks.TRASH_CAN_ITEM, Items.bucket);
 
         // Trash Can (Energy)
-        addShapelessRecipe(
+        if (RecipeConfig.enableTrashCanEnergyRecipe) addShapelessRecipe(
             ModBlocks.TRASH_CAN_ENERGY,
             ModBlocks.TRASH_CAN_ITEM,
             Items.redstone,
@@ -204,7 +332,7 @@ public class RecipeLoader {
             Items.gold_ingot);
 
         // Drum
-        addShapedRecipe(
+        if (RecipeConfig.enableDrumRecipe) addShapedRecipe(
             ModBlocks.DRUM,
             "ipi",
             "ici",
@@ -216,8 +344,21 @@ public class RecipeLoader {
             'c',
             Items.cauldron);
 
+        // Bedrockium Drum
+        if (RecipeConfig.enableBedrockiumDrumRecipe) addShapedRecipe(
+            ModBlocks.BEDROCKIUM_DRUM,
+            "ipi",
+            "ici",
+            "ipi",
+            'i',
+            ModItems.BEDROCKIUM_INGOT,
+            'p',
+            Blocks.light_weighted_pressure_plate,
+            'c',
+            Items.cauldron);
+
         // Sound Muffler
-        addShapedRecipe(
+        if (RecipeConfig.enableSoundMufflerRecipe) addShapedRecipe(
             ModBlocks.SOUND_MUFFLER,
             "www",
             "wjw",
@@ -228,7 +369,7 @@ public class RecipeLoader {
             Blocks.noteblock);
 
         // Rain Muffler
-        addShapedRecipe(
+        if (RecipeConfig.enableRainMufflerRecipe) addShapedRecipe(
             ModBlocks.RAIN_MUFFLER,
             "www",
             "wbw",
@@ -239,7 +380,7 @@ public class RecipeLoader {
             Items.water_bucket);
 
         // Fire Battery
-        addShapedRecipe(
+        if (RecipeConfig.enableFireBatteryRecipe) addShapedRecipe(
             ModItems.FIRE_BATTERY,
             "ppp",
             "p p",
@@ -250,7 +391,7 @@ public class RecipeLoader {
             Items.redstone);
 
         // Underworld Portal
-        addShapedRecipe(
+        if (RecipeConfig.enableUnderworldPortalRecipe) addShapedRecipe(
             ModBlocks.UNDERWORLD_PORTAL,
             "qiq",
             "iui",
@@ -263,7 +404,7 @@ public class RecipeLoader {
             ModBlocks.COMPRESSED_COBBLESTONE.newItemStack(1, 4));
 
         // Blackout Curtains
-        addShapedRecipe(
+        if (RecipeConfig.enableBlackoutCurtainsRecipe) addShapedRecipe(
             ModBlocks.BLACKOUT_CURTAINS.newItemStack(12),
             "ww",
             "ww",
@@ -272,7 +413,7 @@ public class RecipeLoader {
             new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE));
 
         // Conveyor
-        addShapedRecipe(
+        if (RecipeConfig.enableConveyorRecipe) addShapedRecipe(
             ModBlocks.CONVEYOR.newItemStack(8),
             "rrr",
             "isi",
@@ -285,7 +426,7 @@ public class RecipeLoader {
             Items.redstone);
 
         // Magic Wood
-        addShapedRecipe(
+        if (RecipeConfig.enableMagicWoodRecipe) addShapedRecipe(
             ModBlocks.MAGIC_WOOD,
             "gbg",
             "bsb",
@@ -297,8 +438,21 @@ public class RecipeLoader {
             's',
             Blocks.bookshelf);
 
+        // Endspark
+        if (RecipeConfig.enableEndsparkRecipe) addShapedRecipe(
+            ModBlocks.ENDSPARK,
+            "wow",
+            "oeo",
+            "wow",
+            'w',
+            ModBlocks.MAGIC_WOOD,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'e',
+            Items.ender_eye);
+
         // Pure Love
-        addShapedRecipe(
+        if (RecipeConfig.enablePureLoveRecipe) addShapedRecipe(
             ModBlocks.PURE_LOVE,
             "rcr",
             "rir",
@@ -315,21 +469,31 @@ public class RecipeLoader {
             ModBlocks.INVERTED_BLOCK);
 
         // Marginally Maximized Chest
-        addShapedRecipe(ModBlocks.MARGINALLY_MAXIMISED_CHEST, "sss", "scs", "sss", 's', Items.stick, 'c', Blocks.chest);
+        if (RecipeConfig.enableMarginallyMaximisedChestRecipe) addShapedRecipe(
+            ModBlocks.MARGINALLY_MAXIMISED_CHEST,
+            "sss",
+            "scs",
+            "sss",
+            's',
+            Items.stick,
+            'c',
+            Blocks.chest);
 
         // Significantly Shrunk Chest
-        addShapelessRecipe(new DisableableItemStack(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST, 9), Blocks.chest);
-        addShapelessRecipe(
-            new DisableableItemStack(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST, 9),
-            ModBlocks.MARGINALLY_MAXIMISED_CHEST);
+        if (RecipeConfig.enableSignificantlyShrunkChestRecipe) {
+            addShapelessRecipe(new DisableableItemStack(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST, 9), Blocks.chest);
+            addShapelessRecipe(
+                new DisableableItemStack(ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST, 9),
+                ModBlocks.MARGINALLY_MAXIMISED_CHEST);
+        }
 
         // Radically Reduced Chest
-        addShapelessRecipe(
+        if (RecipeConfig.enableRadicallyReducedChestRecipe) addShapelessRecipe(
             new DisableableItemStack(ModBlocks.RADICALLY_REDUCED_CHEST, 9),
             ModBlocks.SIGNIFICANTLY_SHRUNK_CHEST);
 
         // Mob Jar
-        addShapedRecipe(
+        if (RecipeConfig.enableMobJarRecipe) addShapedRecipe(
             ModItems.MOB_JAR,
             "geg",
             "gbg",
@@ -342,7 +506,7 @@ public class RecipeLoader {
             Items.glass_bottle);
 
         // Golden Bag of Holding
-        addShapedRecipe(
+        if (RecipeConfig.enableGoldenBagRecipe) addShapedRecipe(
             ModItems.GOLDEN_BAG,
             "wdw",
             "gcg",
@@ -359,7 +523,7 @@ public class RecipeLoader {
             Blocks.gold_block);
 
         // Temporal Gate
-        addShapedRecipe(
+        if (RecipeConfig.enableEndOfTimePortalRecipe) addShapedRecipe(
             ModBlocks.END_OF_TIME_PORTAL,
             "qeq",
             "ece",
@@ -372,7 +536,7 @@ public class RecipeLoader {
             Items.clock);
 
         // Trading Post
-        addShapedRecipe(
+        if (RecipeConfig.enableTradingPostRecipe) addShapedRecipe(
             ModBlocks.TRADING_POST,
             "pep",
             "pjp",
@@ -383,9 +547,99 @@ public class RecipeLoader {
             Blocks.emerald_block,
             'j',
             Blocks.jukebox);
+
+        addShapedRecipe(
+            ModBlocks.TRUE_GREENSCREEN,
+            "ege",
+            "gig",
+            "ege",
+            'e',
+            ModBlocks.ETHEREAL_GLASS.get(),
+            'g',
+            ModBlocks.LAPIS_AETHERIUS.newItemStack(1, 5),
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
+
+        // Filing Cabinets
+        if (RecipeConfig.enableFilingCabinetRecipes) {
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 0),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                Items.iron_ingot,
+                'c',
+                Blocks.chest);
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 1),
+                "mcm",
+                "mcm",
+                "mcm",
+                'm',
+                ModBlocks.MAGIC_WOOD,
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 0));
+
+            addShapedRecipe(
+                ModBlocks.FILING_CABINET.newItemStack(1, 2),
+                "ici",
+                "ici",
+                "ici",
+                'i',
+                ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+                'c',
+                ModBlocks.FILING_CABINET.newItemStack(1, 1));
+        }
+
+        // Filing Cabinet Capacity Upgrade
+        if (RecipeConfig.enableFilingCabinetUpgradeRecipe) addShapedRecipe(
+            ModItems.CAPACITY_UPGRADE,
+            " d ",
+            "gcg",
+            " d ",
+            'g',
+            Items.gold_ingot,
+            'c',
+            ModBlocks.FILING_CABINET.newItemStack(1, 0),
+            'd',
+            Items.diamond);
+
+        // Void Quarry
+        if (RecipeConfig.enableVoidQuarryRecipe) addShapedRecipe(
+            ModBlocks.VOID_QUARRY,
+            "oso",
+            "ede",
+            "pap",
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            's',
+            Blocks.sapling,
+            'e',
+            ModBlocks.ENDSPARK,
+            'd',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0),
+            'p',
+            ModBlocks.SMART_PUMP,
+            'a',
+            Items.diamond_pickaxe);
+
+        // Paint Roller
+        if (RecipeConfig.enablePaintRollerRecipe) addShapedRecipe(
+            ModItems.PAINT_ROLLER,
+            "ws",
+            " s",
+            "s ",
+            's',
+            Items.stick,
+            'w',
+            new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     private static void loadGeneratorRecipes() {
+        if (!RecipeConfig.enableGeneratorRecipes) return;
+
         // Low-Temp Furnace Generator
         addShapedRecipe(
             ModBlocks.LOW_TEMPERATURE_FURNACE_GENERATOR,
@@ -576,56 +830,60 @@ public class RecipeLoader {
     }
 
     private static void loadSpikeRecipes() {
-        addShapedRecipe(
-            ModBlocks.SPIKE_WOOD,
-            " a ",
-            "aba",
-            "bcb",
-            'a',
-            Items.wooden_sword,
-            'b',
-            Blocks.planks,
-            'c',
-            Blocks.log);
+        if (RecipeConfig.enableSpikeRecipes) {
+            addShapedRecipe(
+                ModBlocks.SPIKE_WOOD.newItemStack(4),
+                " a ",
+                "aba",
+                "bcb",
+                'a',
+                Items.wooden_sword,
+                'b',
+                Blocks.planks,
+                'c',
+                Blocks.log);
 
-        addShapedRecipe(
-            ModBlocks.SPIKE_IRON,
-            " a ",
-            "aba",
-            "bcb",
-            'a',
-            Items.iron_sword,
-            'b',
-            Items.iron_ingot,
-            'c',
-            Blocks.iron_block);
+            addShapedRecipe(
+                ModBlocks.SPIKE_IRON.newItemStack(4),
+                " a ",
+                "aba",
+                "bcb",
+                'a',
+                Items.iron_sword,
+                'b',
+                Items.iron_ingot,
+                'c',
+                Blocks.iron_block);
 
-        addShapedRecipe(
-            ModBlocks.SPIKE_GOLD,
-            " a ",
-            "aba",
-            "bcb",
-            'a',
-            Items.golden_sword,
-            'b',
-            ModBlocks.MAGIC_WOOD,
-            'c',
-            Blocks.gold_block);
+            addShapedRecipe(
+                ModBlocks.SPIKE_GOLD.newItemStack(4),
+                " a ",
+                "aba",
+                "bcb",
+                'a',
+                Items.golden_sword,
+                'b',
+                ModBlocks.MAGIC_WOOD,
+                'c',
+                Blocks.gold_block);
 
-        addShapedRecipe(
-            ModBlocks.SPIKE_DIAMOND,
-            " a ",
-            "aba",
-            "bcb",
-            'a',
-            Items.diamond_sword,
-            'b',
-            ModBlocks.SPIKE_GOLD,
-            'c',
-            Blocks.diamond_block);
+            addShapedRecipe(
+                ModBlocks.SPIKE_DIAMOND.newItemStack(4),
+                " a ",
+                "aba",
+                "bcb",
+                'a',
+                Items.diamond_sword,
+                'b',
+                ModBlocks.SPIKE_GOLD,
+                'c',
+                Blocks.diamond_block);
+        }
     }
 
     private static void loadLapisAetheriusRecipes() {
+        if (!RecipeConfig.enableLapisAetheriusRecipes) return;
+
         for (int i = 0; i < 16; i++) {
             addShapedRecipe(
                 new DisableableItemStack(ModBlocks.LAPIS_AETHERIUS, 4, i),
@@ -643,7 +901,7 @@ public class RecipeLoader {
 
     private static void loadWateringCanRecipes() {
         // Basic Watering Can
-        addShapedRecipe(
+        if (RecipeConfig.enableWateringCanBasicRecipe) addShapedRecipe(
             ModItems.WATERING_CAN_BASIC,
             "im ",
             "ibi",
@@ -656,7 +914,7 @@ public class RecipeLoader {
             new ItemStack(Items.dye, 1, 15));
 
         // Advanced Watering Can
-        addShapedRecipe(
+        if (RecipeConfig.enableWateringCanAdvancedRecipe) addShapedRecipe(
             ModItems.WATERING_CAN_ADVANCED,
             "im ",
             "ibi",
@@ -669,7 +927,7 @@ public class RecipeLoader {
             new ItemStack(Items.dye, 1, 15));
 
         // Elite Watering Can
-        addShapedRecipe(
+        if (RecipeConfig.enableWateringCanEliteRecipe) addShapedRecipe(
             ModItems.WATERING_CAN_ELITE,
             "im ",
             "ibi",
@@ -683,9 +941,11 @@ public class RecipeLoader {
     }
 
     private static void loadDecorativeBlocksRecipes() {
+        if (!RecipeConfig.enableDecorativeBlockRecipes) return;
+
         // Ender-Infused Obsidian
         addShapedRecipe(
-            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 1, 5),
+            new DisableableItemStack(ModBlocks.DECORATIVE_BLOCKS, 4, 5),
             " o ",
             "oeo",
             " o ",
@@ -788,6 +1048,8 @@ public class RecipeLoader {
     }
 
     private static void loadEtherealGlassRecipes() {
+        if (!RecipeConfig.enableEtherealGlassRecipes) return;
+
         // Ethereal Glass
         addShapedRecipe(
             new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
@@ -801,7 +1063,7 @@ public class RecipeLoader {
 
         // Ineffable Glass
         addShapedRecipe(
-            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 0),
+            new DisableableItemStack(ModBlocks.ETHEREAL_GLASS, 1, 1),
             "ggg",
             "gig",
             "ggg",
@@ -842,7 +1104,7 @@ public class RecipeLoader {
 
     private static void loadBedrockiumRecipes() {
         // Bedrockium Ingot
-        addShapedRecipe(
+        if (RecipeConfig.enableBedrockiumIngotRecipe) addShapedRecipe(
             ModItems.BEDROCKIUM_INGOT,
             "tqt",
             "qdq",
@@ -853,18 +1115,27 @@ public class RecipeLoader {
             new DisableableItemStack(ModBlocks.COMPRESSED_COBBLESTONE, 1, 3),
             'd',
             Blocks.diamond_block);
+
         // Bedrockium Ingot -> Block
-        addShapedRecipe(ModBlocks.BEDROCKIUM_BLOCK, "iii", "iii", "iii", 'i', ModItems.BEDROCKIUM_INGOT);
-        // Bedrockium Block -> Ingot
-        addShapedRecipe(new DisableableItemStack(ModItems.BEDROCKIUM_INGOT, 9), "b", 'b', ModBlocks.BEDROCKIUM_BLOCK);
-        // Direct Block Recipe
-        addFurnaceRecipe(
-            new DisableableItemStack(ModBlocks.COMPRESSED_COBBLESTONE, 1, 7),
-            ModBlocks.BEDROCKIUM_BLOCK,
-            1F);
+        if (RecipeConfig.enableBedrockiumBlockRecipe) {
+            addShapedRecipe(ModBlocks.BEDROCKIUM_BLOCK, "iii", "iii", "iii", 'i', ModItems.BEDROCKIUM_INGOT);
+            // Bedrockium Block -> Ingot
+            addShapedRecipe(
+                new DisableableItemStack(ModItems.BEDROCKIUM_INGOT, 9),
+                "b",
+                'b',
+                ModBlocks.BEDROCKIUM_BLOCK);
+            // Direct Block Recipe
+            addFurnaceRecipe(
+                new DisableableItemStack(ModBlocks.COMPRESSED_COBBLESTONE, 1, 7),
+                ModBlocks.BEDROCKIUM_BLOCK,
+                1F);
+        }
     }
 
     private static void loadGlassRecipes() {
+        if (!RecipeConfig.enableDecorativeGlassRecipes) return;
+
         // Smooth Glass
         addFurnaceRecipe(
             ModBlocks.DECORATIVE_BLOCKS.newItemStack(8, 3),
@@ -983,57 +1254,100 @@ public class RecipeLoader {
             ModBlocks.DECORATIVE_GLASS.newItemStack(1, 2));
     }
 
-    private static void loadColoredBlockRecipes() {
-        if (!BlockConfig.enableColoredBlocks) return;
+    // DO NOT call from inside RecipeLoader, must be called after config colored blocks get initialized
+    public static void loadColoredBlockRecipes() {
+        if (!BlockConfig.coloredBlocks.enableColoredBlocks || !RecipeConfig.enableColoredBlockRecipes) return;
 
-        ItemStack[] dyes = new ItemStack[16];
-        for (int i = 0; i < 16; ++i) {
-            dyes[i] = new ItemStack(Items.dye, 1, i);
+        if (BlockColored.allowDyingBlocks()) {
+            for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                loadDyeableColoredBlockRecipe(block);
+            }
+        } else {
+            ItemStack[] dyes = new ItemStack[16];
+            for (int i = 0; i < 16; ++i) {
+                dyes[i] = new ItemStack(Items.dye, 1, i);
+            }
+
+            for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                loadColoredBlockRecipe(block, dyes);
+            }
         }
-        loadColoredBlockRecipe(ModBlocks.COLORED_WOOD_PLANKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_GLOWSTONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_STONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_COBBLESTONE, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_QUARTZ_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_SOUL_SAND, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_LAMP, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_BRICKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_STONE_BRICKS, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_LAPIS_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_OBSIDIAN, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_REDSTONE_BLOCK, dyes);
-        loadColoredBlockRecipe(ModBlocks.COLORED_COAL_BLOCK, dyes);
     }
 
-    private static void loadColoredBlockRecipe(ModBlocks block, ItemStack[] dyes) {
+    private static void loadDyeableColoredBlockRecipe(BlockColored block) {
+        ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
+
+        ItemStack any8 = new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE);
+        // To base using water
+        GameRegistry.addShapedRecipe(
+            new ItemStack(block.getBase(), 8, block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            any8,
+            'd',
+            new ItemStack(Items.water_bucket));
+
+        ItemStack anyDyed = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack baseItem = new ItemStack(
+            Item.getItemFromBlock(block.getBase()),
+            1,
+            block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0);
+        // From base to dyed using roller
+        GameRegistry.addRecipe(
+            new RecipePaintRollerToPaint(
+                3,
+                3,
+                new ItemStack[] { baseItem, baseItem, baseItem, baseItem, paintRoller, baseItem, baseItem, baseItem,
+                    baseItem },
+                any8));
+
+        // From dyed to dyed using roller
+        GameRegistry.addRecipe(
+            new RecipePaintRollerToPaint(
+                3,
+                3,
+                new ItemStack[] { anyDyed, anyDyed, anyDyed, anyDyed, paintRoller, anyDyed, anyDyed, anyDyed, anyDyed },
+                any8));
+    }
+
+    private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
+        ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
+
+        System.out.println("Dyable ID: " + Block.getIdFromBlock(block));
+        System.out.println("Base ID: " + Block.getIdFromBlock(block.getBase()));
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
             addShapedRecipe(
-                block.newItemStack(8, i),
+                new ItemStack(block, 7, i),
                 "bbb",
                 "bdb",
-                "bbb",
+                "bpb",
                 'b',
-                ((BlockColored) block.get()).getBase(),
+                block.getBase(),
                 'd',
-                dyes[15 - i]);
-
-            addShapedRecipe(
-                new ItemStack(((BlockColored) block.get()).getBase(), 8),
-                "bbb",
-                "bdb",
-                "bbb",
-                'b',
-                block.newItemStack(1, i),
-                'd',
-                water);
+                dyes[15 - i],
+                'p',
+                paintRoller);
         }
+
+        addShapedRecipe(
+            new ItemStack(block.getBase(), 8),
+            "bbb",
+            "bdb",
+            "bbb",
+            'b',
+            new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE),
+            'd',
+            water);
     }
 
     private static void loadInversionRecipes() {
         // Inverted Ingot (unstable)
         // Has to use a special recipe adder to check for vanilla crafting table
-        if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()) {
+        if (ModItems.INVERSION_SIGIL_ACTIVE.isEnabled() && ModItems.INVERTED_INGOT.isEnabled()
+            && RecipeConfig.enableInvertedIngotRecipe) {
             GameRegistry.addRecipe(
                 new RecipeInvertedIngot(
                     1,
@@ -1043,20 +1357,20 @@ public class RecipeLoader {
                     ModItems.INVERTED_INGOT.newItemStack()));
         }
 
-        addShapedRecipe(
-            ModItems.INVERTED_INGOT.newItemStack(1, 1),
+        if (RecipeConfig.enableInvertedIngotQuasiNormalizedRecipe) addShapedRecipe(
+            ModItems.INVERTED_INGOT.newItemStack(1, 2),
             "i",
             "s",
             "d",
             'i',
             Items.iron_ingot,
             's',
-            ModItems.PSEUDO_INVERSION_SIGIL,
+            ModItems.PSEUDO_REVERSION_SIGIL,
             'd',
             Items.diamond);
 
         // Inverted Nugget
-        addShapedRecipe(
+        if (RecipeConfig.enableInvertedNuggetRecipe) addShapedRecipe(
             ModItems.INVERTED_NUGGET,
             "g",
             "s",
@@ -1068,12 +1382,18 @@ public class RecipeLoader {
             'd',
             Items.diamond);
 
-        // Inverted Ingot (stable)
-        addShapedRecipe(ModItems.INVERTED_INGOT.newItemStack(1, 1), "nnn", "nnn", "nnn", 'n', ModItems.INVERTED_NUGGET);
+        // Inverted Ingot (stable, from nuggets)
+        if (RecipeConfig.enableInvertedIngotFromNuggetsRecipe) addShapedRecipe(
+            ModItems.INVERTED_INGOT.newItemStack(1, 1),
+            "nnn",
+            "nnn",
+            "nnn",
+            'n',
+            ModItems.INVERTED_NUGGET);
 
-        // Gourmand's Axe
-        addShapedRecipe(
-            ModItems.GOURMANDS_AXE,
+        // Sating Axe
+        if (RecipeConfig.enableSatingAxeRecipe) addShapedRecipe(
+            ModItems.SATING_AXE,
             "ii",
             "is",
             " s",
@@ -1082,9 +1402,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Destruction Pickaxe
-        addShapedRecipe(
-            ModItems.DESTRUCTION_PICKAXE,
+        // Erasure Pickaxe
+        if (RecipeConfig.enableErasurePickaxeRecipe) addShapedRecipe(
+            ModItems.ERASURE_PICKAXE,
             "iii",
             " s ",
             " s ",
@@ -1093,9 +1413,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Reversing Hoe
-        addShapedRecipe(
-            ModItems.REVERSING_HOE,
+        // Retrograde Hoe
+        if (RecipeConfig.enableRetrogradeHoeRecipe) addShapedRecipe(
+            ModItems.RETROGRADE_HOE,
             "ii",
             " s",
             " s",
@@ -1104,9 +1424,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Anti-Particulate Shovel
-        addShapedRecipe(
-            ModItems.ANTI_PARTICULATE_SHOVEL,
+        // Anti-Gravity Shovel
+        if (RecipeConfig.enableAntiGravityShovelRecipe) addShapedRecipe(
+            ModItems.ANTI_GRAVITY_SHOVEL,
             "i",
             "s",
             "s",
@@ -1115,9 +1435,9 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Etheric Sword
-        addShapedRecipe(
-            ModItems.ETHERIC_SWORD,
+        // Liminal Sword
+        if (RecipeConfig.enableLiminalSwordRecipe) addShapedRecipe(
+            ModItems.LIMINAL_SWORD,
             "i",
             "i",
             "s",
@@ -1126,19 +1446,30 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Precision Shears
-        addShapedRecipe(
-            ModItems.PRECISION_SHEARS,
+        // Chunchunmaru
+        if (RecipeConfig.enableChunchunmaruRecipe) addShapedRecipe(
+            ModItems.CHUNCHUNMARU,
+            "i",
+            "i",
+            "s",
+            'i',
+            ModItems.INVERTED_INGOT.newItemStack(1, 2),
+            's',
+            ModItems.LIMINAL_SWORD);
+
+        // Recall Shears
+        if (RecipeConfig.enableRecallShearsRecipe) addShapedRecipe(
+            ModItems.RECALL_SHEARS,
             "fi",
             "if",
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE),
             'f',
-            ModBlocks.FLOATING_BLOCK);
+            ModBlocks.HEAVENLY_BLOCK);
 
-        // Architect's Wand
-        addShapedRecipe(
-            ModItems.ARCHITECTS_WAND,
+        // Builder's Wand
+        if (RecipeConfig.enableBuildersWandRecipe) addShapedRecipe(
+            ModItems.BUILDERS_WAND,
             " i",
             "s ",
             'i',
@@ -1146,18 +1477,18 @@ public class RecipeLoader {
             's',
             Blocks.obsidian);
 
-        // Super Architect's Wand
-        addShapedRecipe(
-            ModItems.SUPER_ARCHITECTS_WAND,
+        // Super Builder's Wand
+        if (RecipeConfig.enableSuperBuildersWandRecipe) addShapedRecipe(
+            ModItems.SUPER_BUILDERS_WAND,
             " i",
             "s ",
             'i',
             ModItems.BEDROCKIUM_INGOT,
             's',
-            ModItems.ARCHITECTS_WAND);
+            ModItems.BUILDERS_WAND);
 
         // Inverted Ingot -> Block
-        addShapedRecipe(
+        if (RecipeConfig.enableInvertedBlockRecipe) addShapedRecipe(
             ModBlocks.INVERTED_BLOCK,
             "iii",
             "iii",
@@ -1166,7 +1497,7 @@ public class RecipeLoader {
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
 
         // Glove
-        if (ModItems.GLOVE.isEnabled()) {
+        if (ModItems.GLOVE.isEnabled() && RecipeConfig.enableGloveRecipe) {
             GameRegistry.addRecipe(
                 new RecipeGlove(
                     2,
@@ -1178,16 +1509,225 @@ public class RecipeLoader {
         }
     }
 
-    private static void loadQEDRecipes() {
-        // todo test recipe, remove later
-        QEDRegistry.instance()
+    private static void loadEnderLocusRecipes() {
+        if (!ModBlocks.ENDER_LOCUS.isEnabled()) return;
+
+        // Ender Locus
+        if (RecipeConfig.enableEnderLocusRecipe) addShapedRecipe(
+            ModBlocks.ENDER_LOCUS,
+            "ece",
+            "omo",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'c',
+            Blocks.crafting_table,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+            'm',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 0));
+
+        // Convergence Crystal
+        if (RecipeConfig.enableConvergenceCrystalRecipe) addShapedRecipe(
+            ModBlocks.CONVERGENCE_CRYSTAL,
+            " e ",
+            " o ",
+            "ooo",
+            'e',
+            Items.ender_eye,
+            'o',
+            ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        if (RecipeConfig.enableEnderLocusOreRecipes) {
+            // Ore + Coal -> Ingot (Ender Locus)
+            EnderLocusRegistry.instance()
+                .addRecipe(
+                    new ItemStack(Items.gold_ingot, 3),
+                    new String[] { "OC ", "   ", "   " },
+                    'O',
+                    Blocks.gold_ore,
+                    'C',
+                    Items.coal);
+
+            EnderLocusRegistry.instance()
+                .addRecipe(
+                    new ItemStack(Items.iron_ingot, 3),
+                    new String[] { "OC ", "   ", "   " },
+                    'O',
+                    Blocks.iron_ore,
+                    'C',
+                    Items.coal);
+        }
+
+        // Giga Torch (Ender Locus)
+        if (RecipeConfig.enableGigaTorchRecipe) EnderLocusRegistry.instance()
             .addRecipe(
-                new ItemStack(Items.gold_ingot),
-                new String[] { "NNN", "NGN", "NNN" },
-                'N',
-                new ItemStack(Items.gold_nugget),
-                'G',
-                "blockGlass");
+                ModBlocks.GIGA_TORCH.newItemStack(),
+                new String[] { "RCH", "CWC", "CWC" },
+                'R',
+                new ItemStack(Items.potionitem, 1, 8225),
+                'H',
+                new ItemStack(Items.potionitem, 1, 8229),
+                'W',
+                "logWood",
+                'C',
+                ModBlocks.CHANDELIER);
+
+        // Void Marker (Ender Locus)
+        if (RecipeConfig.enableVoidMarkerRecipe) EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_MARKER.newItemStack(1),
+                new String[] { " E ", " O ", " O " },
+                'O',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5),
+                'E',
+                Items.ender_pearl);
+
+        // Void Quarry Upgrades (Ender Locus)
+        if (!RecipeConfig.enableVoidQuarryUpgradeRecipes) return;
+
+        // World Hole
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 0),
+                new String[] { " T ", "QBQ", " E " },
+                'T',
+                ModBlocks.TRASH_CAN_ITEM,
+                'Q',
+                Blocks.quartz_block,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Silk Touch
+        ItemStack pickaxe = new ItemStack(Items.golden_pickaxe);
+        pickaxe.addEnchantment(Enchantment.silkTouch, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 1),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fluid Pump
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 2),
+                new String[] { " T ", "RBR", " E " },
+                'T',
+                Items.bucket,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Speed 1
+        // TODO: Redstone -> Transfer Node Speed Upgrade
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.efficiency, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 3),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Speed 2
+        // TODO: Redstone -> Transfer Node Speed Upgrade
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.efficiency, 3);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 4),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 3),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Speed 3
+        // TODO: Redstone -> Transfer Node Stack Upgrade
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.efficiency, 5);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 5),
+                new String[] { "P P", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 4),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fortune 1
+        pickaxe = new ItemStack(Items.iron_pickaxe);
+        pickaxe.addEnchantment(Enchantment.fortune, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 6),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 2),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fortune 2
+        pickaxe = new ItemStack(Items.golden_pickaxe);
+        pickaxe.addEnchantment(Enchantment.fortune, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 7),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 6),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        // Fortune 3
+        pickaxe = new ItemStack(Items.diamond_pickaxe);
+        pickaxe.addEnchantment(Enchantment.fortune, 1);
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 8),
+                new String[] { " P ", "RBR", " E " },
+                'P',
+                pickaxe,
+                'R',
+                Items.redstone,
+                'B',
+                ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 7),
+                'E',
+                ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
     }
 
     private static void loadTransferNodeRecipes() {
@@ -1306,8 +1846,55 @@ public class RecipeLoader {
             TransferUpgrade.FILTER.getStack());
     }
 
-    private static void loadTransferPipeRecipes() {
+    private static void loadTransferPipeRecipes()
+    {
 
+    }
+
+    private static void loadFilterVariantRecipes()
+    {
+        if (TransferConfig.INSTANCE.EnableTransferSystem)
+        {
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.redstone_torch)
+                    ),
+                0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.wool)
+                    ),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Items.stick)
+                    ),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagInt((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.ADV_FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.redstone_torch)
+                    ),
+                    0));
+
+            // Clears NBT
+            addShapelessRecipe(TransferUpgrade.FILTER.getStack(1), TransferUpgrade.FILTER.getStack(1));
+            addShapelessRecipe(TransferUpgrade.ADV_FILTER.getStack(1), TransferUpgrade.ADV_FILTER.getStack(1));
+        }
     }
 
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
@@ -1323,6 +1910,8 @@ public class RecipeLoader {
     }
 
     private static void loadCompressedBlockRecipes() {
+        if (!RecipeConfig.enableCompressedBlockRecipes) return;
+
         ModBlocks[] blocks = { ModBlocks.COMPRESSED_COBBLESTONE, ModBlocks.COMPRESSED_DIRT, ModBlocks.COMPRESSED_GRAVEL,
             ModBlocks.COMPRESSED_SAND, };
 
@@ -1349,5 +1938,15 @@ public class RecipeLoader {
                     new DisableableItemStack(modBlock, 1, i + 1));
             }
         }
+    }
+
+    private static DisableableItemStack setNBTForItem(DisableableItemStack in, String key, NBTBase tag)
+    {
+        if (!in.theStack.hasTagCompound())
+        {
+            in.theStack.stackTagCompound = new NBTTagCompound();
+        }
+        in.theStack.stackTagCompound.setTag(key, tag);
+        return in;
     }
 }

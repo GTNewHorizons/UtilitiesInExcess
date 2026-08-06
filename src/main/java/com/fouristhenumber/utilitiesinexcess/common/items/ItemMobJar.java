@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -13,8 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,21 +59,38 @@ public class ItemMobJar extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && stack.hasTagCompound()
-            && stack.getTagCompound()
-                .hasKey("MobData")) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float clickX, float clickY, float clickZ) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey("MobData")) {
+            if (world.isRemote) {
+                return true;
+            }
+
             NBTTagCompound mobData = stack.getTagCompound()
                 .getCompoundTag("MobData");
             Entity entity = EntityList.createEntityFromNBT(mobData, world);
             if (entity != null) {
-                entity.setPosition(player.posX, player.posY, player.posZ);
-                world.spawnEntityInWorld(entity);
-                stack.getTagCompound()
-                    .removeTag("MobData");
+                MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+
+                if (mop != null && mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                    ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
+                    double targetX = mop.blockX + dir.offsetX + 0.5;
+                    double targetY = mop.blockY + dir.offsetY;
+                    double targetZ = mop.blockZ + dir.offsetZ + 0.5;
+
+                    entity.setPosition(targetX, targetY, targetZ);
+
+                    world.spawnEntityInWorld(entity);
+                    if (!player.capabilities.isCreativeMode || player.isSneaking()) {
+                        stack.getTagCompound()
+                            .removeTag("MobData");
+                    }
+                }
             }
+            return true;
         }
-        return stack;
+        return false;
     }
 
     @Override
@@ -110,10 +130,10 @@ public class ItemMobJar extends Item {
             Entity dummy = EntityList.createEntityByName(id, player.worldObj);
             if (dummy instanceof EntityLivingBase) {
                 String mobName = dummy.getCommandSenderName();
-                tooltip.add(StatCollector.translateToLocalFormatted("item.mob_jar.desc.full", mobName));
+                tooltip.add(StatCollector.translateToLocalFormatted("uie.desc.item.mob_jar.full", mobName));
             }
         } else {
-            tooltip.add(StatCollector.translateToLocal("item.mob_jar.desc.empty"));
+            tooltip.add(StatCollector.translateToLocal("uie.desc.item.mob_jar.empty"));
         }
         super.addInformation(stack, player, tooltip, p_77624_4_);
     }

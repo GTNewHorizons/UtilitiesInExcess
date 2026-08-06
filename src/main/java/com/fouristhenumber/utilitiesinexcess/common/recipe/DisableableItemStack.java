@@ -8,7 +8,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
-import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -41,7 +40,7 @@ public class DisableableItemStack {
     }
 
     public static boolean isEnabled(Object disableable) {
-        if (disableable instanceof ModItems mi) return mi.isEnabled() || ItemConfig.registerDisabledItems;
+        if (disableable instanceof ModItems mi) return mi.isEnabled();
         if (disableable instanceof ModBlocks mb) return mb.isEnabled();
         if (disableable instanceof DisableableItemStack dstack) return isEnabled(dstack.disableable);
         return true;

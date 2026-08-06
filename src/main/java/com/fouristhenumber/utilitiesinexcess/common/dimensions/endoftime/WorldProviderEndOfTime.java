@@ -5,11 +5,15 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.event.world.WorldEvent;
 
 import com.fouristhenumber.utilitiesinexcess.common.dimensions.UIEWorldChunkManager;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,9 +21,9 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.defaultBiomeId));
-        this.dimensionId = EndOfTimeConfig.endOfTimeDimensionId;
-        this.hasNoSky = true;
+        this.worldChunkMgr = new UIEWorldChunkManager(BiomeGenBase.getBiome(EndOfTimeConfig.INSTANCE.defaultBiomeId));
+        this.dimensionId = EndOfTimeConfig.INSTANCE.endOfTimeDimensionId;
+        this.hasNoSky = false;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public float calculateCelestialAngle(long p_76563_1_, float p_76563_3_) {
-        return 0.0F;
+        return 0.5F;
     }
 
     @Override
@@ -41,9 +45,10 @@ public class WorldProviderEndOfTime extends WorldProvider {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isSkyColored() {
-        return false;
+        return true;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public Vec3 getSkyColor(Entity p_72833_1_, float p_72833_2_) {
         return Vec3.createVectorHelper(0, 0, 0);
@@ -80,8 +85,29 @@ public class WorldProviderEndOfTime extends WorldProvider {
 
     @Override
     public ChunkCoordinates getEntrancePortalLocation() {
-        return DimensionPortalData.get(this.worldObj)
-            .getTarget();
+        PlatformAnchorData data = PlatformAnchorData.get(this.worldObj);
+        return data.isZero() ? new ChunkCoordinates(0, 65, 0) : data.getTarget();
+    }
+
+    @Override
+    public boolean isDaytime() {
+        return false;
+    }
+
+    @Override
+    public void calculateInitialWeather() {}
+
+    @Override
+    public void updateWeather() {}
+
+    @Override
+    public boolean canDoLightning(Chunk chunk) {
+        return false;
+    }
+
+    @Override
+    public boolean canDoRainSnowIce(Chunk chunk) {
+        return false;
     }
 
     @Override
@@ -97,6 +123,24 @@ public class WorldProviderEndOfTime extends WorldProvider {
     @Override
     public String getDimensionName() {
         return "The End of Time";
+    }
+
+    @SuppressWarnings("unused")
+    @EventBusSubscriber
+    public static class SpawningEvents {
+
+        @EventBusSubscriber.Condition
+        public static boolean shouldSubscribe() {
+            return !EndOfTimeConfig.INSTANCE.endOfTimeSpawning;
+        }
+
+        @SubscribeEvent
+        public static void disableSpawning(WorldEvent.PotentialSpawns event) {
+            if (event.world.provider.dimensionId == EndOfTimeConfig.INSTANCE.endOfTimeDimensionId) {
+                event.setCanceled(true);
+            }
+        }
+
     }
 
 }

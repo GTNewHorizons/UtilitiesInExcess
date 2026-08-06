@@ -10,7 +10,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntitySoundMuffler;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
@@ -22,7 +24,7 @@ public class BlockSoundMuffler extends BlockContainer {
         setStepSound(soundTypeCloth);
         setBlockName("sound_muffler");
         setBlockTextureName("utilitiesinexcess:sound_muffler");
-        setHardness(0.5f);
+        setHardness(0.8f);
     }
 
     @Override
@@ -55,12 +57,22 @@ public class BlockSoundMuffler extends BlockContainer {
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
             String formatted = StatCollector
-                .translateToLocalFormatted("tile.sound_muffler.desc.1", BlockConfig.soundMuffler.soundMufflerRange);
+                .translateToLocalFormatted("uie.desc.tile.sound_muffler.range", BlockConfig.mufflers.soundMufflerRange);
             tooltip.add(formatted);
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "tile.sound_muffler.desc.2",
-                    BlockConfig.soundMuffler.soundMufflerReduction));
+                    "uie.desc.tile.sound_muffler.volume",
+                    BlockConfig.mufflers.soundMufflerReduction));
         }
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 30;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return 30;
     }
 }

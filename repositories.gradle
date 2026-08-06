@@ -1,5 +1,17 @@
 // Add any additional repositories for your dependencies here.
 
 repositories {
-
+    ivy {
+        name = 'spark-github'
+        url = 'https://github.com/GTNewHorizons/spark/releases/download/'
+        patternLayout {
+            artifact '[revision]/spark-forge1710-1.10-SNAPSHOT(-[classifier]).[ext]'
+        }
+        content {
+            includeModule 'com.github.GTNewHorizons', 'spark'
+        }
+        metadataSources {
+            artifact()
+        }
+    }
 }

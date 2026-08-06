@@ -358,7 +358,7 @@ public class ChunkProviderUnderWorld implements IChunkProvider {
     /// Gets the difficulty for this chunk. Domain: [0, 4]. Represents the multiplier for material gains and mob spawns.
     /// Difficulties above 2 have aggressive mob spawning.
     public double getDifficulty(int chunkX, int chunkZ) {
-        if (!UnderWorldConfig.enableDifficulty) return 0;
+        if (!UnderWorldConfig.INSTANCE.enableDifficulty) return 0;
 
         return difficulty.sample(chunkX, chunkZ);
     }

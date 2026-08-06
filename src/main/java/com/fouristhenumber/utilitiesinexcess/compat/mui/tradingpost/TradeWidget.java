@@ -13,16 +13,16 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.ObjectValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorMerchantRecipe;
-import com.fouristhenumber.utilitiesinexcess.utils.mui.TooltipItemDisplayWidget;
 
 public class TradeWidget extends ParentWidget<TradeWidget> implements Interactable {
 
@@ -38,9 +38,9 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     private VillagerSyncHandler columnSyncHandler;
     private boolean isFavorite = false;
 
-    private final TooltipItemDisplayWidget itemToBuy;
-    private final TooltipItemDisplayWidget itemToBuy2;
-    private final TooltipItemDisplayWidget itemToSell;
+    private final TradeItemDisplayWidget itemToBuy;
+    private final TradeItemDisplayWidget itemToBuy2;
+    private final TradeItemDisplayWidget itemToSell;
 
     public static class TradeProgressWidget extends ProgressWidget {
 
@@ -68,37 +68,58 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
             item = new ItemStack(ModItems.INVERSION_SIGIL_INACTIVE.get());
         }
 
-        itemToBuy = new TooltipItemDisplayWidget();
-        itemToBuy.paddingRight(0)
-            .displayAmount(true)
-            .item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToBuy() : item, i -> {}));
-
-        itemToBuy2 = new TooltipItemDisplayWidget();
-        itemToBuy2.paddingLeft(0)
+        itemToBuy = new TradeItemDisplayWidget();
+        itemToBuy.setTradeItemType(TradeItemDisplayWidget.TradeItemType.BUY)
+            .paddingRight(0)
             .displayAmount(true)
             .item(
                 new ObjectValue.Dynamic<>(
-                    () -> this.recipe != null ? this.recipe.getSecondItemToBuy() : item,
+                    ItemStack.class,
+                    () -> this.recipe != null ? this.recipe.getItemToBuy() : item,
                     i -> {}));
 
-        itemToSell = new TooltipItemDisplayWidget();
-        itemToSell.displayAmount(true)
-            .item(new ObjectValue.Dynamic<>(() -> this.recipe != null ? this.recipe.getItemToSell() : item, i -> {}));
-
-        Flow inputItems = new Row().childPadding(1)
+        Flow inputItems = Flow.row()
+            .childPadding(1)
             .coverChildren()
-            .child(itemToBuy)
-            .child(itemToBuy2);
+            .child(itemToBuy);
+
+        if (this.recipe.getSecondItemToBuy() != null) {
+            itemToBuy2 = new TradeItemDisplayWidget();
+            itemToBuy2.setTradeItemType(TradeItemDisplayWidget.TradeItemType.BUY2)
+                .paddingLeft(0)
+                .displayAmount(true)
+                .item(
+                    new ObjectValue.Dynamic<>(
+                        ItemStack.class,
+                        () -> this.recipe != null ? this.recipe.getSecondItemToBuy() : item,
+                        i -> {}));
+
+            inputItems.child(itemToBuy2);
+        } else {
+            inputItems.child(new Widget<>().size(18));
+            itemToBuy2 = null;
+        }
+
+        itemToSell = new TradeItemDisplayWidget();
+        itemToSell.setTradeItemType(TradeItemDisplayWidget.TradeItemType.SELL)
+            .displayAmount(true)
+            .item(
+                new ObjectValue.Dynamic<>(
+                    ItemStack.class,
+                    () -> this.recipe != null ? this.recipe.getItemToSell() : item,
+                    i -> {}));
+
         ProgressWidget progress = new TradeProgressWidget().direction(ProgressWidget.Direction.RIGHT)
             .texture(GuiTextures.PROGRESS_ARROW, 20)
-            .progress(() -> {
+            .value(new DoubleValue.Dynamic(() -> {
                 AccessorMerchantRecipe trade = (AccessorMerchantRecipe) getRecipe();
                 if (trade == null) return 0.69;
                 if (trade.getMaxUses() > 7) // After the initial 7 uses every recipe gets 2 to 12 additional uses
                     return ((double) trade.getMaxUses() - trade.getCurrentUses()) / 12;
                 return 1 - (trade.getCurrentUses() / (double) (trade.getMaxUses()));
-            });
-        Flow wholeRow = new Row().coverChildren()
+            }, null));
+        Flow wholeRow = Flow.row()
+            .coverChildren()
             .padding(1)
             .childPadding(2)
             .child(inputItems)
@@ -119,11 +140,6 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
 
         // Yes. Both this *and* hoverBackground(HIGHLIGHT_BACKGROUND) *and* the drawBackground override are needed.
         if (isBelowMouse() || isHovering()) Gui.drawRect(1, 1, getArea().width - 1, getArea().height - 1, 0xFFA1A1A1);
-
-        if (isFavorite) {
-            Color.setGlColorOpaque(Color.YELLOW.main);
-            GuiTextures.FAVORITE.draw(0, 0, 6, 6);
-        }
     }
 
     @Override
@@ -180,6 +196,7 @@ public class TradeWidget extends ParentWidget<TradeWidget> implements Interactab
     }
 
     public boolean matches(String search) {
-        return itemToBuy.matches(search) || itemToBuy2.matches(search) || itemToSell.matches(search);
+        return itemToBuy.matches(search) || (itemToBuy2 != null && itemToBuy2.matches(search))
+            || itemToSell.matches(search);
     }
 }

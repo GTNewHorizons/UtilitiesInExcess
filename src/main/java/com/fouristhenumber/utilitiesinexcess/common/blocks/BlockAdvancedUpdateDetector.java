@@ -22,7 +22,8 @@ public class BlockAdvancedUpdateDetector extends BlockContainer {
     public BlockAdvancedUpdateDetector() {
         super(Material.rock);
         setBlockName("advanced_block_update_detector");
-        setHardness(1.0F);
+        setHardness(1F);
+        setResistance(10F);
         setHarvestLevel("pickaxe", 0);
     }
 
@@ -73,7 +74,7 @@ public class BlockAdvancedUpdateDetector extends BlockContainer {
             tileABUD.toggleFace(side);
             player.addChatMessage(
                 new ChatComponentTranslation(
-                    "chat.tile.advanced_block_update_detector.toggle",
+                    "uie.chat.advanced_block_update_detector.toggle",
                     facings[side],
                     tileABUD.getScanning(side)));
             return true;

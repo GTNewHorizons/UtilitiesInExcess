@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
@@ -96,7 +95,8 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
     @Override
     protected boolean consumeFuel() {
         if (fuelStack != null && fuelStack.getItem() != null
-            && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
+            && energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()
+            && isItemValidForSlot(0, fuelStack)) {
             currentFuelBurnTime = getFuelBurnTime(fuelStack);
             currentRFPerTick = getRFPerTick(fuelStack);
             fuelStack.stackSize--;
@@ -139,9 +139,9 @@ public abstract class TileEntityBaseGeneratorWithItemFuel extends TileEntityBase
         ModularSlot slot = new ModularSlot(itemHandler, 0).slotGroup(slotGroup);
 
         panel.child(
-            new Grid().coverChildren()
-                .pos(79, 34)
-                .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
+            new ItemSlot().slot(slot)
+                .horizontalCenter()
+                .top(34));
 
         return panel;
     }

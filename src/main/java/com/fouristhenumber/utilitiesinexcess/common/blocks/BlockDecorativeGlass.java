@@ -7,11 +7,13 @@ import net.minecraft.block.BlockGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,7 +26,27 @@ public class BlockDecorativeGlass extends BlockGlass {
         super(Material.glass, false);
         setBlockName("decorative_glass");
         setHardness(0.3F);
+        setResistance(0.3F);
         setStepSound(soundTypeGlass);
+    }
+
+    @Override
+    public float getBlockHardness(World worldIn, int x, int y, int z) {
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        return switch (meta) {
+            case 5, 11 -> 4F;
+            default -> 0.3F;
+        };
+    }
+
+    @Override
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double exX, double exY,
+        double exZ) {
+        int meta = world.getBlockMetadata(x, y, z);
+        return switch (meta) {
+            case 5, 11 -> 800F;
+            default -> 0.3F;
+        };
     }
 
     // Dark Glass has the blackout curtain effect

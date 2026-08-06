@@ -14,8 +14,8 @@ public class BlockInverted extends Block {
         super(Material.iron);
         setBlockName("inverted_block");
         setBlockTextureName("utilitiesinexcess:inverted_block");
-        setHardness(0.5F);
-        setResistance(150F);
+        setHardness(0.45F);
+        setResistance(10F);
     }
 
     @Override

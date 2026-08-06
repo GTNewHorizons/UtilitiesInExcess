@@ -1,11 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.microblock.MicroMaterialRegistry;
@@ -20,13 +24,30 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
 
     public static final Set<String> sidedParts = new HashSet<>();
 
+    public static final Map<String, String> legacyAliases = new HashMap<>();
+
     public void init() {
         for (int i = 0; i < partNames.length; i++) {
             partMap.put(partNames[i], i);
         }
         sidedParts.add(WallPart.name);
         sidedParts.add(FencePart.name);
-        MultiPartRegistry.registerParts(this, partNames);
+
+        if (!Mods.ExtraUtilities.isLoaded() && OtherConfig.enableWorldConversion) {
+            legacyAliases.put("extrautils:sphere", SpherePart.name);
+            legacyAliases.put("extrautils:fence", FencePart.name);
+            legacyAliases.put("extrautils:wall", WallPart.name);
+        }
+
+        Set<String> namesToRegister = new HashSet<>();
+        namesToRegister.addAll(Arrays.asList(partNames));
+        namesToRegister.addAll(legacyAliases.keySet());
+
+        MultiPartRegistry.registerParts(this, namesToRegister.toArray(new String[0]));
+    }
+
+    private String translateName(String name) {
+        return legacyAliases.getOrDefault(name, name);
     }
 
     public UEMultipart createUEMultiPart(boolean isClient, int material, int side, String name) {
@@ -47,19 +68,23 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
     // Called on the server
     @Override
     public TMultiPart createPart(String name, NBTTagCompound nbt) {
+        String actualName = translateName(name);
+
         return createUEMultiPart(
             false,
             MicroMaterialRegistry.materialID(nbt.getString("material")),
             nbt.getInteger("side"),
-            name);
+            actualName);
     }
 
     // Called on the client
     @Override
     public TMultiPart createPart(String name, MCDataInput packet) {
-        if (sidedParts.contains(name)) {
-            return createUEMultiPart(true, MicroMaterialRegistry.readMaterialID(packet), packet.readInt(), name);
+        String actualName = translateName(name);
+
+        if (sidedParts.contains(actualName)) {
+            return createUEMultiPart(true, MicroMaterialRegistry.readMaterialID(packet), packet.readInt(), actualName);
         }
-        return createUEMultiPart(true, MicroMaterialRegistry.readMaterialID(packet), 0, name);
+        return createUEMultiPart(true, MicroMaterialRegistry.readMaterialID(packet), 0, actualName);
     }
 }

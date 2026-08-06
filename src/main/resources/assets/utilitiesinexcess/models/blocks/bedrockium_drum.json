@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/drum",
+  "textures": {
+    "0": "utilitiesinexcess:models/bedrockium_drum",
+    "particle": "utilitiesinexcess:models/particle/bedrockium_drum"
+  }
+}

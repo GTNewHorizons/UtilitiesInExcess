@@ -5,35 +5,24 @@ import net.minecraft.item.ItemStack;
 import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.BreadthWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.DepthWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.ITransferWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.RoundRobinWalker;
 
 public enum TransferUpgrade {
 
     // Order preserved from XU for migration purposes
-    SPEED(null),
-    FILTER(UpgradeType.FILTER),
-    WORLD_INTERACTION(null),
-    STACK(null),
-    CREATIVE(null),
-    ENDER_TRANSMITTER(null),
-    ENDER_RECEIVER(null),
-    SEARCH_DEPTH(UpgradeType.WALKER),
-    SEARCH_BREADTH(UpgradeType.WALKER),
-    SEARCH_ROUND_ROBIN(UpgradeType.WALKER),
-    ADV_FILTER(UpgradeType.FILTER),
-
+    SPEED,
+    FILTER,
+    WORLD_INTERACTION,
+    STACK,
+    CREATIVE,
+    ENDER_TRANSMITTER,
+    ENDER_RECEIVER,
+    SEARCH_DEPTH,
+    SEARCH_BREADTH,
+    SEARCH_ROUND_ROBIN,
+    ADV_FILTER,
     ;
 
     public static final TransferUpgrade[] VALUES = values();
-
-    private final UpgradeType type;
-
-    TransferUpgrade(UpgradeType type) {
-        this.type = type;
-    }
 
     public String getName() {
         return name().toLowerCase();
@@ -45,23 +34,6 @@ public enum TransferUpgrade {
 
     public DisableableItemStack getStack(int amount) {
         return new DisableableItemStack(ModItems.UPGRADE, amount, ordinal());
-    }
-
-    public boolean isWalkerUpgrade() {
-        return this.type == UpgradeType.WALKER;
-    }
-
-    public ITransferWalker getWalker() {
-        return switch (this) {
-            case SEARCH_DEPTH -> new DepthWalker();
-            case SEARCH_BREADTH -> new BreadthWalker();
-            case SEARCH_ROUND_ROBIN -> new RoundRobinWalker();
-            default -> null;
-        };
-    }
-
-    public boolean isFilterUpgrade() {
-        return this.type == UpgradeType.FILTER;
     }
 
     public static boolean isUpgrade(ItemStack stack) {
@@ -76,8 +48,20 @@ public enum TransferUpgrade {
         return VALUES[meta];
     }
 
-    private enum UpgradeType {
-        WALKER,
-        FILTER,
+    public void applyTo(IUpgradeable node, ItemStack stack)
+    {
+        switch (this) {
+            case SPEED:                node.applySpeedUpgrade(stack); break;
+            case FILTER:                node.applyFilterUpgrade(stack); break;
+            case WORLD_INTERACTION:      node.applyWorldInteractionUpgrade(stack); break;
+            case STACK:                  node.applyStackUpgrade(stack); break;
+            case CREATIVE:                node.applyCreativeUpgrade(stack); break;
+            case ENDER_TRANSMITTER:      node.applyEnderTransmitterUpgrade(stack); break;
+            case ENDER_RECEIVER:          node.applyEnderReceiverUpgrade(stack); break;
+            case SEARCH_DEPTH:            node.applySearchDepthUpgrade(stack); break;
+            case SEARCH_BREADTH:          node.applySearchBreadthUpgrade(stack); break;
+            case SEARCH_ROUND_ROBIN:      node.applySearchRoundRobinUpgrade(stack); break;
+            case ADV_FILTER:              node.applyAdvFilterUpgrade(stack); break;
+        }
     }
 }

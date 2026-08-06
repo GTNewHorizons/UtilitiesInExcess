@@ -45,7 +45,7 @@ public class BlockEtherealGlass extends BlockGlass {
     public BlockEtherealGlass() {
         super(Material.glass, false);
         setBlockName("ethereal_glass");
-        setHardness(0.3F);
+        setHardness(0.5F);
         setStepSound(soundTypeGlass);
     }
 
