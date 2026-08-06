@@ -4,8 +4,10 @@ import codechicken.lib.world.TileChunkLoadHook;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -185,7 +187,10 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
-
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+        WirelessNetworkManager.reset();
+    }
     public void onMissingMapping(FMLMissingMappingsEvent event) {
         ExuWorldConversionWarning.onMissingMapping(event);
     }

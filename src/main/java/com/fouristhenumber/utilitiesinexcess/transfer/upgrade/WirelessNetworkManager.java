@@ -1,7 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -132,5 +134,13 @@ public class WirelessNetworkManager
 
         if (byDim.isEmpty())
             receivers.remove(frequency);
+    }
+
+    public static void reset()
+    {
+        transmitters.clear();
+        receivers.clear();
+        reverseReceiverMap.clear();
+        reverseTransmitterMap.clear();
     }
 }
