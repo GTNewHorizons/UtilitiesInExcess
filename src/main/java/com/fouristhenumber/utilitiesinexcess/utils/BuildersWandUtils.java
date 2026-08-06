@@ -28,7 +28,19 @@ public class BuildersWandUtils {
 
     public BuildersWandUtils() {}
 
-    ;
+    /**
+     * ItemStacks match based on
+     * -> item type
+     * -> item damage
+     * -> item NBT
+     * <p>
+     * (Some mods use NBT data in BlockItem instead of metadata to keep track of the exact type,
+     * e.g. ArchitectureCraft Shapes -> need to distinguish between different shapes of the same block)
+     *
+     */
+    private static boolean matchesExactly(ItemStack a, ItemStack b) {
+        return a != null && b != null && a.isItemEqual(b) && ItemStack.areItemStackTagsEqual(a, b);
+    }
 
     /**
      * Counts the items of a certain type in a player's inventory
@@ -41,8 +53,7 @@ public class BuildersWandUtils {
         int count = 0;
 
         for (ItemStack stack : player.inventory.mainInventory) {
-            if (stack != null && stack.getItem() == itemStack.getItem()
-                && stack.getItemDamage() == itemStack.getItemDamage()) {
+            if (matchesExactly(stack, itemStack)) {
                 count += stack.stackSize;
             }
         }
@@ -60,8 +71,7 @@ public class BuildersWandUtils {
     public static boolean decreaseFromInventory(EntityPlayer player, ItemStack itemStack) {
         for (int slotIndex = player.inventory.mainInventory.length - 1; slotIndex >= 0; slotIndex--) {
             ItemStack stack = player.inventory.mainInventory[slotIndex];
-            if (stack != null && stack.getItem() == itemStack.getItem()
-                && stack.getItemDamage() == itemStack.getItemDamage()) {
+            if (matchesExactly(stack, itemStack)) {
                 stack.stackSize -= 1;
                 if (stack.stackSize <= 0) {
                     player.inventory.setInventorySlotContents(slotIndex, null);
