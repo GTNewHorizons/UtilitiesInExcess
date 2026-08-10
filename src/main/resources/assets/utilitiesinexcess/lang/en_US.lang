@@ -47,6 +47,7 @@ uie.nei.infopage.pseudo_reversion_sigil.3=Finally, activate the ritual by sacrif
 uie.nei.infopage.builders_wand.1=This wand is designed to aid the bearer in construction by placing many blocks at the same time. While looking at a block, a wireframe indicates where the wand will place blocks. Holding Sprint or Sneak locks the orientation of the wand.
 uie.nei.infopage.builders_wand.2=When holding a building block in your off-hand, the wand tries to place it instead.
 uie.nei.infopage.builders_wand.3=If, instead of holding a block, you hold a trowel, random blocks from your hotbar are placed.
+uie.nei.infopage.builders_wand.4=If you hold a scribe, each block placed is a copy of the one it extends.
 uie.nei.infopage.sating_axe.1=This axe contains potent restorative magic that restores the bearer's hunger while it is held. Attacking with the axe heals whatever is hit at the cost of hunger - but this healing is deadly to the undead.
 uie.nei.infopage.erasure_pickaxe.1=This pickaxe is imbued with a destructive rune that allows it to mine stone 5x faster than a diamond pickaxe. However, it is extremely slow at mining anything else and blocks mined are destroyed instead of dropping.
 uie.nei.infopage.anti_gravity_shovel.1=This shovel deals with the annoyance of falling blocks by destroying all sand or gravel in a column above the block mined. Blocks mined with this are destroyed instead of dropping.
@@ -532,6 +533,7 @@ item.chunchunmaru.name=Chunchunmaru
 item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
 
 item.paint_roller.name=Paint Roller
+item.scribe.name=Scribe
 
 ### Item Description
 uie.desc.item.inverted_ingot.1=This ingot is deteriorating rapidly...
@@ -574,6 +576,7 @@ uie.desc.item.paint_roller.0=[§a%s§7] Colorable blocks to dye them
 uie.desc.item.paint_roller.1=[§a%s§7] The air to select hex color
 uie.desc.item.paint_roller.2=[§aCrouch §7+ §a%s§7] Use line-mode
 uie.desc.item.paint_roller.3=[§a%s§7] Colorable blocks to copy color
+uie.desc.item.scribe.1=Off-hand: the Builder's Wand copies each block it extends
 
 ### Item aliases
 item.heavenly_ring_magic.aliases=Angel Ring
