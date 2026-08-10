@@ -35,8 +35,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -45,18 +43,19 @@ import java.util.List;
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.getModesFromStack;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic.parseFilterItem;
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
+import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.getInventory;
 
-public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferNode> implements IInventory
+public class ItemTransferNodeLogic extends BaseTransferNodeLogic<TileEntityItemTransferNode> implements IInventory
 {
-    ItemStack buffer;
     IInventory connectedInventory;
     public ItemWalker walker;
 
     // Upgrades
     private boolean isCreative = false;
-    private boolean isStackUpgrade = false;
     private ItemFilter logicalFilter;
+    private boolean init = false;
+    private boolean isRoundRobin = false;
 
     public ItemTransferNodeLogic(TileEntityItemTransferNode host)
     {
@@ -71,38 +70,58 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
     // logic concise and fast for the cases where there is no rationing pipe.
     public void updateEntity()
     {
-        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        if (host.getWorld().isRemote)
         {
             return;
         }
 
-        if (connectedInventory == null) {
-            updateSourceInventory();
-        }
-
-        if (connectedInventory != null) {
-            importItems();
-        }
-
-        if (buffer == null)
+        if (!init)
         {
-            walker.reset();
-            return;
+            upgrades.init();
+            init = true;
         }
 
-        List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
-        if (!targets.isEmpty())
-        {
-            BaseInserter inserter = walker.getInserter(host.getWorld());
-            for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
-            {
-                buffer = inserter.insert(target, buffer);
+        int actionsThisTick = actionsThisTick();
+        for (int i = 0; i < actionsThisTick; i ++) {
+            if (connectedInventory == null) {
+                updateSourceInventory();
             }
+
+            if (connectedInventory != null) {
+                importItems();
+            }
+
+            if (buffer == null)
+            {
+                if (!this.isRoundRobin)
+                {
+                    walker.reset();
+                }
+
+                return;
+            }
+
+            List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
+            if (!targets.isEmpty()) {
+                BaseInserter inserter = walker.getInserter(host.getWorld());
+                for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
+                {
+                    if (this.isCreative)
+                    {
+                        ItemStack creativeStack = buffer.copy();
+                        inserter.insert(target, buffer);
+                        buffer = creativeStack;
+                    }
+                    else
+                    {
+                        buffer = inserter.insert(target, buffer);
+                    }
+                }
+            }
+            walker.step(host.getWorld());
         }
-        walker.step(host.getWorld());
     }
 
-    // Watch this one. I was lazy and had GPT re-write it to be sided.
     public void importItems()
     {
         ForgeDirection facing = host.getFacing();
@@ -114,9 +133,8 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
         }
         else
         {
-            int size = connectedInventory.getSizeInventory();
-            slots = new int[size];
-            for (int i = 0; i < size; i++)
+            slots = new int[connectedInventory.getSizeInventory()];
+            for (int i = 0; i < slots.length; i++)
             {
                 slots[i] = i;
             }
@@ -125,7 +143,7 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
         for (int slot : slots)
         {
             ItemStack stackInSlot = connectedInventory.getStackInSlot(slot);
-            if (stackInSlot == null)
+            if (stackInSlot == null || stackInSlot.stackSize <= 0)
             {
                 continue;
             }
@@ -135,7 +153,6 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
                 continue;
             }
 
-            // Respect sided extraction rules if applicable
             if (connectedInventory instanceof ISidedInventory sided)
             {
                 if (!sided.canExtractItem(slot, stackInSlot, facing.ordinal()))
@@ -144,31 +161,14 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
                 }
             }
 
-            if (buffer == null)
+            int amountMoved = addToOwnInventory(stackInSlot);
+            if (amountMoved == 0)
             {
-                buffer = stackInSlot.splitStack(1);
-
-                if (stackInSlot.stackSize <= 0)
-                {
-                    connectedInventory.setInventorySlotContents(slot, null);
-                }
-
-                connectedInventory.markDirty();
-                break;
+                continue;
             }
-            else if (buffer.isItemEqual(stackInSlot))
-            {
-                stackInSlot.splitStack(1);
-                buffer.stackSize += 1;
 
-                if (stackInSlot.stackSize <= 0)
-                {
-                    connectedInventory.setInventorySlotContents(slot, null);
-                }
-
-                connectedInventory.markDirty();
-                break;
-            }
+            connectedInventory.setInventorySlotContents(slot, stackInSlot.stackSize <= 0 ? null : stackInSlot);
+            break;
         }
     }
 
@@ -271,7 +271,7 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
     }
 
     // ======================================= Upgrades =======================================
-    // Applicable upgrades: Creative x, Speed x, Stack x , BFS x, DFS x, RoundRobin x, Filter x, Adv Filter x
+    // Applicable upgrades: Creative, Speed, Stack , BFS, DFS, RoundRobin, Filter, Adv Filter
     @Override
     public void resetUpgrades()
     {
@@ -280,6 +280,7 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
         this.isCreative = false;
         this.isStackUpgrade = false;
         this.logicalFilter = null;
+        this.isRoundRobin = false;
     }
 
     @Override
@@ -297,7 +298,8 @@ public class ItemTransferNodeLogic extends BaseNodeLogic<TileEntityItemTransferN
     @Override
     public void applySearchRoundRobinUpgrade(ItemStack stack)
     {
-        this.walker.setStepper(new RoundRobinStepper());
+        this.walker.setStepper(new RandomStepper());
+        this.isRoundRobin = true;
     }
 
     @Override

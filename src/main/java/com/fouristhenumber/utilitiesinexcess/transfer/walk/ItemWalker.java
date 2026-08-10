@@ -37,8 +37,7 @@ public class ItemWalker extends WalkerBase<IInventory, ItemStack>
         return targeter.getValidTargets(world, walkerPos, walkingComponent, stepper.fromDirection);
     }
 
-    // Gets the amount of items that can be put into an inventory by a certain component. This is relevant
-    // for rationing pipes. If result is -1, the limit is ignored.
+    // Different blocks have different insertion rules
     public BaseInserter getInserter(World world)
     {
         if (world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z) instanceof BlockTransferBase transferBase)

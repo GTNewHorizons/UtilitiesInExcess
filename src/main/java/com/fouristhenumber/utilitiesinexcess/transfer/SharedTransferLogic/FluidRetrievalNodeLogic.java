@@ -18,12 +18,10 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RoundRobinStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,11 +48,8 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     IFluidHandler connectedTank;
 
     // Upgrades
-    private boolean isCreative = false;
-    private boolean isWorldInteraction = false;
-
-    // TODO needed?
-    private FluidStack pullingFluid;
+    private boolean isRoundRobin = false;
+    private boolean init = false;
 
     public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host)
     {
@@ -68,6 +63,12 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
         if (host.getWorld().isRemote)
         {
             return;
+        }
+
+        if (!init)
+        {
+            upgrades.init();
+            init = true;
         }
 
         int actionsThisTick = actionsThisTick();
@@ -91,8 +92,14 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
                 return;
             }
 
-            if (!importFromPullingTanks(pullingTanks)) {
-                pullingFluid = null;
+            // In roundrobin we always step after an action
+            if (isRoundRobin)
+            {
+                importFromPullingTanks(pullingTanks);
+                walker.step(host.getWorld());
+            }
+            else if (!importFromPullingTanks(pullingTanks))
+            {
                 walker.step(host.getWorld());
             }
         }
@@ -202,9 +209,8 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     {
         super.resetUpgrades();
         this.walker.setStepper(new RandomStepper());
-        this.isCreative = false;
+        this.isRoundRobin = false;
         this.maxDrainAmount = DEFAULT_MAX_DRAIN_AMOUNT;
-        this.isWorldInteraction = false;
     }
 
     @Override
@@ -222,13 +228,8 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     @Override
     public void applySearchRoundRobinUpgrade(ItemStack stack)
     {
-        this.walker.setStepper(new RoundRobinStepper());
-    }
-
-    @Override
-    public void applyCreativeUpgrade(ItemStack stack)
-    {
-        this.isCreative = true;
+        this.walker.setStepper(new RandomStepper());
+        this.isRoundRobin = true;
     }
 
     @Override

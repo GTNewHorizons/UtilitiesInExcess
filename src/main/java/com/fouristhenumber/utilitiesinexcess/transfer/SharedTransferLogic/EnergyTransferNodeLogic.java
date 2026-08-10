@@ -28,7 +28,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2ByteOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -58,7 +57,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
 
     private int MAX_CAPACITY = 10000;
     private int MAX_TRANSFER = 10000;
-    private int WIRELESS_TRANSFER_SPEED = 250;
+    private final int WIRELESS_TRANSFER_SPEED = 250;
 
     private boolean init = false;
     private int scanGeneration = 0;
@@ -272,7 +271,10 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
                 if (accepted > 0)
                 {
                     remaining -= accepted;
-                    containedEnergy -= accepted;
+                    if (!isCreative)
+                    {
+                        containedEnergy -= accepted;
+                    }
                 }
                 else
                 {
@@ -336,7 +338,10 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
                         );
 
                         int extracted = (int)Math.ceil(accepted / 0.9);
-                        containedEnergy -= extracted;
+                        if (!isCreative)
+                        {
+                            containedEnergy -= accepted;
+                        }
                         remaining -= extracted;
                         if (remaining <= 0)
                         {

@@ -45,16 +45,16 @@ import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
 import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 
-public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrievalNode> implements IInventory
+public class ItemRetrievalNodeLogic extends BaseTransferNodeLogic<TileEntityItemRetrievalNode> implements IInventory
 {
     public ItemWalker walker;
     ItemStack buffer;
     IInventory connectedInventory;
 
     // Upgrades
-    private boolean isCreative = false;
-    private boolean isStackUpgrade = false;
+    private boolean isRoundRobin = false;
     private ItemFilter logicalFilter;
+    private boolean init = false;
 
     private ItemStack pullingItem;
 
@@ -72,38 +72,52 @@ public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrieva
     // through the same block then
     public void updateEntity()
     {
-        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        if (host.getWorld().isRemote)
         {
             return;
         }
 
-        if (connectedInventory == null)
+        if (!init)
         {
-            updateConnectedInventory();
+            upgrades.init();
+            init = true;
         }
-        else
+        int actionsThisTick = actionsThisTick();
+        for (int i = 0; i < actionsThisTick; i ++)
         {
-            exportToConnected();
-        }
+            if (connectedInventory == null)
+            {
+                updateConnectedInventory();
+            }
+            else
+            {
+                exportToConnected();
+            }
 
-        if (buffer != null && buffer.stackSize == buffer.getMaxStackSize())
-        {
-            walker.reset();
-            return;
-        }
+            if (buffer != null && buffer.stackSize == buffer.getMaxStackSize())
+            {
+                walker.reset();
+                return;
+            }
 
-        List<TargetResolver.Target<IInventory>> pullingInventories = walker.getValidTargets(host.getWorld());
+            List<TargetResolver.Target<IInventory>> pullingInventories = walker.getValidTargets(host.getWorld());
 
-        if (pullingInventories.isEmpty())
-        {
-            walker.step(host.getWorld());
-            return;
-        }
+            if (pullingInventories.isEmpty())
+            {
+                walker.step(host.getWorld());
+                return;
+            }
 
-        if (!importFromPullingInventories(pullingInventories))
-        {
-            pullingItem = null;
-            walker.step(host.getWorld());
+            if (isRoundRobin)
+            {
+                importFromPullingInventories(pullingInventories);
+                walker.step(host.getWorld());
+            }
+            else if (!importFromPullingInventories(pullingInventories))
+            {
+                pullingItem = null;
+                walker.step(host.getWorld());
+            }
         }
     }
 
@@ -136,21 +150,21 @@ public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrieva
 
         for (int slot : slots)
         {
-            ItemStack stack = inv.handler.getStackInSlot(slot);
+            ItemStack stackInSlot = inv.handler.getStackInSlot(slot);
 
-            if (stack == null || stack.stackSize <= 0)
+            if (stackInSlot == null || stackInSlot.stackSize <= 0)
             {
                 continue;
             }
 
-            if (logicalFilter != null && !logicalFilter.matches(stack))
+            if (logicalFilter != null && !logicalFilter.matches(stackInSlot))
             {
                 continue;
             }
 
             if (pullingItem == null)
             {
-                // Sometimes if for some reason you have a transfer node that doesn't have a connected inventory
+                // Sometimes if for some reason you have a retrieval node that doesn't have a connected inventory
                 // (or the inventory is full) you will just keep walking with a stack in the buffer.
                 if (buffer != null)
                 {
@@ -158,44 +172,31 @@ public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrieva
                 }
                 else
                 {
-                    pullingItem = stack.copy();
+                    pullingItem = stackInSlot.copy();
                     pullingItem.stackSize = 1;
                 }
             }
-            else if (!canStacksMerge(pullingItem, stack))
+            else if (!canStacksMerge(pullingItem, stackInSlot)) // We want to pull all the same item out at once if possible
             {
                 continue;
             }
 
-            if (!addToOwnInventory(stack))
+            // Respect sided extraction rules if applicable
+            if (connectedInventory instanceof ISidedInventory sided)
+            {
+                if (!sided.canExtractItem(slot, stackInSlot, inv.side))
+                {
+                    continue;
+                }
+            }
+
+            int amountMoved = addToOwnInventory(stackInSlot);
+            if (amountMoved == 0)
             {
                 continue;
             }
 
-            stack.stackSize--;
-            inv.handler.setInventorySlotContents(slot, stack.stackSize <= 0 ? null : stack);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean addToOwnInventory(ItemStack sourceStack)
-    {
-        ItemStack existing = this.getStackInSlot(0);
-
-        if (existing == null)
-        {
-            ItemStack single = sourceStack.copy();
-            single.stackSize = 1;
-            this.setInventorySlotContents(0, single);
-            return true;
-        }
-        else if (canStacksMerge(existing, sourceStack) && existing.stackSize < existing.getMaxStackSize())
-        {
-            existing.stackSize++;
-            this.setInventorySlotContents(0, existing);
+            inv.handler.setInventorySlotContents(slot, stackInSlot.stackSize <= 0 ? null : stackInSlot);
             return true;
         }
 
@@ -381,15 +382,15 @@ public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrieva
     }
 
     // ======================================= Upgrades =======================================
-    // Applicable upgrades: Creative x, Speed x, Stack x , BFS x, DFS x, RoundRobin x, Filter x, Adv Filter x
+    // Applicable upgrades: Speed, Stack , BFS, DFS, RoundRobin, Filter, Adv Filter
     @Override
     public void resetUpgrades()
     {
         super.resetUpgrades();
         this.walker.setStepper(new RandomStepper());
-        this.isCreative = false;
         this.isStackUpgrade = false;
         this.logicalFilter = null;
+        this.isRoundRobin = false;
     }
 
     @Override
@@ -407,13 +408,8 @@ public class ItemRetrievalNodeLogic extends BaseNodeLogic<TileEntityItemRetrieva
     @Override
     public void applySearchRoundRobinUpgrade(ItemStack stack)
     {
-        this.walker.setStepper(new RoundRobinStepper());
-    }
-
-    @Override
-    public void applyCreativeUpgrade(ItemStack stack)
-    {
-        this.isCreative = true;
+        this.walker.setStepper(new RandomStepper());
+        this.isRoundRobin = true;
     }
 
     @Override

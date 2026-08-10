@@ -22,14 +22,16 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RoundRobinStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -46,6 +48,7 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
     // Upgrades
     private boolean isCreative = false;
     private boolean isWorldInteraction = false;
+    private boolean init = false;
 
     IFluidHandler connectedTank;
     public FluidWalker walker;
@@ -57,63 +60,200 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
 
     public void updateEntity()
     {
-        if (host.getWorld().isRemote || host.getWorld().getTotalWorldTime() % 20 != 0)
+        if (host.getWorld().isRemote)
         {
             return;
         }
 
-        if (connectedTank == null)
+        if (!init)
         {
-            updateSourceTank();
+            upgrades.init();
+            init = true;
         }
 
-        if (connectedTank != null)
+        int actionsThisTick = actionsThisTick();
+        for (int i = 0; i < actionsThisTick; i ++)
         {
-            importFluids();
-        }
-
-        if (buffer.getFluid() == null)
-        {
-            walker.reset();
-            return;
-        }
-
-        List<TargetResolver.Target<IFluidHandler>> targets = walker.getValidTargets(host.getWorld());
-        if (!targets.isEmpty())
-        {
-            FluidStack fluid = buffer.getFluid();
-            if (fluid != null)
+            if (isWorldInteraction)
             {
-                FluidStack toInsert = fluid.copy();
-                toInsert.amount = fluid.amount;
-
-                for (TargetResolver.Target<IFluidHandler> target : targets)
+                importFluidsFromWorld();
+            }
+            else
+            {
+                if (connectedTank == null)
                 {
-                    int filled;
-
-                    filled = target.handler.fill(
-                        ForgeDirection.getOrientation(target.side).getOpposite(),
-                        toInsert,
-                        true
-                    );
-
-                    toInsert.amount -= filled;
-
-                    if (toInsert.amount <= 0)
-                    {
-                        break;
-                    }
+                    updateSourceTank();
                 }
 
-                int inserted = fluid.amount - toInsert.amount;
-
-                if (inserted > 0)
+                if (connectedTank != null)
                 {
-                    buffer.drain(inserted, true);
+                    importFluids();
+                }
+            }
+
+
+            if (buffer.getFluid() == null)
+            {
+                walker.reset();
+                return;
+            }
+
+            List<TargetResolver.Target<IFluidHandler>> targets = walker.getValidTargets(host.getWorld());
+            if (!targets.isEmpty())
+            {
+                FluidStack fluid = buffer.getFluid();
+                if (fluid != null)
+                {
+                    int tryingToInsertAmount = fluid.amount / 2;
+                    if (tryingToInsertAmount <= 0)
+                    {
+                        return;
+                    }
+
+                    FluidStack toInsert = fluid.copy();
+                    toInsert.amount = tryingToInsertAmount;
+
+                    int totalAccepted = 0;
+
+                    for (TargetResolver.Target<IFluidHandler> target : targets)
+                    {
+                        if (toInsert.amount <= 0)
+                        {
+                            break;
+                        }
+
+                        int accepted = target.handler.fill(
+                            ForgeDirection.getOrientation(target.side).getOpposite(),
+                            toInsert,
+                            false
+                        );
+
+                        accepted = Math.min(accepted, toInsert.amount);
+
+                        toInsert.amount -= accepted;
+                        totalAccepted += accepted;
+                    }
+
+                    if (totalAccepted <= 0)
+                    {
+                        return;
+                    }
+
+                    FluidStack remaining = fluid.copy();
+                    remaining.amount = totalAccepted;
+
+                    int actuallyInserted = 0;
+
+                    for (TargetResolver.Target<IFluidHandler> target : targets)
+                    {
+                        if (remaining.amount <= 0)
+                        {
+                            break;
+                        }
+
+                        int filled = target.handler.fill(
+                            ForgeDirection.getOrientation(target.side).getOpposite(),
+                            remaining,
+                            true
+                        );
+
+                        filled = Math.min(filled, remaining.amount);
+
+                        remaining.amount -= filled;
+                        actuallyInserted += filled;
+                    }
+
+                    if (actuallyInserted > 0 && !this.isCreative)
+                    {
+                        buffer.drain(actuallyInserted, true);
+                    }
+                }
+            }
+            walker.step(host.getWorld());
+        }
+    }
+
+    public void importFluidsFromWorld()
+    {
+        ForgeDirection fromDir = host.getFacing();
+
+        int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
+        if (spaceRemaining <= 0)
+        {
+            return;
+        }
+
+        int x = host.getX() + fromDir.offsetX;
+        int y = host.getY() + fromDir.offsetY;
+        int z = host.getZ() + fromDir.offsetZ;
+
+        World world = host.getWorld();
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+
+        if (meta != 0)
+        {
+            return;
+        }
+
+        Fluid fluid;
+
+        if (block == Blocks.water || block == Blocks.flowing_water)
+        {
+            if (!isInfiniteWaterSource(world, x, y, z))
+            {
+                return;
+            }
+            fluid = FluidRegistry.WATER;
+        }
+        else if (block == Blocks.lava || block == Blocks.flowing_lava)
+        {
+            return;
+        }
+        else
+        {
+            return;
+        }
+
+        FluidStack buffered = buffer.getFluid();
+        if (buffered != null && !buffered.getFluid().equals(fluid))
+        {
+            return;
+        }
+
+        int fillAmount = Math.min(spaceRemaining, 1000); // 1 bucket/tick
+        buffer.fill(new FluidStack(fluid, fillAmount), true);
+    }
+
+    private boolean isInfiniteWaterSource(World world, int x, int y, int z)
+    {
+        int sources = 0;
+
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN)
+            {
+                continue;
+            }
+
+            int nx = x + dir.offsetX;
+            int ny = y + dir.offsetY;
+            int nz = z + dir.offsetZ;
+
+            Block neighbor = world.getBlock(nx, ny, nz);
+            int meta = world.getBlockMetadata(nx, ny, nz);
+
+            if ((neighbor == Blocks.water || neighbor == Blocks.flowing_water) && meta == 0)
+            {
+                sources++;
+                if (sources >= 2)
+                {
+                    return true;
                 }
             }
         }
-        walker.step(host.getWorld());
+
+        return false;
     }
 
     public void importFluids()
@@ -121,7 +261,10 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
         ForgeDirection fromDir = host.getFacing().getOpposite();
 
         int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
-        if (spaceRemaining <= 0) return;
+        if (spaceRemaining <= 0)
+        {
+            return;
+        }
 
         int drainAmount = Math.min(spaceRemaining, maxDrainAmount);
 
@@ -169,7 +312,7 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
     }
 
     // ======================================= Upgrades =======================================
-    // Applicable upgrades: Creative, Speed, Stack, BFS, DFS, RoundRobin, World interaction
+    // Applicable upgrades: Creative, Speed, Stack, BFS, DFS, World interaction
     @Override
     public void resetUpgrades()
     {
@@ -190,12 +333,6 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
     public void applySearchBreadthUpgrade(ItemStack stack)
     {
         this.walker.setStepper(new BFSStepper());
-    }
-
-    @Override
-    public void applySearchRoundRobinUpgrade(ItemStack stack)
-    {
-        this.walker.setStepper(new RoundRobinStepper());
     }
 
     @Override
