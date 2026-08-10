@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
@@ -43,7 +44,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTransferNode> implements IEnergyHandler
+public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Integer>> implements IEnergyHandler
 {
     public EnergyWalker walker;
 
@@ -66,7 +67,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
     private boolean isCreative = false;
     private final Object2IntOpenHashMap<String> pushingFrequencies = new Object2IntOpenHashMap<>();
 
-    public EnergyTransferNodeLogic(TileEntityEnergyTransferNode host)
+    public EnergyTransferNodeLogic(IWalkingComponent<Integer> host)
     {
         super(host);
         walker = new EnergyWalker(host);
@@ -95,7 +96,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<TileEntityEnergyTrans
 
         if (!init)
         {
-            if (host.getWorld().getBlockMetadata(host.xCoord, host.yCoord, host.zCoord) == 1)
+            if (host.getWorld().getBlockMetadata(host.getX(), host.getY(), host.getZ()) == 1)
             {
                 MAX_CAPACITY = 1000000;
                 MAX_TRANSFER = 25000;

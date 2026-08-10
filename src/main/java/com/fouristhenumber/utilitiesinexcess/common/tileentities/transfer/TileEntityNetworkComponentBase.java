@@ -1,10 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 
-public abstract class TileEntityNetworkComponentBase<T> extends TileEntity implements ITransferNetworkComponent
+public abstract class TileEntityNetworkComponentBase<T extends NetworkLogic<? extends ITransferNetworkComponent>> extends TileEntity implements ITransferNetworkComponent
 {
     protected T logic;
 

@@ -5,18 +5,11 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemEnergyNode extends ItemBlock
+public class ItemEnergyNode extends BaseTransferItemBlock
 {
     public ItemEnergyNode(Block block)
     {
         super(block);
-        setHasSubtypes(true);
-    }
-
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
     }
 
     @Override

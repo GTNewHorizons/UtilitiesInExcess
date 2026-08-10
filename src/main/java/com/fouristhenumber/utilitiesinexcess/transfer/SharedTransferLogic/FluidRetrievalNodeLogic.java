@@ -228,7 +228,6 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     @Override
     public void applySearchRoundRobinUpgrade(ItemStack stack)
     {
-        this.walker.setStepper(new RandomStepper());
         this.isRoundRobin = true;
     }
 

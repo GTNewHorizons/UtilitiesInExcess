@@ -14,7 +14,11 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import codechicken.lib.data.MCDataOutput;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -26,13 +30,15 @@ import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroblockRender;
 import it.unimi.dsi.fastutil.Pair;
 
-public class WallPart extends ConnectablePart {
+public class WallPart extends ConnectablePart implements IMaterialPart
+{
 
     public static final String name = "ue_wall";
+    public Material material;
 
-    public WallPart(int material, int side) {
+    public WallPart(int materialId, int side) {
         super(side);
-        this.material = material;
+        this.material = new Material(materialId);
     }
 
     @Override
@@ -45,27 +51,27 @@ public class WallPart extends ConnectablePart {
         // Render post
         if (pass == -1) {
             // Post
-            MicroblockRender.renderCuboid(position, getIMaterial(), pass, postBounds, 0);
+            MicroblockRender.renderCuboid(position, material.getIMaterial(), pass, postBounds, 0);
             // Connector
             MicroblockRender
-                .renderCuboid(position, getIMaterial(), pass, Rotate90AboutYBlockCenterPos(connectorNS, 1), 0);
+                .renderCuboid(position, material.getIMaterial(), pass, Rotate90AboutYBlockCenterPos(connectorNS, 1), 0);
         } else {
             int mask = getConnectionMask();
             if (mask == 0b1010) {
                 Cuboid6 model = PRECOMPUTED_SIMPLE_MODEL.get(this.downDirection)[1];
-                MicroblockRender.renderCuboid(position, getIMaterial(), pass, model, getCullMask(1));
+                MicroblockRender.renderCuboid(position, material.getIMaterial(), pass, model, getCullMask(1));
             } else if (mask == 0b0101) {
                 Cuboid6 model = PRECOMPUTED_SIMPLE_MODEL.get(this.downDirection)[0];
-                MicroblockRender.renderCuboid(position, getIMaterial(), pass, model, getCullMask(0));
+                MicroblockRender.renderCuboid(position, material.getIMaterial(), pass, model, getCullMask(0));
             } else {
                 Pair<Integer, Cuboid6>[] models = PRECOMPUTED_MODEL.get(this.downDirection)[mask];
                 for (int i = 0; i < models.length; i++) {
                     if (i == 0) {
-                        MicroblockRender.renderCuboid(position, getIMaterial(), pass, models[i].second(), 0);
+                        MicroblockRender.renderCuboid(position, material.getIMaterial(), pass, models[i].second(), 0);
                     } else {
                         MicroblockRender.renderCuboid(
                             position,
-                            getIMaterial(),
+                            material.getIMaterial(),
                             pass,
                             models[i].second(),
                             getCullMask(models[i].first()));
@@ -106,6 +112,47 @@ public class WallPart extends ConnectablePart {
     }
 
     @Override
+    public IIcon getBreakingIcon(Object subPart, int side) {
+        return this.material.getBreakingIcon(subPart, side);
+    }
+
+    @Override
+    public IIcon getBrokenIcon(int side) {
+        return this.material.getBrokenIcon(side);
+    }
+
+    @Override
+    public boolean renderStatic(Vector3 position, int pass) {
+        if (this.material.canMaterialRenderInPass(pass)) {
+            render(position, pass);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void save(NBTTagCompound tag) {
+        super.save(tag);
+        material.save(tag);
+    }
+
+    @Override
+    public void load(NBTTagCompound tag) {
+        super.load(tag);
+        material.load(tag);
+    }
+
+    @Override
+    public void writeDesc(MCDataOutput packet) {
+        super.writeDesc(packet);
+        material.writeDesc(packet);
+    }
+
+    public ItemStack pickItem(MovingObjectPosition hit) {
+        return UEMultipartItem.createStack(material.id, Content.partMap.get(this.getType()));
+    }
+
+    @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
         return Collections.singleton(MultipartWallRenderingHelper.PRECOMPUTED_BOUNDS.get(downDirection)[0][0].second());
     }
@@ -124,4 +171,8 @@ public class WallPart extends ConnectablePart {
         return drawConnecableHighLight(hit, player, frame, highlightCuboidList);
     }
 
+    @Override
+    public Material getMaterial() {
+        return material;
+    }
 }

@@ -2,21 +2,14 @@ package com.fouristhenumber.utilitiesinexcess.common.items;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemRetrievalNode extends ItemBlock
+public class ItemRetrievalNode extends BaseTransferItemBlock
 {
     public ItemRetrievalNode(Block block)
     {
         super(block);
-        setHasSubtypes(true);
-    }
 
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
     }
 
     @Override

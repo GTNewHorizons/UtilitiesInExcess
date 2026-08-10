@@ -298,7 +298,6 @@ public class ItemTransferNodeLogic extends BaseTransferNodeLogic<TileEntityItemT
     @Override
     public void applySearchRoundRobinUpgrade(ItemStack stack)
     {
-        this.walker.setStepper(new RandomStepper());
         this.isRoundRobin = true;
     }
 

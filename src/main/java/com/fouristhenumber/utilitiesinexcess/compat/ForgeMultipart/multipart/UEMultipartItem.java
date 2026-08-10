@@ -64,7 +64,7 @@ public class UEMultipartItem extends Item {
         MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
         BlockCoord position = new BlockCoord(x, y, z).offset(side);
         TMultiPart potentialPart = new Content()
-            .createUEMultiPart(false, materialID, ForgeDirection.OPPOSITES[side], partNames[damage]);
+            .createUEMultiPart(false, ForgeDirection.OPPOSITES[side], materialID, partNames[damage]);
         if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
             && TileMultipart.canPlacePart(world, position, potentialPart)) {
             if (!world.isRemote) {
@@ -97,8 +97,8 @@ public class UEMultipartItem extends Item {
     }
 
     public static ItemStack createStack(UEMultipart part) {
-        if (part instanceof MaterialBasedPart matPart) {
-            return createStack(matPart.material, Content.partMap.get(part.getType()));
+        if (part instanceof IMaterialPart matPart) {
+            return createStack(matPart.getMaterial().id, Content.partMap.get(part.getType()));
         }
         return null;
     }
