@@ -2,9 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,90 +13,84 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemScribe;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.tools.ToolTrowel;
 import xonin.backhand.api.core.BackhandUtils;
 
-public class BuildersSelection {
+public class BuildersBlockSelectionFilter {
 
-    private final Set<ItemStack> validBlocks;
+    private final List<ItemStack> validBlocks;
     private final ItemStack backhand;
     private final ItemStack lookAtBlock;
 
-    public BuildersSelection(EntityPlayer player, World world, MovingObjectPosition movingObjectPosition) {
-        this.validBlocks = new HashSet<>();
+    private final boolean ignoreVariants;
+
+    public BuildersBlockSelectionFilter(EntityPlayer player, World world, MovingObjectPosition movingObjectPosition) {
+        this.validBlocks = new ArrayList<>();
         backhand = Mods.Backhand.isLoaded() ? BackhandUtils.getOffhandItem(player) : null;
         lookAtBlock = getBlockByLocation(world, movingObjectPosition, player);
+        ignoreVariants = lookAtBlock != null && isScribe(backhand);
 
         // No logic is executed if we don't look at any block, no need to bother checking other cases
-        if (lookAtBlock == null) {
-            return;
-        }
+        if (lookAtBlock == null) return;
 
         this.validBlocks.add(lookAtBlock); // Clicked block is always valid
 
-        if (backhand == null) {
-            return;
-        }
         if (isValidBlock(backhand)) {
             this.validBlocks.add(backhand.copy());
-            return;
-        }
-        if (isTrowel(backhand)) {
+        } else if (isTrowel(backhand)) {
             this.validBlocks.addAll(hotbarBlocks(player));
         }
     }
 
     /**
-     *
-     * @param player
-     * @return Always a valid block list or null
+     * Generates a list of blocks to build with
      */
-    public List<ItemStack> blockToPlace(EntityPlayer player) {
+    public List<ItemStack> generatePalette(EntityPlayer player) {
+        if (lookAtBlock == null) return Collections.emptyList();
+        if (isValidBlock(backhand)) return Collections.singletonList(backhand);
+        if (isTrowel(backhand)) return hotbarBlocks(player);
 
-        if (backhand == null) {
-            return Collections.singletonList((lookAtBlock));
-        }
-        if (isValidBlock(backhand)) {
-            return Collections.singletonList(backhand);
-        } else if (isTrowel(backhand)) {
-            return hotbarBlocks(player);
-        } else {
-            return Collections.singletonList(lookAtBlock);
-        }
+        return Collections.singletonList(lookAtBlock);
     }
 
-    public int maxPlaceCount(EntityPlayer player, int wandLimit) {
-        if (player.capabilities.isCreativeMode) return BuildersWandsConfig.INSTANCE.buildersWandCreativeBuildLimit;
-
-        int count = 0;
-        for (ItemStack block : blockToPlace(player)) {
-            count += BuildersWandUtils.countItemInInventory(player, block);
-        }
-        return Math.min(count, wandLimit);
-    }
-
+    /**
+     * Checks if the given ItemStack matches any of the valid blocks in the filter
+     */
     public boolean matches(ItemStack other) {
         if (other == null) return false;
         return this.validBlocks.stream()
             .anyMatch(
-                validBlock -> validBlock.getItem() == other.getItem()
-                    && ItemStack.areItemStackTagsEqual(validBlock, other)
-                    && validBlock.getItemDamage() == other.getItemDamage());
+                validBlock -> ignoreVariants ? validBlock.getItem() == other.getItem()
+                    : ItemUtil.areStacksEqual(validBlock, other));
+    }
+
+    /**
+     * Whether the fill spans every variant of a block, matching on block identity alone and copying
+     * each position's own material rather than drawing from a palette.
+     */
+    public boolean ignoresVariants() {
+        return ignoreVariants;
     }
 
     public static boolean isTrowel(@Nullable ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-        if (Mods.GregTech.isLoaded() && stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool) {
+        if (stack == null) return false;
+
+        if (Mods.GregTech.isLoaded() && stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool)
             return metaGeneratedTool.getToolStats(stack) instanceof ToolTrowel;
-        }
+
         return false;
+    }
+
+    public static boolean isScribe(@Nullable ItemStack stack) {
+        if (stack == null) return false;
+
+        return stack.getItem() instanceof ItemScribe;
     }
 
     private static boolean isValidBlock(@Nullable ItemStack stack) {
@@ -116,7 +108,7 @@ public class BuildersSelection {
             if (!isValidBlock(item)) {
                 continue;
             }
-            candidates.add(item);
+            candidates.add(item.copy());
         }
         return candidates;
     }

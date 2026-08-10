@@ -7,7 +7,7 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 public class MovingObjectPositionUtil {
 
-    public static void TranslateMovingObjectPoistionToLocation(MovingObjectPosition movingObjectPosition,
+    public static void TranslateMovingObjectPositionToLocation(MovingObjectPosition movingObjectPosition,
         BlockPos location) {
         double offsetXn = movingObjectPosition.hitVec.xCoord - movingObjectPosition.blockX;
         double offsetYn = movingObjectPosition.hitVec.yCoord - movingObjectPosition.blockY;
@@ -19,5 +19,17 @@ public class MovingObjectPositionUtil {
 
         movingObjectPosition.hitVec = Vec3
             .createVectorHelper(location.x + offsetXn, location.y + offsetYn, location.z + offsetZn);
+    }
+
+    public static MovingObjectPosition copy(MovingObjectPosition movingObjectPosition) {
+        return new MovingObjectPosition(
+            movingObjectPosition.blockX,
+            movingObjectPosition.blockY,
+            movingObjectPosition.blockZ,
+            movingObjectPosition.sideHit,
+            Vec3.createVectorHelper(
+                movingObjectPosition.hitVec.xCoord,
+                movingObjectPosition.hitVec.yCoord,
+                movingObjectPosition.hitVec.zCoord));
     }
 }

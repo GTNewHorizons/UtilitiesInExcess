@@ -20,6 +20,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemScribe;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
@@ -83,6 +84,7 @@ public enum ModItems {
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
     CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     PAINT_ROLLER(ColoredBlocksConfig.INSTANCE.enablePaintRoller, new ItemPaintRoller(), "paint_roller"),
+    SCRIBE(BuildersWandsConfig.INSTANCE.enableScribe, new ItemScribe(), "scribe"),
     ; // leave trailing semicolon
     // spotless:on
 
