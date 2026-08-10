@@ -9,6 +9,7 @@ import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.Ev
 
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
@@ -17,9 +18,8 @@ public class BiomeDecoratorUnderWorld extends BiomeDecorator {
 
     @Override
     protected void generateOres() {
-        double difficulty = getChunkProvider().getDifficulty(chunk_X, chunk_Z);
 
-        boolean isAggressiveArea = difficulty >= 2;
+        boolean isAggressiveArea = getDifficulty() >= 2;
 
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Pre(currentWorld, randomGenerator, chunk_X, chunk_Z));
 
@@ -54,7 +54,11 @@ public class BiomeDecoratorUnderWorld extends BiomeDecorator {
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));
     }
 
-    private ChunkProviderUnderWorld getChunkProvider() {
-        return (ChunkProviderUnderWorld) ((WorldServer) currentWorld).theChunkProviderServer.currentChunkProvider;
+    private double getDifficulty() {
+        IChunkProvider chunkProvider = ((WorldServer) currentWorld).theChunkProviderServer.currentChunkProvider;
+        if (chunkProvider instanceof ChunkProviderUnderWorld chunkProviderUnderWorld) {
+            return chunkProviderUnderWorld.getDifficulty(chunk_X, chunk_Z);
+        }
+        return 1;
     }
 }
