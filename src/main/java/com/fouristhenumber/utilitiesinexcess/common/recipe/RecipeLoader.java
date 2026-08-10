@@ -1720,16 +1720,18 @@ public class RecipeLoader {
         final ItemStack witherSkull = new ItemStack(Items.skull, 1, 1);
         final ItemStack soulSand = new ItemStack(Blocks.soul_sand);
 
-        GameRegistry.addRecipe(
-            new PeacefulRecipe(
-                new ShapedRecipes(
-                    3,
-                    3,
-                    new ItemStack[] { witherSkull, witherSkull, witherSkull, soulSand, soulSand, soulSand,
-                        new ItemStack(Items.diamond_sword), soulSand, new ItemStack(Items.bow) },
-                    new ItemStack(Items.nether_star))));
+        if (RecipeConfig.enablePeacefulNetherStarRecipe) {
+            GameRegistry.addRecipe(
+                new PeacefulRecipe(
+                    new ShapedRecipes(
+                        3,
+                        3,
+                        new ItemStack[] { witherSkull, witherSkull, witherSkull, soulSand, soulSand, soulSand,
+                            new ItemStack(Items.diamond_sword), soulSand, new ItemStack(Items.bow) },
+                        new ItemStack(Items.nether_star))));
+        }
 
-        if (ModItems.WATERING_CAN_BASIC.isEnabled()) {
+        if (RecipeConfig.enablePeacefulBasicWateringCanRecipe && ModItems.WATERING_CAN_BASIC.isEnabled()) {
             final ItemStack stone = new ItemStack(Blocks.stone);
 
             GameRegistry.addRecipe(
