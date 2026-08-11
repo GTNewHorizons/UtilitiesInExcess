@@ -24,7 +24,6 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserte
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RoundRobinStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.filter.ItemFilter;
@@ -34,7 +33,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,10 +41,9 @@ import java.util.List;
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.getModesFromStack;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic.parseFilterItem;
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
-import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.getInventory;
 
-public class ItemTransferNodeLogic extends BaseTransferNodeLogic<TileEntityItemTransferNode> implements IInventory
+public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingComponent<ItemStack>> implements IInventory
 {
     IInventory connectedInventory;
     public ItemWalker walker;
@@ -169,29 +166,6 @@ public class ItemTransferNodeLogic extends BaseTransferNodeLogic<TileEntityItemT
 
             connectedInventory.setInventorySlotContents(slot, stackInSlot.stackSize <= 0 ? null : stackInSlot);
             break;
-        }
-    }
-
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        if (buffer != null)
-        {
-            NBTTagCompound compound = new NBTTagCompound();
-            this.buffer.writeToNBT(compound);
-            nbt.setTag("Buffer", compound);
-        }
-    }
-
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        if (nbt.hasKey("Buffer"))
-        {
-            NBTTagCompound compound = nbt.getCompoundTag("Buffer");
-            this.buffer = ItemStack.loadItemStackFromNBT(compound);
         }
     }
 
@@ -336,6 +310,7 @@ public class ItemTransferNodeLogic extends BaseTransferNodeLogic<TileEntityItemT
         );
     }
 
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
@@ -388,11 +363,6 @@ public class ItemTransferNodeLogic extends BaseTransferNodeLogic<TileEntityItemT
                 .mapTo(1, 1, index -> new ItemSlot().slot(slot)));
 
         return panel;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
 
     public void updateSourceInventory()

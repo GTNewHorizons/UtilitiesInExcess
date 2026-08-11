@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
@@ -16,34 +15,26 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
 // This class doesn't really even need to be a IInventory because of composition on FluidTank + UpgradeInventory.
 // I think it's just simpler design.
-public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrievalNode>
+public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalkingComponent<FluidStack>>
 {
-    public static final int maxFluidAmount = 8000;
-    public static final int DEFAULT_MAX_DRAIN_AMOUNT = 200;
-    public int maxDrainAmount = DEFAULT_MAX_DRAIN_AMOUNT;
-    public FluidTank buffer = new FluidTank(maxFluidAmount);
     public FluidWalker walker;
     IFluidHandler connectedTank;
 
@@ -253,6 +244,7 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
     }
 
     // ======================================= UI =======================================
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
@@ -298,11 +290,4 @@ public class FluidRetrievalNodeLogic extends BaseNodeLogic<TileEntityFluidRetrie
 
         return panel;
     }
-
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
-
-
 }

@@ -1,17 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 
-public abstract class BaseTransferNodeLogic<T extends ITransferNetworkComponent> extends BaseNodeLogic<T> implements IInventory
+public abstract class BaseItemTransferNodeLogic<T extends INodeLogicHost> extends BaseNodeLogic<T, ItemStack> implements IInventory
 {
     protected ItemStack buffer;
     protected boolean isStackUpgrade = false;
 
-    public BaseTransferNodeLogic(T host) {
+    public BaseItemTransferNodeLogic(T host) {
         super(host);
     }
 
@@ -54,5 +54,36 @@ public abstract class BaseTransferNodeLogic<T extends ITransferNetworkComponent>
         }
 
         return 0;
+    }
+
+    @Override
+    public ItemStack getWalkingObject()
+    {
+        return buffer;
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+
+        if (buffer != null)
+        {
+            NBTTagCompound compound = new NBTTagCompound();
+            this.buffer.writeToNBT(compound);
+            nbt.setTag("Buffer", compound);
+        }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+
+        if (nbt.hasKey("Buffer"))
+        {
+            NBTTagCompound compound = nbt.getCompoundTag("Buffer");
+            this.buffer = ItemStack.loadItemStackFromNBT(compound);
+        }
     }
 }

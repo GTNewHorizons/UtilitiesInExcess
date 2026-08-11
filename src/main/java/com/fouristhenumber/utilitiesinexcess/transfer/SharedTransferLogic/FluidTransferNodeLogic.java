@@ -3,7 +3,6 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
@@ -16,15 +15,12 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -37,14 +33,8 @@ import net.minecraftforge.fluids.*;
 
 import java.util.List;
 
-public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransferNode>
+public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingComponent<FluidStack>>
 {
-    public static final int DEFAULT_MAX_DRAIN_AMOUNT = 200;
-    public static final int maxFluidAmount = 8000;
-    public int maxDrainAmount = DEFAULT_MAX_DRAIN_AMOUNT;
-    public FluidTank buffer = new FluidTank(maxFluidAmount);
-
-
     // Upgrades
     private boolean isCreative = false;
     private boolean isWorldInteraction = false;
@@ -221,7 +211,7 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
             return;
         }
 
-        int fillAmount = Math.min(spaceRemaining, 1000); // 1 bucket/tick
+        int fillAmount = Math.min(spaceRemaining, 1000);
         buffer.fill(new FluidStack(fluid, fillAmount), true);
     }
 
@@ -370,6 +360,7 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
 
     // Note that because of the power of the fluid slot players can now put fluids in manually too!
     // I see this as a win and doesn't break forward compat in any way.
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
@@ -416,10 +407,4 @@ public class FluidTransferNodeLogic extends BaseNodeLogic<TileEntityFluidTransfe
         return panel;
     }
 
-
-
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
 }

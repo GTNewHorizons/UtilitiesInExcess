@@ -10,6 +10,7 @@ public interface ITransferNetworkComponent
     int getY();
     int getZ();
 
+    int getMeta();
 
     void markHostDirty();
 }

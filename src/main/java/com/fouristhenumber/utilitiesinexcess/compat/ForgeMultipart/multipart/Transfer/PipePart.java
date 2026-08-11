@@ -3,13 +3,14 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Tr
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConnectablePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class PipePart extends ConnectablePart
 {
-    protected PipePart(int side) {
-        super(side);
+    public PipePart(int meta) {
+        super(meta);
     }
 
     @Override
@@ -44,6 +45,6 @@ public class PipePart extends ConnectablePart
 
     @Override
     public String getType() {
-        return "";
+        return ConversionRegistry.Pipe.getName();
     }
 }

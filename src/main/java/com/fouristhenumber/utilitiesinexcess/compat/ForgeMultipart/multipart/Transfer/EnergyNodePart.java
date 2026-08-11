@@ -12,18 +12,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class EnergyNodePart extends PartNetworkComponentBase<EnergyTransferNodeLogic> implements IWalkingComponent<Integer>
 {
-    protected EnergyNodePart(int side) {
-        super(side);
+    public EnergyNodePart(int meta) {
+        super(meta);
     }
 
     @Override
     public Block getBlock() {
         return ModBlocks.TRANSFER_NODE_ENERGY.get();
-    }
-
-    @Override
-    public Cuboid6 getConnectionInDirection(ForgeDirection side) {
-        return null;
     }
 
     @Override

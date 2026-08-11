@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
-import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content.partNames;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.partNames;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +63,7 @@ public class UEMultipartItem extends Item {
 
         MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
         BlockCoord position = new BlockCoord(x, y, z).offset(side);
-        TMultiPart potentialPart = new Content()
+        TMultiPart potentialPart = UiEPartFactory
             .createUEMultiPart(false, ForgeDirection.OPPOSITES[side], materialID, partNames[damage]);
         if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
             && TileMultipart.canPlacePart(world, position, potentialPart)) {
@@ -98,7 +98,7 @@ public class UEMultipartItem extends Item {
 
     public static ItemStack createStack(UEMultipart part) {
         if (part instanceof IMaterialPart matPart) {
-            return createStack(matPart.getMaterial().id, Content.partMap.get(part.getType()));
+            return createStack(matPart.getMaterial().id, UiEPartFactory.partMap.get(part.getType()));
         }
         return null;
     }

@@ -19,7 +19,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
@@ -44,7 +43,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Integer>> implements IEnergyHandler
+public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Integer>, Integer> implements IEnergyHandler
 {
     public EnergyWalker walker;
 
@@ -87,6 +86,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
     // 5. Walkers of any type may walk through energy nodes in any valid direction.
     // 6. If the walker finds a IEnergyReceiver that is not an IEnergyProvider adjacent to an energy extraction pipe
     // it does not supply it power.
+    @Override
     public void updateEntity()
     {
         if (host.getWorld().isRemote)
@@ -96,7 +96,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
 
         if (!init)
         {
-            if (host.getWorld().getBlockMetadata(host.getX(), host.getY(), host.getZ()) == 1)
+            if (host.getMeta() == 1)
             {
                 MAX_CAPACITY = 1000000;
                 MAX_TRANSFER = 25000;
@@ -395,6 +395,11 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
         return true;
     }
 
+    @Override
+    public Integer getWalkingObject() {
+        return containedEnergy;
+    }
+
     // ======================================= Upgrades =======================================
     // Applicable upgrades: Speed, Creative, Transmitter, Receiver
     // Note speed is just changing the stepping speed of the node, nothing to do with the energy transfer
@@ -446,6 +451,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
         }
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
@@ -453,12 +459,14 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
         nbt.setTag("Energy", energy);
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
         containedEnergy = nbt.getInteger("Energy");
     }
 
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() ->
@@ -504,8 +512,4 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
         return panel;
     }
 
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
 }

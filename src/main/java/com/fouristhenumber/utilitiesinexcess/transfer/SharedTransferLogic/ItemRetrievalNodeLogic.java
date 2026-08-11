@@ -23,7 +23,6 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RoundRobinStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.filter.ItemFilter;
@@ -33,7 +32,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,7 +43,7 @@ import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
 import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 
-public class ItemRetrievalNodeLogic extends BaseTransferNodeLogic<TileEntityItemRetrievalNode> implements IInventory
+public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingComponent<ItemStack>> implements IInventory
 {
     public ItemWalker walker;
     ItemStack buffer;
@@ -280,29 +278,6 @@ public class ItemRetrievalNodeLogic extends BaseTransferNodeLogic<TileEntityItem
         }
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        if (buffer != null)
-        {
-            NBTTagCompound compound = new NBTTagCompound();
-            this.buffer.writeToNBT(compound);
-            nbt.setTag("Buffer", compound);
-        }
-    }
-
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        if (nbt.hasKey("Buffer"))
-        {
-            NBTTagCompound compound = nbt.getCompoundTag("Buffer");
-            this.buffer = ItemStack.loadItemStackFromNBT(compound);
-        }
-    }
-
     public void updateConnectedInventory()
     {
         ForgeDirection facing = host.getFacing();
@@ -440,6 +415,7 @@ public class ItemRetrievalNodeLogic extends BaseTransferNodeLogic<TileEntityItem
         );
     }
 
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         StringSyncValue searchLocationSyncer = new StringSyncValue(() -> walker.getLocationString());
@@ -493,8 +469,4 @@ public class ItemRetrievalNodeLogic extends BaseTransferNodeLogic<TileEntityItem
         return panel;
     }
 
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
 }

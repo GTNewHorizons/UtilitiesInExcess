@@ -3,20 +3,15 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Tr
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConnectablePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TransferNodePart<T extends NetworkLogic<? extends ITransferNetworkComponent>> extends PartNetworkComponentBase<T>
 {
-    protected TransferNodePart(int side) {
-        super(side);
-    }
-
-    @Override
-    public Cuboid6 getConnectionInDirection(ForgeDirection side) {
-        return null;
+    public TransferNodePart(int meta) {
+        super(meta);
     }
 
     @Override
@@ -46,6 +41,6 @@ public class TransferNodePart<T extends NetworkLogic<? extends ITransferNetworkC
 
     @Override
     public String getType() {
-        return "";
+        return ConversionRegistry.TransferNode.getName();
     }
 }

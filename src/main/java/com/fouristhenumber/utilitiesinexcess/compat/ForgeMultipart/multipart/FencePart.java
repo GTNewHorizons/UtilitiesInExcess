@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import codechicken.lib.data.MCDataOutput;
-import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -136,7 +135,7 @@ public class FencePart extends ConnectablePart implements IMaterialPart
 
     @Override
     public ItemStack pickItem(MovingObjectPosition hit) {
-        return UEMultipartItem.createStack(material.id, Content.partMap.get(this.getType()));
+        return UEMultipartItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
     }
 
     @Override

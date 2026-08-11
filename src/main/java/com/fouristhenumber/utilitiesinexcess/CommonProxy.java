@@ -4,6 +4,7 @@ import codechicken.lib.world.TileChunkLoadHook;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -27,7 +28,6 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
@@ -45,7 +45,6 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -118,7 +117,7 @@ public class CommonProxy {
 
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
-            new Content().init();
+            new UiEPartFactory().init();
             FMPCompat.init();
         }
 

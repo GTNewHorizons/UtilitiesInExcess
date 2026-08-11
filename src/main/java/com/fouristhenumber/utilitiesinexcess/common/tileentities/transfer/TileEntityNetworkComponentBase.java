@@ -30,6 +30,11 @@ public abstract class TileEntityNetworkComponentBase<T extends NetworkLogic<? ex
     }
 
     @Override
+    public int getMeta()
+    {
+        return worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+    }
+    @Override
     public void markHostDirty()
     {
         this.markDirty();

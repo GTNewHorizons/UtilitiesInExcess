@@ -1,12 +1,19 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.IUpgradeable;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class BaseNodeLogic<T extends ITransferNetworkComponent> extends NetworkLogic<T> implements IUpgradeable
+public abstract class BaseNodeLogic<T extends INodeLogicHost, V> extends NetworkLogic<T> implements IUpgradeable
 {
     public static final int DEFAULT_STEPS_PER_SECOND = 2;
     protected int actionPerSecond = DEFAULT_STEPS_PER_SECOND;
@@ -20,6 +27,14 @@ public abstract class BaseNodeLogic<T extends ITransferNetworkComponent> extends
         this.upgrades = new UpgradeInventory(6, this);
     }
 
+    public abstract void updateEntity();
+
+    public abstract ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings);
+
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
+    }
     @Override
     public void markDirty()
     {
@@ -59,4 +74,6 @@ public abstract class BaseNodeLogic<T extends ITransferNetworkComponent> extends
     {
         upgrades.readFromNBT(nbt);
     }
+
+    public abstract V getWalkingObject();
 }

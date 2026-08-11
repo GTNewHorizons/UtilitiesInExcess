@@ -6,17 +6,22 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import appeng.block.AEBaseItemBlock;
-import appeng.fmp.PartRegistry;
-import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.TileMultipart;
-import codechicken.multipart.minecraft.McMultipartSPH;
 import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.TransferNodePart;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidRetrievalNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemRetrievalNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemTransferNodeLogic;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
@@ -32,15 +37,13 @@ import codechicken.lib.data.MCDataInput;
 import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TMultiPart;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-// This is basically the part factory.
-public class Content implements MultiPartRegistry.IPartFactory2 {
+public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
 
     public static final String[] partNames = new String[] { FencePart.name, WallPart.name, SpherePart.name };
     public static final Map<String, Integer> partMap = new HashMap<>();
@@ -73,16 +76,40 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
         return legacyAliases.getOrDefault(name, name);
     }
 
-    public static UEMultipart createUEMultiPart(boolean isClient, int side, int material, String name) {
+    public static UEMultipart createUEMultiPart(boolean isClient, int meta, int material, String name) {
         switch (name) {
             case ("ue_fence"): {
-                return new FencePart(material, side);
+                return new FencePart(material, meta);
             }
             case ("ue_wall"): {
-                return new WallPart(material, side);
+                return new WallPart(material, meta);
             }
             case ("ue_sphere"): {
                 return new SpherePart(material);
+            }
+            case ("retrieval_node"):
+            {
+                if (meta >> 3 == 0)
+                {
+                    return new RetrievalNodePart<ItemRetrievalNodeLogic>(meta);
+                }
+                return new RetrievalNodePart<FluidRetrievalNodeLogic>(meta);
+            }
+            case ("transfer_node"):
+            {
+                if (meta >> 3 == 0)
+                {
+                    return new TransferNodePart<ItemTransferNodeLogic>(meta);
+                }
+                return new TransferNodePart<FluidTransferNodeLogic>(meta);
+            }
+            case ("pipe"):
+            {
+                return new PipePart(meta);
+            }
+            case ("energy_node"):
+            {
+                return new EnergyNodePart(meta);
             }
         }
         return null;

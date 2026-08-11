@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
-import appeng.core.Api;
-import appeng.fmp.PartRegistry;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
@@ -16,25 +14,23 @@ import net.minecraft.block.Block;
 
 import javax.annotation.Nullable;
 
-import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content.createUEMultiPart;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.createUEMultiPart;
 
 // Registry for non-FMP blocks that are able to be turned into FMP blocks on placement.
 public enum ConversionRegistry
 {
-    TransferNode("transfer_node", BlockTransferNode.class, TransferNodePart.class),
-    RetrievalNode("retrieval_node", BlockRetrievalNode.class, RetrievalNodePart.class),
-    EnergyNode("energy_node", BlockTransferNodeEnergy.class, EnergyNodePart.class),
-    Pipe("pipe", BlockPipe.class, PipePart.class);
+    TransferNode("transfer_node", BlockTransferNode.class),
+    RetrievalNode("retrieval_node", BlockRetrievalNode.class),
+    EnergyNode("energy_node", BlockTransferNodeEnergy.class),
+    Pipe("pipe", BlockPipe.class);
 
     private final String name;
     private final Class<? extends BlockTransferBase> block;
-    private final Class<? extends UEMultipart> part;
 
-    ConversionRegistry(String name, Class<? extends BlockTransferBase> block, Class<? extends UEMultipart> part)
+    ConversionRegistry(String name, Class<? extends BlockTransferBase> block)
     {
         this.name = name;
         this.block = block;
-        this.part = part;
     }
 
     @Nullable
