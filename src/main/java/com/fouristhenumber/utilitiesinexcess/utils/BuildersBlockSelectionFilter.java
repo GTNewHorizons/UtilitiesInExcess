@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -28,13 +29,13 @@ public class BuildersBlockSelectionFilter {
     private final ItemStack backhand;
     private final ItemStack lookAtBlock;
 
-    private final boolean ignoreVariants;
+    private final boolean isCopyMode;
 
     public BuildersBlockSelectionFilter(EntityPlayer player, World world, MovingObjectPosition movingObjectPosition) {
         this.validBlocks = new ArrayList<>();
         backhand = Mods.Backhand.isLoaded() ? BackhandUtils.getOffhandItem(player) : null;
         lookAtBlock = getBlockByLocation(world, movingObjectPosition, player);
-        ignoreVariants = lookAtBlock != null && isScribe(backhand);
+        isCopyMode = lookAtBlock != null && isScribe(backhand);
 
         // No logic is executed if we don't look at any block, no need to bother checking other cases
         if (lookAtBlock == null) return;
@@ -64,18 +65,19 @@ public class BuildersBlockSelectionFilter {
      */
     public boolean matches(ItemStack other) {
         if (other == null) return false;
+
+        if (isCopyMode) return true;
+
         return this.validBlocks.stream()
-            .anyMatch(
-                validBlock -> ignoreVariants ? validBlock.getItem() == other.getItem()
-                    : ItemUtil.areStacksEqual(validBlock, other));
+            .anyMatch(validBlock -> ItemUtil.areStacksEqual(validBlock, other));
     }
 
     /**
-     * Whether the fill spans every variant of a block, matching on block identity alone and copying
-     * each position's own material rather than drawing from a palette.
+     * Whether the fill spans the whole surface regardless of what it is made of, copying each position's
+     * own block rather than drawing from a palette.
      */
-    public boolean ignoresVariants() {
-        return ignoreVariants;
+    public boolean isCopyMode() {
+        return isCopyMode;
     }
 
     public static boolean isTrowel(@Nullable ItemStack stack) {

@@ -159,8 +159,17 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
                 itemCopy.tryPlaceItemIntoWorld(player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
 
                 // Don't forget to take the spent item from the inventory
-                if (itemCopy.stackSize == 0 && !player.capabilities.isCreativeMode)
-                    BuildersWandUtils.decreaseFromInventory(player, toPlace);
+                if (itemCopy.stackSize == 0) {
+                    if (!player.capabilities.isCreativeMode) BuildersWandUtils.decreaseFromInventory(player, toPlace);
+
+                    // copy the rotation or other metadata pieces that do not transfer through itemStack
+                    if (filter.isCopyMode()) world.setBlockMetadataWithNotify(
+                        pos.x + forgeSide.offsetX,
+                        pos.y + forgeSide.offsetY,
+                        pos.z + forgeSide.offsetZ,
+                        world.getBlockMetadata(pos.x, pos.y, pos.z),
+                        3);
+                }
             }
         }
         player.inventoryContainer.detectAndSendChanges();

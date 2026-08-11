@@ -36,7 +36,7 @@ public abstract class BuildersBlockPicker {
 
     public static BuildersBlockPicker create(World world, EntityPlayer player, BuildersBlockSelectionFilter filter,
         BuildersMaterialBudget budget) {
-        if (filter.ignoresVariants()) {
+        if (filter.isCopyMode()) {
             return new CopyBlockPicker(world, budget);
         }
         return new PaletteBlockPicker(
