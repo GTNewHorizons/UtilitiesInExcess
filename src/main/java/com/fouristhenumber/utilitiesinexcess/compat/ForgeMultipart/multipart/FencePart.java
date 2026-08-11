@@ -135,7 +135,7 @@ public class FencePart extends ConnectablePart implements IMaterialPart
 
     @Override
     public ItemStack pickItem(MovingObjectPosition hit) {
-        return UEMultipartItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
+        return UiEMultipartMaterialItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
     }
 
     @Override

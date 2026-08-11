@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item;
 
-import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.partNames;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.materialBasedPartNames;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -52,7 +52,7 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
         int materialId = MicroMaterialRegistry.materialID(
             item.getTagCompound()
                 .getString("mat"));
-        UEMultipart part = new UiEPartFactory().createUEMultiPart(true,0, materialId, partNames[item.getItemDamage()]);
+        UEMultipart part = new UiEPartFactory().createUEMultiPart(true,0, materialId, materialBasedPartNames[item.getItemDamage()]);
         part.render(new Vector3(0, 0, 0), -1);
 
         state.drawInstance();

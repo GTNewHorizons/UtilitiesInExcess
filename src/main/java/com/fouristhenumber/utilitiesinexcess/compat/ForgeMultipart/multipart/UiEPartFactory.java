@@ -5,22 +5,22 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFluidTransferNode;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidRetrievalNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidTransferNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.TransferNodePart;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidRetrievalNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemRetrievalNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.ItemRetrievalNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.ItemTransferNodePart;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketFMPPlaceBlock;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -37,27 +37,41 @@ import codechicken.lib.data.MCDataInput;
 import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TMultiPart;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry.getPartByBlock;
 
-    public static final String[] partNames = new String[] { FencePart.name, WallPart.name, SpherePart.name };
+public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPartRegistry.IPartConverter {
+
+    public static final String[] materialBasedPartNames = new String[]
+        {
+            FencePart.name, WallPart.name, SpherePart.name,
+        };
+
+    public static final String[] transferPartNames = new String[]
+        {
+            ConversionRegistry.EnergyNode.getName(), ConversionRegistry.FluidTransferNode.getName(),
+            ConversionRegistry.FluidRetrievalNode.getName(), ConversionRegistry.ItemTransferNode.getName(),
+            ConversionRegistry.ItemRetrievalNode.getName(), ConversionRegistry.Pipe.getName()
+        };
+
     public static final Map<String, Integer> partMap = new HashMap<>();
-
-    public static final Set<String> sidedParts = new HashSet<>();
 
     public static final Map<String, String> legacyAliases = new HashMap<>();
 
     public void init() {
-        for (int i = 0; i < partNames.length; i++) {
-            partMap.put(partNames[i], i);
+        for (int i = 0; i < materialBasedPartNames.length; i++) {
+            partMap.put(materialBasedPartNames[i], i);
         }
-        sidedParts.add(WallPart.name);
-        sidedParts.add(FencePart.name);
+        for (int i = 0; i < transferPartNames.length; i++)
+        {
+            partMap.put(transferPartNames[i], i);
+        }
 
         if (!Mods.ExtraUtilities.isLoaded() && OtherConfig.enableWorldConversion) {
             legacyAliases.put("extrautils:sphere", SpherePart.name);
@@ -66,10 +80,11 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
         }
 
         Set<String> namesToRegister = new HashSet<>();
-        namesToRegister.addAll(Arrays.asList(partNames));
+        namesToRegister.addAll(partMap.keySet());
         namesToRegister.addAll(legacyAliases.keySet());
 
         MultiPartRegistry.registerParts(this, namesToRegister.toArray(new String[0]));
+        MultiPartRegistry.registerConverter(this);
     }
 
     private String translateName(String name) {
@@ -87,21 +102,21 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
             case ("ue_sphere"): {
                 return new SpherePart(material);
             }
-            case ("retrieval_node"):
+            case ("item_retrieval_node"):
             {
-                if (meta >> 3 == 0)
-                {
-                    return new RetrievalNodePart<ItemRetrievalNodeLogic>(meta);
-                }
-                return new RetrievalNodePart<FluidRetrievalNodeLogic>(meta);
+                return new ItemRetrievalNodePart(meta);
             }
-            case ("transfer_node"):
+            case ("fluid_retrieval_node"):
             {
-                if (meta >> 3 == 0)
-                {
-                    return new TransferNodePart<ItemTransferNodeLogic>(meta);
-                }
-                return new TransferNodePart<FluidTransferNodeLogic>(meta);
+                return new FluidRetrievalNodePart(meta);
+            }
+            case ("item_transfer_node"):
+            {
+                return new ItemTransferNodePart(meta);
+            }
+            case ("fluid_transfer_node"):
+            {
+                return new FluidTransferNodePart(meta);
             }
             case ("pipe"):
             {
@@ -129,13 +144,33 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
 
     // Called on the client
     @Override
-    public TMultiPart createPart(String name, MCDataInput packet) {
+    public TMultiPart createPart(String name, MCDataInput packet)
+    {
         String actualName = translateName(name);
 
-        if (sidedParts.contains(actualName)) {
-            return createUEMultiPart(true, packet.readInt(), MicroMaterialRegistry.readMaterialID(packet), actualName);
-        }
-        return createUEMultiPart(true, 0, MicroMaterialRegistry.readMaterialID(packet), actualName);
+        // Honestly, this is ugly as fuck, but the other option I can think of right now is make maps of them.
+        // I see no reason to do this, I just want to finish the damn thing.
+        return switch (actualName) {
+            case (FencePart.name), (WallPart.name) ->
+                createUEMultiPart(true, packet.readInt(), MicroMaterialRegistry.readMaterialID(packet), actualName);
+            case (SpherePart.name) ->
+                createUEMultiPart(true, 0, MicroMaterialRegistry.readMaterialID(packet), actualName);
+            default -> createUEMultiPart(true, packet.readInt(), 0, actualName);
+        };
+    }
+
+    @Override
+    public Iterable<Block> blockTypes() {
+        return Arrays.stream(ConversionRegistry.values())
+            .map(ConversionRegistry::getBlock)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public TMultiPart convert(World world, BlockCoord pos) {
+        Block block = world.getBlock(pos.x, pos.y, pos.z);
+        int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);
+        return getPartByBlock(block, meta);
     }
 
     // Pretty much ripped from fmp
@@ -153,7 +188,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
 
         @SubscribeEvent
         public static void playerInteract(PlayerInteractEvent event) {
-            if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.world.isRemote) {
                 if (placing.get() != null) return; // for mods that do dumb stuff and call this event like MFR
                 placing.set(event);
                 if (place(event.entityPlayer, event.entityPlayer.worldObj)) event.setCanceled(true);
@@ -176,7 +211,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
             TMultiPart part = null;
             if (held.getItem() instanceof BaseTransferItemBlock item) {
                 itemBlock = Block.getBlockFromItem(item);
-                part = ConversionRegistry.getPartByBlock(itemBlock, hit.sideHit);
+                part = getPartByBlock(itemBlock, hit.sideHit);
             }
 
             if (part == null) return false;
@@ -197,16 +232,16 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
                     (float) f.y,
                     (float) f.z)) {
                     player.swingItem();
-//                    PacketCustom.sendToServer(
-//                        new C08PacketPlayerBlockPlacement(
-//                            hit.blockX,
-//                            hit.blockY,
-//                            hit.blockZ,
-//                            hit.sideHit,
-//                            player.inventory.getCurrentItem(),
-//                            (float) f.x,
-//                            (float) f.y,
-//                            (float) f.z));
+                    PacketCustom.sendToServer(
+                        new C08PacketPlayerBlockPlacement(
+                            hit.blockX,
+                            hit.blockY,
+                            hit.blockZ,
+                            hit.sideHit,
+                            player.inventory.getCurrentItem(),
+                            (float) f.x,
+                            (float) f.y,
+                            (float) f.z));
                     return true;
                 }
             }
@@ -232,7 +267,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2 {
                 }
             } else {
                 player.swingItem();
-//                new PacketCustom(McMultipartSPH.channel, 1).sendToServer();
+                PacketHandler.INSTANCE.sendToServer(new PacketFMPPlaceBlock());
             }
             return true;
         }

@@ -56,7 +56,7 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
 
     private ItemStack pullingItem;
 
-    public ItemRetrievalNodeLogic(TileEntityItemRetrievalNode host) {
+    public ItemRetrievalNodeLogic(IWalkingComponent<ItemStack> host) {
         super(host);
         this.walker = new ItemWalker(host);
     }

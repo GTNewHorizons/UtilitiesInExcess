@@ -43,7 +43,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
     IFluidHandler connectedTank;
     public FluidWalker walker;
 
-    public FluidTransferNodeLogic(TileEntityFluidTransferNode host) {
+    public FluidTransferNodeLogic(IWalkingComponent<FluidStack> host) {
         super(host);
         walker = new FluidWalker(host);
     }

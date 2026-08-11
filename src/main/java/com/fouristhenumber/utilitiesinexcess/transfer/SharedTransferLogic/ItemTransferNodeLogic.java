@@ -54,7 +54,7 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
     private boolean init = false;
     private boolean isRoundRobin = false;
 
-    public ItemTransferNodeLogic(TileEntityItemTransferNode host)
+    public ItemTransferNodeLogic(IWalkingComponent<ItemStack> host)
     {
         super(host);
         this.walker = new ItemWalker(host);

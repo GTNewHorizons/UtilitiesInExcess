@@ -2,26 +2,26 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Tr
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemTransferNodeLogic;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
-public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Integer>
+public class ItemTransferNodePart extends BaseNodePart<ItemTransferNodeLogic, ItemStack>
 {
-    public EnergyNodePart(int meta) {
+    public ItemTransferNodePart(int meta) {
         super(meta);
     }
 
     @Override
     public Block getBlock() {
-        return ModBlocks.TRANSFER_NODE_ENERGY.get();
+        return ModBlocks.TRANSFER_NODE.get();
     }
 
     @Override
-    protected EnergyTransferNodeLogic getLogic()
-    {
+    protected ItemTransferNodeLogic getLogic() {
         if (logic == null)
         {
-            logic = new EnergyTransferNodeLogic(this);
+            logic = new ItemTransferNodeLogic(this);
         }
         return logic;
     }
@@ -30,5 +30,4 @@ public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Intege
     public String getType() {
         return ConversionRegistry.ItemTransferNode.getName();
     }
-
 }

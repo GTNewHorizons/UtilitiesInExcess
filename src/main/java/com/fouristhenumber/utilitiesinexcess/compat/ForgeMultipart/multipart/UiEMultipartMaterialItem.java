@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
-import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.partNames;
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.materialBasedPartNames;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +25,10 @@ import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 
 // Most of this is just ripped from FMP ngl
-public class UEMultipartItem extends Item {
+public class UiEMultipartMaterialItem extends Item {
 
-    public UEMultipartItem() {
-        setUnlocalizedName("ue_microPartItem");
+    public UiEMultipartMaterialItem() {
+        setUnlocalizedName("ue_materialPartItem");
         setHasSubtypes(true);
     }
 
@@ -36,17 +36,17 @@ public class UEMultipartItem extends Item {
     public String getItemStackDisplayName(ItemStack stack) {
         MicroMaterialRegistry.IMicroMaterial material = getMaterial(stack);
         int damage = getDamage(stack);
-        if (material == null || damage > partNames.length) {
+        if (material == null || damage > materialBasedPartNames.length) {
             return "Unnamed";
         }
-        return StatCollector.translateToLocalFormatted(partNames[damage] + ".name", material.getLocalizedName());
+        return StatCollector.translateToLocalFormatted(materialBasedPartNames[damage] + ".name", material.getLocalizedName());
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> listOfStacks) {
         Arrays.stream(MicroMaterialRegistry.getIdMap())
             .forEach(t -> {
-                for (int i = 0; i < partNames.length; i++) {
+                for (int i = 0; i < materialBasedPartNames.length; i++) {
                     listOfStacks.add(createStack(t._1, i));
                 }
             });
@@ -57,14 +57,14 @@ public class UEMultipartItem extends Item {
         float hitX, float hitY, float hitZ) {
         int materialID = getMaterialID(item);
         int damage = item.getItemDamage();
-        if (materialID < 0 || damage > partNames.length) {
+        if (materialID < 0 || damage > materialBasedPartNames.length) {
             return false;
         }
 
         MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
         BlockCoord position = new BlockCoord(x, y, z).offset(side);
         TMultiPart potentialPart = UiEPartFactory
-            .createUEMultiPart(false, ForgeDirection.OPPOSITES[side], materialID, partNames[damage]);
+            .createUEMultiPart(false, ForgeDirection.OPPOSITES[side], materialID, materialBasedPartNames[damage]);
         if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
             && TileMultipart.canPlacePart(world, position, potentialPart)) {
             if (!world.isRemote) {

@@ -58,7 +58,7 @@ public class PipeCoverPart extends UEMultipart {
     }
 
     public ItemStack pickItem(MovingObjectPosition hit) {
-        return UEMultipartItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
+        return UiEMultipartMaterialItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
     }
 
     @Override

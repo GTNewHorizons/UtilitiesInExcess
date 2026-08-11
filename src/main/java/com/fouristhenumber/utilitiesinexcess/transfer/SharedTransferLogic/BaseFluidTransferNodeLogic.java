@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-public abstract class BaseFluidTransferNodeLogic<T extends INodeLogicHost> extends BaseNodeLogic<T, FluidStack>
+public abstract class BaseFluidTransferNodeLogic<T extends IWalkingComponent<FluidStack>> extends BaseNodeLogic<T, FluidStack>
 {
     public static final int maxFluidAmount = 8000;
     public static final int DEFAULT_MAX_DRAIN_AMOUNT = 200;

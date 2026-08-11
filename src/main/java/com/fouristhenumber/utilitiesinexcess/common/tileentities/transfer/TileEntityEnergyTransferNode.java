@@ -51,4 +51,9 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<Ene
     public boolean canConnectEnergy(ForgeDirection forgeDirection) {
         return getLogic().canConnectEnergy(forgeDirection);
     }
-}
+
+    @Override
+    public ForgeDirection getFacing()
+    {
+        return ForgeDirection.UNKNOWN;
+    }}

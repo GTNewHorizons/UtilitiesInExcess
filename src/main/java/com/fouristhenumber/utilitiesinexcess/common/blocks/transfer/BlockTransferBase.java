@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 import cofh.api.energy.IEnergyHandler;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import net.minecraft.block.BlockContainer;
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public abstract class BlockTransferBase extends BlockContainer
+public abstract class BlockTransferBase extends BlockContainer implements IWalkable
 {
     protected BlockTransferBase(Material mat)
     {

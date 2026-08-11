@@ -22,6 +22,11 @@ import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID
 
 public abstract class BlockNodeBase extends BlockTransferBase
 {
+    private static final int TYPE_MASK = 0b00000001;
+    private static final int FACING_MASK = 0b00001110;
+    private static final int FACING_SHIFT = 1;
+
+
     protected BlockNodeBase() {
         super(Material.iron);
     }
@@ -118,10 +123,10 @@ public abstract class BlockNodeBase extends BlockTransferBase
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, int metadata, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, int meta, IWalkingComponent<?> walkingComponent)
     {
         int mask = 0b111111;
-        int facing = metadata & 7;
+        int facing = getFacingOrdinal(meta);
         if (facing < 6)
         {
             mask &= ~(1 << facing);
@@ -134,33 +139,42 @@ public abstract class BlockNodeBase extends BlockTransferBase
     }
 
     @Override
-    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int metadata)
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int meta)
     {
         int mask = 0;
-        int facing = metadata & 7;
+        ForgeDirection facing = getFacing(meta);
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
-            if (dir != ForgeDirection.getOrientation(facing))
+            if (dir != facing)
             {
                 if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
                 {
                     mask |= 1 << dir.ordinal();
                 }
             }
-
         }
         return mask;
     }
 
     @Override
-    public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction)
+    public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int meta, ForgeDirection direction)
     {
-        return direction.ordinal() != (metadata & 7);
+        return direction != getFacing(meta);
     }
 
     @Override
     public int getRenderType()
     {
         return flatNodeRenderID;
+    }
+
+    public static ForgeDirection getFacing(int meta)
+    {
+        return ForgeDirection.getOrientation(getFacingOrdinal(meta));
+    }
+
+    public static int getFacingOrdinal(int meta)
+    {
+        return (meta & FACING_MASK) >> FACING_SHIFT;
     }
 }

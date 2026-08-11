@@ -79,7 +79,7 @@ public class SpherePart extends UEMultipart implements IMaterialPart
     }
 
     public ItemStack pickItem(MovingObjectPosition hit) {
-        return UEMultipartItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
+        return UiEMultipartMaterialItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
     }
 
     @Override

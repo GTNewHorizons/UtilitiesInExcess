@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class BaseNodeLogic<T extends INodeLogicHost, V> extends NetworkLogic<T> implements IUpgradeable
+public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends NetworkLogic<T> implements IUpgradeable
 {
     public static final int DEFAULT_STEPS_PER_SECOND = 2;
     protected int actionPerSecond = DEFAULT_STEPS_PER_SECOND;

@@ -82,7 +82,7 @@ public class BlockRetrievalNode extends BlockNodeBase
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
 
-        if (metadata >> 3 == 0)
+        if ((metadata & 1) == 0)
         {
             return new TileEntityItemRetrievalNode();
         }
@@ -103,7 +103,7 @@ public class BlockRetrievalNode extends BlockNodeBase
     @Override
     public IIcon getIcon(int side, int meta)
     {
-        return BlockRetrievalNode.RetrievalNodeType.values()[(meta >> 3)].getIcon(side, meta);
+        return BlockRetrievalNode.RetrievalNodeType.values()[(meta & 1)].getIcon(side, meta);
     }
 
     @Override

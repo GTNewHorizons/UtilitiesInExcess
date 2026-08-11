@@ -19,7 +19,7 @@ public abstract class UEMultipart extends TMultiPart implements JIconHitEffects,
 
     @Override
     public Iterable<ItemStack> getDrops() {
-        return Collections.singletonList(UEMultipartItem.createStack(this));
+        return Collections.singletonList(UiEMultipartMaterialItem.createStack(this));
     }
 
     @Override

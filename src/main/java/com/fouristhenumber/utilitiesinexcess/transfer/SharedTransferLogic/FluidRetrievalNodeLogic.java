@@ -42,7 +42,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
     private boolean isRoundRobin = false;
     private boolean init = false;
 
-    public FluidRetrievalNodeLogic(TileEntityFluidRetrievalNode host)
+    public FluidRetrievalNodeLogic(IWalkingComponent<FluidStack> host)
     {
         super(host);
         this.walker = new FluidWalker(host);

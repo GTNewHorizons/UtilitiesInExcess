@@ -45,7 +45,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Angelica:2.1.49:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:FindIt:1.4.3:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.14.93-GTNH:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:ForgeMultipart:1.7.10:dev") {transitive = false}
+    implementation("com.github.GTNewHorizons:ForgeMultipart:1.7.10:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Backhand:1.8.11:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:waila:1.19.30:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Postea:1.2.5:dev") {transitive = false}
