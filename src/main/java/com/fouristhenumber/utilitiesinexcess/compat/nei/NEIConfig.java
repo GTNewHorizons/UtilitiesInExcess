@@ -78,14 +78,11 @@ public class NEIConfig implements IConfigureNEI {
         public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
             event.registerHandlerInfo(
                 new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
-                    .setHeight(140)
-                    .setWidth(166)
                     .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
                     .build());
             event.registerHandlerInfo(
                 new HandlerInfo.Builder("pseudo_reversion_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
                     .setHeight(140)
-                    .setWidth(166)
                     .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
                     .build());
         }
