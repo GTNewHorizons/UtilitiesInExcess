@@ -25,6 +25,9 @@ import cpw.mods.fml.relauncher.Side;
 @SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
 
+    public static final boolean ENDER_LOCUS = ModBlocks.ENDER_LOCUS.isEnabled();
+    public static final boolean PSEUDO_REVERSION = ModItems.PSEUDO_REVERSION_SIGIL.isEnabled();
+
     @Override
     public String getName() {
         return StatCollector.translateToLocal("uie.nei.title.plugin");
@@ -37,32 +40,36 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
-        EnderLocusRecipeHandler enderLocusRecipeHandler = new EnderLocusRecipeHandler();
+        if (ENDER_LOCUS) {
+            EnderLocusRecipeHandler enderLocusRecipeHandler = new EnderLocusRecipeHandler();
 
-        API.registerRecipeHandler(enderLocusRecipeHandler);
-        API.registerUsageHandler(enderLocusRecipeHandler);
+            API.registerRecipeHandler(enderLocusRecipeHandler);
+            API.registerUsageHandler(enderLocusRecipeHandler);
 
-        API.addRecipeCatalyst(ModBlocks.ENDER_LOCUS.newItemStack(), enderLocusRecipeHandler, 1);
-        API.addRecipeCatalyst(ModBlocks.CONVERGENCE_CRYSTAL.newItemStack(), enderLocusRecipeHandler, 0);
+            API.addRecipeCatalyst(ModBlocks.ENDER_LOCUS.newItemStack(), enderLocusRecipeHandler, 1);
+            API.addRecipeCatalyst(ModBlocks.CONVERGENCE_CRYSTAL.newItemStack(), enderLocusRecipeHandler, 0);
 
-        FMLInterModComms.sendRuntimeMessage(
-            UtilitiesInExcess.MODID,
-            "NEIPlugins",
-            "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.ender_locus")
-                + "@ender_locus_recipes");
+            FMLInterModComms.sendRuntimeMessage(
+                UtilitiesInExcess.MODID,
+                "NEIPlugins",
+                "register-crafting-handler",
+                "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.ender_locus")
+                    + "@ender_locus_recipes");
+        }
 
-        PseudoReversionRecipeHandler pseudoReversionHandler = new PseudoReversionRecipeHandler();
+        if (PSEUDO_REVERSION) {
+            PseudoReversionRecipeHandler pseudoReversionHandler = new PseudoReversionRecipeHandler();
 
-        API.registerRecipeHandler(pseudoReversionHandler);
-        API.registerUsageHandler(pseudoReversionHandler);
+            API.registerRecipeHandler(pseudoReversionHandler);
+            API.registerUsageHandler(pseudoReversionHandler);
 
-        FMLInterModComms.sendRuntimeMessage(
-            UtilitiesInExcess.MODID,
-            "NEIPlugins",
-            "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.pseudo_reversion")
-                + "@pseudo_reversion_recipes");
+            FMLInterModComms.sendRuntimeMessage(
+                UtilitiesInExcess.MODID,
+                "NEIPlugins",
+                "register-crafting-handler",
+                "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.pseudo_reversion")
+                    + "@pseudo_reversion_recipes");
+        }
     }
 
     @SuppressWarnings("unused")
@@ -76,15 +83,21 @@ public class NEIConfig implements IConfigureNEI {
 
         @SubscribeEvent
         public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
-            event.registerHandlerInfo(
-                new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
-                    .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
-                    .build());
-            event.registerHandlerInfo(
-                new HandlerInfo.Builder("pseudo_reversion_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
-                    .setHeight(140)
-                    .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
-                    .build());
+            if (ENDER_LOCUS) {
+                event.registerHandlerInfo(
+                    new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
+                        .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
+                        .build());
+            }
+            if (PSEUDO_REVERSION) {
+                event.registerHandlerInfo(
+                    new HandlerInfo.Builder(
+                        "pseudo_reversion_recipes",
+                        UtilitiesInExcess.MODNAME,
+                        UtilitiesInExcess.MODID).setHeight(140)
+                            .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
+                            .build());
+            }
         }
     }
 
