@@ -13,6 +13,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -45,6 +46,16 @@ public class BuildersWandUtils {
                 if (stack.stackSize <= 0) {
                     player.inventory.setInventorySlotContents(slotIndex, null);
                 }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean containsItemStack(InventoryPlayer player, ItemStack itemStack) {
+        for (int slotIndex = player.mainInventory.length - 1; slotIndex >= 0; slotIndex--) {
+            ItemStack stack = player.mainInventory[slotIndex];
+            if (ItemUtil.areStacksEqual(stack, itemStack)) {
                 return true;
             }
         }
