@@ -33,7 +33,7 @@ public class EnderLocusCraftTweakerSupport {
     }
 
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
+    public static void removeRecipes(IItemStack output) {
         MineTweakerAPI.apply(new ActionRemoveLocusRecipes(output));
     }
 
@@ -170,12 +170,12 @@ public class EnderLocusCraftTweakerSupport {
 
         @Override
         public String describe() {
-            return "Removing Ender Locus recipe which output " + this.filter;
+            return "Removing Ender Locus recipes which output " + this.filter;
         }
 
         @Override
         public String describeUndo() {
-            return "Undoing removal of " + this.removed.length + " Ender Locus recipes which output " + this.filter;
+            return "Undoing removal of " + this.removed.length + " Ender Locus recipe(s) which output " + this.filter;
         }
 
         @Override
