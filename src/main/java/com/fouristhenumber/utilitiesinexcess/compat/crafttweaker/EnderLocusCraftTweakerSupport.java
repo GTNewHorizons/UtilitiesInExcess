@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -117,16 +116,14 @@ public class EnderLocusCraftTweakerSupport {
 
         @Override
         public String describe() {
-            return "Adding Ender Locus recipe for " + StatCollector.translateToLocal(
-                recipe.getOutput()
-                    .getDisplayName());
+            return "Adding Ender Locus recipe for " + recipe.getOutput()
+                .getDisplayName();
         }
 
         @Override
         public String describeUndo() {
-            return "Undoing Ender Locus recipe addition for " + StatCollector.translateToLocal(
-                recipe.getOutput()
-                    .getDisplayName());
+            return "Undoing Ender Locus recipe addition for " + recipe.getOutput()
+                .getDisplayName();
         }
 
         @Override
