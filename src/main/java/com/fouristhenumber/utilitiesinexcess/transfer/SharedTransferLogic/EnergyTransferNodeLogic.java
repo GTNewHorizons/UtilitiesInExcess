@@ -37,6 +37,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -510,6 +511,20 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
 
 
         return panel;
+    }
+
+    // ======================================= Some shared FMP Logic =======================================
+    public static int getConnectionMask(IBlockAccess world, int x, int y, int z)
+    {
+        int mask = 0;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
+            {
+                mask |= 1 << dir.ordinal();
+            }
+        }
+        return mask;
     }
 
 }

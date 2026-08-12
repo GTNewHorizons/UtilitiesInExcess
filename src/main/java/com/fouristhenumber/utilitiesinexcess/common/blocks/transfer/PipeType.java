@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase.isValidConnectable;
+import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
 public enum PipeType
 {

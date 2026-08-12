@@ -91,7 +91,7 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
     {
         if (block instanceof BlockTransferBase transferBase)
         {
-            RenderPipes(transferBase.getConnectionMask(worldAccess, x, y, z, worldAccess.getBlockMetadata(x, y, z)), x, y, z, block, renderer, true);
+            RenderPipes(transferBase.getConnectionMask(worldAccess, x, y, z), x, y, z, block, renderer, true);
         }
         return true;
     }

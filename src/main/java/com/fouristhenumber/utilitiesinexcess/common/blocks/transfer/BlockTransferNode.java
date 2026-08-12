@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityItemTransferNode;
@@ -55,9 +56,9 @@ public class BlockTransferNode extends BlockNodeBase {
 
         // Meta corresponds to the ForgeDirection that is pointing toward the target container.
         // So if the first three bits are equal to 5 then the target direction is east.
-        public IIcon getIcon(int side, int meta) // Note that we're just using the first 3 bits here. Fourth bit is the type
+        public IIcon getIcon(int side, int meta)
         {
-            if ((meta & 7) == side)
+            if (BlockNodeBase.getFacingOrdinal(meta) == side)
             {
                 return iicons[1];
             }
@@ -71,7 +72,7 @@ public class BlockTransferNode extends BlockNodeBase {
     }
 
     @Override
-    public BaseInserter getInserter(int meta) {
+    public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
         return new DefaultInserter();
     }
 
@@ -108,6 +109,6 @@ public class BlockTransferNode extends BlockNodeBase {
     @Override
     public IIcon getIcon(int side, int meta)
     {
-        return TransferNodeType.values()[(meta >> 3)].getIcon(side, meta);
+        return TransferNodeType.values()[meta & 1].getIcon(side, meta);
     }
 }

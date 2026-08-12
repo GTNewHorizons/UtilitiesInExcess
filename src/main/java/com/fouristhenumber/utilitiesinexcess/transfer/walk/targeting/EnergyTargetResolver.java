@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting;
 
 import cofh.api.energy.IEnergyConnection;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
@@ -20,13 +21,10 @@ public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
     public List<Target<IEnergyConnection>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir)
     {
         List<Target<IEnergyConnection>> validTargets = new ArrayList<>();
-
-        Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
-        if (block instanceof BlockTransferBase networkBlock)
+        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (connectable != null)
         {
-            int meta = world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z);
-
-            int validOuputDirs = networkBlock.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, meta, walking);
+            int validOuputDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
 
             for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
             {

@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 
 import static com.fouristhenumber.utilitiesinexcess.CommonProxy.energyNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
 public class BlockTransferNodeEnergy extends BlockTransferBase
 {
@@ -100,13 +101,13 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, int metadata, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         return 0b111111;
     }
 
     @Override
-    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int metadata)
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
         int mask = 0;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
@@ -120,10 +121,11 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     }
 
     @Override
-    public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction)
+    public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
     {
         return true;
     }
+
     @Override
     public boolean renderAsNormalBlock() {
         return false;
@@ -149,7 +151,7 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     }
 
     @Override
-    public BaseInserter getInserter(int meta) {
+    public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
         return new DefaultInserter();
     }
 }

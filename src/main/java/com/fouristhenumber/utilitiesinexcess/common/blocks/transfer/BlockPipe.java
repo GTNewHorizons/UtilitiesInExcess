@@ -87,7 +87,7 @@ public class BlockPipe extends BlockTransferBase
         if (block instanceof BlockTransferBase transferBase)
         {
 
-            int mask = transferBase.getConnectionMask(world, x, y, z, world.getBlockMetadata(x, y, z));
+            int mask = transferBase.getConnectionMask(world, x, y, z);
 
             float minY = (mask & (1 << 0)) != 0 ? 0F : 0.375F; // DOWN (-Y)
             float maxY = (mask & (1 << 1)) != 0 ? 1F : 0.625F; // UP (+Y)
@@ -108,39 +108,39 @@ public class BlockPipe extends BlockTransferBase
         Block block = worldIn.getBlock(x, y, z);
         if (block instanceof BlockTransferBase transferBase)
         {
-            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z));
+            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
 
-            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getBoundingBox().copy().offset(x, y, z);
+            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
             if (boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.DOWN.getBoundingBox().copy().offset(x, y, z);
+            boundingBox = PipeCollision.DOWN.getCollisionBox().copy().offset(x, y, z);
             if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.UP.getBoundingBox().copy().offset(x, y, z);
+            boundingBox = PipeCollision.UP.getCollisionBox().copy().offset(x, y, z);
             if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.NORTH.getBoundingBox().copy().offset(x, y, z);
+            boundingBox = PipeCollision.NORTH.getCollisionBox().copy().offset(x, y, z);
             if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.SOUTH.getBoundingBox().copy().offset(x, y, z);
+            boundingBox = PipeCollision.SOUTH.getCollisionBox().copy().offset(x, y, z);
             if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.WEST.getBoundingBox().copy().offset(x, y, z);
+            boundingBox = PipeCollision.WEST.getCollisionBox().copy().offset(x, y, z);
             if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.EAST.getBoundingBox().copy().offset(x, y, z);
+            boundingBox = PipeCollision.EAST.getCollisionBox().copy().offset(x, y, z);
             if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask)) {
                 list.add(boundingBox);
             }
@@ -180,26 +180,26 @@ public class BlockPipe extends BlockTransferBase
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, int metadata, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
-        return PipeType.values()[metadata].validWalkDirections(world, x, y, z, fromDirection, walkingComponent);
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].validWalkDirections(world, x, y, z, fromDirection, walkingComponent);
     }
 
     @Override
-    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int metadata)
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
-        return PipeType.values()[metadata].getConnectionMask(world, x, y, z);
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].getConnectionMask(world, x, y, z);
     }
 
     @Override
-    public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection direction)
+    public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
     {
-        return PipeType.values()[metadata].acceptsConnectionFrom(world, x, y, z, direction);
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].acceptsConnectionFrom(world, x, y, z, direction);
     }
 
     @Override
-    public BaseInserter getInserter(int meta) {
-        return PipeType.values()[meta].getInserter();
+    public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].getInserter();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import net.minecraft.block.Block;
@@ -21,16 +22,13 @@ public class FluidTargetResolver implements TargetResolver<IFluidHandler>
     public List<Target<IFluidHandler>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir) {
         List<Target<IFluidHandler>> validTargets = new ArrayList<>();
 
-        Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
-        if (block instanceof BlockTransferBase networkBlock)
+        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (connectable != null)
         {
-            int meta = world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z);
-
-            int validOuputDirs = networkBlock.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, meta, walking);
-
+            int validOutputDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
             for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
             {
-                if ((validOuputDirs & (1 << searchDir.ordinal())) == 0)
+                if ((validOutputDirs & (1 << searchDir.ordinal())) == 0)
                 {
                     continue;
                 }

@@ -5,7 +5,9 @@ import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.Tr
 import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -45,10 +47,17 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
-        if (modelId != getRenderId()) return false;
+        return renderFlatNode(world, x, y, z, block, modelId, renderer, world.getBlockMetadata(x, y, z));
+    }
 
-        int meta = world.getBlockMetadata(x, y, z);
-        int side = meta & 7;
+    public static boolean renderFlatNode(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer, int meta)
+    {
+        if (modelId != flatNodeRenderID)
+        {
+            return false;
+        }
+
+        int side = BlockNodeBase.getFacingOrdinal(meta);
 
         float t = 2f / 16f;
         float s12 = 12f / 16f;
@@ -123,12 +132,21 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         }
         renderer.renderStandardBlock(block, x, y, z);
 
-        if (block instanceof BlockTransferBase transferBase)
+        if (block instanceof IConnectable connectable)
         {
-            int mask = transferBase.getConnectionMask(world, x, y, z, world.getBlockMetadata(x, y, z));
+            int mask = connectable.getConnectionMask(world, x, y, z);
+
+            // Since we are using a threadlocal renderBlocks for FMP stuff, if this ever got messed up here, we are going to have the
+            // wrong texture for a lot of things I think, so just try finally.
             renderer.setOverrideBlockTexture(PipeType.TRANSFER.getIcon(0));
-            RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
-            renderer.clearOverrideBlockTexture();
+            try
+            {
+                RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
+            }
+            finally
+            {
+                renderer.clearOverrideBlockTexture();
+            }
         }
         return true;
     }

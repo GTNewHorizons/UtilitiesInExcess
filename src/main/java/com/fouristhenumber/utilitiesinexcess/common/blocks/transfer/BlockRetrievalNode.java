@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -107,7 +108,7 @@ public class BlockRetrievalNode extends BlockNodeBase
     }
 
     @Override
-    public BaseInserter getInserter(int meta) {
+    public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
         return new DefaultInserter();
     }
 }

@@ -9,52 +9,7 @@ public enum PipeCollision
             AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
 
         @Override
-        public AxisAlignedBB getBoundingBox() {
-            return BOX;
-        }
-    },
-    NORTH {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
-
-        @Override
-        public AxisAlignedBB getBoundingBox() {
-            return BOX;
-        }
-    },
-    SOUTH {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.625, 0.625, 0.625, 1.0);
-
-        @Override
-        public AxisAlignedBB getBoundingBox() {
-            return BOX;
-        }
-    },
-    EAST {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
-
-        @Override
-        public AxisAlignedBB getBoundingBox() {
-            return BOX;
-        }
-    },
-    WEST {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
-
-        @Override
-        public AxisAlignedBB getBoundingBox() {
-            return BOX;
-        }
-    },
-    UP {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
-
-        @Override
-        public AxisAlignedBB getBoundingBox() {
+        public AxisAlignedBB getCollisionBox() {
             return BOX;
         }
     },
@@ -63,10 +18,55 @@ public enum PipeCollision
             AxisAlignedBB.getBoundingBox(0.375, 0.0, 0.375, 0.625, 0.375, 0.625);
 
         @Override
-        public AxisAlignedBB getBoundingBox() {
+        public AxisAlignedBB getCollisionBox() {
+            return BOX;
+        }
+    },
+    UP {
+        private static final AxisAlignedBB BOX =
+            AxisAlignedBB.getBoundingBox(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
+
+        @Override
+        public AxisAlignedBB getCollisionBox() {
+            return BOX;
+        }
+    },
+    NORTH {
+        private static final AxisAlignedBB BOX =
+            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
+
+        @Override
+        public AxisAlignedBB getCollisionBox() {
+            return BOX;
+        }
+    },
+    SOUTH {
+        private static final AxisAlignedBB BOX =
+            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.625, 0.625, 0.625, 1.0);
+
+        @Override
+        public AxisAlignedBB getCollisionBox() {
+            return BOX;
+        }
+    },
+    WEST {
+        private static final AxisAlignedBB BOX =
+            AxisAlignedBB.getBoundingBox(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
+
+        @Override
+        public AxisAlignedBB getCollisionBox() {
+            return BOX;
+        }
+    },
+    EAST {
+        private static final AxisAlignedBB BOX =
+            AxisAlignedBB.getBoundingBox(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
+
+        @Override
+        public AxisAlignedBB getCollisionBox() {
             return BOX;
         }
     };
 
-    public abstract AxisAlignedBB getBoundingBox();
+    public abstract AxisAlignedBB getCollisionBox();
 }

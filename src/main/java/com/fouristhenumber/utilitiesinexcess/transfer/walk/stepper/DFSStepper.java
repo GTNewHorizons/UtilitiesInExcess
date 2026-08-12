@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
@@ -36,14 +37,13 @@ public class DFSStepper extends StepStrategy
     @Override
     public BlockPos step(World world, BlockPos walkerPos, IWalkingComponent walkingComponent)
     {
-        Block block = world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z);
-        if (!(block instanceof BlockTransferBase transferBlock))
+        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (connectable == null)
         {
             return reset(walkerPos, walkingComponent);
         }
 
-        int meta = world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z);
-        int validDirs = transferBlock.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, meta, walkingComponent);
+        int validDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
 
         int remaining = filterToUnvisited(world, walkerPos.x, walkerPos.y, walkerPos.z, validDirs);
 

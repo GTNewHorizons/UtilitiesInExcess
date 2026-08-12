@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
 
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,9 +17,11 @@ import net.minecraft.world.World;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
 public abstract class BlockNodeBase extends BlockTransferBase
 {
@@ -60,60 +63,136 @@ public abstract class BlockNodeBase extends BlockTransferBase
                              int side, float hitX, float hitY, float hitZ,
                              int meta)
     {
-        return (meta << 3) | ForgeDirection.getOrientation(side).getOpposite().ordinal();
+        return  meta | (ForgeDirection.getOrientation(side).getOpposite().ordinal() << FACING_SHIFT);
     }
 
     @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
     {
         Block block = worldIn.getBlock(x, y, z);
+        int facing = getFacingOrdinal(worldIn.getBlockMetadata(x, y, z));
         if (block instanceof BlockTransferBase transferBase)
         {
-            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z));
+            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
 
-            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getBoundingBox().copy().offset(x, y, z);
-            if (boundingBox.intersectsWith(mask))
+            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
+            if (connectionMask != 0 && boundingBox.intersectsWith(mask))
             {
                 list.add(boundingBox);
             }
 
-            boundingBox = PipeCollision.DOWN.getBoundingBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask))
+            for (int i = 1; i < PipeCollision.values().length; i++)
             {
-                list.add(boundingBox);
+                boundingBox = PipeCollision.values()[i].getCollisionBox().copy().offset(x, y, z);
+                if ((connectionMask & (1 << (i - 1))) != 0 && boundingBox.intersectsWith(mask))
+                {
+                    list.add(boundingBox);
+                }
+            }
+            list.addAll(
+                Arrays.stream(NodeCollision.values()[facing].getCollisionBoxes())
+                    .map(b -> b.copy().offset(x, y, z))
+                    .filter(b -> b.intersectsWith(mask))
+                    .toList()
+            );
+        }
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+    {
+        Block block = world.getBlock(x, y, z);
+
+        if (!(block instanceof BlockNodeBase nodeBase))
+            return;
+
+        int meta = world.getBlockMetadata(x, y, z);
+        int mask = nodeBase.getConnectionMask(world, x, y, z);
+        AxisAlignedBB bb = getBoundsAABB(meta, mask);
+        block.setBlockBounds(
+            (float) bb.minX,
+            (float) bb.minY,
+            (float) bb.minZ,
+            (float) bb.maxX,
+            (float) bb.maxY,
+            (float) bb.maxZ
+        );
+    }
+
+    public static AxisAlignedBB getBoundsAABB(int meta, int connectionMask)
+    {
+        int facing = getFacingOrdinal(meta);
+
+        AxisAlignedBB bb = NodeCollision.values()[facing].getBoundingBox().copy();
+        if (connectionMask != 0) {
+
+            // Need to add in the middle bounding box always if it's
+            switch(facing)
+            {
+                case(0):
+                {
+                    bb.maxY = PipeCollision.MIDDLE.getCollisionBox().maxY;
+                    break;
+                }
+                case(1):
+                {
+                    bb.minY = PipeCollision.MIDDLE.getCollisionBox().minY;
+                    break;
+                }
+                case(2):
+                {
+                    bb.maxZ = PipeCollision.MIDDLE.getCollisionBox().maxZ;
+                    break;
+                }
+                case(3):
+                {
+                    bb.minZ = PipeCollision.MIDDLE.getCollisionBox().minZ;
+                    break;
+                }
+                case(4):
+                {
+                    bb.maxX = PipeCollision.MIDDLE.getCollisionBox().maxX;
+                    break;
+                }
+                case(5):
+                {
+                    bb.minX = PipeCollision.MIDDLE.getCollisionBox().minX;
+                    break;
+                }
             }
 
-            boundingBox = PipeCollision.UP.getBoundingBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask))
-            {
-                list.add(boundingBox);
-            }
+            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                if ((connectionMask & (1 << direction.ordinal())) == 0)
+                    continue;
 
-            boundingBox = PipeCollision.NORTH.getBoundingBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask))
-            {
-                list.add(boundingBox);
-            }
+                switch (direction) {
+                    case DOWN:
+                        bb.minY = 0.0;
+                        break;
 
-            boundingBox = PipeCollision.SOUTH.getBoundingBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask))
-            {
-                list.add(boundingBox);
-            }
+                    case UP:
+                        bb.maxY = 1.0;
+                        break;
 
-            boundingBox = PipeCollision.WEST.getBoundingBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask))
-            {
-                list.add(boundingBox);
-            }
+                    case NORTH:
+                        bb.minZ = 0.0;
+                        break;
 
-            boundingBox = PipeCollision.EAST.getBoundingBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask))
-            {
-                list.add(boundingBox);
+                    case SOUTH:
+                        bb.maxZ = 1.0;
+                        break;
+
+                    case WEST:
+                        bb.minX = 0.0;
+                        break;
+
+                    case EAST:
+                        bb.maxX = 1.0;
+                        break;
+                }
             }
         }
-
+        return bb;
     }
 
     @Override
@@ -123,10 +202,10 @@ public abstract class BlockNodeBase extends BlockTransferBase
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, int meta, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         int mask = 0b111111;
-        int facing = getFacingOrdinal(meta);
+        int facing = getFacingOrdinal(world.getBlockMetadata(x, y, z));
         if (facing < 6)
         {
             mask &= ~(1 << facing);
@@ -139,10 +218,10 @@ public abstract class BlockNodeBase extends BlockTransferBase
     }
 
     @Override
-    public int getConnectionMask(IBlockAccess world, int x, int y, int z, int meta)
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
         int mask = 0;
-        ForgeDirection facing = getFacing(meta);
+        ForgeDirection facing = getFacing(world.getBlockMetadata(x, y, z));
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
             if (dir != facing)
@@ -157,9 +236,9 @@ public abstract class BlockNodeBase extends BlockTransferBase
     }
 
     @Override
-    public boolean acceptsConnectionFrom(IBlockAccess world, int x, int y, int z, int meta, ForgeDirection direction)
+    public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
     {
-        return direction != getFacing(meta);
+        return direction != getFacing(world.getBlockMetadata(x, y, z));
     }
 
     @Override

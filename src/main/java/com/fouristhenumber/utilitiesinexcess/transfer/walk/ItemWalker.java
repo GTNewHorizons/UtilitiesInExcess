@@ -42,7 +42,7 @@ public class ItemWalker extends WalkerBase<IInventory, ItemStack>
     {
         if (world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z) instanceof BlockTransferBase transferBase)
         {
-            return transferBase.getInserter(world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z));
+            return transferBase.getInserter(world, walkerPos.x, walkerPos.y, walkerPos.z);
         }
         return new DefaultInserter();
     }
