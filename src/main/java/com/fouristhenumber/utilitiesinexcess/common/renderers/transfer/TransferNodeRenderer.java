@@ -139,14 +139,10 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
             // Since we are using a threadlocal renderBlocks for FMP stuff, if this ever got messed up here, we are going to have the
             // wrong texture for a lot of things I think, so just try finally.
             renderer.setOverrideBlockTexture(PipeType.TRANSFER.getIcon(0));
-            try
-            {
-                RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
-            }
-            finally
-            {
-                renderer.clearOverrideBlockTexture();
-            }
+            renderer.renderAllFaces = true;
+            RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
+            renderer.clearOverrideBlockTexture();
+            renderer.renderAllFaces = false;
         }
         return true;
     }

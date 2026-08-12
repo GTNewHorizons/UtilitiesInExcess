@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Tr
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import codechicken.multipart.ISBRHPart;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
@@ -14,13 +15,14 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInse
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class PartNetworkComponentBase extends UEMultipart implements ITransferNetworkComponent, IConnectable
+public abstract class PartNetworkComponentBase extends UEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart
 {
     public int meta;
 
@@ -109,18 +111,17 @@ public abstract class PartNetworkComponentBase extends UEMultipart implements IT
     }
 
     @Override
-    public boolean renderStatic(Vector3 position, int pass)
-    {
-        render(position, pass);
-        return true;
-    }
-
-    @Override
     public void render(Vector3 position, int pass)
     {
         TransferNodeRenderer.renderFlatNode(world(), (int) position.x, (int) position.y, (int) position.z, getBlock(), getBlock().getRenderType(), getRenderBlocks(world()), meta);
     }
 
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+    {
+        TransferNodeRenderer.renderFlatNode(world, x, y, z, getBlock(), getBlock().getRenderType(), renderer, meta);
+        return true;
+    }
     @Override
     public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
         return new DefaultInserter();

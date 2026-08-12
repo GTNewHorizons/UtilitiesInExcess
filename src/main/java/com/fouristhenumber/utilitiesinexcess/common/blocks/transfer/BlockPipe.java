@@ -83,11 +83,10 @@ public class BlockPipe extends BlockTransferBase
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
-        Block block = world.getBlock(x, y, z);
-        if (block instanceof BlockTransferBase transferBase)
+        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
+        if (connectable != null)
         {
-
-            int mask = transferBase.getConnectionMask(world, x, y, z);
+            int mask = connectable.getConnectionMask(world, x, y, z);
 
             float minY = (mask & (1 << 0)) != 0 ? 0F : 0.375F; // DOWN (-Y)
             float maxY = (mask & (1 << 1)) != 0 ? 1F : 0.625F; // UP (+Y)
