@@ -1,6 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.api;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -90,8 +92,23 @@ public final class EnderLocusRegistry {
         }
     }
 
-    public void removeRecipe(ItemStack output) {
-        this.recipes.removeIf(recipe -> ItemStack.areItemStacksEqual(recipe.getOutput(), output));
+    public List<EnderLocusRecipe> removeRecipes(Predicate<EnderLocusRecipe> test) {
+        ArrayList<EnderLocusRecipe> removed = new ArrayList<>(3);
+
+        this.recipes.removeIf(recipe -> {
+            if (test.test(recipe)) {
+                removed.add(recipe);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        return removed;
+    }
+
+    public void removeRecipe(EnderLocusRecipe recipe) {
+        this.recipes.remove(recipe);
     }
 
     public ItemStack findRecipe(InventoryCrafting inv, boolean consume) {
