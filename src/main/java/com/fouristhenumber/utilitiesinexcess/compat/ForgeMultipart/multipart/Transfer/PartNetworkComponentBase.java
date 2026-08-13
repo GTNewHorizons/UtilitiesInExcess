@@ -8,7 +8,7 @@ import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UEMultipart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class PartNetworkComponentBase extends UEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart
+public abstract class PartNetworkComponentBase extends UiEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart
 {
     public int meta;
 
@@ -108,12 +108,6 @@ public abstract class PartNetworkComponentBase extends UEMultipart implements IT
     @SideOnly(Side.CLIENT)
     public IIcon getBrokenIcon(int side) {
         return getBlock().getIcon(side, meta);
-    }
-
-    @Override
-    public void render(Vector3 position, int pass)
-    {
-        TransferNodeRenderer.renderFlatNode(world(), (int) position.x, (int) position.y, (int) position.z, getBlock(), getBlock().getRenderType(), getRenderBlocks(world()), meta);
     }
 
     @Override

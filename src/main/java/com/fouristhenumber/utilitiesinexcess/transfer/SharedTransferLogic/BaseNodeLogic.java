@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
@@ -13,8 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends NetworkLogic<T> implements IUpgradeable
-{
+public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends NetworkLogic<T> implements IUpgradeable {
     public static final int DEFAULT_STEPS_PER_SECOND = 2;
     protected int actionPerSecond = DEFAULT_STEPS_PER_SECOND;
     protected UpgradeInventory upgrades;
@@ -35,22 +36,20 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
         return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
+
     @Override
-    public void markDirty()
-    {
+    public void markDirty() {
         host.markHostDirty();
     }
 
     @Override
-    public void applySpeedUpgrade(ItemStack stack)
-    {
+    public void applySpeedUpgrade(ItemStack stack) {
         actionPerSecond += stack.stackSize;
     }
 
     // Naturally, due to how this works it can create aliasing in the location of the walker.
     // It could look strange to users, but I'm not sure the best way to fix this.
-    public int actionsThisTick()
-    {
+    public int actionsThisTick() {
         progress += actionPerSecond / 20f;
 
         int actions = (int) progress;
@@ -60,16 +59,19 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
     }
 
     @Override
-    public void resetUpgrades()
-    {
+    public void resetUpgrades() {
         this.actionPerSecond = DEFAULT_STEPS_PER_SECOND;
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
-    {
+    public void writeToNBT(NBTTagCompound nbt) {
         this.upgrades.writeToNBT(nbt);
-
     }
+
+    public void writeDesc(MCDataOutput output)
+    {
+        this.upgrades.writeDesc(output);
+    }
+
     public void readFromNBT(NBTTagCompound nbt)
     {
         upgrades.readFromNBT(nbt);

@@ -145,7 +145,7 @@ public class FencePart extends ConnectablePart implements IMaterialPart
 
     @Override
     public boolean drawHighlight(MovingObjectPosition hit, EntityPlayer player, float frame) {
-        return drawConnecableHighLight(
+        return drawConnectableHighLight(
             hit,
             player,
             frame,

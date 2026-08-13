@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 
-public class PipeCoverPart extends UEMultipart {
+public class PipeCoverPart extends UiEMultipart {
 
     Material material;
 

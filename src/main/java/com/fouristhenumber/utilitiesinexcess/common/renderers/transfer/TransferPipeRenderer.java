@@ -17,13 +17,10 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 @ThreadSafeISBRH(perThread = false)
 public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
 
-    public static void RenderPipes(int mask, int x, int y, int z, Block block, RenderBlocks renderer, boolean renderCenter) {
-
-        if (renderCenter)
-        {
-            renderer.setRenderBounds(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
-            renderer.renderStandardBlock(block, x, y, z);
-        }
+    public static void RenderPipes(int mask, int x, int y, int z, Block block, RenderBlocks renderer)
+    {
+        renderer.setRenderBounds(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
+        renderer.renderStandardBlock(block, x, y, z);
 
         // -Y (down)
         if ((mask & (1)) != 0) {
@@ -91,7 +88,7 @@ public class TransferPipeRenderer implements ISimpleBlockRenderingHandler {
     {
         if (block instanceof BlockTransferBase transferBase)
         {
-            RenderPipes(transferBase.getConnectionMask(worldAccess, x, y, z), x, y, z, block, renderer, true);
+            RenderPipes(transferBase.getConnectionMask(worldAccess, x, y, z), x, y, z, block, renderer);
         }
         return true;
     }

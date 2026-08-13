@@ -1,10 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,9 +31,8 @@ public class RandomStepper extends StepStrategy
             {
                 if ((validDirs & (1 << dir.ordinal())) != 0)
                 {
-                    if (world.getBlock(walkerPos.x + dir.offsetX,
-                        walkerPos.y + dir.offsetY,
-                        walkerPos.z + dir.offsetZ) instanceof BlockTransferBase)
+                    IConnectable connectableInDir = IConnectable.getConnectable(world, walkerPos.x + dir.offsetX, walkerPos.y + dir.offsetY, walkerPos.z + dir.offsetZ);
+                    if (connectableInDir != null)
                     {
                         dirList.add(dir);
                     }

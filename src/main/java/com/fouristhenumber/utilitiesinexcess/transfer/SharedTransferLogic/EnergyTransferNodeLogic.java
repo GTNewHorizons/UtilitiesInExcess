@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataOutput;
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
@@ -465,6 +466,13 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
     {
         super.readFromNBT(nbt);
         containedEnergy = nbt.getInteger("Energy");
+    }
+
+    @Override
+    public void writeDesc(MCDataOutput output)
+    {
+        super.writeDesc(output);
+        output.writeInt(containedEnergy);
     }
 
     @Override

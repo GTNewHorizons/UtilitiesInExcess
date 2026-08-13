@@ -17,8 +17,10 @@ import net.minecraft.world.World;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
@@ -69,33 +71,43 @@ public abstract class BlockNodeBase extends BlockTransferBase
     @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
     {
-        Block block = worldIn.getBlock(x, y, z);
-        int facing = getFacingOrdinal(worldIn.getBlockMetadata(x, y, z));
-        if (block instanceof BlockTransferBase transferBase)
+        for (AxisAlignedBB box : getBlockCenteredCollisionCandidates(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z)))
         {
-            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
-
-            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
-            if (connectionMask != 0 && boundingBox.intersectsWith(mask))
+            if (box.offset(x, y, z).intersectsWith(mask))
             {
-                list.add(boundingBox);
+                list.add(box);
+            }
+        }
+    }
+
+    public static List<AxisAlignedBB> getBlockCenteredCollisionCandidates(World worldIn, int x, int y, int z, int meta)
+    {
+        List<AxisAlignedBB> candidates = new ArrayList<>();
+        int facing = getFacingOrdinal(meta);
+        IConnectable connectable = IConnectable.getConnectable(worldIn, x, y, z);
+        if (connectable != null)
+        {
+            int connectionMask = connectable.getConnectionMask(worldIn, x, y, z);
+
+            if (connectionMask != 0)
+            {
+                candidates.add(PipeCollision.MIDDLE.getCollisionBox().copy());
             }
 
             for (int i = 1; i < PipeCollision.values().length; i++)
             {
-                boundingBox = PipeCollision.values()[i].getCollisionBox().copy().offset(x, y, z);
-                if ((connectionMask & (1 << (i - 1))) != 0 && boundingBox.intersectsWith(mask))
+                if ((connectionMask & (1 << (i - 1))) != 0)
                 {
-                    list.add(boundingBox);
+                    candidates.add(PipeCollision.values()[i].getCollisionBox().copy());
                 }
             }
-            list.addAll(
+            candidates.addAll(
                 Arrays.stream(NodeCollision.values()[facing].getCollisionBoxes())
-                    .map(b -> b.copy().offset(x, y, z))
-                    .filter(b -> b.intersectsWith(mask))
+                    .map(AxisAlignedBB::copy)
                     .toList()
             );
         }
+        return candidates;
     }
 
     @Override
@@ -234,6 +246,7 @@ public abstract class BlockNodeBase extends BlockTransferBase
         }
         return mask;
     }
+
 
     @Override
     public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)

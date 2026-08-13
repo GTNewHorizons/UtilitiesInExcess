@@ -5,6 +5,7 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNod
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -82,6 +83,7 @@ public class CommonProxy {
         ModBiomes.init();
         TileChunkLoadHook.init();
         ColoredSlots.init();
+        PartGuiHandler.init();
 
         transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());

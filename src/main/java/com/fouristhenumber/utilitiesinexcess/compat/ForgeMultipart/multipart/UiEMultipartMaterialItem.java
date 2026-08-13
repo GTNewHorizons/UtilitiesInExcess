@@ -96,7 +96,7 @@ public class UiEMultipartMaterialItem extends Item {
         return stack;
     }
 
-    public static ItemStack createStack(UEMultipart part) {
+    public static ItemStack createStack(UiEMultipart part) {
         if (part instanceof IMaterialPart matPart) {
             return createStack(matPart.getMaterial().id, UiEPartFactory.partMap.get(part.getType()));
         }

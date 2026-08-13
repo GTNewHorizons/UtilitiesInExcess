@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataOutput;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -84,6 +85,16 @@ public abstract class BaseItemTransferNodeLogic<T extends IWalkingComponent<Item
         {
             NBTTagCompound compound = nbt.getCompoundTag("Buffer");
             this.buffer = ItemStack.loadItemStackFromNBT(compound);
+        }
+    }
+
+    @Override
+    public void writeDesc(MCDataOutput output)
+    {
+        super.writeDesc(output);
+        if (buffer != null)
+        {
+            output.writeItemStack(buffer);
         }
     }
 }

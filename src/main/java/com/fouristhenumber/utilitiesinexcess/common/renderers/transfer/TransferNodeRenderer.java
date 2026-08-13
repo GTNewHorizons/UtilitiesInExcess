@@ -132,15 +132,16 @@ public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
         }
         renderer.renderStandardBlock(block, x, y, z);
 
-        if (block instanceof IConnectable connectable)
+        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
+        if (connectable != null)
         {
             int mask = connectable.getConnectionMask(world, x, y, z);
-
-            // Since we are using a threadlocal renderBlocks for FMP stuff, if this ever got messed up here, we are going to have the
-            // wrong texture for a lot of things I think, so just try finally.
             renderer.setOverrideBlockTexture(PipeType.TRANSFER.getIcon(0));
             renderer.renderAllFaces = true;
-            RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer, mask != 0);
+            if (mask != 0)
+            {
+                RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer);
+            }
             renderer.clearOverrideBlockTexture();
             renderer.renderAllFaces = false;
         }

@@ -228,21 +228,6 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
         this.maxDrainAmount = maxFluidAmount;
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        NBTTagCompound fluidTag = new NBTTagCompound();
-        buffer.writeToNBT(fluidTag);
-        nbt.setTag("Fluid", fluidTag);
-    }
-
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        buffer.readFromNBT(nbt.getCompoundTag("Fluid"));
-    }
-
     // ======================================= UI =======================================
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)

@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 
-public class SpherePart extends UEMultipart implements IMaterialPart
+public class SpherePart extends UiEMultipart implements IMaterialPart
 {
 
     public static final Cuboid6 Bounds = new Cuboid6(0.125, 0.125, 0.125, 0.875, 0.875, 0.875);

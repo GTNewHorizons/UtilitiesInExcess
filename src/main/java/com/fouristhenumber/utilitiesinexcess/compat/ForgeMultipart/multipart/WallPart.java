@@ -168,7 +168,7 @@ public class WallPart extends ConnectablePart implements IMaterialPart
         } else {
             highlightCuboidList = Arrays.asList(PRECOMPUTED_BOUNDS.get(downDirection)[mask]);
         }
-        return drawConnecableHighLight(hit, player, frame, highlightCuboidList);
+        return drawConnectableHighLight(hit, player, frame, highlightCuboidList);
     }
 
     @Override

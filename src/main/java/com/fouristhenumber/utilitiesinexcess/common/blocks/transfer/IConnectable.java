@@ -46,7 +46,6 @@ public interface IConnectable
             }
         }
 
-
         return null;
     }
 }

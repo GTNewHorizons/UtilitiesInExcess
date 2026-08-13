@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
+import codechicken.lib.data.MCDataOutput;
 import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
@@ -84,6 +85,14 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
         }
     }
 
+    public void writeDesc(MCDataOutput output)
+    {
+        for (ItemStack upgrade : this.upgrades) {
+            if (upgrade != null) {
+                output.writeItemStack(upgrade);
+            }
+        }
+    }
     @Override
     public int getSizeInventory() {
         return upgrades.length;

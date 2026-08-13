@@ -38,7 +38,7 @@ public class BFSStepper extends StepStrategy
                     int ny = walkerPos.y + dir.offsetY;
                     int nz = walkerPos.z + dir.offsetZ;
 
-                    if (world.getBlock(nx, ny, nz) instanceof BlockTransferBase)
+                    if (IConnectable.getConnectable(world, nx, ny, nz) != null)
                     {
                         long packedCoord = CoordinatePacker.pack(nx, ny, nz);
                         if (visitedLocations.add(packedCoord))

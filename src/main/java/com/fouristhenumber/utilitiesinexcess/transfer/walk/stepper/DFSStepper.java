@@ -80,7 +80,7 @@ public class DFSStepper extends StepStrategy
             int nz = top.z + chosen.offsetZ;
             long packed = CoordinatePacker.pack(nx, ny, nz);
 
-            if (world.getBlock(nx, ny, nz) instanceof BlockTransferBase && visitedLocations.add(packed))
+            if (IConnectable.getConnectable(world, nx, ny, nz) != null && visitedLocations.add(packed))
             {
                 return mutablePos.set(nx, ny, nz);
             }

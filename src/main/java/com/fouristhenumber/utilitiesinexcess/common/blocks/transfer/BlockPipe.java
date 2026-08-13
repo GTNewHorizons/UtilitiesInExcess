@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import cpw.mods.fml.relauncher.Side;
@@ -22,6 +23,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.fouristhenumber.utilitiesinexcess.CommonProxy.transferPipeRenderID;
@@ -104,46 +107,77 @@ public class BlockPipe extends BlockTransferBase
     @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
     {
-        Block block = worldIn.getBlock(x, y, z);
-        if (block instanceof BlockTransferBase transferBase)
+        for (AxisAlignedBB box : getBlockCenteredCollisionCandidates(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z)))
         {
-            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
-
-            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
-            if (boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
-            }
-
-            boundingBox = PipeCollision.DOWN.getCollisionBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
-            }
-
-            boundingBox = PipeCollision.UP.getCollisionBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
-            }
-
-            boundingBox = PipeCollision.NORTH.getCollisionBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
-            }
-
-            boundingBox = PipeCollision.SOUTH.getCollisionBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
-            }
-
-            boundingBox = PipeCollision.WEST.getCollisionBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
-            }
-
-            boundingBox = PipeCollision.EAST.getCollisionBox().copy().offset(x, y, z);
-            if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask)) {
-                list.add(boundingBox);
+            if (box.offset(x, y, z).intersectsWith(mask))
+            {
+                list.add(box);
             }
         }
+
+//        Block block = worldIn.getBlock(x, y, z);
+//        if (block instanceof BlockTransferBase transferBase)
+//        {
+//            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
+//
+//            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
+//            if (boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.DOWN.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.UP.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.NORTH.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.SOUTH.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.WEST.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.EAST.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//        }
+    }
+
+
+    public static List<AxisAlignedBB> getBlockCenteredCollisionCandidates(World worldIn, int x, int y, int z, int meta)
+    {
+        List<AxisAlignedBB> candidates = new ArrayList<>();
+        IConnectable connectable = IConnectable.getConnectable(worldIn, x, y, z);
+        if (connectable != null)
+        {
+            int connectionMask = connectable.getConnectionMask(worldIn, x, y, z);
+
+            candidates.add(PipeCollision.MIDDLE.getCollisionBox().copy());
+
+
+            for (int i = 1; i < PipeCollision.values().length; i++)
+            {
+                if ((connectionMask & (1 << (i - 1))) != 0)
+                {
+                    candidates.add(PipeCollision.values()[i].getCollisionBox().copy());
+                }
+            }
+        }
+        return candidates;
     }
 
     @Override

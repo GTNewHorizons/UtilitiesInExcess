@@ -91,7 +91,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
         return legacyAliases.getOrDefault(name, name);
     }
 
-    public static UEMultipart createUEMultiPart(boolean isClient, int meta, int material, String name) {
+    public static UiEMultipart createUEMultiPart(boolean isClient, int meta, int material, String name) {
         switch (name) {
             case ("ue_fence"): {
                 return new FencePart(material, meta);

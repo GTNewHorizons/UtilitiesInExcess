@@ -343,21 +343,6 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
         this.isWorldInteraction = true;
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        NBTTagCompound fluidTag = new NBTTagCompound();
-        buffer.writeToNBT(fluidTag);
-        nbt.setTag("Fluid", fluidTag);
-    }
-
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        buffer.readFromNBT(nbt.getCompoundTag("Fluid"));
-    }
-
     // Note that because of the power of the fluid slot players can now put fluids in manually too!
     // I see this as a win and doesn't break forward compat in any way.
     @Override
