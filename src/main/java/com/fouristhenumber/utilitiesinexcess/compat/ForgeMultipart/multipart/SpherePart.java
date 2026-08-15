@@ -4,10 +4,12 @@ import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render
 
 import java.util.Collections;
 
+import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -24,6 +26,11 @@ public class SpherePart extends UiEMultipart implements IMaterialPart
 
     public SpherePart(int materialId) {
         this.material = new Material(materialId);
+    }
+
+    public SpherePart(MCDataInput packet)
+    {
+        this.material = new Material(MicroMaterialRegistry.readMaterialID(packet));
     }
 
     @Override

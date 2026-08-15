@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
+import codechicken.lib.data.MCDataInput;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemRetrievalNodeLogic;
@@ -10,6 +11,12 @@ public class ItemRetrievalNodePart extends BaseNodePart<ItemRetrievalNodeLogic, 
 {
     public ItemRetrievalNodePart(int meta) {
         super(meta);
+    }
+
+    public ItemRetrievalNodePart(MCDataInput packet)
+    {
+        super(packet.readInt());
+        logic.readDesc(packet);
     }
 
     @Override

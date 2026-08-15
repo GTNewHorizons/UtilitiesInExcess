@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
@@ -8,7 +9,6 @@ import cofh.api.energy.IEnergyReceiver;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
@@ -19,15 +19,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -105,6 +102,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
             }
             upgrades.init();
             init = true;
+            walker.init();
         }
 
         if (!sources.isEmpty())
@@ -473,6 +471,13 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
     {
         super.writeDesc(output);
         output.writeInt(containedEnergy);
+    }
+
+    @Override
+    public void readDesc(MCDataInput input)
+    {
+        super.readDesc(input);
+        containedEnergy = input.readInt();
     }
 
     @Override

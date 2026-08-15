@@ -60,6 +60,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
         {
             upgrades.init();
             init = true;
+            walker.init();
         }
 
         int actionsThisTick = actionsThisTick();

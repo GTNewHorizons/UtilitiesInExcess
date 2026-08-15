@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
+import codechicken.lib.data.MCDataInput;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
@@ -30,6 +31,11 @@ public class PipePart extends PartNetworkComponentBase implements ISBRHPart
 {
     public PipePart(int meta) {
         super(meta);
+    }
+
+    public PipePart(MCDataInput packet)
+    {
+        super(packet.readInt());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
+import codechicken.lib.data.MCDataInput;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
@@ -11,6 +12,12 @@ public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Intege
 {
     public EnergyNodePart(int meta) {
         super(meta);
+    }
+
+    public EnergyNodePart(MCDataInput packet)
+    {
+        super(packet.readInt());
+        getLogic().readDesc(packet);
     }
 
     @Override

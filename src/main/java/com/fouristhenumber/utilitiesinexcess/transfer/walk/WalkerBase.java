@@ -17,6 +17,10 @@ public abstract class WalkerBase<T, E>
     WalkerBase(IWalkingComponent<E> walkingComponent)
     {
         this.walkingComponent = walkingComponent;
+    }
+
+    public void init()
+    {
         walkerPos = new BlockPos(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
     }
 
@@ -29,12 +33,19 @@ public abstract class WalkerBase<T, E>
 
     public String getLocationString()
     {
-        return "x: " +
-            (walkerPos.x - walkingComponent.getX()) +
-            " y: " +
-            (walkerPos.y - walkingComponent.getY()) +
-            " z: " +
-            (walkerPos.z - walkingComponent.getZ());
+        if (walkerPos != null)
+        {
+            return "x: " +
+                (walkerPos.x - walkingComponent.getX()) +
+                " y: " +
+                (walkerPos.y - walkingComponent.getY()) +
+                " z: " +
+                (walkerPos.z - walkingComponent.getZ());
+        }
+        else
+        {
+            return "x: 0 y: 0 z: 0";
+        }
     }
 
     public abstract void reset();

@@ -22,11 +22,6 @@ public class PipeCoverPart extends UiEMultipart {
     }
 
     @Override
-    public void render(Vector3 position, int pass) {
-
-    }
-
-    @Override
     public IIcon getBreakingIcon(Object subPart, int side) {
         return this.material.getBreakingIcon(subPart, side);
     }
@@ -34,15 +29,6 @@ public class PipeCoverPart extends UiEMultipart {
     @Override
     public IIcon getBrokenIcon(int side) {
         return this.material.getBrokenIcon(side);
-    }
-
-    @Override
-    public boolean renderStatic(Vector3 position, int pass) {
-        if (this.material.canMaterialRenderInPass(pass)) {
-            render(position, pass);
-            return true;
-        }
-        return false;
     }
 
     public void save(NBTTagCompound tag) {

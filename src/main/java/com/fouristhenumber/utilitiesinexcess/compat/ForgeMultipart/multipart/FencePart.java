@@ -13,7 +13,9 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
+import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,6 +37,12 @@ public class FencePart extends ConnectablePart implements IMaterialPart
     public FencePart(int materialId, int side) {
         super(side);
         this.material = new Material(materialId);
+    }
+
+    public FencePart(MCDataInput packet)
+    {
+        super(packet.readInt());
+        this.material = new Material(MicroMaterialRegistry.readMaterialID(packet));
     }
 
     @Override

@@ -41,6 +41,7 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
     implements IWalkingComponent<V>, IGuiHolder<PosGuiData>
 {
     protected T logic;
+    private boolean initialized = false;
 
     public BaseNodePart(int meta) {
         super(meta);
@@ -49,7 +50,25 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
     @Override
     public void update()
     {
+        if (world().isRemote)
+        {
+            return;
+        }
+
+        if (!initialized) {
+            init();
+        }
+
         getLogic().updateEntity();
+    }
+
+
+    private void init() {
+        if (initialized) {
+            return;
+        }
+
+        initialized = true;
     }
 
     protected abstract T getLogic();
@@ -75,7 +94,7 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
 
     @Override
     public V getWalkingObject() {
-        return logic.getWalkingObject();
+        return getLogic().getWalkingObject();
     }
 
     @Override

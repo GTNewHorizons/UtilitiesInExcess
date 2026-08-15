@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
+import codechicken.lib.data.MCDataInput;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidRetrievalNodeLogic;
@@ -10,6 +11,12 @@ public class FluidRetrievalNodePart extends BaseNodePart<FluidRetrievalNodeLogic
 {
     public FluidRetrievalNodePart(int meta) {
         super(meta);
+    }
+
+    public FluidRetrievalNodePart(MCDataInput packet)
+    {
+        super(packet.readInt());
+        getLogic().readDesc(packet);
     }
 
     @Override

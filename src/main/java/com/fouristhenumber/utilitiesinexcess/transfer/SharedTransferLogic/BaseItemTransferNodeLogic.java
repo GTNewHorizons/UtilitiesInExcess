@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -92,9 +93,14 @@ public abstract class BaseItemTransferNodeLogic<T extends IWalkingComponent<Item
     public void writeDesc(MCDataOutput output)
     {
         super.writeDesc(output);
-        if (buffer != null)
-        {
-            output.writeItemStack(buffer);
-        }
+        output.writeItemStack(buffer);
+
+    }
+
+    @Override
+    public void readDesc(MCDataInput input)
+    {
+        super.readDesc(input);
+        buffer = input.readItemStack();
     }
 }

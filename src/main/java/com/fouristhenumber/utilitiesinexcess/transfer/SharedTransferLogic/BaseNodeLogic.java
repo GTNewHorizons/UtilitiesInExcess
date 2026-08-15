@@ -72,6 +72,11 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
         this.upgrades.writeDesc(output);
     }
 
+    public void readDesc(MCDataInput input)
+    {
+        this.upgrades.readDesc(input);
+    }
+
     public void readFromNBT(NBTTagCompound nbt)
     {
         upgrades.readFromNBT(nbt);

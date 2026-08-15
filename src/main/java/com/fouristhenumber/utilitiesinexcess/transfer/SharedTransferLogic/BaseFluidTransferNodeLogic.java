@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,10 +42,14 @@ public abstract class BaseFluidTransferNodeLogic<T extends IWalkingComponent<Flu
     public void writeDesc(MCDataOutput output)
     {
         super.writeDesc(output);
-        if (buffer.getFluid() != null)
-        {
-            output.writeFluidStack(buffer.getFluid());
-        }
+        output.writeFluidStack(buffer.getFluid());
+    }
+
+    @Override
+    public void readDesc(MCDataInput input)
+    {
+        super.readDesc(input);
+        buffer.setFluid(input.readFluidStack());
     }
 
 }

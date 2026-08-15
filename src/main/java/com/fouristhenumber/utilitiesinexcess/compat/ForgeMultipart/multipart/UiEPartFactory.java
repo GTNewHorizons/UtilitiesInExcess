@@ -130,6 +130,45 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
         return null;
     }
 
+    public static UiEMultipart createUEMultiPart(MCDataInput packet, String name) {
+        switch (name) {
+            case ("ue_fence"): {
+                return new FencePart(packet);
+            }
+            case ("ue_wall"): {
+                return new WallPart(packet);
+            }
+            case ("ue_sphere"): {
+                return new SpherePart(packet);
+            }
+            case ("item_retrieval_node"):
+            {
+                return new ItemRetrievalNodePart(packet);
+            }
+            case ("fluid_retrieval_node"):
+            {
+                return new FluidRetrievalNodePart(packet);
+            }
+            case ("item_transfer_node"):
+            {
+                return new ItemTransferNodePart(packet);
+            }
+            case ("fluid_transfer_node"):
+            {
+                return new FluidTransferNodePart(packet);
+            }
+            case ("pipe"):
+            {
+                return new PipePart(packet);
+            }
+            case ("energy_node"):
+            {
+                return new EnergyNodePart(packet);
+            }
+        }
+        return null;
+    }
+
     // Called on the server
     @Override
     public TMultiPart createPart(String name, NBTTagCompound nbt) {
@@ -147,16 +186,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
     public TMultiPart createPart(String name, MCDataInput packet)
     {
         String actualName = translateName(name);
-
-        // Honestly, this is ugly as fuck, but the other option I can think of right now is make maps of them.
-        // I see no reason to do this, I just want to finish the damn thing.
-        return switch (actualName) {
-            case (FencePart.name), (WallPart.name) ->
-                createUEMultiPart(true, packet.readInt(), MicroMaterialRegistry.readMaterialID(packet), actualName);
-            case (SpherePart.name) ->
-                createUEMultiPart(true, 0, MicroMaterialRegistry.readMaterialID(packet), actualName);
-            default -> createUEMultiPart(true, packet.readInt(), 0, actualName);
-        };
+        return createUEMultiPart(packet, actualName);
     }
 
     @Override

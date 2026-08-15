@@ -18,7 +18,10 @@ import net.minecraft.world.IBlockAccess;
 public abstract class UiEMultipart extends TMultiPart implements JIconHitEffects, JNormalOcclusion
 {
 
-    public abstract void render(Vector3 position, int pass);
+    public void render(Vector3 position, int pass)
+    {
+
+    }
 
     @Override
     public Iterable<ItemStack> getDrops() {

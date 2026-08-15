@@ -59,6 +59,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
         {
             upgrades.init();
             init = true;
+            walker.init();
         }
 
         int actionsThisTick = actionsThisTick();
