@@ -1,5 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import codechicken.lib.world.TileChunkLoadHook;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
+import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,6 +65,12 @@ public class UtilitiesInExcess {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
+    }
+
+    @Mod.EventHandler
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+        proxy.serverStopping(event);
     }
 
     @Mod.EventHandler

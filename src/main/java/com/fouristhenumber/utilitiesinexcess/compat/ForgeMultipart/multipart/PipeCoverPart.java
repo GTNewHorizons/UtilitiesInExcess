@@ -1,9 +1,20 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
+import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 
-public class PipeCoverPart extends MaterialBasedPart {
+public class PipeCoverPart extends UiEMultipart {
+
+    Material material;
+
+    public PipeCoverPart(int materialId) {
+        this.material = new Material(materialId);
+    }
 
     @Override
     public String getType() {
@@ -11,8 +22,29 @@ public class PipeCoverPart extends MaterialBasedPart {
     }
 
     @Override
-    public void render(Vector3 position, int pass) {
+    public IIcon getBreakingIcon(Object subPart, int side) {
+        return this.material.getBreakingIcon(subPart, side);
+    }
 
+    @Override
+    public IIcon getBrokenIcon(int side) {
+        return this.material.getBrokenIcon(side);
+    }
+
+    public void save(NBTTagCompound tag) {
+        material.save(tag);
+    }
+
+    public void load(NBTTagCompound tag) {
+        material.load(tag);
+    }
+
+    public void writeDesc(MCDataOutput packet) {
+        material.writeDesc(packet);
+    }
+
+    public ItemStack pickItem(MovingObjectPosition hit) {
+        return UiEMultipartMaterialItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
     }
 
     @Override

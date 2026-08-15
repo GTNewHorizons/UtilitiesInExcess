@@ -1,0 +1,238 @@
+package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
+
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.transferPipeRenderID;
+
+public class BlockPipe extends BlockTransferBase
+{
+
+    public BlockPipe() {
+        super(Material.iron);
+        this.setBlockName("block_pipe");
+    }
+
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg)
+    {
+        for (int i = 0; i < PipeType.values().length; i++)
+        {
+            PipeType.values()[i].registerIcon(reg);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int side, int meta)
+    {
+        return PipeType.fromMeta(meta).getIcon(side);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<net.minecraft.item.ItemStack> list)
+    {
+        for (int i = 0; i < PipeType.values().length; i++)
+        {
+            list.add(new ItemStack(itemIn, 1, i));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+    {
+        int meta = world.getBlockMetadata(x, y, z);
+        return PipeType.fromMeta(meta).getIcon(side);
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+    {
+        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
+        if (connectable != null)
+        {
+            int mask = connectable.getConnectionMask(world, x, y, z);
+
+            float minY = (mask & (1 << 0)) != 0 ? 0F : 0.375F; // DOWN (-Y)
+            float maxY = (mask & (1 << 1)) != 0 ? 1F : 0.625F; // UP (+Y)
+
+            float minZ = (mask & (1 << 2)) != 0 ? 0F : 0.375F; // NORTH (-Z)
+            float maxZ = (mask & (1 << 3)) != 0 ? 1F : 0.625F; // SOUTH (+Z)
+
+            float minX = (mask & (1 << 4)) != 0 ? 0F : 0.375F; // WEST (-X)
+            float maxX = (mask & (1 << 5)) != 0 ? 1F : 0.625F; // EAST (+X)
+
+            this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+        }
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
+    {
+        for (AxisAlignedBB box : getBlockCenteredCollisionCandidates(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z)))
+        {
+            if (box.offset(x, y, z).intersectsWith(mask))
+            {
+                list.add(box);
+            }
+        }
+
+//        Block block = worldIn.getBlock(x, y, z);
+//        if (block instanceof BlockTransferBase transferBase)
+//        {
+//            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
+//
+//            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
+//            if (boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.DOWN.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.UP.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.NORTH.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.SOUTH.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.WEST.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//
+//            boundingBox = PipeCollision.EAST.getCollisionBox().copy().offset(x, y, z);
+//            if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask)) {
+//                list.add(boundingBox);
+//            }
+//        }
+    }
+
+
+    public static List<AxisAlignedBB> getBlockCenteredCollisionCandidates(World worldIn, int x, int y, int z, int meta)
+    {
+        List<AxisAlignedBB> candidates = new ArrayList<>();
+        IConnectable connectable = IConnectable.getConnectable(worldIn, x, y, z);
+        if (connectable != null)
+        {
+            int connectionMask = connectable.getConnectionMask(worldIn, x, y, z);
+
+            candidates.add(PipeCollision.MIDDLE.getCollisionBox().copy());
+
+
+            for (int i = 1; i < PipeCollision.values().length; i++)
+            {
+                if ((connectionMask & (1 << (i - 1))) != 0)
+                {
+                    candidates.add(PipeCollision.values()[i].getCollisionBox().copy());
+                }
+            }
+        }
+        return candidates;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+                                    float subY, float subZ)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (worldIn.getBlockMetadata(x, y, z) == PipeType.FILTER.ordinal() && worldIn.getTileEntity(x, y, z) instanceof TileEntityFilterPipe)
+            {
+                GuiFactories.tileEntity().open(player, x, y, z);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata)
+    {
+        return new TileEntityFilterPipe();
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata)
+    {
+        return metadata == PipeType.FILTER.getMeta();
+    }
+
+    @Override
+    public int getRenderType()
+    {
+        return transferPipeRenderID;
+    }
+
+    @Override
+    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    {
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].validWalkDirections(world, x, y, z, fromDirection, walkingComponent);
+    }
+
+    @Override
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z)
+    {
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].getConnectionMask(world, x, y, z);
+    }
+
+    @Override
+    public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
+    {
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].acceptsConnectionFrom(world, x, y, z, direction);
+    }
+
+    @Override
+    public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].getInserter();
+    }
+
+}

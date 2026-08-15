@@ -1,0 +1,161 @@
+package com.fouristhenumber.utilitiesinexcess.common.renderers.transfer;
+
+import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
+import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
+import static com.fouristhenumber.utilitiesinexcess.utils.RenderUtils.renderInventoryCube;
+
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.world.IBlockAccess;
+
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+
+@ThreadSafeISBRH(perThread = false)
+public class TransferNodeRenderer implements ISimpleBlockRenderingHandler {
+
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+        float t = 2f / 16f;
+        float s12 = 12f / 16f;
+        float s8 = 8f / 16f;
+        float s12Half = (1f - s12) / 2f;
+        float s8Half = (1f - s8) / 2f;
+
+        Tessellator tess = Tessellator.instance;
+
+        tess.startDrawingQuads();
+        tess.setNormal(0, 1, 0);
+
+        renderer.setRenderBounds(0, 0, 0, 1, t, 1);
+        renderInventoryCube(renderer, block, metadata << 3);
+        renderer.setRenderBounds(s12Half, t, s12Half, s12Half + s12, 2f * t, s12Half + s12);
+        renderInventoryCube(renderer, block, metadata << 3);
+        renderer.setRenderBounds(s8Half, 2f * t, s8Half, s8Half + s8, 3f * t, s8Half + s8);
+        renderInventoryCube(renderer, block, metadata << 3);
+
+        tess.draw();
+    }
+
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+        RenderBlocks renderer) {
+        return renderFlatNode(world, x, y, z, block, modelId, renderer, world.getBlockMetadata(x, y, z));
+    }
+
+    public static boolean renderFlatNode(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer, int meta)
+    {
+        if (modelId != flatNodeRenderID)
+        {
+            return false;
+        }
+
+        int side = BlockNodeBase.getFacingOrdinal(meta);
+
+        float t = 2f / 16f;
+        float s12 = 12f / 16f;
+        float s8 = 8f / 16f;
+        float s12Half = (1f - s12) / 2f;
+        float s8Half = (1f - s8) / 2f;
+
+        switch (side) {
+            case 0:
+                renderer.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, t, 1.0F);
+                break;
+            case 1:
+                renderer.setRenderBounds(0.0F, 1.0F - t, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
+            case 2:
+                renderer.setRenderBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, t);
+                break;
+            case 3:
+                renderer.setRenderBounds(0.0F, 0.0F, 1.0F - t, 1.0F, 1.0F, 1.0F);
+                break;
+            case 4:
+                renderer.setRenderBounds(0.0F, 0.0F, 0.0F, t, 1.0F, 1.0F);
+                break;
+            case 5:
+                renderer.setRenderBounds(1.0F - t, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
+        }
+
+        renderer.renderStandardBlock(block, x, y, z);
+
+        switch (side) {
+            case 0:
+                renderer.setRenderBounds(s12Half, t, s12Half, s12Half + s12, 2f * t, s12Half + s12);
+                break;
+            case 1:
+                renderer.setRenderBounds(s12Half, 1f - 2f * t, s12Half, s12Half + s12, 1f - t, s12Half + s12);
+                break;
+            case 2:
+                renderer.setRenderBounds(s12Half, s12Half, t, s12Half + s12, s12Half + s12, 2f * t);
+                break;
+            case 3:
+                renderer.setRenderBounds(s12Half, s12Half, 1f - 2f * t, s12Half + s12, s12Half + s12, 1f - t);
+                break;
+            case 4:
+                renderer.setRenderBounds(t, s12Half, s12Half, 2f * t, s12Half + s12, s12Half + s12);
+                break;
+            case 5:
+                renderer.setRenderBounds(1f - 2f * t, s12Half, s12Half, 1f - t, s12Half + s12, s12Half + s12);
+                break;
+        }
+        renderer.renderStandardBlock(block, x, y, z);
+
+        switch (side) {
+            case 0:
+                renderer.setRenderBounds(s8Half, 2f * t, s8Half, s8Half + s8, 3f * t, s8Half + s8);
+                break;
+            case 1:
+                renderer.setRenderBounds(s8Half, 1f - 3f * t, s8Half, s8Half + s8, 1f - 2f * t, s8Half + s8);
+                break;
+            case 2:
+                renderer.setRenderBounds(s8Half, s8Half, 2f * t, s8Half + s8, s8Half + s8, 3f * t);
+                break;
+            case 3:
+                renderer.setRenderBounds(s8Half, s8Half, 1f - 3f * t, s8Half + s8, s8Half + s8, 1f - 2f * t);
+                break;
+            case 4:
+                renderer.setRenderBounds(2f * t, s8Half, s8Half, 3f * t, s8Half + s8, s8Half + s8);
+                break;
+            case 5:
+                renderer.setRenderBounds(1f - 3f * t, s8Half, s8Half, 1f - 2f * t, s8Half + s8, s8Half + s8);
+                break;
+        }
+        renderer.renderStandardBlock(block, x, y, z);
+
+        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
+        if (connectable != null)
+        {
+            int mask = connectable.getConnectionMask(world, x, y, z);
+            renderer.setOverrideBlockTexture(PipeType.TRANSFER.getIcon(0));
+            renderer.renderAllFaces = true;
+            if (mask != 0)
+            {
+                RenderPipes(mask, x, y, z, ModBlocks.TRANSFER_PIPE.get(), renderer);
+            }
+            renderer.clearOverrideBlockTexture();
+            renderer.renderAllFaces = false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int modelId)
+    {
+        return true;
+    }
+
+    @Override
+    public int getRenderId() {
+        return flatNodeRenderID;
+    }
+}

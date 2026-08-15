@@ -1,5 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnergyNode;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemTransferNode;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -60,6 +68,9 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
+//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNode;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidMarker;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarryUpgrade;
@@ -117,7 +128,7 @@ public enum ModBlocks {
     CURSED_EARTH(CursedEarthConfig.INSTANCE.enableCursedEarth, new BlockCursedEarth(false), BlockCursedEarth.ItemBlockCursedEarth.class, "cursed_earth"),
     BLESSED_EARTH(CursedEarthConfig.INSTANCE.enableBlessedEarth, new BlockCursedEarth(true), BlockCursedEarth.ItemBlockCursedEarth.class, "blessed_earth"),
     LAPIS_AETHERIUS(BlockConfig.enableLapisAetherius, new BlockLapisAetherius(), BlockLapisAetherius.ItemLapisAetherius.class, "lapis_aetherius"),
-    LAPIS_AETHERIUS_DYEABLE(BlockConfig.enableLapisAetherius && BlockColored.allowDyingBlocks(), new BlockLapisAetheriusDyable(), BlockLapisAetheriusDyable.ItemLapisAetherius.class, "lapis_aetherius_dyeable"),
+    LAPIS_AETHERIUS_DYEABLE(BlockConfig.enableLapisAetherius, new BlockLapisAetheriusDyable(), BlockLapisAetheriusDyable.ItemLapisAetherius.class, "lapis_aetherius_dyeable"),
     BEDROCKIUM_BLOCK(ItemConfig.enableBedrockium, new BlockBedrockium(), BlockBedrockium.ItemBlockBedrockium.class, "bedrockium_block"),
     INVERTED_BLOCK(InversionConfig.INSTANCE.enableInvertedIngot, new BlockInverted(), "inverted_block"),
     LOW_TEMPERATURE_FURNACE_GENERATOR(GeneratorConfig.enableLowTemperatureFurnaceGenerator, new BlockLowTemperatureFurnaceGenerator("low_temperature_furnace_generator", 1), "low_temperature_furnace_generator"),
@@ -174,6 +185,10 @@ public enum ModBlocks {
     SMART_PUMP(BlockConfig.smartPump.enableSmartPump, new BlockSmartPump(), "smart_pump"),
     TRADING_POST(BlockConfig.enableTradingPost, new BlockTradingPost(), "trading_post"),
     DECORATIVE_BLOCKS(BlockConfig.enableDecorativeBlocks, new BlockDecorative(), BlockDecorative.ItemBlockDecorative.class, "decorative_block"),
+    TRANSFER_PIPE(TransferConfig.INSTANCE.EnableTransferSystem, new BlockPipe(), ItemPipe.class, "transfer_pipe"),
+    TRANSFER_NODE(TransferConfig.INSTANCE.EnableTransferSystem, new BlockTransferNode(), ItemTransferNode.class, "transfer_node"),
+    TRANSFER_NODE_ENERGY(TransferConfig.INSTANCE.EnableTransferSystem, new BlockTransferNodeEnergy(), ItemEnergyNode.class, "transfer_node_energy"),
+    RETRIEVAL_NODE(TransferConfig.INSTANCE.EnableTransferSystem, new BlockRetrievalNode(), ItemRetrievalNode.class, "retrieval_node"),
     CHANDELIER(BlockConfig.chandelier.enableChandelier, new BlockChandelier(), BlockChandelier.ItemBlockChandelier.class, "chandelier"),
     GIGA_TORCH(BlockConfig.gigaTorch.enableGigaTorch, new BlockGigaTorch(), BlockGigaTorch.ItemBlockGigaTorch.class, "giga_torch"),
     COLLECTOR(BlockConfig.enableCollector, new BlockCollector(), "collector"),

@@ -22,7 +22,7 @@ import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import it.unimi.dsi.fastutil.Pair;
 
-public abstract class ConnectablePart extends MaterialBasedPart {
+public abstract class ConnectablePart extends UiEMultipart {
 
     public static final Map<ForgeDirection, ForgeDirection[]> iteratorKey;
     static {
@@ -57,7 +57,7 @@ public abstract class ConnectablePart extends MaterialBasedPart {
     // What direction is "down" for the connectable part
     public ForgeDirection downDirection;
 
-    ConnectablePart(int side) {
+    protected ConnectablePart(int side) {
         this.downDirection = ForgeDirection.getOrientation(side);
     }
 
@@ -154,13 +154,11 @@ public abstract class ConnectablePart extends MaterialBasedPart {
 
     @Override
     public void save(NBTTagCompound tag) {
-        super.save(tag);
         tag.setInteger("side", this.downDirection.ordinal());
     }
 
     @Override
     public void load(NBTTagCompound tag) {
-        super.load(tag);
         downDirection = ForgeDirection.getOrientation(tag.getInteger("side"));
     }
 
@@ -181,8 +179,8 @@ public abstract class ConnectablePart extends MaterialBasedPart {
             "Somehow multipart connectable is trying to access a direction outside of it's frame!");
     }
 
-    public boolean drawConnecableHighLight(MovingObjectPosition hit, EntityPlayer player, float frame,
-        Iterable<Pair<Integer, Cuboid6>> highlightCuboidList) {
+    public boolean drawConnectableHighLight(MovingObjectPosition hit, EntityPlayer player, float frame,
+                                            Iterable<Pair<Integer, Cuboid6>> highlightCuboidList) {
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);

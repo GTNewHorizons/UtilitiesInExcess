@@ -1,5 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import codechicken.lib.world.TileChunkLoadHook;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
+import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
+import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -19,7 +29,6 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
@@ -37,7 +46,6 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -52,6 +60,10 @@ public class CommonProxy {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
+    public static int spikeRenderID;
+    public static int transferPipeRenderID;
+    public static int energyNodeRenderID;
+    public static int flatNodeRenderID;
     public SoundVolumeChecks soundVolumeChecks;
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
@@ -69,6 +81,16 @@ public class CommonProxy {
         ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
+        TileChunkLoadHook.init();
+        ColoredSlots.init();
+        PartGuiHandler.init();
+
+        transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
+        flatNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
+        energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
@@ -97,7 +119,7 @@ public class CommonProxy {
 
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
-            new Content().init();
+            new UiEPartFactory().init();
             FMPCompat.init();
         }
 
@@ -166,7 +188,10 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
-
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+        WirelessNetworkManager.reset();
+    }
     public void onMissingMapping(FMLMissingMappingsEvent event) {
         ExuWorldConversionWarning.onMissingMapping(event);
     }

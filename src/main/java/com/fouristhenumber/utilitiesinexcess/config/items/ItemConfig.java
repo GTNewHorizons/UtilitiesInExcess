@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.config.items;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.InvertedTools;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
@@ -36,6 +37,10 @@ public class ItemConfig {
     @Config.Order(600)
     @Config.LangKey("utilitiesinexcess.config.item.heavenly_rings")
     public static final HeavenlyRing heavenlyRing = new HeavenlyRing();
+
+    @Config.Order(700)
+    @Config.LangKey("utilitiesinexcess.config.transfer")
+    public static final TransferConfig transfer = TransferConfig.INSTANCE;
 
     public static class HeavenlyRing {
 

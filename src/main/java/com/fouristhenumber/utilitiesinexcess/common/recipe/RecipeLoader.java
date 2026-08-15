@@ -2,11 +2,17 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
@@ -16,8 +22,13 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
 import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RecipeLoader {
 
@@ -33,6 +44,9 @@ public class RecipeLoader {
         loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
+        loadColoredBlockRecipes();
+        loadTransferNodeRecipes();
+        loadFilterVariantRecipes();
 
         // Chandeliers
         if (RecipeConfig.enableChandelierRecipe) {
@@ -1301,6 +1315,8 @@ public class RecipeLoader {
     private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
         ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
 
+        System.out.println("Dyable ID: " + Block.getIdFromBlock(block));
+        System.out.println("Base ID: " + Block.getIdFromBlock(block.getBase()));
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
             addShapedRecipe(
@@ -1714,6 +1730,173 @@ public class RecipeLoader {
                 ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
     }
 
+    private static void loadTransferNodeRecipes() {
+        loadTransferUpgradeRecipes();
+        loadTransferPipeRecipes();
+    }
+
+    private static void loadTransferUpgradeRecipes() {
+        // Speed Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SPEED.getStack(4),
+            "RNR",
+            "NIN",
+            "RIR",
+            'R',
+            new ItemStack(Blocks.redstone_block),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'I',
+            new ItemStack(Items.gold_ingot));
+
+        // Filter
+        addShapedRecipe(
+            TransferUpgrade.FILTER.getStack(),
+            "RWR",
+            "WSW",
+            "RWR",
+            'R',
+            new ItemStack(Items.redstone),
+            'W',
+            new ItemStack(Items.stick),
+            'S',
+            new ItemStack(Items.string));
+        // todo filter setting stuff?
+
+        // World Interaction Upgrade
+        addShapedRecipe(
+            TransferUpgrade.WORLD_INTERACTION.getStack(),
+            "LIL",
+            "IPI",
+            "LIL",
+            'L',
+            new ItemStack(Items.dye, 1, 4), // Lapis
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'P',
+            new ItemStack(Items.iron_pickaxe));
+
+        // Stack Upgrade
+        addShapedRecipe(
+            TransferUpgrade.STACK.getStack(),
+            "INI",
+            "DUD",
+            "IDI",
+            'I',
+            new ItemStack(Items.gold_ingot),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'D',
+            new ItemStack(Items.diamond),
+            'U',
+            TransferUpgrade.SPEED.getStack());
+
+        // Creative Upgrade has no recipe
+
+        // TODO Ender Transmitter/Receiver default recipes are in QED
+
+        // Depth-First Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_DEPTH.getStack(3),
+            "UBB",
+            "UGU",
+            "GBB",
+            'U',
+            TransferUpgrade.SPEED.getStack(),
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'G',
+            new ItemStack(Items.gold_ingot));
+
+        // Breadth-First Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_BREADTH.getStack(3),
+            "BBB",
+            "SUS",
+            "BBB",
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'S',
+            TransferUpgrade.SPEED.getStack(),
+            'U',
+            TransferUpgrade.SEARCH_DEPTH.getStack());
+
+        // Round Robin Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_ROUND_ROBIN.getStack(3),
+            "BNB",
+            "BIN",
+            "BNB",
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'I',
+            new ItemStack(Items.gold_ingot));
+
+        // Advanced Filter
+        addShapedRecipe(
+            TransferUpgrade.ADV_FILTER.getStack(),
+            "L L",
+            " F ",
+            "L L",
+            'L',
+            new ItemStack(Items.dye, 1, 4), // Lapis
+            'F',
+            TransferUpgrade.FILTER.getStack());
+    }
+
+    private static void loadTransferPipeRecipes()
+    {
+
+    }
+
+    private static void loadFilterVariantRecipes()
+    {
+        if (TransferConfig.INSTANCE.EnableTransferSystem)
+        {
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.redstone_torch)
+                    ),
+                0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.wool)
+                    ),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.FILTER.getStack(1).theStack,
+                        new ItemStack(Items.stick)
+                    ),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagInt((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(
+                        TransferUpgrade.ADV_FILTER.getStack(1).theStack,
+                        new ItemStack(Blocks.redstone_torch)
+                    ),
+                    0));
+
+            // Clears NBT
+            addShapelessRecipe(TransferUpgrade.FILTER.getStack(1), TransferUpgrade.FILTER.getStack(1));
+            addShapelessRecipe(TransferUpgrade.ADV_FILTER.getStack(1), TransferUpgrade.ADV_FILTER.getStack(1));
+        }
+    }
+
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
         return DisableableItemStack.addShapedRecipe(outputObject, params);
     }
@@ -1755,5 +1938,15 @@ public class RecipeLoader {
                     new DisableableItemStack(modBlock, 1, i + 1));
             }
         }
+    }
+
+    private static DisableableItemStack setNBTForItem(DisableableItemStack in, String key, NBTBase tag)
+    {
+        if (!in.theStack.hasTagCompound())
+        {
+            in.theStack.stackTagCompound = new NBTTagCompound();
+        }
+        in.theStack.stackTagCompound.setTag(key, tag);
+        return in;
     }
 }

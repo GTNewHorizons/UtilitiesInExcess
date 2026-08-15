@@ -610,6 +610,24 @@ uie.gui.title.trash_can=Trash Can
 uie.gui.title.trash_can_fluid=Trash Can (Fluid)
 uie.gui.title.paint_roller=Select Color:
 
+tile.transfer_pipe.name=Transfer Pipe
+
+tile.transfer_node.name=Transfer Node
+tile.transfer_node_fluid.name=Transfer Node (Fluid)
+tile.transfer_node_energy.name=Transfer Node (Energy)
+tile.transfer_node_hyper_energy.name=Transfer Node (Hyper Energy)
+tile.retrieval_node.name=Retrieval Node
+tile.retrieval_node_fluid.name=Retrieval Node (Fluids)
+
+gui.title.transfer_node.name=Transfer Node
+gui.title.transfer_node_fluid.name=Fluid Transfer Node
+ue_wall.name=%s Wall
+ue_fence.name=%s Fence
+ue_sphere.name=%s Impossible Object
+
+gui.title.filter_pipe.name=Filter Pipe
+gui.title.filter.name=Filter
+
 ## Gui Strings
 uie.gui.text.ender_locus.energy-tick= RF/t
 uie.gui.text.ender_locus.flux_strength=Flux Strength: %s
