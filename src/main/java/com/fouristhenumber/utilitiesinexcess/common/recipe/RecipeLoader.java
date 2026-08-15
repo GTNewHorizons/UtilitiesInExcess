@@ -611,6 +611,24 @@ public class RecipeLoader {
             'a',
             Items.diamond_pickaxe);
 
+        // Glove
+        if (ModItems.GLOVE.isEnabled() && RecipeConfig.enableGloveRecipe) {
+            GameRegistry.addRecipe(
+                new RecipeGlove(
+                    2,
+                    2,
+                    new ItemStack[] { new ItemStack(Items.string),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
+                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.string) },
+                    ModItems.GLOVE.newItemStack()));
+        }
+
+        // Boxing Glove
+        if (ModItems.BOXING_GLOVE.isEnabled() && RecipeConfig.enableBoxingGloveRecipe) {
+            Object center = ModItems.GLOVE.isEnabled() ? ModItems.GLOVE.get() : Blocks.wool;
+            addShapedRecipe(ModItems.BOXING_GLOVE, " l ", "lcl", " l ", 'l', Items.leather, 'c', center);
+        }
+
         // Paint Roller
         if (RecipeConfig.enablePaintRollerRecipe) addShapedRecipe(
             ModItems.PAINT_ROLLER,
@@ -1479,18 +1497,6 @@ public class RecipeLoader {
             "iii",
             'i',
             ModItems.INVERTED_INGOT.newItemStack(1, OreDictionary.WILDCARD_VALUE));
-
-        // Glove
-        if (ModItems.GLOVE.isEnabled() && RecipeConfig.enableGloveRecipe) {
-            GameRegistry.addRecipe(
-                new RecipeGlove(
-                    2,
-                    2,
-                    new ItemStack[] { new ItemStack(Items.string),
-                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE),
-                        new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.string) },
-                    ModItems.GLOVE.newItemStack()));
-        }
     }
 
     private static void loadEnderLocusRecipes() {

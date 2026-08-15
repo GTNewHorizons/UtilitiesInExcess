@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBoxingGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ModelPartRenderHelper;
@@ -29,7 +30,7 @@ public class MixinModelRenderer_Baubles {
         if (player == null) return;
 
         ItemStack stack = player.getHeldItem();
-        if (stack == null || !(stack.getItem() instanceof ItemGlove))
+        if (stack == null || !(stack.getItem() instanceof ItemGlove || stack.getItem() instanceof ItemBoxingGlove))
             stack = UIEUtils.getBauble(player, ItemGlove.class);
 
         if (stack != null) {
@@ -37,7 +38,7 @@ public class MixinModelRenderer_Baubles {
             ModelPartRenderHelper.renderBipedPart(
                 0.0625F,
                 thisObject.modelBipedMain.bipedRightArm,
-                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage(), player));
+                () -> GloveRenderer.renderGloveAsBauble(finalStack, player));
         }
     }
 }

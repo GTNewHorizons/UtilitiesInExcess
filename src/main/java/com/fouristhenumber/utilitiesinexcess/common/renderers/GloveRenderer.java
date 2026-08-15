@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBoxingGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.RenderableCube;
@@ -33,6 +34,9 @@ public class GloveRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
+        if (item.getItem() instanceof ItemBoxingGlove) {
+            return type == ItemRenderType.EQUIPPED_FIRST_PERSON || type == ItemRenderType.EQUIPPED;
+        }
         return type == ItemRenderType.EQUIPPED_FIRST_PERSON || type == ItemRenderType.EQUIPPED
             || type == ItemRenderType.INVENTORY;
     }
@@ -137,7 +141,9 @@ public class GloveRenderer implements IItemRenderer {
 
     public static Function<EntityPlayer, RenderableCube> getBottomCube = (player) -> bottomCube;
 
-    public static void renderGloveAsBauble(int meta, EntityPlayer player) {
+    public static void renderGloveAsBauble(ItemStack stack, EntityPlayer player) {
+        boolean boxing = stack.getItem() instanceof ItemBoxingGlove;
+
         int previousTex = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
         // 0.27 -0.73 1.43 -0.5 0 0 0 1
@@ -147,17 +153,26 @@ public class GloveRenderer implements IItemRenderer {
 
         mc.renderEngine.bindTexture(gloveTexture);
         Tessellator t = Tessellator.instance;
-        float[] rgb = woolMetaToRGB(meta / 16);
         t.startDrawingQuads();
-        t.setColorOpaque_F(rgb[0], rgb[1], rgb[2]);
+        if (boxing) {
+            t.setColorOpaque(160, 0, 0);
+        } else {
+            float[] rgb = woolMetaToRGB(stack.getItemDamage() / 16);
+            t.setColorOpaque_F(rgb[0], rgb[1], rgb[2]);
+        }
         getTopCube.apply(player)
             .draw(t, 0, 0, 0, 24, false);
         t.draw();
 
         GL11.glTranslatef(0, -0.25F, 0F);
-        rgb = woolMetaToRGB(meta % 16);
         t.startDrawingQuads();
-        t.setColorOpaque_F(rgb[0], rgb[1], rgb[2]);
+
+        if (boxing) {
+            t.setColorOpaque(90, 0, 8);
+        } else {
+            float[] rgb = woolMetaToRGB(stack.getItemDamage() % 16);
+            t.setColorOpaque_F(rgb[0], rgb[1], rgb[2]);
+        }
         getBottomCube.apply(player)
             .draw(t, 0, 0, 0, 24, false);
         t.draw();

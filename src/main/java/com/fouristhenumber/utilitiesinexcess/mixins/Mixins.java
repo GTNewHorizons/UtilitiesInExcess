@@ -19,10 +19,13 @@ public enum Mixins implements IMixins {
         .setApplyIf(() -> CursedEarthConfig.INSTANCE.enableCursedEarth || CursedEarthConfig.INSTANCE.enableBlessedEarth)
         /*.addRequiredMod(TargetedMod.VANILLA)*/),
     GLOVE(new MixinBuilder("Implements the Glove's special right click")
-        .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove", "minecraft.MixinItemRenderer_Glove", "minecraft.MixinPlayerControllerMP_Glove")
+        .addCommonMixins("minecraft.MixinNetHandlerPlayServer_Glove", "minecraft.MixinPlayerControllerMP_Glove")
         .setPhase(Phase.EARLY)
-        .setApplyIf(() -> ItemConfig.enableGlove)
-        /*.addRequiredMod(TargetedMod.VANILLA)*/),
+        .setApplyIf(() -> ItemConfig.enableGlove)),
+    GLOVES_FIRST_PERSON(new MixinBuilder("Allows both gloves to be drawn on the players hand in first person")
+        .addClientMixins("minecraft.MixinItemRenderer_Gloves")
+        .setPhase(Phase.EARLY)
+        .setApplyIf(() -> ItemConfig.enableGlove || ItemConfig.enableBoxingGlove)),
     BAUBLE_RENDERS(new MixinBuilder("Renders equipped baubles on the player")
         .addCommonMixins("minecraft.MixinModelBiped_Baubles", "minecraft.MixinModelRenderer_Baubles")
         .setPhase(Phase.EARLY)

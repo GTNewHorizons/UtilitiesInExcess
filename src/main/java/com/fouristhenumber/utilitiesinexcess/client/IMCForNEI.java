@@ -294,6 +294,8 @@ public class IMCForNEI {
                     "uie.nei.infopage.colored_blocks.dyeable");
             }
         }
+
+        sendInfoPage("<utilitiesinexcess:boxing_glove>", "uie.nei.infopage.boxing_glove");
     }
 
     private static void sendInfoPage(String filter, String page) {

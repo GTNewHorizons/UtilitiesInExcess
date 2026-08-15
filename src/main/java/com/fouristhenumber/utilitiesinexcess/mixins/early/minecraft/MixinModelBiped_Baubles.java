@@ -8,10 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemBoxingGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemGlove;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemHeavenlyRing;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.GloveRenderer;
@@ -51,6 +53,7 @@ public class MixinModelBiped_Baubles {
 
     private float uie$heavenlyRingWing = 1;
 
+    @Unique
     private void uie$doExtraRender(Entity entity, float p_78088_7_) {
         ModelBiped thisObject = (ModelBiped) (Object) this;
 
@@ -58,7 +61,7 @@ public class MixinModelBiped_Baubles {
         if (!(entity instanceof EntityPlayer player)) return;
 
         ItemStack stack = player.getHeldItem();
-        if (stack == null || !(stack.getItem() instanceof ItemGlove))
+        if (stack == null || !(stack.getItem() instanceof ItemGlove || stack.getItem() instanceof ItemBoxingGlove))
             stack = UIEUtils.getBauble(player, ItemGlove.class);
 
         if (stack != null) {
@@ -66,7 +69,7 @@ public class MixinModelBiped_Baubles {
             ModelPartRenderHelper.renderBipedPart(
                 0.0625F,
                 thisObject.bipedRightArm,
-                () -> GloveRenderer.renderGloveAsBauble(finalStack.getItemDamage(), player));
+                () -> GloveRenderer.renderGloveAsBauble(finalStack, player));
         }
 
         ItemStack ring = null;
