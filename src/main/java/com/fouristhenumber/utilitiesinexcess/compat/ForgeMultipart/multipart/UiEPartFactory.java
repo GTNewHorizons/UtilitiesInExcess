@@ -39,9 +39,11 @@ import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.MultiPartRegistry;
 import codechicken.multipart.TMultiPart;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
@@ -199,7 +201,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             else if (held.getItem() instanceof BaseTransferItemBlock item) // Nodes do
             {
                 itemBlock = Block.getBlockFromItem(item);
-                part = getPartByBlock(itemBlock, held.getItemDamage());
+                part = getPartByBlock(itemBlock, held.getItemDamage() | (ForgeDirection.getOrientation(hit.sideHit).getOpposite().ordinal() << 1));
             }
 
             if (part == null) return false;
@@ -239,6 +241,18 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
             if (!world.isRemote) {
                 TileMultipart.addPart(world, pos, part);
+
+                // Dig thorough the FMP code, and you'll realize this never happens based on a terrible
+                // line of init for FMP. For some reason getOrConvertTile sets doesTick = true EVEN THOUGH it doesn't add it to the world
+                // since that TE doesn't exist yet (see head of getOrConvertTile)
+                // Then, since doesTick == true it doesn't try to add it to the world as a tickable entity after so we just mimic what
+                // the world does on load, checking if it can update.
+                TileEntity maybeTE = world.getTileEntity(pos.x, pos.y, pos.z);
+                if (maybeTE instanceof TileMultipart maybeMultitile && maybeMultitile.canUpdate())
+                {
+                    world.addTileEntity(maybeMultitile);
+                }
+
                 world.playSoundEffect(
                     pos.x + 0.5,
                     pos.y + 0.5,

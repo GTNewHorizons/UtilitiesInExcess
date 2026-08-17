@@ -3,6 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Tr
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.ISBRHPart;
+import codechicken.multipart.JNormalOcclusion;
+import codechicken.multipart.JPartialOcclusion;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
@@ -28,15 +30,30 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
     public int meta;
 
     protected boolean doPartsOccludeDirection(ForgeDirection side) {
+        Cuboid6 connectionBox = getConnectionInDirection(side);
+
         for (TMultiPart part : tile().jPartList()) {
-            if (part != this) {
-                for (Cuboid6 cube : part.getSubParts()) {
-                    if (cube.intersects(getConnectionInDirection(side))) {
+            if (part == this) {
+                continue;
+            }
+
+            if (part instanceof JNormalOcclusion) {
+                for (Cuboid6 cube : ((JNormalOcclusion) part).getOcclusionBoxes()) {
+                    if (cube.intersects(connectionBox)) {
+                        return true;
+                    }
+                }
+            }
+
+            if (part instanceof JPartialOcclusion) {
+                for (Cuboid6 cube : ((JPartialOcclusion) part).getPartialOcclusionBoxes()) {
+                    if (cube.intersects(connectionBox)) {
                         return true;
                     }
                 }
             }
         }
+
         return false;
     }
 
@@ -112,7 +129,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, RenderBlocks renderer)
     {
         FMLRenderAccessLibrary.renderWorldBlock(renderer, new MetaOverrideWorld(world, x, y, z, meta), x, y, z, getBlock(), ModelISBRH.JSON_ISBRH_ID);
         return true;
