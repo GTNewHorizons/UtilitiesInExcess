@@ -17,7 +17,6 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalki
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -31,9 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 
-public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements ISBRHPart
+public class PipePart extends LogicComponentBasePart<FilterPipeLogic>
 {
     public PipePart(int meta) {
         super(meta);
@@ -53,13 +51,6 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements
     {
         super(packet.readInt());
         getLogic().readDesc(packet);
-    }
-
-    @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-    {
-        RenderPipes(this.getConnectionMask(world, x, y, z), x, y, z, this.getBlock(), renderer);
-        return true;
     }
 
     @Override
@@ -85,9 +76,9 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements
 
     private Cuboid6 getBlockBounds(IBlockAccess world, int x, int y, int z)
     {
-        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
+        List<IConnectable> connectables = IConnectable.getConnectables(world, x, y, z);
 
-        if (connectable == null)
+        if (!connectables.isEmpty())
         {
             return new Cuboid6(
                 new Vector3(0.375, 0.375, 0.375),
@@ -95,7 +86,7 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements
             );
         }
 
-        int mask = connectable.getConnectionMask(world, x, y, z);
+        int mask = IConnectable.getConnectionMask(connectables, world, x, y, z);
 
         double minY = (mask & (1 << 0)) != 0 ? 0.0 : 0.375;
         double maxY = (mask & (1 << 1)) != 0 ? 1.0 : 0.625;
@@ -123,14 +114,28 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent) {
-        return PipeType.values()[meta].validWalkDirections(world, x, y, z, fromDirection, walkingComponent);
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    {
+        int mask = PipeType.values()[meta].validWalkDirections(world, x, y, z, fromDirection, walkingComponent);
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            int bit = 1 << dir.ordinal();
+            if ((mask & bit) == 0)
+            {
+                continue;
+            }
+            if (doPartsOccludeDirection(dir))
+            {
+                mask &= ~bit;
+            }
+        }
+        return mask;
     }
 
     @Override
     public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
-        int mask = PipeType.values()[world.getBlockMetadata(x, y, z)].getConnectionMask(world, x, y, z);
+        int mask = 0;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
             if (getConnection(world, x, y, z, dir))
@@ -149,11 +154,11 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements
     @Override
     public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
     {
-        if (doPartsOccludeDirection(direction))
+        if (!PipeType.values()[meta].acceptsConnectionFrom(world, x, y, z, direction) )
         {
             return false;
         }
-        return PipeType.values()[meta].acceptsConnectionFrom(world, x, y, z, direction);
+        return !doPartsOccludeDirection(direction);
     }
 
     @Override

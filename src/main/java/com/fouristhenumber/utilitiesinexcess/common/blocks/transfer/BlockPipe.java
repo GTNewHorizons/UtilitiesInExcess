@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalki
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -111,10 +112,10 @@ public class BlockPipe extends BlockTransferBase
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
-        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(world, x, y, z);
+        if (!connectables.isEmpty())
         {
-            int mask = connectable.getConnectionMask(world, x, y, z);
+            int mask = IConnectable.getConnectionMask(connectables, world, x, y, z);
 
             float minY = (mask & (1 << 0)) != 0 ? 0F : 0.375F; // DOWN (-Y)
             float maxY = (mask & (1 << 1)) != 0 ? 1F : 0.625F; // UP (+Y)
@@ -145,10 +146,10 @@ public class BlockPipe extends BlockTransferBase
     public static List<AxisAlignedBB> getBlockCenteredCollisionCandidates(World worldIn, int x, int y, int z, int meta)
     {
         List<AxisAlignedBB> candidates = new ArrayList<>();
-        IConnectable connectable = IConnectable.getConnectable(worldIn, x, y, z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(worldIn, x, y, z);
+        if (!connectables.isEmpty())
         {
-            int connectionMask = connectable.getConnectionMask(worldIn, x, y, z);
+            int connectionMask = IConnectable.getConnectionMask(connectables, worldIn, x, y, z);
 
             candidates.add(PipeCollision.MIDDLE.getCollisionBox().copy());
 
@@ -193,11 +194,11 @@ public class BlockPipe extends BlockTransferBase
     @Override
     public int getRenderType()
     {
-        return transferPipeRenderID;
+        return ModelISBRH.JSON_ISBRH_ID;
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         return PipeType.values()[world.getBlockMetadata(x, y, z)].validWalkDirections(world, x, y, z, fromDirection, walkingComponent);
     }

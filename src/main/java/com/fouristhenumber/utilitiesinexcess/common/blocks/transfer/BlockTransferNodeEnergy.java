@@ -101,7 +101,7 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         return 0b111111;
     }

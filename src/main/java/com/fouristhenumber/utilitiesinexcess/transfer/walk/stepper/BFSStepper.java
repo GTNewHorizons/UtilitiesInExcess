@@ -11,6 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
+
 public class BFSStepper extends StepStrategy
 {
     LongArrayFIFOQueue stepQueue = new LongArrayFIFOQueue();
@@ -26,10 +28,10 @@ public class BFSStepper extends StepStrategy
     @Override
     public BlockPos step(World world, BlockPos walkerPos, IWalkingComponent walkingComponent)
     {
-        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (!connectables.isEmpty())
         {
-            int validDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
+            int validDirs = IConnectable.validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
 
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                 if ((validDirs & (1 << dir.ordinal())) != 0)
@@ -38,7 +40,8 @@ public class BFSStepper extends StepStrategy
                     int ny = walkerPos.y + dir.offsetY;
                     int nz = walkerPos.z + dir.offsetZ;
 
-                    if (IConnectable.getConnectable(world, nx, ny, nz) != null)
+                    List<IConnectable> candidateConnectables = IConnectable.getConnectables(world, nx, ny, nz);
+                    if (!candidateConnectables.isEmpty() && IConnectable.canConnectInDirection(candidateConnectables, world, nx, ny, nz, dir.getOpposite()))
                     {
                         long packedCoord = CoordinatePacker.pack(nx, ny, nz);
                         if (visitedLocations.add(packedCoord))

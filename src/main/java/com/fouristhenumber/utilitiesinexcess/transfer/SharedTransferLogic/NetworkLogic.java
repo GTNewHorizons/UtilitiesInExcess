@@ -20,6 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import java.util.List;
+
 public abstract class NetworkLogic<T extends ITransferNetworkComponent>
 {
     protected T host;
@@ -29,14 +31,15 @@ public abstract class NetworkLogic<T extends ITransferNetworkComponent>
         this.host = host;
     }
 
+    // TODO Move this somewhere else.
     public static boolean isValidConnectable(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
     {
         boolean connects;
-        IConnectable connectable = IConnectable.getConnectable(world, x, y, z);
+        List<IConnectable> connectables = IConnectable.getConnectables(world, x, y, z);
 
-        if (connectable != null)
+        if (!connectables.isEmpty())
         {
-            connects = connectable.canConnectInDirection(world, x, y, z, dir.getOpposite());
+            connects = IConnectable.canConnectInDirection(connectables, world, x, y, z, dir.getOpposite());
         }
         else
         {

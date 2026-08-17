@@ -1,0 +1,688 @@
+{
+  "multipart": [
+    {
+      "when": { "meta": "0" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/pipe_middle" }
+    },
+    {
+      "when": { "meta": "1" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_middle" }
+    },
+    {
+      "when": { "meta": "2" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/filter_pipe_middle" }
+    },
+    {
+      "when": { "meta": "3" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_middle" }
+    },
+    {
+      "when": { "meta": "4" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_middle" }
+    },
+    {
+      "when": { "meta": "5" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_middle" }
+    },
+    {
+      "when": { "meta": "6" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_middle" }
+    },
+    {
+      "when": { "meta": "7" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/energy_pipe_middle" }
+    },
+    {
+      "when": { "meta": "8" },
+      "apply": { "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_middle" }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "0" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "0" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "0" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "0" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "0" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "0" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "1" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "1" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "1" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "1" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "1" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "1" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/crossover_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "2" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/filter_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "2" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/filter_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "2" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/filter_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "2" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/filter_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "2" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/filter_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "2" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/filter_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "3" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "3" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "3" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "3" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "3" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "3" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/sorting_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "4" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "4" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "4" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "4" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "4" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "4" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/mod_sorting_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "5" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "5" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "5" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "5" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "5" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "5" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/rationing_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "6" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "6" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "6" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "6" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "6" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "6" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/hyper_rationing_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "7" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "7" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "7" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "7" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "7" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "7" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_pipe_edge",
+        "x": 270
+      }
+    },
+
+    {
+      "when": {
+        "AND": [
+          { "meta": "8" },
+          { "connection_north": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "8" },
+          { "connection_south": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_edge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "8" },
+          { "connection_east": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_edge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "8" },
+          { "connection_west": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_edge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "8" },
+          { "connection_up": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_edge",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "AND": [
+          { "meta": "8" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/energy_extraction_pipe_edge",
+        "x": 270
+      }
+    }
+  ]
+}

@@ -88,10 +88,10 @@ public abstract class BlockNodeBase extends BlockTransferBase // implements IBlo
     {
         List<AxisAlignedBB> candidates = new ArrayList<>();
         int facing = getFacingOrdinal(meta);
-        IConnectable connectable = IConnectable.getConnectable(worldIn, x, y, z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(worldIn, x, y, z);
+        if (!connectables.isEmpty())
         {
-            int connectionMask = connectable.getConnectionMask(worldIn, x, y, z);
+            int connectionMask = IConnectable.getConnectionMask(connectables, worldIn, x, y, z);
 
             if (connectionMask != 0)
             {
@@ -218,7 +218,7 @@ public abstract class BlockNodeBase extends BlockTransferBase // implements IBlo
     }
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         int mask = 0b111111;
         int facing = getFacingOrdinal(world.getBlockMetadata(x, y, z));

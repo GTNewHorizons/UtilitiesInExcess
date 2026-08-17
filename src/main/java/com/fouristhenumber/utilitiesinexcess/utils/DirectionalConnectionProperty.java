@@ -7,8 +7,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable.getConnectable;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable.getConnectables;
 
 public class DirectionalConnectionProperty implements BlockProperty<Boolean>
 {
@@ -54,7 +55,9 @@ public class DirectionalConnectionProperty implements BlockProperty<Boolean>
     }
 
     @Override
-    public Boolean getValue(IBlockAccess world, int x, int y, int z) {
-        return getConnectable(world, x, y, z) instanceof IConnectable connectable && connectable.getConnection(world, x, y, z, direction);
+    public Boolean getValue(IBlockAccess world, int x, int y, int z)
+    {
+        List<IConnectable> connectables = getConnectables(world, x, y, z);
+        return !connectables.isEmpty() && IConnectable.getConnection(connectables, world, x, y, z, direction);
     }
 }

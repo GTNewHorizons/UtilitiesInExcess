@@ -7,6 +7,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInse
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.ModSortedInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.RationedInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.SortedInserter;
+import minetweaker.api.block.IBlock;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -22,7 +23,7 @@ public enum PipeType
     CROSSOVER("crossover_pipe")
     {
         @Override
-        public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+        public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
         {
             return 1 << fromDirection.getOpposite().ordinal();
         }
@@ -82,7 +83,7 @@ public enum PipeType
         }
 
         @Override
-        public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+        public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
         {
             if (world.getTileEntity(x, y, z) instanceof TileEntityFilterPipe filterPipe)
             {
@@ -181,7 +182,7 @@ public enum PipeType
         return TRANSFER;
     }
 
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         if (fromDirection != ForgeDirection.UNKNOWN)
         {

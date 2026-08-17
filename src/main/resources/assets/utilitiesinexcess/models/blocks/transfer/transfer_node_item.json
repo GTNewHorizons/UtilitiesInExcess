@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "utilitiesinexcess:models/transfer/transfer_node_item",
-		"particle": "utilitiesinexcess:models/transfer/particle/transfer_node_item"
+		"particle": "utilitiesinexcess:models/particle/transfer_node_item"
 	},
 	"elements": [
 		{

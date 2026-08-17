@@ -21,18 +21,22 @@ public class RandomStepper extends StepStrategy
     @Override
     public BlockPos step(World world, BlockPos walkerPos, IWalkingComponent walkingComponent)
     {
-        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (!connectables.isEmpty())
         {
-            int validDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
+            int validDirs = IConnectable.validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
             List<ForgeDirection> dirList = new ArrayList<>();
 
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
             {
                 if ((validDirs & (1 << dir.ordinal())) != 0)
                 {
-                    IConnectable connectableInDir = IConnectable.getConnectable(world, walkerPos.x + dir.offsetX, walkerPos.y + dir.offsetY, walkerPos.z + dir.offsetZ);
-                    if (connectableInDir != null)
+                    int nx = walkerPos.x + dir.offsetX;
+                    int ny = walkerPos.y + dir.offsetY;
+                    int nz = walkerPos.z + dir.offsetZ;
+
+                    List<IConnectable> candidateConnectables = IConnectable.getConnectables(world, nx, ny, nz);
+                    if (!candidateConnectables.isEmpty() && IConnectable.canConnectInDirection(candidateConnectables, world, nx, ny, nz, dir.getOpposite()))
                     {
                         dirList.add(dir);
                     }

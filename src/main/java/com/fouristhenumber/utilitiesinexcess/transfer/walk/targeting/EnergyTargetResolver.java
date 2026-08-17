@@ -21,14 +21,14 @@ public class EnergyTargetResolver implements TargetResolver<IEnergyConnection> {
     public List<Target<IEnergyConnection>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir)
     {
         List<Target<IEnergyConnection>> validTargets = new ArrayList<>();
-        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (!connectables.isEmpty())
         {
-            int validOuputDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
+            int validOutputDirs = IConnectable.validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
 
             for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
             {
-                if ((validOuputDirs & (1 << searchDir.ordinal())) == 0)
+                if ((validOutputDirs & (1 << searchDir.ordinal())) == 0)
                 {
                     continue;
                 }

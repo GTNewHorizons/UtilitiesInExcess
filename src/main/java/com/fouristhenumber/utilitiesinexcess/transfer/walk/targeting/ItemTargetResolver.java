@@ -25,10 +25,10 @@ public class ItemTargetResolver implements TargetResolver<IInventory> {
     public List<Target<IInventory>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent<?> walking, ForgeDirection fromDir)
     {
         List<Target<IInventory>> validTargets = new ArrayList<>();
-        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
-        if (connectable != null)
+        List<IConnectable> connectables = IConnectable.getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (!connectables.isEmpty())
         {
-            int validOutputDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
+            int validOutputDirs = IConnectable.validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
 
             for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
             {

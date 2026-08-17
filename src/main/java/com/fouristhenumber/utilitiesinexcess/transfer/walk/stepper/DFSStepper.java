@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayDeque;
+import java.util.List;
 
 public class DFSStepper extends StepStrategy
 {
@@ -37,13 +38,13 @@ public class DFSStepper extends StepStrategy
     @Override
     public BlockPos step(World world, BlockPos walkerPos, IWalkingComponent walkingComponent)
     {
-        IConnectable connectable = IConnectable.getConnectable(world, walkerPos.x, walkerPos.y, walkerPos.z);
-        if (connectable == null)
+        List<IConnectable> connectables = IConnectable.getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (connectables.isEmpty())
         {
             return reset(walkerPos, walkingComponent);
         }
 
-        int validDirs = connectable.validWalkDirections(world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
+        int validDirs = IConnectable.validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDirection, walkingComponent);
 
         int remaining = filterToUnvisited(world, walkerPos.x, walkerPos.y, walkerPos.z, validDirs);
 
@@ -80,7 +81,8 @@ public class DFSStepper extends StepStrategy
             int nz = top.z + chosen.offsetZ;
             long packed = CoordinatePacker.pack(nx, ny, nz);
 
-            if (IConnectable.getConnectable(world, nx, ny, nz) != null && visitedLocations.add(packed))
+            List<IConnectable> candidateConnectables = IConnectable.getConnectables(world, nx, ny, nz);
+            if (!candidateConnectables.isEmpty() && IConnectable.canConnectInDirection(candidateConnectables, world, nx, ny, nz, chosen.getOpposite()) && visitedLocations.add(packed))
             {
                 return mutablePos.set(nx, ny, nz);
             }

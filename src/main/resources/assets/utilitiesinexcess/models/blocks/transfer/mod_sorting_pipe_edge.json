@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/transfer/pipe_edge",
+  "textures": {
+    "0": "utilitiesinexcess:blocks/mod_sorting_pipe",
+    "particle": "utilitiesinexcess:blocks/mod_sorting_pipe"
+  }
+}

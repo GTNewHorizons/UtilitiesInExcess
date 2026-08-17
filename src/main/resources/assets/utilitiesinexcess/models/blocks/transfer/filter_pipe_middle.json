@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/transfer/pipe_middle",
+  "textures": {
+    "0": "utilitiesinexcess:blocks/filter_pipe",
+    "particle": "utilitiesinexcess:blocks/filter_pipe"
+  }
+}

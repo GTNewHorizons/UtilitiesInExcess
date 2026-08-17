@@ -4,18 +4,15 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
-import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import scala.collection.Seq;
 
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
@@ -48,10 +44,7 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
 
     @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
-        return Stream.concat(
-                Arrays.stream(NodeCollision.values()[getFacing().ordinal()].getOcclusionBoxes()),
-                Stream.of(PipeCollision.MIDDLE.getCollisionBox())
-            )
+        return Arrays.stream(NodeCollision.values()[getFacing().ordinal()].getOcclusionBoxes())
             .map(AxisAlignedBB::copy)
             .map(Cuboid6::new)
             .toList();
@@ -76,12 +69,12 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
         if (tile() == null) {
             return false;
         }
-        return !doPartsOccludeDirection(direction);
+        return direction != getFacing() && !doPartsOccludeDirection(direction);
     }
 
 
     @Override
-    public int validWalkDirections(World world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
         int mask = 0b111111;
         int facing = getFacingOrdinal(meta);
@@ -92,6 +85,20 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
         if (fromDirection != ForgeDirection.UNKNOWN)
         {
             mask &= ~(1 << fromDirection.ordinal());
+        }
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            int bit = 1 << dir.ordinal();
+
+            if ((mask & bit) == 0)
+            {
+                continue;
+            }
+
+            if (doPartsOccludeDirection(dir))
+            {
+                mask &= ~bit;
+            }
         }
         return mask;
     }

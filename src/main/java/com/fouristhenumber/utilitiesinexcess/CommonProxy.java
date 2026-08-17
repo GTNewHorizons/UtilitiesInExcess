@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess;
 
 import codechicken.lib.world.TileChunkLoadHook;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
@@ -57,6 +56,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import minetweaker.MineTweakerAPI;
 
+import java.util.Arrays;
+
 import static com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry.registerProperty;
 
 public class CommonProxy {
@@ -90,17 +91,15 @@ public class CommonProxy {
 
         transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
-        flatNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
         energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
 
-        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.DOWN);
-        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.UP);
-        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.NORTH);
-        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.SOUTH);
-        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.WEST);
-        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.EAST);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.DOWN);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.UP);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.NORTH);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.SOUTH);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.WEST);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.EAST);
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
