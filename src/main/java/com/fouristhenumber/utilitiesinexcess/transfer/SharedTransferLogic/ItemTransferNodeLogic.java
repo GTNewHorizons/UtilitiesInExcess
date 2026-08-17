@@ -74,9 +74,9 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
 
         if (!init)
         {
+            walker.init();
             upgrades.init();
             init = true;
-            walker.init();
         }
 
         int actionsThisTick = actionsThisTick();

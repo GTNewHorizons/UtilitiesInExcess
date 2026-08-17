@@ -4,6 +4,10 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.gtnewhorizon.gtnhlib.api.IBlockModelProvider;
+import com.gtnewhorizon.gtnhlib.client.model.BakedModelQuadContext;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
+import com.gtnewhorizon.gtnhlib.client.model.baked.BakedModel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -25,7 +29,7 @@ import java.util.stream.Collectors;
 import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
-public abstract class BlockNodeBase extends BlockTransferBase
+public abstract class BlockNodeBase extends BlockTransferBase // implements IBlockModelProvider
 {
     private static final int TYPE_MASK = 0b00000001;
     private static final int FACING_MASK = 0b00001110;
@@ -233,20 +237,26 @@ public abstract class BlockNodeBase extends BlockTransferBase
     public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
         int mask = 0;
-        ForgeDirection facing = getFacing(world.getBlockMetadata(x, y, z));
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
-            if (dir != facing)
+            if (getConnection(world, x, y, z, dir))
             {
-                if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
-                {
-                    mask |= 1 << dir.ordinal();
-                }
+                mask |= 1 << dir.ordinal();
             }
         }
         return mask;
     }
 
+    @Override
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
+    {
+        ForgeDirection facing = getFacing(world.getBlockMetadata(x, y, z));
+        if (dir != facing)
+        {
+            return isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+        }
+        return false;
+    }
 
     @Override
     public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
@@ -257,7 +267,7 @@ public abstract class BlockNodeBase extends BlockTransferBase
     @Override
     public int getRenderType()
     {
-        return flatNodeRenderID;
+        return ModelISBRH.JSON_ISBRH_ID;
     }
 
     public static ForgeDirection getFacing(int meta)

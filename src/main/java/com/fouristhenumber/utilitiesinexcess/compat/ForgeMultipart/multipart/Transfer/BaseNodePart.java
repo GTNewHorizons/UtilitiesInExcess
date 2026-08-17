@@ -1,26 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
-import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.TMultiPart;
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
@@ -37,12 +28,9 @@ import java.util.stream.Stream;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
-public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends PartNetworkComponentBase
-    implements IWalkingComponent<V>, IGuiHolder<PosGuiData>
+public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends LogicComponentBasePart<T>
+    implements IWalkingComponent<V>
 {
-    protected T logic;
-    private boolean initialized = false;
-
     public BaseNodePart(int meta) {
         super(meta);
     }
@@ -50,28 +38,8 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
     @Override
     public void update()
     {
-        if (world().isRemote)
-        {
-            return;
-        }
-
-        if (!initialized) {
-            init();
-        }
-
         getLogic().updateEntity();
     }
-
-
-    private void init() {
-        if (initialized) {
-            return;
-        }
-
-        initialized = true;
-    }
-
-    protected abstract T getLogic();
 
     @Override
     public Cuboid6 getBounds() {
@@ -129,24 +97,6 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
     }
 
     @Override
-    public void save(NBTTagCompound tag) {
-        super.save(tag);
-        getLogic().writeToNBT(tag);
-    }
-
-    @Override
-    public void load(NBTTagCompound tag) {
-        super.load(tag);
-        getLogic().readFromNBT(tag);
-    }
-
-    @Override
-    public void writeDesc(MCDataOutput packet) {
-        super.writeDesc(packet);
-        getLogic().writeDesc(packet);
-    }
-
-    @Override
     public Iterable<Cuboid6> getCollisionBoxes()
     {
         List<Cuboid6> cuboid6s = new ArrayList<>();
@@ -162,18 +112,26 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
     public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
         int mask = 0;
-        ForgeDirection facing = this.getFacing();
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
-            if (dir != facing)
+            if (getConnection(world, x, y, z, dir))
             {
-                if (!doPartsOccludeDirection(dir) && isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
-                {
-                    mask |= 1 << dir.ordinal();
-                }
+                mask |= 1 << dir.ordinal();
             }
         }
         return mask;
+    }
+
+    // Needs to be separate from the block implementation because we care about occluding parts in the current block
+    @Override
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
+    {
+        ForgeDirection facing = this.getFacing();
+        if (dir != facing)
+        {
+            return !doPartsOccludeDirection(dir) && isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+        }
+        return false;
     }
 
     @Override
@@ -202,16 +160,5 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Pa
         }
 
         return true;
-    }
-
-    @Override
-    public ModularPanel buildUI(PosGuiData posGuiData, PanelSyncManager panelSyncManager, UISettings uiSettings) {
-        return getLogic().buildUI(posGuiData, panelSyncManager, uiSettings);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return getLogic().createScreen(data, mainPanel);
     }
 }

@@ -5,21 +5,27 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.ISBRHPart;
+import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import scala.collection.Seq;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,15 +33,26 @@ import java.util.List;
 
 import static com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer.RenderPipes;
 
-public class PipePart extends PartNetworkComponentBase implements ISBRHPart
+public class PipePart extends LogicComponentBasePart<FilterPipeLogic> implements ISBRHPart
 {
     public PipePart(int meta) {
         super(meta);
     }
 
+    private FilterPipeLogic logic;
+
+    protected FilterPipeLogic getLogic() {
+        if (logic == null)
+        {
+            logic = new FilterPipeLogic(this);
+        }
+        return logic;
+    }
+
     public PipePart(MCDataInput packet)
     {
         super(packet.readInt());
+        getLogic().readDesc(packet);
     }
 
     @Override
@@ -116,12 +133,17 @@ public class PipePart extends PartNetworkComponentBase implements ISBRHPart
         int mask = PipeType.values()[world.getBlockMetadata(x, y, z)].getConnectionMask(world, x, y, z);
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
-            if (doPartsOccludeDirection(dir))
+            if (getConnection(world, x, y, z, dir))
             {
                 mask &= ~(1 << dir.ordinal());
             }
         }
         return mask;
+    }
+
+    @Override
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
+        return PipeType.values()[meta].getConnection(world, x, y, z, dir) && !doPartsOccludeDirection(dir);
     }
 
     @Override
@@ -131,16 +153,37 @@ public class PipePart extends PartNetworkComponentBase implements ISBRHPart
         {
             return false;
         }
-        return PipeType.values()[world.getBlockMetadata(x, y, z)].acceptsConnectionFrom(world, x, y, z, direction);
+        return PipeType.values()[meta].acceptsConnectionFrom(world, x, y, z, direction);
     }
 
     @Override
     public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
-        return PipeType.values()[world.getBlockMetadata(x, y, z)].getInserter();
+        return PipeType.values()[meta].getInserter();
     }
 
     @Override
     public Iterable<IndexedCuboid6> getSubParts() {
         return Collections.singleton(new IndexedCuboid6(0, new Cuboid6(this.getBlockBounds(world(), x(), y(), z()))));
+    }
+
+    @Override
+    public boolean activate(EntityPlayer player, MovingObjectPosition hit, ItemStack stack)
+    {
+        if (!world().isRemote && this.meta == PipeType.FILTER.getMeta())
+        {
+            Seq<TMultiPart> parts = tile().partList();
+
+            int index = -1;
+            for (int i = 0; i < parts.size(); i++)
+            {
+                if (parts.apply(i) == this)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            PartGuiHandler.open(player, this, index);
+        }
+        return true;
     }
 }

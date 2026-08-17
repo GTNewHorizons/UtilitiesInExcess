@@ -44,7 +44,7 @@ public enum ConversionRegistry
         for (final ConversionRegistry registry : values()) {
             if (registry.block.isInstance(block))
             {
-                return createUEMultiPart(false, meta, 0, registry.name);
+                return createUEMultiPart(meta, 0, registry.name);
             }
         }
         return null;

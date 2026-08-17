@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/transfer/transfer_node_item",
+  "textures": {
+    "0": "utilitiesinexcess:models/transfer/transfer_node_fluid",
+    "particle": "utilitiesinexcess:models/transfer/particle/transfer_node_fluid"
+  }
+}

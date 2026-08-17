@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -43,7 +45,7 @@ import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.PURPLE_SL
 import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.YELLOW_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.getInventoryContentsFromStack;
 
-public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implements IInventory
+public class FilterPipeLogic extends NetworkLogic<ITransferNetworkComponent> implements IInventory
 {
     // This is the actual items in the filter.
     private final ItemStack[] filters = new ItemStack[6];
@@ -51,10 +53,29 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
     // This is the logic that those items represent.
     private final ItemFilter[] logicalFilter = new ItemFilter[6];
 
-    public FilterPipeLogic(TileEntityFilterPipe host) {
+    public FilterPipeLogic(ITransferNetworkComponent host) {
         super(host);
     }
 
+    @Override
+    public void writeToNBT(NBTTagCompound compound)
+    {
+        NBTTagList itemList = new NBTTagList();
+        for (int i = 0; i < filters.length; i++)
+        {
+            ItemStack stack = filters[i];
+            if (stack != null)
+            {
+                NBTTagCompound itemCompound = new NBTTagCompound();
+                itemCompound.setByte("Slot", (byte) i);
+                stack.writeToNBT(itemCompound);
+                itemList.appendTag(itemCompound);
+            }
+        }
+        compound.setTag("Items", itemList);
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         NBTTagList list = compound.getTagList("Items", 10);
@@ -73,21 +94,18 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
         parseInventoryToFilter();
     }
 
-    public void writeToNBT(NBTTagCompound compound)
-    {
-        NBTTagList itemList = new NBTTagList();
-        for (int i = 0; i < filters.length; i++)
-        {
-            ItemStack stack = filters[i];
-            if (stack != null)
-            {
-                NBTTagCompound itemCompound = new NBTTagCompound();
-                itemCompound.setByte("Slot", (byte) i);
-                stack.writeToNBT(itemCompound);
-                itemList.appendTag(itemCompound);
-            }
+    @Override
+    public void writeDesc(MCDataOutput output) {
+        for (ItemStack filter : this.filters) {
+            output.writeItemStack(filter);
         }
-        compound.setTag("Items", itemList);
+    }
+
+    @Override
+    public void readDesc(MCDataInput input) {
+        for (int i = 0; i < this.filters.length; i++) {
+            this.filters[i] = input.readItemStack();
+        }
     }
 
     @Override
@@ -140,6 +158,7 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
         host.markHostDirty();
     }
 
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings)
     {
         ModularPanel panel = new ModularPanel("panel");
@@ -339,10 +358,4 @@ public class FilterPipeLogic extends NetworkLogic<TileEntityFilterPipe> implemen
     {
         return true;
     }
-
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
-
 }

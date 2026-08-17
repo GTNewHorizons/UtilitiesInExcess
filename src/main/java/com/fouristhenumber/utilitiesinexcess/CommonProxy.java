@@ -8,6 +8,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiE
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
+import com.fouristhenumber.utilitiesinexcess.utils.DirectionalConnectionProperty;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import net.minecraft.client.Minecraft;
@@ -56,6 +57,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import minetweaker.MineTweakerAPI;
 
+import static com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry.registerProperty;
+
 public class CommonProxy {
 
     public static int lapisAetheriusRenderID;
@@ -91,6 +94,13 @@ public class CommonProxy {
         RenderingRegistry.registerBlockHandler(new TransferNodeRenderer());
         energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
+
+        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.DOWN);
+        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.UP);
+        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.NORTH);
+        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.SOUTH);
+        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.WEST);
+        registerProperty(ModBlocks.TRANSFER_NODE.get(), DirectionalConnectionProperty.EAST);
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 

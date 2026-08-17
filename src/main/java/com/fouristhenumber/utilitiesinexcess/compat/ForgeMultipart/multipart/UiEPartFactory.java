@@ -13,6 +13,7 @@ import codechicken.lib.vec.BlockCoord;
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidRetrievalNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidTransferNodePart;
@@ -91,82 +92,34 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
         return legacyAliases.getOrDefault(name, name);
     }
 
-    public static UiEMultipart createUEMultiPart(boolean isClient, int meta, int material, String name) {
-        switch (name) {
-            case ("ue_fence"): {
-                return new FencePart(material, meta);
-            }
-            case ("ue_wall"): {
-                return new WallPart(material, meta);
-            }
-            case ("ue_sphere"): {
-                return new SpherePart(material);
-            }
-            case ("item_retrieval_node"):
-            {
-                return new ItemRetrievalNodePart(meta);
-            }
-            case ("fluid_retrieval_node"):
-            {
-                return new FluidRetrievalNodePart(meta);
-            }
-            case ("item_transfer_node"):
-            {
-                return new ItemTransferNodePart(meta);
-            }
-            case ("fluid_transfer_node"):
-            {
-                return new FluidTransferNodePart(meta);
-            }
-            case ("pipe"):
-            {
-                return new PipePart(meta);
-            }
-            case ("energy_node"):
-            {
-                return new EnergyNodePart(meta);
-            }
-        }
-        return null;
+    public static UiEMultipart createUEMultiPart(int meta, int material, String name) {
+        return switch (name) {
+            case ("ue_fence") -> new FencePart(material, meta);
+            case ("ue_wall") -> new WallPart(material, meta);
+            case ("ue_sphere") -> new SpherePart(material);
+            case ("item_retrieval_node") -> new ItemRetrievalNodePart(meta);
+            case ("fluid_retrieval_node") -> new FluidRetrievalNodePart(meta);
+            case ("item_transfer_node") -> new ItemTransferNodePart(meta);
+            case ("fluid_transfer_node") -> new FluidTransferNodePart(meta);
+            case ("pipe") -> new PipePart(meta);
+            case ("energy_node") -> new EnergyNodePart(meta);
+            default -> null;
+        };
     }
 
     public static UiEMultipart createUEMultiPart(MCDataInput packet, String name) {
-        switch (name) {
-            case ("ue_fence"): {
-                return new FencePart(packet);
-            }
-            case ("ue_wall"): {
-                return new WallPart(packet);
-            }
-            case ("ue_sphere"): {
-                return new SpherePart(packet);
-            }
-            case ("item_retrieval_node"):
-            {
-                return new ItemRetrievalNodePart(packet);
-            }
-            case ("fluid_retrieval_node"):
-            {
-                return new FluidRetrievalNodePart(packet);
-            }
-            case ("item_transfer_node"):
-            {
-                return new ItemTransferNodePart(packet);
-            }
-            case ("fluid_transfer_node"):
-            {
-                return new FluidTransferNodePart(packet);
-            }
-            case ("pipe"):
-            {
-                return new PipePart(packet);
-            }
-            case ("energy_node"):
-            {
-                return new EnergyNodePart(packet);
-            }
-        }
-        return null;
+        return switch (name) {
+            case ("ue_fence") -> new FencePart(packet);
+            case ("ue_wall") -> new WallPart(packet);
+            case ("ue_sphere") -> new SpherePart(packet);
+            case ("item_retrieval_node") -> new ItemRetrievalNodePart(packet);
+            case ("fluid_retrieval_node") -> new FluidRetrievalNodePart(packet);
+            case ("item_transfer_node") -> new ItemTransferNodePart(packet);
+            case ("fluid_transfer_node") -> new FluidTransferNodePart(packet);
+            case ("pipe") -> new PipePart(packet);
+            case ("energy_node") -> new EnergyNodePart(packet);
+            default -> null;
+        };
     }
 
     // Called on the server
@@ -175,7 +128,6 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
         String actualName = translateName(name);
 
         return createUEMultiPart(
-            false,
             nbt.getInteger("side"),
             MicroMaterialRegistry.materialID(nbt.getString("material")),
             actualName);
@@ -239,9 +191,15 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
             Block itemBlock = null;
             TMultiPart part = null;
-            if (held.getItem() instanceof BaseTransferItemBlock item) {
+            if (held.getItem() instanceof ItemPipe item) // Pipes don't care about sidedness
+            {
                 itemBlock = Block.getBlockFromItem(item);
-                part = getPartByBlock(itemBlock, hit.sideHit);
+                part = getPartByBlock(itemBlock, held.getItemDamage());
+            }
+            else if (held.getItem() instanceof BaseTransferItemBlock item) // Nodes do
+            {
+                itemBlock = Block.getBlockFromItem(item);
+                part = getPartByBlock(itemBlock, held.getItemDamage());
             }
 
             if (part == null) return false;

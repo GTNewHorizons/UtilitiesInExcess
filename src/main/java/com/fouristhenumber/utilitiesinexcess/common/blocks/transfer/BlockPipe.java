@@ -1,7 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TileMultipart;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
@@ -20,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -67,20 +72,40 @@ public class BlockPipe extends BlockTransferBase
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+    {
+        if (world.getBlock(x, y, z) instanceof BlockPipe)
+        {
+            return getIcon(side, world.getBlockMetadata(x, y, z));
+        }
+
+        // Weird to put this here, but the normal render blocks pipeline goes through here.
+        // There are probably better ways to do this, but it takes a lot of changes to rendering
+        // from what I can tell.
+        if (Mods.ForgeMicroBlock.isLoaded())
+        {
+            if (world.getTileEntity(x, y, z) instanceof TileMultipart multipart)
+            {
+                for (TMultiPart part : multipart.jPartList())
+                {
+                    if (part instanceof PipePart pipe)
+                    {
+                        return getIcon(side, pipe.meta);
+                    }
+                }
+            }
+        }
+        return getIcon(0, 0);
+    }
+
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<net.minecraft.item.ItemStack> list)
     {
         for (int i = 0; i < PipeType.values().length; i++)
         {
             list.add(new ItemStack(itemIn, 1, i));
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int meta = world.getBlockMetadata(x, y, z);
-        return PipeType.fromMeta(meta).getIcon(side);
     }
 
     @Override
@@ -114,47 +139,6 @@ public class BlockPipe extends BlockTransferBase
                 list.add(box);
             }
         }
-
-//        Block block = worldIn.getBlock(x, y, z);
-//        if (block instanceof BlockTransferBase transferBase)
-//        {
-//            int connectionMask = transferBase.getConnectionMask(worldIn, x, y, z);
-//
-//            AxisAlignedBB boundingBox = PipeCollision.MIDDLE.getCollisionBox().copy().offset(x, y, z);
-//            if (boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//
-//            boundingBox = PipeCollision.DOWN.getCollisionBox().copy().offset(x, y, z);
-//            if ((connectionMask & (1 << 0)) != 0 && boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//
-//            boundingBox = PipeCollision.UP.getCollisionBox().copy().offset(x, y, z);
-//            if ((connectionMask & (1 << 1)) != 0 && boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//
-//            boundingBox = PipeCollision.NORTH.getCollisionBox().copy().offset(x, y, z);
-//            if ((connectionMask & (1 << 2)) != 0 && boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//
-//            boundingBox = PipeCollision.SOUTH.getCollisionBox().copy().offset(x, y, z);
-//            if ((connectionMask & (1 << 3)) != 0 && boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//
-//            boundingBox = PipeCollision.WEST.getCollisionBox().copy().offset(x, y, z);
-//            if ((connectionMask & (1 << 4)) != 0 && boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//
-//            boundingBox = PipeCollision.EAST.getCollisionBox().copy().offset(x, y, z);
-//            if ((connectionMask & (1 << 5)) != 0 && boundingBox.intersectsWith(mask)) {
-//                list.add(boundingBox);
-//            }
-//        }
     }
 
 
@@ -222,6 +206,11 @@ public class BlockPipe extends BlockTransferBase
     public int getConnectionMask(IBlockAccess world, int x, int y, int z)
     {
         return PipeType.values()[world.getBlockMetadata(x, y, z)].getConnectionMask(world, x, y, z);
+    }
+
+    @Override
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
+        return PipeType.values()[world.getBlockMetadata(x, y, z)].getConnection(world, x, y, z, dir);
     }
 
     @Override

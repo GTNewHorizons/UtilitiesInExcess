@@ -52,7 +52,7 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
         int materialId = MicroMaterialRegistry.materialID(
             item.getTagCompound()
                 .getString("mat"));
-        UiEMultipart part = new UiEPartFactory().createUEMultiPart(true,0, materialId, materialBasedPartNames[item.getItemDamage()]);
+        UiEMultipart part = UiEPartFactory.createUEMultiPart(0, materialId, materialBasedPartNames[item.getItemDamage()]);
         part.render(new Vector3(0, 0, 0), -1);
 
         state.drawInstance();

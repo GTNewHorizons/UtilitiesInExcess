@@ -1,6 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
 import codechicken.lib.data.MCDataInput;
+import codechicken.lib.vec.BlockCoord;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
@@ -42,7 +43,12 @@ public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Intege
 
     @Override
     public int getConnectionMask(IBlockAccess world, int x, int y, int z) {
-        return EnergyTransferNodeLogic.getConnectionMask(world, x, y, z);
+        return 0;
+    }
+
+    @Override
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
+        return false;
     }
 
     // Needs to look at

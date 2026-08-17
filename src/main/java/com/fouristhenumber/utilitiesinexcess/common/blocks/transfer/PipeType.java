@@ -41,14 +41,20 @@ public enum PipeType
             int mask = 0;
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
             {
-                ForgeDirection opp = dir.getOpposite();
-                if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir) &&
-                    isValidConnectable(world, x + opp.offsetX, y + opp.offsetY, z + opp.offsetZ, opp))
+                if (getConnection(world, x, y, z, dir))
                 {
                     mask |= 1 << dir.ordinal();
                 }
             }
             return mask;
+        }
+
+        @Override
+        public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
+        {
+            ForgeDirection opp = dir.getOpposite();
+            return isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir) &&
+                isValidConnectable(world, x + opp.offsetX, y + opp.offsetY, z + opp.offsetZ, opp);
         }
     },
     FILTER("filter_pipe", "filter_pipe_0", "filter_pipe_1", "filter_pipe_2")
@@ -189,7 +195,7 @@ public enum PipeType
         int mask = 0;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
-            if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
+            if (getConnection(world, x, y, z, dir))
             {
                 mask |= 1 << dir.ordinal();
             }
@@ -204,5 +210,10 @@ public enum PipeType
 
     public BaseInserter getInserter() {
         return new DefaultInserter();
+    }
+
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
+    {
+        return isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
     }
 }

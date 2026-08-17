@@ -1,0 +1,167 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "meta": "0"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_item", "x": 0, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "2"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_item", "x": 180, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "4"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_item", "x": 90, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "6"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_item", "x": 270, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "8"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_item", "x": 90, "y": 90
+      }
+    },
+    {
+      "when": {
+        "meta": "10"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_item", "x": 90, "y": 270
+      }
+    },
+
+    {
+      "when": {
+        "meta": "1"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_fluid", "x": 0, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "3"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_fluid", "x": 180, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "5"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_fluid", "x": 90, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "7"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_fluid", "x": 270, "y": 0
+      }
+    },
+    {
+      "when": {
+        "meta": "9"
+      },
+      "apply": {"model": "utilitiesinexcess:blocks/transfer/transfer_node_fluid", "x": 90, "y": 90
+      }
+    },
+    {
+      "when": {
+        "meta": "11"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_fluid",
+        "x": 90,
+        "y": 270
+      }
+    },
+
+    {
+      "when": {
+        "OR": [
+          { "connection_north": "true" },
+          { "connection_south": "true" },
+          { "connection_east": "true" },
+          { "connection_west": "true" },
+          { "connection_up": "true" },
+          { "connection_down": "true" }
+        ]
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_middle"
+      }
+    },
+
+    {
+      "when": {
+        "connection_north": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "connection_south": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "y": 180
+      }
+    },
+    {
+      "when": {
+        "connection_east": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "y": 270
+      }
+    },
+    {
+      "when": {
+        "connection_west": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "y": 90
+      }
+    },
+    {
+      "when": {
+        "connection_up": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "x": 90
+      }
+    },
+    {
+      "when": {
+        "connection_down": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "x": 270
+      }
+    }
+  ]
+}

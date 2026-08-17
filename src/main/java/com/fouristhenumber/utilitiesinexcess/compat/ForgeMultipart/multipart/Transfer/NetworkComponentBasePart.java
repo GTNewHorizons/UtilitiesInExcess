@@ -2,27 +2,28 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Tr
 
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Vector3;
 import codechicken.multipart.ISBRHPart;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferNodeRenderer;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.MetaOverrideWorld;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.src.FMLRenderAccessLibrary;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class PartNetworkComponentBase extends UiEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart
+public abstract class NetworkComponentBasePart extends UiEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart
 {
     public int meta;
 
@@ -44,9 +45,11 @@ public abstract class PartNetworkComponentBase extends UiEMultipart implements I
         return new Cuboid6(PipeCollision.values()[side.ordinal() + 1].getCollisionBox());
     }
 
-    protected PartNetworkComponentBase(int meta) {
+    protected NetworkComponentBasePart(int meta) {
         this.meta = meta;
     }
+
+    public abstract Block getBlock();
 
     @Override
     public World getWorld() {
@@ -97,8 +100,6 @@ public abstract class PartNetworkComponentBase extends UiEMultipart implements I
         packet.writeInt(meta);
     }
 
-    public abstract Block getBlock();
-
     @Override
     public IIcon getBreakingIcon(Object subPart, int side) {
         return getBlock().getIcon(side, meta);
@@ -113,7 +114,7 @@ public abstract class PartNetworkComponentBase extends UiEMultipart implements I
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        TransferNodeRenderer.renderFlatNode(world, x, y, z, getBlock(), getBlock().getRenderType(), renderer, meta);
+        FMLRenderAccessLibrary.renderWorldBlock(renderer, new MetaOverrideWorld(world, x, y, z, meta), x, y, z, getBlock(), ModelISBRH.JSON_ISBRH_ID);
         return true;
     }
     @Override

@@ -20,7 +20,11 @@ public interface IConnectable
     // Gets the actual things that are connected used for rendering.
     int getConnectionMask(IBlockAccess world, int x, int y, int z);
 
-    // Given a block can it connect to the block from the given direction.
+    // Same as getConnectionMask, but for one direction. Implementations of getConnectionMask use this function.
+    // In theory it oculd
+    boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir);
+
+    // Given a block what are all possible directions that it can connect to, not caring what direction has a connectable
     boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction);
 
     BaseInserter getInserter(IBlockAccess world, int x, int y, int z);
@@ -35,8 +39,7 @@ public interface IConnectable
 
         if (Mods.ForgeMicroBlock.isLoaded())
         {
-            TileEntity tile = world.getTileEntity(x, y, z);
-            if (tile instanceof TileMultipart multipart)
+            if (world.getTileEntity(x, y, z) instanceof TileMultipart multipart)
             {
                 for (TMultiPart part : multipart.jPartList())
                 {

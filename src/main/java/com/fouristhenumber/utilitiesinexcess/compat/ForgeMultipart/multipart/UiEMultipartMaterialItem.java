@@ -64,7 +64,7 @@ public class UiEMultipartMaterialItem extends Item {
         MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
         BlockCoord position = new BlockCoord(x, y, z).offset(side);
         TMultiPart potentialPart = UiEPartFactory
-            .createUEMultiPart(false, ForgeDirection.OPPOSITES[side], materialID, materialBasedPartNames[damage]);
+            .createUEMultiPart(ForgeDirection.OPPOSITES[side], materialID, materialBasedPartNames[damage]);
         if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
             && TileMultipart.canPlacePart(world, position, potentialPart)) {
             if (!world.isRemote) {

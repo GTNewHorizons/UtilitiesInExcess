@@ -30,13 +30,6 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
 
     public abstract void updateEntity();
 
-    public abstract ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings);
-
-    @SideOnly(Side.CLIENT)
-    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
-    }
-
     @Override
     public void markDirty() {
         host.markHostDirty();
@@ -63,23 +56,28 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
         this.actionPerSecond = DEFAULT_STEPS_PER_SECOND;
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
         this.upgrades.writeToNBT(nbt);
     }
 
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        upgrades.readFromNBT(nbt);
+    }
+
+    @Override
     public void writeDesc(MCDataOutput output)
     {
         this.upgrades.writeDesc(output);
     }
 
+    @Override
     public void readDesc(MCDataInput input)
     {
         this.upgrades.readDesc(input);
-    }
-
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        upgrades.readFromNBT(nbt);
     }
 
     public abstract V getWalkingObject();

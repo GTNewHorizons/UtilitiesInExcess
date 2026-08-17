@@ -112,12 +112,18 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
         int mask = 0;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
         {
-            if (isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir))
+            if (getConnection(world, x, y, z, dir))
             {
                 mask |= 1 << dir.ordinal();
             }
         }
         return mask;
+    }
+
+    @Override
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
+    {
+        return isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
     }
 
     @Override
