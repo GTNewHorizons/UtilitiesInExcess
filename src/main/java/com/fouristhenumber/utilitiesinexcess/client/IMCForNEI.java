@@ -6,6 +6,7 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
+import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.mixins.early.minecraft.accessors.AccessorBlock;
 
@@ -77,6 +78,9 @@ public class IMCForNEI {
             if (Mods.GregTech.isLoaded()) sendInfoPage(
                 "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
                 "uie.nei.infopage.builders_wand.3");
+            if (BuildersWandsConfig.INSTANCE.enableScribe) sendInfoPage(
+                "<utilitiesinexcess:builders_wand>,<utilitiesinexcess:super_builders_wand>",
+                "uie.nei.infopage.builders_wand.4");
         }
         sendInfoPage("<utilitiesinexcess:mob_jar>", "uie.nei.infopage.mob_jar.1");
 
