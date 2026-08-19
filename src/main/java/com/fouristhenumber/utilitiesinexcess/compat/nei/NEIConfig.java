@@ -16,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.drawable.DrawableBuilder;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
 import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -70,6 +71,11 @@ public class NEIConfig implements IConfigureNEI {
                 "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.pseudo_reversion")
                     + "@pseudo_reversion_recipes");
         }
+
+        ShapedPeacefulRecipeHandler shapedPeacefulRecipeHandler = new ShapedPeacefulRecipeHandler();
+
+        API.registerRecipeHandler(shapedPeacefulRecipeHandler);
+        API.registerUsageHandler(shapedPeacefulRecipeHandler);
     }
 
     @SuppressWarnings("unused")
@@ -98,6 +104,17 @@ public class NEIConfig implements IConfigureNEI {
                             .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
                             .build());
             }
+            event.registerHandlerInfo(
+                new HandlerInfo.Builder(
+                    ShapedPeacefulRecipeHandler.class.getName(),
+                    UtilitiesInExcess.MODNAME,
+                    UtilitiesInExcess.MODID)
+                    .setDisplayImage(
+                        new DrawableBuilder("utilitiesinexcess:textures/gui/peaceful_crafting.png", 0, 0, 16, 16)
+                            .setTextureSize(16, 16)
+                            .addPadding(-1, 0, -1, 0)
+                            .build())
+                    .build());
         }
     }
 
