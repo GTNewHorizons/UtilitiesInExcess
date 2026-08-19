@@ -35,7 +35,7 @@ import tconstruct.tools.TinkerTools;
 public class TinkersMaterials {
 
     public static Fluid invertedFluid = TinkerSmeltery.registerFluid("inverted");
-    public static Fluid bedrockiumFluid = TinkerSmeltery.registerFluid("bedrockium");
+    public static Fluid bedrockiumFluid = TinkerSmeltery.registerFluid("bedrockium_uie");
 
     public static void registerMaterials() {
 
