@@ -95,6 +95,7 @@ public class NEIConfig implements IConfigureNEI {
                         .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
                         .build());
             }
+
             if (PSEUDO_REVERSION) {
                 event.registerHandlerInfo(
                     new HandlerInfo.Builder(
@@ -104,17 +105,18 @@ public class NEIConfig implements IConfigureNEI {
                             .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
                             .build());
             }
+
             event.registerHandlerInfo(
                 new HandlerInfo.Builder(
                     ShapedPeacefulRecipeHandler.class.getName(),
                     UtilitiesInExcess.MODNAME,
                     UtilitiesInExcess.MODID)
-                    .setDisplayImage(
-                        new DrawableBuilder("utilitiesinexcess:textures/gui/peaceful_crafting.png", 0, 0, 16, 16)
-                            .setTextureSize(16, 16)
-                            .addPadding(-1, 0, -1, 0)
-                            .build())
-                    .build());
+                        .setDisplayImage(
+                            new DrawableBuilder("utilitiesinexcess:textures/gui/peaceful_crafting.png", 0, 0, 16, 16)
+                                .setTextureSize(16, 16)
+                                .addPadding(-1, 0, -1, 0)
+                                .build())
+                        .build());
         }
     }
 
