@@ -10,12 +10,15 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroMaterialRegistry;
+import codechicken.multipart.JNormalOcclusion;
+import codechicken.multipart.NormalOcclusionTest;
+import codechicken.multipart.TMultiPart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 
-public class SpherePart extends UiEMultipart implements IMaterialPart
+public class SpherePart extends UiEMultipart implements IMaterialPart, JNormalOcclusion
 {
 
     public static final Cuboid6 Bounds = new Cuboid6(0.125, 0.125, 0.125, 0.875, 0.875, 0.875);
@@ -107,5 +110,10 @@ public class SpherePart extends UiEMultipart implements IMaterialPart
     @Override
     public Material getMaterial() {
         return material;
+    }
+
+    @Override
+    public boolean occlusionTest(TMultiPart part) {
+        return NormalOcclusionTest.apply(this, part) && super.occlusionTest(part);
     }
 }

@@ -4,7 +4,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 public enum PipeCollision
 {
-    MIDDLE {
+    MIDDLE(-1) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
 
@@ -13,7 +13,7 @@ public enum PipeCollision
             return BOX;
         }
     },
-    DOWN {
+    DOWN(0) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.375, 0.0, 0.375, 0.625, 0.375, 0.625);
 
@@ -22,7 +22,7 @@ public enum PipeCollision
             return BOX;
         }
     },
-    UP {
+    UP(1) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
 
@@ -31,7 +31,7 @@ public enum PipeCollision
             return BOX;
         }
     },
-    NORTH {
+    NORTH(2) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
 
@@ -40,7 +40,7 @@ public enum PipeCollision
             return BOX;
         }
     },
-    SOUTH {
+    SOUTH(3) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.625, 0.625, 0.625, 1.0);
 
@@ -49,7 +49,7 @@ public enum PipeCollision
             return BOX;
         }
     },
-    WEST {
+    WEST(4) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
 
@@ -58,7 +58,7 @@ public enum PipeCollision
             return BOX;
         }
     },
-    EAST {
+    EAST(5) {
         private static final AxisAlignedBB BOX =
             AxisAlignedBB.getBoundingBox(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
 
@@ -67,6 +67,18 @@ public enum PipeCollision
             return BOX;
         }
     };
+
+    private final int maskBit;
+
+    PipeCollision(int maskBit)
+    {
+        this.maskBit = maskBit;
+    }
+
+    public int getMaskBit()
+    {
+        return maskBit;
+    }
 
     public abstract AxisAlignedBB getCollisionBox();
 }

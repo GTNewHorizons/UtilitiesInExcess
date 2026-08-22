@@ -15,7 +15,7 @@ import codechicken.multipart.NormalOcclusionTest;
 import codechicken.multipart.TMultiPart;
 import net.minecraft.world.IBlockAccess;
 
-public abstract class UiEMultipart extends TMultiPart implements JIconHitEffects, JNormalOcclusion
+public abstract class UiEMultipart extends TMultiPart implements JIconHitEffects
 {
 
     public void render(Vector3 position, int pass)
@@ -38,8 +38,5 @@ public abstract class UiEMultipart extends TMultiPart implements JIconHitEffects
         IconHitEffects.addHitEffects(this, movingObjectPosition, renderer);
     }
 
-    @Override
-    public boolean occlusionTest(TMultiPart part) {
-        return NormalOcclusionTest.apply(this, part) && super.occlusionTest(part);
-    }
+
 }

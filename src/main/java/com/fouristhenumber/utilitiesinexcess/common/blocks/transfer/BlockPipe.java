@@ -7,13 +7,11 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,16 +22,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static com.fouristhenumber.utilitiesinexcess.CommonProxy.transferPipeRenderID;
 
 public class BlockPipe extends BlockTransferBase
 {
@@ -110,6 +106,74 @@ public class BlockPipe extends BlockTransferBase
     }
 
     @Override
+    public MovingObjectPosition collisionRayTrace(
+        World world,
+        int x,
+        int y,
+        int z,
+        Vec3 startVec,
+        Vec3 endVec)
+    {
+        List<IConnectable> connectables = IConnectable.getConnectables(
+            world,
+            x,
+            y,
+            z
+        );
+
+        int mask = IConnectable.getConnectionMask(
+            connectables,
+            world,
+            x,
+            y,
+            z
+        );
+
+        MovingObjectPosition closestHit = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (PipeCollision collision : PipeCollision.values())
+        {
+            // MIDDLE is always present.
+            if (collision != PipeCollision.MIDDLE
+                && (mask & (1 << collision.getMaskBit())) == 0)
+            {
+                continue;
+            }
+
+            AxisAlignedBB box = collision.getCollisionBox().copy();
+
+            // collision boxes are block-local, while the ray is in world space
+            box = box.getOffsetBoundingBox(x, y, z);
+
+            MovingObjectPosition hit = box.calculateIntercept(
+                startVec,
+                endVec
+            );
+
+            if (hit == null)
+                continue;
+
+            double distance = hit.hitVec.squareDistanceTo(startVec);
+
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+
+                closestHit = new MovingObjectPosition(
+                    x,
+                    y,
+                    z,
+                    hit.sideHit,
+                    hit.hitVec
+                );
+            }
+        }
+
+        return closestHit;
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
         List<IConnectable> connectables = IConnectable.getConnectables(world, x, y, z);
@@ -174,9 +238,10 @@ public class BlockPipe extends BlockTransferBase
             if (worldIn.getBlockMetadata(x, y, z) == PipeType.FILTER.ordinal() && worldIn.getTileEntity(x, y, z) instanceof TileEntityFilterPipe)
             {
                 GuiFactories.tileEntity().open(player, x, y, z);
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override

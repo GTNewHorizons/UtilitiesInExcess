@@ -17,6 +17,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidRetrievalNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidTransferNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipeJacketPart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.ItemRetrievalNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.ItemTransferNodePart;
@@ -53,7 +54,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
     public static final String[] materialBasedPartNames = new String[]
         {
-            FencePart.name, WallPart.name, SpherePart.name,
+            FencePart.name, WallPart.name, SpherePart.name, PipeJacketPart.name
         };
 
     public static final String[] transferPartNames = new String[]
@@ -105,6 +106,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             case ("fluid_transfer_node") -> new FluidTransferNodePart(meta);
             case ("pipe") -> new PipePart(meta);
             case ("energy_node") -> new EnergyNodePart(meta);
+            case ("pipe_jacket") -> new PipeJacketPart(material);
             default -> null;
         };
     }
@@ -120,6 +122,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             case ("fluid_transfer_node") -> new FluidTransferNodePart(packet);
             case ("pipe") -> new PipePart(packet);
             case ("energy_node") -> new EnergyNodePart(packet);
+            case ("pipe_jacket") -> new PipeJacketPart(packet);
             default -> null;
         };
     }
@@ -204,11 +207,13 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
                 part = getPartByBlock(itemBlock, held.getItemDamage() | (ForgeDirection.getOrientation(hit.sideHit).getOpposite().ordinal() << 1));
             }
 
-            if (part == null) return false;
+            if (part == null)
+            {
+                return false;
+            }
 
             if (world.isRemote && !player.isSneaking()) // attempt to use block activated like normal and tell the server
-            // the right stuff
-            {
+            { // the right stuff
                 Vector3 f = new Vector3(hit.hitVec).add(-hit.blockX, -hit.blockY, -hit.blockZ);
                 Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
                 if (!ignoreActivate(block) && block.onBlockActivated(

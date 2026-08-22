@@ -5,6 +5,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.ISBRHPart;
 import codechicken.multipart.JNormalOcclusion;
 import codechicken.multipart.JPartialOcclusion;
+import codechicken.multipart.NormalOcclusionTest;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
@@ -25,7 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class NetworkComponentBasePart extends UiEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart
+public abstract class NetworkComponentBasePart extends UiEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart, JNormalOcclusion
 {
     public int meta;
 
@@ -33,7 +34,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
         Cuboid6 connectionBox = getConnectionInDirection(side);
 
         for (TMultiPart part : tile().jPartList()) {
-            if (part == this) {
+            if (part == this || part instanceof PipeJacketPart) { // Don't count pipe jacket in occlusion for network parts.
                 continue;
             }
 
@@ -138,4 +139,20 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
     public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
         return new DefaultInserter();
     }
+
+    // Pipes are never allowed in the same space as other network component bases.
+    @Override
+    public boolean occlusionTest(TMultiPart part)
+    {
+        if (this instanceof PipePart && part instanceof NetworkComponentBasePart) {
+            return false;
+        }
+
+        if (this instanceof NetworkComponentBasePart && part instanceof PipePart) {
+            return false;
+        }
+
+        return super.occlusionTest(part);
+    }
+
 }

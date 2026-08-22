@@ -236,5 +236,4 @@ public abstract class ConnectablePart extends UiEMultipart {
 
         return true;
     }
-
 }

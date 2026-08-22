@@ -39,8 +39,9 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
 
     @Override
     public Cuboid6 getBounds() {
-        return new Cuboid6(BlockNodeBase.getBoundsAABB(meta, this.getConnectionMask(world(), x(), y(), z())));
+        return new Cuboid6(NodeCollision.values()[getFacingOrdinal(meta)].getBoundingBox().copy());
     }
+
 
     @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
@@ -143,7 +144,7 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
 
     @Override
     public Iterable<IndexedCuboid6> getSubParts() {
-        return Collections.singleton(new IndexedCuboid6(0, new Cuboid6(BlockNodeBase.getBoundsAABB(meta, this.getConnectionMask(world(), x(), y(), z())))));
+        return Collections.singleton(new IndexedCuboid6(0, this.getBounds()));
     }
 
     @Override

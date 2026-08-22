@@ -27,7 +27,7 @@ public class Material
         MicroMaterialRegistry.writeMaterialID(packet, id);
     }
 
-    MicroMaterialRegistry.IMicroMaterial getIMaterial() {
+    public MicroMaterialRegistry.IMicroMaterial getIMaterial() {
         return MicroMaterialRegistry.getMaterial(id);
     }
 

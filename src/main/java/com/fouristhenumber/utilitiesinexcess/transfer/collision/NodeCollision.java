@@ -8,7 +8,7 @@ public enum NodeCollision
         private static final AxisAlignedBB[] COLLISION_BOX =
             {
                 // Bottom
-                AxisAlignedBB.getBoundingBox(0.0625, 0.0, 0.0625, 0.9375, 0.0625, 0.9375),
+                AxisAlignedBB.getBoundingBox(0.125, 0.0, 0.125, 0.875, 0.0625, 0.875),
                 // Middle
                 AxisAlignedBB.getBoundingBox(0.1875, 0.0, 0.1875, 0.8125, 0.25, 0.8125),
                 // Top
@@ -24,7 +24,7 @@ public enum NodeCollision
                 AxisAlignedBB.getBoundingBox(0.375, 0.0,    0.375, 0.625, 0.375,  0.625)
             };
 
-        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.0625, 0.0, 0.0625, 0.9375, 0.375, 0.9375);
+        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.125, 0.0, 0.125, 0.875, 0.375, 0.875);
 
 
         @Override
@@ -48,7 +48,7 @@ public enum NodeCollision
         private static final AxisAlignedBB[] COLLISION_BOX =
             {
                 // Bottom
-                AxisAlignedBB.getBoundingBox(0.0625, 0.9375, 0.0625, 0.9375, 1.0, 0.9375),
+                AxisAlignedBB.getBoundingBox(0.125, 0.9375, 0.125, 0.875, 1.0, 0.875),
                 // Middle
                 AxisAlignedBB.getBoundingBox(0.1875, 0.75, 0.1875, 0.8125, 1.0, 0.8125),
                 // Top
@@ -65,7 +65,7 @@ public enum NodeCollision
                 AxisAlignedBB.getBoundingBox(.375, 0.625, .375, .75, 1.0, .75)
             };
 
-        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.0625, 0.6875, 0.0625, 0.9375, 1.0, 0.9375);
+        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.125, 0.6875, 0.125, 0.875, 1.0, 0.875);
 
         @Override
         public AxisAlignedBB[] getCollisionBoxes() {
@@ -88,7 +88,7 @@ public enum NodeCollision
         private static final AxisAlignedBB[] COLLISION_BOX =
             {
                 // Bottom
-                AxisAlignedBB.getBoundingBox(0.0625, 0.0625, 0.0, 0.9375, 0.9375, 0.0625),
+                AxisAlignedBB.getBoundingBox(0.125, 0.125, 0.0, 0.875, 0.875, 0.0625),
                 // Middle
                 AxisAlignedBB.getBoundingBox(0.1875, 0.1875, 0.0, 0.8125, 0.8125, 0.25),
                 // Top
@@ -105,7 +105,7 @@ public enum NodeCollision
                 AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.0, 0.625, 0.625, 0.375)
             };
 
-        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.0625, 0.0625, 0.0, 0.9375, 0.9375, 0.375);
+        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.125, 0.125, 0.0, 0.875, 0.875, 0.375);
 
         @Override
         public AxisAlignedBB[] getCollisionBoxes() {
@@ -128,7 +128,7 @@ public enum NodeCollision
         private static final AxisAlignedBB[] COLLISION_BOX =
             {
                 // Bottom
-                AxisAlignedBB.getBoundingBox(0.0625, 0.0625, 0.9375, 0.9375, 0.9375, 1.0),
+                AxisAlignedBB.getBoundingBox(0.125, 0.125, 0.9375, 0.875, 0.875, 1.0),
                 // Middle
                 AxisAlignedBB.getBoundingBox(0.1875, 0.1875, 0.75, 0.8125, 0.8125, 1.0),
                 // Top
@@ -145,7 +145,7 @@ public enum NodeCollision
                 AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.625, 0.625, 0.625, 1.0)
             };
 
-        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.0625, 0.0625, 0.625, 0.9375, 0.9375, 1.0);
+        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.125, 0.125, 0.625, 0.875, 0.875, 1.0);
 
         @Override
         public AxisAlignedBB[] getCollisionBoxes() {
@@ -168,7 +168,7 @@ public enum NodeCollision
         private static final AxisAlignedBB[] COLLISION_BOX =
             {
                 // Bottom
-                AxisAlignedBB.getBoundingBox(0.0, 0.0625, 0.0625, 0.0625, 0.9375, 0.9375),
+                AxisAlignedBB.getBoundingBox(0.0, 0.125, 0.125, 0.0625, 0.875, 0.875),
                 // Middle
                 AxisAlignedBB.getBoundingBox(0.0, 0.1875, 0.1875, 0.25, 0.8125, 0.8125),
                 // Top
@@ -185,7 +185,7 @@ public enum NodeCollision
                 AxisAlignedBB.getBoundingBox(0.0, 0.375, 0.375, 0.375, 0.625, 0.625)
             };
 
-        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.0, 0.0625, 0.0625, 0.375, 0.9375, 0.9375);
+        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.0, 0.125, 0.125, 0.375, 0.875, 0.875);
 
         @Override
         public AxisAlignedBB[] getCollisionBoxes() {
@@ -208,7 +208,7 @@ public enum NodeCollision
         private static final AxisAlignedBB[] COLLISION_BOX =
             {
                 // Bottom
-                AxisAlignedBB.getBoundingBox(0.9375, 0.0625, 0.0625, 1.0, 0.9375, 0.9375),
+                AxisAlignedBB.getBoundingBox(0.9375, 0.125, 0.125, 1.0, 0.875, 0.875),
                 // Middle
                 AxisAlignedBB.getBoundingBox(0.75, 0.1875, 0.1875, 1.0, 0.8125, 0.8125),
                 // Top
@@ -225,7 +225,7 @@ public enum NodeCollision
                 AxisAlignedBB.getBoundingBox(0.625, 0.375, 0.375, 1.0, 0.625, 0.625)
             };
 
-        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.625, 0.0625, 0.0625, 1.0, 0.9375, 0.9375);
+        private static final AxisAlignedBB BOUNDING_BOX = AxisAlignedBB.getBoundingBox(0.625, 0.125, 0.125, 1.0, 0.875, 0.875);
 
         @Override
         public AxisAlignedBB[] getCollisionBoxes() {

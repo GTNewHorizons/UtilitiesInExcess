@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util;
 
-import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import net.minecraft.entity.player.EntityPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +11,4 @@ public class PartGuiData extends PosGuiData
         super(player, x, y, z);
         this.partIndex = partIndex;
     }
-
-
 }

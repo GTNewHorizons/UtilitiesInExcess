@@ -16,6 +16,9 @@ import javax.annotation.Nonnull;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.microblock.MicroMaterialRegistry;
+import codechicken.multipart.JNormalOcclusion;
+import codechicken.multipart.NormalOcclusionTest;
+import codechicken.multipart.TMultiPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,12 +32,13 @@ import codechicken.lib.vec.Vector3;
 import codechicken.microblock.MicroblockRender;
 import it.unimi.dsi.fastutil.Pair;
 
-public class FencePart extends ConnectablePart implements IMaterialPart
+public class FencePart extends ConnectablePart implements IMaterialPart, JNormalOcclusion
 {
     public static final String name = "ue_fence";
     public Material material;
 
-    public FencePart(int materialId, int side) {
+    public FencePart(int materialId, int side)
+    {
         super(side);
         this.material = new Material(materialId);
     }
@@ -163,5 +167,10 @@ public class FencePart extends ConnectablePart implements IMaterialPart
     @Override
     public Material getMaterial() {
         return material;
+    }
+
+    @Override
+    public boolean occlusionTest(TMultiPart part) {
+        return NormalOcclusionTest.apply(this, part) && super.occlusionTest(part);
     }
 }
