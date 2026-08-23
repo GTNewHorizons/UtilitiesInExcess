@@ -19,6 +19,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.architecturecraft.ArchitectureCraftCompat;
 import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
 import com.fouristhenumber.utilitiesinexcess.utils.BuildersBlockPicker;
 import com.fouristhenumber.utilitiesinexcess.utils.BuildersBlockSelectionFilter;
@@ -149,26 +151,35 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
 
             if (toPlace == null) continue;
 
-            if (damageBackhand(BuildersWandsConfig.INSTANCE.damageTrowelWithBuildersWand, player)) {
+            if (!damageBackhand(BuildersWandsConfig.INSTANCE.damageTrowelWithBuildersWand, player)) continue;
 
-                ItemStack itemCopy = toPlace.copy();
-                itemCopy.stackSize = 1;
+            ItemStack itemCopy = toPlace.copy();
+            itemCopy.stackSize = 1;
 
-                // uses ItemBlock to place the block with all the checks
-                // sets stackSize to 0 on success
-                itemCopy.tryPlaceItemIntoWorld(player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
+            // uses ItemBlock to place the block with all the checks
+            // sets stackSize to 0 on success
+            itemCopy.tryPlaceItemIntoWorld(player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
 
-                // Don't forget to take the spent item from the inventory
-                if (itemCopy.stackSize == 0) {
-                    if (!player.capabilities.isCreativeMode) BuildersWandUtils.decreaseFromInventory(player, toPlace);
+            // Don't forget to take the spent item from the inventory
+            if (itemCopy.stackSize == 0) {
+                if (!player.capabilities.isCreativeMode) BuildersWandUtils.decreaseFromInventory(player, toPlace);
+
+                if (filter.isCopyMode()) {
+                    int destX = pos.x + forgeSide.offsetX;
+                    int destY = pos.y + forgeSide.offsetY;
+                    int destZ = pos.z + forgeSide.offsetZ;
 
                     // copy the rotation or other metadata pieces that do not transfer through itemStack
-                    if (filter.isCopyMode()) world.setBlockMetadataWithNotify(
-                        pos.x + forgeSide.offsetX,
-                        pos.y + forgeSide.offsetY,
-                        pos.z + forgeSide.offsetZ,
+                    world.setBlockMetadataWithNotify(
+                        destX,
+                        destY,
+                        destZ,
                         world.getBlockMetadata(pos.x, pos.y, pos.z),
                         3);
+
+                    // Special handling for ArchitectureCraft shape TEs
+                    if (Mods.ArchitectureCraft.isLoaded()) ArchitectureCraftCompat
+                        .tryCopyShapeState(world, pos.x, pos.y, pos.z, destX, destY, destZ, player);
                 }
             }
         }

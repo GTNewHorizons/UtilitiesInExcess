@@ -18,6 +18,7 @@ public enum Mods {
     Postea("postea"),
     ForgeMicroBlock("ForgeMicroblock"),
     Backhand("backhand"),
+    ArchitectureCraft("ArchitectureCraft"),
     GregTech("gregtech_nh"),
     SimpleSkinBackport("simpleskinbackport"),
     EndlessIDs("endlessids"),
