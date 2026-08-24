@@ -106,6 +106,10 @@ public class RecipeConfig {
 
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
+    public static boolean enableScribeRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
     public static boolean enableBedrockiumIngotRecipe;
 
     @Config.RequiresMcRestart
