@@ -39,4 +39,9 @@ public class BuildersWandsConfig {
     @Config.DefaultInt(100)
     @Config.Comment("[GT5U] Durability damage dealt to Trowels per block placed by the Builder's Wand. (Set to 0 to disable)")
     public int damageTrowelWithBuildersWand;
+
+    @Config.Order(600)
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public boolean enableScribe;
 }
