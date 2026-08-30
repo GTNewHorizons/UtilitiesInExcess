@@ -1,0 +1,7 @@
+{
+  "parent": "utilitiesinexcess:blocks/transfer/transfer_node_energy",
+  "textures": {
+    "0": "utilitiesinexcess:blocks/models/transfer/hyper_energy_node",
+    "particle": "utilitiesinexcess:blocks/models/transfer/hyper_energy_node"
+  }
+}

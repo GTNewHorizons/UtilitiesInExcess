@@ -142,7 +142,7 @@ public abstract class BlockNodeBase extends BlockTransferBase // implements IBlo
         AxisAlignedBB bb = NodeCollision.values()[facing].getBoundingBox().copy();
         if (connectionMask != 0) {
 
-            // Need to add in the middle bounding box always if it's
+            // Need to add in the middle bounding box always if it's got any connections.
             switch(facing)
             {
                 case(0):

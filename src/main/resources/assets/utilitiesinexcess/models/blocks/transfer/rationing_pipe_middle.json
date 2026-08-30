@@ -1,7 +1,7 @@
 {
   "parent": "utilitiesinexcess:blocks/transfer/pipe_middle",
   "textures": {
-    "0": "utilitiesinexcess:blocks/rationing_pipe",
-    "particle": "utilitiesinexcess:blocks/rationing_pipe"
+    "0": "utilitiesinexcess:blocks/models/transfer/rationing_pipe",
+    "particle": "utilitiesinexcess:blocks/models/transfer/rationing_pipe"
   }
 }

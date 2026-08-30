@@ -29,10 +29,6 @@ public class BlockRetrievalNode extends BlockNodeBase
         private final String[] textureNames;
         protected IIcon[] iicons;
 
-        RetrievalNodeType(String name)
-        {
-            this(name, name);
-        }
 
         RetrievalNodeType(String name, String... textures)
         {

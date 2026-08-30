@@ -1,0 +1,68 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "meta": "0"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_energy"
+      }
+    },
+    {
+      "when": {
+        "meta": "1"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/transfer_node_hyper_energy"
+      }
+    },
+    {
+      "when": {
+        "connection_north": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge"
+      }
+    },
+    {
+      "when": {
+        "connection_south": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "y": 180
+      }
+    },
+    {
+      "when": {
+        "connection_east": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "y": 90
+      }
+    },
+    {
+      "when": {
+        "connection_west": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "y": 270
+      }
+    },
+    {
+      "when": {
+        "connection_up": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "x": 270
+      }
+    },
+    {
+      "when": {
+        "connection_down": "true"
+      },
+      "apply": {
+        "model": "utilitiesinexcess:blocks/transfer/pipe_edge", "x": 90
+      }
+    }
+  ]
+}

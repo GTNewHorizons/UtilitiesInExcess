@@ -1,7 +1,7 @@
 {
   "parent": "utilitiesinexcess:blocks/transfer/pipe_edge",
   "textures": {
-    "0": "utilitiesinexcess:blocks/energy_extraction_pipe",
-    "particle": "utilitiesinexcess:blocks/energy_extraction_pipe"
+    "0": "utilitiesinexcess:blocks/models/transfer/energy_extraction_pipe",
+    "particle": "utilitiesinexcess:blocks/models/transfer/energy_extraction_pipe"
   }
 }

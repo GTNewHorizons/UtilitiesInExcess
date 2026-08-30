@@ -94,12 +94,12 @@ public class CommonProxy {
         energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
 
-        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.DOWN);
-        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.UP);
-        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.NORTH);
-        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.SOUTH);
-        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.WEST);
-        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get()), DirectionalConnectionProperty.EAST);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.DOWN);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.UP);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.NORTH);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.SOUTH);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.WEST);
+        BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.EAST);
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 

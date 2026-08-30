@@ -1,7 +1,7 @@
 {
   "parent": "utilitiesinexcess:blocks/transfer/pipe_middle",
   "textures": {
-    "0": "utilitiesinexcess:blocks/mod_sorting_pipe",
-    "particle": "utilitiesinexcess:blocks/mod_sorting_pipe"
+    "0": "utilitiesinexcess:blocks/models/transfer/mod_sorting_pipe",
+    "particle": "utilitiesinexcess:blocks/models/transfer/mod_sorting_pipe"
   }
 }

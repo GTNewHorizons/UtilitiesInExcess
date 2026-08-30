@@ -1,7 +1,7 @@
 {
   "parent": "utilitiesinexcess:blocks/transfer/pipe_edge",
   "textures": {
-    "0": "utilitiesinexcess:blocks/crossover_pipe",
-    "particle": "utilitiesinexcess:blocks/crossover_pipe"
+    "0": "utilitiesinexcess:blocks/models/transfer/crossover_pipe",
+    "particle": "utilitiesinexcess:blocks/models/transfer/crossover_pipe"
   }
 }

@@ -1,0 +1,62 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "utilitiesinexcess:blocks/models/transfer/energy_node",
+		"particle": "utilitiesinexcess:blocks/models/transfer/energy_node"
+	},
+	"elements": [
+		{
+			"from": [4, 4, 4],
+			"to": [12, 12, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 9, 9]},
+			"faces": {
+				"north": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"east": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"south": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"west": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 5, 5],
+			"to": [13, 11, 11],
+			"faces": {
+				"north": {"uv": [3, 5, 13, 11], "texture": "#0"},
+				"east": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"south": {"uv": [3, 5, 13, 11], "texture": "#0"},
+				"west": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"up": {"uv": [3, 5, 13, 11], "texture": "#0"},
+				"down": {"uv": [3, 5, 13, 11], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 5, 3],
+			"to": [11, 11, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"east": {"uv": [3, 5, 13, 11], "texture": "#0"},
+				"south": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"west": {"uv": [3, 5, 13, 11], "texture": "#0"},
+				"up": {"uv": [5, 3, 11, 13], "texture": "#0"},
+				"down": {"uv": [5, 3, 11, 13], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 3, 5],
+			"to": [11, 13, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [5, 3, 11, 13], "texture": "#0"},
+				"east": {"uv": [5, 3, 11, 13], "texture": "#0"},
+				"south": {"uv": [5, 3, 11, 13], "texture": "#0"},
+				"west": {"uv": [5, 3, 11, 13], "texture": "#0"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#0"}
+			}
+		}
+	],
+	"display": {}
+}

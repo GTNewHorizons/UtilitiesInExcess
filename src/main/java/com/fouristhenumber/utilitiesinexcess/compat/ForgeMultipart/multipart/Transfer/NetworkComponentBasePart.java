@@ -5,7 +5,6 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.ISBRHPart;
 import codechicken.multipart.JNormalOcclusion;
 import codechicken.multipart.JPartialOcclusion;
-import codechicken.multipart.NormalOcclusionTest;
 import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
@@ -135,6 +134,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
         FMLRenderAccessLibrary.renderWorldBlock(renderer, new MetaOverrideWorld(world, x, y, z, meta), x, y, z, getBlock(), ModelISBRH.JSON_ISBRH_ID);
         return true;
     }
+
     @Override
     public BaseInserter getInserter(IBlockAccess world, int x, int y, int z) {
         return new DefaultInserter();
