@@ -203,9 +203,7 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic>
         Cuboid6 bounds = getBlockBounds(world(), x(), y(), z());
 
         double interpX = player.lastTickPosX + (player.posX - player.lastTickPosX) * frame;
-
         double interpY = player.lastTickPosY + (player.posY - player.lastTickPosY) * frame;
-
         double interpZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * frame;
 
         AxisAlignedBB box = AxisAlignedBB.getBoundingBox(

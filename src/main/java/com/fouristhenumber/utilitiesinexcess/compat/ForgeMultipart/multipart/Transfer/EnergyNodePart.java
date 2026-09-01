@@ -26,12 +26,12 @@ import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic
 public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Integer>
 {
     public EnergyNodePart(int meta) {
-        super(meta);
+        super(BlockNodeBase.getType(meta));
     }
 
     public EnergyNodePart(MCDataInput packet)
     {
-        super(packet.readInt());
+        super(BlockNodeBase.getType(packet.readInt()));
         getLogic().readDesc(packet);
     }
 
