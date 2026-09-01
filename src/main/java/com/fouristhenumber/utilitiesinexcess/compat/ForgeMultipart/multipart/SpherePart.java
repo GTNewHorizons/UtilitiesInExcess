@@ -89,7 +89,7 @@ public class SpherePart extends UiEMultipart implements IMaterialPart, JNormalOc
     }
 
     public ItemStack pickItem(MovingObjectPosition hit) {
-        return UiEMultipartMaterialItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
+        return UiEMultipartMaterialItem.createStack(this);
     }
 
     @Override

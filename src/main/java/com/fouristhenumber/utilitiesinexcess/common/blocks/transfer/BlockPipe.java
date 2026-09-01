@@ -114,20 +114,9 @@ public class BlockPipe extends BlockTransferBase
         Vec3 startVec,
         Vec3 endVec)
     {
-        List<IConnectable> connectables = IConnectable.getConnectables(
-            world,
-            x,
-            y,
-            z
-        );
+        List<IConnectable> connectables = IConnectable.getConnectables(world, x, y, z);
 
-        int mask = IConnectable.getConnectionMask(
-            connectables,
-            world,
-            x,
-            y,
-            z
-        );
+        int mask = IConnectable.getConnectionMask(connectables, world, x, y, z);
 
         MovingObjectPosition closestHit = null;
         double closestDistance = Double.MAX_VALUE;
@@ -152,7 +141,9 @@ public class BlockPipe extends BlockTransferBase
             );
 
             if (hit == null)
+            {
                 continue;
+            }
 
             double distance = hit.hitVec.squareDistanceTo(startVec);
 

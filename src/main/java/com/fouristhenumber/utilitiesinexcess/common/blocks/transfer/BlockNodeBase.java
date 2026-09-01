@@ -4,16 +4,14 @@ package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
-import com.gtnewhorizon.gtnhlib.api.IBlockModelProvider;
-import com.gtnewhorizon.gtnhlib.client.model.BakedModelQuadContext;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
-import com.gtnewhorizon.gtnhlib.client.model.baked.BakedModel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -24,9 +22,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
-import static com.fouristhenumber.utilitiesinexcess.CommonProxy.flatNodeRenderID;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
 public abstract class BlockNodeBase extends BlockTransferBase // implements IBlockModelProvider
@@ -270,6 +267,7 @@ public abstract class BlockNodeBase extends BlockTransferBase // implements IBlo
         return ModelISBRH.JSON_ISBRH_ID;
     }
 
+
     public static ForgeDirection getFacing(int meta)
     {
         return ForgeDirection.getOrientation(getFacingOrdinal(meta));
@@ -278,5 +276,16 @@ public abstract class BlockNodeBase extends BlockTransferBase // implements IBlo
     public static int getFacingOrdinal(int meta)
     {
         return (meta & FACING_MASK) >> FACING_SHIFT;
+    }
+
+    public static int getType(int meta)
+    {
+        return meta & TYPE_MASK;
+    }
+
+    @Override
+    public int damageDropped(int metadata)
+    {
+        return metadata;
     }
 }

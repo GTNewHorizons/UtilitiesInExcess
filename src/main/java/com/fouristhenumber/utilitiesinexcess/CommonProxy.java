@@ -1,8 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import codechicken.lib.world.TileChunkLoadHook;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.EnergyNodeRenderer;
-import com.fouristhenumber.utilitiesinexcess.common.renderers.transfer.TransferPipeRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
@@ -88,11 +86,6 @@ public class CommonProxy {
         TileChunkLoadHook.init();
         ColoredSlots.init();
         PartGuiHandler.init();
-
-        transferPipeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new TransferPipeRenderer());
-        energyNodeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new EnergyNodeRenderer());
 
         BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.DOWN);
         BlockPropertyRegistry.registerProperty(Arrays.asList(ModBlocks.TRANSFER_NODE.get(), ModBlocks.TRANSFER_PIPE.get(), ModBlocks.TRANSFER_NODE_ENERGY.get()), DirectionalConnectionProperty.UP);

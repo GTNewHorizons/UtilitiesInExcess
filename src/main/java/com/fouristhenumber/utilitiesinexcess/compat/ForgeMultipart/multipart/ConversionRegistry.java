@@ -25,7 +25,7 @@ public enum ConversionRegistry
     FluidTransferNode("fluid_transfer_node", BlockTransferNode.class, ModBlocks.TRANSFER_NODE::get),
     ItemRetrievalNode("item_retrieval_node", BlockRetrievalNode.class, ModBlocks.RETRIEVAL_NODE::get),
     FluidRetrievalNode("fluid_retrieval_node", BlockRetrievalNode.class, ModBlocks.RETRIEVAL_NODE::get),
-    EnergyNode("energy_node", BlockTransferNodeEnergy.class, ModBlocks.TRANSFER_NODE_ENERGY::get),
+    EnergyTransferNode("energy_node", BlockTransferNodeEnergy.class, ModBlocks.TRANSFER_NODE_ENERGY::get),
     Pipe("pipe", BlockPipe.class, ModBlocks.TRANSFER_PIPE::get);
 
     private final String name;

@@ -14,8 +14,12 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.IMaterialPart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Material;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -122,8 +126,10 @@ public class PipeJacketPart extends UiEMultipart implements IMaterialPart, JPart
 
     // The best way to get the rendering for this thing is just check what else in is the block I think
     private NetworkComponentBasePart getNetworkComponent() {
-        for (TMultiPart part : tile().jPartList()) {
-            if (part instanceof NetworkComponentBasePart) {
+        for (TMultiPart part : tile().jPartList())
+        {
+            if (part instanceof NetworkComponentBasePart)
+            {
                 return (NetworkComponentBasePart) part;
             }
         }
@@ -132,7 +138,8 @@ public class PipeJacketPart extends UiEMultipart implements IMaterialPart, JPart
 
     @Override
     public boolean renderStatic(Vector3 position, int pass) {
-        if (this.material.canMaterialRenderInPass(pass)) {
+        if (this.material.canMaterialRenderInPass(pass))
+        {
             render(position, pass);
             return true;
         }
@@ -144,54 +151,25 @@ public class PipeJacketPart extends UiEMultipart implements IMaterialPart, JPart
     {
         if (pass == -1)
         {
-            MicroblockRender.renderCuboid(
-                position,
-                this.material.getIMaterial(),
-                pass,
-                bounds,
-                0
-            );
-
+            MicroblockRender.renderCuboid(position, this.material.getIMaterial(), pass, bounds, 0);
             return;
         }
 
-        List<IConnectable> connectables = IConnectable.getConnectables(
-            world(),
-            x(),
-            y(),
-            z()
-        );
+        List<IConnectable> connectables = IConnectable.getConnectables(world(), x(), y(), z());
 
-        int mask = IConnectable.getConnectionMask(
-            connectables,
-            world(),
-            x(),
-            y(),
-            z()
-        );
+        int mask = IConnectable.getConnectionMask(connectables, world(), x(), y(), z());
 
         // Cull the faces of the middle piece where a connection exists.
-        MicroblockRender.renderCuboid(
-            position,
-            this.material.getIMaterial(),
-            pass,
-            bounds,
-            mask
-        );
+        MicroblockRender.renderCuboid(position, this.material.getIMaterial(), pass, bounds, mask);
 
         // Render each connected arm, culling the face touching the middle.
         for (int i = 0; i < connectionBounds.length; i++)
         {
             if ((mask & (1 << i)) == 0)
+            {
                 continue;
-
-            MicroblockRender.renderCuboid(
-                position,
-                this.material.getIMaterial(),
-                pass,
-                connectionBounds[i],
-                CONNECTION_CULL_FACES[i]
-            );
+            }
+            MicroblockRender.renderCuboid(position, this.material.getIMaterial(), pass, connectionBounds[i], CONNECTION_CULL_FACES[i]);
         }
     }
 
@@ -211,6 +189,27 @@ public class PipeJacketPart extends UiEMultipart implements IMaterialPart, JPart
     public void writeDesc(MCDataOutput packet) {
         super.writeDesc(packet);
         material.writeDesc(packet);
+    }
+
+    public ItemStack pickItem(MovingObjectPosition hit) {
+        return UiEMultipartMaterialItem.createStack(this);
+    }
+
+    public void onPartChanged(TMultiPart unused)
+    {
+        boolean shouldDrop = true;
+        for (TMultiPart part : tile().jPartList())
+        {
+            if (part instanceof NetworkComponentBasePart)
+            {
+                shouldDrop = false;
+            }
+        }
+        if (shouldDrop)
+        {
+            tile().dropItems(this.getDrops());
+            tile().remPart(this);
+        }
     }
 }
 

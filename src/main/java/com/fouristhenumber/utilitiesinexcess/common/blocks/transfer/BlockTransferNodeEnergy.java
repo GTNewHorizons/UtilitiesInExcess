@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
@@ -13,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.fouristhenumber.utilitiesinexcess.CommonProxy.energyNodeRenderID;
@@ -31,6 +35,10 @@ import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic
 public class BlockTransferNodeEnergy extends BlockTransferBase
 {
 
+    public static final AxisAlignedBB basicBounds = AxisAlignedBB.getBoundingBox(
+    0.1875, 0.1875, 0.1875,
+    0.8125, 0.8125, 0.8125
+    );
     public enum EnergyNodeType {
         BASE("transfer_node_energy"),
         HYPER("transfer_node_hyper_energy");
@@ -107,7 +115,12 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     @Override
     public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)
     {
-        return 0b111111;
+        int mask = 0b111111;
+        if (fromDirection != ForgeDirection.UNKNOWN)
+        {
+            mask &= ~(1 << fromDirection.ordinal());
+        }
+        return mask;
     }
 
     @Override
@@ -166,6 +179,43 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
     }
 
     @Override
+    public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
+    {
+        for (AxisAlignedBB box : getBlockCenteredCollisionCandidates(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z)))
+        {
+            if (box.offset(x, y, z).intersectsWith(mask))
+            {
+                list.add(box);
+            }
+        }
+    }
+
+    public static List<AxisAlignedBB> getBlockCenteredCollisionCandidates(World worldIn, int x, int y, int z, int meta)
+    {
+        List<AxisAlignedBB> candidates = new ArrayList<>();
+        List<IConnectable> connectables = IConnectable.getConnectables(worldIn, x, y, z);
+        if (!connectables.isEmpty())
+        {
+            int connectionMask = IConnectable.getConnectionMask(connectables, worldIn, x, y, z);
+
+            if (connectionMask != 0)
+            {
+                candidates.add(PipeCollision.MIDDLE.getCollisionBox().copy());
+            }
+
+            for (int i = 1; i < PipeCollision.values().length; i++)
+            {
+                if ((connectionMask & (1 << (i - 1))) != 0)
+                {
+                    candidates.add(PipeCollision.values()[i].getCollisionBox().copy());
+                }
+            }
+            candidates.add(basicBounds.copy());
+        }
+        return candidates;
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
         Block block = world.getBlock(x, y, z);
@@ -189,10 +239,7 @@ public class BlockTransferNodeEnergy extends BlockTransferBase
 
     public static AxisAlignedBB getBoundsAABB(int connectionMask)
     {
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-            0.1875, 0.1875, 0.1875,
-            0.8125, 0.8125, 0.8125
-        );
+        AxisAlignedBB bb = basicBounds.copy();
 
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
             if ((connectionMask & (1 << direction.ordinal())) == 0)

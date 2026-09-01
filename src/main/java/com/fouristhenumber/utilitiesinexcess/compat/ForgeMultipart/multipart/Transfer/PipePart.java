@@ -11,6 +11,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
@@ -21,6 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -173,37 +175,22 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic>
     @Override
     public Iterable<IndexedCuboid6> getSubParts()
     {
-        List<IConnectable> connectables = IConnectable.getConnectables(
-            world(),
-            x(),
-            y(),
-            z()
-        );
-        int mask = IConnectable.getConnectionMask(
-            connectables,
-            world(),
-            x(),
-            y(),
-            z()
-        );
+        List<IConnectable> connectables = IConnectable.getConnectables(world(), x(), y(), z());
+        int mask = IConnectable.getConnectionMask(connectables, world(), x(), y(), z());
         List<IndexedCuboid6> parts = new ArrayList<>(7);
-        parts.add(new IndexedCuboid6(
-            PipeCollision.MIDDLE.ordinal(),
-            new Cuboid6(PipeCollision.MIDDLE.getCollisionBox())
-        ));
+        parts.add(new IndexedCuboid6(PipeCollision.MIDDLE.ordinal(), new Cuboid6(PipeCollision.MIDDLE.getCollisionBox())));
 
         for (PipeCollision collision : PipeCollision.values())
         {
             if (collision == PipeCollision.MIDDLE)
+            {
                 continue;
+            }
 
             int bit = collision.ordinal() - 1;
             if ((mask & (1 << bit)) != 0)
             {
-                parts.add(new IndexedCuboid6(
-                    collision.ordinal(),
-                    new Cuboid6(collision.getCollisionBox())
-                ));
+                parts.add(new IndexedCuboid6(collision.ordinal(), new Cuboid6(collision.getCollisionBox())));
             }
         }
         return parts;
@@ -211,36 +198,27 @@ public class PipePart extends LogicComponentBasePart<FilterPipeLogic>
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean drawHighlight(
-        MovingObjectPosition hit,
-        EntityPlayer player,
-        float frame)
+    public boolean drawHighlight(MovingObjectPosition hit, EntityPlayer player, float frame)
     {
         Cuboid6 bounds = getBlockBounds(world(), x(), y(), z());
 
-        double d0 = player.lastTickPosX
-            + (player.posX - player.lastTickPosX) * frame;
+        double interpX = player.lastTickPosX + (player.posX - player.lastTickPosX) * frame;
 
-        double d1 = player.lastTickPosY
-            + (player.posY - player.lastTickPosY) * frame;
+        double interpY = player.lastTickPosY + (player.posY - player.lastTickPosY) * frame;
 
-        double d2 = player.lastTickPosZ
-            + (player.posZ - player.lastTickPosZ) * frame;
+        double interpZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * frame;
 
         AxisAlignedBB box = AxisAlignedBB.getBoundingBox(
-            bounds.min.x + x() - d0,
-            bounds.min.y + y() - d1,
-            bounds.min.z + z() - d2,
-            bounds.max.x + x() - d0,
-            bounds.max.y + y() - d1,
-            bounds.max.z + z() - d2
+            bounds.min.x + x() - interpX,
+            bounds.min.y + y() - interpY,
+            bounds.min.z + z() - interpZ,
+            bounds.max.x + x() - interpX,
+            bounds.max.y + y() - interpY,
+            bounds.max.z + z() - interpZ
         );
 
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(
-            GL11.GL_SRC_ALPHA,
-            GL11.GL_ONE_MINUS_SRC_ALPHA
-        );
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
         GL11.glLineWidth(2.0F);
         GL11.glDisable(GL11.GL_TEXTURE_2D);

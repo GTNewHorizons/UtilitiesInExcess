@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -486,7 +487,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
         StringSyncValue searchLocationSyncer = new StringSyncValue(() ->
             "Holding: " + containedEnergy + " RF\n" +
             "Powering: " + (sources.size() + sinks.size()) + " Connections\n" +
-            "Search Location: " + walker.getLocationString());
+            "Search Location:\n" + walker.getLocationString());
         syncManager.syncValue("searchLocationSyncer", searchLocationSyncer);
 
         SlotGroup upgradeSlotGroup = new SlotGroup("energy_node_upgrades", 1);
@@ -512,6 +513,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent<Int
                 .asWidget()
                 .marginTop(20)
                 .horizontalCenter()
+                .textAlign(Alignment.CENTER)
         );
 
         Flow flow = Flow.row();

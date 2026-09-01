@@ -147,7 +147,7 @@ public class FencePart extends ConnectablePart implements IMaterialPart, JNormal
 
     @Override
     public ItemStack pickItem(MovingObjectPosition hit) {
-        return UiEMultipartMaterialItem.createStack(material.id, UiEPartFactory.partMap.get(this.getType()));
+        return UiEMultipartMaterialItem.createStack(this);
     }
 
     @Override

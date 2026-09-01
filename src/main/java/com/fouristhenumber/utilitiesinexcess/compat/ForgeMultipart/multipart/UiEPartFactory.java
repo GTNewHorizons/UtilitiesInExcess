@@ -59,7 +59,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
     public static final String[] transferPartNames = new String[]
         {
-            ConversionRegistry.EnergyNode.getName(), ConversionRegistry.FluidTransferNode.getName(),
+            ConversionRegistry.EnergyTransferNode.getName(), ConversionRegistry.FluidTransferNode.getName(),
             ConversionRegistry.FluidRetrievalNode.getName(), ConversionRegistry.ItemTransferNode.getName(),
             ConversionRegistry.ItemRetrievalNode.getName(), ConversionRegistry.Pipe.getName()
         };

@@ -9,6 +9,7 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNo
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -168,5 +169,17 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
         }
 
         return true;
+    }
+
+    @Override
+    public ItemStack pickItem(MovingObjectPosition hit)
+    {
+        return new ItemStack(Item.getItemFromBlock(getBlock()), 1, BlockNodeBase.getType(meta));
+    }
+
+    @Override
+    public Iterable<ItemStack> getDrops()
+    {
+        return Collections.singletonList(new ItemStack(Item.getItemFromBlock(getBlock()), 1, BlockNodeBase.getType(meta)));
     }
 }

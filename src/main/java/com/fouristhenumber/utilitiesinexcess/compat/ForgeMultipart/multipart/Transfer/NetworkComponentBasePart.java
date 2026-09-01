@@ -9,6 +9,7 @@ import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.MetaOverrideWorld;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
@@ -18,12 +19,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.FMLRenderAccessLibrary;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Collections;
 
 public abstract class NetworkComponentBasePart extends UiEMultipart implements ITransferNetworkComponent, IConnectable, ISBRHPart, JNormalOcclusion
 {
@@ -155,4 +162,19 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
         return super.occlusionTest(part);
     }
 
+    public ItemStack pickItem(MovingObjectPosition hit)
+    {
+        return new ItemStack(Item.getItemFromBlock(getBlock()), 1, meta);
+    }
+
+    @Override
+    public Iterable<ItemStack> getDrops()
+    {
+        return Collections.singletonList(new ItemStack(Item.getItemFromBlock(getBlock()), 1, meta));
+    }
+
+    public float getStrength(MovingObjectPosition hit , EntityPlayer player)
+    {
+        return 30 * getBlock().getBlockHardness(world(), hit.blockX, hit.blockY, hit.blockZ); // It's a weird calc but whatever.
+    }
 }
