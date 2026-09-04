@@ -1,6 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess;
 
 import codechicken.lib.world.TileChunkLoadHook;
+import codechicken.multipart.MultiPartRegistry;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.TransferNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;

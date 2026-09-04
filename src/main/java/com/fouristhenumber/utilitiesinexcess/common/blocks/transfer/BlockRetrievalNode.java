@@ -79,7 +79,7 @@ public class BlockRetrievalNode extends BlockNodeBase
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
 
-        if ((metadata & 1) == 0)
+        if (BlockNodeBase.getType(metadata) == 0)
         {
             return new TileEntityItemRetrievalNode();
         }

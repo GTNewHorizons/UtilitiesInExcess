@@ -12,15 +12,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class LogicComponentBasePart<T extends NetworkLogic> extends NetworkComponentBasePart implements IGuiHolder<PartGuiData>
+public abstract class LogicComponentBasePart extends NetworkComponentBasePart implements IGuiHolder<PartGuiData>
 {
-    protected T logic;
+    protected NetworkLogic<?> logic;
 
     protected LogicComponentBasePart(int meta) {
         super(meta);
     }
 
-    protected abstract T getLogic();
+    protected abstract NetworkLogic<?> getLogic();
 
     @Override
     public void save(NBTTagCompound tag) {

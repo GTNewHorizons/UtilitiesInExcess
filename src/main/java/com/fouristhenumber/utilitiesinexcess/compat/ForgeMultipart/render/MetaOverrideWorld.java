@@ -6,7 +6,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public record MetaOverrideWorld(IBlockAccess world, int x, int y, int z, int meta) implements IBlockAccess {
+public class MetaOverrideWorld implements IBlockAccess
+{
+    protected final IBlockAccess world;
+    protected final int x, y, z, meta;
+
+    public MetaOverrideWorld(IBlockAccess world, int x, int y, int z, int meta)
+    {
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.meta = meta;
+    }
 
     @Override
     public Block getBlock(int x, int y, int z) {

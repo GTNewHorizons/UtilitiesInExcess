@@ -15,12 +15,10 @@ import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidRetrievalNodePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.FluidTransferNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipeJacketPart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.ItemRetrievalNodePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.ItemTransferNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.TransferNodePart;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketFMPPlaceBlock;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
@@ -59,9 +57,10 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
     public static final String[] transferPartNames = new String[]
         {
-            ConversionRegistry.EnergyTransferNode.getName(), ConversionRegistry.FluidTransferNode.getName(),
-            ConversionRegistry.FluidRetrievalNode.getName(), ConversionRegistry.ItemTransferNode.getName(),
-            ConversionRegistry.ItemRetrievalNode.getName(), ConversionRegistry.Pipe.getName()
+            ConversionRegistry.TransferNode.getName(),
+            ConversionRegistry.RetrievalNode.getName(),
+            ConversionRegistry.EnergyNode.getName(),
+            ConversionRegistry.Pipe.getName()
         };
 
     public static final Map<String, Integer> partMap = new HashMap<>();
@@ -100,12 +99,10 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             case ("ue_fence") -> new FencePart(material, meta);
             case ("ue_wall") -> new WallPart(material, meta);
             case ("ue_sphere") -> new SpherePart(material);
-            case ("item_retrieval_node") -> new ItemRetrievalNodePart(meta);
-            case ("fluid_retrieval_node") -> new FluidRetrievalNodePart(meta);
-            case ("item_transfer_node") -> new ItemTransferNodePart(meta);
-            case ("fluid_transfer_node") -> new FluidTransferNodePart(meta);
-            case ("pipe") -> new PipePart(meta);
-            case ("energy_node") -> new EnergyNodePart(meta);
+            case ("utilitiesinexcess:retrieval_node") -> new RetrievalNodePart(meta);
+            case ("utilitiesinexcess:transfer_node") -> new TransferNodePart(meta);
+            case ("utilitiesinexcess:transfer_pipe") -> new PipePart(meta);
+            case ("utilitiesinexcess:transfer_node_energy") -> new EnergyNodePart(meta);
             case ("pipe_jacket") -> new PipeJacketPart(material);
             default -> null;
         };
@@ -116,12 +113,10 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             case ("ue_fence") -> new FencePart(packet);
             case ("ue_wall") -> new WallPart(packet);
             case ("ue_sphere") -> new SpherePart(packet);
-            case ("item_retrieval_node") -> new ItemRetrievalNodePart(packet);
-            case ("fluid_retrieval_node") -> new FluidRetrievalNodePart(packet);
-            case ("item_transfer_node") -> new ItemTransferNodePart(packet);
-            case ("fluid_transfer_node") -> new FluidTransferNodePart(packet);
-            case ("pipe") -> new PipePart(packet);
-            case ("energy_node") -> new EnergyNodePart(packet);
+            case ("utilitiesinexcess:retrieval_node") -> new RetrievalNodePart(packet);
+            case ("utilitiesinexcess:transfer_node") -> new TransferNodePart(packet);
+            case ("utilitiesinexcess:transfer_pipe") -> new PipePart(packet);
+            case ("utilitiesinexcess:transfer_node_energy") -> new EnergyNodePart(packet);
             case ("pipe_jacket") -> new PipeJacketPart(packet);
             default -> null;
         };

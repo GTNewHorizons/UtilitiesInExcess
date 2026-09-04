@@ -36,7 +36,7 @@ public class BlockPipe extends BlockTransferBase
 
     public BlockPipe() {
         super(Material.iron);
-        this.setBlockName("block_pipe");
+        this.setBlockName("transfer_pipe");
     }
 
     @Override

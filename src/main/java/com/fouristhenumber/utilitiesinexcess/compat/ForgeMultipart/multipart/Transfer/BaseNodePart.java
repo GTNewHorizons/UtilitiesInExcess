@@ -6,7 +6,10 @@ import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ITickableLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,8 +28,8 @@ import java.util.List;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
-public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends LogicComponentBasePart<T>
-    implements IWalkingComponent<V>
+public abstract class BaseNodePart extends LogicComponentBasePart
+    implements IWalkingComponent
 {
     public BaseNodePart(int meta) {
         super(meta);
@@ -35,14 +38,16 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
     @Override
     public void update()
     {
-        getLogic().updateEntity();
+        NetworkLogic<?> logic = getLogic();
+        if (logic instanceof ITickableLogic tickable) {
+            tickable.updateEntity();
+        }
     }
 
     @Override
     public Cuboid6 getBounds() {
         return new Cuboid6(NodeCollision.values()[getFacingOrdinal(meta)].getBoundingBox().copy());
     }
-
 
     @Override
     public Iterable<Cuboid6> getOcclusionBoxes() {
@@ -53,11 +58,14 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
     }
 
     @Override
-    public abstract String getType();
+    public Object getWalkingObject()
+    {
+        NetworkLogic<?> logic = getLogic();
 
-    @Override
-    public V getWalkingObject() {
-        return getLogic().getWalkingObject();
+        if (logic instanceof IWalkingLogic<?> walking) {
+            return walking.getWalkingObject();
+        }
+        return null;
     }
 
     @Override
@@ -73,7 +81,6 @@ public abstract class BaseNodePart <T extends BaseNodeLogic<?, V>, V> extends Lo
         }
         return direction != getFacing() && !doPartsOccludeDirection(direction);
     }
-
 
     @Override
     public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent<?> walkingComponent)

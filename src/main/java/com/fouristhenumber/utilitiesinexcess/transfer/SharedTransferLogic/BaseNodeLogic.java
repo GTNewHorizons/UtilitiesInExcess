@@ -15,7 +15,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends NetworkLogic<T> implements IUpgradeable {
+public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends NetworkLogic<T> implements IUpgradeable, ITickableLogic, IWalkingLogic<V>
+{
     public static final int DEFAULT_STEPS_PER_SECOND = 2;
     protected int actionPerSecond = DEFAULT_STEPS_PER_SECOND;
     protected UpgradeInventory upgrades;
@@ -27,8 +28,6 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
         super(host);
         this.upgrades = new UpgradeInventory(6, this);
     }
-
-    public abstract void updateEntity();
 
     @Override
     public void markDirty() {
@@ -79,6 +78,4 @@ public abstract class BaseNodeLogic<T extends IWalkingComponent<V>, V> extends N
     {
         this.upgrades.readDesc(input);
     }
-
-    public abstract V getWalkingObject();
 }

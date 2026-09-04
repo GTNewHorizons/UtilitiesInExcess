@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import codechicken.multipart.TMultiPart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.gtnewhorizon.gtnhlib.blockstate.core.BlockProperty;
 import com.gtnewhorizon.gtnhlib.blockstate.core.BlockPropertyTrait;
@@ -59,5 +60,11 @@ public class DirectionalConnectionProperty implements BlockProperty<Boolean>
     {
         List<IConnectable> connectables = getConnectables(world, x, y, z);
         return !connectables.isEmpty() && IConnectable.getConnection(connectables, world, x, y, z, direction);
+    }
+
+    public Boolean getValue(TMultiPart part)
+    {
+        List<IConnectable> connectables = getConnectables(part.world(), part.x(), part.y(), part.z());
+        return !connectables.isEmpty() && IConnectable.getConnection(connectables, part.world(), part.x(), part.y(), part.z(), direction);
     }
 }

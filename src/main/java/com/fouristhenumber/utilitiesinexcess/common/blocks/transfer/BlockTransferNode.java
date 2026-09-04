@@ -58,7 +58,7 @@ public class BlockTransferNode extends BlockNodeBase {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
 
-        if (metadata >> 3 == 0)
+        if (BlockNodeBase.getType(metadata) == 0)
         {
             return new TileEntityItemTransferNode();
         }

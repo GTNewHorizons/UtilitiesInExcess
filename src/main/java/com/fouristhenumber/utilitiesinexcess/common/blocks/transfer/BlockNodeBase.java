@@ -286,6 +286,6 @@ public abstract class BlockNodeBase extends BlockTransferBase // implements IBlo
     @Override
     public int damageDropped(int metadata)
     {
-        return metadata;
+        return getType(metadata);
     }
 }

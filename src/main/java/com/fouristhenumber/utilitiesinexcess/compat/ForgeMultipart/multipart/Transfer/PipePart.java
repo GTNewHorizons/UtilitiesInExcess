@@ -15,6 +15,7 @@ import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiE
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import cpw.mods.fml.relauncher.Side;
@@ -37,15 +38,15 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PipePart extends LogicComponentBasePart<FilterPipeLogic>
+public class PipePart extends LogicComponentBasePart
 {
     public PipePart(int meta) {
         super(meta);
     }
 
-    private FilterPipeLogic logic;
 
-    protected FilterPipeLogic getLogic() {
+    @Override
+    protected NetworkLogic<?> getLogic() {
         if (logic == null)
         {
             logic = new FilterPipeLogic(this);

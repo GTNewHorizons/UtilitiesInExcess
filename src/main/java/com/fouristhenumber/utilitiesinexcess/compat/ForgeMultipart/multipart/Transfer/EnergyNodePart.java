@@ -9,6 +9,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransfe
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
 import net.minecraft.block.Block;
 import net.minecraft.util.AxisAlignedBB;
@@ -23,7 +24,7 @@ import java.util.List;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
-public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Integer>
+public class EnergyNodePart extends BaseNodePart
 {
     public EnergyNodePart(int meta) {
         super(BlockNodeBase.getType(meta));
@@ -41,7 +42,7 @@ public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Intege
     }
 
     @Override
-    protected EnergyTransferNodeLogic getLogic()
+    protected NetworkLogic<?> getLogic()
     {
         if (logic == null)
         {
@@ -52,7 +53,7 @@ public class EnergyNodePart extends BaseNodePart<EnergyTransferNodeLogic, Intege
 
     @Override
     public String getType() {
-        return ConversionRegistry.EnergyTransferNode.getName();
+        return ConversionRegistry.EnergyNode.getName();
     }
 
     @Override

@@ -15,18 +15,13 @@ import java.util.function.Supplier;
 
 import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory.createUEMultiPart;
 
-// Registry for non-FMP blocks that are able to be turned into FMP blocks on placement.
-// I wanted to make only one part per type aka one retrieval one transfer, but realistically, it's much cleaner
-// to just have 1 extra concrete class per type. I could get around it with factories and everything, but
-// I generally believe that is going to make the code already more complicated and confusing than it is now...
+// Registry for non-FMP-only blocks that are able to be turned into FMP blocks on placement.
 public enum ConversionRegistry
 {
-    ItemTransferNode("item_transfer_node", BlockTransferNode.class, ModBlocks.TRANSFER_NODE::get),
-    FluidTransferNode("fluid_transfer_node", BlockTransferNode.class, ModBlocks.TRANSFER_NODE::get),
-    ItemRetrievalNode("item_retrieval_node", BlockRetrievalNode.class, ModBlocks.RETRIEVAL_NODE::get),
-    FluidRetrievalNode("fluid_retrieval_node", BlockRetrievalNode.class, ModBlocks.RETRIEVAL_NODE::get),
-    EnergyTransferNode("energy_node", BlockTransferNodeEnergy.class, ModBlocks.TRANSFER_NODE_ENERGY::get),
-    Pipe("pipe", BlockPipe.class, ModBlocks.TRANSFER_PIPE::get);
+    TransferNode("utilitiesinexcess:transfer_node", BlockTransferNode.class, ModBlocks.TRANSFER_NODE::get),
+    RetrievalNode("utilitiesinexcess:retrieval_node", BlockRetrievalNode.class, ModBlocks.RETRIEVAL_NODE::get),
+    EnergyNode("utilitiesinexcess:transfer_node_energy", BlockTransferNodeEnergy.class, ModBlocks.TRANSFER_NODE_ENERGY::get),
+    Pipe("utilitiesinexcess:transfer_pipe", BlockPipe.class, ModBlocks.TRANSFER_PIPE::get);
 
     private final String name;
     private final Class<? extends BlockTransferBase> block;
