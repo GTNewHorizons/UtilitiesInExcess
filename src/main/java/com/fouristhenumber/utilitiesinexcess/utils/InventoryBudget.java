@@ -9,9 +9,9 @@ import net.minecraft.item.ItemStack;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 /**
- * Tracks how much of each material a fill has committed to, so it never promises more than the player owns.
+ * Tracks what an inventory can still afford, without touching it.
  */
-public final class BuildersMaterialBudget {
+public final class InventoryBudget {
 
     private static final class Reservation {
 
@@ -23,13 +23,36 @@ public final class BuildersMaterialBudget {
     private final InventoryPlayer inventory;
     private final boolean creative;
 
-    public BuildersMaterialBudget(InventoryPlayer inventory, boolean creative) {
+    public InventoryBudget(InventoryPlayer inventory, boolean creative) {
         this.inventory = inventory;
         this.creative = creative;
     }
 
     /**
-     * Claims one of the given material, returning false if none is left to spend.
+     * Claims one of every listed material, or none of them.
+     *
+     * @return true on success
+     */
+    public boolean tryReserve(List<ItemStack> materials) {
+        int mark = reservations.size();
+        int[] spent = new int[mark];
+        for (int i = 0; i < mark; i++) spent[i] = reservations.get(i).remaining;
+
+        for (ItemStack material : materials) {
+            if (tryReserve(material)) continue;
+
+            // Rollback
+            for (int i = 0; i < mark; i++) reservations.get(i).remaining = spent[i];
+            while (reservations.size() > mark) reservations.removeLast();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Claims one of the given material, or not.
+     *
+     * @return true on success
      */
     public boolean tryReserve(ItemStack material) {
         for (Reservation reservation : reservations) {
@@ -43,20 +66,17 @@ public final class BuildersMaterialBudget {
         }
 
         int owned = 0;
-        for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
-            ItemStack inSlot = inventory.getStackInSlot(slot);
+        for (int slot = 0; slot < inventory.mainInventory.length; slot++) {
+            ItemStack inSlot = inventory.mainInventory[slot];
             if (inSlot != null && ItemUtil.areStacksEqual(inSlot, material)) {
                 owned += inSlot.stackSize;
             }
         }
 
         // Creative still requires owning one, matching the stock wand.
-        if (owned == 0) {
-            return false;
-        }
-        if (creative) {
-            owned = Integer.MAX_VALUE;
-        }
+        if (owned == 0) return false;
+
+        if (creative) owned = Integer.MAX_VALUE;
 
         Reservation reservation = new Reservation();
         reservation.stack = material;

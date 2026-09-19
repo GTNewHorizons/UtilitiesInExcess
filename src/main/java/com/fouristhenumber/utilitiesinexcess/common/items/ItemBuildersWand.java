@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils.damageBackhand;
-
 import java.util.List;
 import java.util.Set;
 
@@ -19,15 +17,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.compat.architecturecraft.ArchitectureCraftCompat;
-import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersBlockPicker;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersBlockSelectionFilter;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersMaterialBudget;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils.WandAxisMode;
+import com.fouristhenumber.utilitiesinexcess.utils.ChickenLibRayTracer;
+import com.fouristhenumber.utilitiesinexcess.utils.InventoryBudget;
 import com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWBlockPicker;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWCellHandlers;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWContext;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWMode;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWRegion;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWRegion.WandAxisLock;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
@@ -36,7 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBuildersWand extends Item implements ITranslucentItem {
 
-    public int buildLimit;
+    private final int buildLimit;
 
     public ItemBuildersWand(int buildLimit) {
         super();
@@ -61,7 +59,12 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
 
         if (!isSelected) return;
 
-        // I'm pretty sure this will never determine whether we render or not but I'm not certain
+        // adventure mode
+        if (!player.capabilities.allowEdit) {
+            WireframeRenderer.clearCandidatePositions();
+            return;
+        }
+
         MovingObjectPosition movingObjectPosition = Minecraft.getMinecraft().objectMouseOver;
 
         // Check if player is looking at a block.
@@ -73,26 +76,12 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
 
         ForgeDirection forgeSide = ForgeDirection.getOrientation(movingObjectPosition.sideHit);
 
-        WandAxisMode axisMode;
-        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) {
-            axisMode = WandAxisMode.HORIZONTAL;
-        } else if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) {
-            axisMode = WandAxisMode.VERTICAL;
-        } else {
-            axisMode = WandAxisMode.FREE;
-        }
-
-        // selection filter
-        var filter = new BuildersBlockSelectionFilter(player, world, movingObjectPosition);
-
-        // keep track of potentially used blocks in inventory
-        var itemBudget = new BuildersMaterialBudget(player.inventory, player.capabilities.isCreativeMode);
-
-        // block picker
-        var blockPicker = BuildersBlockPicker.create(world, player, filter, itemBudget);
-
-        Set<BlockPos> blocksToPlace = BuildersWandUtils
-            .findAdjacentBlocks(world, buildLimit, movingObjectPosition, player, filter, blockPicker, axisMode);
+        WandAxisLock axisLock = axisLock(player);
+        Set<BlockPos> blocksToPlace = BWRegion.findAdjacentBlocksToBuildOn(
+            newContext(world, player, movingObjectPosition),
+            buildLimit,
+            movingObjectPosition,
+            axisLock);
 
         WireframeRenderer.clearCandidatePositions();
         for (BlockPos pos : blocksToPlace)
@@ -103,13 +92,14 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         if (world.isRemote) return true;
+        if (!player.capabilities.allowEdit) return false;
 
         MovingObjectPosition mop = new MovingObjectPosition(
             x,
             y,
             z,
             side,
-            Vec3.createVectorHelper(x + hitX, y + hitY, z + hitZ));
+            Vec3.createVectorHelper((double) x + hitX, (double) y + hitY, (double) z + hitZ));
 
         // Sanity check
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
@@ -118,73 +108,58 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
             return true;
         }
 
-        WandAxisMode axisMode;
-        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) {
-            axisMode = WandAxisMode.HORIZONTAL;
-        } else if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) {
-            axisMode = WandAxisMode.VERTICAL;
-        } else {
-            axisMode = WandAxisMode.FREE;
-        }
+        WandAxisLock axisLock = axisLock(player);
 
-        // selection filter
-        var filter = new BuildersBlockSelectionFilter(player, world, mop);
+        // the scan pass spends the budget working out what fits, so placement starts from a fresh one
+        BWContext scanCtx = newContext(world, player, mop);
+        Set<BlockPos> blocksToPlace = BWRegion.findAdjacentBlocksToBuildOn(scanCtx, buildLimit, mop, axisLock);
 
-        // keep track of potentially used blocks in inventory
-        var itemBudget = new BuildersMaterialBudget(player.inventory, player.capabilities.isCreativeMode);
-
-        // block picker
-        var blockPicker = BuildersBlockPicker.create(world, player, filter, itemBudget);
-
-        // potential block positions
-        Set<BlockPos> blocksToPlace = BuildersWandUtils
-            .findAdjacentBlocks(world, buildLimit, mop, player, filter, blockPicker, axisMode);
-
-        // reset the blockPicker with new budget
-        itemBudget = new BuildersMaterialBudget(player.inventory, player.capabilities.isCreativeMode);
-        blockPicker = BuildersBlockPicker.create(world, player, filter, itemBudget);
-
-        for (BlockPos pos : blocksToPlace) {
-            MovingObjectPositionUtil.TranslateMovingObjectPositionToLocation(mop, pos);
-            ItemStack toPlace = blockPicker
-                .pickBlock(mop, BuildersBlockSelectionFilter.getBlockByLocation(world, mop, player));
-
-            if (toPlace == null) continue;
-
-            if (!damageBackhand(BuildersWandsConfig.INSTANCE.damageTrowelWithBuildersWand, player)) continue;
-
-            ItemStack itemCopy = toPlace.copy();
-            itemCopy.stackSize = 1;
-
-            // uses ItemBlock to place the block with all the checks
-            // sets stackSize to 0 on success
-            itemCopy.tryPlaceItemIntoWorld(player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
-
-            // Don't forget to take the spent item from the inventory
-            if (itemCopy.stackSize == 0) {
-                if (!player.capabilities.isCreativeMode) BuildersWandUtils.decreaseFromInventory(player, toPlace);
-
-                if (filter.isCopyMode()) {
-                    int destX = pos.x + forgeSide.offsetX;
-                    int destY = pos.y + forgeSide.offsetY;
-                    int destZ = pos.z + forgeSide.offsetZ;
-
-                    // copy the rotation or other metadata pieces that do not transfer through itemStack
-                    world.setBlockMetadataWithNotify(
-                        destX,
-                        destY,
-                        destZ,
-                        world.getBlockMetadata(pos.x, pos.y, pos.z),
-                        3);
-
-                    // Special handling for ArchitectureCraft shape TEs
-                    if (Mods.ArchitectureCraft.isLoaded()) ArchitectureCraftCompat
-                        .tryCopyShapeState(world, pos.x, pos.y, pos.z, destX, destY, destZ, player);
-                }
+        // every cell is protection-checked on its own, Forge recording the whole use at once would muddle that
+        boolean capturing = world.captureBlockSnapshots;
+        world.captureBlockSnapshots = false;
+        try {
+            BWContext buildCtx = newContext(world, player, mop);
+            for (BlockPos srcPos : blocksToPlace) {
+                MovingObjectPositionUtil.TranslateMovingObjectPositionToLocation(mop, srcPos);
+                BWCellHandlers.build(buildCtx, mop, true);
             }
+        } finally {
+            world.captureBlockSnapshots = capturing;
         }
         player.inventoryContainer.detectAndSendChanges();
         return true;
+    }
+
+    /** Mode, budget and picker for one pass over the fill, seeded from the clicked cell. */
+    private static BWContext newContext(World world, EntityPlayer player, MovingObjectPosition mop) {
+        var budget = new InventoryBudget(player.inventory, player.capabilities.isCreativeMode);
+
+        // plain copy: the client ray can be an ExtendedMOP naming a part broken this tick
+        MovingObjectPosition plainMop = MovingObjectPositionUtil.copy(mop);
+        ItemStack lookedAtBlock = world.getBlock(plainMop.blockX, plainMop.blockY, plainMop.blockZ)
+            .getPickBlock(plainMop, world, plainMop.blockX, plainMop.blockY, plainMop.blockZ, player);
+
+        BWMode mode = BWMode.of(player);
+        var picker = BWBlockPicker.create(world, player, mode, lookedAtBlock, budget);
+
+        // null when the ray misses the clicked block, then handlers just get the plain position
+        MovingObjectPosition tracedMop = ChickenLibRayTracer
+            .retraceBlock(world, player, mop.blockX, mop.blockY, mop.blockZ);
+        return new BWContext(
+            world,
+            tracedMop != null ? tracedMop : MovingObjectPositionUtil.copy(mop),
+            lookedAtBlock,
+            player,
+            mode,
+            picker,
+            budget);
+    }
+
+    private static WandAxisLock axisLock(EntityPlayer player) {
+        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) return WandAxisLock.HORIZONTAL;
+        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) return WandAxisLock.VERTICAL;
+
+        return WandAxisLock.FREE;
     }
 
     @Override
