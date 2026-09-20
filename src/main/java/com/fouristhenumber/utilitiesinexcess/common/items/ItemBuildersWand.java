@@ -20,7 +20,6 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
 import com.fouristhenumber.utilitiesinexcess.utils.ChickenLibRayTracer;
 import com.fouristhenumber.utilitiesinexcess.utils.InventoryBudget;
 import com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil;
-import com.fouristhenumber.utilitiesinexcess.utils.bw.BWBlockPicker;
 import com.fouristhenumber.utilitiesinexcess.utils.bw.BWCellHandlers;
 import com.fouristhenumber.utilitiesinexcess.utils.bw.BWContext;
 import com.fouristhenumber.utilitiesinexcess.utils.bw.BWMode;
@@ -134,24 +133,14 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
     private static BWContext newContext(World world, EntityPlayer player, MovingObjectPosition mop) {
         var budget = new InventoryBudget(player.inventory, player.capabilities.isCreativeMode);
 
-        // plain copy: the client ray can be an ExtendedMOP naming a part broken this tick
-        MovingObjectPosition plainMop = MovingObjectPositionUtil.copy(mop);
-        ItemStack lookedAtBlock = world.getBlock(plainMop.blockX, plainMop.blockY, plainMop.blockZ)
-            .getPickBlock(plainMop, world, plainMop.blockX, plainMop.blockY, plainMop.blockZ, player);
-
-        BWMode mode = BWMode.of(player);
-        var picker = BWBlockPicker.create(world, player, mode, lookedAtBlock, budget);
-
         // null when the ray misses the clicked block, then handlers just get the plain position
         MovingObjectPosition tracedMop = ChickenLibRayTracer
             .retraceBlock(world, player, mop.blockX, mop.blockY, mop.blockZ);
         return new BWContext(
             world,
             tracedMop != null ? tracedMop : MovingObjectPositionUtil.copy(mop),
-            lookedAtBlock,
             player,
-            mode,
-            picker,
+            BWMode.of(player),
             budget);
     }
 

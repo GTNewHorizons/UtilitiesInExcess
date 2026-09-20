@@ -24,30 +24,47 @@ public final class ArchitectureCraftBWCellHandler extends DefaultBWCellHandler {
 
     @Override
     public boolean handles(BWContext ctx, int x, int y, int z) {
-        return ctx.isExtrudeMode() && shapeAt(ctx.world, x, y, z) != null;
+        return shapeAt(ctx.world, x, y, z) != null;
     }
 
     @Override
     public boolean build(BWContext ctx, MovingObjectPosition mop, boolean place) {
         if (!super.build(ctx, mop, place)) return false;
-        if (!place) return true;
+        // only the Scribe reproduces a cell as it is, the other modes just place the shape item
+        if (!place || !ctx.isExtrudeMode()) return true;
 
         BlockPos from = MovingObjectPositionUtil.blockPos(mop);
-        copyShapeState(
-            ctx,
-            from,
-            MovingObjectPositionUtil.targetPos(mop),
-            claddingOf(shapeAt(ctx.world, from.x, from.y, from.z)));
+        copyShapeState(ctx, from, MovingObjectPositionUtil.targetPos(mop), claddingOf(ctx, from));
         return true;
+    }
+
+    /**
+     * AC has badly implemented pickBlock.
+     * We use what The Sawbench and block drops use instead.
+     */
+    @Override
+    @Nullable
+    public ItemStack pickBlockAt(BWContext ctx, MovingObjectPosition mop) {
+        BlockPos from = MovingObjectPositionUtil.blockPos(mop);
+        TileShape shape = shapeAt(ctx.world, from.x, from.y, from.z);
+        if (shape == null) return super.pickBlockAt(ctx, mop);
+
+        boolean emissive = ctx.world.getBlock(from.x, from.y, from.z) == ArchitectureCraft.content.blockShapeSE;
+        return shape.shape.kind.newStack(shape.shape, shape.baseBlockState, 1, emissive);
     }
 
     /** A clad shape costs its cladding too, so a copy nobody can pay for is never started. */
     @Override
     protected List<ItemStack> extraCosts(BWContext ctx, MovingObjectPosition mop) {
-        BlockPos from = MovingObjectPositionUtil.blockPos(mop);
-        ItemStack cladding = claddingOf(shapeAt(ctx.world, from.x, from.y, from.z));
+        if (!ctx.isExtrudeMode()) return Collections.emptyList();
 
+        ItemStack cladding = claddingOf(ctx, MovingObjectPositionUtil.blockPos(mop));
         return cladding == null ? Collections.emptyList() : Collections.singletonList(cladding);
+    }
+
+    @Nullable
+    private static ItemStack claddingOf(BWContext ctx, BlockPos pos) {
+        return claddingOf(shapeAt(ctx.world, pos.x, pos.y, pos.z));
     }
 
     /** Copies the TileShape state the item cannot carry: side, turn, offset, connections and cladding. */

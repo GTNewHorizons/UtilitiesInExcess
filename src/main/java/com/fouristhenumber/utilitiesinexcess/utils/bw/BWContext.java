@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import com.fouristhenumber.utilitiesinexcess.utils.InventoryBudget;
+import com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 /** Everything a cell handler needs during one pass of a Builder's Wand use. */
@@ -25,15 +26,20 @@ public final class BWContext {
     @Nullable
     public final ItemStack clickedBlockStack;
 
-    public BWContext(World world, MovingObjectPosition originalMop, @Nullable ItemStack clickedBlockStack,
-        EntityPlayer player, BWMode mode, BWBlockPicker picker, InventoryBudget budget) {
+    public BWContext(World world, MovingObjectPosition originalMop, EntityPlayer player, BWMode mode,
+        InventoryBudget budget) {
         this.world = world;
         this.player = player;
         this.mode = mode;
-        this.picker = picker;
         this.budget = budget;
         this.originalMop = originalMop;
-        this.clickedBlockStack = clickedBlockStack;
+
+        // the clicked cell is priced by its own handler, like every other cell, which needs this context to exist.
+        // everything a handler reads while claiming a cell is assigned above.
+        MovingObjectPosition clicked = MovingObjectPositionUtil.copy(originalMop);
+        this.clickedBlockStack = BWCellHandlers.find(this, clicked.blockX, clicked.blockY, clicked.blockZ)
+            .pickBlockAt(this, clicked);
+        this.picker = BWBlockPicker.create(world, player, mode, clickedBlockStack, budget);
     }
 
     public boolean isCreative() {

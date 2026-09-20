@@ -37,13 +37,14 @@ public abstract class BWBlockPicker {
     /**
      * pick a suitable block to be placed
      * -> has to be placeable, use canPlaceBlock()
+     * -> materials must be available in the inventory, use tryReserve()
      *
      * @param mop         the source block on which the new one will be placed
      * @param sourceBlock the stack the source block hands over when picked
      * @param extraCosts  what this cell costs besides the block itself, reserved together with it
      * @return block to be placed, already reserved against the budget, or null
      */
-    public abstract ItemStack pickBlock(MovingObjectPosition mop, @Nullable ItemStack sourceBlock,
+    public abstract ItemStack pickBlockFor(MovingObjectPosition mop, @Nullable ItemStack sourceBlock,
         List<ItemStack> extraCosts);
 
     /** Reserves the block and everything else the cell costs, all of them or none. */
@@ -136,7 +137,8 @@ public abstract class BWBlockPicker {
         }
 
         @Override
-        public ItemStack pickBlock(MovingObjectPosition mop, @Nullable ItemStack ignored, List<ItemStack> extraCosts) {
+        public ItemStack pickBlockFor(MovingObjectPosition mop, @Nullable ItemStack ignored,
+            List<ItemStack> extraCosts) {
             System.arraycopy(scratchTemplate, 0, scratch, 0, scratch.length);
 
             // try every block in the palette in a random order
@@ -165,7 +167,7 @@ public abstract class BWBlockPicker {
         }
 
         @Override
-        public ItemStack pickBlock(MovingObjectPosition mop, @Nullable ItemStack sourceBlock,
+        public ItemStack pickBlockFor(MovingObjectPosition mop, @Nullable ItemStack sourceBlock,
             List<ItemStack> extraCosts) {
             return sourceBlock != null && canPlaceBlock(world, sourceBlock, mop) && tryReserve(sourceBlock, extraCosts)
                 ? sourceBlock

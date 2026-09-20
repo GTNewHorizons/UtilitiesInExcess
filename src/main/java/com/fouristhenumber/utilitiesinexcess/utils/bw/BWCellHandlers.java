@@ -14,7 +14,8 @@ import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
  * Add your own custom place handler by implementing IBWCellHandler and registering it here.
  *
  * Useful particularly for extrude mode, when naively copying just the metadata of a block is not enough.
- * Also useful for any blocks for which Block to ItemStack method "pickBlock" is tricky (like ForgeMicroblocks)
+ * Also useful for any blocks for which the vanilla Block to ItemStack method getPickBlock() is tricky
+ * (like ForgeMicroblocks)
  */
 public final class BWCellHandlers {
 

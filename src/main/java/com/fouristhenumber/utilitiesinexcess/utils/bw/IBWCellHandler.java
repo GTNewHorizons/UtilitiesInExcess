@@ -1,6 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.utils.bw;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Teaches the Builder's Wand to extend one kind of cell.
@@ -51,8 +54,8 @@ import net.minecraft.util.MovingObjectPosition;
  * Real examples:
  * <ul>
  * <li>ArchitectureCraftBWCellHandler: the example above, plus the cladding it costs declared in {@code extraCosts}
- * <li>MultipartBWCellHandler: implements this interface directly, because a cell holding a bag of parts is no
- * single block with a single item
+ * <li>MultipartBWCellHandler: replaces {@link #build} with one branch per mode, because a cell holding a bag of
+ * parts is no single block with a single item
  * </ul>
  *
  * <h3>Rules</h3>
@@ -74,6 +77,14 @@ public interface IBWCellHandler {
      * hands the cell to the next handler, and finally to {@link DefaultBWCellHandler}.
      */
     boolean handles(BWContext ctx, int x, int y, int z);
+
+    /**
+     * The stack that stands for this cell: what the wand looks for in the inventory, what it places, and what the
+     * clicked cell is compared against. Null when the cell cannot be expressed as one stack.
+     * Usually {@code block.getPickBlock()}.
+     */
+    @Nullable
+    ItemStack pickBlockAt(BWContext ctx, MovingObjectPosition mop);
 
     /**
      * Report what this cell costs and, when asked, build it.

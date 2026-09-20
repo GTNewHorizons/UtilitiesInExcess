@@ -28,11 +28,18 @@ import com.gtnewhorizon.gtnhlib.util.ItemUtil;
  * <ul>
  * <li>Which cells are even yours? {@link #handles} claims them, otherwise your handler won't be called at all.
  *
- * <li>Does your block hand back a useless {@code getPickBlock()}?
- * This is bad since wand needs to decide whether two blocks are identical, so it can spread over them.
+ * <li>Do you need custom selection spreading rules?
+ * By default, spreading works by comparing itemStacks acquired by {@link #pickBlockAt} from clickedBlock and a
+ * current block.
+ * If block does not have one simple itemStack to return, e.g. for multipart cases, this will fail.
  * Override {@link #sameKindAsClicked} and compare them your way.
  *
- * <li>Does a cell cost more than its block, a cladding, a dye, a filter inside? Declare it in {@link #extraCosts}
+ * <li>Does your block hand back a wrong {@code getPickBlock()}?
+ * One that the inventory never contains, a dropped damage value or a leftover NBT tag.
+ * Override {@link #pickBlockAt} and build the stack your block drops.
+ *
+ * <li>Does a cell cost more than its block, perhaps a cladding, a dye, a filter inside? Declare it in
+ * {@link #extraCosts}
  * and the wand reserves it together with the block, or skips the cell.
  *
  * <li>Does the new block come out blank, missing a rotation, a color, a cover?
@@ -59,10 +66,10 @@ public class DefaultBWCellHandler implements IBWCellHandler {
         // ItemBlock places into a replaceable cell (air, grass, snow, fluid) instead of in front of it
         if (block.isReplaceable(world, mop.blockX, mop.blockY, mop.blockZ)) return false;
 
-        ItemStack sourceBlockStack = block.getPickBlock(mop, ctx.world, mop.blockX, mop.blockY, mop.blockZ, ctx.player);
+        ItemStack sourceBlockStack = pickBlockAt(ctx, mop);
         if (!(ctx.spreadsOverAnything() || sameKindAsClicked(ctx, mop, sourceBlockStack))) return false;
 
-        ItemStack toPlace = ctx.picker.pickBlock(mop, sourceBlockStack, extraCosts(ctx, mop));
+        ItemStack toPlace = ctx.picker.pickBlockFor(mop, sourceBlockStack, extraCosts(ctx, mop));
         if (toPlace == null) return false;
         if (!place) return true;
 
@@ -107,6 +114,17 @@ public class DefaultBWCellHandler implements IBWCellHandler {
     /** What this cell costs besides the block itself */
     protected List<ItemStack> extraCosts(BWContext ctx, MovingObjectPosition mop) {
         return Collections.emptyList();
+    }
+
+    /**
+     * The stack that stands for this cell: what the wand looks for in the inventory and what it places.
+     * Override when the pick stack is not the one this block drops.
+     */
+    @Override
+    @Nullable
+    public ItemStack pickBlockAt(BWContext ctx, MovingObjectPosition mop) {
+        return ctx.world.getBlock(mop.blockX, mop.blockY, mop.blockZ)
+            .getPickBlock(mop, ctx.world, mop.blockX, mop.blockY, mop.blockZ, ctx.player);
     }
 
     /**
