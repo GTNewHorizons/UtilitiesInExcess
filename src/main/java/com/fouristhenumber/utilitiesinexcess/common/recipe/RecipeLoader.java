@@ -1772,7 +1772,7 @@ public class RecipeLoader {
                 "###",
                 '#',
                 new ItemStack(block.getBase(), 9));
-            addShapelessRecipe(new DisableableItemStack(modBlock, 9), new DisableableItemStack(modBlock, 1));
+            addShapelessRecipe(new ItemStack(block.getBase(), 9), new DisableableItemStack(modBlock, 1));
             for (int i = 0; i < 7; i++) {
                 addShapedRecipe(
                     new DisableableItemStack(modBlock, 1, i + 1),
