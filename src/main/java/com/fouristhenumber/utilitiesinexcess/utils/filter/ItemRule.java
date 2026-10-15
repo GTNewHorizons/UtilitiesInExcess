@@ -1,30 +1,26 @@
 package com.fouristhenumber.utilitiesinexcess.utils.filter;
 
+import java.util.Objects;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.Objects;
+public class ItemRule {
 
-public class ItemRule
-{
     private MatchMode mode;
     private int meta;
     private NBTTagCompound nbt;
 
-    public ItemRule(MatchMode mode, int meta, NBTTagCompound nbt)
-    {
+    public ItemRule(MatchMode mode, int meta, NBTTagCompound nbt) {
         this.mode = mode;
         this.meta = meta;
         this.nbt = nbt;
     }
 
     // This matches function is called after we've already matched on the item so no need to compare it.
-    boolean matches(ItemStack stack)
-    {
+    boolean matches(ItemStack stack) {
         return switch (mode) {
-            case DEFAULT ->
-                Objects.equals(stack.stackTagCompound, nbt)
-                    && stack.getItemDamage() == meta;
+            case DEFAULT -> Objects.equals(stack.stackTagCompound, nbt) && stack.getItemDamage() == meta;
             case IGNORE_NBT -> stack.getItemDamage() == meta;
             case IGNORE_META -> Objects.equals(stack.stackTagCompound, nbt);
             case IGNORE_NBT_META -> true;

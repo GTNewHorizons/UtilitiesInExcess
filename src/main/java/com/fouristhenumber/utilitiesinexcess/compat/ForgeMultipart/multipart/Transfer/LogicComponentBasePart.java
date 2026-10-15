@@ -1,6 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
-import codechicken.lib.data.MCDataOutput;
+import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
@@ -11,20 +20,13 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEn
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiData;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+
+import codechicken.lib.data.MCDataOutput;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;
+public abstract class LogicComponentBasePart extends NetworkComponentBasePart implements IGuiHolder<PartGuiData> {
 
-public abstract class LogicComponentBasePart extends NetworkComponentBasePart implements IGuiHolder<PartGuiData>
-{
     protected NetworkLogic logic;
 
     protected LogicComponentBasePart(int meta) {
@@ -33,8 +35,7 @@ public abstract class LogicComponentBasePart extends NetworkComponentBasePart im
 
     protected abstract NetworkLogic getLogic();
 
-    public void initFromTE(TileEntityNetworkComponentBase base)
-    {
+    public void initFromTE(TileEntityNetworkComponentBase base) {
         getLogic().initFromOtherLogic(base.getLogic());
     }
 
@@ -70,25 +71,22 @@ public abstract class LogicComponentBasePart extends NetworkComponentBasePart im
     // Override this because why do extra allocations to drop things?
     @Override
     public void harvest(MovingObjectPosition hit, EntityPlayer player) {
-        if (!player.capabilities.isCreativeMode)
-        {
+        if (!player.capabilities.isCreativeMode) {
             logic.dropContents(world(), x(), y(), z());
             this.dropSelf(world(), x(), y(), z());
         }
-        this.tile().remPart(this);
+        this.tile()
+            .remPart(this);
     }
 
-    private void dropSelf(World world, int x, int y, int z)
-    {
+    private void dropSelf(World world, int x, int y, int z) {
         dropStack(world, x, y, z, new ItemStack(Item.getItemFromBlock(getBlock()), 1, BlockNodeBase.getType(meta)));
     }
 
     @Override
-    public void invalidateConvertedTile()
-    {
+    public void invalidateConvertedTile() {
         TileEntity teToInvalidate = world().getTileEntity(x(), y(), z());
-        if (teToInvalidate instanceof TileEntityTransferNodeBase baseNodeTe)
-        {
+        if (teToInvalidate instanceof TileEntityTransferNodeBase baseNodeTe) {
             baseNodeTe.invalidateInventory();
         }
     }

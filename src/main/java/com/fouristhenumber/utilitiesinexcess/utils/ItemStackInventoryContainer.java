@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-public interface ItemStackInventoryContainer
-{
+public interface ItemStackInventoryContainer {
+
     int getInventorySize();
 }

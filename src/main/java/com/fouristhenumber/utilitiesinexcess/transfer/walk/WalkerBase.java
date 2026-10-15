@@ -1,60 +1,51 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
+import java.util.List;
+
+import net.minecraft.world.World;
+
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import net.minecraft.world.World;
 
-import java.util.List;
+public abstract class WalkerBase<T> {
 
-public abstract class WalkerBase<T>
-{
     protected IWalkingComponent walkingComponent;
     BlockPos walkerPos;
     protected StepStrategy stepper;
 
-    WalkerBase(IWalkingComponent walkingComponent)
-    {
+    WalkerBase(IWalkingComponent walkingComponent) {
         this.walkingComponent = walkingComponent;
     }
 
-    public void init()
-    {
+    public void init() {
         walkerPos = new BlockPos(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
     }
 
-    public void setStepper(StepStrategy stepper)
-    {
+    public void setStepper(StepStrategy stepper) {
         this.stepper = stepper;
         this.reset();
     }
 
-    public BlockPos getWalkerPos()
-    {
+    public BlockPos getWalkerPos() {
         return walkerPos;
     }
 
-    public void setWalkerPos(BlockPos pos)
-    {
+    public void setWalkerPos(BlockPos pos) {
         this.walkerPos = pos;
     }
 
     public abstract void step(World world);
 
-    public String getLocationString()
-    {
-        if (walkerPos != null)
-        {
-            return "x: " +
-                (walkerPos.x - walkingComponent.getX()) +
-                " y: " +
-                (walkerPos.y - walkingComponent.getY()) +
-                " z: " +
-                (walkerPos.z - walkingComponent.getZ());
-        }
-        else
-        {
+    public String getLocationString() {
+        if (walkerPos != null) {
+            return "x: " + (walkerPos.x - walkingComponent.getX())
+                + " y: "
+                + (walkerPos.y - walkingComponent.getY())
+                + " z: "
+                + (walkerPos.z - walkingComponent.getZ());
+        } else {
             return "x: 0 y: 0 z: 0";
         }
     }
@@ -63,8 +54,7 @@ public abstract class WalkerBase<T>
 
     public abstract List<TargetResolver.Target<T>> getValidTargets(World world);
 
-    public void initFromOtherWalker(WalkerBase<?> walker)
-    {
+    public void initFromOtherWalker(WalkerBase<?> walker) {
         this.walkerPos = walker.getWalkerPos();
         this.stepper.fromDirection = walker.stepper.fromDirection;
     }

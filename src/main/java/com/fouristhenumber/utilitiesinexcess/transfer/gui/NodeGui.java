@@ -1,5 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.gui;
 
+import java.util.function.Supplier;
+
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
@@ -14,20 +18,11 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
-import net.minecraft.util.StatCollector;
 
-import java.util.function.Supplier;
+public class NodeGui {
 
-public class NodeGui
-{
-    public static ModularPanel buildUI(
-        UpgradeInventory upgrades,
-        String upgradeSlotGroupName,
-        String title,
-        StringSyncValue searchText,
-        Supplier<Widget> bufferSlotBuilder,
-        PanelSyncManager syncManager)
-    {
+    public static ModularPanel buildUI(UpgradeInventory upgrades, String upgradeSlotGroupName, String title,
+        StringSyncValue searchText, Supplier<Widget> bufferSlotBuilder, PanelSyncManager syncManager) {
         syncManager.syncValue("searchLocationSyncer", searchText);
 
         SlotGroup upgradeSlotGroup = new SlotGroup(upgradeSlotGroupName, 1);
@@ -50,18 +45,20 @@ public class NodeGui
             IKey.dynamic(searchText::getStringValue)
                 .asWidget()
                 .marginTop(20)
-                .horizontalCenter()
-        );
+                .horizontalCenter());
 
         Flow flow = Flow.row();
-        flow.pos(34,60).size(108,18);
+        flow.pos(34, 60)
+            .size(108, 18);
 
         // Upgrades
         IItemHandler upgradeItemHandler = new InvWrapper(upgrades);
 
-        for (int i = 0; i < upgrades.getSizeInventory(); i++)
-        {
-            flow.child(new ItemSlot().slot(new ModularSlot(upgradeItemHandler,i).slotGroup(upgradeSlotGroup).changeListener(upgrades)));
+        for (int i = 0; i < upgrades.getSizeInventory(); i++) {
+            flow.child(
+                new ItemSlot().slot(
+                    new ModularSlot(upgradeItemHandler, i).slotGroup(upgradeSlotGroup)
+                        .changeListener(upgrades)));
         }
         panel.child(flow);
 
@@ -71,16 +68,12 @@ public class NodeGui
         return panel;
     }
 
-    private static void addBufferSlot(ModularPanel panel, Supplier<Widget> slotBuilder)
-    {
-        if (slotBuilder == null)
-            return;
+    private static void addBufferSlot(ModularPanel panel, Supplier<Widget> slotBuilder) {
+        if (slotBuilder == null) return;
 
         panel.child(
-            new Grid()
-                .coverChildren()
+            new Grid().coverChildren()
                 .pos(79, 34)
-                .mapTo(1, 1, index -> slotBuilder.get())
-        );
+                .mapTo(1, 1, index -> slotBuilder.get()));
     }
 }

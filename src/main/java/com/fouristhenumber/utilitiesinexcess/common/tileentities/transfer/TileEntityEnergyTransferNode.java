@@ -1,25 +1,21 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 
-import net.minecraftforge.common.util.ForgeDirection;
+public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase implements IWirelessNode {
 
-public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase
-    implements IWirelessNode
-{
     @Override
-    public NetworkLogic getLogic()
-    {
-        if (logic == null)
-        {
+    public NetworkLogic getLogic() {
+        if (logic == null) {
             logic = new EnergyTransferNodeLogic(this);
         }
         return logic;
     }
 
-    public void invalidateInventory()
-    {
+    public void invalidateInventory() {
         getLogic().invalidateInventory();
     }
 
@@ -49,8 +45,7 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase
     }
 
     @Override
-    public ForgeDirection getFacing()
-    {
+    public ForgeDirection getFacing() {
         return ForgeDirection.UNKNOWN;
     }
 }

@@ -1,8 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.config.items;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.InvertedTools;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 @Config.LangKey("uie.config.items")

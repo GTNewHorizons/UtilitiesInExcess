@@ -1,27 +1,25 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ItemStackInventory implements IInventory {
 
-public class ItemStackInventory implements IInventory
-{
     private final int size;
     private final ItemStack[] filters;
     private final int stackLimit;
     private boolean dirty = false;
 
-    public ItemStackInventory(ItemStack stack, int size, int stackLimit)
-    {
+    public ItemStackInventory(ItemStack stack, int size, int stackLimit) {
         this.stackLimit = stackLimit;
         NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null)
-        {
+        if (nbt == null) {
             nbt = new NBTTagCompound();
             stack.setTagCompound(nbt);
         }
@@ -31,42 +29,34 @@ public class ItemStackInventory implements IInventory
 
         NBTTagList list = nbt.getTagList("Items", 10);
 
-        for (int i = 0; i < list.tagCount(); i++)
-        {
+        for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound itemTag = list.getCompoundTagAt(i);
 
             int slot = itemTag.getByte("Slot") & 255;
 
-            if (slot >= 0 && slot < this.size)
-            {
+            if (slot >= 0 && slot < this.size) {
                 filters[slot] = ItemStack.loadItemStackFromNBT(itemTag);
             }
         }
     }
 
-    public void writeInventoryToHeldStack(EntityPlayer player)
-    {
-        if (!dirty || player.getEntityWorld().isRemote)
-        {
+    public void writeInventoryToHeldStack(EntityPlayer player) {
+        if (!dirty || player.getEntityWorld().isRemote) {
             return;
         }
         ItemStack heldStack = player.getHeldItem();
-        if (heldStack == null)
-        {
+        if (heldStack == null) {
             return; // This can happen if you don't lock the slot the inventory is from.
         }
-        if (heldStack.stackTagCompound == null)
-        {
+        if (heldStack.stackTagCompound == null) {
             heldStack.stackTagCompound = new NBTTagCompound();
         }
         NBTTagCompound compound = heldStack.stackTagCompound;
         compound.setInteger("size", filters.length);
         NBTTagList itemList = new NBTTagList();
-        for (int i = 0; i < filters.length; i++)
-        {
+        for (int i = 0; i < filters.length; i++) {
             ItemStack stack = filters[i];
-            if (stack != null)
-            {
+            if (stack != null) {
                 NBTTagCompound itemCompound = new NBTTagCompound();
                 itemCompound.setByte("Slot", (byte) i);
                 stack.writeToNBT(itemCompound);
@@ -76,17 +66,14 @@ public class ItemStackInventory implements IInventory
         compound.setTag("Items", itemList);
     }
 
-    public static List<ItemStack> getInventoryContentsFromStack(ItemStack itemInventory)
-    {
-        if (itemInventory == null || !itemInventory.hasTagCompound())
-        {
+    public static List<ItemStack> getInventoryContentsFromStack(ItemStack itemInventory) {
+        if (itemInventory == null || !itemInventory.hasTagCompound()) {
             return null;
         }
 
         NBTTagCompound compound = itemInventory.stackTagCompound;
 
-        if (!compound.hasKey("Items"))
-        {
+        if (!compound.hasKey("Items")) {
             return null;
         }
 
@@ -95,8 +82,7 @@ public class ItemStackInventory implements IInventory
 
         NBTTagList itemList = compound.getTagList("Items", 10); // 10 = NBTTagCompound
 
-        for (int i = 0; i < itemList.tagCount(); i++)
-        {
+        for (int i = 0; i < itemList.tagCount(); i++) {
             NBTTagCompound itemCompound = itemList.getCompoundTagAt(i);
             contents.add(ItemStack.loadItemStackFromNBT(itemCompound));
         }
@@ -115,20 +101,17 @@ public class ItemStackInventory implements IInventory
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
+    public ItemStack decrStackSize(int index, int count) {
         return ItemStackInventory.decrStackSizeInItemStackArray(index, count, filters, this);
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index)
-    {
+    public ItemStack getStackInSlotOnClosing(int index) {
         return filters[index];
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
+    public void setInventorySlotContents(int index, ItemStack stack) {
         filters[index] = stack;
         markDirty();
     }
@@ -173,58 +156,45 @@ public class ItemStackInventory implements IInventory
         return true;
     }
 
-    public static ItemStack decrStackSizeInItemStackArray(int index, int count, ItemStack[] arr, IInventory inv)
-    {
-        if (arr[index] == null)
-        {
+    public static ItemStack decrStackSizeInItemStackArray(int index, int count, ItemStack[] arr, IInventory inv) {
+        if (arr[index] == null) {
             return null;
         }
 
         ItemStack itemstack;
-        if (arr[index].stackSize <= count)
-        {
+        if (arr[index].stackSize <= count) {
             itemstack = arr[index];
             arr[index] = null;
-        }
-        else
-        {
+        } else {
             itemstack = arr[index].splitStack(count);
 
-            if (arr[index].stackSize == 0)
-            {
+            if (arr[index].stackSize == 0) {
                 arr[index] = null;
             }
         }
 
-        if (inv != null)
-        {
+        if (inv != null) {
             inv.markDirty();
         }
         return itemstack;
     }
 
-    public static ItemStack decrStackSize(int count, IInventory inv)
-    {
+    public static ItemStack decrStackSize(int count, IInventory inv) {
         ItemStack item = inv.getStackInSlot(0);
 
-        if (item == null)
-        {
+        if (item == null) {
             return null;
         }
 
         ItemStack result;
 
-        if (item.stackSize <= count)
-        {
+        if (item.stackSize <= count) {
             result = item;
             inv.setInventorySlotContents(0, null);
-        }
-        else
-        {
+        } else {
             result = item.splitStack(count);
 
-            if (item.stackSize == 0)
-            {
+            if (item.stackSize == 0) {
                 inv.setInventorySlotContents(0, null);
             }
         }

@@ -1,10 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart;
 
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 

@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
+import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry.getPartByBlock;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,39 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import codechicken.lib.packet.PacketCustom;
-import codechicken.lib.raytracer.RayTracer;
-import codechicken.lib.vec.BlockCoord;
-import codechicken.lib.vec.Vector3;
-import codechicken.multipart.TileMultipart;
-import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.LogicComponentBasePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.NetworkComponentBasePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipeJacketPart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.TransferNodePart;
-import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
-import com.fouristhenumber.utilitiesinexcess.network.client.PacketFMPPlaceBlock;
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
-
-import codechicken.lib.data.MCDataInput;
-import codechicken.microblock.MicroMaterialRegistry;
-import codechicken.multipart.MultiPartRegistry;
-import codechicken.multipart.TMultiPart;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -49,22 +23,41 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry.getPartByBlock;
+import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.LogicComponentBasePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipeJacketPart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.TransferNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketFMPPlaceBlock;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.packet.PacketCustom;
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.vec.BlockCoord;
+import codechicken.lib.vec.Vector3;
+import codechicken.microblock.MicroMaterialRegistry;
+import codechicken.multipart.MultiPartRegistry;
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TileMultipart;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPartRegistry.IPartConverter {
 
-    public static final String[] materialBasedPartNames = new String[]
-        {
-            FencePart.name, WallPart.name, SpherePart.name, PipeJacketPart.name
-        };
+    public static final String[] materialBasedPartNames = new String[] { FencePart.name, WallPart.name, SpherePart.name,
+        PipeJacketPart.name };
 
-    public static final String[] transferPartNames = new String[]
-        {
-            ConversionRegistry.TransferNode.getName(),
-            ConversionRegistry.RetrievalNode.getName(),
-            ConversionRegistry.EnergyNode.getName(),
-            ConversionRegistry.Pipe.getName()
-        };
+    public static final String[] transferPartNames = new String[] { ConversionRegistry.TransferNode.getName(),
+        ConversionRegistry.RetrievalNode.getName(), ConversionRegistry.EnergyNode.getName(),
+        ConversionRegistry.Pipe.getName() };
 
     public static final Map<String, Integer> partMap = new HashMap<>();
 
@@ -74,8 +67,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
         for (int i = 0; i < materialBasedPartNames.length; i++) {
             partMap.put(materialBasedPartNames[i], i);
         }
-        for (int i = 0; i < transferPartNames.length; i++)
-        {
+        for (int i = 0; i < transferPartNames.length; i++) {
             partMap.put(transferPartNames[i], i);
         }
 
@@ -138,8 +130,7 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
     // Called on the client
     @Override
-    public TMultiPart createPart(String name, MCDataInput packet)
-    {
+    public TMultiPart createPart(String name, MCDataInput packet) {
         String actualName = translateName(name);
         return createUEMultiPart(packet, actualName);
     }
@@ -160,10 +151,11 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
         // It's super irritating, but due to how FMP initializes things it needs to build a whole new logic object
         // instead of just taking control of the old logic object.
-        if (!world.isRemote) // Just do the logic init on the server because placement is irrelevant to the logical state
+        if (!world.isRemote) // Just do the logic init on the server because placement is irrelevant to the logical
+                             // state
         {
-            if (part instanceof LogicComponentBasePart logicalPart && te instanceof TileEntityNetworkComponentBase componentBase)
-            {
+            if (part instanceof LogicComponentBasePart logicalPart
+                && te instanceof TileEntityNetworkComponentBase componentBase) {
                 logicalPart.initFromTE(componentBase);
             }
         }
@@ -173,11 +165,10 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
     // Pretty much ripped from fmp
     // This class deals with the conversion of normal blocks to FMP blocks
     @EventBusSubscriber(side = Side.CLIENT)
-    public static class EventHandler
-    {
+    public static class EventHandler {
+
         @EventBusSubscriber.Condition
-        public static boolean shouldEnable()
-        {
+        public static boolean shouldEnable() {
             return Mods.ForgeMicroBlock.isLoaded();
         }
 
@@ -214,19 +205,22 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             {
                 itemBlock = Block.getBlockFromItem(item);
                 part = getPartByBlock(itemBlock, held.getItemDamage());
-            }
-            else if (held.getItem() instanceof BaseTransferItemBlock item) // Nodes do
+            } else if (held.getItem() instanceof BaseTransferItemBlock item) // Nodes do
             {
                 itemBlock = Block.getBlockFromItem(item);
-                part = getPartByBlock(itemBlock, held.getItemDamage() | (ForgeDirection.getOrientation(hit.sideHit).getOpposite().ordinal() << 1));
+                part = getPartByBlock(
+                    itemBlock,
+                    held.getItemDamage() | (ForgeDirection.getOrientation(hit.sideHit)
+                        .getOpposite()
+                        .ordinal() << 1));
             }
 
-            if (part == null)
-            {
+            if (part == null) {
                 return false;
             }
 
-            if (world.isRemote && !player.isSneaking()) // attempt to use block activated like normal and tell the server
+            if (world.isRemote && !player.isSneaking()) // attempt to use block activated like normal and tell the
+                                                        // server
             { // the right stuff
                 Vector3 f = new Vector3(hit.hitVec).add(-hit.blockX, -hit.blockY, -hit.blockZ);
                 Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);

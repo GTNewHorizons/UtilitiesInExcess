@@ -1,33 +1,31 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
-public class FluidTargetResolver implements TargetResolver<IFluidHandler>
-{
+public class FluidTargetResolver implements TargetResolver<IFluidHandler> {
 
-    public FluidTargetResolver()
-    {}
+    public FluidTargetResolver() {}
 
     @Override
-    public List<Target<IFluidHandler>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent walking, ForgeDirection fromDir) {
+    public List<Target<IFluidHandler>> getValidTargets(World world, BlockPos walkerPos, IWalkingComponent walking,
+        ForgeDirection fromDir) {
         List<Target<IFluidHandler>> validTargets = new ArrayList<>();
 
         List<IConnectable> connectables = IConnectable.getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
-        if (!connectables.isEmpty())
-        {
-            int validOutputDirs = IConnectable.validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
-            for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS)
-            {
-                if ((validOutputDirs & (1 << searchDir.ordinal())) == 0)
-                {
+        if (!connectables.isEmpty()) {
+            int validOutputDirs = IConnectable
+                .validWalkDirections(connectables, world, walkerPos.x, walkerPos.y, walkerPos.z, fromDir, walking);
+            for (ForgeDirection searchDir : ForgeDirection.VALID_DIRECTIONS) {
+                if ((validOutputDirs & (1 << searchDir.ordinal())) == 0) {
                     continue;
                 }
 
@@ -35,12 +33,15 @@ public class FluidTargetResolver implements TargetResolver<IFluidHandler>
                     if (world.getTileEntity(
                         walkerPos.x + searchDir.offsetX,
                         walkerPos.y + searchDir.offsetY,
-                        walkerPos.z + searchDir.offsetZ)
-                        instanceof IFluidHandler target) {
-                        validTargets.add(new Target<>(target, searchDir.getOpposite().ordinal(),
-                            walkerPos.x + searchDir.offsetX,
-                            walkerPos.y + searchDir.offsetY,
-                            walkerPos.z + searchDir.offsetZ));
+                        walkerPos.z + searchDir.offsetZ) instanceof IFluidHandler target) {
+                        validTargets.add(
+                            new Target<>(
+                                target,
+                                searchDir.getOpposite()
+                                    .ordinal(),
+                                walkerPos.x + searchDir.offsetX,
+                                walkerPos.y + searchDir.offsetY,
+                                walkerPos.z + searchDir.offsetZ));
                     }
                 }
             }

@@ -1,18 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
-public class ModSortedInserter extends BaseInserter
-{
+import cpw.mods.fml.common.registry.GameRegistry;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+
+public class ModSortedInserter extends BaseInserter {
+
     @Override
-    public ItemStack TryInsertItem(IInventory inventory, ItemStack stack)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
+    public ItemStack TryInsertItem(IInventory inventory, ItemStack stack) {
+        if (stack == null || stack.stackSize <= 0) {
             return null;
         }
 
@@ -25,52 +24,41 @@ public class ModSortedInserter extends BaseInserter
         IntArrayList mergeableSlots = new IntArrayList();
         IntArrayList emptySlots = new IntArrayList();
 
-        for (int slot = 0; slot < size; slot++)
-        {
-            if (!inventory.isItemValidForSlot(slot, stack))
-            {
+        for (int slot = 0; slot < size; slot++) {
+            if (!inventory.isItemValidForSlot(slot, stack)) {
                 continue;
             }
 
             ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
+            if (existing == null) {
                 emptySlots.add(slot);
                 emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else
-            {
+            } else {
                 empty = false;
 
-                if (!modItemMatched)
-                {
+                if (!modItemMatched) {
                     GameRegistry.UniqueIdentifier idA = GameRegistry.findUniqueIdentifierFor(stack.getItem());
                     GameRegistry.UniqueIdentifier idB = GameRegistry.findUniqueIdentifierFor(existing.getItem());
 
-                    if (idA != null && idB != null && idA.modId.equals(idB.modId))
-                    {
+                    if (idA != null && idB != null && idA.modId.equals(idB.modId)) {
                         modItemMatched = true;
                     }
                 }
             }
 
-            if (existing != null && canStacksMerge(existing, stack))
-            {
+            if (existing != null && canStacksMerge(existing, stack)) {
                 int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
                 int space = max - existing.stackSize;
-                if (space > 0)
-                {
+                if (space > 0) {
                     mergeableSlots.add(slot);
                     mergeableSlots.add(space);
                 }
             }
         }
 
-        if (empty || modItemMatched)
-        {
+        if (empty || modItemMatched) {
             StackToInventoryMergingHelper(mergeableSlots, inventory, stack);
-            if (stack.stackSize <= 0)
-            {
+            if (stack.stackSize <= 0) {
                 return null;
             }
             return StackToInventoryMergingHelper(emptySlots, inventory, stack);
@@ -79,10 +67,8 @@ public class ModSortedInserter extends BaseInserter
     }
 
     @Override
-    public ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
+    public ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side) {
+        if (stack == null || stack.stackSize <= 0) {
             return null;
         }
 
@@ -94,51 +80,40 @@ public class ModSortedInserter extends BaseInserter
         IntArrayList emptySlots = new IntArrayList();
 
         // Note that we have to iterate the whole inventory first or, we won't know if there's mergeable slots
-        for (int slot : slots)
-        {
-            if (!inventory.canInsertItem(slot, stack, side))
-            {
+        for (int slot : slots) {
+            if (!inventory.canInsertItem(slot, stack, side)) {
                 continue;
             }
 
             ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
+            if (existing == null) {
                 emptySlots.add(slot);
                 emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else
-            {
+            } else {
                 empty = false;
-                if (!modItemMatched && existing.getItem() == stack.getItem() &&
-                    existing.getItemDamage() == stack.getItemDamage())
-                {
+                if (!modItemMatched && existing.getItem() == stack.getItem()
+                    && existing.getItemDamage() == stack.getItemDamage()) {
                     GameRegistry.UniqueIdentifier idA = GameRegistry.findUniqueIdentifierFor(stack.getItem());
                     GameRegistry.UniqueIdentifier idB = GameRegistry.findUniqueIdentifierFor(existing.getItem());
 
-                    if (idA != null && idB != null)
-                    {
-                        if (idA.modId.equals(idB.modId))
-                        {
+                    if (idA != null && idB != null) {
+                        if (idA.modId.equals(idB.modId)) {
                             modItemMatched = true;
                         }
                     }
                 }
             }
 
-            if (existing != null && canStacksMerge(existing, stack))
-            {
+            if (existing != null && canStacksMerge(existing, stack)) {
                 int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
                 int space = max - existing.stackSize;
-                if (space > 0)
-                {
+                if (space > 0) {
                     mergeableSlots.add(slot);
                     mergeableSlots.add(space);
                 }
             }
         }
-        if (empty || modItemMatched)
-        {
+        if (empty || modItemMatched) {
             StackToInventoryMergingHelper(mergeableSlots, inventory, stack);
             if (stack.stackSize <= 0) {
                 return null;

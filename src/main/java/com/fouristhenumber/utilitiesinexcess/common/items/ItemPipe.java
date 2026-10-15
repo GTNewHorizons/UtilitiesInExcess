@@ -1,20 +1,18 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemPipe extends BaseTransferItemBlock
-{
-    public ItemPipe(Block block)
-    {
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
+
+public class ItemPipe extends BaseTransferItemBlock {
+
+    public ItemPipe(Block block) {
         super(block);
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
-    {
+    public String getUnlocalizedName(ItemStack stack) {
         return "tile." + PipeType.values()[stack.getItemDamage()].getName();
     }
 }

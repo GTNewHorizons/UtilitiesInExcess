@@ -1,17 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
-import codechicken.lib.data.MCDataOutput;
-import codechicken.microblock.MicroMaterialRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-public class Material
-{
+import codechicken.lib.data.MCDataOutput;
+import codechicken.microblock.MicroMaterialRegistry;
+
+public class Material {
+
     protected int id;
 
-    public Material(int material)
-    {
+    public Material(int material) {
         this.id = material;
     }
 
@@ -44,8 +44,7 @@ public class Material
         return material.getBreakingIcon(side);
     }
 
-    public boolean canMaterialRenderInPass(int pass)
-    {
+    public boolean canMaterialRenderInPass(int pass) {
         return getIMaterial().canRenderInPass(pass);
     }
 }

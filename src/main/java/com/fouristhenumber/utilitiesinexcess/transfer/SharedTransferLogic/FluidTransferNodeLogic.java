@@ -1,24 +1,23 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.BFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.DFSStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 
-public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
-{
+public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic {
+
     // Upgrades
     private boolean isCreative = false;
     private boolean isWorldInteraction = false;
@@ -30,48 +29,37 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
         walker = new FluidWalker(host);
     }
 
-    public void updateEntity()
-    {
-        if (host.getWorld().isRemote)
-        {
+    public void updateEntity() {
+        if (host.getWorld().isRemote) {
             return;
         }
 
-        if (!init)
-        {
+        if (!init) {
             walker.init();
             upgrades.init();
             init = true;
         }
 
         int actionsThisTick = actionsThisTick();
-        for (int i = 0; i < actionsThisTick; i++)
-        {
-            if (isWorldInteraction)
-            {
+        for (int i = 0; i < actionsThisTick; i++) {
+            if (isWorldInteraction) {
                 importFluidsFromWorld();
-            }
-            else
-            {
+            } else {
                 updateSourceTank();
-                if (connectedTank != null)
-                {
+                if (connectedTank != null) {
                     importFluids();
                 }
             }
 
             FluidStack fluid = buffer.getFluid();
-            if (fluid == null)
-            {
+            if (fluid == null) {
                 walker.reset();
                 return;
             }
 
-            List<TargetResolver.Target<IFluidHandler>> targets =
-                walker.getValidTargets(host.getWorld());
+            List<TargetResolver.Target<IFluidHandler>> targets = walker.getValidTargets(host.getWorld());
 
-            if (!targets.isEmpty())
-            {
+            if (!targets.isEmpty()) {
                 int tryingToInsertAmount = (fluid.amount + 1) / 2;
 
                 FluidStack toInsert = fluid.copy();
@@ -79,15 +67,16 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
 
                 int totalAccepted = 0;
 
-                for (TargetResolver.Target<IFluidHandler> target : targets)
-                {
-                    if (toInsert.amount <= 0)
-                    {
+                for (TargetResolver.Target<IFluidHandler> target : targets) {
+                    if (toInsert.amount <= 0) {
                         break;
                     }
 
-                    int accepted = target.handler.fill(ForgeDirection.getOrientation(target.side).getOpposite(), toInsert, false
-                    );
+                    int accepted = target.handler.fill(
+                        ForgeDirection.getOrientation(target.side)
+                            .getOpposite(),
+                        toInsert,
+                        false);
 
                     accepted = Math.max(0, Math.min(accepted, toInsert.amount));
 
@@ -95,25 +84,22 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
                     totalAccepted += accepted;
                 }
 
-                if (totalAccepted > 0)
-                {
+                if (totalAccepted > 0) {
                     FluidStack remaining = fluid.copy();
                     remaining.amount = totalAccepted;
 
                     int actuallyInserted = 0;
 
-                    for (TargetResolver.Target<IFluidHandler> target : targets)
-                    {
-                        if (remaining.amount <= 0)
-                        {
+                    for (TargetResolver.Target<IFluidHandler> target : targets) {
+                        if (remaining.amount <= 0) {
                             break;
                         }
 
                         int filled = target.handler.fill(
-                            ForgeDirection.getOrientation(target.side).getOpposite(),
+                            ForgeDirection.getOrientation(target.side)
+                                .getOpposite(),
                             remaining,
-                            true
-                        );
+                            true);
 
                         filled = Math.max(0, Math.min(filled, remaining.amount));
 
@@ -121,8 +107,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
                         actuallyInserted += filled;
                     }
 
-                    if (actuallyInserted > 0 && !this.isCreative)
-                    {
+                    if (actuallyInserted > 0 && !this.isCreative) {
                         buffer.drain(actuallyInserted, true);
                         host.markHostDirty();
                     }
@@ -133,13 +118,11 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
         }
     }
 
-    public void importFluidsFromWorld()
-    {
+    public void importFluidsFromWorld() {
         ForgeDirection fromDir = ((IWalkingComponent) host).getFacing();
 
         int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
-        if (spaceRemaining <= 0)
-        {
+        if (spaceRemaining <= 0) {
             return;
         }
 
@@ -151,33 +134,26 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
 
-        if (meta != 0)
-        {
+        if (meta != 0) {
             return;
         }
 
         Fluid fluid;
 
-        if (block == Blocks.water || block == Blocks.flowing_water)
-        {
-            if (!isInfiniteWaterSource(world, x, y, z))
-            {
+        if (block == Blocks.water || block == Blocks.flowing_water) {
+            if (!isInfiniteWaterSource(world, x, y, z)) {
                 return;
             }
             fluid = FluidRegistry.WATER;
-        }
-        else if (block == Blocks.lava || block == Blocks.flowing_lava)
-        {
+        } else if (block == Blocks.lava || block == Blocks.flowing_lava) {
             return;
-        }
-        else
-        {
+        } else {
             return;
         }
 
         FluidStack buffered = buffer.getFluid();
-        if (buffered != null && !buffered.getFluid().equals(fluid))
-        {
+        if (buffered != null && !buffered.getFluid()
+            .equals(fluid)) {
             return;
         }
 
@@ -186,14 +162,11 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
         host.markHostDirty();
     }
 
-    private boolean isInfiniteWaterSource(World world, int x, int y, int z)
-    {
+    private boolean isInfiniteWaterSource(World world, int x, int y, int z) {
         int sources = 0;
 
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-        {
-            if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN)
-            {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
                 continue;
             }
 
@@ -204,11 +177,9 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
             Block neighbor = world.getBlock(nx, ny, nz);
             int meta = world.getBlockMetadata(nx, ny, nz);
 
-            if ((neighbor == Blocks.water || neighbor == Blocks.flowing_water) && meta == 0)
-            {
+            if ((neighbor == Blocks.water || neighbor == Blocks.flowing_water) && meta == 0) {
                 sources++;
-                if (sources >= 2)
-                {
+                if (sources >= 2) {
                     return true;
                 }
             }
@@ -217,13 +188,12 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
         return false;
     }
 
-    public void importFluids()
-    {
-        ForgeDirection fromDir = ((IWalkingComponent) host).getFacing().getOpposite();
+    public void importFluids() {
+        ForgeDirection fromDir = ((IWalkingComponent) host).getFacing()
+            .getOpposite();
 
         int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
-        if (spaceRemaining <= 0)
-        {
+        if (spaceRemaining <= 0) {
             return;
         }
 
@@ -231,30 +201,23 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
 
         FluidStack bufferedFluid = buffer.getFluid();
 
-        if (bufferedFluid == null)
-        {
+        if (bufferedFluid == null) {
             FluidStack drainableFluid = connectedTank.drain(fromDir, drainAmount, false);
-            if (drainableFluid != null && drainableFluid.amount > 0)
-            {
+            if (drainableFluid != null && drainableFluid.amount > 0) {
                 FluidStack drained = connectedTank.drain(fromDir, drainableFluid.amount, true);
-                if (drained != null)
-                {
+                if (drained != null) {
                     buffer.fill(drained, true);
                     host.markHostDirty();
                 }
             }
-        }
-        else
-        {
-            if (connectedTank.canDrain(fromDir, bufferedFluid.getFluid()))
-            {
+        } else {
+            if (connectedTank.canDrain(fromDir, bufferedFluid.getFluid())) {
                 FluidStack request = new FluidStack(bufferedFluid.getFluid(), drainAmount);
                 FluidStack drainableFluid = connectedTank.drain(fromDir, request, false);
-                if (drainableFluid != null && drainableFluid.amount > 0)
-                {
-                    FluidStack drained = connectedTank.drain(fromDir, new FluidStack(bufferedFluid.getFluid(), drainableFluid.amount), true);
-                    if (drained != null)
-                    {
+                if (drainableFluid != null && drainableFluid.amount > 0) {
+                    FluidStack drained = connectedTank
+                        .drain(fromDir, new FluidStack(bufferedFluid.getFluid(), drainableFluid.amount), true);
+                    if (drained != null) {
                         buffer.fill(drained, true);
                         host.markHostDirty();
                     }
@@ -263,12 +226,11 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
         }
     }
 
-    public void updateSourceTank()
-    {
+    public void updateSourceTank() {
         ForgeDirection facing = ((IWalkingComponent) host).getFacing();
-        TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
-        if (neighbor instanceof IFluidHandler tank)
-        {
+        TileEntity neighbor = host.getWorld()
+            .getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
+        if (neighbor instanceof IFluidHandler tank) {
             connectedTank = tank;
         }
     }
@@ -276,8 +238,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
     // ======================================= Upgrades =======================================
     // Applicable upgrades: Creative, Speed, Stack, BFS, DFS, World interaction
     @Override
-    public void resetUpgrades()
-    {
+    public void resetUpgrades() {
         super.resetUpgrades();
         this.walker.setStepper(new RandomStepper());
         this.isCreative = false;
@@ -286,37 +247,31 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
     }
 
     @Override
-    public void applySearchDepthUpgrade(ItemStack stack)
-    {
+    public void applySearchDepthUpgrade(ItemStack stack) {
         this.walker.setStepper(new DFSStepper());
     }
 
     @Override
-    public void applySearchBreadthUpgrade(ItemStack stack)
-    {
+    public void applySearchBreadthUpgrade(ItemStack stack) {
         this.walker.setStepper(new BFSStepper());
     }
 
     @Override
-    public void applyCreativeUpgrade(ItemStack stack)
-    {
+    public void applyCreativeUpgrade(ItemStack stack) {
         this.isCreative = true;
     }
 
     @Override
-    public void applyStackUpgrade(ItemStack stack)
-    {
+    public void applyStackUpgrade(ItemStack stack) {
         this.maxDrainAmount = maxFluidAmount;
     }
 
     @Override
-    public void applyWorldInteractionUpgrade(ItemStack stack)
-    {
+    public void applyWorldInteractionUpgrade(ItemStack stack) {
         this.isWorldInteraction = true;
     }
 
-    public String getInventoryName()
-    {
+    public String getInventoryName() {
         return "uie.gui.title.fluid_transfer_node.name";
     }
 }

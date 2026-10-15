@@ -1,6 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +15,7 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 @Mod(
     modid = UtilitiesInExcess.MODID,
@@ -63,8 +63,7 @@ public class UtilitiesInExcess {
     }
 
     @Mod.EventHandler
-    public void serverStopping(FMLServerStoppingEvent event)
-    {
+    public void serverStopping(FMLServerStoppingEvent event) {
         proxy.serverStopping(event);
     }
 

@@ -5,7 +5,6 @@ import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multip
 import java.util.Arrays;
 import java.util.List;
 
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipeJacketPart;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +39,8 @@ public class UiEMultipartMaterialItem extends Item {
         if (material == null || damage > materialBasedPartNames.length) {
             return "Unnamed";
         }
-        return StatCollector.translateToLocalFormatted(materialBasedPartNames[damage] + ".name", material.getLocalizedName());
+        return StatCollector
+            .translateToLocalFormatted(materialBasedPartNames[damage] + ".name", material.getLocalizedName());
     }
 
     @Override
@@ -67,9 +67,7 @@ public class UiEMultipartMaterialItem extends Item {
         if (damage == 3) // Pipe jackets are attempted to place in the block we're already clicking on.
         {
             position = new BlockCoord(x, y, z);
-        }
-        else
-        {
+        } else {
             position = new BlockCoord(x, y, z).offset(side);
         }
         TMultiPart potentialPart = UiEPartFactory

@@ -13,12 +13,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
-import codechicken.microblock.MicroMaterialRegistry;
-import codechicken.multipart.JNormalOcclusion;
-import codechicken.multipart.NormalOcclusionTest;
-import codechicken.multipart.TMultiPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,25 +20,29 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.microblock.MicroblockRender;
+import codechicken.multipart.JNormalOcclusion;
+import codechicken.multipart.NormalOcclusionTest;
+import codechicken.multipart.TMultiPart;
 import it.unimi.dsi.fastutil.Pair;
 
-public class FencePart extends ConnectablePart implements IMaterialPart, JNormalOcclusion
-{
+public class FencePart extends ConnectablePart implements IMaterialPart, JNormalOcclusion {
+
     public static final String name = "ue_fence";
     public Material material;
 
-    public FencePart(int materialId, int side)
-    {
+    public FencePart(int materialId, int side) {
         super(side);
         this.material = new Material(materialId);
     }
 
-    public FencePart(MCDataInput packet)
-    {
+    public FencePart(MCDataInput packet) {
         super(packet.readInt());
         this.material = new Material(MicroMaterialRegistry.readMaterialID(packet));
     }
@@ -70,22 +68,36 @@ public class FencePart extends ConnectablePart implements IMaterialPart, JNormal
             // Connectors & Notches TODO notches would be nice to remove if I could figure out how to wrap the texture
             // with MicroblockRender
             // Bottom Connector
-            MicroblockRender.renderCuboid(position.add(0, .3125, -.375), this.material.getIMaterial(), pass, itemConnectorMiddle, 0);
-            MicroblockRender.renderCuboid(position.add(0, 0, -.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
-            MicroblockRender.renderCuboid(position.add(0, 0, 1.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
+            MicroblockRender.renderCuboid(
+                position.add(0, .3125, -.375),
+                this.material.getIMaterial(),
+                pass,
+                itemConnectorMiddle,
+                0);
+            MicroblockRender
+                .renderCuboid(position.add(0, 0, -.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
+            MicroblockRender
+                .renderCuboid(position.add(0, 0, 1.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
 
             // Top Connector
-            MicroblockRender.renderCuboid(position.add(0, .5, -1), this.material.getIMaterial(), pass, itemConnectorMiddle, 0);
-            MicroblockRender.renderCuboid(position.add(0, 0, -.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
-            MicroblockRender.renderCuboid(position.add(0, 0, 1.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
+            MicroblockRender
+                .renderCuboid(position.add(0, .5, -1), this.material.getIMaterial(), pass, itemConnectorMiddle, 0);
+            MicroblockRender
+                .renderCuboid(position.add(0, 0, -.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
+            MicroblockRender
+                .renderCuboid(position.add(0, 0, 1.125), this.material.getIMaterial(), pass, itemConnectorNotch, 0);
         } else {
             Pair<Integer, Cuboid6>[] models = PRECOMPUTED_MODEL.get(this.downDirection)[getConnectionMask()];
             for (int i = 0; i < models.length; i++) {
                 if (i == 0) {
                     MicroblockRender.renderCuboid(position, this.material.getIMaterial(), pass, models[i].second(), 0);
                 }
-                MicroblockRender
-                    .renderCuboid(position, this.material.getIMaterial(), pass, models[i].second(), getCullMask(models[i].first()));
+                MicroblockRender.renderCuboid(
+                    position,
+                    this.material.getIMaterial(),
+                    pass,
+                    models[i].second(),
+                    getCullMask(models[i].first()));
             }
         }
     }

@@ -1,24 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
-import cofh.lib.util.helpers.InventoryHelper;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.IUpgradeable;
-import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class BaseNodeLogic extends NetworkLogic implements IUpgradeable, ITickableLogic, IWalkingLogic
-{
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.IUpgradeable;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.UpgradeInventory;
+
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
+
+public abstract class BaseNodeLogic extends NetworkLogic implements IUpgradeable, ITickableLogic, IWalkingLogic {
+
     public static final int DEFAULT_STEPS_PER_SECOND = 2;
     protected int actionPerSecond = DEFAULT_STEPS_PER_SECOND;
     protected UpgradeInventory upgrades;
@@ -32,24 +25,21 @@ public abstract class BaseNodeLogic extends NetworkLogic implements IUpgradeable
     }
 
     @Override
-    public void invalidateInventory()
-    {
+    public void invalidateInventory() {
         upgrades.clearInv();
     }
 
     @Override
-    public void initFromOtherLogic(NetworkLogic logic)
-    {
-        if (logic instanceof BaseNodeLogic nodeLogic)
-        {
-            this.getWalker().initFromOtherWalker(nodeLogic.getWalker());
+    public void initFromOtherLogic(NetworkLogic logic) {
+        if (logic instanceof BaseNodeLogic nodeLogic) {
+            this.getWalker()
+                .initFromOtherWalker(nodeLogic.getWalker());
             this.upgrades = nodeLogic.upgrades;
         }
         this.init = true;
     }
 
-    public void dropContents(World world, int x, int y, int z)
-    {
+    public void dropContents(World world, int x, int y, int z) {
         this.upgrades.dropContents(world, x, y, z);
     }
 
@@ -82,26 +72,22 @@ public abstract class BaseNodeLogic extends NetworkLogic implements IUpgradeable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
+    public void writeToNBT(NBTTagCompound nbt) {
         this.upgrades.writeToNBT(nbt);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
+    public void readFromNBT(NBTTagCompound nbt) {
         upgrades.readFromNBT(nbt);
     }
 
     @Override
-    public void writeDesc(MCDataOutput output)
-    {
+    public void writeDesc(MCDataOutput output) {
         this.upgrades.writeDesc(output);
     }
 
     @Override
-    public void readDesc(MCDataInput input)
-    {
+    public void readDesc(MCDataInput input) {
         this.upgrades.readDesc(input);
     }
 }

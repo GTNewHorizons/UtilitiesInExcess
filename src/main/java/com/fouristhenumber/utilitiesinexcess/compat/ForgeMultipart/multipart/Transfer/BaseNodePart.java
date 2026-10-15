@@ -1,16 +1,13 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
-import codechicken.lib.raytracer.IndexedCuboid6;
-import codechicken.lib.vec.Cuboid6;
-import codechicken.multipart.TMultiPart;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ITickableLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
+import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,26 +15,28 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ITickableLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
+
+import codechicken.lib.raytracer.IndexedCuboid6;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.multipart.TMultiPart;
 import scala.collection.Seq;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+public abstract class BaseNodePart extends LogicComponentBasePart implements IWalkingComponent {
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
-
-public abstract class BaseNodePart extends LogicComponentBasePart
-    implements IWalkingComponent
-{
     public BaseNodePart(int meta) {
         super(meta);
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
         NetworkLogic logic = getLogic();
         if (logic instanceof ITickableLogic tickable) {
             tickable.updateEntity();
@@ -46,7 +45,9 @@ public abstract class BaseNodePart extends LogicComponentBasePart
 
     @Override
     public Cuboid6 getBounds() {
-        return new Cuboid6(NodeCollision.values()[getFacingOrdinal(meta)].getBoundingBox().copy());
+        return new Cuboid6(
+            NodeCollision.values()[getFacingOrdinal(meta)].getBoundingBox()
+                .copy());
     }
 
     @Override
@@ -58,8 +59,7 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     }
 
     @Override
-    public Object getWalkingObject()
-    {
+    public Object getWalkingObject() {
         NetworkLogic logic = getLogic();
 
         if (logic instanceof IWalkingLogic walking) {
@@ -74,8 +74,7 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     }
 
     @Override
-    public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
-    {
+    public boolean canConnectInDirection(IBlockAccess world, int x, int y, int z, ForgeDirection direction) {
         if (tile() == null) {
             return false;
         }
@@ -83,29 +82,24 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     }
 
     @Override
-    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent walkingComponent)
-    {
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection,
+        IWalkingComponent walkingComponent) {
         int mask = 0b111111;
         int facing = getFacingOrdinal(meta);
-        if (facing < 6)
-        {
+        if (facing < 6) {
             mask &= ~(1 << facing);
         }
-        if (fromDirection != ForgeDirection.UNKNOWN)
-        {
+        if (fromDirection != ForgeDirection.UNKNOWN) {
             mask &= ~(1 << fromDirection.ordinal());
         }
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-        {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             int bit = 1 << dir.ordinal();
 
-            if ((mask & bit) == 0)
-            {
+            if ((mask & bit) == 0) {
                 continue;
             }
 
-            if (doPartsOccludeDirection(dir))
-            {
+            if (doPartsOccludeDirection(dir)) {
                 mask &= ~bit;
             }
         }
@@ -113,11 +107,9 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     }
 
     @Override
-    public Iterable<Cuboid6> getCollisionBoxes()
-    {
+    public Iterable<Cuboid6> getCollisionBoxes() {
         List<Cuboid6> cuboid6s = new ArrayList<>();
-        for (AxisAlignedBB aabb : BlockNodeBase.getBlockCenteredCollisionCandidates(world(), x(), y(), z(), meta))
-        {
+        for (AxisAlignedBB aabb : BlockNodeBase.getBlockCenteredCollisionCandidates(world(), x(), y(), z(), meta)) {
             cuboid6s.add(new Cuboid6(aabb));
         }
         return cuboid6s;
@@ -125,13 +117,10 @@ public abstract class BaseNodePart extends LogicComponentBasePart
 
     // Needs to be separate from the block implementation because we care about occluding parts in the current block
     @Override
-    public int getConnectionMask(IBlockAccess world, int x, int y, int z)
-    {
+    public int getConnectionMask(IBlockAccess world, int x, int y, int z) {
         int mask = 0;
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-        {
-            if (getConnection(world, x, y, z, dir))
-            {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (getConnection(world, x, y, z, dir)) {
                 mask |= 1 << dir.ordinal();
             }
         }
@@ -140,12 +129,11 @@ public abstract class BaseNodePart extends LogicComponentBasePart
 
     // Needs to be separate from the block implementation because we care about occluding parts in the current block
     @Override
-    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
-    {
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
         ForgeDirection facing = this.getFacing();
-        if (dir != facing)
-        {
-            return !doPartsOccludeDirection(dir) && isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+        if (dir != facing) {
+            return !doPartsOccludeDirection(dir)
+                && isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
         }
         return false;
     }
@@ -156,17 +144,13 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     }
 
     @Override
-    public boolean activate(EntityPlayer player, MovingObjectPosition hit, ItemStack stack)
-    {
-        if (!world().isRemote)
-        {
+    public boolean activate(EntityPlayer player, MovingObjectPosition hit, ItemStack stack) {
+        if (!world().isRemote) {
             Seq<TMultiPart> parts = tile().partList();
 
             int index = -1;
-            for (int i = 0; i < parts.size(); i++)
-            {
-                if (parts.apply(i) == this)
-                {
+            for (int i = 0; i < parts.size(); i++) {
+                if (parts.apply(i) == this) {
                     index = i;
                     break;
                 }
@@ -179,8 +163,7 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     }
 
     @Override
-    public ItemStack pickItem(MovingObjectPosition hit)
-    {
+    public ItemStack pickItem(MovingObjectPosition hit) {
         return new ItemStack(Item.getItemFromBlock(getBlock()), 1, BlockNodeBase.getType(meta));
     }
 }

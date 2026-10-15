@@ -1,12 +1,11 @@
 package com.fouristhenumber.utilitiesinexcess.utils.filter;
 
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRules
-{
+import net.minecraft.item.ItemStack;
+
+public class ItemRules {
 
     private final List<ItemRule> blacklists = new ArrayList<>();
     private final List<ItemRule> whitelists = new ArrayList<>();
@@ -21,8 +20,7 @@ public class ItemRules
         return false;
     }
 
-    public boolean matchesWhitelists(ItemStack stack)
-    {
+    public boolean matchesWhitelists(ItemStack stack) {
         if (whitelists.isEmpty()) {
             return true;
         }
@@ -36,14 +34,10 @@ public class ItemRules
         return false;
     }
 
-    public void addRule(ItemStack stack, boolean inverted, MatchMode mode)
-    {
-        if (inverted)
-        {
+    public void addRule(ItemStack stack, boolean inverted, MatchMode mode) {
+        if (inverted) {
             blacklists.add(new ItemRule(mode, stack.getItemDamage(), stack.stackTagCompound));
-        }
-        else
-        {
+        } else {
             whitelists.add(new ItemRule(mode, stack.getItemDamage(), stack.stackTagCompound));
         }
     }

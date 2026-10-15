@@ -2,11 +2,11 @@ package com.fouristhenumber.utilitiesinexcess.transfer.collision;
 
 import net.minecraft.util.AxisAlignedBB;
 
-public enum PipeCollision
-{
+public enum PipeCollision {
+
     MIDDLE(-1) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -14,8 +14,8 @@ public enum PipeCollision
         }
     },
     DOWN(0) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.0, 0.375, 0.625, 0.375, 0.625);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.375, 0.0, 0.375, 0.625, 0.375, 0.625);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -23,8 +23,8 @@ public enum PipeCollision
         }
     },
     UP(1) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.375, 0.625, 0.375, 0.625, 1.0, 0.625);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -32,8 +32,8 @@ public enum PipeCollision
         }
     },
     NORTH(2) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.0, 0.625, 0.625, 0.375);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -41,8 +41,8 @@ public enum PipeCollision
         }
     },
     SOUTH(3) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.625, 0.625, 0.625, 1.0);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.375, 0.375, 0.625, 0.625, 0.625, 1.0);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -50,8 +50,8 @@ public enum PipeCollision
         }
     },
     WEST(4) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.0, 0.375, 0.375, 0.375, 0.625, 0.625);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -59,8 +59,8 @@ public enum PipeCollision
         }
     },
     EAST(5) {
-        private static final AxisAlignedBB BOX =
-            AxisAlignedBB.getBoundingBox(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
+
+        private static final AxisAlignedBB BOX = AxisAlignedBB.getBoundingBox(0.625, 0.375, 0.375, 1.0, 0.625, 0.625);
 
         @Override
         public AxisAlignedBB getCollisionBox() {
@@ -70,13 +70,11 @@ public enum PipeCollision
 
     private final int maskBit;
 
-    PipeCollision(int maskBit)
-    {
+    PipeCollision(int maskBit) {
         this.maskBit = maskBit;
     }
 
-    public int getMaskBit()
-    {
+    public int getMaskBit() {
         return maskBit;
     }
 

@@ -1,7 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.config.transfer;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.config.items.FireBatteryConfig;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 @Config(modid = UtilitiesInExcess.MODID, category = "transfer")

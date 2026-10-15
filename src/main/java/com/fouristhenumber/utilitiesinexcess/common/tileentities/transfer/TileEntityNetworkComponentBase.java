@@ -1,11 +1,12 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public abstract class TileEntityNetworkComponentBase extends TileEntity implements ITransferNetworkComponent
-{
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+
+public abstract class TileEntityNetworkComponentBase extends TileEntity implements ITransferNetworkComponent {
+
     @Override
     public World getWorld() {
         return this.worldObj;
@@ -27,14 +28,12 @@ public abstract class TileEntityNetworkComponentBase extends TileEntity implemen
     }
 
     @Override
-    public int getMeta()
-    {
+    public int getMeta() {
         return worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override
-    public void markHostDirty()
-    {
+    public void markHostDirty() {
         this.markDirty();
     }
 

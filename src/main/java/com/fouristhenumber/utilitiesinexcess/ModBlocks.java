@@ -1,13 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnergyNode;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemRetrievalNode;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemTransferNode;
-import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -68,13 +60,18 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockPotio
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockRedstoneGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockSolarGenerator;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.generators.BlockTNTGenerator;
-//import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockRetrievalNode;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNode;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidMarker;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.voidquarry.BlockVoidQuarryUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBlockRotatable;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemEnergyNode;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemRetrievalNode;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemTransferNode;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.CursedEarthConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.EnderLotusConfig;
@@ -84,6 +81,7 @@ import com.fouristhenumber.utilitiesinexcess.config.dimensions.EndOfTimeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.dimensions.UnderWorldConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.InversionConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.ItemConfig;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 

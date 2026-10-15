@@ -1,39 +1,36 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.raytracer.IndexedCuboid6;
-import codechicken.lib.vec.Cuboid6;
-import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.IWirelessNode;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
+import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.IWirelessNode;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 
-import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.raytracer.IndexedCuboid6;
+import codechicken.lib.vec.Cuboid6;
 
-public class EnergyNodePart extends BaseNodePart implements IWirelessNode
-{
+public class EnergyNodePart extends BaseNodePart implements IWirelessNode {
+
     public EnergyNodePart(int meta) {
         super(BlockNodeBase.getType(meta));
     }
 
-    public EnergyNodePart(MCDataInput packet)
-    {
+    public EnergyNodePart(MCDataInput packet) {
         super(BlockNodeBase.getType(packet.readInt()));
         getLogic().readDesc(packet);
     }
@@ -44,10 +41,8 @@ public class EnergyNodePart extends BaseNodePart implements IWirelessNode
     }
 
     @Override
-    protected NetworkLogic getLogic()
-    {
-        if (logic == null)
-        {
+    protected NetworkLogic getLogic() {
+        if (logic == null) {
             logic = new EnergyTransferNodeLogic(this);
         }
         return logic;
@@ -85,30 +80,26 @@ public class EnergyNodePart extends BaseNodePart implements IWirelessNode
     }
 
     @Override
-    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
-    {
-        return !doPartsOccludeDirection(dir) && isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+    public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
+        return !doPartsOccludeDirection(dir)
+            && isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
     }
 
     @Override
-    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection, IWalkingComponent walkingComponent)
-    {
+    public int validWalkDirections(IBlockAccess world, int x, int y, int z, ForgeDirection fromDirection,
+        IWalkingComponent walkingComponent) {
         int mask = 0b111111;
-        if (fromDirection != ForgeDirection.UNKNOWN)
-        {
+        if (fromDirection != ForgeDirection.UNKNOWN) {
             mask &= ~(1 << fromDirection.ordinal());
         }
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-        {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             int bit = 1 << dir.ordinal();
 
-            if ((mask & bit) == 0)
-            {
+            if ((mask & bit) == 0) {
                 continue;
             }
 
-            if (doPartsOccludeDirection(dir))
-            {
+            if (doPartsOccludeDirection(dir)) {
                 mask &= ~bit;
             }
         }
@@ -121,11 +112,10 @@ public class EnergyNodePart extends BaseNodePart implements IWirelessNode
     }
 
     @Override
-    public Iterable<Cuboid6> getCollisionBoxes()
-    {
+    public Iterable<Cuboid6> getCollisionBoxes() {
         List<Cuboid6> cuboid6s = new ArrayList<>();
-        for (AxisAlignedBB aabb : BlockTransferNodeEnergy.getBlockCenteredCollisionCandidates(world(), x(), y(), z(), meta))
-        {
+        for (AxisAlignedBB aabb : BlockTransferNodeEnergy
+            .getBlockCenteredCollisionCandidates(world(), x(), y(), z(), meta)) {
             cuboid6s.add(new Cuboid6(aabb));
         }
         return cuboid6s;

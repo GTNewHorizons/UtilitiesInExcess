@@ -1,31 +1,25 @@
 package com.fouristhenumber.utilitiesinexcess.utils;
 
-public class MaskedArrayView<T>
-{
+public class MaskedArrayView<T> {
+
     private int mask = 0;
     private final T[] array;
 
-    public MaskedArrayView(int mask, T[] array)
-    {
+    public MaskedArrayView(int mask, T[] array) {
         this.mask = mask;
         this.array = array;
     }
 
-    public int size()
-    {
+    public int size() {
         return Integer.bitCount(mask);
     }
 
-    public T get(int i)
-    {
+    public T get(int i) {
         int count = 0;
 
-        for (int bit = 0; bit < array.length; bit++)
-        {
-            if ((mask & (1 << bit)) != 0)
-            {
-                if (count == i)
-                {
+        for (int bit = 0; bit < array.length; bit++) {
+            if ((mask & (1 << bit)) != 0) {
+                if (count == i) {
                     return array[bit];
                 }
                 count++;
@@ -35,15 +29,11 @@ public class MaskedArrayView<T>
         throw new IndexOutOfBoundsException();
     }
 
-    public int actualLocation(int index)
-    {
+    public int actualLocation(int index) {
         int location = 0;
-        for (int bit = 0; bit < array.length; bit++)
-        {
-            if ((mask & (1 << bit)) != 0)
-            {
-                if (location == index)
-                {
+        for (int bit = 0; bit < array.length; bit++) {
+            if ((mask & (1 << bit)) != 0) {
+                if (location == index) {
                     return bit;
                 }
                 location++;

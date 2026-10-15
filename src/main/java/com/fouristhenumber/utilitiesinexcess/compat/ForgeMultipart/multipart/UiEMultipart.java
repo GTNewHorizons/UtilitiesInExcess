@@ -3,23 +3,17 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 import java.util.Collections;
 
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 
 import codechicken.lib.vec.Vector3;
 import codechicken.multipart.IconHitEffects;
 import codechicken.multipart.JIconHitEffects;
-import codechicken.multipart.JNormalOcclusion;
-import codechicken.multipart.NormalOcclusionTest;
 import codechicken.multipart.TMultiPart;
-import net.minecraft.world.IBlockAccess;
 
-public abstract class UiEMultipart extends TMultiPart implements JIconHitEffects
-{
+public abstract class UiEMultipart extends TMultiPart implements JIconHitEffects {
 
-    public void render(Vector3 position, int pass)
-    {
+    public void render(Vector3 position, int pass) {
 
     }
 

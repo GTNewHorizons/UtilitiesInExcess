@@ -1,19 +1,21 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
-import cofh.api.energy.IEnergyConnection;
+import java.util.List;
+
+import net.minecraft.world.World;
+
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.*;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.EnergyTargetResolver;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
-import net.minecraft.world.World;
 
-import java.util.List;
+import cofh.api.energy.IEnergyConnection;
 
 // Pretty sure these are totally unaffected by search type upgrades. For round-robin, dfs, and bfs.
-public class EnergyWalker extends WalkerBase<IEnergyConnection>
-{
+public class EnergyWalker extends WalkerBase<IEnergyConnection> {
+
     TargetResolver<IEnergyConnection> targeter;
 
     public EnergyWalker(IWalkingComponent walkingComponent) {
@@ -37,14 +39,13 @@ public class EnergyWalker extends WalkerBase<IEnergyConnection>
         return targeter.getValidTargets(world, walkerPos, walkingComponent, stepper.fromDirection);
     }
 
-    public boolean isOnExtractionPipe(World world)
-    {
-        return (world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z) instanceof BlockPipe &&
-            world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z) == PipeType.ENERGYEXTRACTION.ordinal());
+    public boolean isOnExtractionPipe(World world) {
+        return (world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z) instanceof BlockPipe
+            && world.getBlockMetadata(walkerPos.x, walkerPos.y, walkerPos.z) == PipeType.ENERGYEXTRACTION.ordinal());
     }
 
-    public boolean isAtOrigin()
-    {
-        return (walkingComponent.getX() == walkerPos.x && walkingComponent.getY() == walkerPos.y && walkingComponent.getZ() == walkerPos.z);
+    public boolean isAtOrigin() {
+        return (walkingComponent.getX() == walkerPos.x && walkingComponent.getY() == walkerPos.y
+            && walkingComponent.getZ() == walkerPos.z);
     }
 }

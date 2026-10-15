@@ -19,8 +19,7 @@ public enum TransferUpgrade {
     SEARCH_DEPTH,
     SEARCH_BREADTH,
     SEARCH_ROUND_ROBIN,
-    ADV_FILTER,
-    ;
+    ADV_FILTER,;
 
     public static final TransferUpgrade[] VALUES = values();
 
@@ -48,25 +47,46 @@ public enum TransferUpgrade {
         return VALUES[meta];
     }
 
-    public static boolean isWirelessUpgrade(ItemStack stack)
-    {
-        return stack.getItem() == ModItems.UPGRADE.get() && (stack.getItemDamage() == ENDER_TRANSMITTER.ordinal() || stack.getItemDamage() == ENDER_RECEIVER.ordinal());
+    public static boolean isWirelessUpgrade(ItemStack stack) {
+        return stack.getItem() == ModItems.UPGRADE.get() && (stack.getItemDamage() == ENDER_TRANSMITTER.ordinal()
+            || stack.getItemDamage() == ENDER_RECEIVER.ordinal());
     }
 
-    public void applyTo(IUpgradeable node, ItemStack stack)
-    {
+    public void applyTo(IUpgradeable node, ItemStack stack) {
         switch (this) {
-            case SPEED:                node.applySpeedUpgrade(stack); break;
-            case FILTER:                node.applyFilterUpgrade(stack); break;
-            case WORLD_INTERACTION:      node.applyWorldInteractionUpgrade(stack); break;
-            case STACK:                  node.applyStackUpgrade(stack); break;
-            case CREATIVE:                node.applyCreativeUpgrade(stack); break;
-            case ENDER_TRANSMITTER:      node.applyEnderTransmitterUpgrade(stack); break;
-            case ENDER_RECEIVER:          node.applyEnderReceiverUpgrade(stack); break;
-            case SEARCH_DEPTH:            node.applySearchDepthUpgrade(stack); break;
-            case SEARCH_BREADTH:          node.applySearchBreadthUpgrade(stack); break;
-            case SEARCH_ROUND_ROBIN:      node.applySearchRoundRobinUpgrade(stack); break;
-            case ADV_FILTER:              node.applyAdvFilterUpgrade(stack); break;
+            case SPEED:
+                node.applySpeedUpgrade(stack);
+                break;
+            case FILTER:
+                node.applyFilterUpgrade(stack);
+                break;
+            case WORLD_INTERACTION:
+                node.applyWorldInteractionUpgrade(stack);
+                break;
+            case STACK:
+                node.applyStackUpgrade(stack);
+                break;
+            case CREATIVE:
+                node.applyCreativeUpgrade(stack);
+                break;
+            case ENDER_TRANSMITTER:
+                node.applyEnderTransmitterUpgrade(stack);
+                break;
+            case ENDER_RECEIVER:
+                node.applyEnderReceiverUpgrade(stack);
+                break;
+            case SEARCH_DEPTH:
+                node.applySearchDepthUpgrade(stack);
+                break;
+            case SEARCH_BREADTH:
+                node.applySearchBreadthUpgrade(stack);
+                break;
+            case SEARCH_ROUND_ROBIN:
+                node.applySearchRoundRobinUpgrade(stack);
+                break;
+            case ADV_FILTER:
+                node.applyAdvFilterUpgrade(stack);
+                break;
         }
     }
 }

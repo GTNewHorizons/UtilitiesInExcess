@@ -2,9 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
-import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
@@ -21,15 +20,14 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RecipeLoader {
 
@@ -1734,8 +1732,7 @@ public class RecipeLoader {
     }
 
     private static void loadTransferRecipes() {
-        if (TransferConfig.INSTANCE.EnableTransferSystem)
-        {
+        if (TransferConfig.INSTANCE.EnableTransferSystem) {
             loadTransferUpgradeRecipes();
             loadTransferPipeRecipes();
             loadTransferNodeRecipes();
@@ -1800,8 +1797,9 @@ public class RecipeLoader {
         // Creative Upgrade has no recipe
 
         EnderLocusRegistry.instance()
-            .addRecipe(TransferUpgrade.ENDER_TRANSMITTER.getStack().theStack,
-                new String[] { "PTP", "QPQ", "PTP"},
+            .addRecipe(
+                TransferUpgrade.ENDER_TRANSMITTER.getStack().theStack,
+                new String[] { "PTP", "QPQ", "PTP" },
                 'P',
                 new ItemStack(Items.ender_pearl),
                 'T',
@@ -1810,8 +1808,9 @@ public class RecipeLoader {
                 new ItemStack(Items.quartz));
 
         EnderLocusRegistry.instance()
-            .addRecipe(TransferUpgrade.ENDER_RECEIVER.getStack().theStack,
-                new String[] { "PRP", "QPQ", "PQP"},
+            .addRecipe(
+                TransferUpgrade.ENDER_RECEIVER.getStack().theStack,
+                new String[] { "PRP", "QPQ", "PQP" },
                 'P',
                 new ItemStack(Items.ender_pearl),
                 'R',
@@ -1870,9 +1869,9 @@ public class RecipeLoader {
             TransferUpgrade.FILTER.getStack());
     }
 
-    private static void loadTransferPipeRecipes()
-    {
-        addShapedRecipe(PipeType.TRANSFER.getStack(8),
+    private static void loadTransferPipeRecipes() {
+        addShapedRecipe(
+            PipeType.TRANSFER.getStack(8),
             "SSS",
             "GRG",
             "SSS",
@@ -1883,7 +1882,8 @@ public class RecipeLoader {
             'R',
             new ItemStack(Items.redstone));
 
-        addShapedRecipe(PipeType.CROSSOVER.getStack(1),
+        addShapedRecipe(
+            PipeType.CROSSOVER.getStack(1),
             " T ",
             "TRT",
             " T ",
@@ -1892,7 +1892,8 @@ public class RecipeLoader {
             'R',
             new ItemStack(Items.redstone));
 
-        addShapedRecipe(PipeType.FILTER.getStack(5),
+        addShapedRecipe(
+            PipeType.FILTER.getStack(5),
             "DTD",
             "TTT",
             "DTD",
@@ -1901,7 +1902,8 @@ public class RecipeLoader {
             'D',
             new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE));
 
-        addShapedRecipe(PipeType.SORTING.getStack(2),
+        addShapedRecipe(
+            PipeType.SORTING.getStack(2),
             "SSS",
             "GRG",
             "SSS",
@@ -1912,14 +1914,16 @@ public class RecipeLoader {
             'R',
             new ItemStack(Items.gold_ingot));
 
-        addShapedRecipe(PipeType.MODSORTING.getStack(1),
+        addShapedRecipe(
+            PipeType.MODSORTING.getStack(1),
             "RSR",
             'R',
             new ItemStack(Items.redstone),
             'S',
             PipeType.SORTING.getStack(1));
 
-        addShapedRecipe(PipeType.RATIONING.getStack(2),
+        addShapedRecipe(
+            PipeType.RATIONING.getStack(2),
             "SSS",
             "GLG",
             "SSS",
@@ -1930,7 +1934,8 @@ public class RecipeLoader {
             'L',
             new ItemStack(Items.dye, 1, 4));
 
-        addShapedRecipe(PipeType.HYPERRATIONING.getStack(2),
+        addShapedRecipe(
+            PipeType.HYPERRATIONING.getStack(2),
             "BBB",
             "GLG",
             "BBB",
@@ -1941,7 +1946,8 @@ public class RecipeLoader {
             'L',
             new ItemStack(Items.dye, 1, 4));
 
-        addShapedRecipe(PipeType.ENERGY.getStack(8),
+        addShapedRecipe(
+            PipeType.ENERGY.getStack(8),
             "SSS",
             "RRR",
             "SSS",
@@ -1950,7 +1956,8 @@ public class RecipeLoader {
             'R',
             new ItemStack(Items.redstone));
 
-        addShapedRecipe(PipeType.ENERGYEXTRACTION.getStack(1),
+        addShapedRecipe(
+            PipeType.ENERGYEXTRACTION.getStack(1),
             "G G",
             "GEG",
             " E ",
@@ -1960,9 +1967,9 @@ public class RecipeLoader {
             PipeType.ENERGY.getStack(1));
     }
 
-    private static void loadTransferNodeRecipes()
-    {
-        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(1, 0),
+    private static void loadTransferNodeRecipes() {
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(1, 0),
             " P ",
             "RBR",
             "SCS",
@@ -1977,7 +1984,8 @@ public class RecipeLoader {
             'B',
             new ItemStack(Blocks.redstone_block));
 
-        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(4, 0),
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(4, 0),
             " P ",
             "RER",
             "SCS",
@@ -1992,7 +2000,8 @@ public class RecipeLoader {
             'E',
             new ItemStack(Items.ender_pearl));
 
-        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(1, 1),
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(1, 1),
             " P ",
             "LRL",
             "IBI",
@@ -2007,7 +2016,8 @@ public class RecipeLoader {
             'R',
             new ItemStack(Blocks.redstone_block));
 
-        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(4, 1),
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(4, 1),
             " P ",
             "LEL",
             "IBI",
@@ -2024,8 +2034,9 @@ public class RecipeLoader {
 
         // Transfer Node Energy
         EnderLocusRegistry.instance()
-            .addRecipe(ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
-                new String[] { "GNG", "NBN", "GNG"},
+            .addRecipe(
+                ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
+                new String[] { "GNG", "NBN", "GNG" },
                 'G',
                 new ItemStack(Items.gold_ingot),
                 'N',
@@ -2035,15 +2046,17 @@ public class RecipeLoader {
 
         // Transfer Node Hyper-Energy
         EnderLocusRegistry.instance()
-            .addRecipe(ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 1),
-                new String[] { " N ", "NBN", " N "},
+            .addRecipe(
+                ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 1),
+                new String[] { " N ", "NBN", " N " },
                 'N',
                 ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
                 'B',
                 ModItems.BEDROCKIUM_INGOT.newItemStack());
 
         EnderLocusRegistry.instance()
-            .addRecipe(ModBlocks.RETRIEVAL_NODE.newItemStack(1, 0),
+            .addRecipe(
+                ModBlocks.RETRIEVAL_NODE.newItemStack(1, 0),
                 new String[] { " P ", "NEN", " P " },
                 'P',
                 new ItemStack(Items.ender_pearl),
@@ -2053,7 +2066,8 @@ public class RecipeLoader {
                 new ItemStack(Items.emerald));
 
         EnderLocusRegistry.instance()
-            .addRecipe(ModBlocks.RETRIEVAL_NODE.newItemStack(1, 1),
+            .addRecipe(
+                ModBlocks.RETRIEVAL_NODE.newItemStack(1, 1),
                 new String[] { " P ", "NDN", " P " },
                 'P',
                 new ItemStack(Items.ender_pearl),
@@ -2063,44 +2077,43 @@ public class RecipeLoader {
                 new ItemStack(Items.diamond));
     }
 
-    private static void loadFilterVariantRecipes()
-    {
-        if (TransferConfig.INSTANCE.EnableTransferSystem)
-        {
+    private static void loadFilterVariantRecipes() {
+        if (TransferConfig.INSTANCE.EnableTransferSystem) {
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
-                    Arrays.asList(
-                        TransferUpgrade.FILTER.getStack(1).theStack,
-                        new ItemStack(Blocks.redstone_torch)
-                    ),
-                0));
-
-            GameRegistry.addRecipe(
-                new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
-                    Arrays.asList(
-                        TransferUpgrade.FILTER.getStack(1).theStack,
-                        new ItemStack(Blocks.wool)
-                    ),
+                    setNBTForItem(
+                        TransferUpgrade.FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(TransferUpgrade.FILTER.getStack(1).theStack, new ItemStack(Blocks.redstone_torch)),
                     0));
 
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
-                    Arrays.asList(
-                        TransferUpgrade.FILTER.getStack(1).theStack,
-                        new ItemStack(Items.stick)
-                    ),
+                    setNBTForItem(
+                        TransferUpgrade.FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
+                    Arrays.asList(TransferUpgrade.FILTER.getStack(1).theStack, new ItemStack(Blocks.wool)),
                     0));
 
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
-                    Arrays.asList(
-                        TransferUpgrade.ADV_FILTER.getStack(1).theStack,
-                        new ItemStack(Blocks.redstone_torch)
-                    ),
+                    setNBTForItem(
+                        TransferUpgrade.FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
+                    Arrays.asList(TransferUpgrade.FILTER.getStack(1).theStack, new ItemStack(Items.stick)),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(
+                        TransferUpgrade.ADV_FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays
+                        .asList(TransferUpgrade.ADV_FILTER.getStack(1).theStack, new ItemStack(Blocks.redstone_torch)),
                     0));
 
             // Clears NBT
@@ -2152,10 +2165,8 @@ public class RecipeLoader {
         }
     }
 
-    private static DisableableItemStack setNBTForItem(DisableableItemStack in, String key, NBTBase tag)
-    {
-        if (!in.theStack.hasTagCompound())
-        {
+    private static DisableableItemStack setNBTForItem(DisableableItemStack in, String key, NBTBase tag) {
+        if (!in.theStack.hasTagCompound()) {
             in.theStack.stackTagCompound = new NBTTagCompound();
         }
         in.theStack.stackTagCompound.setTag(key, tag);

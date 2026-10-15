@@ -1,9 +1,9 @@
 package com.fouristhenumber.utilitiesinexcess;
 
-import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
@@ -19,9 +19,9 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilActi
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInversionSigilInactive;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
@@ -45,9 +45,9 @@ import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalS
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RecallShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 // Credit to Et Futurum (Requiem)
 public enum ModItems {

@@ -14,12 +14,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
-import codechicken.microblock.MicroMaterialRegistry;
-import codechicken.multipart.JNormalOcclusion;
-import codechicken.multipart.NormalOcclusionTest;
-import codechicken.multipart.TMultiPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,14 +23,19 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block.MultipartWallRenderingHelper;
 
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
+import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.microblock.MicroblockRender;
+import codechicken.multipart.JNormalOcclusion;
+import codechicken.multipart.NormalOcclusionTest;
+import codechicken.multipart.TMultiPart;
 import it.unimi.dsi.fastutil.Pair;
 
-public class WallPart extends ConnectablePart implements IMaterialPart, JNormalOcclusion
-{
+public class WallPart extends ConnectablePart implements IMaterialPart, JNormalOcclusion {
 
     public static final String name = "ue_wall";
     public Material material;
@@ -46,8 +45,7 @@ public class WallPart extends ConnectablePart implements IMaterialPart, JNormalO
         this.material = new Material(materialId);
     }
 
-    public WallPart(MCDataInput packet)
-    {
+    public WallPart(MCDataInput packet) {
         super(packet.readInt());
         this.material = new Material(MicroMaterialRegistry.readMaterialID(packet));
     }

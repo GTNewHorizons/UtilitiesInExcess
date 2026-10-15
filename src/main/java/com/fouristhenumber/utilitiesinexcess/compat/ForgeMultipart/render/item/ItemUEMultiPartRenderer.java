@@ -7,8 +7,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.TextureUtils;
@@ -52,7 +52,8 @@ public class ItemUEMultiPartRenderer implements IItemRenderer {
         int materialId = MicroMaterialRegistry.materialID(
             item.getTagCompound()
                 .getString("mat"));
-        UiEMultipart part = UiEPartFactory.createUEMultiPart(0, materialId, materialBasedPartNames[item.getItemDamage()]);
+        UiEMultipart part = UiEPartFactory
+            .createUEMultiPart(0, materialId, materialBasedPartNames[item.getItemDamage()]);
         part.render(new Vector3(0, 0, 0), -1);
 
         state.drawInstance();

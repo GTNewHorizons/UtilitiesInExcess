@@ -1,24 +1,23 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
-public class RationedInserter extends BaseInserter
-{
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+
+public class RationedInserter extends BaseInserter {
+
     int limit;
-    public RationedInserter(int limit)
-    {
+
+    public RationedInserter(int limit) {
         this.limit = limit;
     }
 
     // Insertion logic for non-sided inventories where there's a maxAllowed in the inventory
     @Override
-    public ItemStack TryInsertItem(IInventory inventory, ItemStack stack)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
+    public ItemStack TryInsertItem(IInventory inventory, ItemStack stack) {
+        if (stack == null || stack.stackSize <= 0) {
             return null;
         }
 
@@ -31,31 +30,24 @@ public class RationedInserter extends BaseInserter
 
         int found = 0;
 
-        for (int slot = 0; slot < size; slot++)
-        {
-            if (!inventory.isItemValidForSlot(slot, stack))
-            {
+        for (int slot = 0; slot < size; slot++) {
+            if (!inventory.isItemValidForSlot(slot, stack)) {
                 continue;
             }
 
             ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
+            if (existing == null) {
                 emptySlots.add(slot);
                 emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else if (canStacksMerge(existing, stack))
-            {
+            } else if (canStacksMerge(existing, stack)) {
                 found += existing.stackSize;
-                if (found >= limit)
-                {
+                if (found >= limit) {
                     return stack;
                 }
 
                 int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
                 int space = max - existing.stackSize;
-                if (space > 0)
-                {
+                if (space > 0) {
                     mergeableSlots.add(slot);
                     mergeableSlots.add(space);
                 }
@@ -65,8 +57,7 @@ public class RationedInserter extends BaseInserter
         int preMergeStackSize = stack.stackSize;
         // Once for mergeable slots first, then the empty slots.
         StackToInventoryMergingHelperLimited(mergeableSlots, inventory, stack, found);
-        if (stack.stackSize <= 0)
-        {
+        if (stack.stackSize <= 0) {
             return null;
         }
         found += preMergeStackSize - stack.stackSize;
@@ -75,10 +66,8 @@ public class RationedInserter extends BaseInserter
 
     // Insertion logic for sided inventories where there's a maxAllowed in the inventory
     @Override
-    public ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side)
-    {
-        if (stack == null || stack.stackSize <= 0)
-        {
+    public ItemStack TryInsertItemSided(ISidedInventory inventory, ItemStack stack, int side) {
+        if (stack == null || stack.stackSize <= 0) {
             return null;
         }
 
@@ -90,31 +79,24 @@ public class RationedInserter extends BaseInserter
         IntArrayList emptySlots = new IntArrayList();
 
         int found = 0;
-        for (int slot : slots)
-        {
-            if (!inventory.canInsertItem(slot, stack, side))
-            {
+        for (int slot : slots) {
+            if (!inventory.canInsertItem(slot, stack, side)) {
                 continue;
             }
 
             ItemStack existing = inventory.getStackInSlot(slot);
-            if (existing == null)
-            {
+            if (existing == null) {
                 emptySlots.add(slot);
                 emptySlots.add(inventory.getInventoryStackLimit());
-            }
-            else if (canStacksMerge(existing, stack))
-            {
+            } else if (canStacksMerge(existing, stack)) {
                 found += existing.stackSize;
-                if (found >= limit)
-                {
+                if (found >= limit) {
                     return stack;
                 }
 
                 int max = Math.min(existing.getMaxStackSize(), inventory.getInventoryStackLimit());
                 int space = max - existing.stackSize;
-                if (space > 0)
-                {
+                if (space > 0) {
                     mergeableSlots.add(slot);
                     mergeableSlots.add(space);
                 }
@@ -124,8 +106,7 @@ public class RationedInserter extends BaseInserter
         // Once for mergeable slots first, then the empty slots.
         int preMergeStackSize = stack.stackSize;
         StackToInventoryMergingHelperLimited(mergeableSlots, inventory, stack, found);
-        if (stack.stackSize <= 0)
-        {
+        if (stack.stackSize <= 0) {
             return null;
         }
         found += preMergeStackSize - stack.stackSize;
@@ -133,29 +114,19 @@ public class RationedInserter extends BaseInserter
     }
 
     // Helper for consistent inventory insertion/merging
-    private ItemStack StackToInventoryMergingHelperLimited(
-        IntArrayList slotInfo,
-        IInventory inventory,
-        ItemStack insertionStack,
-        int currentItemsInInventory)
-    {
-        for (int i = 0; i < slotInfo.size(); i += 2)
-        {
+    private ItemStack StackToInventoryMergingHelperLimited(IntArrayList slotInfo, IInventory inventory,
+        ItemStack insertionStack, int currentItemsInInventory) {
+        for (int i = 0; i < slotInfo.size(); i += 2) {
             int insertAmount = limit - currentItemsInInventory;
-            if (insertAmount <= 0)
-            {
+            if (insertAmount <= 0) {
                 return insertionStack.stackSize <= 0 ? null : insertionStack;
             }
 
             int slot = slotInfo.getInt(i);
 
-            int amountInsertable = Math.min(
-                slotInfo.getInt(i + 1),
-                Math.min(insertionStack.stackSize, insertAmount)
-            );
+            int amountInsertable = Math.min(slotInfo.getInt(i + 1), Math.min(insertionStack.stackSize, insertAmount));
 
-            if (amountInsertable <= 0)
-            {
+            if (amountInsertable <= 0) {
                 continue;
             }
 
@@ -164,20 +135,16 @@ public class RationedInserter extends BaseInserter
 
             ItemStack existing = inventory.getStackInSlot(slot);
 
-            if (existing == null)
-            {
+            if (existing == null) {
                 ItemStack newStack = insertionStack.copy();
                 newStack.stackSize = amountInsertable;
                 inventory.setInventorySlotContents(slot, newStack);
-            }
-            else
-            {
+            } else {
                 existing.stackSize += amountInsertable;
                 inventory.setInventorySlotContents(slot, existing);
             }
 
-            if (insertionStack.stackSize <= 0)
-            {
+            if (insertionStack.stackSize <= 0) {
                 return null;
             }
         }

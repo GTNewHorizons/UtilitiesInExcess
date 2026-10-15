@@ -1,12 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.upgrade;
 
-import codechicken.lib.data.MCDataInput;
-import codechicken.lib.data.MCDataOutput;
+import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;
 
-import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged;
-
-import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
-import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
+import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,69 +11,60 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
+import com.cleanroommc.modularui.widgets.slot.IOnSlotChanged;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
+import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
 
-public class UpgradeInventory implements IOnSlotChanged, IInventory
-{
+public class UpgradeInventory implements IOnSlotChanged, IInventory {
+
     ItemStack[] upgrades;
     IUpgradeable host;
 
-    public UpgradeInventory(int size, IUpgradeable node)
-    {
+    public UpgradeInventory(int size, IUpgradeable node) {
         upgrades = new ItemStack[size];
         host = node;
     }
 
-    public void clearInv()
-    {
-        if (upgrades == null)
-        {
+    public void clearInv() {
+        if (upgrades == null) {
             return;
         }
         Arrays.fill(upgrades, null);
     }
 
     @Override
-    public void onChange(ItemStack newItem, boolean onlyAmountChanged, boolean client, boolean init)
-    {
-        if (!client && !init)
-        {
+    public void onChange(ItemStack newItem, boolean onlyAmountChanged, boolean client, boolean init) {
+        if (!client && !init) {
             host.resetUpgrades();
 
-            for (ItemStack stack : upgrades)
-            {
+            for (ItemStack stack : upgrades) {
                 TransferUpgrade upgrade = TransferUpgrade.getUpgrade(stack);
-                if (upgrade != null)
-                {
+                if (upgrade != null) {
                     upgrade.applyTo(host, stack);
                 }
             }
         }
     }
 
-    public void init()
-    {
-        for (ItemStack stack : upgrades)
-        {
+    public void init() {
+        for (ItemStack stack : upgrades) {
             TransferUpgrade upgrade = TransferUpgrade.getUpgrade(stack);
-            if (upgrade != null)
-            {
+            if (upgrade != null) {
                 upgrade.applyTo(host, stack);
             }
         }
     }
-    public void writeToNBT(NBTTagCompound nbt)
-    {
+
+    public void writeToNBT(NBTTagCompound nbt) {
         NBTTagList itemTagList = new NBTTagList();
 
-        for (int i = 0; i < this.upgrades.length; ++i)
-        {
-            if (this.upgrades[i] != null)
-            {
+        for (int i = 0; i < this.upgrades.length; ++i) {
+            if (this.upgrades[i] != null) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)i);
+                nbttagcompound.setByte("Slot", (byte) i);
                 this.upgrades[i].writeToNBT(nbttagcompound);
                 itemTagList.appendTag(nbttagcompound);
             }
@@ -86,23 +73,19 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
         nbt.setTag("Upgrades", itemTagList);
     }
 
-    public void readFromNBT(NBTTagCompound nbt)
-    {
+    public void readFromNBT(NBTTagCompound nbt) {
         NBTTagList nbttaglist = nbt.getTagList("Upgrades", 10);
         this.upgrades = new ItemStack[this.getSizeInventory()];
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
             int slot = compound.getByte("Slot") & 255;
 
-            if (slot < this.upgrades.length)
-            {
+            if (slot < this.upgrades.length) {
                 this.upgrades[slot] = ItemStack.loadItemStackFromNBT(compound);
             }
         }
     }
-
 
     public void writeDesc(MCDataOutput output) {
         for (ItemStack upgrade : this.upgrades) {
@@ -122,26 +105,22 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
     }
 
     @Override
-    public ItemStack getStackInSlot(int slotIn)
-    {
+    public ItemStack getStackInSlot(int slotIn) {
         return upgrades[slotIn];
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
+    public ItemStack decrStackSize(int index, int count) {
         return ItemStackInventory.decrStackSizeInItemStackArray(index, count, upgrades, this);
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index)
-    {
+    public ItemStack getStackInSlotOnClosing(int index) {
         return upgrades[index];
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
+    public void setInventorySlotContents(int index, ItemStack stack) {
         upgrades[index] = stack;
         this.markDirty();
     }
@@ -182,17 +161,13 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
         return stack.getItem() instanceof ItemUpgrade;
     }
 
-    public void dropContents(World world, int x, int y, int z)
-    {
-        for (ItemStack stack : upgrades)
-        {
-            if (stack == null || stack.stackSize <= 0)
-            {
+    public void dropContents(World world, int x, int y, int z) {
+        for (ItemStack stack : upgrades) {
+            if (stack == null || stack.stackSize <= 0) {
                 continue;
             }
 

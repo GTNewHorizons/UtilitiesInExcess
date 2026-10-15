@@ -1,17 +1,17 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
+import java.util.List;
+
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.*;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.FluidTargetResolver;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.List;
+public class FluidWalker extends WalkerBase<IFluidHandler> {
 
-public class FluidWalker extends WalkerBase<IFluidHandler>
-{
     TargetResolver<IFluidHandler> targeter;
 
     public FluidWalker(IWalkingComponent walkingComponent) {
@@ -21,8 +21,7 @@ public class FluidWalker extends WalkerBase<IFluidHandler>
     }
 
     @Override
-    public void step(World world)
-    {
+    public void step(World world) {
         walkerPos = stepper.step(world, walkerPos, walkingComponent);
     }
 
@@ -32,8 +31,7 @@ public class FluidWalker extends WalkerBase<IFluidHandler>
     }
 
     @Override
-    public void reset()
-    {
+    public void reset() {
         stepper.reset(walkerPos, walkingComponent);
     }
 }

@@ -1,19 +1,22 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util;
 
-import codechicken.multipart.TMultiPart;
-import codechicken.multipart.TileMultipart;
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.factory.AbstractUIFactory;
-import com.cleanroommc.modularui.factory.GuiManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
+
 import org.jetbrains.annotations.NotNull;
 
-public class PartGuiHandler extends AbstractUIFactory<PartGuiData>
-{
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.AbstractUIFactory;
+import com.cleanroommc.modularui.factory.GuiManager;
+
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TileMultipart;
+
+public class PartGuiHandler extends AbstractUIFactory<PartGuiData> {
+
     public static final PartGuiHandler INSTANCE = new PartGuiHandler("uie:part");
 
     protected PartGuiHandler(String name) {
@@ -41,7 +44,9 @@ public class PartGuiHandler extends AbstractUIFactory<PartGuiData>
     public @NotNull IGuiHolder<PartGuiData> getGuiHolder(PartGuiData data) {
         TileEntity te = data.getTileEntity();
         if (te instanceof TileMultipart multipartTE) {
-            IGuiHolder<PartGuiData> guiHolder = castGuiHolder(multipartTE.partList().apply(data.partIndex));
+            IGuiHolder<PartGuiData> guiHolder = castGuiHolder(
+                multipartTE.partList()
+                    .apply(data.partIndex));
             if (guiHolder != null) {
                 return guiHolder;
             }

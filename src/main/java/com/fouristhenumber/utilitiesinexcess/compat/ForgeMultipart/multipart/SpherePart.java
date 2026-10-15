@@ -4,6 +4,11 @@ import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render
 
 import java.util.Collections;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.IndexedCuboid6;
@@ -13,13 +18,8 @@ import codechicken.microblock.MicroMaterialRegistry;
 import codechicken.multipart.JNormalOcclusion;
 import codechicken.multipart.NormalOcclusionTest;
 import codechicken.multipart.TMultiPart;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
 
-public class SpherePart extends UiEMultipart implements IMaterialPart, JNormalOcclusion
-{
+public class SpherePart extends UiEMultipart implements IMaterialPart, JNormalOcclusion {
 
     public static final Cuboid6 Bounds = new Cuboid6(0.125, 0.125, 0.125, 0.875, 0.875, 0.875);
 
@@ -31,8 +31,7 @@ public class SpherePart extends UiEMultipart implements IMaterialPart, JNormalOc
         this.material = new Material(materialId);
     }
 
-    public SpherePart(MCDataInput packet)
-    {
+    public SpherePart(MCDataInput packet) {
         this.material = new Material(MicroMaterialRegistry.readMaterialID(packet));
     }
 

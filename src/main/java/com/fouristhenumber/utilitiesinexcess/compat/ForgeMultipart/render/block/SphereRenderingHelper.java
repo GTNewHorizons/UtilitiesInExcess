@@ -1,13 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.block;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.BlockMicroMaterial;
@@ -274,7 +271,22 @@ public class SphereRenderingHelper {
                     Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat0].copy()
                         .add(x, y, z);
 
-                    renderSphericFaceVanilla(tess, vert0, vert1, vert2, vert2, u1, v1, u2, v2, u3, v3, u3, v3, brightness, color);
+                    renderSphericFaceVanilla(
+                        tess,
+                        vert0,
+                        vert1,
+                        vert2,
+                        vert2,
+                        u1,
+                        v1,
+                        u2,
+                        v2,
+                        u3,
+                        v3,
+                        u3,
+                        v3,
+                        brightness,
+                        color);
                 }
             }
         }
@@ -359,7 +371,22 @@ public class SphereRenderingHelper {
                     Vector3 vert2 = SphereRenderingHelper.verts[lon1][lat0].copy()
                         .add(x, y, z);
 
-                    renderSphericFaceVanilla(tess, vert0, vert2, vert1, vert1, u1, v1, u3, v3, u2, v2, u2, v2, brightness, color);
+                    renderSphericFaceVanilla(
+                        tess,
+                        vert0,
+                        vert2,
+                        vert1,
+                        vert1,
+                        u1,
+                        v1,
+                        u3,
+                        v3,
+                        u2,
+                        v2,
+                        u2,
+                        v2,
+                        brightness,
+                        color);
                 }
             }
         }
@@ -389,7 +416,7 @@ public class SphereRenderingHelper {
                     }
                 }
 
-                side +=2;
+                side += 2;
                 double uWindow = sideIcons[side].getMaxU() - sideIcons[side].getMinU();
                 double vWindow = sideIcons[side].getMaxV() - sideIcons[side].getMinV();
 
@@ -422,8 +449,8 @@ public class SphereRenderingHelper {
     }
 
     // Sometimes we don't care about the side
-    public static void RenderSphereSides(Tessellator tess, IIcon sideIcon, double x, double y, double z,
-                                         int brightness, int color) {
+    public static void RenderSphereSides(Tessellator tess, IIcon sideIcon, double x, double y, double z, int brightness,
+        int color) {
         for (int latitude = 0; latitude < 16; latitude++) {
             for (int longitude = 2; longitude < 6; longitude++) {
                 double uWindow = sideIcon.getMaxU() - sideIcon.getMinU();

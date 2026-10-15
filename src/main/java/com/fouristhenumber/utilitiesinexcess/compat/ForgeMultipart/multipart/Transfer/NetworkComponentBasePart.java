@@ -1,27 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
-import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.vec.Cuboid6;
-import codechicken.multipart.JNormalOcclusion;
-import codechicken.multipart.JPartialOcclusion;
-import codechicken.multipart.JsonModeledPart;
-import codechicken.multipart.NormalOcclusionTest;
-import codechicken.multipart.TMultiPart;
-
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
-import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.BlockMetaOverrideWorld;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.MetaOverrideWorld;
-import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
-
-import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,16 +10,37 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.ITransferNetworkComponent;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.BlockMetaOverrideWorld;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.MetaOverrideWorld;
+import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
+import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 
-public abstract class NetworkComponentBasePart extends UiEMultipart implements ITransferNetworkComponent, IConnectable, JsonModeledPart, JNormalOcclusion
-{
+import codechicken.lib.data.MCDataOutput;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.multipart.JNormalOcclusion;
+import codechicken.multipart.JPartialOcclusion;
+import codechicken.multipart.JsonModeledPart;
+import codechicken.multipart.NormalOcclusionTest;
+import codechicken.multipart.TMultiPart;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public abstract class NetworkComponentBasePart extends UiEMultipart
+    implements ITransferNetworkComponent, IConnectable, JsonModeledPart, JNormalOcclusion {
+
     public int meta;
 
     protected boolean doPartsOccludeDirection(ForgeDirection side) {
         Cuboid6 connectionBox = getConnectionInDirection(side);
 
         for (TMultiPart part : tile().jPartList()) {
-            if (part == this || part instanceof PipeJacketPart) { // Don't count pipe jacket in occlusion for network parts.
+            if (part == this || part instanceof PipeJacketPart) { // Don't count pipe jacket in occlusion for network
+                                                                  // parts.
                 continue;
             }
 
@@ -65,8 +64,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
         return false;
     }
 
-    public Cuboid6 getConnectionInDirection(ForgeDirection side)
-    {
+    public Cuboid6 getConnectionInDirection(ForgeDirection side) {
         return new Cuboid6(PipeCollision.values()[side.ordinal() + 1].getCollisionBox());
     }
 
@@ -80,8 +78,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
     }
 
     @Override
-    public IBlockAccess getRenderWorld()
-    {
+    public IBlockAccess getRenderWorld() {
         return new MetaOverrideWorld(world(), x(), y(), z(), meta);
     }
 
@@ -106,8 +103,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
     }
 
     @Override
-    public int getMeta()
-    {
+    public int getMeta() {
         return meta;
     }
 
@@ -131,13 +127,15 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
 
     @Override
     public IIcon getBreakingIcon(Object subPart, int side) {
-        return ModelISBRH.INSTANCE.get().getParticleIcon(new BlockMetaOverrideWorld(world(), x(), y(), z(), meta, this.getBlock()), x(), y(), z());
+        return ModelISBRH.INSTANCE.get()
+            .getParticleIcon(new BlockMetaOverrideWorld(world(), x(), y(), z(), meta, this.getBlock()), x(), y(), z());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getBrokenIcon(int side) {
-        return ModelISBRH.INSTANCE.get().getParticleIcon(new BlockMetaOverrideWorld(world(), x(), y(), z(), meta, this.getBlock()), x(), y(), z());
+        return ModelISBRH.INSTANCE.get()
+            .getParticleIcon(new BlockMetaOverrideWorld(world(), x(), y(), z(), meta, this.getBlock()), x(), y(), z());
     }
 
     @Override
@@ -147,8 +145,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
 
     // Pipes are never allowed in the same space as other network component bases.
     @Override
-    public boolean occlusionTest(TMultiPart part)
-    {
+    public boolean occlusionTest(TMultiPart part) {
         if (this instanceof PipePart && part instanceof NetworkComponentBasePart) {
             return false;
         }
@@ -160,13 +157,12 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
         return NormalOcclusionTest.apply(this, part) && super.occlusionTest(part);
     }
 
-    public ItemStack pickItem(MovingObjectPosition hit)
-    {
+    public ItemStack pickItem(MovingObjectPosition hit) {
         return new ItemStack(Item.getItemFromBlock(getBlock()), 1, meta);
     }
 
-    public float getStrength(MovingObjectPosition hit , EntityPlayer player)
-    {
-        return 30 * getBlock().getBlockHardness(world(), hit.blockX, hit.blockY, hit.blockZ); // It's a weird calc but whatever.
+    public float getStrength(MovingObjectPosition hit, EntityPlayer player) {
+        return 30 * getBlock().getBlockHardness(world(), hit.blockX, hit.blockY, hit.blockZ); // It's a weird calc but
+                                                                                              // whatever.
     }
 }
