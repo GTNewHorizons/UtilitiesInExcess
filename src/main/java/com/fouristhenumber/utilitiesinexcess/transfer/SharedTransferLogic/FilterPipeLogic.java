@@ -44,7 +44,7 @@ import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.PURPLE_SL
 import static com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots.YELLOW_SLOT;
 import static com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory.getInventoryContentsFromStack;
 
-public class FilterPipeLogic extends NetworkLogic<ITransferNetworkComponent> implements IInventory
+public class FilterPipeLogic extends NetworkLogic implements IInventory
 {
     // This is the actual items in the filter.
     private final ItemStack[] filters = new ItemStack[6];
@@ -72,6 +72,19 @@ public class FilterPipeLogic extends NetworkLogic<ITransferNetworkComponent> imp
             }
         }
         compound.setTag("Items", itemList);
+    }
+
+    @Override
+    public void initFromOtherLogic(NetworkLogic logic)
+    {
+        if (logic instanceof FilterPipeLogic filterPipeLogic)
+        {
+            for (int i = 0; i < filters.length; i++)
+            {
+                filters[i] = filterPipeLogic.filters[i];
+                logicalFilter[i] = filterPipeLogic.logicalFilter[i];
+            }
+        }
     }
 
     @Override
@@ -258,10 +271,9 @@ public class FilterPipeLogic extends NetworkLogic<ITransferNetworkComponent> imp
         int extractedMode = parentMode & 0b110;
         int mode = getModesFromStack(filter) | extractedMode;
         boolean inverted = isInverted(parentMode) ^ isInverted(mode);
-        if (!inverted)
-        {
-            mode = mode & 0b110;
-        }
+
+        // Pass only matching-mode bits plus the effective inversion.
+        int childMode = mode  | (inverted ? 0b001 : 0);
 
         List<ItemStack> containedItems = getInventoryContentsFromStack(filter);
         if (containedItems == null)
@@ -274,7 +286,7 @@ public class FilterPipeLogic extends NetworkLogic<ITransferNetworkComponent> imp
             {
                 if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.FILTER)
                 {
-                    parseFilterItem(logicalFilter, containedItem, mode);
+                    parseFilterItem(logicalFilter, containedItem, childMode);
                 }
                 else if (TransferUpgrade.getUpgrade(containedItem) == TransferUpgrade.ADV_FILTER)
                 {
@@ -302,7 +314,7 @@ public class FilterPipeLogic extends NetworkLogic<ITransferNetworkComponent> imp
                     }
                     case (0b110):
                     {
-                        logicalFilter.addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT_MET);
+                        logicalFilter.addToRuleList(containedItem, inverted, MatchMode.IGNORE_NBT_META);
                         break;
                     }
                 }

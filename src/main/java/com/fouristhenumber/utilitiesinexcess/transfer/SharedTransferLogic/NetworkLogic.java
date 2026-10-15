@@ -23,11 +23,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
-public abstract class NetworkLogic<T extends ITransferNetworkComponent>
+public abstract class NetworkLogic
 {
-    protected T host;
+    protected ITransferNetworkComponent host;
 
-    public NetworkLogic(T host)
+    public NetworkLogic(ITransferNetworkComponent host)
     {
         this.host = host;
     }
@@ -54,6 +54,13 @@ public abstract class NetworkLogic<T extends ITransferNetworkComponent>
     // because then it's easier to access from parts.
     public void dropContents(World world, int x, int y, int z) {}
 
+    // When a part is converted the break block call is made. We need to clear the inventory before that happens.
+    public void invalidateInventory() {}
+
+    // This is used to transfer the TE logic to a part as the host. Also note that this doesn't need to mark
+    // the host dirty since FMP does this for us.
+    public abstract void initFromOtherLogic(NetworkLogic logic);
+
     public abstract void writeToNBT(NBTTagCompound nbt);
 
     public abstract void readFromNBT(NBTTagCompound nbt);
@@ -68,4 +75,5 @@ public abstract class NetworkLogic<T extends ITransferNetworkComponent>
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
         return new ModularScreen(UtilitiesInExcess.MODID, mainPanel);
     }
+
 }

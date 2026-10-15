@@ -1,24 +1,15 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
-import cofh.api.energy.IEnergyHandler;
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.nbt.NBTTagCompound;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<EnergyTransferNodeLogic>
-    implements IEnergyHandler
+public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase
+    implements IWirelessNode
 {
     @Override
-    protected EnergyTransferNodeLogic getLogic()
+    public NetworkLogic getLogic()
     {
         if (logic == null)
         {
@@ -27,33 +18,39 @@ public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase<Ene
         return logic;
     }
 
+    public void invalidateInventory()
+    {
+        getLogic().invalidateInventory();
+    }
+
     @Override
     public int receiveEnergy(ForgeDirection forgeDirection, int i, boolean b) {
-        return getLogic().receiveEnergy(forgeDirection, i, b);
+        return ((EnergyTransferNodeLogic) getLogic()).receiveEnergy(forgeDirection, i, b);
     }
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int i, boolean b) {
-        return getLogic().extractEnergy(forgeDirection, i, b);
+        return ((EnergyTransferNodeLogic) getLogic()).extractEnergy(forgeDirection, i, b);
     }
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return getLogic().getEnergyStored(forgeDirection);
+        return ((EnergyTransferNodeLogic) getLogic()).getEnergyStored(forgeDirection);
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return getLogic().getMaxEnergyStored(forgeDirection);
+        return ((EnergyTransferNodeLogic) getLogic()).getMaxEnergyStored(forgeDirection);
     }
 
     @Override
     public boolean canConnectEnergy(ForgeDirection forgeDirection) {
-        return getLogic().canConnectEnergy(forgeDirection);
+        return ((EnergyTransferNodeLogic) getLogic()).canConnectEnergy(forgeDirection);
     }
 
     @Override
     public ForgeDirection getFacing()
     {
         return ForgeDirection.UNKNOWN;
-    }}
+    }
+}

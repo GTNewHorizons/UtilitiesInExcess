@@ -25,12 +25,11 @@ import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
 import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 
-public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingComponent> implements IInventory
+public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic
 {
     // Upgrades
     private boolean isRoundRobin = false;
     private ItemFilter logicalFilter;
-    private boolean init = false;
 
     private ItemStack pullingItem;
 
@@ -156,7 +155,7 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
             }
 
             // Respect sided extraction rules if applicable
-            if (connectedInventory instanceof ISidedInventory sided)
+            if (inv instanceof ISidedInventory sided)
             {
                 if (!sided.canExtractItem(slot, stackInSlot, inv.side))
                 {
@@ -185,7 +184,7 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
         }
 
         ItemStack toExport = buffer;
-        ForgeDirection connectedSide = host.getFacing();
+        ForgeDirection connectedSide = ((IWalkingComponent) host).getFacing().getOpposite();
 
         if (connectedInventory instanceof ISidedInventory sidedInventory)
         {
@@ -224,6 +223,7 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
         }
 
         buffer = toExport.stackSize <= 0 ? null : toExport;
+        host.markHostDirty();
     }
 
     private void tryMergeIntoSlot(IInventory inventory, int slot, ItemStack toExport)
@@ -256,7 +256,7 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
 
     public void updateConnectedInventory()
     {
-        ForgeDirection facing = host.getFacing();
+        ForgeDirection facing = ((IWalkingComponent) host).getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IInventory inventory) {
             connectedInventory = inventory;
@@ -285,13 +285,6 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
     @Override
     public ItemStack getStackInSlotOnClosing(int index) {
         return buffer;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.buffer = stack;
-        this.markDirty();
     }
 
     @Override
@@ -379,7 +372,7 @@ public class ItemRetrievalNodeLogic extends BaseItemTransferNodeLogic<IWalkingCo
         {
             logicalFilter = new ItemFilter();
         }
-        parseFilterItem(logicalFilter, filter, getModesFromStack(filter));
+        parseFilterItem(logicalFilter, filter, 0);
     }
 
     @Override

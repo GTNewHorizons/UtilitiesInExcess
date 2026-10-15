@@ -6,6 +6,7 @@ import com.fouristhenumber.utilitiesinexcess.network.client.FloatingBlockParticl
 import com.fouristhenumber.utilitiesinexcess.network.client.GammaRayParticlePacket;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketAggressiveMobSpawn;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketRainMuffledSync;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketSetFrequency;
 import com.fouristhenumber.utilitiesinexcess.network.client.PacketUnderworldAttack;
 import com.fouristhenumber.utilitiesinexcess.network.client.PaintRollerColorSelect;
 import com.fouristhenumber.utilitiesinexcess.network.client.ParticlePacket;
@@ -53,5 +54,12 @@ public class PacketHandler {
             packetId++,
             Side.SERVER
         );
+        INSTANCE.registerMessage(
+            PacketSetFrequency.Handler.class,
+            PacketSetFrequency.class,
+            packetId++,
+            Side.SERVER
+        );
+
     }
 }

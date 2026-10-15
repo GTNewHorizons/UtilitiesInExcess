@@ -10,16 +10,20 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class WirelessNetworkManager
 {
 
     private static final Map<String, Int2ObjectOpenHashMap<LongOpenHashSet>> transmitters = new HashMap<>();
-    private static final Int2ObjectOpenHashMap<Long2ObjectMap<String>> reverseTransmitterMap = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectOpenHashMap<Long2ObjectMap<Set<String>>>
+        reverseTransmitterMap = new Int2ObjectOpenHashMap<>();
 
     private static final Map<String, Int2ObjectOpenHashMap<LongOpenHashSet>> receivers = new HashMap<>();
-    private static final Int2ObjectOpenHashMap<Long2ObjectMap<String>> reverseReceiverMap = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectOpenHashMap<Long2ObjectMap<Set<String>>>
+        reverseReceiverMap = new Int2ObjectOpenHashMap<>();
 
     public static Int2ObjectOpenHashMap<LongOpenHashSet> getReceiversByFrequency(String frequency)
     {
@@ -36,7 +40,8 @@ public class WirelessNetworkManager
 
         reverseTransmitterMap
             .computeIfAbsent(dim, d -> new Long2ObjectOpenHashMap<>())
-            .put(packedCoords, frequency);
+            .computeIfAbsent(packedCoords, p -> new HashSet<>())
+            .add(frequency);
     }
 
     public static void deregisterTransmitter(String frequency, int dim, int x, int y, int z)
@@ -56,29 +61,47 @@ public class WirelessNetworkManager
     {
         long pos = CoordinatePacker.pack(x, y, z);
 
-        Map<Long, String> lookup = reverseTransmitterMap.get(dim);
+        Long2ObjectMap<Set<String>> lookup = reverseTransmitterMap.get(dim);
         if (lookup == null)
-            return;
-
-        String frequency = lookup.remove(pos);
-        if (frequency == null)
-            return;
-
-        Map<Integer, LongOpenHashSet> byDim = transmitters.get(frequency);
-        if (byDim == null)
-            return;
-
-        LongOpenHashSet nodes = byDim.get(dim);
-        if (nodes != null)
         {
+            return;
+        }
+        Set<String> frequencies = lookup.remove(pos);
+        if (frequencies == null)
+        {
+            return;
+        }
+        for (String frequency : frequencies)
+        {
+            Int2ObjectOpenHashMap<LongOpenHashSet> byDim = transmitters.get(frequency);
+            if (byDim == null)
+            {
+                continue;
+            }
+
+            LongOpenHashSet nodes = byDim.get(dim);
+            if (nodes == null)
+            {
+                continue;
+            }
+
             nodes.remove(pos);
 
             if (nodes.isEmpty())
+            {
                 byDim.remove(dim);
+            }
+
+            if (byDim.isEmpty())
+            {
+                transmitters.remove(frequency);
+            }
         }
 
-        if (byDim.isEmpty())
-            transmitters.remove(frequency);
+        if (lookup.isEmpty())
+        {
+            reverseTransmitterMap.remove(dim);
+        }
     }
 
     public static void registerReceiver(String frequency, int dim, int x, int y, int z)
@@ -91,7 +114,8 @@ public class WirelessNetworkManager
 
         reverseReceiverMap
             .computeIfAbsent(dim, d -> new Long2ObjectOpenHashMap<>())
-            .put(packedCoords, frequency);
+            .computeIfAbsent(packedCoords, p -> new HashSet<>())
+            .add(frequency);
     }
 
     public static void deregisterReceiver(String frequency, int dim, int x, int y, int z)
@@ -111,29 +135,50 @@ public class WirelessNetworkManager
     {
         long pos = CoordinatePacker.pack(x, y, z);
 
-        Map<Long, String> lookup = reverseReceiverMap.get(dim);
+        Long2ObjectMap<Set<String>> lookup = reverseReceiverMap.get(dim);
         if (lookup == null)
-            return;
-
-        String frequency = lookup.remove(pos);
-        if (frequency == null)
-            return;
-
-        Map<Integer, LongOpenHashSet> byDim = receivers.get(frequency);
-        if (byDim == null)
-            return;
-
-        LongOpenHashSet nodes = byDim.get(dim);
-        if (nodes != null)
         {
+            return;
+        }
+
+        Set<String> frequencies = lookup.remove(pos);
+        if (frequencies == null)
+        {
+            return;
+        }
+
+        for (String frequency : frequencies)
+        {
+            Int2ObjectOpenHashMap<LongOpenHashSet> byDim = receivers.get(frequency);
+            if (byDim == null)
+            {
+                continue;
+            }
+
+            LongOpenHashSet nodes = byDim.get(dim);
+            if (nodes == null)
+            {
+                continue;
+
+            }
+
             nodes.remove(pos);
 
             if (nodes.isEmpty())
+            {
                 byDim.remove(dim);
+            }
+
+            if (byDim.isEmpty())
+            {
+                receivers.remove(frequency);
+            }
         }
 
-        if (byDim.isEmpty())
-            receivers.remove(frequency);
+        if (lookup.isEmpty())
+        {
+            reverseReceiverMap.remove(dim);
+        }
     }
 
     public static void reset()

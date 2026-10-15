@@ -17,17 +17,35 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class BaseNodeLogic<T extends IWalkingComponent> extends NetworkLogic<T> implements IUpgradeable, ITickableLogic, IWalkingLogic
+public abstract class BaseNodeLogic extends NetworkLogic implements IUpgradeable, ITickableLogic, IWalkingLogic
 {
     public static final int DEFAULT_STEPS_PER_SECOND = 2;
     protected int actionPerSecond = DEFAULT_STEPS_PER_SECOND;
     protected UpgradeInventory upgrades;
+    protected boolean init = false;
 
     private float progress = 0f;
 
-    public BaseNodeLogic(T host) {
+    public BaseNodeLogic(IWalkingComponent host) {
         super(host);
         this.upgrades = new UpgradeInventory(6, this);
+    }
+
+    @Override
+    public void invalidateInventory()
+    {
+        upgrades.clearInv();
+    }
+
+    @Override
+    public void initFromOtherLogic(NetworkLogic logic)
+    {
+        if (logic instanceof BaseNodeLogic nodeLogic)
+        {
+            this.getWalker().initFromOtherWalker(nodeLogic.getWalker());
+            this.upgrades = nodeLogic.upgrades;
+        }
+        this.init = true;
     }
 
     public void dropContents(World world, int x, int y, int z)

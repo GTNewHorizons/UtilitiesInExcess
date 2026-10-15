@@ -29,6 +29,17 @@ public abstract class WalkerBase<T>
         this.stepper = stepper;
         this.reset();
     }
+
+    public BlockPos getWalkerPos()
+    {
+        return walkerPos;
+    }
+
+    public void setWalkerPos(BlockPos pos)
+    {
+        this.walkerPos = pos;
+    }
+
     public abstract void step(World world);
 
     public String getLocationString()
@@ -51,4 +62,10 @@ public abstract class WalkerBase<T>
     public abstract void reset();
 
     public abstract List<TargetResolver.Target<T>> getValidTargets(World world);
+
+    public void initFromOtherWalker(WalkerBase<?> walker)
+    {
+        this.walkerPos = walker.getWalkerPos();
+        this.stepper.fromDirection = walker.stepper.fromDirection;
+    }
 }

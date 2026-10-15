@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
@@ -18,13 +19,18 @@ public class TileEntityFilterPipe extends TileEntityNetworkComponentBase
 {
     private FilterPipeLogic logic;
 
-    protected FilterPipeLogic getLogic()
+    public FilterPipeLogic getLogic()
     {
         if (logic == null)
         {
             logic = new FilterPipeLogic(this);
         }
         return logic;
+    }
+
+    public void invalidateInventory()
+    {
+        getLogic().invalidateInventory();
     }
 
     public TileEntityFilterPipe() {}

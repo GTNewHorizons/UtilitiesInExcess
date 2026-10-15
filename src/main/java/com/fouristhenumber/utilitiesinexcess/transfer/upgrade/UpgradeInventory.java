@@ -15,6 +15,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
+
 import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;
 
 public class UpgradeInventory implements IOnSlotChanged, IInventory
@@ -26,6 +28,15 @@ public class UpgradeInventory implements IOnSlotChanged, IInventory
     {
         upgrades = new ItemStack[size];
         host = node;
+    }
+
+    public void clearInv()
+    {
+        if (upgrades == null)
+        {
+            return;
+        }
+        Arrays.fill(upgrades, null);
     }
 
     @Override

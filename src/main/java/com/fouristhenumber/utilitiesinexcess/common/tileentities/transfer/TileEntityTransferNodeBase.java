@@ -1,32 +1,35 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.INodeLogicHost;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.item.ItemStack;
+
 import net.minecraft.nbt.NBTTagCompound;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class TileEntityTransferNodeBase<T extends BaseNodeLogic> extends TileEntityNetworkComponentBase
-    implements INodeLogicHost, IGuiHolder<PosGuiData>, IWalkingComponent
+public abstract class TileEntityTransferNodeBase extends TileEntityNetworkComponentBase implements INodeLogicHost, IGuiHolder<PosGuiData>, IWalkingComponent
 {
-    T logic;
+    NetworkLogic logic;
 
-    protected abstract T getLogic();
+    public abstract NetworkLogic getLogic();
 
     @Override
     public void updateEntity()
     {
-        this.getLogic().updateEntity();
+        ((BaseNodeLogic) this.getLogic()).updateEntity();
     }
 
     @Override
@@ -46,7 +49,7 @@ public abstract class TileEntityTransferNodeBase<T extends BaseNodeLogic> extend
     @Override
     public Object getWalkingObject()
     {
-        return getLogic().getWalkingObject();
+        return ((BaseNodeLogic) getLogic()).getWalkingObject();
     }
 
     @Override
@@ -69,5 +72,11 @@ public abstract class TileEntityTransferNodeBase<T extends BaseNodeLogic> extend
     public void dropInventoryContents()
     {
         getLogic().dropContents(worldObj, xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public void invalidateInventory()
+    {
+        getLogic().invalidateInventory();
     }
 }

@@ -6,6 +6,8 @@ import codechicken.lib.vec.Cuboid6;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.IWirelessNode;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
@@ -24,7 +26,7 @@ import java.util.List;
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
 
-public class EnergyNodePart extends BaseNodePart
+public class EnergyNodePart extends BaseNodePart implements IWirelessNode
 {
     public EnergyNodePart(int meta) {
         super(BlockNodeBase.getType(meta));
@@ -42,7 +44,7 @@ public class EnergyNodePart extends BaseNodePart
     }
 
     @Override
-    protected NetworkLogic<?> getLogic()
+    protected NetworkLogic getLogic()
     {
         if (logic == null)
         {
@@ -129,4 +131,28 @@ public class EnergyNodePart extends BaseNodePart
         return cuboid6s;
     }
 
+    @Override
+    public int receiveEnergy(ForgeDirection forgeDirection, int i, boolean b) {
+        return ((EnergyTransferNodeLogic) getLogic()).receiveEnergy(forgeDirection, i, b);
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection forgeDirection, int i, boolean b) {
+        return ((EnergyTransferNodeLogic) getLogic()).extractEnergy(forgeDirection, i, b);
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection forgeDirection) {
+        return ((EnergyTransferNodeLogic) getLogic()).getEnergyStored(forgeDirection);
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection forgeDirection) {
+        return ((EnergyTransferNodeLogic) getLogic()).getMaxEnergyStored(forgeDirection);
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection forgeDirection) {
+        return ((EnergyTransferNodeLogic) getLogic()).canConnectEnergy(forgeDirection);
+    }
 }

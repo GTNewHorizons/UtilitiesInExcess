@@ -1,5 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
 
-public interface IWalkingLogic {
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
+
+public interface IWalkingLogic
+{
     Object getWalkingObject();
+
+    WalkerBase<?> getWalker();
 }

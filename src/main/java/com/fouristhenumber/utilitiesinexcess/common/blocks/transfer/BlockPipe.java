@@ -186,6 +186,12 @@ public class BlockPipe extends BlockTransferBase
     }
 
     @Override
+    public int damageDropped(int meta)
+    {
+        return meta;
+    }
+
+    @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider)
     {
         for (AxisAlignedBB box : getBlockCenteredCollisionCandidates(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z)))
@@ -196,7 +202,6 @@ public class BlockPipe extends BlockTransferBase
             }
         }
     }
-
 
     public static List<AxisAlignedBB> getBlockCenteredCollisionCandidates(World worldIn, int x, int y, int z, int meta)
     {

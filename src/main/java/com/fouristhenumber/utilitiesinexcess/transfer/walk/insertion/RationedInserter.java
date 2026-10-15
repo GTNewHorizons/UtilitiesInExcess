@@ -173,6 +173,7 @@ public class RationedInserter extends BaseInserter
             else
             {
                 existing.stackSize += amountInsertable;
+                inventory.setInventorySlotContents(slot, existing);
             }
 
             if (insertionStack.stackSize <= 0)

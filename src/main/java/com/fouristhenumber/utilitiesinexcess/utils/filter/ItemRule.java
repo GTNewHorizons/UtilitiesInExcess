@@ -3,6 +3,8 @@ package com.fouristhenumber.utilitiesinexcess.utils.filter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Objects;
+
 public class ItemRule
 {
     private MatchMode mode;
@@ -20,10 +22,12 @@ public class ItemRule
     boolean matches(ItemStack stack)
     {
         return switch (mode) {
-            case DEFAULT -> stack.stackTagCompound == nbt && stack.getItemDamage() == meta;
+            case DEFAULT ->
+                Objects.equals(stack.stackTagCompound, nbt)
+                    && stack.getItemDamage() == meta;
             case IGNORE_NBT -> stack.getItemDamage() == meta;
-            case IGNORE_META -> stack.stackTagCompound == nbt;
-            case IGNORE_NBT_MET -> true;
+            case IGNORE_META -> Objects.equals(stack.stackTagCompound, nbt);
+            case IGNORE_NBT_META -> true;
         };
     }
 }

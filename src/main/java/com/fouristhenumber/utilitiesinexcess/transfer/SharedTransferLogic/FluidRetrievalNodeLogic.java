@@ -17,13 +17,12 @@ import java.util.List;
 
 // This class doesn't really even need to be a IInventory because of composition on FluidTank + UpgradeInventory.
 // I think it's just simpler design.
-public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalkingComponent>
+public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic
 {
     IFluidHandler connectedTank;
 
     // Upgrades
     private boolean isRoundRobin = false;
-    private boolean init = false;
 
     public FluidRetrievalNodeLogic(IWalkingComponent host)
     {
@@ -49,9 +48,9 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
         int actionsThisTick = actionsThisTick();
         for (int i = 0; i < actionsThisTick; i ++)
         {
-            if (connectedTank == null) {
-                updateConnectedTank();
-            } else {
+            updateConnectedTank();
+            if (connectedTank != null)
+            {
                 exportToConnected();
             }
 
@@ -114,6 +113,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
                 if (drained != null)
                 {
                     buffer.fill(drained, true);
+                    host.markHostDirty();
                     return true;
                 }
             }
@@ -130,6 +130,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
                     if (drained != null)
                     {
                         buffer.fill(drained, true);
+                        host.markHostDirty();
                         return true;
                     }
                 }
@@ -140,7 +141,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
 
     public void updateConnectedTank()
     {
-        ForgeDirection facing = host.getFacing();
+        ForgeDirection facing = ((IWalkingComponent) host).getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IFluidHandler tank)
         {
@@ -154,7 +155,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
         {
             return;
         }
-        ForgeDirection connectedSide = host.getFacing().getOpposite();
+        ForgeDirection connectedSide = ((IWalkingComponent) host).getFacing().getOpposite();
         FluidStack available = buffer.getFluid();
 
         if (available == null || available.amount <= 0)
@@ -174,6 +175,7 @@ public class FluidRetrievalNodeLogic extends BaseFluidTransferNodeLogic<IWalking
         if (filled > 0)
         {
             buffer.drain(filled, true);
+            host.markHostDirty();
         }
     }
 

@@ -1,5 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
+import com.fouristhenumber.utilitiesinexcess.ModBlocks;
+import com.fouristhenumber.utilitiesinexcess.ModItems;
+import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
@@ -216,5 +219,10 @@ public enum PipeType
     public boolean getConnection(IBlockAccess world, int x, int y, int z, ForgeDirection dir)
     {
         return isValidConnectable(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir);
+    }
+
+    public DisableableItemStack getStack(int amount)
+    {
+        return new DisableableItemStack(ModBlocks.TRANSFER_PIPE, amount, ordinal());
     }
 }

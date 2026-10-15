@@ -38,7 +38,7 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     @Override
     public void update()
     {
-        NetworkLogic<?> logic = getLogic();
+        NetworkLogic logic = getLogic();
         if (logic instanceof ITickableLogic tickable) {
             tickable.updateEntity();
         }
@@ -60,7 +60,7 @@ public abstract class BaseNodePart extends LogicComponentBasePart
     @Override
     public Object getWalkingObject()
     {
-        NetworkLogic<?> logic = getLogic();
+        NetworkLogic logic = getLogic();
 
         if (logic instanceof IWalkingLogic walking) {
             return walking.getWalkingObject();

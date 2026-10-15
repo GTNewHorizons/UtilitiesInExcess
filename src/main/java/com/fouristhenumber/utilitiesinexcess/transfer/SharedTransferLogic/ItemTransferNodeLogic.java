@@ -23,14 +23,12 @@ import java.util.List;
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.getModesFromStack;
 import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic.parseFilterItem;
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
-import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.getInventory;
 
-public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingComponent> implements IInventory
+public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic
 {
     // Upgrades
     private boolean isCreative = false;
     private ItemFilter logicalFilter;
-    private boolean init = false;
     private boolean isRoundRobin = false;
 
     public ItemTransferNodeLogic(IWalkingComponent host)
@@ -39,11 +37,6 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
         this.walker = new ItemWalker(host);
     }
 
-    // Perhaps the best way to do this is creating a inserter logic that deals with insertion?
-    // You can call walker.getInserter() then do inserter.insert()?
-
-    // Note that I did write quite lengthy insertion logic for this. I felt that it is more important to keep the
-    // logic concise and fast for the cases where there is no rationing pipe.
     public void updateEntity()
     {
         if (host.getWorld().isRemote)
@@ -65,20 +58,24 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
                 importItems();
             }
 
-            List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
-            if (!targets.isEmpty()) {
-                BaseInserter inserter = walker.getInserter(host.getWorld());
-                for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
-                {
-                    if (this.isCreative)
+            if (buffer != null)
+            {
+                List<TargetResolver.Target<IInventory>> targets = walker.getValidTargets(host.getWorld());
+                if (!targets.isEmpty()) {
+                    BaseInserter inserter = walker.getInserter(host.getWorld());
+                    for (TargetResolver.Target<IInventory> target : targets) // Need to loop through because sometimes the full stack cannot fit in one inventory
                     {
-                        ItemStack creativeStack = buffer.copy();
-                        inserter.insert(target, buffer);
-                        buffer = creativeStack;
-                    }
-                    else
-                    {
-                        buffer = inserter.insert(target, buffer);
+                        if (this.isCreative)
+                        {
+                            ItemStack creativeStack = buffer.copy();
+                            inserter.insert(target, buffer);
+                            buffer = creativeStack;
+                        }
+                        else
+                        {
+                            buffer = inserter.insert(target, buffer);
+                            host.markHostDirty();
+                        }
                     }
                 }
             }
@@ -99,12 +96,12 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
 
     public void importItems()
     {
-        ForgeDirection facing = host.getFacing();
+        ForgeDirection connectedSide = ((IWalkingComponent) host).getFacing().getOpposite();
         int[] slots;
 
         if (connectedInventory instanceof ISidedInventory sided)
         {
-            slots = sided.getAccessibleSlotsFromSide(facing.ordinal());
+            slots = sided.getAccessibleSlotsFromSide(connectedSide.ordinal());
         }
         else
         {
@@ -130,7 +127,7 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
 
             if (connectedInventory instanceof ISidedInventory sided)
             {
-                if (!sided.canExtractItem(slot, stackInSlot, facing.ordinal()))
+                if (!sided.canExtractItem(slot, stackInSlot, connectedSide.ordinal()))
                 {
                     continue;
                 }
@@ -169,13 +166,6 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
     public ItemStack getStackInSlotOnClosing(int index)
     {
         return buffer;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        buffer = stack;
-        this.markDirty();
     }
 
     @Override
@@ -272,7 +262,7 @@ public class ItemTransferNodeLogic extends BaseItemTransferNodeLogic<IWalkingCom
         {
             logicalFilter = new ItemFilter();
         }
-        parseFilterItem(logicalFilter, filter, getModesFromStack(filter));
+        parseFilterItem(logicalFilter, filter, 0);
     }
 
     @Override

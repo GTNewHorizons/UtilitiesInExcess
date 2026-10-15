@@ -4,7 +4,6 @@ import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.Networ
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-
 public abstract class TileEntityNetworkComponentBase extends TileEntity implements ITransferNetworkComponent
 {
     @Override
@@ -39,4 +38,7 @@ public abstract class TileEntityNetworkComponentBase extends TileEntity implemen
         this.markDirty();
     }
 
+    public abstract void invalidateInventory();
+
+    public abstract NetworkLogic getLogic();
 }

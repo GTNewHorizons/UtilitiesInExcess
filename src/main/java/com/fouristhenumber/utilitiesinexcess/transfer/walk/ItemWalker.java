@@ -1,6 +1,10 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk;
 
+import codechicken.multipart.BlockMultipart;
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
@@ -8,11 +12,15 @@ import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.ItemTargetR
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import java.util.List;
+
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable.getConnectables;
 
 public class ItemWalker extends WalkerBase<IInventory>
 {
@@ -40,11 +48,14 @@ public class ItemWalker extends WalkerBase<IInventory>
     // Different blocks have different insertion rules
     public BaseInserter getInserter(World world)
     {
-        if (world.getBlock(walkerPos.x, walkerPos.y, walkerPos.z) instanceof BlockTransferBase transferBase)
+        List<IConnectable> connectables = getConnectables(world, walkerPos.x, walkerPos.y, walkerPos.z);
+        if (connectables.isEmpty())
         {
-            return transferBase.getInserter(world, walkerPos.x, walkerPos.y, walkerPos.z);
+            return new DefaultInserter();
         }
-        return new DefaultInserter();
+        // Since theo only thing that can be in multiples in a block that is a connectable is a node, it's safe to
+        // just check the first one since all nodes have the same inserter.
+        return connectables.getFirst().getInserter(world, walkerPos.x, walkerPos.y, walkerPos.z);
     }
 
     @Override

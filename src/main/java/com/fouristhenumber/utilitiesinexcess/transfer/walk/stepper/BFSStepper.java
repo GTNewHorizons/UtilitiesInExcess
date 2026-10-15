@@ -5,6 +5,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import it.unimi.dsi.fastutil.bytes.ByteArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.block.Block;
@@ -15,8 +16,9 @@ import java.util.List;
 
 public class BFSStepper extends StepStrategy
 {
-    LongArrayFIFOQueue stepQueue = new LongArrayFIFOQueue();
-    LongOpenHashSet visitedLocations = new LongOpenHashSet();
+    private final LongArrayFIFOQueue stepQueue = new LongArrayFIFOQueue();
+    private final ByteArrayFIFOQueue directionQueue = new ByteArrayFIFOQueue();
+    private final LongOpenHashSet visitedLocations = new LongOpenHashSet();
 
     private final BlockPos mutablePos = new BlockPos();
 
@@ -47,6 +49,7 @@ public class BFSStepper extends StepStrategy
                         if (visitedLocations.add(packedCoord))
                         {
                             stepQueue.enqueue(packedCoord);
+                            directionQueue.enqueue((byte) dir.getOpposite().ordinal());
                         }
                     }
                 }
@@ -57,6 +60,7 @@ public class BFSStepper extends StepStrategy
             }
             else
             {
+                fromDirection = ForgeDirection.VALID_DIRECTIONS[directionQueue.dequeueByte()];
                 return mutablePos.set(stepQueue.dequeueLong());
             }
         }
@@ -67,6 +71,7 @@ public class BFSStepper extends StepStrategy
     public BlockPos reset(BlockPos walkerPos, IWalkingComponent walkingComponent)
     {
         stepQueue.clear();
+        directionQueue.clear();
         visitedLocations.clear();
         visitedLocations.add(CoordinatePacker.pack(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ()));
         return walkerPos.set(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());

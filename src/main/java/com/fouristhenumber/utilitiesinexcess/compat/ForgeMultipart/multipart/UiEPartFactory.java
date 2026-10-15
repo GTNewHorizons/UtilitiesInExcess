@@ -14,7 +14,10 @@ import codechicken.lib.vec.Vector3;
 import codechicken.multipart.TileMultipart;
 import com.fouristhenumber.utilitiesinexcess.common.items.BaseTransferItemBlock;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPipe;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.EnergyNodePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.LogicComponentBasePart;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.NetworkComponentBasePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.RetrievalNodePart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipeJacketPart;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
@@ -152,7 +155,19 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
     public TMultiPart convert(World world, BlockCoord pos) {
         Block block = world.getBlock(pos.x, pos.y, pos.z);
         int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);
-        return getPartByBlock(block, meta);
+        TileEntity te = world.getTileEntity(pos.x, pos.y, pos.z);
+        TMultiPart part = getPartByBlock(block, meta);
+
+        // It's super irritating, but due to how FMP initializes things it needs to build a whole new logic object
+        // instead of just taking control of the old logic object.
+        if (!world.isRemote) // Just do the logic init on the server because placement is irrelevant to the logical state
+        {
+            if (part instanceof LogicComponentBasePart logicalPart && te instanceof TileEntityNetworkComponentBase componentBase)
+            {
+                logicalPart.initFromTE(componentBase);
+            }
+        }
+        return part;
     }
 
     // Pretty much ripped from fmp
@@ -186,6 +201,10 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
             final ItemStack held = player.getHeldItem();
 
             if (held == null) {
+                return false;
+            }
+
+            if (!player.canPlayerEdit(pos.x, pos.y, pos.z, hit.sideHit, held)) {
                 return false;
             }
 
@@ -241,18 +260,6 @@ public class UiEPartFactory implements MultiPartRegistry.IPartFactory2, MultiPar
 
             if (!world.isRemote) {
                 TileMultipart.addPart(world, pos, part);
-
-                // Dig thorough the FMP code, and you'll realize this never happens based on a terrible
-                // line of init for FMP. For some reason getOrConvertTile sets doesTick = true EVEN THOUGH it doesn't add it to the world
-                // since that TE doesn't exist yet (see head of getOrConvertTile)
-                // Then, since doesTick == true it doesn't try to add it to the world as a tickable entity after so we just mimic what
-                // the world does on load, checking if it can update.
-//                TileEntity maybeTE = world.getTileEntity(pos.x, pos.y, pos.z);
-//                if (maybeTE instanceof TileMultipart maybeMultitile && maybeMultitile.canUpdate())
-//                {
-//                    world.addTileEntity(maybeMultitile);
-//                }
-
                 world.playSoundEffect(
                     pos.x + 0.5,
                     pos.y + 0.5,

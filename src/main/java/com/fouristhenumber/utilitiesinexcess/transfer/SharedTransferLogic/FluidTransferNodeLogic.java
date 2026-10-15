@@ -17,12 +17,11 @@ import net.minecraftforge.fluids.*;
 
 import java.util.List;
 
-public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingComponent>
+public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic
 {
     // Upgrades
     private boolean isCreative = false;
     private boolean isWorldInteraction = false;
-    private boolean init = false;
 
     IFluidHandler connectedTank;
 
@@ -46,7 +45,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
         }
 
         int actionsThisTick = actionsThisTick();
-        for (int i = 0; i < actionsThisTick; i ++)
+        for (int i = 0; i < actionsThisTick; i++)
         {
             if (isWorldInteraction)
             {
@@ -54,65 +53,50 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
             }
             else
             {
-                if (connectedTank == null)
-                {
-                    updateSourceTank();
-                }
-
+                updateSourceTank();
                 if (connectedTank != null)
                 {
                     importFluids();
                 }
             }
 
-
-            if (buffer.getFluid() == null)
+            FluidStack fluid = buffer.getFluid();
+            if (fluid == null)
             {
                 walker.reset();
                 return;
             }
 
-            List<TargetResolver.Target<IFluidHandler>> targets = walker.getValidTargets(host.getWorld());
+            List<TargetResolver.Target<IFluidHandler>> targets =
+                walker.getValidTargets(host.getWorld());
+
             if (!targets.isEmpty())
             {
-                FluidStack fluid = buffer.getFluid();
-                if (fluid != null)
+                int tryingToInsertAmount = (fluid.amount + 1) / 2;
+
+                FluidStack toInsert = fluid.copy();
+                toInsert.amount = tryingToInsertAmount;
+
+                int totalAccepted = 0;
+
+                for (TargetResolver.Target<IFluidHandler> target : targets)
                 {
-                    int tryingToInsertAmount = fluid.amount / 2;
-                    if (tryingToInsertAmount <= 0)
+                    if (toInsert.amount <= 0)
                     {
-                        return;
+                        break;
                     }
 
-                    FluidStack toInsert = fluid.copy();
-                    toInsert.amount = tryingToInsertAmount;
+                    int accepted = target.handler.fill(ForgeDirection.getOrientation(target.side).getOpposite(), toInsert, false
+                    );
 
-                    int totalAccepted = 0;
+                    accepted = Math.max(0, Math.min(accepted, toInsert.amount));
 
-                    for (TargetResolver.Target<IFluidHandler> target : targets)
-                    {
-                        if (toInsert.amount <= 0)
-                        {
-                            break;
-                        }
+                    toInsert.amount -= accepted;
+                    totalAccepted += accepted;
+                }
 
-                        int accepted = target.handler.fill(
-                            ForgeDirection.getOrientation(target.side).getOpposite(),
-                            toInsert,
-                            false
-                        );
-
-                        accepted = Math.min(accepted, toInsert.amount);
-
-                        toInsert.amount -= accepted;
-                        totalAccepted += accepted;
-                    }
-
-                    if (totalAccepted <= 0)
-                    {
-                        return;
-                    }
-
+                if (totalAccepted > 0)
+                {
                     FluidStack remaining = fluid.copy();
                     remaining.amount = totalAccepted;
 
@@ -131,7 +115,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
                             true
                         );
 
-                        filled = Math.min(filled, remaining.amount);
+                        filled = Math.max(0, Math.min(filled, remaining.amount));
 
                         remaining.amount -= filled;
                         actuallyInserted += filled;
@@ -140,16 +124,18 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
                     if (actuallyInserted > 0 && !this.isCreative)
                     {
                         buffer.drain(actuallyInserted, true);
+                        host.markHostDirty();
                     }
                 }
             }
+
             walker.step(host.getWorld());
         }
     }
 
     public void importFluidsFromWorld()
     {
-        ForgeDirection fromDir = host.getFacing();
+        ForgeDirection fromDir = ((IWalkingComponent) host).getFacing();
 
         int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
         if (spaceRemaining <= 0)
@@ -197,6 +183,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
 
         int fillAmount = Math.min(spaceRemaining, 1000);
         buffer.fill(new FluidStack(fluid, fillAmount), true);
+        host.markHostDirty();
     }
 
     private boolean isInfiniteWaterSource(World world, int x, int y, int z)
@@ -232,7 +219,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
 
     public void importFluids()
     {
-        ForgeDirection fromDir = host.getFacing().getOpposite();
+        ForgeDirection fromDir = ((IWalkingComponent) host).getFacing().getOpposite();
 
         int spaceRemaining = buffer.getCapacity() - buffer.getFluidAmount();
         if (spaceRemaining <= 0)
@@ -253,6 +240,7 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
                 if (drained != null)
                 {
                     buffer.fill(drained, true);
+                    host.markHostDirty();
                 }
             }
         }
@@ -268,16 +256,16 @@ public class FluidTransferNodeLogic extends BaseFluidTransferNodeLogic<IWalkingC
                     if (drained != null)
                     {
                         buffer.fill(drained, true);
+                        host.markHostDirty();
                     }
                 }
             }
         }
     }
 
-
     public void updateSourceTank()
     {
-        ForgeDirection facing = host.getFacing();
+        ForgeDirection facing = ((IWalkingComponent) host).getFacing();
         TileEntity neighbor = host.getWorld().getTileEntity(host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
         if (neighbor instanceof IFluidHandler tank)
         {

@@ -10,19 +10,22 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.fouristhenumber.utilitiesinexcess.transfer.gui.NodeGui;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.FluidWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
+import goodgenerator.blocks.myFluids.BaseFluid;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-public abstract class BaseFluidTransferNodeLogic<T extends IWalkingComponent> extends BaseNodeLogic<T>
+public abstract class BaseFluidTransferNodeLogic extends BaseNodeLogic
 {
     public static final int maxFluidAmount = 8000;
     public static final int DEFAULT_MAX_DRAIN_AMOUNT = 200;
     public int maxDrainAmount = DEFAULT_MAX_DRAIN_AMOUNT;
-    public FluidTank buffer = new FluidTank(maxFluidAmount);
+    protected FluidTank buffer = new FluidTank(maxFluidAmount);
 
-    public FluidWalker walker;
-    public BaseFluidTransferNodeLogic(T host)
+    protected FluidWalker walker;
+
+    public BaseFluidTransferNodeLogic(IWalkingComponent host)
     {
         super(host);
     }
@@ -30,6 +33,29 @@ public abstract class BaseFluidTransferNodeLogic<T extends IWalkingComponent> ex
     @Override
     public FluidStack getWalkingObject() {
         return buffer.getFluid();
+    }
+
+    @Override
+    public void invalidateInventory()
+    {
+        super.invalidateInventory();
+        buffer.setFluid(null);
+    }
+
+    @Override
+    public WalkerBase getWalker()
+    {
+        return walker;
+    }
+
+    @Override
+    public void initFromOtherLogic(NetworkLogic logic)
+    {
+        super.initFromOtherLogic(logic);
+        if (logic instanceof BaseFluidTransferNodeLogic fluidNodeLogic)
+        {
+            this.buffer = fluidNodeLogic.buffer;
+        }
     }
 
     @Override

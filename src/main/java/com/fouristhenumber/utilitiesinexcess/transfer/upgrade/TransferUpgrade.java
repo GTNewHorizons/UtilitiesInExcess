@@ -48,6 +48,11 @@ public enum TransferUpgrade {
         return VALUES[meta];
     }
 
+    public static boolean isWirelessUpgrade(ItemStack stack)
+    {
+        return stack.getItem() == ModItems.UPGRADE.get() && (stack.getItemDamage() == ENDER_TRANSMITTER.ordinal() || stack.getItemDamage() == ENDER_RECEIVER.ordinal());
+    }
+
     public void applyTo(IUpgradeable node, ItemStack stack)
     {
         switch (this) {

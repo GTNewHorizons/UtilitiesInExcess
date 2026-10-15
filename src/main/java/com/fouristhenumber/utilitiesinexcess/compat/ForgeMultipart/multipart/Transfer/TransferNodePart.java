@@ -27,7 +27,7 @@ public class TransferNodePart extends BaseNodePart
     }
 
     @Override
-    protected NetworkLogic<?> getLogic() {
+    protected NetworkLogic getLogic() {
         if (logic == null)
         {
             logic = BlockNodeBase.getType(meta) == 0 ? new ItemTransferNodeLogic(this) : new FluidTransferNodeLogic(this);

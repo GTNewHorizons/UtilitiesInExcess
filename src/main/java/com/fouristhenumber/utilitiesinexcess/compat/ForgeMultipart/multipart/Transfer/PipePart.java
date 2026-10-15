@@ -10,6 +10,7 @@ import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockPipe;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
@@ -44,9 +45,8 @@ public class PipePart extends LogicComponentBasePart
         super(meta);
     }
 
-
     @Override
-    protected NetworkLogic<?> getLogic() {
+    protected NetworkLogic getLogic() {
         if (logic == null)
         {
             logic = new FilterPipeLogic(this);

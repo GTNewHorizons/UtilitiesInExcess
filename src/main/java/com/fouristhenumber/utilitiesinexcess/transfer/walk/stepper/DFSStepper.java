@@ -1,31 +1,38 @@
 package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 
-import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferBase;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import net.minecraft.block.Block;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayDeque;
 import java.util.List;
 
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable.getConnectables;
+
 public class DFSStepper extends StepStrategy
 {
+    // Represents the location of frame on the stack. So basically a position in the DFS tree with direction in which
+    // the frame was entered.
     private static class Frame
     {
         final int x, y, z;
         int remainingDirs; // bitmask of directions not yet attempted from this node
+        final ForgeDirection entryDir; // Which direction was the frame originally entered from
 
-        Frame(int x, int y, int z, int remainingDirs)
+        Frame(int x, int y, int z, int remainingDirs, ForgeDirection entryDir)
         {
             this.x = x;
             this.y = y;
             this.z = z;
             this.remainingDirs = remainingDirs;
+            this.entryDir = entryDir;
         }
     }
 
@@ -53,7 +60,9 @@ public class DFSStepper extends StepStrategy
             ForgeDirection chosen = firstDirection(remaining);
             int leftover = remaining & ~(1 << chosen.ordinal());
 
-            stack.push(new Frame(walkerPos.x, walkerPos.y, walkerPos.z, leftover));
+            stack.push(new Frame(walkerPos.x, walkerPos.y, walkerPos.z, leftover, fromDirection));
+
+            fromDirection = chosen.getOpposite();
 
             int nx = walkerPos.x + chosen.offsetX;
             int ny = walkerPos.y + chosen.offsetY;
@@ -66,6 +75,7 @@ public class DFSStepper extends StepStrategy
         while (!stack.isEmpty())
         {
             Frame top = stack.peek();
+            fromDirection = top.entryDir;
 
             if (top.remainingDirs == 0)
             {
@@ -105,8 +115,8 @@ public class DFSStepper extends StepStrategy
             int ny = y + dir.offsetY;
             int nz = z + dir.offsetZ;
 
-            if (world.getBlock(nx, ny, nz) instanceof BlockTransferBase
-                && !visitedLocations.contains(CoordinatePacker.pack(nx, ny, nz)))
+            List<IConnectable> connectables = getConnectables(world, nx, ny, nz);
+            if (!connectables.isEmpty() && !visitedLocations.contains(CoordinatePacker.pack(nx, ny, nz)))
             {
                 result |= (1 << dir.ordinal());
             }
@@ -125,6 +135,7 @@ public class DFSStepper extends StepStrategy
         stack.clear();
         visitedLocations.clear();
         visitedLocations.add(CoordinatePacker.pack(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ()));
+        fromDirection = ForgeDirection.UNKNOWN;
         return walkerPos.set(walkingComponent.getX(), walkingComponent.getY(), walkingComponent.getZ());
     }
 }

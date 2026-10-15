@@ -39,7 +39,8 @@ public abstract class BaseInserter
             int slot = slotInfo.getInt(i);
             int amountInsertable = Math.min(slotInfo.getInt(i + 1), insertionStack.stackSize);
             insertionStack.stackSize -= amountInsertable;
-            if (inventory.getStackInSlot(slot) == null)
+            ItemStack existing = inventory.getStackInSlot(slot);
+            if (existing == null)
             {
                 ItemStack newStack = insertionStack.copy();
                 newStack.stackSize = amountInsertable;
@@ -47,7 +48,8 @@ public abstract class BaseInserter
             }
             else
             {
-                inventory.getStackInSlot(slot).stackSize += amountInsertable;
+                existing.stackSize += amountInsertable;
+                inventory.setInventorySlotContents(slot, existing);
             }
 
             if (insertionStack.stackSize <= 0)

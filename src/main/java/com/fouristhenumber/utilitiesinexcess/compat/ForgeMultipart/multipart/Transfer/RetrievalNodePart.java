@@ -29,7 +29,7 @@ public class RetrievalNodePart extends BaseNodePart
     }
 
     @Override
-    protected NetworkLogic<?> getLogic() {
+    protected NetworkLogic getLogic() {
         if (logic == null)
         {
             logic = BlockNodeBase.getType(meta) == 0 ? new ItemRetrievalNodeLogic(this) : new FluidRetrievalNodeLogic(this);

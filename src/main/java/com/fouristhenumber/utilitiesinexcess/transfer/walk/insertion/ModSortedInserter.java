@@ -41,18 +41,15 @@ public class ModSortedInserter extends BaseInserter
             else
             {
                 empty = false;
-                if (!modItemMatched && existing.getItem() == stack.getItem() &&
-                    existing.getItemDamage() == stack.getItemDamage())
+
+                if (!modItemMatched)
                 {
                     GameRegistry.UniqueIdentifier idA = GameRegistry.findUniqueIdentifierFor(stack.getItem());
                     GameRegistry.UniqueIdentifier idB = GameRegistry.findUniqueIdentifierFor(existing.getItem());
 
-                    if (idA != null && idB != null)
+                    if (idA != null && idB != null && idA.modId.equals(idB.modId))
                     {
-                        if (idA.modId.equals(idB.modId))
-                        {
-                            modItemMatched = true;
-                        }
+                        modItemMatched = true;
                     }
                 }
             }

@@ -19,42 +19,34 @@ public class ItemFilter
     // Heavily commented because this logic is fucking confusing for me.
     public boolean matches(ItemStack stack)
     {
-        // If there's no rules in the whole filter, just do nothing.
-        // Don't think this can happen, but guarding anyway.
         if (itemRules.isEmpty() && predicateRules.isEmpty())
         {
             return true;
         }
 
-        // If we have a rule, check it, otherwise if there's no rule for the item we return if no specific whitelist or predicate whitelist
-        // exists on the whole filter. This means we have blacklist only filter, and we can accept the item.
+        // Blacklists always take precedence.
         ItemRules rules = itemRules.get(stack.getItem());
-        if (rules == null)
-        {
-            // so here we couldn't find a rule for this block, now we check if there is actually no rules at all
-            if (itemRules.isEmpty())
-            {
-                // If there are no rules check the predicates of this filter
-                if (predicateRules.matchesBlackLists(stack))
-                {
-                    return false;
-                }
-                else if (predicateRules.matchesWhiteLists(stack))
-                {
-                    return true;
-                }
-            }
-            return !hasWhitelist;
-        }
 
-        // Check the blacklists
-        if (rules.matchesBlacklists(stack) || predicateRules.matchesBlackLists(stack))
+        if ((rules != null && rules.matchesBlacklists(stack))
+            || predicateRules.matchesBlackLists(stack))
         {
             return false;
         }
 
-        // Check the whitelists
-        return rules.matchesWhitelists(stack) && predicateRules.matchesWhiteLists(stack);
+        // An item without specific rules can still match predicates.
+        if (rules == null)
+        {
+            if (predicateRules.matchesWhiteLists(stack))
+            {
+                return true;
+            }
+
+            return !hasWhitelist;
+        }
+
+        // Both rule systems must permit the item.
+        return rules.matchesWhitelists(stack)
+            && predicateRules.matchesWhiteLists(stack);
     }
 
     public void addToRuleList(ItemStack stack, boolean inverted, MatchMode mode)

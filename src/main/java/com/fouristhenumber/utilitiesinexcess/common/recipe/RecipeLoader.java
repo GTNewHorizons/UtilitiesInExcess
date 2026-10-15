@@ -2,6 +2,7 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 import net.minecraft.block.Block;
@@ -45,7 +46,7 @@ public class RecipeLoader {
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
         loadColoredBlockRecipes();
-        loadTransferNodeRecipes();
+        loadTransferRecipes();
         loadFilterVariantRecipes();
 
         // Chandeliers
@@ -1728,11 +1729,17 @@ public class RecipeLoader {
                 ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 7),
                 'E',
                 ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        //
     }
 
-    private static void loadTransferNodeRecipes() {
-        loadTransferUpgradeRecipes();
-        loadTransferPipeRecipes();
+    private static void loadTransferRecipes() {
+        if (TransferConfig.INSTANCE.EnableTransferSystem)
+        {
+            loadTransferUpgradeRecipes();
+            loadTransferPipeRecipes();
+            loadTransferNodeRecipes();
+        }
     }
 
     private static void loadTransferUpgradeRecipes() {
@@ -1761,7 +1768,6 @@ public class RecipeLoader {
             new ItemStack(Items.stick),
             'S',
             new ItemStack(Items.string));
-        // todo filter setting stuff?
 
         // World Interaction Upgrade
         addShapedRecipe(
@@ -1793,7 +1799,25 @@ public class RecipeLoader {
 
         // Creative Upgrade has no recipe
 
-        // TODO Ender Transmitter/Receiver default recipes are in QED
+        EnderLocusRegistry.instance()
+            .addRecipe(TransferUpgrade.ENDER_TRANSMITTER.getStack().theStack,
+                new String[] { "PTP", "QPQ", "PTP"},
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'T',
+                new ItemStack(Blocks.redstone_torch),
+                'Q',
+                new ItemStack(Items.quartz));
+
+        EnderLocusRegistry.instance()
+            .addRecipe(TransferUpgrade.ENDER_RECEIVER.getStack().theStack,
+                new String[] { "PRP", "QPQ", "PQP"},
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'R',
+                new ItemStack(Items.redstone),
+                'Q',
+                new ItemStack(Items.quartz));
 
         // Depth-First Search Upgrade
         addShapedRecipe(
@@ -1848,7 +1872,195 @@ public class RecipeLoader {
 
     private static void loadTransferPipeRecipes()
     {
+        addShapedRecipe(PipeType.TRANSFER.getStack(8),
+            "SSS",
+            "GRG",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'G',
+            new ItemStack(Blocks.glass),
+            'R',
+            new ItemStack(Items.redstone));
 
+        addShapedRecipe(PipeType.CROSSOVER.getStack(1),
+            " T ",
+            "TRT",
+            " T ",
+            'T',
+            PipeType.TRANSFER.getStack(1),
+            'R',
+            new ItemStack(Items.redstone));
+
+        addShapedRecipe(PipeType.FILTER.getStack(5),
+            "DTD",
+            "TTT",
+            "DTD",
+            'T',
+            PipeType.TRANSFER.getStack(1),
+            'D',
+            new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE));
+
+        addShapedRecipe(PipeType.SORTING.getStack(2),
+            "SSS",
+            "GRG",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'G',
+            new ItemStack(Blocks.glass),
+            'R',
+            new ItemStack(Items.gold_ingot));
+
+        addShapedRecipe(PipeType.MODSORTING.getStack(1),
+            "RSR",
+            'R',
+            new ItemStack(Items.redstone),
+            'S',
+            PipeType.SORTING.getStack(1));
+
+        addShapedRecipe(PipeType.RATIONING.getStack(2),
+            "SSS",
+            "GLG",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'G',
+            new ItemStack(Blocks.glass),
+            'L',
+            new ItemStack(Items.dye, 1, 4));
+
+        addShapedRecipe(PipeType.HYPERRATIONING.getStack(2),
+            "BBB",
+            "GLG",
+            "BBB",
+            'B',
+            new ItemStack(Blocks.stone_button),
+            'G',
+            new ItemStack(Blocks.glass),
+            'L',
+            new ItemStack(Items.dye, 1, 4));
+
+        addShapedRecipe(PipeType.ENERGY.getStack(8),
+            "SSS",
+            "RRR",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'R',
+            new ItemStack(Items.redstone));
+
+        addShapedRecipe(PipeType.ENERGYEXTRACTION.getStack(1),
+            "G G",
+            "GEG",
+            " E ",
+            'G',
+            new ItemStack(Items.gold_ingot),
+            'E',
+            PipeType.ENERGY.getStack(1));
+    }
+
+    private static void loadTransferNodeRecipes()
+    {
+        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(1, 0),
+            " P ",
+            "RBR",
+            "SCS",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'R',
+            new ItemStack(Items.redstone),
+            'S',
+            new ItemStack(Blocks.stone),
+            'C',
+            new ItemStack(Blocks.chest),
+            'B',
+            new ItemStack(Blocks.redstone_block));
+
+        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(4, 0),
+            " P ",
+            "RER",
+            "SCS",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'R',
+            new ItemStack(Items.redstone),
+            'S',
+            new ItemStack(Blocks.stone),
+            'C',
+            new ItemStack(Blocks.chest),
+            'E',
+            new ItemStack(Items.ender_pearl));
+
+        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(1, 1),
+            " P ",
+            "LRL",
+            "IBI",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'L',
+            new ItemStack(Items.dye, 1, 4),
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'B',
+            new ItemStack(Items.bucket),
+            'R',
+            new ItemStack(Blocks.redstone_block));
+
+        addShapedRecipe(ModBlocks.TRANSFER_NODE.newItemStack(4, 1),
+            " P ",
+            "LEL",
+            "IBI",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'L',
+            new ItemStack(Items.dye, 1, 4),
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'B',
+            new ItemStack(Items.bucket),
+            'E',
+            new ItemStack(Items.ender_pearl));
+
+        // Transfer Node Energy
+        EnderLocusRegistry.instance()
+            .addRecipe(ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
+                new String[] { "GNG", "NBN", "GNG"},
+                'G',
+                new ItemStack(Items.gold_ingot),
+                'N',
+                ModBlocks.TRANSFER_NODE.newItemStack(1, 0),
+                'B',
+                TransferUpgrade.SEARCH_BREADTH.getStack());
+
+        // Transfer Node Hyper-Energy
+        EnderLocusRegistry.instance()
+            .addRecipe(ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 1),
+                new String[] { " N ", "NBN", " N "},
+                'N',
+                ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
+                'B',
+                ModItems.BEDROCKIUM_INGOT.newItemStack());
+
+        EnderLocusRegistry.instance()
+            .addRecipe(ModBlocks.RETRIEVAL_NODE.newItemStack(1, 0),
+                new String[] { " P ", "NEN", " P " },
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'N',
+                ModBlocks.TRANSFER_NODE.newItemStack(),
+                'E',
+                new ItemStack(Items.emerald));
+
+        EnderLocusRegistry.instance()
+            .addRecipe(ModBlocks.RETRIEVAL_NODE.newItemStack(1, 1),
+                new String[] { " P ", "NDN", " P " },
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'N',
+                ModBlocks.TRANSFER_NODE.newItemStack(1, 1),
+                'D',
+                new ItemStack(Items.diamond));
     }
 
     private static void loadFilterVariantRecipes()
@@ -1884,7 +2096,7 @@ public class RecipeLoader {
 
             GameRegistry.addRecipe(
                 new NBTPreservingRecipe(
-                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagInt((byte) ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    setNBTForItem(TransferUpgrade.ADV_FILTER.getStack(1), "Mode", new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
                     Arrays.asList(
                         TransferUpgrade.ADV_FILTER.getStack(1).theStack,
                         new ItemStack(Blocks.redstone_torch)

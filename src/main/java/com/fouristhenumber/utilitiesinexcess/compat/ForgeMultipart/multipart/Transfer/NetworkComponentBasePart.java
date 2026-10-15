@@ -5,6 +5,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.JNormalOcclusion;
 import codechicken.multipart.JPartialOcclusion;
 import codechicken.multipart.JsonModeledPart;
+import codechicken.multipart.NormalOcclusionTest;
 import codechicken.multipart.TMultiPart;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
@@ -156,7 +157,7 @@ public abstract class NetworkComponentBasePart extends UiEMultipart implements I
             return false;
         }
 
-        return super.occlusionTest(part);
+        return NormalOcclusionTest.apply(this, part) && super.occlusionTest(part);
     }
 
     public ItemStack pickItem(MovingObjectPosition hit)

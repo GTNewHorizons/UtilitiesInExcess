@@ -22,6 +22,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.network.client.PacketSetFrequency;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventory;
 import com.fouristhenumber.utilitiesinexcess.utils.ItemStackInventoryContainer;
@@ -302,28 +304,14 @@ public class ItemUpgrade extends Item implements IGuiHolder<PlayerInventoryGuiDa
             buttonWidget
                 .overlay(GuiTextures.CHECKMARK)
                 .onMousePressed(mouseButton -> {
-                    buttonWidget.playClickSound();
-                    if (mouseButton == 0 || mouseButton == 1)
+                    if (mouseButton != 0 && mouseButton != 1)
                     {
-                        ItemStack itemToWriteTo = data.getPlayer().getHeldItem();
-                        {
-                            if (itemToWriteTo != null)
-                            {
-                                if (itemToWriteTo.hasTagCompound())
-                                {
-                                    itemToWriteTo.getTagCompound().setString("Frequency", frequencyBox.getText());
-                                }
-                                else
-                                {
-                                    NBTTagCompound newCompound = new NBTTagCompound();
-                                    newCompound.setString("Frequency", frequencyBox.getText());
-                                    itemToWriteTo.setTagCompound(newCompound);
-                                }
-                            }
-                        }
-                        return true;
+                        return false;
                     }
-                    return false;
+
+                    buttonWidget.playClickSound();
+                    PacketHandler.INSTANCE.sendToServer(new PacketSetFrequency(frequencyBox.getText()));
+                    return true;
                 }));
         flow.childPadding(2);
         panel.child(flow);

@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import com.fouristhenumber.utilitiesinexcess.transfer.gui.NodeGui;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.ItemWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,15 +25,38 @@ import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.Base
 import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;
 import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.getInventory;
 
-public abstract class BaseItemTransferNodeLogic<T extends IWalkingComponent> extends BaseNodeLogic<T> implements IInventory
+public abstract class BaseItemTransferNodeLogic extends BaseNodeLogic implements IInventory
 {
     protected ItemStack buffer;
     protected boolean isStackUpgrade = false;
     public ItemWalker walker;
     protected IInventory connectedInventory;
 
-    public BaseItemTransferNodeLogic(T host) {
+    public BaseItemTransferNodeLogic(IWalkingComponent host) {
         super(host);
+    }
+
+    @Override
+    public void invalidateInventory()
+    {
+        super.invalidateInventory();
+        buffer = null;
+    }
+
+    @Override
+    public WalkerBase getWalker()
+    {
+        return walker;
+    }
+
+    @Override
+    public void initFromOtherLogic(NetworkLogic logic)
+    {
+        super.initFromOtherLogic(logic);
+        if (logic instanceof BaseItemTransferNodeLogic itemNodeLogic)
+        {
+            this.buffer = itemNodeLogic.buffer;
+        }
     }
 
     protected int addToOwnInventory(ItemStack sourceStack)
@@ -74,6 +98,13 @@ public abstract class BaseItemTransferNodeLogic<T extends IWalkingComponent> ext
         }
 
         return 0;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.buffer = stack;
+        this.markDirty();
     }
 
     @Override
@@ -149,7 +180,7 @@ public abstract class BaseItemTransferNodeLogic<T extends IWalkingComponent> ext
 
     public void updateSourceInventory()
     {
-        ForgeDirection facing = host.getFacing();
+        ForgeDirection facing = ((IWalkingComponent) host).getFacing();
         connectedInventory = getInventory(host.getWorld(), host.getX() + facing.offsetX, host.getY() + facing.offsetY, host.getZ() + facing.offsetZ);
     }
 }

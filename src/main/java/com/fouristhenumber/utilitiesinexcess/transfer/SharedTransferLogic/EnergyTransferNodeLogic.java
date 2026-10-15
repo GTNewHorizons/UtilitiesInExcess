@@ -20,30 +20,38 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.IWirelessNode;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
 import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.EnergyWalker;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.WalkerBase;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
+
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> implements IEnergyHandler
+import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable.getConnectables;
+
+public class EnergyTransferNodeLogic extends BaseNodeLogic implements IEnergyHandler
 {
     public EnergyWalker walker;
 
@@ -111,7 +119,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
             importEnergy();
         }
 
-        if (!sinks.isEmpty())
+        if (!sinks.isEmpty() || !pushingFrequencies.isEmpty())
         {
             exportEnergy();
         }
@@ -185,6 +193,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
         }
 
         int remaining = Math.min(MAX_CAPACITY - containedEnergy, MAX_TRANSFER);
+        boolean changed = false;
 
         LongArrayList active = new LongArrayList(sources.keySet());
 
@@ -208,7 +217,6 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
                 }
 
                 ForgeDirection dir = ForgeDirection.getOrientation(getSide(sources.get(coord)));
-
                 int chunk = Math.max(1, remaining / active.size());
 
                 int extracted = provider.extractEnergy(dir, chunk, false);
@@ -217,6 +225,7 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
                 {
                     containedEnergy += extracted;
                     remaining -= extracted;
+                    changed = true;
                 }
                 else
                 {
@@ -225,9 +234,18 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
 
                 if (remaining <= 0 || containedEnergy >= MAX_CAPACITY)
                 {
+                    if (changed)
+                    {
+                        host.markHostDirty();
+                    }
                     return;
                 }
             }
+        }
+
+        if (changed)
+        {
+            host.markHostDirty();
         }
     }
 
@@ -240,22 +258,17 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
         }
 
         int remaining = Math.min(containedEnergy, MAX_TRANSFER);
+        boolean changed = false;
 
         LongArrayList active = new LongArrayList(sinks.keySet());
 
-        // Really irritating but this needs to be roundrobin or it doesn't work for
-        // machines that don't accept the max amount of energy. Fucking annoying to figure out.
         while (!active.isEmpty() && remaining > 0)
         {
             for (int i = 0; i < active.size(); i++)
             {
                 long coord = active.getLong(i);
 
-                TileEntity te = host.getWorld().getTileEntity(
-                    CoordinatePacker.unpackX(coord),
-                    CoordinatePacker.unpackY(coord),
-                    CoordinatePacker.unpackZ(coord)
-                );
+                TileEntity te = host.getWorld().getTileEntity(CoordinatePacker.unpackX(coord), CoordinatePacker.unpackY(coord), CoordinatePacker.unpackZ(coord));
 
                 if (!(te instanceof IEnergyReceiver receiver))
                 {
@@ -265,17 +278,17 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
                 }
 
                 ForgeDirection dir = ForgeDirection.getOrientation(getSide(sinks.get(coord)));
-
                 int chunk = Math.max(1, remaining / active.size());
-
                 int accepted = receiver.receiveEnergy(dir, chunk, false);
 
                 if (accepted > 0)
                 {
                     remaining -= accepted;
+
                     if (!isCreative)
                     {
                         containedEnergy -= accepted;
+                        changed = true;
                     }
                 }
                 else
@@ -285,31 +298,28 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
 
                 if (remaining <= 0)
                 {
+                    if (changed)
+                    {
+                        host.markHostDirty();
+                    }
                     return;
                 }
             }
         }
 
-        if (remaining <= 0)
-        {
-            return;
-        }
-
-
         for (String frequency : pushingFrequencies.keySet())
         {
             Int2ObjectOpenHashMap<LongOpenHashSet> receiversByDim = WirelessNetworkManager.getReceiversByFrequency(frequency);
+
             if (receiversByDim == null || receiversByDim.isEmpty())
             {
                 continue;
             }
 
             int power = pushingFrequencies.getInt(frequency);
-
             for (int dim : receiversByDim.keySet())
             {
                 LongOpenHashSet receivers = receiversByDim.get(dim);
-
                 for (long coord : receivers)
                 {
                     World world = DimensionManager.getWorld(dim);
@@ -321,32 +331,32 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
                     int x = CoordinatePacker.unpackX(coord);
                     int y = CoordinatePacker.unpackY(coord);
                     int z = CoordinatePacker.unpackZ(coord);
-                    TileEntity te = world.getTileEntity(x, y, z);
+                    List<IConnectable> connectables = getConnectables(world, x, y, z);
 
-                    if (te instanceof TileEntityEnergyTransferNode receivingNode)
+                    // again here we only have to check first becuase the energy nodes are the only possible
+                    // connectable in a block if there is on.
+                    if (connectables.getFirst() instanceof IWirelessNode receivingNode)
                     {
                         int maxSend = Math.min(remaining, power * WIRELESS_TRANSFER_SPEED);
-                        int lossySend = (int)(maxSend * 0.9);
-                        int accepted = receivingNode.receiveEnergy(
-                            ForgeDirection.UNKNOWN,
-                            lossySend,
-                            true
-                        );
-
-                        receivingNode.receiveEnergy(
-                            ForgeDirection.UNKNOWN,
-                            accepted,
-                            false
-                        );
-
-                        int extracted = (int)Math.ceil(accepted / 0.9);
-                        if (!isCreative)
+                        int lossySend = (int) (maxSend * 0.9);
+                        int accepted = receivingNode.receiveEnergy(ForgeDirection.UNKNOWN, lossySend, true);
+                        if (accepted > 0)
                         {
-                            containedEnergy -= accepted;
+                            receivingNode.receiveEnergy(ForgeDirection.UNKNOWN, accepted, false);
+                            int extracted = (int) Math.ceil(accepted / 0.9);
+                            if (!isCreative)
+                            {
+                                containedEnergy -= extracted;
+                                changed = true;
+                            }
+                            remaining -= extracted;
                         }
-                        remaining -= extracted;
                         if (remaining <= 0)
                         {
+                            if (changed)
+                            {
+                                host.markHostDirty();
+                            }
                             return;
                         }
                     }
@@ -357,15 +367,21 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
                 }
             }
         }
+
+        if (changed)
+        {
+            host.markHostDirty();
+        }
     }
 
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
     {
         int acceptedAmount = Math.min(maxReceive, MAX_CAPACITY - containedEnergy);
-        if (!simulate)
+        if (!simulate && acceptedAmount > 0)
         {
             containedEnergy += acceptedAmount;
+            host.markHostDirty();
         }
         return acceptedAmount;
     }
@@ -374,9 +390,10 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
     {
         int extractedAmount = Math.min(maxExtract, containedEnergy);
-        if (!simulate)
+        if (!simulate && extractedAmount > 0)
         {
             containedEnergy -= extractedAmount;
+            host.markHostDirty();
         }
         return extractedAmount;
     }
@@ -399,6 +416,23 @@ public class EnergyTransferNodeLogic extends BaseNodeLogic<IWalkingComponent> im
     @Override
     public Integer getWalkingObject() {
         return containedEnergy;
+    }
+
+    @Override
+    public WalkerBase<?> getWalker() {
+        return walker;
+    }
+
+    @Override
+    public void initFromOtherLogic(NetworkLogic logic)
+    {
+        super.initFromOtherLogic(logic);
+        if (logic instanceof EnergyTransferNodeLogic energyNodeLogic)
+        {
+            this.containedEnergy = energyNodeLogic.containedEnergy;
+            this.sources = energyNodeLogic.sources;
+            this.sinks = energyNodeLogic.sinks;
+        }
     }
 
     // ======================================= Upgrades =======================================

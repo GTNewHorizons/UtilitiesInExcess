@@ -7,6 +7,8 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
+import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiData;
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import cpw.mods.fml.relauncher.Side;
@@ -15,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -22,13 +25,18 @@ import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropSta
 
 public abstract class LogicComponentBasePart extends NetworkComponentBasePart implements IGuiHolder<PartGuiData>
 {
-    protected NetworkLogic<?> logic;
+    protected NetworkLogic logic;
 
     protected LogicComponentBasePart(int meta) {
         super(meta);
     }
 
-    protected abstract NetworkLogic<?> getLogic();
+    protected abstract NetworkLogic getLogic();
+
+    public void initFromTE(TileEntityNetworkComponentBase base)
+    {
+        getLogic().initFromOtherLogic(base.getLogic());
+    }
 
     @Override
     public void save(NBTTagCompound tag) {
@@ -70,9 +78,18 @@ public abstract class LogicComponentBasePart extends NetworkComponentBasePart im
         this.tile().remPart(this);
     }
 
-
     private void dropSelf(World world, int x, int y, int z)
     {
         dropStack(world, x, y, z, new ItemStack(Item.getItemFromBlock(getBlock()), 1, BlockNodeBase.getType(meta)));
+    }
+
+    @Override
+    public void invalidateConvertedTile()
+    {
+        TileEntity teToInvalidate = world().getTileEntity(x(), y(), z());
+        if (teToInvalidate instanceof TileEntityTransferNodeBase baseNodeTe)
+        {
+            baseNodeTe.invalidateInventory();
+        }
     }
 }
