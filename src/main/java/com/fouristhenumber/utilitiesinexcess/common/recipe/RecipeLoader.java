@@ -1473,6 +1473,10 @@ public class RecipeLoader {
             's',
             ModItems.BUILDERS_WAND);
 
+        // Scribe
+        if (RecipeConfig.enableScribeRecipe)
+            addShapedRecipe(ModItems.SCRIBE, "np", "np", "np", 'n', Items.gold_nugget, 'p', Items.paper);
+
         // Inverted Ingot -> Block
         if (RecipeConfig.enableInvertedBlockRecipe) addShapedRecipe(
             ModBlocks.INVERTED_BLOCK,

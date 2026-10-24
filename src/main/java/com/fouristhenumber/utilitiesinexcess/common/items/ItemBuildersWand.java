@@ -1,12 +1,8 @@
 package com.fouristhenumber.utilitiesinexcess.common.items;
 
-import static com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils.damageBackhand;
-
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,14 +15,16 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.common.renderers.WireframeRenderer;
-import com.fouristhenumber.utilitiesinexcess.config.items.BuildersWandsConfig;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersSelection;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils;
-import com.fouristhenumber.utilitiesinexcess.utils.BuildersWandUtils.WandAxisMode;
+import com.fouristhenumber.utilitiesinexcess.utils.ChickenLibRayTracer;
+import com.fouristhenumber.utilitiesinexcess.utils.InventoryBudget;
+import com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWCellHandlers;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWContext;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWMode;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWRegion;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWRegion.WandAxisLock;
 import com.gtnewhorizon.gtnhlib.api.ITranslucentItem;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
@@ -35,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBuildersWand extends Item implements ITranslucentItem {
 
-    public int buildLimit;
+    private final int buildLimit;
 
     public ItemBuildersWand(int buildLimit) {
         super();
@@ -56,15 +54,16 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
     @SideOnly(Side.CLIENT)
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-        if (!world.isRemote || !(entity instanceof EntityPlayer player)) {
+        if (!world.isRemote || !(entity instanceof EntityPlayer player)) return;
+
+        if (!isSelected) return;
+
+        // adventure mode
+        if (!player.capabilities.allowEdit) {
+            WireframeRenderer.clearCandidatePositions();
             return;
         }
 
-        if (!isSelected) {
-            return;
-        }
-
-        // I'm pretty sure this will never determine whether we render or not but I'm not certain
         MovingObjectPosition movingObjectPosition = Minecraft.getMinecraft().objectMouseOver;
 
         // Check if player is looking at a block.
@@ -74,146 +73,82 @@ public class ItemBuildersWand extends Item implements ITranslucentItem {
             return;
         }
 
-        // 1. Target block location
-        BlockPos target = new BlockPos(
-            movingObjectPosition.blockX,
-            movingObjectPosition.blockY,
-            movingObjectPosition.blockZ);
+        ForgeDirection forgeSide = ForgeDirection.getOrientation(movingObjectPosition.sideHit);
 
-        // 2. Side
-        int side = movingObjectPosition.sideHit;
-        ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
-        if (forgeSide == ForgeDirection.UNKNOWN) {
-            UtilitiesInExcess.LOG
-                .warn("Builder's wand onUpdate was called with invalid facing direction: {}", forgeSide);
-            return;
-        }
-
-        WandAxisMode axisMode;
-        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) {
-            axisMode = WandAxisMode.HORIZONTAL;
-        } else if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) {
-            axisMode = WandAxisMode.VERTICAL;
-        } else {
-            axisMode = WandAxisMode.FREE;
-        }
-
-        // 4. Target block to place
-        BuildersSelection selection = new BuildersSelection(player, world, movingObjectPosition);
-        List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
-
-        // 3. Total amount to place
-        int placeCount = selection.maxPlaceCount(player, buildLimit);
-
-        Set<BlockPos> blocksToPlace = BuildersWandUtils.findAdjacentBlocks(
-            world,
-            itemStackToPlace,
-            placeCount,
-            forgeSide,
-            target,
+        WandAxisLock axisLock = axisLock(player);
+        Set<BlockPos> blocksToPlace = BWRegion.findAdjacentBlocksToBuildOn(
+            newContext(world, player, movingObjectPosition),
+            buildLimit,
             movingObjectPosition,
-            player,
-            selection,
-            axisMode);
+            axisLock);
+
         WireframeRenderer.clearCandidatePositions();
-        for (BlockPos pos : blocksToPlace) {
+        for (BlockPos pos : blocksToPlace)
             WireframeRenderer.addCandidatePosition(pos.offset(forgeSide.offsetX, forgeSide.offsetY, forgeSide.offsetZ));
-        }
-    }
-
-    private void placeBlock(World world, EntityPlayer player, @NotNull ItemStack itemStack, BlockPos pos, int side,
-        float hitX, float hitY, float hitZ, ForgeDirection forgeSide) {
-
-        // This block is here because some mods want to use TEs to
-        ItemStack itemCopy = itemStack.copy();
-        itemCopy.stackSize = 1;
-        Block comparisonBlock = world.getBlock(pos.x, pos.y, pos.z);
-        int comparisonMeta = world.getBlockMetadata(pos.x, pos.y, pos.z);
-        ItemStack comparisonItemStack = new ItemStack(comparisonBlock, 1, comparisonMeta);
-
-        boolean useCompatPlacement = !ItemStack.areItemStacksEqual(itemCopy, comparisonItemStack);
-        if (useCompatPlacement) {
-            itemStack.getItem()
-                .onItemUse(itemCopy, player, world, pos.x, pos.y, pos.z, side, hitX, hitY, hitZ);
-        } else {
-            Block block = Block.getBlockFromItem(itemCopy.getItem());
-            world.setBlock(
-                pos.x + forgeSide.offsetX,
-                pos.y + forgeSide.offsetY,
-                pos.z + forgeSide.offsetZ,
-                block,
-                comparisonMeta,
-                3);
-
-            world.playSoundEffect(
-                pos.x + forgeSide.offsetX,
-                pos.y + forgeSide.offsetY,
-                pos.z + forgeSide.offsetZ,
-                block.stepSound.func_150496_b(),
-                (block.stepSound.getVolume() + 1.0F) / 2.0F,
-                block.stepSound.getPitch() * 0.8F);
-        }
     }
 
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         if (world.isRemote) return true;
+        if (!player.capabilities.allowEdit) return false;
 
-        // TODO: Prevent player from placing blocks into themself / other entities?
+        MovingObjectPosition mop = new MovingObjectPosition(
+            x,
+            y,
+            z,
+            side,
+            Vec3.createVectorHelper((double) x + hitX, (double) y + hitY, (double) z + hitZ));
+
+        // Sanity check
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         if (forgeSide == ForgeDirection.UNKNOWN) {
-            UtilitiesInExcess.LOG
-                .warn("Builder's wand onItemUse was called with invalid facing direction: {}", forgeSide);
-            return false;
+            UtilitiesInExcess.LOG.warn("Builder's wand onItemUse was called with invalid facing direction: {}", side);
+            return true;
         }
 
-        BlockPos target = new BlockPos(x, y, z);
-        MovingObjectPosition mop = new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(hitX, hitY, hitZ));
-        BuildersSelection selection = new BuildersSelection(player, world, mop);
+        WandAxisLock axisLock = axisLock(player);
 
-        List<ItemStack> itemStackToPlace = selection.blockToPlace(player);
+        // the scan pass spends the budget working out what fits, so placement starts from a fresh one
+        BWContext scanCtx = newContext(world, player, mop);
+        Set<BlockPos> blocksToPlace = BWRegion.findAdjacentBlocksToBuildOn(scanCtx, buildLimit, mop, axisLock);
 
-        WandAxisMode axisMode;
-        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) {
-            axisMode = WandAxisMode.HORIZONTAL;
-        } else if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) {
-            axisMode = WandAxisMode.VERTICAL;
-        } else {
-            axisMode = WandAxisMode.FREE;
-        }
-
-        int placeCount = selection.maxPlaceCount(player, buildLimit);
-
-        Set<BlockPos> blocksToPlace = BuildersWandUtils.findAdjacentBlocks(
-            world,
-            itemStackToPlace,
-            placeCount,
-            forgeSide,
-            target,
-            mop,
-            player,
-            selection,
-            axisMode);
-
-        ItemStack nowPlacing;
-        for (BlockPos pos : blocksToPlace) {
-            List<ItemStack> candidates = selection.blockToPlace(player);
-            if (candidates.size() == 1) {
-                nowPlacing = candidates.get(0);
-            } else {
-                nowPlacing = candidates.get(
-                    ThreadLocalRandom.current()
-                        .nextInt(candidates.size()));
+        // every cell is protection-checked on its own, Forge recording the whole use at once would muddle that
+        boolean capturing = world.captureBlockSnapshots;
+        world.captureBlockSnapshots = false;
+        try {
+            BWContext buildCtx = newContext(world, player, mop);
+            for (BlockPos srcPos : blocksToPlace) {
+                MovingObjectPositionUtil.TranslateMovingObjectPositionToLocation(mop, srcPos);
+                BWCellHandlers.build(buildCtx, mop, true);
             }
-
-            if (player.capabilities.isCreativeMode || (BuildersWandUtils.decreaseFromInventory(player, nowPlacing)
-                && damageBackhand(BuildersWandsConfig.INSTANCE.damageTrowelWithBuildersWand, player))) {
-                placeBlock(world, player, nowPlacing, pos, side, hitX, hitY, hitZ, forgeSide);
-            }
+        } finally {
+            world.captureBlockSnapshots = capturing;
         }
         player.inventoryContainer.detectAndSendChanges();
         return true;
+    }
+
+    /** Mode, budget and picker for one pass over the fill, seeded from the clicked cell. */
+    private static BWContext newContext(World world, EntityPlayer player, MovingObjectPosition mop) {
+        var budget = new InventoryBudget(player.inventory, player.capabilities.isCreativeMode);
+
+        // null when the ray misses the clicked block, then handlers just get the plain position
+        MovingObjectPosition tracedMop = ChickenLibRayTracer
+            .retraceBlock(world, player, mop.blockX, mop.blockY, mop.blockZ);
+        return new BWContext(
+            world,
+            tracedMop != null ? tracedMop : MovingObjectPositionUtil.copy(mop),
+            player,
+            BWMode.of(player),
+            budget);
+    }
+
+    private static WandAxisLock axisLock(EntityPlayer player) {
+        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_H.isKeyDown(player)) return WandAxisLock.HORIZONTAL;
+        if (UtilitiesInExcess.proxy.BUILDERS_KEYBIND_V.isKeyDown(player)) return WandAxisLock.VERTICAL;
+
+        return WandAxisLock.FREE;
     }
 
     @Override

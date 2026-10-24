@@ -19,8 +19,10 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.MultipartBWCellHandler;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.architecturecraft.ArchitectureCraftBWCellHandler;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.PosteaTransforms;
@@ -31,6 +33,7 @@ import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
+import com.fouristhenumber.utilitiesinexcess.utils.bw.BWCellHandlers;
 import com.gtnewhorizon.gtnhlib.api.gui.WorldConversionWarningManager;
 import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
@@ -99,6 +102,11 @@ public class CommonProxy {
             FMPItems.init();
             new Content().init();
             FMPCompat.init();
+            BWCellHandlers.register(new MultipartBWCellHandler());
+        }
+
+        if (Mods.ArchitectureCraft.isLoaded()) {
+            BWCellHandlers.register(new ArchitectureCraftBWCellHandler());
         }
 
         if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
