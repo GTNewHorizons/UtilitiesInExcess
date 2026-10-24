@@ -34,12 +34,13 @@ public final class BWContext {
         this.budget = budget;
         this.originalMop = originalMop;
 
-        // the clicked cell is priced by its own handler, like every other cell, which needs this context to exist.
-        // everything a handler reads while claiming a cell is assigned above.
+        // Use appropriate CellHandler to determine which block was clicked
+        // (instead of vanilla getPickBlock, which might be faulty)
+        // the context is still half-built here, but pick block at should not require clickedBlockStack nor picker
         MovingObjectPosition clicked = MovingObjectPositionUtil.copy(originalMop);
         this.clickedBlockStack = BWCellHandlers.find(this, clicked.blockX, clicked.blockY, clicked.blockZ)
             .pickBlockAt(this, clicked);
-        this.picker = BWBlockPicker.create(world, player, mode, clickedBlockStack, budget);
+        this.picker = new BWBlockPicker(world, player, mode, clickedBlockStack, budget);
     }
 
     public boolean isCreative() {
@@ -48,10 +49,6 @@ public final class BWContext {
 
     public boolean isExtrudeMode() {
         return mode == BWMode.EXTRUDE;
-    }
-
-    public boolean isTrowelMode() {
-        return mode == BWMode.TROWEL;
     }
 
     /** Whether the current mode spreads over any surface, no matter what is underneath */

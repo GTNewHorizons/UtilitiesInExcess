@@ -1,5 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.utils.bw;
 
+import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.blockPos;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.hitX;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.hitY;
 import static com.fouristhenumber.utilitiesinexcess.utils.MovingObjectPositionUtil.hitZ;
@@ -12,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -47,9 +47,6 @@ import com.gtnewhorizon.gtnhlib.util.ItemUtil;
  * behind. Override {@link #build}, call {@code super.build} first, then copy the tile entity state from the source
  * cell onto the new block, only when {@code place} is true.
  * </ul>
- * <p>
- * Is your cell not one block with one item at all, the way a bag of multiparts is not? Then implement
- * {@link IBWCellHandler} directly instead.
  */
 public class DefaultBWCellHandler implements IBWCellHandler {
 
@@ -80,21 +77,20 @@ public class DefaultBWCellHandler implements IBWCellHandler {
         itemCopy.stackSize = 1;
 
         BlockPos to = targetPos(mop);
-        ForgeDirection side = ForgeDirection.getOrientation(mop.sideHit);
-        // extrude mode aims at the empty cell, clicking the source would merge slabs into a double slab
-        boolean atTarget = ctx.isExtrudeMode();
+        // extrude mode aims at the empty cell, clicking the source would merge slabs into a double slab.
+        BlockPos placeAt = ctx.isExtrudeMode() ? to : blockPos(mop);
 
         // uses ItemBlock to place the block with all the checks, sets stackSize to 0 on success
         itemCopy.tryPlaceItemIntoWorld(
             ctx.player,
             world,
-            atTarget ? to.x : mop.blockX,
-            atTarget ? to.y : mop.blockY,
-            atTarget ? to.z : mop.blockZ,
+            placeAt.x,
+            placeAt.y,
+            placeAt.z,
             mop.sideHit,
-            atTarget ? hitX(mop) - side.offsetX : hitX(mop),
-            atTarget ? hitY(mop) - side.offsetY : hitY(mop),
-            atTarget ? hitZ(mop) - side.offsetZ : hitZ(mop));
+            hitX(mop),
+            hitY(mop),
+            hitZ(mop));
         if (itemCopy.stackSize != 0) return false;
 
         ctx.spend(toPlace);
