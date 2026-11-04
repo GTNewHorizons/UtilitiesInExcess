@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.*;
+import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.FluidTargetResolver;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 
