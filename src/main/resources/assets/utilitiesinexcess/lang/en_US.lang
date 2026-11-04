@@ -12,6 +12,7 @@ uie.common.time.seconds_abbreviation=s
 uie.nei.title.plugin=UtilitiesInExcess NEI Plugin
 uie.nei.title.ender_locus=Ender Locus Recipes
 uie.nei.title.pseudo_reversion=Pseudo-Reversion Ritual
+uie.nei.title.shaped_peaceful_crafting=Shaped Peaceful Crafting
 
 ### NEI handler text
 uie.nei.text.pseudo_reversion.label_north=North (Progeny of Fire)

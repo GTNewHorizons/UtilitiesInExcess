@@ -18,8 +18,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -37,7 +40,12 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
+import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.nei.EnderLocusRecipeHandler;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+import codechicken.nei.NEIClientConfig;
+import codechicken.nei.recipe.GuiCraftingRecipe;
 
 public class TileEntityEnderLocus extends TileEntity implements IInventory, IGuiHolder<PosGuiData> {
 
@@ -166,7 +174,7 @@ public class TileEntityEnderLocus extends TileEntity implements IInventory, IGui
 
         // Progress bar
         panel.child(
-            new ProgressWidget().texture(PROGRESS_ARROW, 20)
+            new ProgressWidgetNEI().texture(PROGRESS_ARROW, 20)
                 .value(new DoubleSyncValue(() -> (double) craftingSyncer.getIntValue() / recipeCost))
                 .marginTop(33)
                 .marginLeft(97));
@@ -301,6 +309,35 @@ public class TileEntityEnderLocus extends TileEntity implements IInventory, IGui
 
         public boolean canInteractWith(EntityPlayer var1) {
             return false;
+        }
+    }
+
+    public static class ProgressWidgetNEI extends ProgressWidget implements Interactable {
+
+        public ProgressWidgetNEI() {
+            if (Mods.NEI.isLoaded()) {
+                this.addTooltipLine(StatCollector.translateToLocal("nei.recipe.tooltip"));
+            }
+        }
+
+        @Override
+        public @NotNull Result onMouseTapped(int mouseButton) {
+            if (Mods.NEI.isLoaded() && mouseButton == 0) {
+                GuiCraftingRecipe.openRecipeGui(EnderLocusRecipeHandler.OVERLAY_ID);
+                return Result.SUCCESS;
+            }
+
+            return Result.IGNORE;
+        }
+
+        @Override
+        public @NotNull Result onKeyPressed(char typedChar, int keyCode) {
+            if (Mods.NEI.isLoaded() && NEIClientConfig.getKeyBinding("gui.recipe") == keyCode) {
+                GuiCraftingRecipe.openRecipeGui(EnderLocusRecipeHandler.OVERLAY_ID);
+                return Result.SUCCESS;
+            }
+
+            return Result.IGNORE;
         }
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -43,6 +44,7 @@ public class RecipeLoader {
         loadEnderLocusRecipes();
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
+        loadPeacefulRecipes();
         loadColoredBlockRecipes();
         loadTransferRecipes();
         loadFilterVariantRecipes();
@@ -2122,6 +2124,35 @@ public class RecipeLoader {
         }
     }
 
+    private static void loadPeacefulRecipes() {
+        final ItemStack witherSkull = new ItemStack(Items.skull, 1, 1);
+        final ItemStack soulSand = new ItemStack(Blocks.soul_sand);
+
+        if (RecipeConfig.enablePeacefulNetherStarRecipe) {
+            GameRegistry.addRecipe(
+                new PeacefulRecipe(
+                    new ShapedRecipes(
+                        3,
+                        3,
+                        new ItemStack[] { witherSkull, witherSkull, witherSkull, soulSand, soulSand, soulSand,
+                            new ItemStack(Items.diamond_sword), soulSand, new ItemStack(Items.bow) },
+                        new ItemStack(Items.nether_star))));
+        }
+
+        if (RecipeConfig.enablePeacefulBasicWateringCanRecipe && ModItems.WATERING_CAN_BASIC.isEnabled()) {
+            final ItemStack stone = new ItemStack(Blocks.stone);
+
+            GameRegistry.addRecipe(
+                new PeacefulRecipe(
+                    new ShapedRecipes(
+                        3,
+                        3,
+                        new ItemStack[] { stone, null, null, stone, new ItemStack(Items.bowl), stone, null, stone,
+                            null },
+                        ModItems.WATERING_CAN_BASIC.newItemStack())));
+        }
+    }
+
     private static boolean addShapedRecipe(Object outputObject, Object... params) {
         return DisableableItemStack.addShapedRecipe(outputObject, params);
     }
@@ -2149,7 +2180,7 @@ public class RecipeLoader {
                 "###",
                 '#',
                 new ItemStack(block.getBase(), 9));
-            addShapelessRecipe(new DisableableItemStack(modBlock, 9), new DisableableItemStack(modBlock, 1));
+            addShapelessRecipe(new ItemStack(block.getBase(), 9), new DisableableItemStack(modBlock, 1));
             for (int i = 0; i < 7; i++) {
                 addShapedRecipe(
                     new DisableableItemStack(modBlock, 1, i + 1),

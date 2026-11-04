@@ -14,9 +14,11 @@ import codechicken.nei.recipe.ShapedRecipeHandler;
 
 public class EnderLocusRecipeHandler extends ShapedRecipeHandler {
 
+    public static final String OVERLAY_ID = "ender_locus_recipes";
+
     @Override
     public String getOverlayIdentifier() {
-        return "ender_locus_recipes";
+        return OVERLAY_ID;
     }
 
     @Override
