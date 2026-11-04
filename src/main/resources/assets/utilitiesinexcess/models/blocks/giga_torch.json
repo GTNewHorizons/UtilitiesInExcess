@@ -2,8 +2,8 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "utilitiesinexcess:models/giga_torch",
-    "particle": "utilitiesinexcess:models/giga_torch"
+		"0": "utilitiesinexcess:blocks/models/giga_torch",
+    "particle": "utilitiesinexcess:blocks/models/giga_torch"
 	},
 	"elements": [
 		{
