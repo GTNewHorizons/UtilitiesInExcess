@@ -4,13 +4,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UEMultipartItem;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEMultipartMaterialItem;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum FMPItems {
 
-    UE_MULTI_PART(true, new UEMultipartItem(), "multi_part_item");
+    UE_MULTI_PART(true, new UiEMultipartMaterialItem(), "multi_part_item");
 
     public static final FMPItems[] VALUES = values();
 

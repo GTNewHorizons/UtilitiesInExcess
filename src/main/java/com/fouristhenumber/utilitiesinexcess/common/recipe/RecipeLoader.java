@@ -2,12 +2,18 @@ package com.fouristhenumber.utilitiesinexcess.common.recipe;
 
 import static net.minecraft.item.Item.getItemFromBlock;
 
+import java.util.Arrays;
+
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
@@ -15,8 +21,12 @@ import com.fouristhenumber.utilitiesinexcess.ModItems;
 import com.fouristhenumber.utilitiesinexcess.api.EnderLocusRegistry;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockColored;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockCompressed;
+import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.config.RecipeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.BlockConfig;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.TransferUpgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -35,6 +45,9 @@ public class RecipeLoader {
         loadGlassRecipes();
         loadDecorativeBlocksRecipes();
         loadPeacefulRecipes();
+        loadColoredBlockRecipes();
+        loadTransferRecipes();
+        loadFilterVariantRecipes();
 
         // Chandeliers
         if (RecipeConfig.enableChandelierRecipe) {
@@ -1303,6 +1316,8 @@ public class RecipeLoader {
     private static void loadColoredBlockRecipe(BlockColored block, ItemStack[] dyes) {
         ItemStack paintRoller = new ItemStack(ModItems.PAINT_ROLLER.get());
 
+        System.out.println("Dyable ID: " + Block.getIdFromBlock(block));
+        System.out.println("Base ID: " + Block.getIdFromBlock(block.getBase()));
         ItemStack water = new ItemStack(Items.water_bucket);
         for (int i = 0; i < 16; ++i) {
             addShapedRecipe(
@@ -1714,6 +1729,399 @@ public class RecipeLoader {
                 ModBlocks.VOID_QUARRY_UPGRADE.newItemStack(1, 7),
                 'E',
                 ModBlocks.DECORATIVE_BLOCKS.newItemStack(1, 5));
+
+        //
+    }
+
+    private static void loadTransferRecipes() {
+        if (TransferConfig.INSTANCE.EnableTransferSystem) {
+            loadTransferUpgradeRecipes();
+            loadTransferPipeRecipes();
+            loadTransferNodeRecipes();
+        }
+    }
+
+    private static void loadTransferUpgradeRecipes() {
+        // Speed Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SPEED.getStack(4),
+            "RNR",
+            "NIN",
+            "RIR",
+            'R',
+            new ItemStack(Blocks.redstone_block),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'I',
+            new ItemStack(Items.gold_ingot));
+
+        // Filter
+        addShapedRecipe(
+            TransferUpgrade.FILTER.getStack(),
+            "RWR",
+            "WSW",
+            "RWR",
+            'R',
+            new ItemStack(Items.redstone),
+            'W',
+            new ItemStack(Items.stick),
+            'S',
+            new ItemStack(Items.string));
+
+        // World Interaction Upgrade
+        addShapedRecipe(
+            TransferUpgrade.WORLD_INTERACTION.getStack(),
+            "LIL",
+            "IPI",
+            "LIL",
+            'L',
+            new ItemStack(Items.dye, 1, 4), // Lapis
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'P',
+            new ItemStack(Items.iron_pickaxe));
+
+        // Stack Upgrade
+        addShapedRecipe(
+            TransferUpgrade.STACK.getStack(),
+            "INI",
+            "DUD",
+            "IDI",
+            'I',
+            new ItemStack(Items.gold_ingot),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'D',
+            new ItemStack(Items.diamond),
+            'U',
+            TransferUpgrade.SPEED.getStack());
+
+        // Creative Upgrade has no recipe
+
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                TransferUpgrade.ENDER_TRANSMITTER.getStack().theStack,
+                new String[] { "PTP", "QPQ", "PTP" },
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'T',
+                new ItemStack(Blocks.redstone_torch),
+                'Q',
+                new ItemStack(Items.quartz));
+
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                TransferUpgrade.ENDER_RECEIVER.getStack().theStack,
+                new String[] { "PRP", "QPQ", "PQP" },
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'R',
+                new ItemStack(Items.redstone),
+                'Q',
+                new ItemStack(Items.quartz));
+
+        // Depth-First Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_DEPTH.getStack(3),
+            "UBB",
+            "UGU",
+            "GBB",
+            'U',
+            TransferUpgrade.SPEED.getStack(),
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'G',
+            new ItemStack(Items.gold_ingot));
+
+        // Breadth-First Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_BREADTH.getStack(3),
+            "BBB",
+            "SUS",
+            "BBB",
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'S',
+            TransferUpgrade.SPEED.getStack(),
+            'U',
+            TransferUpgrade.SEARCH_DEPTH.getStack());
+
+        // Round Robin Search Upgrade
+        addShapedRecipe(
+            TransferUpgrade.SEARCH_ROUND_ROBIN.getStack(3),
+            "BNB",
+            "BIN",
+            "BNB",
+            'B',
+            new ItemStack(Blocks.redstone_block),
+            'N',
+            new ItemStack(Items.gold_nugget),
+            'I',
+            new ItemStack(Items.gold_ingot));
+
+        // Advanced Filter
+        addShapedRecipe(
+            TransferUpgrade.ADV_FILTER.getStack(),
+            "L L",
+            " F ",
+            "L L",
+            'L',
+            new ItemStack(Items.dye, 1, 4), // Lapis
+            'F',
+            TransferUpgrade.FILTER.getStack());
+    }
+
+    private static void loadTransferPipeRecipes() {
+        addShapedRecipe(
+            PipeType.TRANSFER.getStack(8),
+            "SSS",
+            "GRG",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'G',
+            new ItemStack(Blocks.glass),
+            'R',
+            new ItemStack(Items.redstone));
+
+        addShapedRecipe(
+            PipeType.CROSSOVER.getStack(1),
+            " T ",
+            "TRT",
+            " T ",
+            'T',
+            PipeType.TRANSFER.getStack(1),
+            'R',
+            new ItemStack(Items.redstone));
+
+        addShapedRecipe(
+            PipeType.FILTER.getStack(5),
+            "DTD",
+            "TTT",
+            "DTD",
+            'T',
+            PipeType.TRANSFER.getStack(1),
+            'D',
+            new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE));
+
+        addShapedRecipe(
+            PipeType.SORTING.getStack(2),
+            "SSS",
+            "GRG",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'G',
+            new ItemStack(Blocks.glass),
+            'R',
+            new ItemStack(Items.gold_ingot));
+
+        addShapedRecipe(
+            PipeType.MODSORTING.getStack(1),
+            "RSR",
+            'R',
+            new ItemStack(Items.redstone),
+            'S',
+            PipeType.SORTING.getStack(1));
+
+        addShapedRecipe(
+            PipeType.RATIONING.getStack(2),
+            "SSS",
+            "GLG",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'G',
+            new ItemStack(Blocks.glass),
+            'L',
+            new ItemStack(Items.dye, 1, 4));
+
+        addShapedRecipe(
+            PipeType.HYPERRATIONING.getStack(2),
+            "BBB",
+            "GLG",
+            "BBB",
+            'B',
+            new ItemStack(Blocks.stone_button),
+            'G',
+            new ItemStack(Blocks.glass),
+            'L',
+            new ItemStack(Items.dye, 1, 4));
+
+        addShapedRecipe(
+            PipeType.ENERGY.getStack(8),
+            "SSS",
+            "RRR",
+            "SSS",
+            'S',
+            new ItemStack(Blocks.stone_slab),
+            'R',
+            new ItemStack(Items.redstone));
+
+        addShapedRecipe(
+            PipeType.ENERGYEXTRACTION.getStack(1),
+            "G G",
+            "GEG",
+            " E ",
+            'G',
+            new ItemStack(Items.gold_ingot),
+            'E',
+            PipeType.ENERGY.getStack(1));
+    }
+
+    private static void loadTransferNodeRecipes() {
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(1, 0),
+            " P ",
+            "RBR",
+            "SCS",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'R',
+            new ItemStack(Items.redstone),
+            'S',
+            new ItemStack(Blocks.stone),
+            'C',
+            new ItemStack(Blocks.chest),
+            'B',
+            new ItemStack(Blocks.redstone_block));
+
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(4, 0),
+            " P ",
+            "RER",
+            "SCS",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'R',
+            new ItemStack(Items.redstone),
+            'S',
+            new ItemStack(Blocks.stone),
+            'C',
+            new ItemStack(Blocks.chest),
+            'E',
+            new ItemStack(Items.ender_pearl));
+
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(1, 1),
+            " P ",
+            "LRL",
+            "IBI",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'L',
+            new ItemStack(Items.dye, 1, 4),
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'B',
+            new ItemStack(Items.bucket),
+            'R',
+            new ItemStack(Blocks.redstone_block));
+
+        addShapedRecipe(
+            ModBlocks.TRANSFER_NODE.newItemStack(4, 1),
+            " P ",
+            "LEL",
+            "IBI",
+            'P',
+            ModBlocks.TRANSFER_PIPE.newItemStack(1, OreDictionary.WILDCARD_VALUE),
+            'L',
+            new ItemStack(Items.dye, 1, 4),
+            'I',
+            new ItemStack(Items.iron_ingot),
+            'B',
+            new ItemStack(Items.bucket),
+            'E',
+            new ItemStack(Items.ender_pearl));
+
+        // Transfer Node Energy
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
+                new String[] { "GNG", "NBN", "GNG" },
+                'G',
+                new ItemStack(Items.gold_ingot),
+                'N',
+                ModBlocks.TRANSFER_NODE.newItemStack(1, 0),
+                'B',
+                TransferUpgrade.SEARCH_BREADTH.getStack());
+
+        // Transfer Node Hyper-Energy
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 1),
+                new String[] { " N ", "NBN", " N " },
+                'N',
+                ModBlocks.TRANSFER_NODE_ENERGY.newItemStack(1, 0),
+                'B',
+                ModItems.BEDROCKIUM_INGOT.newItemStack());
+
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.RETRIEVAL_NODE.newItemStack(1, 0),
+                new String[] { " P ", "NEN", " P " },
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'N',
+                ModBlocks.TRANSFER_NODE.newItemStack(),
+                'E',
+                new ItemStack(Items.emerald));
+
+        EnderLocusRegistry.instance()
+            .addRecipe(
+                ModBlocks.RETRIEVAL_NODE.newItemStack(1, 1),
+                new String[] { " P ", "NDN", " P " },
+                'P',
+                new ItemStack(Items.ender_pearl),
+                'N',
+                ModBlocks.TRANSFER_NODE.newItemStack(1, 1),
+                'D',
+                new ItemStack(Items.diamond));
+    }
+
+    private static void loadFilterVariantRecipes() {
+        if (TransferConfig.INSTANCE.EnableTransferSystem) {
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(
+                        TransferUpgrade.FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays.asList(TransferUpgrade.FILTER.getStack(1).theStack, new ItemStack(Blocks.redstone_torch)),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(
+                        TransferUpgrade.FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYNBT.ordinal())).theStack,
+                    Arrays.asList(TransferUpgrade.FILTER.getStack(1).theStack, new ItemStack(Blocks.wool)),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(
+                        TransferUpgrade.FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.FUZZYMETA.ordinal())).theStack,
+                    Arrays.asList(TransferUpgrade.FILTER.getStack(1).theStack, new ItemStack(Items.stick)),
+                    0));
+
+            GameRegistry.addRecipe(
+                new NBTPreservingRecipe(
+                    setNBTForItem(
+                        TransferUpgrade.ADV_FILTER.getStack(1),
+                        "Mode",
+                        new NBTTagInt((byte) 1 << ItemUpgrade.FilterMode.INVERTED.ordinal())).theStack,
+                    Arrays
+                        .asList(TransferUpgrade.ADV_FILTER.getStack(1).theStack, new ItemStack(Blocks.redstone_torch)),
+                    0));
+
+            // Clears NBT
+            addShapelessRecipe(TransferUpgrade.FILTER.getStack(1), TransferUpgrade.FILTER.getStack(1));
+            addShapelessRecipe(TransferUpgrade.ADV_FILTER.getStack(1), TransferUpgrade.ADV_FILTER.getStack(1));
+        }
     }
 
     private static void loadPeacefulRecipes() {
@@ -1786,5 +2194,13 @@ public class RecipeLoader {
                     new DisableableItemStack(modBlock, 1, i + 1));
             }
         }
+    }
+
+    private static DisableableItemStack setNBTForItem(DisableableItemStack in, String key, NBTBase tag) {
+        if (!in.theStack.hasTagCompound()) {
+            in.theStack.stackTagCompound = new NBTTagCompound();
+        }
+        in.theStack.stackTagCompound.setTag(key, tag);
+        return in;
     }
 }

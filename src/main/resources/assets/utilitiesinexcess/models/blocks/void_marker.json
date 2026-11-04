@@ -2,7 +2,7 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "utilitiesinexcess:models/void_marker",
+		"0": "utilitiesinexcess:blocks/models/void_marker",
 		"particle": "utilitiesinexcess:blocks/ender_locus_bottom"
 	},
 	"elements": [

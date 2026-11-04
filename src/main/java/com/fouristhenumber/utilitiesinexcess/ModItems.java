@@ -3,6 +3,7 @@ package com.fouristhenumber.utilitiesinexcess;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemAnalyzer;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemBedrockiumIngot;
@@ -20,6 +21,7 @@ import com.fouristhenumber.utilitiesinexcess.common.items.ItemInvertedIngot;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemMobJar;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPaintRoller;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemPseudoReversionSigil;
+import com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemWateringCan;
 import com.fouristhenumber.utilitiesinexcess.common.items.ItemXRayGlasses;
 import com.fouristhenumber.utilitiesinexcess.common.items.tools.ItemAntiGravityShovel;
@@ -43,6 +45,7 @@ import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.LiminalS
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RecallShearsConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.RetrogradeHoeConfig;
 import com.fouristhenumber.utilitiesinexcess.config.items.invertedtools.SatingAxeConfig;
+import com.fouristhenumber.utilitiesinexcess.config.transfer.TransferConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -63,6 +66,7 @@ public enum ModItems {
     HEAVENLY_RING_METAL(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("metal", 8), "heavenly_ring_metal"),
     HEAVENLY_RING_MAGIC(ItemConfig.heavenlyRing.enable, new ItemHeavenlyRing("magic", 8), "heavenly_ring_magic"),
     MOB_JAR(ItemConfig.enableMobJar, new ItemMobJar(), "mob_jar"),
+
     WATERING_CAN_BASIC(WateringCanConfig.INSTANCE.Tier.enableWateringCanBasic, new ItemWateringCan(1,3), "watering_can_basic"),
     WATERING_CAN_ADVANCED(WateringCanConfig.INSTANCE.Tier.enableWateringCanAdvanced, new ItemWateringCan(2,5), "watering_can_advanced"),
     WATERING_CAN_ELITE(WateringCanConfig.INSTANCE.Tier.enableWateringCanElite, new ItemWateringCan(3,7), "watering_can_elite"),
@@ -80,6 +84,8 @@ public enum ModItems {
     XRAY_GLASSES(ItemConfig.enableXRayGlasses, new ItemXRayGlasses(ItemArmor.ArmorMaterial.IRON, 0, 0), "xray_glasses"),
     BLOCK_ANALYZER(ItemConfig.enableBlockAnalyzer, new ItemAnalyzer(), "block_analyzer"),
     GLOVE(ItemConfig.enableGlove, new ItemGlove(), "glove"),
+    // todo config
+    UPGRADE(TransferConfig.INSTANCE.EnableTransferSystem, new ItemUpgrade(), "upgrade"),
     CHUNCHUNMARU(ChunchunmaruConfig.INSTANCE.enable, new ItemChunchunmaru(), "chunchunmaru"),
     CAPACITY_UPGRADE(BlockConfig.filingCabinets.enableFilingCabinets, new ItemCapacityUpgrade(), "capacity_upgrade"),
     PAINT_ROLLER(ColoredBlocksConfig.INSTANCE.enablePaintRoller, new ItemPaintRoller(), "paint_roller"),
@@ -100,11 +106,13 @@ public enum ModItems {
     private final boolean isEnabled;
     private final Item theItem;
     private final String name;
+    private final String[] oreDictNames;
 
-    ModItems(boolean enabled, Item item, String name) {
+    ModItems(boolean enabled, Item item, String name, String... oreDictNames) {
         this.isEnabled = enabled;
         theItem = item;
         this.name = name;
+        this.oreDictNames = oreDictNames;
     }
 
     public boolean isEnabled() {
@@ -125,5 +133,16 @@ public enum ModItems {
 
     public ItemStack newItemStack(int count, int meta) {
         return new ItemStack(this.get(), count, meta);
+    }
+
+    public static void registerOreDict() {
+        for (ModItems item : VALUES) {
+            if (!item.isEnabled()) continue;
+            if (item.oreDictNames == null) continue;
+
+            for (String oreName : item.oreDictNames) {
+                OreDictionary.registerOre(oreName, item.newItemStack());
+            }
+        }
     }
 }

@@ -1,7 +1,5 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
-
 import java.util.List;
 
 import net.minecraft.block.Block;

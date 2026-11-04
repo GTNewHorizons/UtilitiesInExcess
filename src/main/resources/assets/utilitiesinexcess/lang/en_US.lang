@@ -146,6 +146,7 @@ uie.nei.infopage.paint_roller=This super advanced paint roller can be used to dy
 ue_wall.name=%s Wall
 ue_fence.name=%s Fence
 ue_sphere.name=%s Impossible Object
+ue_pipe_jacket.name=%s Pipe Jacket
 
 tile.heavenly_block.name=Heavenly Block
 tile.bedrockium_block.name=Block of Bedrockium
@@ -415,6 +416,22 @@ tile.giga_torch.aliases=Magnum Torch
 tile.pacifists_bench.aliases=Peaceful Table
 tile.ender_locus.aliases=QED (Quantum Entanglement Device)
 
+tile.transfer_node_item.name=Transfer Node (Items)
+tile.transfer_node_fluid.name=Transfer Node (Liquids)
+tile.retrieval_node_item.name=Retrieval Node (Items)
+tile.retrieval_node_fluid.name=Retrieval Node (Liquids)
+tile.transfer_node_energy.name=Transfer Node (Energy)
+tile.transfer_node_hyper_energy.name=Transfer Node (Hyper Energy)
+tile.transfer_pipe.name=Transfer Pipe
+tile.crossover_pipe.name=Crossover Pipe
+tile.filter_pipe.name=Filter Pipe
+tile.sorting_pipe.name=Sorting Pipe
+tile.mod_sorting_pipe.name=Mod Sorting Pipe
+tile.rationing_pipe.name=Rationing Pipe
+tile.hyper_rationing_pipe.name=Hyper-Rationing Pipe
+tile.energy_pipe.name=Energy Pipe
+tile.energy_extraction_pipe.name=Energy Extraction Pipe
+
 ### Blocks Description
 uie.desc.tile.drum.empty=Empty
 uie.desc.tile.drum.value=%s: %s / %s
@@ -534,6 +551,18 @@ item.capacity_upgrade.name=Filing Cabinet Capacity Upgrade
 
 item.paint_roller.name=Paint Roller
 
+item.upgrade_speed.name=Speed Upgrade
+item.upgrade_filter.name=Item Filter
+item.upgrade_world_interaction.name=World Interaction Upgrade
+item.upgrade_stack.name=Stack Upgrade
+item.upgrade_creative.name=Creative Upgrade
+item.upgrade_ender_transmitter.name=Ender Transmitter
+item.upgrade_ender_receiver.name=Ender Receiver
+item.upgrade_search_depth.name=Depth-First Search Upgrade
+item.upgrade_search_breadth.name=Breadth-First Search Upgrade
+item.upgrade_search_round_robin.name=Pseudo Round Robin Upgrade
+item.upgrade_adv_filter.name=Advanced Item Filter
+
 ### Item Description
 uie.desc.item.inverted_ingot.1=This ingot is deteriorating rapidly...
 uie.desc.item.inverted_ingot.2=Will implode in %s seconds!
@@ -610,6 +639,15 @@ material.inverted.ability=Fully Inverted
 uie.gui.title.trash_can=Trash Can
 uie.gui.title.trash_can_fluid=Trash Can (Fluid)
 uie.gui.title.paint_roller=Select Color:
+uie.gui.title.item_transfer_node.name=Item Transfer Node
+uie.gui.title.item_retrieval_node.name=Item Retrieval Node
+uie.gui.title.fluid_transfer_node.name=Fluid Transfer Node
+uie.gui.title.fluid_retrieval_node.name=Fluid Retrieval Node 
+uie.gui.title.energy_transfer_node.name=Energy Transfer Node
+uie.gui.title.hyper_energy_transfer_node.name=Hyper Energy Transfer Node
+
+gui.title.filter_pipe.name=Filter Pipe
+gui.title.filter.name=Filter
 
 ## Gui Strings
 uie.gui.text.ender_locus.energy-tick= RF/t

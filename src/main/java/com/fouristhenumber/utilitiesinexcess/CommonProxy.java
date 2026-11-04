@@ -1,5 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess;
 
+import java.util.Arrays;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -19,7 +21,8 @@ import com.fouristhenumber.utilitiesinexcess.common.renderers.LapisAetheriusRend
 import com.fouristhenumber.utilitiesinexcess.common.worldgen.WorldGenEnderLotus;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
-import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.UiEPartFactory;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
 import com.fouristhenumber.utilitiesinexcess.compat.crafttweaker.EnderLocusCraftTweakerSupport;
 import com.fouristhenumber.utilitiesinexcess.compat.exu.ExuWorldConversionWarning;
@@ -28,6 +31,9 @@ import com.fouristhenumber.utilitiesinexcess.compat.tinkers.TinkersCompat;
 import com.fouristhenumber.utilitiesinexcess.config.OtherConfig;
 import com.fouristhenumber.utilitiesinexcess.config.blocks.ColoredBlocksConfig;
 import com.fouristhenumber.utilitiesinexcess.network.PacketHandler;
+import com.fouristhenumber.utilitiesinexcess.transfer.upgrade.WirelessNetworkManager;
+import com.fouristhenumber.utilitiesinexcess.utils.ColoredSlots;
+import com.fouristhenumber.utilitiesinexcess.utils.DirectionalConnectionProperty;
 import com.fouristhenumber.utilitiesinexcess.utils.PinkFuelHelper;
 import com.fouristhenumber.utilitiesinexcess.utils.SoundVolumeChecks;
 import com.fouristhenumber.utilitiesinexcess.utils.TEChunkLoadingCallback;
@@ -37,6 +43,7 @@ import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.VolumeShape;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import codechicken.lib.world.TileChunkLoadHook;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -45,6 +52,7 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import minetweaker.MineTweakerAPI;
 
@@ -52,6 +60,10 @@ public class CommonProxy {
 
     public static int lapisAetheriusRenderID;
     public static int blackoutCurtainsRenderID;
+    public static int spikeRenderID;
+    public static int transferPipeRenderID;
+    public static int energyNodeRenderID;
+    public static int flatNodeRenderID;
     public SoundVolumeChecks soundVolumeChecks;
     public ArrayProximityCheck4D mobSpawnBlockChecks = new ArrayProximityCheck4D(VolumeShape.CUBE);
 
@@ -69,6 +81,52 @@ public class CommonProxy {
         ModOreDictionary.init();
         ModDimensions.init();
         ModBiomes.init();
+        TileChunkLoadHook.init();
+        ColoredSlots.init();
+        PartGuiHandler.init();
+
+        BlockPropertyRegistry.registerProperty(
+            Arrays.asList(
+                ModBlocks.TRANSFER_NODE.get(),
+                ModBlocks.TRANSFER_PIPE.get(),
+                ModBlocks.TRANSFER_NODE_ENERGY.get(),
+                ModBlocks.RETRIEVAL_NODE.get()),
+            DirectionalConnectionProperty.DOWN);
+        BlockPropertyRegistry.registerProperty(
+            Arrays.asList(
+                ModBlocks.TRANSFER_NODE.get(),
+                ModBlocks.TRANSFER_PIPE.get(),
+                ModBlocks.TRANSFER_NODE_ENERGY.get(),
+                ModBlocks.RETRIEVAL_NODE.get()),
+            DirectionalConnectionProperty.UP);
+        BlockPropertyRegistry.registerProperty(
+            Arrays.asList(
+                ModBlocks.TRANSFER_NODE.get(),
+                ModBlocks.TRANSFER_PIPE.get(),
+                ModBlocks.TRANSFER_NODE_ENERGY.get(),
+                ModBlocks.RETRIEVAL_NODE.get()),
+            DirectionalConnectionProperty.NORTH);
+        BlockPropertyRegistry.registerProperty(
+            Arrays.asList(
+                ModBlocks.TRANSFER_NODE.get(),
+                ModBlocks.TRANSFER_PIPE.get(),
+                ModBlocks.TRANSFER_NODE_ENERGY.get(),
+                ModBlocks.RETRIEVAL_NODE.get()),
+            DirectionalConnectionProperty.SOUTH);
+        BlockPropertyRegistry.registerProperty(
+            Arrays.asList(
+                ModBlocks.TRANSFER_NODE.get(),
+                ModBlocks.TRANSFER_PIPE.get(),
+                ModBlocks.TRANSFER_NODE_ENERGY.get(),
+                ModBlocks.RETRIEVAL_NODE.get()),
+            DirectionalConnectionProperty.WEST);
+        BlockPropertyRegistry.registerProperty(
+            Arrays.asList(
+                ModBlocks.TRANSFER_NODE.get(),
+                ModBlocks.TRANSFER_PIPE.get(),
+                ModBlocks.TRANSFER_NODE_ENERGY.get(),
+                ModBlocks.RETRIEVAL_NODE.get()),
+            DirectionalConnectionProperty.EAST);
 
         GameRegistry.registerWorldGenerator(new WorldGenEnderLotus(), 10);
 
@@ -97,7 +155,7 @@ public class CommonProxy {
 
         if (Mods.ForgeMicroBlock.isLoaded()) {
             FMPItems.init();
-            new Content().init();
+            new UiEPartFactory().init();
             FMPCompat.init();
         }
 
@@ -166,6 +224,10 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {}
+
+    public void serverStopping(FMLServerStoppingEvent event) {
+        WirelessNetworkManager.reset();
+    }
 
     public void onMissingMapping(FMLMissingMappingsEvent event) {
         ExuWorldConversionWarning.onMissingMapping(event);
