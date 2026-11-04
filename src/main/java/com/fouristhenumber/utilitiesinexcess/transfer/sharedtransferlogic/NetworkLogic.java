@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.ItemTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 public class TileEntityItemTransferNode extends TileEntityTransferNodeBase {
 

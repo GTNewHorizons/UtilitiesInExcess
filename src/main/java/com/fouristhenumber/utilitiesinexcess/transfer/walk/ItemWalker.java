@@ -8,7 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.RandomStepper;

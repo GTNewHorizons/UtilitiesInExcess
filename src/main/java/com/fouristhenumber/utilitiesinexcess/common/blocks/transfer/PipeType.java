@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+import static com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic.isValidConnectable;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.recipe.DisableableItemStack;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.ModSortedInserter;

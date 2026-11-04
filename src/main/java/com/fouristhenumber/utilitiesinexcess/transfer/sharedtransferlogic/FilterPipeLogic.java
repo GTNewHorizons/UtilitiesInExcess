@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic;
 
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.getModesFromStack;
 import static com.fouristhenumber.utilitiesinexcess.common.items.ItemUpgrade.FilterMode.isInverted;

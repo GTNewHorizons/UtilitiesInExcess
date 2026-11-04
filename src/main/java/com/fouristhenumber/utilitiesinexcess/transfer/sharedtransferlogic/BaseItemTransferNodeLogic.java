@@ -1,4 +1,4 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic;
 
 import static com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter.canStacksMerge;
 import static com.fouristhenumber.utilitiesinexcess.utils.InventoryUtils.dropStack;

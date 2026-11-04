@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 public class FluidTargetResolver implements TargetResolver<IFluidHandler> {

@@ -1,6 +1,6 @@
-package com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic;
+package com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic;
 
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic.parseFilterItem;
+import static com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.FilterPipeLogic.parseFilterItem;
 import static com.fouristhenumber.utilitiesinexcess.transfer.upgrade.AdvancedFilterMode.getAdvFilterMode;
 
 import java.util.List;

@@ -23,8 +23,8 @@ import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityFilterPipe;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer.PipePart;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;
 

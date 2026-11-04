@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.common.blocks.transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+import static com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic.isValidConnectable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityEnergyTransferNode;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.DefaultInserter;
 import com.gtnewhorizon.gtnhlib.client.model.ModelISBRH;

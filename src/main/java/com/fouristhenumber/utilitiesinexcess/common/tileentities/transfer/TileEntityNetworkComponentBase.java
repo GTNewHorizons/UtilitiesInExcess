@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 public abstract class TileEntityNetworkComponentBase extends TileEntity implements ITransferNetworkComponent {
 

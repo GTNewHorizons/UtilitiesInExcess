@@ -10,10 +10,10 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.BaseNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.INodeLogicHost;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.BaseNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.INodeLogicHost;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -2,8 +2,8 @@ package com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.EnergyTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 public class TileEntityEnergyTransferNode extends TileEntityTransferNodeBase implements IWirelessNode {
 

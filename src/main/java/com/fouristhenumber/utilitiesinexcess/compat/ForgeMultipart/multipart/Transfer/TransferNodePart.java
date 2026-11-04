@@ -5,9 +5,9 @@ import net.minecraft.block.Block;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FluidTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ItemTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.FluidTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.ItemTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 import codechicken.lib.data.MCDataInput;
 

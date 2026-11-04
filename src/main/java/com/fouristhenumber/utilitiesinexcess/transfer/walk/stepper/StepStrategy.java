@@ -3,7 +3,7 @@ package com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 
 public abstract class StepStrategy {

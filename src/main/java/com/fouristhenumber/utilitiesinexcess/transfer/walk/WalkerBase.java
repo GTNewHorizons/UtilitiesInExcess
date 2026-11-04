@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.world.World;
 
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.stepper.StepStrategy;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.targeting.TargetResolver;
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;

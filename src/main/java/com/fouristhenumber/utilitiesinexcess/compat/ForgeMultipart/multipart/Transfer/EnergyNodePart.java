@@ -1,6 +1,6 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+import static com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic.isValidConnectable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,9 +16,9 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBas
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockTransferNodeEnergy;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.IWirelessNode;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.EnergyTransferNodeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.EnergyTransferNodeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.raytracer.IndexedCuboid6;

@@ -1,7 +1,7 @@
 package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Transfer;
 
 import static com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase.getFacingOrdinal;
-import static com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic.isValidConnectable;
+import static com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic.isValidConnectable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,11 +18,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.ITickableLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.NodeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.ITickableLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;

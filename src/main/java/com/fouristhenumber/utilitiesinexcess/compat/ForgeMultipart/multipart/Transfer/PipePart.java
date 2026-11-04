@@ -21,10 +21,10 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.IConnectable
 import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.PipeType;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.ConversionRegistry;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiHandler;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.FilterPipeLogic;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.IWalkingComponent;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.collision.PipeCollision;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.FilterPipeLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.IWalkingComponent;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 import com.fouristhenumber.utilitiesinexcess.transfer.walk.insertion.BaseInserter;
 
 import codechicken.lib.data.MCDataInput;

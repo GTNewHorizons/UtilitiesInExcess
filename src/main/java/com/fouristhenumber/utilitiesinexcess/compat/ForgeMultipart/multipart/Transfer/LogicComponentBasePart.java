@@ -19,7 +19,7 @@ import com.fouristhenumber.utilitiesinexcess.common.blocks.transfer.BlockNodeBas
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityNetworkComponentBase;
 import com.fouristhenumber.utilitiesinexcess.common.tileentities.transfer.TileEntityTransferNodeBase;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.util.PartGuiData;
-import com.fouristhenumber.utilitiesinexcess.transfer.SharedTransferLogic.NetworkLogic;
+import com.fouristhenumber.utilitiesinexcess.transfer.sharedtransferlogic.NetworkLogic;
 
 import codechicken.lib.data.MCDataOutput;
 import cpw.mods.fml.relauncher.Side;
