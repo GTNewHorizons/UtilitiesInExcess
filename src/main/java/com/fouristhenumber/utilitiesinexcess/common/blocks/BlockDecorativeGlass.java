@@ -32,6 +32,7 @@ public class BlockDecorativeGlass extends BlockGlass {
 
     @Override
     public float getBlockHardness(World worldIn, int x, int y, int z) {
+        if (worldIn == null) return 0.3f;
         int meta = worldIn.getBlockMetadata(x, y, z);
         return switch (meta) {
             case 5, 11 -> 4F;

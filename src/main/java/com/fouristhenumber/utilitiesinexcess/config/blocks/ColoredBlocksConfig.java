@@ -34,18 +34,32 @@ public class ColoredBlocksConfig {
     @Config.RequiresMcRestart
     public boolean enableDying;
 
+    // spotless:off
     @Config.Order(300)
-    @Config.Comment({ "WARNING! THIS IS AN ADVANCED CONFIG OPTION!",
-        "If you don't know what you're doing do not touch.", "", "Add extra blocks to be turned into colored blocks",
-        "", "Format: MODID;BLOCKNAME;BRIGHTNESS;TEXTUREDOMAIN;TEXTURENAME",
+    @Config.Comment({
+        "Add extra blocks to be turned into colored blocks",
+        "Each of these will be registered as a new block with a new ID.",
+        "",
+        "Format: MODID;BLOCKNAME;BLOCKMETA;BRIGHTNESS;TYPE;DISPLAYNAME",
         "   MODID: Mod ID of the mod that adds the block. NOT DOMAIN. (example: \"minecraft\")",
-        "   BLOCKNAME: Name of the block (example: \"wool\")",
+        "   BLOCKNAME: Name of the block (example: \"stained_glass\")",
+        "   BLOCKMETA: Block's meta/damage (example: \"0\")",
         "   BRIGHTNESS: Brightness multiplier (example: \"1.5\")",
-        "   TEXTUREDOMAIN: Domain for texture (example: \"utilitiesinexcess\")",
-        "   TEXTURENAME: Texture location (example: \"textures/blocks/block_update_detector_active.png\")", "",
-        "Example: minecraft;double_stone_slab;1;minecraft;textures/blocks/stone_slab_top.png",
-        "Example: utilitiesinexcess;block_update_detector;1.5;utilitiesinexcess;textures/blocks/block_update_detector_active.png",
-        "" })
+        "   TYPE: Colored block type selection (example: \"DEFAULT\")",
+        "   DISPLAYNAME: (optional) a new display name (example: \"Stained Glass\")",
+        "",
+        "Available Types:",
+        "   DEFAULT: A regular block, no special features",
+        "   CTM: Block with connected textures, right click to toggle connecting to different colors (requires angelica)",
+        "   ROTATABLE: Block that can be rotated (once) 90 degrees with a right click",
+        "   LIGHT: Block that emits light, right click to toggle light",
+        "",
+        "Example: minecraft;stained_glass;0;1.5;CTM;Stained Glass",
+        "Example: minecraft;double_stone_slab;8;1.5;DEFAULT",
+        "Example: minecraft;pumpkin;0;1.5;ROTATABLE",
+        ""
+    })
+    // spotless:on
     @Config.DefaultStringList({})
     @Config.RequiresMcRestart
     public String[] extraColoredBlocks;

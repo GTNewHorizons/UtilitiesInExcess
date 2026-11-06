@@ -18,6 +18,7 @@ import com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityPorta
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.render.item.ItemUEMultiPartRenderer;
 import com.fouristhenumber.utilitiesinexcess.compat.Mods;
+import com.fouristhenumber.utilitiesinexcess.compat.angelica.coloredblocks.CTMForColoredBlocks;
 import com.fouristhenumber.utilitiesinexcess.compat.findit.FindItHelper;
 import com.fouristhenumber.utilitiesinexcess.compat.simpleskinbackport.SsbCompat;
 import com.fouristhenumber.utilitiesinexcess.compat.waila.TTRenderColoredBlock;
@@ -41,6 +42,9 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         ModelRegistry.registerModid(MODID);
+        if (Mods.Angelica.isLoaded()) {
+            CTMForColoredBlocks.init();
+        }
     }
 
     @Override

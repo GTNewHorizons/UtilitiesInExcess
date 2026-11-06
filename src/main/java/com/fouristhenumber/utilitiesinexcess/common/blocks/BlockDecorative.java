@@ -30,6 +30,7 @@ public class BlockDecorative extends Block {
 
     @Override
     public float getBlockHardness(World worldIn, int x, int y, int z) {
+        if (worldIn == null) return 1f;
         int meta = worldIn.getBlockMetadata(x, y, z);
         return switch (meta) {
             // Obsidian

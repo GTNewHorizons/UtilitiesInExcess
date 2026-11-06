@@ -21,10 +21,13 @@ public class RecipePaintRollerToPaint extends ShapedRecipes {
         boolean paintStripper = ItemPaintRoller.getPaintStripperFromStack(roller);
 
         if (paintStripper) {
+            BlockColored bc = ((BlockColored) ((ItemBlock) out.getItem()).field_150939_a);
             out = new ItemStack(
-                ((BlockColored) ((ItemBlock) out.getItem()).field_150939_a).getBase(),
+                bc.getBase()
+                    .getBlock(),
                 out.stackSize,
-                0);
+                bc.getBase()
+                    .getMeta());
         } else {
             // TODO revert if https://github.com/GTMEGA/EndlessIDs/issues/291 is solved
             out.setItemDamage(BlockColored.getEIDMetaFromRGB(ItemPaintRoller.getColorFromStack(roller)));
