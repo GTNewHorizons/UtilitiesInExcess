@@ -23,7 +23,6 @@ public enum Mods {
     EndlessIDs("endlessids"),
     Angelica("angelica"),
     ChromaticTooltips("chromatictooltips"),
-    EndlessIDs("endlessids"),
     Controlling("controlling")
     ;
     // spotless:on
