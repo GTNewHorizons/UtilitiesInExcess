@@ -7,14 +7,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import org.lwjgl.input.Keyboard;
-
 import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.utils.KeybindUtils;
 import com.fouristhenumber.utilitiesinexcess.utils.UIEUtils;
 
 import baubles.api.BaubleType;
@@ -43,17 +41,12 @@ public class ItemGlove extends Item implements IBauble {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean p_77624_4_) {
         super.addInformation(stack, player, tooltip, p_77624_4_);
         tooltip.add(
-            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+            StatCollector.translateToLocalFormatted(
                 "uie.desc.item.glove.1",
-                EnumChatFormatting.WHITE + "["
-                    + EnumChatFormatting.GOLD
-                    + Keyboard.getKeyName(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeyCode())
-                    + EnumChatFormatting.WHITE
-                    + "]"
-                    + EnumChatFormatting.AQUA));
+                KeybindUtils.getKeyDisplayNameWithMouse(UtilitiesInExcess.proxy.GLOVE_KEYBIND.getKeybinding())));
 
-        tooltip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("uie.desc.item.glove.2"));
-        tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("uie.desc.item.glove.3"));
+        tooltip.add(StatCollector.translateToLocal("uie.desc.item.glove.2"));
+        tooltip.add(StatCollector.translateToLocal("uie.desc.item.glove.3"));
     }
 
     public IIcon topIcon;

@@ -63,7 +63,7 @@ public class VoidQuarryDataProvider implements IWailaDataProvider {
         return tag;
     }
 
-    // Stubs
+    // <editor-fold desc="IWailaDataProvider Stubs" defaultstate="collapsed">
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
     }
@@ -77,4 +77,5 @@ public class VoidQuarryDataProvider implements IWailaDataProvider {
         IWailaConfigHandler config) {
         return currenttip;
     }
+    // </editor-fold>
 }

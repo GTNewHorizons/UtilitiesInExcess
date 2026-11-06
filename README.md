@@ -62,7 +62,7 @@ A special thanks to the 1.0 contributors, without which this project could have 
 ### Artists
 <img src="src/main/resources/assets/utilitiesinexcess/textures/items/heavenly_ring_fairy.png" alt="Heavenly Ring"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/temporal_gate_north.png" alt="Temporal Gate"> &nbsp; &nbsp;&nbsp;Embri <br>
 <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/chandelier_3.png" alt="SOul Chandelier"> &nbsp; &nbsp;  <img src="src/main/resources/assets/utilitiesinexcess/textures/blocks/ender_locus_top.png" alt="Ender Locus"> &nbsp; &nbsp;&nbsp;seventh-june <br>
-<img src="src/main/resources/assets/utilitiesinexcess/textures/items/gourmands_axe.png" alt="Gourmand's Axe"> &nbsp; &nbsp; &nbsp; <img src="img/giga_torch.png" alt="Giga Torch"> &nbsp;&nbsp; &nbsp;&nbsp;Freya <br>
+<img src="src/main/resources/assets/utilitiesinexcess/textures/items/sating_axe.png" alt="Gourmand's Axe"> &nbsp; &nbsp; &nbsp; <img src="img/giga_torch.png" alt="Giga Torch"> &nbsp;&nbsp; &nbsp;&nbsp;Freya <br>
 <img src="img/drum.png" alt="Drum"> &nbsp; <img src="img/trash_can_item.png" alt="Trash Can"> &nbsp; EmeraldsEmerald <br>
 
 ### Programmers

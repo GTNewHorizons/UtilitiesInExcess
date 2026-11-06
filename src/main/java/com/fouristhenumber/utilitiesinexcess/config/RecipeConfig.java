@@ -287,4 +287,12 @@ public class RecipeConfig {
     @Config.RequiresMcRestart
     @Config.DefaultBoolean(true)
     public static boolean enablePaintRollerRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enablePeacefulNetherStarRecipe;
+
+    @Config.RequiresMcRestart
+    @Config.DefaultBoolean(true)
+    public static boolean enablePeacefulBasicWateringCanRecipe;
 }

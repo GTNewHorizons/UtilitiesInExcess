@@ -12,6 +12,7 @@ uie.common.time.seconds_abbreviation=s
 uie.nei.title.plugin=UtilitiesInExcess NEI Plugin
 uie.nei.title.ender_locus=Ender Locus Recipes
 uie.nei.title.pseudo_reversion=Pseudo-Reversion Ritual
+uie.nei.title.shaped_peaceful_crafting=Shaped Peaceful Crafting
 
 ### NEI handler text
 uie.nei.text.pseudo_reversion.label_north=North (Progeny of Fire)
@@ -561,9 +562,9 @@ uie.desc.item.watering_can.area=Area: %dx%d
 
 uie.desc.item.fire_battery.1=RF %s / %s
 
-uie.desc.item.glove.1=Press %s to activate.
-uie.desc.item.glove.2=+2,147,483,647 Breeze Projection
-uie.desc.item.glove.3=§oP.S. Breeze Projection does nothing.
+uie.desc.item.glove.1=§bPress §r[§6%s§r]§b to activate.
+uie.desc.item.glove.2=§9+2,147,483,647 Breeze Projection
+uie.desc.item.glove.3=§7§oP.S. Breeze Projection does nothing.
 
 uie.desc.item.chunchunmaru.1=It's a really cool name
 

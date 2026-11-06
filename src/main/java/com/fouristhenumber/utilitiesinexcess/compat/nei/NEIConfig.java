@@ -16,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.drawable.DrawableBuilder;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
 import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -24,6 +25,9 @@ import cpw.mods.fml.relauncher.Side;
 
 @SuppressWarnings("unused")
 public class NEIConfig implements IConfigureNEI {
+
+    public static final boolean ENDER_LOCUS = ModBlocks.ENDER_LOCUS.isEnabled();
+    public static final boolean PSEUDO_REVERSION = ModItems.PSEUDO_REVERSION_SIGIL.isEnabled();
 
     @Override
     public String getName() {
@@ -37,32 +41,41 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
-        EnderLocusRecipeHandler enderLocusRecipeHandler = new EnderLocusRecipeHandler();
+        if (ENDER_LOCUS) {
+            EnderLocusRecipeHandler enderLocusRecipeHandler = new EnderLocusRecipeHandler();
 
-        API.registerRecipeHandler(enderLocusRecipeHandler);
-        API.registerUsageHandler(enderLocusRecipeHandler);
+            API.registerRecipeHandler(enderLocusRecipeHandler);
+            API.registerUsageHandler(enderLocusRecipeHandler);
 
-        API.addRecipeCatalyst(ModBlocks.ENDER_LOCUS.newItemStack(), enderLocusRecipeHandler, 1);
-        API.addRecipeCatalyst(ModBlocks.CONVERGENCE_CRYSTAL.newItemStack(), enderLocusRecipeHandler, 0);
+            API.addRecipeCatalyst(ModBlocks.ENDER_LOCUS.newItemStack(), enderLocusRecipeHandler, 1);
+            API.addRecipeCatalyst(ModBlocks.CONVERGENCE_CRYSTAL.newItemStack(), enderLocusRecipeHandler, 0);
 
-        FMLInterModComms.sendRuntimeMessage(
-            UtilitiesInExcess.MODID,
-            "NEIPlugins",
-            "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.ender_locus")
-                + "@ender_locus_recipes");
+            FMLInterModComms.sendRuntimeMessage(
+                UtilitiesInExcess.MODID,
+                "NEIPlugins",
+                "register-crafting-handler",
+                "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.ender_locus")
+                    + "@ender_locus_recipes");
+        }
 
-        PseudoReversionRecipeHandler pseudoReversionHandler = new PseudoReversionRecipeHandler();
+        if (PSEUDO_REVERSION) {
+            PseudoReversionRecipeHandler pseudoReversionHandler = new PseudoReversionRecipeHandler();
 
-        API.registerRecipeHandler(pseudoReversionHandler);
-        API.registerUsageHandler(pseudoReversionHandler);
+            API.registerRecipeHandler(pseudoReversionHandler);
+            API.registerUsageHandler(pseudoReversionHandler);
 
-        FMLInterModComms.sendRuntimeMessage(
-            UtilitiesInExcess.MODID,
-            "NEIPlugins",
-            "register-crafting-handler",
-            "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.pseudo_reversion")
-                + "@pseudo_reversion_recipes");
+            FMLInterModComms.sendRuntimeMessage(
+                UtilitiesInExcess.MODID,
+                "NEIPlugins",
+                "register-crafting-handler",
+                "utilitiesinexcess@" + StatCollector.translateToLocal("uie.nei.title.pseudo_reversion")
+                    + "@pseudo_reversion_recipes");
+        }
+
+        ShapedPeacefulRecipeHandler shapedPeacefulRecipeHandler = new ShapedPeacefulRecipeHandler();
+
+        API.registerRecipeHandler(shapedPeacefulRecipeHandler);
+        API.registerUsageHandler(shapedPeacefulRecipeHandler);
     }
 
     @SuppressWarnings("unused")
@@ -76,18 +89,34 @@ public class NEIConfig implements IConfigureNEI {
 
         @SubscribeEvent
         public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+            if (ENDER_LOCUS) {
+                event.registerHandlerInfo(
+                    new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
+                        .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
+                        .build());
+            }
+
+            if (PSEUDO_REVERSION) {
+                event.registerHandlerInfo(
+                    new HandlerInfo.Builder(
+                        "pseudo_reversion_recipes",
+                        UtilitiesInExcess.MODNAME,
+                        UtilitiesInExcess.MODID).setHeight(140)
+                            .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
+                            .build());
+            }
+
             event.registerHandlerInfo(
-                new HandlerInfo.Builder("ender_locus_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
-                    .setHeight(140)
-                    .setWidth(166)
-                    .setDisplayStack(ModBlocks.ENDER_LOCUS.newItemStack())
-                    .build());
-            event.registerHandlerInfo(
-                new HandlerInfo.Builder("pseudo_reversion_recipes", UtilitiesInExcess.MODNAME, UtilitiesInExcess.MODID)
-                    .setHeight(140)
-                    .setWidth(166)
-                    .setDisplayStack(ModItems.PSEUDO_REVERSION_SIGIL.newItemStack())
-                    .build());
+                new HandlerInfo.Builder(
+                    ShapedPeacefulRecipeHandler.class.getName(),
+                    UtilitiesInExcess.MODNAME,
+                    UtilitiesInExcess.MODID)
+                        .setDisplayImage(
+                            new DrawableBuilder("utilitiesinexcess:textures/gui/peaceful_crafting.png", 0, 0, 16, 16)
+                                .setTextureSize(16, 16)
+                                .addPadding(-1, 0, -1, 0)
+                                .build())
+                        .build());
         }
     }
 

@@ -79,7 +79,7 @@ public class BlockCollector extends BlockContainer implements IWailaDataProvider
         return tag;
     }
 
-    // Stubs
+    // <editor-fold desc="IWailaDataProvider Stubs" defaultstate="collapsed">
     @Optional.Method(modid = "Waila")
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
@@ -96,4 +96,5 @@ public class BlockCollector extends BlockContainer implements IWailaDataProvider
         IWailaConfigHandler config) {
         return currentTip;
     }
+    // </editor-fold>
 }

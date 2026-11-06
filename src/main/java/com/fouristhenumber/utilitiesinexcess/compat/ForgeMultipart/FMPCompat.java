@@ -87,9 +87,9 @@ public class FMPCompat {
     }
 
     private static void registerMicroblock(ModBlocks block, int meta) {
-        String blockName = GameRegistry.findUniqueIdentifierFor(block.get())
-            .toString();
         if (block.isEnabled()) {
+            String blockName = GameRegistry.findUniqueIdentifierFor(block.get())
+                .toString();
             MicroMaterialRegistry
                 .registerMaterial(new BlockMicroMaterial(block.get(), meta), applyMeta(blockName, meta));
         }

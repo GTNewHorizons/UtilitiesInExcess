@@ -46,6 +46,7 @@ public class ExuWorldConversionWarning implements IWorldConversionWarning {
 
     public static void onMissingMapping(FMLMissingMappingsEvent event) {
         if (!OtherConfig.enableWorldConversionWarning) return;
+        if (Mods.ExtraUtilities.isLoaded()) return;
         if (ExuWorldConversionWarning.show) return;
 
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {

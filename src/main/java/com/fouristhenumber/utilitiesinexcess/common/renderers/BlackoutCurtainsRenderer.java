@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockAccess;
 
 import org.joml.Vector2d;
 
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
+import com.fouristhenumber.utilitiesinexcess.CommonProxy;
 import com.fouristhenumber.utilitiesinexcess.common.blocks.BlockBlackoutCurtains;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
@@ -244,6 +244,6 @@ public class BlackoutCurtainsRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return UtilitiesInExcess.blackoutCurtainsRenderID;
+        return CommonProxy.blackoutCurtainsRenderID;
     }
 }

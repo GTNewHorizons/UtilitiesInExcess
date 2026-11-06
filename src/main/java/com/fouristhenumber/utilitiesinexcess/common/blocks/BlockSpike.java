@@ -59,7 +59,6 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         setHardness(spikeType.material.getBlockHardness(null, 0, 0, 0));
         setResistance(spikeType.material.getExplosionResistance(null));
         setHarvestLevel(spikeType.material.getHarvestTool(0), spikeType.material.getHarvestLevel(0));
-        setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.75F, 0.9375F);
     }
 
     private static final ThreadLocal<ItemStack> cachedDrop = new ThreadLocal<>();
@@ -345,8 +344,8 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         return tag;
     }
 
+    // <editor-fold desc="IWailaDataProvider Stubs" defaultstate="collapsed">
     @Optional.Method(modid = "Waila")
-    // Stubs
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
     }
@@ -362,4 +361,5 @@ public class BlockSpike extends Block implements IWailaDataProvider {
         IWailaConfigHandler config) {
         return currentTip;
     }
+    // </editor-fold>
 }

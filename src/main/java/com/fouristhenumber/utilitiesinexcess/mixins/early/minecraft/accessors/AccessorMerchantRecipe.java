@@ -11,9 +11,6 @@ public interface AccessorMerchantRecipe {
     @Accessor(value = "toolUses")
     int getCurrentUses();
 
-    @Accessor(value = "toolUses")
-    void setCurrentUses(int uses);
-
     @Accessor(value = "maxTradeUses")
     int getMaxUses();
 }

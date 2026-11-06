@@ -95,7 +95,7 @@ public class BuildersSelection {
         if (stack == null) {
             return false;
         }
-        if (Mods.GT.isLoaded() && stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool) {
+        if (Mods.GregTech.isLoaded() && stack.getItem() instanceof MetaGeneratedTool metaGeneratedTool) {
             return metaGeneratedTool.getToolStats(stack) instanceof ToolTrowel;
         }
         return false;

@@ -5,8 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
+import com.fouristhenumber.utilitiesinexcess.CommonProxy;
 import com.fouristhenumber.utilitiesinexcess.ModBlocks;
-import com.fouristhenumber.utilitiesinexcess.UtilitiesInExcess;
 
 public class BlockLapisAetheriusDyable extends BlockColoredWithLight {
 
@@ -35,7 +35,7 @@ public class BlockLapisAetheriusDyable extends BlockColoredWithLight {
 
     @Override
     public int getRenderType() {
-        return UtilitiesInExcess.lapisAetheriusRenderID;
+        return CommonProxy.lapisAetheriusRenderID;
     }
 
     @Override
