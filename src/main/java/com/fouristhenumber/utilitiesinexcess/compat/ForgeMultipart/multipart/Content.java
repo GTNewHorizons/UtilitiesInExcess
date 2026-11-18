@@ -77,6 +77,18 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
             actualName);
     }
 
+    // Called on the client for off-world previews (Schematica, GuideNH)
+    @Override
+    public TMultiPart createPartForClientPreview(String name, NBTTagCompound nbt) {
+        String actualName = translateName(name);
+
+        return createUEMultiPart(
+            true,
+            MicroMaterialRegistry.materialID(nbt.getString("mat")),
+            nbt.getInteger("side"),
+            actualName);
+    }
+
     // Called on the client
     @Override
     public TMultiPart createPart(String name, MCDataInput packet) {
