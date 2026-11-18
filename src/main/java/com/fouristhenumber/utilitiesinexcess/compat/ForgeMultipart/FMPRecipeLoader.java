@@ -10,15 +10,16 @@ import codechicken.microblock.EdgeMicroClass;
 import codechicken.microblock.FaceMicroClass;
 import codechicken.microblock.ItemMicroPart;
 import codechicken.microblock.MicroMaterialRegistry;
-import scala.Tuple2;
 
 public class FMPRecipeLoader {
 
     public static void run() {
 
-        for (Tuple2<String, MicroMaterialRegistry.IMicroMaterial> material : MicroMaterialRegistry.getIdMap()) {
+        int materialCount = MicroMaterialRegistry.materialCount();
+        for (int id = 0; id < materialCount; id++) {
+            String materialName = MicroMaterialRegistry.materialName(id);
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setString("mat", material._1());
+            tag.setString("mat", materialName);
 
             // Fence
             addShapedRecipe(
@@ -27,9 +28,9 @@ public class FMPRecipeLoader {
                 "pPp",
                 " P ",
                 'p',
-                ItemMicroPart.create((EdgeMicroClass.getClassId() << 8) | 2, material._1()), // Post
+                ItemMicroPart.create((EdgeMicroClass.getClassId() << 8) | 2, materialName), // Post
                 'P',
-                ItemMicroPart.create((EdgeMicroClass.getClassId() << 8) | 4, material._1()) // Pillar
+                ItemMicroPart.create((EdgeMicroClass.getClassId() << 8) | 4, materialName) // Pillar
             );
 
             // Wall
@@ -39,10 +40,10 @@ public class FMPRecipeLoader {
                 "SBS",
                 "SBS",
                 'B',
-                MicroMaterialRegistry.getMaterial(material._1())
+                MicroMaterialRegistry.getMaterial(materialName)
                     .getItem(), // Block the material is derived from
                 'S',
-                ItemMicroPart.create((FaceMicroClass.getClassId() << 8) | 4, material._1()) // Slab
+                ItemMicroPart.create((FaceMicroClass.getClassId() << 8) | 4, materialName) // Slab
             );
 
             // Sphere
@@ -52,11 +53,11 @@ public class FMPRecipeLoader {
                 "SUS",
                 "CSC",
                 'S',
-                ItemMicroPart.create((FaceMicroClass.getClassId() << 8) | 4, material._1()), // Slab
+                ItemMicroPart.create((FaceMicroClass.getClassId() << 8) | 4, materialName), // Slab
                 'B',
                 ModBlocks.INVERTED_BLOCK.newItemStack(),
                 'C',
-                ItemMicroPart.create((FaceMicroClass.getClassId() << 8) | 1, material._1()) // Cover
+                ItemMicroPart.create((FaceMicroClass.getClassId() << 8) | 1, materialName) // Cover
             );
         }
     }
