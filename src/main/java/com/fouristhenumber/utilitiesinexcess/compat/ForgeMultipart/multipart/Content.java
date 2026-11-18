@@ -43,7 +43,7 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
         namesToRegister.addAll(Arrays.asList(partNames));
         namesToRegister.addAll(legacyAliases.keySet());
 
-        MultiPartRegistry.registerParts(this, namesToRegister.toArray(new String[0]));
+        MultiPartRegistry.registerPartFactory(this, namesToRegister.toArray(new String[0]));
     }
 
     private String translateName(String name) {
