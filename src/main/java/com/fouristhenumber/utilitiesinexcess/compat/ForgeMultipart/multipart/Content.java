@@ -72,7 +72,7 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
 
         return createUEMultiPart(
             false,
-            MicroMaterialRegistry.materialID(nbt.getString("material")),
+            MicroMaterialRegistry.materialID(nbt.getString("mat")),
             nbt.getInteger("side"),
             actualName);
     }
