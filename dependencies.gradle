@@ -76,6 +76,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.97:dev") { transitive = false }
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-997-GTNH:dev") { transitive = true }
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:spark:v0.0.16:fat-dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForgeMultipart:2.0.0:dev")
 
     // For debugging chunkloading (/chunkloaders)
     //runtimeOnlyNonPublishable("curse.maven:chicken-chunks-229316:2233250")
