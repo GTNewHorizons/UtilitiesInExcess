@@ -45,7 +45,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Angelica:2.1.53:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:FindIt:1.4.3:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.14.93-GTNH:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:ForgeMultipart:1.7.10:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:ForgeMultipart:2.0.0:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Backhand:1.8.11:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:waila:1.19.30:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Postea:1.2.5:dev") {transitive = false}
@@ -76,6 +76,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.97:dev") { transitive = false }
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-997-GTNH:dev") { transitive = true }
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:spark:v0.0.16:fat-dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForgeMultipart:2.0.0:dev")
 
     // For debugging chunkloading (/chunkloaders)
     //runtimeOnlyNonPublishable("curse.maven:chicken-chunks-229316:2233250")
