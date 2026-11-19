@@ -15,7 +15,7 @@ public class FMPRecipeLoader {
 
     public static void run() {
 
-        int materialCount = MicroMaterialRegistry.materialCount();
+        int materialCount = FMPMaterials.materialCount();
         for (int id = 0; id < materialCount; id++) {
             String materialName = MicroMaterialRegistry.materialName(id);
             NBTTagCompound tag = new NBTTagCompound();

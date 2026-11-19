@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPMaterials;
 
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
@@ -43,7 +44,7 @@ public class UEMultipartItem extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> listOfStacks) {
-        int materialCount = MicroMaterialRegistry.materialCount();
+        int materialCount = FMPMaterials.materialCount();
         for (int id = 0; id < materialCount; id++) {
             String materialName = MicroMaterialRegistry.materialName(id);
             for (int i = 0; i < partNames.length; i++) {
