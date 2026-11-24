@@ -35,6 +35,10 @@ public class PaintRollerRenderer implements IItemRenderer {
         int color = ItemPaintRoller.getColorFromStack(stack);
         boolean paintStripper = ItemPaintRoller.getPaintStripperFromStack(stack);
 
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_BLEND);
+
         ItemRenderUtil.applyStandardItemTransform(type);
 
         if (paintStripper) {
@@ -53,5 +57,7 @@ public class PaintRollerRenderer implements IItemRenderer {
         if (Color.getAlpha(color) != 0) {
             ItemRenderUtil.renderItem(type, paintRoller.starIcon);
         }
+
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }

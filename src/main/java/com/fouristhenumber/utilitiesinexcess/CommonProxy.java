@@ -84,10 +84,6 @@ public class CommonProxy {
             RenderingRegistry.registerBlockHandler(new BlackoutCurtainsRenderer());
         }
 
-        if (Mods.NEI.isLoaded()) {
-            IMCForNEI.IMCSender();
-        }
-
         if (Mods.Waila.isLoaded()) {
             FMLInterModComms.sendMessage(
                 "Waila",
@@ -103,6 +99,10 @@ public class CommonProxy {
 
         if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
             BlockColored.registerConfigBlocks();
+        }
+
+        if (Mods.NEI.isLoaded()) {
+            IMCForNEI.IMCSender();
         }
 
         if (OtherConfig.enableWorldConversionWarning) {
@@ -160,7 +160,7 @@ public class CommonProxy {
     public void loadComplete(FMLLoadCompleteEvent event) {
 
         if (ColoredBlocksConfig.INSTANCE.enableColoredBlocks) {
-            BlockColored.initColoredBlocks();
+            BlockColored.initColoredBlocks(null);
         }
 
     }

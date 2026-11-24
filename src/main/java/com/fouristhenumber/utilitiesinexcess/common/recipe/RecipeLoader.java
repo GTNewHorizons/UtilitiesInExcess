@@ -1248,6 +1248,8 @@ public class RecipeLoader {
 
         if (BlockColored.allowDyingBlocks()) {
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                if (!block.wasRegistered()) continue;
+
                 loadDyeableColoredBlockRecipe(block);
             }
         } else {
@@ -1257,6 +1259,8 @@ public class RecipeLoader {
             }
 
             for (BlockColored block : BlockColored.COLORED_BLOCKS) {
+                if (!block.wasRegistered()) continue;
+
                 loadColoredBlockRecipe(block, dyes);
             }
         }
@@ -1268,7 +1272,12 @@ public class RecipeLoader {
         ItemStack any8 = new ItemStack(block, 8, OreDictionary.WILDCARD_VALUE);
         // To base using water
         GameRegistry.addShapedRecipe(
-            new ItemStack(block.getBase(), 8, block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0),
+            new ItemStack(
+                block.getBase()
+                    .getBlock(),
+                8,
+                block.getBase()
+                    .getMeta()),
             "bbb",
             "bdb",
             "bbb",
@@ -1279,9 +1288,13 @@ public class RecipeLoader {
 
         ItemStack anyDyed = new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack baseItem = new ItemStack(
-            Item.getItemFromBlock(block.getBase()),
+            Item.getItemFromBlock(
+                block.getBase()
+                    .getBlock()),
             1,
-            block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE : 0);
+            block.ignoreBaseMeta() ? OreDictionary.WILDCARD_VALUE
+                : block.getBase()
+                    .getMeta());
         // From base to dyed using roller
         GameRegistry.addRecipe(
             new RecipePaintRollerToPaint(
@@ -1311,7 +1324,8 @@ public class RecipeLoader {
                 "bdb",
                 "bpb",
                 'b',
-                block.getBase(),
+                block.getBase()
+                    .getBlock(),
                 'd',
                 dyes[15 - i],
                 'p',
@@ -1319,7 +1333,12 @@ public class RecipeLoader {
         }
 
         addShapedRecipe(
-            new ItemStack(block.getBase(), 8),
+            new ItemStack(
+                block.getBase()
+                    .getBlock(),
+                8,
+                block.getBase()
+                    .getMeta()),
             "bbb",
             "bdb",
             "bbb",

@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
     version = Tags.VERSION,
     name = "UtilitiesInExcess",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "required-after:gtnhlib@[0.11.23,);after:ForgeMicroblock;after:Waila;after:NotEnoughItems@[2.8.108-GTNH,);")
+    dependencies = "required-after:gtnhlib@[0.11.23,);after:ForgeMicroblock;after:Waila;after:NotEnoughItems@[2.8.108-GTNH,);after:angelica@[2.1.53,);")
 public class UtilitiesInExcess {
 
     public static final String MODID = "utilitiesinexcess";
