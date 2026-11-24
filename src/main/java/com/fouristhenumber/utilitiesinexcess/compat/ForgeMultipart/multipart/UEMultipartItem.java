@@ -2,7 +2,6 @@ package com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart;
 
 import static com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.multipart.Content.partNames;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPItems;
+import com.fouristhenumber.utilitiesinexcess.compat.ForgeMultipart.FMPMaterials;
 
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.BlockCoord;
@@ -44,12 +44,13 @@ public class UEMultipartItem extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> listOfStacks) {
-        Arrays.stream(MicroMaterialRegistry.getIdMap())
-            .forEach(t -> {
-                for (int i = 0; i < partNames.length; i++) {
-                    listOfStacks.add(createStack(t._1, i));
-                }
-            });
+        int materialCount = FMPMaterials.materialCount();
+        for (int id = 0; id < materialCount; id++) {
+            String materialName = MicroMaterialRegistry.materialName(id);
+            for (int i = 0; i < partNames.length; i++) {
+                listOfStacks.add(createStack(materialName, i));
+            }
+        }
     }
 
     @Override

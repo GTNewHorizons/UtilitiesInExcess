@@ -72,7 +72,19 @@ public class Content implements MultiPartRegistry.IPartFactory2 {
 
         return createUEMultiPart(
             false,
-            MicroMaterialRegistry.materialID(nbt.getString("material")),
+            MicroMaterialRegistry.materialID(nbt.getString("mat")),
+            nbt.getInteger("side"),
+            actualName);
+    }
+
+    // Called on the client for off-world previews (Schematica, GuideNH)
+    @Override
+    public TMultiPart createPartForClientPreview(String name, NBTTagCompound nbt) {
+        String actualName = translateName(name);
+
+        return createUEMultiPart(
+            true,
+            MicroMaterialRegistry.materialID(nbt.getString("mat")),
             nbt.getInteger("side"),
             actualName);
     }

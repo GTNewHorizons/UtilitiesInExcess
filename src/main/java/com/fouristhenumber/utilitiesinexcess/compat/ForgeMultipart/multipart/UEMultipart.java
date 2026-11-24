@@ -23,7 +23,7 @@ public abstract class UEMultipart extends TMultiPart implements JIconHitEffects,
     }
 
     @Override
-    public void addDestroyEffects(EffectRenderer renderer) {
+    public void addDestroyEffects(MovingObjectPosition hit, EffectRenderer renderer) {
         IconHitEffects.addDestroyEffects(this, renderer);
     }
 

@@ -8,8 +8,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.lwjgl.opengl.GL11;
-
 import codechicken.lib.vec.Vector3;
 import codechicken.microblock.BlockMicroMaterial;
 import codechicken.microblock.GrassMicroMaterial;
@@ -207,10 +205,6 @@ public class SphereRenderingHelper {
         int UVCounter = 0;
         int UVCounterMiddle = 1;
         for (int longitude = 6; longitude < 8; longitude++) {
-            if (longitude == 7) {
-                tess.draw(); // Empty tess buffer
-                tess.startDrawing(GL11.GL_TRIANGLES); // STart with triangles.
-            }
             for (int latitude = 0; latitude < 16; latitude++) {
                 // using non axis aligned faces so we need special uv for each vertex.
                 double u1, u2, u3, u4, v1, v2, v3, v4;
@@ -285,8 +279,6 @@ public class SphereRenderingHelper {
                 }
             }
         }
-        tess.draw(); // Draw our triangles
-        tess.startDrawingQuads(); // go back to drawing quads once done.
     }
 
     public static void RenderSphereBottom(Tessellator tess, IIcon bottomIcon, double x, double y, double z,
@@ -299,10 +291,6 @@ public class SphereRenderingHelper {
         int UVCounter = 0;
         int UVCounterMiddle = 1;
         for (int longitude = 1; longitude > -1; longitude--) {
-            if (longitude == 0) {
-                tess.draw(); // Empty tess buffer
-                tess.startDrawing(GL11.GL_TRIANGLES); // STart with triangles.
-            }
             for (int latitude = 0; latitude < 16; latitude++) {
                 // using non axis aligned faces so we need special uv for each vertex.
                 double u1, u2, u3, u4, v1, v2, v3, v4;
@@ -376,8 +364,6 @@ public class SphereRenderingHelper {
                 }
             }
         }
-        tess.draw(); // Draw our triangles
-        tess.startDrawingQuads(); // go back to drawing quads once done.
     }
 
     public static void RenderSphereSides(Tessellator tess, IIcon[] sideIcons, double x, double y, double z,
@@ -509,8 +495,10 @@ public class SphereRenderingHelper {
         tess.setColorOpaque_F(cr * shade, cg * shade, cb * shade);
         tess.setNormal((float) n.x, (float) n.y, (float) n.z);
 
+        // Triangle emitted as a degenerate quad so callers can stay in quads mode (required by Angelica)
         tess.addVertexWithUV(vert0.x, vert0.y, vert0.z, u1, v1);
         tess.addVertexWithUV(vert1.x, vert1.y, vert1.z, u2, v2);
+        tess.addVertexWithUV(vert2.x, vert2.y, vert2.z, u3, v3);
         tess.addVertexWithUV(vert2.x, vert2.y, vert2.z, u3, v3);
     }
 
