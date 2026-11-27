@@ -67,7 +67,7 @@ public class ItemInversionSigilInactive extends Item {
 
         if (world.isRemote) return true;
 
-        boolean timeOk = isWithinMidnightWindow(world.getWorldTime());
+        boolean timeOk = isWithinMidnightWindow(world.getWorldTime() % 24000);
         boolean darkOk = world.getBlockLightValue(x, y, z) <= LIGHT_LEVEL_REQUIRED;
         boolean redstoneRingOk = hasRedstoneRing(world, x, y, z);
         boolean grassOk = countNearbyGrass(world, x, y, z);
@@ -177,7 +177,7 @@ public class ItemInversionSigilInactive extends Item {
 
             if (world.isRemote) return;
 
-            if (!isWithinMidnightWindow(world.getWorldTime())) return;
+            if (!isWithinMidnightWindow(world.getWorldTime() % 24000)) return;
 
             if (!(event.entityLiving instanceof EntityAnimal)) return;
 
